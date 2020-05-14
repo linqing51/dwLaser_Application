@@ -1,0 +1,1 @@
+C:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin --output ./testApp.bin ./stm32f407/STM32F407.axf
