@@ -20,3 +20,6 @@ void loadDefault(void);
 int16_t fitLaserToCode(uint8_t ch, int16_t power);
 /*****************************************************************************/
 #endif
+
+
+

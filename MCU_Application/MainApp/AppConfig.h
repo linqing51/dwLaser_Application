@@ -84,3 +84,6 @@
 
 #define CONFIG_RELEASE_SECOND_DEF								1000//激光发射计时秒定义
 #endif
+
+
+

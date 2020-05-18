@@ -3,8 +3,22 @@
 /*****************************************************************************/
 #include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
+/*****************************************************************************/
+#include <stdio.h>
+#include <stdlib.h> 
+#include <string.h>
+#include <ctype.h>
+#include <LIMITS.H>
+#include <math.h>
+#include "stdbool.h"
+#include "stdint.h"
+/*****************************************************************************/
 #include "sPlcConfig.h"
 #include "sPlcFun.h"
+#include "sPlcTimer.h"
+#include "sPlcLaser.h"
+/*****************************************************************************/
+#include "main.h"
 //#include "sPlcPort.h"
 //#include "debugLed.h"
 #if CONFIG_SPLC_FUN_EPID == 1
@@ -14,29 +28,23 @@
 #include "sPlcTest.h"
 #endif
 /*****************************************************************************/
-#define SPLC_FP32					*(fp32_t*)//指针取单精度浮点
-#define SPLC_FP64					*(fp64_t*)//指针取双精度浮点
-#define SPLC_INT32					*(int32_t*)//指针取长整数
+typedef float						fp32_t;
+typedef double						fp64_t;
 /*****************************************************************************/
-extern volatile int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
-extern volatile int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-extern volatile uint8_t TimerCounter_5mS;
-extern volatile uint8_t TimerCounter_10mS;
-extern volatile uint8_t TimerCounter_100mS;
-extern volatile uint8_t TD_10MS_SP;
-extern volatile uint8_t TD_100MS_SP;
-extern volatile uint8_t TD_1000MS_SP;
+extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
+extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
+extern int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
+extern uint8_t TimerCounter_1mS;
+extern uint8_t TimerCounter_10mS;
+extern uint8_t TimerCounter_100mS;
+extern uint8_t TD_10MS_SP;
+extern uint8_t TD_100MS_SP;
+extern uint8_t TD_1000MS_SP;
 /*****************************************************************************/
 void sPlcInit(void);//软逻辑初始化
 void sPlcProcessStart(void);//sPLC轮询起始
 void sPlcProcessEnd(void);//sPLC轮询结束
-extern void sPlcPortProcess(void);//sPLC平台程序
-extern void initWatchDog(void);//看门狗初始化
-extern void feedWatchDog(void);//喂狗
-extern void enableWatchDog(void);//使能看门狗
-extern void disableWatchDog(void);//关闭看门狗(未锁定)
-extern void checkWatchDog(void);//检查看门狗状态
-extern void mucReboot(void);//软件复位
+void sPlcPortProcess(void);//sPLC平台程序
 /*****************************************************************************/
 void assertCoilAddress(uint16_t adr);
 void assertRegisterAddress(uint16_t adr);
@@ -51,17 +59,22 @@ void clearTD(void);
 void clearSPCOIL(void);
 void clearSPREG(void);
 /*****************************************************************************/
-void enterSplcIsr(void);
-void exitSplcIsr(void);
-void disableSplcIsr(void);
-void enableSplcIsr(void);
+__weak void inputInit(void);
+__weak void inputRefresh(void);
+__weak void outputInit(void);
+__weak void outputRefresh(void);
+__weak void loadDefault(void);
+__weak void enterSplcIsr(void);
+__weak void exitSplcIsr(void);
+__weak void disableSplcIsr(void);
+__weak void enableSplcIsr(void);
+__weak void updateNvram(void);//更新NVRAM->EPROM
+__weak void clearNvram(void);//清除NVRAM数据	
+__weak void loadNvram(void);
+__weak void saveNvram(void);
+__weak void mucReboot(void);//软件复位
+__weak void setLed(uint8_t color, uint8_t state);//设置LED灯
 /*****************************************************************************/
 void sPlcInit(void);
-void updateNvram(void);//更新NVRAM->EPROM
-void clearNvram(void);//清除NVRAM数据	
-void loadNvram(void);
-void loadFdram(void);
-void saveFdram(void);
-void saveNvram(void);
 /*****************************************************************************/
 #endif

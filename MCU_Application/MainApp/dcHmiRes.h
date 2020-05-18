@@ -19,32 +19,32 @@
 #define HMI_WHITE     													0xFFFF//白色  
 /*****************************************************************************/
 //HMI页面编号
-#define GDDC_PAGE_POWERUP																				0
-#define GDDC_PAGE_PASSCODE																			1
-#define GDDC_PAGE_NEW_PASSCODE																	2
-#define GDDC_PAGE_STANDBY_CW																		3
-#define GDDC_PAGE_STANDBY_SP																		4
-#define GDDC_PAGE_STANDBY_MP																		5
-#define GDDC_PAGE_STANDBY_GP																		6
-#define GDDC_PAGE_STANDBY_DERMA																	7
-#define GDDC_PAGE_STANDBY_SIGNAL																8
-#define GDDC_PAGE_OPTION																				9//选项页面
-#define GDDC_PAGE_SCHEME_0																			10//方案页面第一页
-#define GDDC_PAGE_SCHEME_1																			11//方案页面第二页
-#define GDDC_PAGE_INFORMATION																		12//信息页面
-#define GDDC_PAGE_DIAGNOSIS																			13//诊断页面
-#define GDDC_PAGE_RENAME																				14//SCHEME更名
+#define GDDC_PAGE_POWERUP												0
+#define GDDC_PAGE_PASSCODE												1
+#define GDDC_PAGE_NEW_PASSCODE											2
+#define GDDC_PAGE_STANDBY_CW											3
+#define GDDC_PAGE_STANDBY_SP											4
+#define GDDC_PAGE_STANDBY_MP											5
+#define GDDC_PAGE_STANDBY_GP											6
+#define GDDC_PAGE_STANDBY_DERMA											7
+#define GDDC_PAGE_STANDBY_SIGNAL										8
+#define GDDC_PAGE_OPTION												9//选项页面
+#define GDDC_PAGE_SCHEME_0												10//方案页面第一页
+#define GDDC_PAGE_SCHEME_1												11//方案页面第二页
+#define GDDC_PAGE_INFORMATION											12//信息页面
+#define GDDC_PAGE_DIAGNOSIS												13//诊断页面
+#define GDDC_PAGE_RENAME												14//SCHEME更名
 /*****************************************************************************/
 //GDDC页面控件编号
 /*****************************************************************************/
-#define GDDC_PAGE_POWERUP_TEXTDISPLAY_CHECK_INFO								1
-#define GDDC_PAGE_POWERUP_PROGRESS_CHECK_INFO										2
+#define GDDC_PAGE_POWERUP_TEXTDISPLAY_CHECK_INFO						1
+#define GDDC_PAGE_POWERUP_PROGRESS_CHECK_INFO							2
 /*****************************************************************************/
-#define GDDC_PAGE_PASSCODE_KEY_NUM1															1
-#define GDDC_PAGE_PASSCODE_KEY_NUM2															2
-#define GDDC_PAGE_PASSCODE_KEY_NUM3															3
-#define GDDC_PAGE_PASSCODE_KEY_NUM4															4
-#define GDDC_PAGE_PASSCODE_KEY_NUM5															5
+#define GDDC_PAGE_PASSCODE_KEY_NUM1										1
+#define GDDC_PAGE_PASSCODE_KEY_NUM2										2
+#define GDDC_PAGE_PASSCODE_KEY_NUM3										3
+#define GDDC_PAGE_PASSCODE_KEY_NUM4										4
+#define GDDC_PAGE_PASSCODE_KEY_NUM5										5
 #define GDDC_PAGE_PASSCODE_KEY_NUM6															6
 #define GDDC_PAGE_PASSCODE_KEY_NUM7															7
 #define GDDC_PAGE_PASSCODE_KEY_NUM8															8
@@ -284,3 +284,6 @@
 #define GDDC_PAGE_RENAME_KEY_EXIT										3
 /*****************************************************************************/
 #endif
+
+
+

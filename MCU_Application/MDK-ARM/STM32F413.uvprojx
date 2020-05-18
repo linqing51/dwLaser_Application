@@ -18,7 +18,7 @@
           <Vendor>STMicroelectronics</Vendor>
           <PackID>Keil.STM32F4xx_DFP.2.14.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
-          <Cpu>IRAM(0x20000000-0x2004FFFF) IROM(0x8000000-0x817FFFF) CLOCK(25000000) FPU2 CPUTYPE("Cortex-M4")</Cpu>
+          <Cpu>IRAM(0x20000000-0x2004FFFF) IROM(0x8000000-0x817FFFF)  CLOCK(25000000) FPU2 CPUTYPE("Cortex-M4")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -134,11 +134,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4101</DriverSelection>
+            <DriverSelection>4107</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -188,7 +188,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F413xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\sPlc;..\sPlcLib;..\MainApp</IncludePath>
+              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Middlewares/Third_Party/FatFs/src; ../Middlewares/Third_Party/FreeRTOS/Source/include; ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2; ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F; ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc; ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ..\sPlc; ..\sPlcPort; ..\dcHMI; ..\MainApp</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -356,7 +356,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\Core\Inc</IncludePath>
+              <IncludePath>..\Inc</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -390,102 +390,57 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Application/User/Core</GroupName>
+          <GroupName>Application/User</GroupName>
           <Files>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/main.c</FilePath>
+              <FilePath>../Src/main.c</FilePath>
             </File>
             <File>
-              <FileName>gpio.c</FileName>
+              <FileName>usbh_diskio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/gpio.c</FilePath>
+              <FilePath>../Src/usbh_diskio.c</FilePath>
             </File>
             <File>
-              <FileName>crc.c</FileName>
+              <FileName>fatfs.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/crc.c</FilePath>
+              <FilePath>../Src/fatfs.c</FilePath>
             </File>
             <File>
               <FileName>freertos.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/freertos.c</FilePath>
+              <FilePath>../Src/freertos.c</FilePath>
             </File>
-            <File>
-              <FileName>i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>rng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/rng.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/stm32f4xx_it.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_hal_msp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/stm32f4xx_hal_msp.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_hal_timebase_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/stm32f4xx_hal_timebase_tim.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/FATFS/Target</GroupName>
-          <Files>
-            <File>
-              <FileName>usbh_diskio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../FATFS/Target/usbh_diskio.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/FATFS/App</GroupName>
-          <Files>
-            <File>
-              <FileName>fatfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../FATFS/App/fatfs.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/USB_HOST/App</GroupName>
-          <Files>
             <File>
               <FileName>usb_host.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../USB_HOST/App/usb_host.c</FilePath>
+              <FilePath>../Src/usb_host.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User/USB_HOST/Target</GroupName>
-          <Files>
             <File>
               <FileName>usbh_conf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../USB_HOST/Target/usbh_conf.c</FilePath>
+              <FilePath>../Src/usbh_conf.c</FilePath>
             </File>
             <File>
               <FileName>usbh_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../USB_HOST/Target/usbh_platform.c</FilePath>
+              <FilePath>../Src/usbh_platform.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/stm32f4xx_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_msp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/stm32f4xx_hal_msp.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_timebase_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/stm32f4xx_hal_timebase_tim.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -610,7 +565,7 @@
             <File>
               <FileName>system_stm32f4xx.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/system_stm32f4xx.c</FilePath>
+              <FilePath>../Src/system_stm32f4xx.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -740,7 +695,73 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>MainApp</GroupName>
+          <GroupName>Middlewares/CMSIS</GroupName>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
+        </Group>
+        <Group>
+          <GroupName>sPlc</GroupName>
+          <Files>
+            <File>
+              <FileName>sPlcFun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlc\sPlcFun.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlc\sPlc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>sPlcPort</GroupName>
+          <Files>
+            <File>
+              <FileName>sPlcTimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcLaser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcLaser.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcChipDac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcChipDac.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcChipAdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcChipAdc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>gddcHmi</GroupName>
+          <Files>
+            <File>
+              <FileName>hmiCmdQueue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\dcHmi\hmiCmdQueue.c</FilePath>
+            </File>
+            <File>
+              <FileName>hmiDriver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\dcHmi\hmiDriver.c</FilePath>
+            </File>
+            <File>
+              <FileName>hmiUserUart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\dcHmi\hmiUserUart.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mainApp</GroupName>
           <Files>
             <File>
               <FileName>MainApp.c</FileName>
@@ -748,27 +769,6 @@
               <FilePath>..\MainApp\MainApp.c</FilePath>
             </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>sPlc</GroupName>
-          <Files>
-            <File>
-              <FileName>sPlc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sPlc\sPlc.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcFun.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sPlc\sPlcFun.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>sPlcLib</GroupName>
-        </Group>
-        <Group>
-          <GroupName>sPlcPort</GroupName>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>

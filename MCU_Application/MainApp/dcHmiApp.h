@@ -86,3 +86,6 @@ void updateExtralDisplay(int16_t mode);//更新额外显示
 void standbyDebugInfoVisiable(int8_t enable);
 void optionKeyEnable(uint8_t enable);
 #endif
+
+
+

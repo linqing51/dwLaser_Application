@@ -1,20 +1,20 @@
 #include "sPlcFun.h"
 /*****************************************************************************/
 void REBOOT(void) {//软件复位	
-	mucReboot();
+	//mucReboot();
 }
-//void ORG(uint16_t A) {
-//}
+void ORG(uint16_t A) {
+}
 //位指令
-//void OUT(uint16_t A) {
-//}
-void SET(uint16_t A){//线圈置位
+void OUT(uint16_t A) {
+}
+void SSET(uint16_t A){//线圈置位
 #if CONFIG_SPLC_ASSERT == 1
 	assertCoilAddress(A);//检查地址范围
 #endif
 	NVRAM0[(A / 16)] |= 1 << (A % 16);
 }
-void RES(uint16_t A){//线圈置零
+void RRES(uint16_t A){//线圈置零
 #if CONFIG_SPLC_ASSERT == 1
 	assertCoilAddress(A);//检查地址范围
 #endif
@@ -27,9 +27,9 @@ void FLIP(uint16_t A){//翻转
 #endif
 	temp= (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;;
 	if(temp)
-		RES(A);
+		RRES(A);
 	else
-		SET(A);
+		SSET(A);
 }
 uint8_t LD(uint16_t A){//载入
 	uint8_t res = 0;
@@ -38,9 +38,9 @@ uint8_t LD(uint16_t A){//载入
 #endif
 	res = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	if(res)
-		return TRUE;
+		return true;
 	else
-		return FALSE;
+		return false;
 }
 uint8_t LDB(uint16_t A){//反向载入
 	uint8_t res = 0;
@@ -49,9 +49,9 @@ uint8_t LDB(uint16_t A){//反向载入
 #endif
 	res = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	if(res)
-		return FALSE;
+		return false;
 	else
-		return TRUE;
+		return true;
 }
 uint8_t LDP(uint16_t A){//脉冲上升沿
 	uint8_t temp0 = 0, temp1 = 0;
@@ -61,9 +61,9 @@ uint8_t LDP(uint16_t A){//脉冲上升沿
 	temp0 = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	temp1 = (uint8_t)(NVRAM1[(A / 16)] >> (A % 16)) & 0x01;
 	if(temp0 == 1 && temp1 == 0)
-		return TRUE;
+		return true;
 	else
-		return FALSE;
+		return false;
 }
 uint8_t LDN(uint16_t A){//脉冲下降沿
 	uint8_t temp0 = 0, temp1 = 0;
@@ -73,15 +73,15 @@ uint8_t LDN(uint16_t A){//脉冲下降沿
 	temp0 = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	temp1 = (uint8_t)(NVRAM1[(A / 16)] >> (A % 16)) & 0x01;
 	if(temp0 == 0 && temp1 == 1)
-		return TRUE;
+		return true;
 	else
-		return FALSE;
+		return false;
 }
 /*****************************************************************************/
 //延时器指令
 void T10MS(uint8_t A, uint8_t start, uint16_t value){//10MS延时器
 	if(start){
-		SET(T_10MS_ENA_START * 16 + A);
+		SSET(T_10MS_ENA_START * 16 + A);
 		if(NVRAM0[(TD_10MS_START + A)] >= value){
 			NVRAM0[(T_10MS_START + (A / 16))] |= 1 << (A % 16);
 		}
@@ -90,14 +90,14 @@ void T10MS(uint8_t A, uint8_t start, uint16_t value){//10MS延时器
 		}
 	}
 	else{
-		RES(T_10MS_ENA_START * 16 + A);
+		RRES(T_10MS_ENA_START * 16 + A);
 		NVRAM0[(T_10MS_START + (A / 16))] &= ~(1 << (A % 16));
 		NVRAM0[(TD_10MS_START + A)] = 0x0;
 	}	
 }
 void T100MS(uint8_t A, uint8_t start, uint16_t value){//100MS延时器
 	if(start){
-		SET(T_100MS_ENA_START * 16 + A);
+		SSET(T_100MS_ENA_START * 16 + A);
 		if(NVRAM0[(TD_100MS_START + A)] >= value){
 			NVRAM0[(T_100MS_START + (A / 16))] |= 1 << (A % 16);
 		}
@@ -106,7 +106,7 @@ void T100MS(uint8_t A, uint8_t start, uint16_t value){//100MS延时器
 		}	
 	}
 	else{
-		RES(T_100MS_ENA_START * 16 + A);
+		RRES(T_100MS_ENA_START * 16 + A);
 		NVRAM0[(T_100MS_START + (A / 16))] &= ~(1 << (A % 16));
 		NVRAM0[(TD_100MS_START + A)] = 0x0;
 	}
@@ -162,7 +162,7 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	temp = (int16_t)(CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096);//单位mV
 	temp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - temp) / temp);
 	ftemp = ((1.0 / CONFIG_NTC_B) * log((fp32_t)(temp) / 10000)) + (1 / (CONFIG_ADC_AMBIENT + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
-	ftemp = ( 1.0 / ftemp ) - 273.0;
+	ftemp = (fp32_t)(( 1.0F / ftemp ) - 273.0F);
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
@@ -437,21 +437,11 @@ void NVLOAD(void){
 	loadNvram();
 	enableSplcIsr();	
 }
-void FDSAV(void){//FDRAM->EPROM
-	disableSplcIsr();
-	saveFdram();
-	enableSplcIsr();
-}
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	disableSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
-	epromWrite((cn * 60 + CONFIG_EPROM_FDRAM_START), (uint8_t*)(cn * 30 + FDRAM), 60);
+	//epromWrite((cn * 60 + CONFIG_EPROM_FDRAM_START), (uint8_t*)(cn * 30 + FDRAM), 60);
 #endif
-	enableSplcIsr();
-}
-void FDLAD(void){//FDRAM<-EPROM
-	disableSplcIsr();
-	loadFdram();
 	enableSplcIsr();
 }
 
@@ -471,3 +461,5 @@ void IMDIO(void) {//立即更新IO点状态含输入输出
 //}
 //void FROM(uint16_t SA) {//步进执行指令
 //}
+
+

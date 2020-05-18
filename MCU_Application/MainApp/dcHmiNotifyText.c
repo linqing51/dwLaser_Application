@@ -10,7 +10,7 @@
 */
 void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
    //TODO: ÃÌº””√ªß
-	data uint16_t tmp;
+	uint16_t tmp;
 	switch(screen_id){
 		case GDDC_PAGE_RENAME:{
 			switch(control_id){
@@ -25,7 +25,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 							SetTextValue(GDDC_PAGE_SCHEME_1, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp - 16), str);
 						}
 					}
-					SET(R_RENAME_TEXTDISPLAY_READ_DONE);
+					SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					break;
 				}
 				default:break;

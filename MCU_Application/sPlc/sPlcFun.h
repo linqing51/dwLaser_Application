@@ -5,8 +5,8 @@
 /*****************************************************************************/
 void REBOOT(void) ;//复位
 //位指令
-void SET(uint16_t A);//线圈置位
-void RES(uint16_t A);//线圈复位
+void SSET(uint16_t A);//线圈置位
+void RRES(uint16_t A);//线圈复位
 void FLIP(uint16_t A) ;//翻转
 uint8_t LD(uint16_t A) ;//载入
 uint8_t LDB(uint16_t A) ;//方向载入
@@ -59,10 +59,6 @@ void HSPWM(int16_t *pos, int16_t *neg, int16_t pot) ;//硬件PWM输出
 /*****************************************************************************/
 void NVSAV(void);//强制立即更新NVRAM
 void NVLOAD(void);
-void FDSAV(void);
-void FDLAD(void);
-void FDSAV_ONE(int16_t cn);
-void FDLAD_ONE(int16_t cn);
 #endif
 
 

@@ -5,17 +5,10 @@
 #if CONFIG_DEBUG == 1
 #define CONFIG_EPROM_DEBUG								0
 #define CONFIG_DEBUG_CONSOLE							0//
-#define CONFIG_DEBUG_PID								0//PID调试功能
-#define CONFIG_DEBUG_TIMER4								0//TIMER4调试
-#define CONFIG_DEBUG_PCA								0//PCA调试
 #else
 #define CONFIG_EPROM_DEBUG								0
 #define CONFIG_DEBUG_CONSOLE							0//
-#define CONFIG_DEBUG_PID								0//PID调试功能
-#define CONFIG_DEBUG_TIMER4								0//TIMER4调试
-#define CONFIG_DEBUG_PCA								0//PCA调试
 #endif
-/*****************************************************************************/
 /*****************************************************************************/
 #define CONFIG_UART0_BAUDRATE									115200//串口0 波特率
 #define CONFIG_UART1_BAUDRATE									115200//串口1 波特率
@@ -48,23 +41,17 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_SPWM									0//使了软件PWM功能
 /*****************************************************************************/
-#define CONFIG_SPLC_FUN_EPID									0//使能SPLC扩展指令
 #define CONFIG_SPLC_FUNTEST										0//功能指令测试
 /*****************************************************************************/
-#define CONFIG_SPLC_ASSERT										0//检查地址范围
+#define CONFIG_SPLC_ASSERT										1//检查地址范围
 #define CONFIG_SPLC_DEV											0x0A01//设备号
 #define CONFIG_SPLC_CLEAR_CODE									0xA58E
 #define CONFIG_SOFTPLC_TICK										200L//5mS
 #define CONFIG_INPUT_FILTER_TIME								1//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_WDT									1//看门狗启用
-/*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
-/*****************************************************************************/
-#define CONFIG_SPLC_USING_PCA									1//片内计数器阵列
-#define CONFIG_PCA_TICK											8000
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
@@ -94,18 +81,28 @@
 #define CONFIG_NTC_VREF											5000L
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DAC									1//是能DAC模块
+#define CONFIG_MAX_DAC_CH0										0xFFFF
+#define CONFIG_MIN_DAC_CH0										0
+#define CONFIG_MAX_DAC_CH1										0xFFFF
+#define CONFIG_MIN_DAC_CH1										0
+#define CONFIG_MAX_DAC_CH2										0xFFFF
+#define CONFIG_MIN_DAC_CH2										0
+#define CONFIG_MAX_DAC_CH3										0xFFFF
+#define CONFIG_MIN_DAC_CH3										0
+#define CONFIG_MAX_DAC_CH4										0xFFFF
+#define CONFIG_MIN_DAC_CH4										0
+#define CONFIG_MAX_DAC_CH5										0xFFFF
+#define CONFIG_MIN_DAC_CH5										0
+#define CONFIG_MAX_DAC_CH6										0xFFFF
+#define CONFIG_MIN_DAC_CH6										0
+#define CONFIG_MAX_DAC_CH7										0xFFFF
+#define CONFIG_MIN_DAC_CH7										0
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DK25L									0//SPLC使能NFC功能
 #define CONFIG_SPLC_USING_DK25L_OVERTIME						500
 #define CONFIG_DK25L_RXBUF_SIZE									16
 #define CONFIG_DK25L_TXBUF_SIZE									16
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_CH376									0
-/*****************************************************************************/
-#define CONFIG_SPLC_USING_ONCHIPFLASH							0
-#define CONFIG_SPLC_USING_SPI_FLASH								0
-#define CONFIG_SPLC_USING_NRF24L01								0
-#define CONFIG_SPLC_USING_WIRELESS_FOOTCONTROL					0//使能无线脚踏
 #define CONFIG_SPLC_USING_ROBATION								0//使能试用期功能
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LASER_TIMER							1
@@ -113,8 +110,8 @@
 /*****************************************************************************/
 #define CONFIG_LASER_TIMER_TICK									1000//1mS
 #define CONFIG_USING_USB_APP									0//USB应用
-#define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
-#define CONFIG_USING_BACKGROUND_APP								1//背景应用
+#define CONFIG_USING_DCHMI_APP									0//广东大彩人机交互应用
+#define CONFIG_USING_BACKGROUND_APP								0//背景应用
 /*****************************************************************************/
 #define CONFIG_CHECK_DELAY_TIME									10
 #define CONFIG_KEY_REPEAT_DELAY_TIME							50
@@ -206,54 +203,63 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_NFC									0
 /*****************************************************************************/
-//线圈 保持 16*4=64 
+//线圈 保持 16 * 32 = 512 
 #define MR_START												0
-#define MR_END   												3
-//数据寄存器 保持 32
-#define DM_START												4
-#define DM_END													35
-//线圈寄存器 非保持 16*16=256
-#define R_START													36
-#define R_END													51						
-//数据寄存器 非保持 128
-#define EM_START												52
-#define EM_END													179
+#define MR_END   												31
+//数据寄存器 保持 2048
+#define DM_START												32
+#define DM_END													2079
+//线圈寄存器 非保持 16 * 32 = 512
+#define R_START													2080
+#define R_END													2111						
+//数据寄存器 非保持 512
+#define EM_START												2112
+#define EM_END													2623
 //延时线圈
-//10MS 16*2=32
-#define T_10MS_START											180
-#define T_10MS_END												181
-//100MS 16*2=32
-#define T_100MS_START											182
-#define T_100MS_END												183
+//1MS  16 * 4 = 64
+#define T_1MS_START												2624
+#define T_1MS_END												2627
+//10MS 16 * 4 = 64
+#define T_10MS_START											2628
+#define T_10MS_END												2631
+//100MS 16 * 4 = 64
+#define T_100MS_START											2632
+#define T_100MS_END												2635
 //延时器使能
-//10MS 16*2=32
-#define T_10MS_ENA_START										184
-#define T_10MS_ENA_END											185
-//100MS 16*2=32
-#define T_100MS_ENA_START										186
-#define T_100MS_ENA_END											187
-//延时计时器 
-//10MS 16*2=32
-#define TD_10MS_START											188
-#define TD_10MS_END												219
-//100MS 16*2=32
-#define TD_100MS_START											220
-#define TD_100MS_END											251
-//输入位寄存器 16*2=32
-#define X_START													252
-#define X_END													253
-//输出位寄存器 16*2=32
-#define Y_START													254
-#define Y_END													255
+//1MS  16 * 4 = 64
+#define T_1MS_ENA_START											2636
+#define T_1MS_ENA_END											2639
+//10MS 16 * 4 = 64
+#define T_10MS_ENA_START										2640
+#define T_10MS_ENA_END											2643
+//100MS 16 * 4 = 64
+#define T_100MS_ENA_START										2644
+#define T_100MS_ENA_END											2647
+//延时计时器
+//1MS  16 * 4 = 64
+#define TD_1MS_START											2648
+#define TD_1MS_END												2711
+//10MS 16 * 4 = 64
+#define TD_10MS_START											2712											
+#define TD_10MS_END												2775
+//100MS 16 * 4 = 64
+#define TD_100MS_START											2776
+#define TD_100MS_END											2839
+//输入位寄存器 16 * 8 = 128
+#define X_START													2840
+#define X_END													2847
+//输出位寄存器 16 * 8 = 128
+#define Y_START													2848
+#define Y_END													2855
 //特殊寄存器 64
-#define SPREG_START												256
-#define SPREG_END												319
-//特殊线圈 16*8=128
-#define SPCOIL_START											320
-#define SPCOIL_END												327
-//临时寄存器 16
-#define TM_START												328
-#define TM_END													343
+#define SPREG_START												2856
+#define SPREG_END												2919
+//特殊线圈 16 * 8 = 128
+#define SPCOIL_START											2920
+#define SPCOIL_END												2927
+//临时寄存器 64
+#define TM_START												2928
+#define TM_END													2991
 /*****************************************************************************/
 #define CONFIG_NVRAM_SIZE 										(TM_END + 1)
 /*****************************************************************************/
@@ -273,25 +279,6 @@
 #define SPCOIL_NVRAM_FAIL										(SPCOIL_START * 16 + 7)//NVRAM校验码错误
 #define SPCOIL_WATCHDOG_OVERFLOW								(SPCOIL_START * 16 + 8)//看门狗溢出
 /*****************************************************************************/
-//USB 
-#define SPCOIL_USBHOST_INT_ERROR								(SPCOIL_START * 16 + 17)//USB 底层中断返回错误
-#define SPCOIL_USBHOST_CONNECT_REQ								(SPCOIL_START * 16 + 18)//USBHOST连接请求
-#define SPCOIL_USBDISK_CONNECT_DOING							(SPCOIL_START * 16 + 19)//USBHOST连接进行中
-#define SPCOIL_USBDISK_CONNECT_DONE								(SPCOIL_START * 16 + 20)//USBHOST连接完成
-#define SPCOIL_USBDISK_MOUNT_REQ								(SPCOIL_START * 16 + 21)//USBDISK载入请求
-#define SPCOIL_USBDISK_MOUNT_DOING								(SPCOIL_START * 16 + 22)//USBDISK装载进行中
-#define SPCOIL_USBDISK_MOUNT_DONE								(SPCOIL_START * 16 + 23)//USBDISK装载完成
-#define SPCOIL_USBDISK_REMOVE_REQ								(SPCOIL_START * 16 + 24)//USBHOST移除请求
-#define SPCOIL_USBDISK_REMOVE_DOING								(SPCOIL_START * 16 + 25)//USBHOST移除进行中
-#define SPCOIL_USBDISK_REMOVE_DONE								(SPCOIL_START * 16 + 26)//USBHOST移除完成
-#define SPCOIL_USBDISK_READING									(SPCOIL_START * 16 + 27)//USBDISK读取进行中
-#define SPCOIL_USBDISK_OPEN_FILE_FAIL							(SPCOIL_START * 16 + 28)//USBDISK打开文件失败
-#define SPCOIL_USBDISK_READ_FILE_FAIL							(SPCOIL_START * 16 + 29)//USBDISK读取文件失败
-#define SPCOIL_USBDISK_WRITE_FILE_FAIL							(SPCOIL_START * 16 + 30)//USBDISK写入文件失败
-#define SPCOIL_USBDISK_CLOSE_FILE_FAIL							(SPCOIL_START * 16 + 31)//USBDISK关闭文件失败
-#define SPCOIL_SIMEPROM_READ_FAIL								(SPCOIL_START * 16 + 32)//SIMEPROM读取失败
-#define SPCOIL_SIMEPROM_WRITE_FAIL								(SPCOIL_START * 16 + 33)//SIMEPROM写入失败
-/*****************************************************************************/
 #define SPCOIL_SPWM_OUT_0										(SPCOIL_START * 16 + 34)//SPWM0输出状态
 #define SPCOIL_SPWM_RESET_0										(SPCOIL_START * 16 + 35)//SPWM0复位
 #define SPCOIL_SPWM_OUT_1										(SPCOIL_START * 16 + 36)//SPWM1输出状态
@@ -301,12 +288,7 @@
 #define SPCOIL_SPWM_OUT_3										(SPCOIL_START * 16 + 40)//SPWM3输出状态
 #define SPCOIL_SPWM_RESET_3										(SPCOIL_START * 16 + 41)//SPWM3复位
 /*****************************************************************************/
-#define SPCOIL_SI7060_INIT_FAIL									(SPCOIL_START * 16 + 47)//SI7060温度传感器初始化失败
-#define SPCOIL_MCP79412_INIT_FAIL								(SPCOIL_START * 16 + 48)//MCP794212 RTC初始化失败
-#define SPCOIL_CH376_INIT_FAIL									(SPCOIL_START * 16 + 49)//USB HOST CH376初始化失败
-#define SPCOIL_SPI_FLASH_INIT_FAIL								(SPCOIL_START * 16 + 50)//SPI FLASH初始化失败
 #define SPCOIL_DK25L_INIT_FAIL									(SPCOIL_START * 16 + 51)//NFC模块初始化失败
-#define SPCOIL_NRF24L01_INIT_FAIL								(SPCOIL_START * 16 + 52)//NRF模块初始化失败
 #define SPCOIL_LASER_DRIVER_INIT_FAIL							(SPCOIL_START * 16 + 53)//激光驱动器初始化失败
 #define SPCOIL_WIRELESS_FOOTCONTROL_INIT_FAIL					(SPCOIL_START * 16 + 56)//无线脚踏初始化失败
 #define SPCOIL_PROBATION_INIT_FAIL								(SPCOIL_START * 16 + 57)//试用期初始化失败
@@ -331,10 +313,15 @@
 #define SPREG_ADC_6												(SPREG_START + 7)//ADC6采集值 ISMON1
 #define SPREG_ADC_7												(SPREG_START + 8)//ADC7采集值 IVINMON1
 #define SPREG_ADC_8												(SPREG_START + 9)//ADC8采集值 Temperature Sensor
+
 #define SPREG_DAC_0												(SPREG_START + 10)//DAC0设定值 LSET0
 #define SPREG_DAC_1												(SPREG_START + 11)//DAC1设定值 LSET1
 #define SPREG_DAC_2												(SPREG_START + 12)//DAC2设定值 LSET2
 #define SPREG_DAC_3												(SPREG_START + 13)//DAC3设定值 LSET3
+#define SPREG_DAC_4												(SPREG_START + 14)//DAC3设定值 LSET4
+#define SPREG_DAC_5												(SPREG_START + 15)//DAC3设定值 LSET5
+#define SPREG_DAC_6												(SPREG_START + 16)//DAC3设定值 LSET6
+#define SPREG_DAC_7												(SPREG_START + 17)//DAC3设定值 LSET7
 /*****************************************************************************/
 #define SPREG_SPWM_POS_0										(SPREG_START + 20)//软件PWM0正脉宽设置
 #define SPREG_SPWM_POS_SHADOW_0									(SPREG_START + 21)//软件PWM0正脉宽阴影
@@ -360,9 +347,5 @@
 #define SPREG_DK25L_VER											(SPREG_START + 50)//DK25L NFC模块版本
 /*****************************************************************************/
 #define SPREG_IDENTITY											(SPREG_END + 0)//平台ID号
-/*****************************************************************************/
-#define T10MS_USBDISK_CONNECT_DELAY								0
-#define T10MS_USBDISK_MOUNT_DELAY								1
-#define T10MS_USBDISK_REMOVE_DELAY								2
 /*****************************************************************************/
 #endif

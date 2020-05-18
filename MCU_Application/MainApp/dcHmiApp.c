@@ -1,32 +1,32 @@
 #include "dcHmiApp.h"
 /*****************************************************************************/
-code char *LANG_WARN_MSG_NO_ERROR = "";
-code char *LANG_WARN_MSG_INTERLOCK_UNPLUG = "Door interlock disconnected";//安全连锁没插
-code char *LANG_WARN_MSG_FOOTSWITCH_UNPLUG = "Footswitch not connected";//脚踏没插
-code char *LANG_WARN_MSG_ESTOP_PRESS = "ESTOP Press";
-code char *LANG_WARN_MSG_FIBER_UNPLUG = "No fiber connected ";//光纤没插或者RFID不识别
-code char *LANG_WARN_MSG_OUT_ENERGY = "Energy out of tolerance";//功率偏差超20%，预留功能，可以以后实现
-code char *LANG_WARN_MSG_DIODE_HTEMP = "Laser overheating";//温度过高
-code char *LANG_WARN_MSG_DIODE_LTEMP = "Laser NTC Open";//温度过低
-code char *LANG_WARN_MSG_DIODE0_OVERCURRENT = "Laser current exceeds set value";//电流超过限定值，保护激光器
-code char *LANG_WARN_MSG_DIODE1_OVERCURRENT = "Laser current exceeds set value";//电流超过限定值，保护激光器
-code char *LANG_WARN_MSG_NTC_ERROR = "Thermistor Error";//热敏电阻故障
-code char *LANG_WARN_MSG_ENVI_HTEMP = "Envi High Temperature";//环境温度过高
-code char *LANG_WARN_MSG_FOOT_DEPRESSED = "Foot/finger switch is depressed";//脚踏按下去没弹起来
-code char *LANG_WARN_MSG_LASER_EMIT = "Laser is firing";//激光正在发射
-code char *LANG_WARN_MSG_WAIT_TRIGGER = "Wait Laser Trigger";//等待激光触发
-code char *LANG_WARN_MSG_FIBER_MISSMATE = "Fiber not mate";
+const char *LANG_WARN_MSG_NO_ERROR = "";
+const char *LANG_WARN_MSG_INTERLOCK_UNPLUG = "Door interlock disconnected";//安全连锁没插
+const char *LANG_WARN_MSG_FOOTSWITCH_UNPLUG = "Footswitch not connected";//脚踏没插
+const char *LANG_WARN_MSG_ESTOP_PRESS = "ESTOP Press";
+const char *LANG_WARN_MSG_FIBER_UNPLUG = "No fiber connected ";//光纤没插或者RFID不识别
+const char *LANG_WARN_MSG_OUT_ENERGY = "Energy out of tolerance";//功率偏差超20%，预留功能，可以以后实现
+const char *LANG_WARN_MSG_DIODE_HTEMP = "Laser overheating";//温度过高
+const char *LANG_WARN_MSG_DIODE_LTEMP = "Laser NTC Open";//温度过低
+const char *LANG_WARN_MSG_DIODE0_OVERCURRENT = "Laser current exceeds set value";//电流超过限定值，保护激光器
+const char *LANG_WARN_MSG_DIODE1_OVERCURRENT = "Laser current exceeds set value";//电流超过限定值，保护激光器
+const char *LANG_WARN_MSG_NTC_ERROR = "Thermistor Error";//热敏电阻故障
+const char *LANG_WARN_MSG_ENVI_HTEMP = "Envi High Temperature";//环境温度过高
+const char *LANG_WARN_MSG_FOOT_DEPRESSED = "Foot/finger switch is depressed";//脚踏按下去没弹起来
+const char *LANG_WARN_MSG_LASER_EMIT = "Laser is firing";//激光正在发射
+const char *LANG_WARN_MSG_WAIT_TRIGGER = "Wait Laser Trigger";//等待激光触发
+const char *LANG_WARN_MSG_FIBER_MISSMATE = "Fiber not mate";
 /*****************************************************************************/
-code char *LANG_INFO_MSG_TYPE = "TYPE: Dual Git Engineering Sample";
-code char *LANG_INFO_MSG_SN = "SN: 0000-00-00";
-code char *LANG_INFO_MSG_WAVELENGTH = "WAVE LENGTH: 980nM";
-code char *LANG_INFO_MSG_LASER_POWER = "LASER_POWER: 30W";
-code char *LANG_INFO_MSG_VERSION = "VERSION: 0.99";
-code char *LANG_INFO_MSG_MANUFACTURE_DATE = "MANUFACTURE DATE:1970-01-01";
+const char *LANG_INFO_MSG_TYPE = "TYPE: Dual Git Engineering Sample";
+const char *LANG_INFO_MSG_SN = "SN: 0000-00-00";
+const char *LANG_INFO_MSG_WAVELENGTH = "WAVE LENGTH: 980nM";
+const char *LANG_INFO_MSG_LASER_POWER = "LASER_POWER: 30W";
+const char *LANG_INFO_MSG_VERSION = "VERSION: 0.99";
+const char *LANG_INFO_MSG_MANUFACTURE_DATE = "MANUFACTURE DATE:1970-01-01";
 /*****************************************************************************/
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
-uint16_t data hmiCmdSize;//已缓冲的指令数
-static data uint8_t MsgId;//当前显示的信息ID
+uint16_t hmiCmdSize;//已缓冲的指令数
+static uint8_t MsgId;//当前显示的信息ID
 void UpdateUI(void);
 static void updateReleaseTimeEnergy(void);
 /*****************************************************************************/
@@ -62,33 +62,33 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 void updateStandbyDebugInfo(void){//更新Standby调试信息
 	char dispBuf[128];
 	sprintf(dispBuf, "Diode Temper:%d, Chip Temper:%d", NVRAM0[EM_DIODE_TEMP0], NVRAM0[EM_ENVI_TEMP]);
-	SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, dispBuf);
-	SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, dispBuf);
-	SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, dispBuf);
-	SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, dispBuf);
-	SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, dispBuf);
-	SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
 }
 void updateDiognosisInfo(void){//更新诊断信息
 	char dispBuf[256];
 	
 	sprintf(dispBuf, "ADC0:0x%4X,ADC1:0x%4X,ADC2:0x%4X,ADC3:0x%4X", NVRAM0[SPREG_ADC_0], NVRAM0[SPREG_ADC_1], NVRAM0[SPREG_ADC_2], NVRAM0[SPREG_ADC_3]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO0, dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO0, (uint8_t*)dispBuf);
 	
 	sprintf(dispBuf, "ADC4:0x%4X,ADC5:0x%4X,ADC6:0x%4X,ADC7:0x%4X", NVRAM0[SPREG_ADC_4], NVRAM0[SPREG_ADC_5], NVRAM0[SPREG_ADC_6], NVRAM0[SPREG_ADC_7]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO1, dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO1, (uint8_t*)dispBuf);
 	
 	sprintf(dispBuf, "DAC0:0x%4X,DAC1:0x%4X,DAC2:0x%4X,DAC3:0x%4X", NVRAM0[SPREG_DAC_0], NVRAM0[SPREG_DAC_1], NVRAM0[SPREG_DAC_2], NVRAM0[SPREG_DAC_3]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
 	
 	sprintf(dispBuf, "NFC VER:0x%4X, PLATFORM VER:0x%4X", NVRAM0[SPREG_DK25L_VER], NVRAM0[SPREG_IDENTITY]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO3, dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO3, (uint8_t*)dispBuf);
 	
 	sprintf(dispBuf, "FS NC:%d, FS NO:%d, ES:%d, IL:%d, FP:%d", LD(X_FOOTSWITCH_NC),  LD(X_FOOTSWITCH_NO), LD(X_ESTOP), LD(X_INTERLOCK), NVRAM0[X_FIBER_PROBE]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4, dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4, (uint8_t*)dispBuf);
 	
 	sprintf(dispBuf, "FAN:%d, TEC:%d", LD(Y_FAN0),  LD(Y_TEC0));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO5, dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO5, (uint8_t*)dispBuf);
 }
 void updateEnergyDensity(void){//更新能量密度显示
 	char dispBuf[32];
@@ -1465,9 +1465,9 @@ void dcHmiLoopInit(void){//初始化模块
 	NVRAM0[EM_COOL_SET_TEMP] = CONFIG_COOL_SET_TEMP;
 	NVRAM0[EM_COOL_DIFF_TEMP] = CONFIG_COOL_DIFF_TEMP;
 	RES(Y_TEC0);
-	SET(Y_FAN0);
-	SET(Y_FAN1);
-	SET(R_RFID_PASS);
+	SSET(Y_FAN0);
+	SSET(Y_FAN1);
+	SSET(R_RFID_PASS);
 	RES(R_DRIVE_TEMP_HIGH);//屏蔽驱动器过热报警
 #if CONFIG_USING_DUAL_WAVE == 0
 	NVRAM0[EM_LASER_POWER_CH1] = 0;
@@ -1488,29 +1488,29 @@ static void temperatureLoop(void){//温度轮询顺序
 	temp = NVRAM0[EM_ENVI_TEMP];
 	//判断二极管0是否过热
 	if(NVRAM0[EM_DIODE_TEMP0] > CONFIG_APP_DIODE_HIGH_TEMP){
-		SET(R_DIODE_TEMP_HIGH);
+		SSET(R_DIODE_TEMP_HIGH);
 	}
 	else{
 		RES(R_DIODE_TEMP_HIGH);
 	}
 	if(NVRAM0[EM_DIODE_TEMP0] < CONFIG_APP_DIODE_LOW_TEMP){
-		SET(R_DIODE_TEMP_LOW);
+		SSET(R_DIODE_TEMP_LOW);
 	}
 	else{
 		RES(R_DIODE_TEMP_LOW);
 	}
 	//判断环境是否过热
 	if(NVRAM0[EM_ENVI_TEMP] > CONFIG_APP_ENVI_HIGH_TEMP){
-		SET(R_ENVI_TEMP_HIGH);
+		SSET(R_ENVI_TEMP_HIGH);
 	}
 	else{
 		RES(R_ENVI_TEMP_HIGH);
 	}
 	//温控执行 激光等待发射及错误状态启动温控	
 	if(LD(R_FAN_ENABLE) || LD(R_DIODE_TEMP_HIGH) || LD(R_ENVI_TEMP_HIGH)){
-		SET(Y_FAN1);
+		SSET(Y_FAN1);
 		if(NVRAM0[EM_DIODE_TEMP0] >= (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
-			SET(Y_TEC0);
+			SSET(Y_TEC0);
 		}
 		if(NVRAM0[EM_DIODE_TEMP0] <= (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
 			RES(Y_TEC0);
@@ -1525,24 +1525,24 @@ static void faultLoop(void){//故障轮询
 	uint8_t temp;
 	temp = 0;
 	if(LD(R_DISABLE_FIBER_PROBE)){//屏蔽光纤探测器
-		SET(R_FIBER_PROBE);
-		SET(R_RFID_PASS);
+		SSET(R_FIBER_PROBE);
+		SSET(R_RFID_PASS);
 	}
 	else{
 		if(LD(X_FIBER_PROBE)){
-			SET(R_FIBER_PROBE);
+			SSET(R_FIBER_PROBE);
 		}
 		else{
 			RES(R_FIBER_PROBE);
 		}
 //		if(LD(R_DISABLE_RFID)){
-//			SET(R_RFID_PASS);
+//			SSET(R_RFID_PASS);
 //		}
 //		else{
 //			if(LDP(X_FIBER_PROBE)){
 //				RES(R_RFID_PASS);//启动RFID读取
 //			}
-//			SET(R_RFID_PASS);
+//			SSET(R_RFID_PASS);
 //		}
 	}
 	temp |= LDB(X_ESTOP);//正常1 
@@ -1554,8 +1554,8 @@ static void faultLoop(void){//故障轮询
 	temp |= LD(R_DIODE_TEMP_LOW);//正常0
 	temp |= LD(R_ENVI_TEMP_HIGH);//正常0
 	if(temp){
-		SET(R_FAULT);
-		SET(Y_LED_ALARM);
+		SSET(R_FAULT);
+		SSET(Y_LED_ALARM);
 	}
 	else{
 		RES(R_FAULT);
@@ -1568,7 +1568,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		faultLoop();
 	}
 	if(LaserFlag_Emiting){
-		SET(Y_LED_EMIT);
+		SSET(Y_LED_EMIT);
 	}
 	else{
 		RES(Y_LED_EMIT);
@@ -1581,8 +1581,8 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	//状态机
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
-		SET(R_FAN_ENABLE);
-		SET(Y_LED_POWERON);//电源灯常亮
+		SSET(R_FAN_ENABLE);
+		SSET(Y_LED_POWERON);//电源灯常亮
 #if CONFIG_USING_BACKGROUND_APP == 1
 		loadScheme();//从掉电存储寄存器中恢复方案参数
 #endif
@@ -1612,24 +1612,24 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[DM_DC_OLD_PASSCODE0] = CONFIG_HMI_DEFAULT_PASSSWORD0;
 			NVRAM0[DM_DC_OLD_PASSCODE1] = CONFIG_HMI_DEFAULT_PASSSWORD1;  
 		}	
-		SET(R_DCHMI_RESET_DOING);
+		SSET(R_DCHMI_RESET_DOING);
 		hmiCmdSize = 0;
 		queue_reset();//清空HMI指令接收缓冲区	
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RESTORE_HMI){//等待HMI复位
-		SET(R_FAN_ENABLE);
+		SSET(R_FAN_ENABLE);
 		T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_CHECK_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
 			T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_CHECK_DELAY_TIME);
 			RES(R_DCHMI_RESET_DOING);
-			SET(R_DCHMI_RESET_DONE);	
+			SSET(R_DCHMI_RESET_DONE);	
 			//HMI从内置FLASH中恢复设置	
-			SET(R_DCHMI_RESTORE_DOING);
+			SSET(R_DCHMI_RESTORE_DOING);
 			FlashRestoreControl(FLASH_DATA_VERSION, FLASH_DATA_ADDR);
 			RES(R_DCHMI_RESTORE_DOING);
-			SET(R_DCHMI_RESTORE_DONE);
+			SSET(R_DCHMI_RESTORE_DONE);
 			//设置HMI页面
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_WAIT_ENTER_PASSCODE;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP;//HMI页面
@@ -1674,7 +1674,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CHECK_FAIL_DISPLAY){//自检错误显示
-		SET(R_FAN_ENABLE);
+		SSET(R_FAN_ENABLE);
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_WAIT_ENTER_PASSCODE){//等待开机密码输入
@@ -2037,7 +2037,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_PARA){//等待蜂鸣器
-		SET(R_FAN_ENABLE);
+		SSET(R_FAN_ENABLE);
 		T100MS(T100MS_READY_BEEM_DELAY, true, CONFIG_STANDBY_BEEM_DELAY_TIME);//启动计时器延时2000mS//打开计时器
 		//清空计时器
 		if(LD(T_100MS_START * 16 + T100MS_READY_BEEM_DELAY)){
@@ -2051,7 +2051,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_DONE){//参数载入完毕并停止蜂鸣器
 		BeemEnable = false;//关闭蜂鸣器
-		SET(R_FAN_ENABLE);
+		SSET(R_FAN_ENABLE);
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 		standbyKeyEnable(true);
 		standbyKeyValue(true);
@@ -2308,7 +2308,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS){//诊断界面
-		SET(R_FAN_ENABLE);
+		SSET(R_FAN_ENABLE);
 		if(LD(R_DIAGNOSIS_OK_DOWN)){//返回Option
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_OPTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;

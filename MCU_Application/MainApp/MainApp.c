@@ -1,13 +1,23 @@
 #include "MainApp.h"
 /*****************************************************************************/
-
-
-
-void mainTask(void *pvParameters){
+void mainAppTask(void *argument){
+	sPlcInit();
 	while(1){
-		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-		 osDelay(500);
+		sPlcProcessStart();
+		if(LD(SPCOIL_START_UP)){//
+#if CONFIG_USING_DCHMI_APP == 1			
+			dcHmiLoopInit();
+#endif			
+		}
+#if CONFIG_USING_DCHMI_APP == 1
+			dcHmiLoop();
+#endif
+#if CONFIG_SPLC_FUNTEST == 1
+#endif
+		sPlcProcessEnd();
 	}
 }
+
+
 
 
