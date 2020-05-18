@@ -32,6 +32,8 @@ volatile int32_t LaserRelease_TotalEnergy;//激光发射总能量
 static void laserStop(void);
 static void laserStart(void);
 /*****************************************************************************/
+extern TIM_HandleTypeDef htim11;
+/*****************************************************************************/
 #if CONFIG_SPLC_USING_LASER_TIMER_TEST == 1
 void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 	EDLAR();
@@ -174,10 +176,14 @@ void STLAR(void){//开始发射脉冲
 	LaserTimer_ReleaseCounter = 0x0;
 	LaserTimer_BeemSwitchCounter = 0x0;
 	LaserFlag_Emiting = false;
-	LaserFlag_Emitover = false;	
+	LaserFlag_Emitover = false;
+	__HAL_TIM_SET_COUNTER(&htim11, 0x0);//清零计数值
+	HAL_TIM_Base_Start_IT(&htim11);//打开计时器
 #endif
 }
 void EDLAR(void){//停止发射脉冲
+	__HAL_TIM_SET_COUNTER(&htim11, 0x0);//清零计数值
+	HAL_TIM_Base_Stop_IT(&htim11);//停止计时器
 	laserStop();//关闭DAC输出
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
@@ -190,6 +196,7 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LASER_CH2_OFF;
 	LASER_CH3_OFF;
 	LASER_CH4_OFF;
+	//设定计时器
 	RRES(SPCOIL_LASER_DRIVER_INIT_FAIL);
 	LaserTimer_Mode = 0;
 	LaserTimer_Select = 0;
