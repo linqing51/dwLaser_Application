@@ -903,4 +903,11 @@ void ReadRTC(void);
 */
 void PlayMusic(uint8_t *buffer);
 
+/*****************************************************************************/
+void SetMusicVolume(uint8_t volume);
+void PlayMusicId(uint16_t id, uint8_t loop);
+void SuspendMusicId(void);
+void ResumeMusicId(void);
+void StopMusicId(void);
+
 #endif      //_HMI_DRIVER_

@@ -1,4 +1,4 @@
-#include "sPlcChipDac.h"
+#include "sPlcDac.h"
 /*****************************************************************************/
 static void setSYNC(uint8_t dat){//PC13
 	if(dat){

@@ -13,16 +13,7 @@
 #define CONFIG_UART0_BAUDRATE									115200//串口0 波特率
 #define CONFIG_UART1_BAUDRATE									115200//串口1 波特率
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_I2C0									1//使能I2C0
-#define CONFIG_SPLC_USING_I2C1									1//使能I2C1
-#define CONFIG_SPLC_USING_I2C2									1//使能I2C2
-#define CONFIG_SPLC_USING_I2C3									1//使能I2C3
 /*****************************************************************************/
-#define CONFIG_I2C0_FREQ 										1            
-#define CONFIG_I2C1_FREQ 										16
-#define CONFIG_I2C2_FREQ 										16
-#define CONFIG_I2C3_FREQ 										16
-#define CONFIG_I2C_WAITACT_TIME									10
 /*****************************************************************************/
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
 #define	CONFIG_AT24C02_SIZE 									256
@@ -53,23 +44,17 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_EPROM									1//EPROM
+#define CONFIG_SPLC_USING_EPROM									0//EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
 #define CONFIG_SPLC_USING_CLEAR_NVRAM							0//启用清除NVRAM功能
 #else
 #define CONFIG_SPLC_USING_CLEAR_NVRAM							0//启用清除NVRAM功能
-#endif
-/*****************************************************************************/
-#define CONFIG_SPLC_USING_UART0									1//UART 0串口启用
-#define CONFIG_SPLC_USING_UART0_ISR								1
-#define UART0													0
-
-#define CONFIG_SPLC_USING_UART1									0//UART 1串口启用
-#define CONFIG_SPLC_USING_UART1_ISR								0
-#define UART1													1
+#endif												
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
-#define CONFIG_SPLC_ADC_FILTER_TAP								10//ADC位移滤波次数
+#define CONFIG_SPLC_ADC_CHANNEL									8//ADC采集通道
+#define CONFIG_SPLC_ADC_AVERAGE_NUM								8//ADC平均值次数
+#define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_SPLC_ADC_CHANNLE									9//ADC通道数
 #define CONFIG_ADC_TEMP_SENSOR_SLOPE							2.86F
 #define CONFIG_ADC_TEMP_SENSOR_OFFSET  							776L// Temp Sensor Offset in mV
@@ -106,7 +91,7 @@
 #define CONFIG_SPLC_USING_ROBATION								0//使能试用期功能
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LASER_TIMER							1
-#define CONFIG_SPLC_USING_LASER_TIMER_TEST						0
+#define CONFIG_SPLC_USING_LASER_TIMER_TEST						1
 /*****************************************************************************/
 #define CONFIG_LASER_TIMER_TICK									1000//1mS
 #define CONFIG_USING_USB_APP									0//USB应用
@@ -312,7 +297,6 @@
 #define SPREG_ADC_5												(SPREG_START + 6)//ADC5采集值 IVINMON0
 #define SPREG_ADC_6												(SPREG_START + 7)//ADC6采集值 ISMON1
 #define SPREG_ADC_7												(SPREG_START + 8)//ADC7采集值 IVINMON1
-#define SPREG_ADC_8												(SPREG_START + 9)//ADC8采集值 Temperature Sensor
 
 #define SPREG_DAC_0												(SPREG_START + 10)//DAC0设定值 LSET0
 #define SPREG_DAC_1												(SPREG_START + 11)//DAC1设定值 LSET1

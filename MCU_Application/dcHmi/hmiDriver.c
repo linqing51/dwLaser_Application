@@ -1998,3 +1998,51 @@ void PlayMusic(uint8_t *buffer)
     END_CMD();
 }
 
+/*****************************************************************************/
+//ÒôÆµ²¥·Å
+void SetMusicVolume(uint8_t volume){//ÉèÖÃÒôÆµÒôÁ¿
+	//EE 93 3A FF FC FF FF 
+	if(volume >= 100){
+		volume = 100;
+	}
+	BEGIN_CMD();
+	TX_8(0x93);
+	TX_8(volume);
+	END_CMD();
+}
+void PlayMusicId(uint16_t id, uint8_t loop){//²¥·ÅÒôÆµID
+	//ID ÒôÆµ loop Ñ­»·²¥·Å´ÎÊý
+	if(loop >= 3){
+		loop = 3;
+	}
+	BEGIN_CMD();
+	TX_8(0x90);
+	TX_8(0x01);
+	TX_16(id);
+	TX_8(loop);
+	END_CMD();
+}
+void SuspendMusicId(void){//ÔÝÍ£²¥·Å
+	//EE 90 02 FF FC FF FF
+	BEGIN_CMD();
+	TX_8(0x02);
+	END_CMD();
+}
+void ResumeMusicId(void){//»Ö¸´²¥·Å
+	//EE 90 03 FF FC FF FF 
+	BEGIN_CMD();
+	TX_8(0x03);
+	END_CMD();
+}
+void StopMusicId(void){//Í£Ö¹²¥·Å
+	//EE 90 00 FF FC FF FF 
+	BEGIN_CMD();
+	TX_8(0x00);
+	END_CMD();
+}
+
+
+
+
+
+

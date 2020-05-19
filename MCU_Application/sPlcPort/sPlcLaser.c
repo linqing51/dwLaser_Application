@@ -1,4 +1,4 @@
-//TIM11
+//TIM11->计时
 #include "sPlcLaser.h"
 /*****************************************************************************/
 #define LASER_CH0_ON				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);						
@@ -38,139 +38,129 @@ extern TIM_HandleTypeDef htim11;
 void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 	EDLAR();
 	if(st == 0){//CH0 CW模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_CW;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH0;
+		LaserTimer_Mode = LASER_MODE_CW;
+		LaserTimer_Select = LASER_SELECT_CH0;
 		STLAR();
 	}
 	if(st == 1){//CH1 CW模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_CW;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH1;
+		LaserTimer_Mode = LASER_MODE_CW;
+		LaserTimer_Select = LASER_SELECT_CH1;
 		STLAR();
 	}
 	if(st == 2){//CH0+CH1 CW模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_CW;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_ALL;
+		LaserTimer_Mode = LASER_MODE_CW;
+		LaserTimer_Select = LASER_SELECT_ALL;
 		STLAR();
 	}
 	if(st == 3){//CH0 SP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_SP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH0;
-		NVRAM0[SPREG_LASER_TMATE] = 50;//激光脉冲正脉宽 10mS
+		LaserTimer_Mode = LASER_MODE_SP;
+		LaserTimer_Select = LASER_SELECT_CH0;
+		LaserTimer_TMate = 5000;//激光脉冲正脉宽 10mS
 		STLAR();
 	}
 	if(st == 4){//CH1 SP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_SP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH1;
-		NVRAM0[SPREG_LASER_TMATE] = 25;//激光脉冲正脉宽 10mS
+		LaserTimer_Mode = LASER_MODE_SP;
+		LaserTimer_Select = LASER_SELECT_CH1;
+		LaserTimer_TMate = 25;//激光脉冲正脉宽 10mS
 		STLAR();
 	}
 	if(st == 5){//CH0+CH1 SP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_SP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_ALL;
-		NVRAM0[SPREG_LASER_TMATE] = 30;//激光脉冲正脉宽 10mS
+		LaserTimer_Mode = LASER_MODE_SP;
+		LaserTimer_Select = LASER_SELECT_ALL;
+		LaserTimer_TMate = 30;//激光脉冲正脉宽 10mS
 		STLAR();
 	}
 	if(st == 6){//CH0 MP模式测试
 		LaserTimer_Mode = LASER_MODE_MP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH0;
-		NVRAM0[SPREG_LASER_TMATE] = 30;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 90;//激光脉冲周期 25mS
+		LaserTimer_Select = LASER_SELECT_CH0;
+		LaserTimer_TMate = 30;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 90;//激光脉冲周期 25mS
 		STLAR();
 	}
 	if(st == 7){//CH1 MP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_MP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH1;
-		NVRAM0[SPREG_LASER_TMATE] = 74;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 96;//激光脉冲周期 25mS
+		LaserTimer_Mode = LASER_MODE_MP;
+		LaserTimer_Select = LASER_SELECT_CH1;
+		LaserTimer_TMate = 74;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 96;//激光脉冲周期 25mS
 		STLAR();
 	}
 	if(st == 8){//CH0+CH1 MP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_MP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_ALL;
-		NVRAM0[SPREG_LASER_TMATE] = 53;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 130;//激光脉冲周期 25mS
+		LaserTimer_Mode = LASER_MODE_MP;
+		LaserTimer_Select = LASER_SELECT_ALL;
+		LaserTimer_TMate = 53;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 130;//激光脉冲周期 25mS
 		STLAR();
 	}
 	if(st == 9){//CH0 GP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_GP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH0;
-		NVRAM0[SPREG_LASER_TMATE] = 10;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 15;//激光脉冲周期 25mS
-		NVRAM0[SPREG_LASER_PMATE] = 10;//10个脉冲
-		NVRAM0[SPREG_LASER_POVERTIME] = 33;//间隔33mS
+		LaserTimer_Mode = LASER_MODE_GP;
+		LaserTimer_Select = LASER_SELECT_CH0;
+		LaserTimer_TMate = 10;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 15;//激光脉冲周期 25mS
+		LaserTimer_PMate = 10;//10个脉冲
+		LaserTimer_POvertime = 33;//间隔33mS
 		STLAR();
 	}
 	if(st == 10){//CH1 GP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_GP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH1;
-		NVRAM0[SPREG_LASER_TMATE] = 19;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 86;//激光脉冲周期 25mS
-		NVRAM0[SPREG_LASER_PMATE] = 12;//10个脉冲
-		NVRAM0[SPREG_LASER_POVERTIME] = 43;//间隔33mS
+		LaserTimer_Mode = LASER_MODE_GP;
+		LaserTimer_Select = LASER_SELECT_CH1;
+		LaserTimer_TMate = 19;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 86;//激光脉冲周期 25mS
+		LaserTimer_PMate = 12;//10个脉冲
+		LaserTimer_POvertime = 43;//间隔33mS
 		STLAR();
 	}
 	if(st == 11){//CH0+CH1 GP模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_GP;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_ALL;
-		NVRAM0[SPREG_LASER_TMATE] = 5;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 24;//激光脉冲周期 25mS
-		NVRAM0[SPREG_LASER_PMATE] = 6;//10个脉冲
-		NVRAM0[SPREG_LASER_POVERTIME] = 60;//间隔33mS
+		LaserTimer_Mode = LASER_MODE_GP;
+		LaserTimer_Select = LASER_SELECT_ALL;
+		LaserTimer_TMate = 5;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 24;//激光脉冲周期 25mS
+		LaserTimer_PMate = 6;//10个脉冲
+		LaserTimer_POvertime = 60;//间隔33mS
 		STLAR();
 	}	
 	if(st == 12){//CH0 DERMA模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_DERMA;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH0;
-		NVRAM0[SPREG_LASER_TMATE] = 10;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 15;//激光脉冲周期 25mS
+		LaserTimer_Mode = LASER_MODE_DERMA;
+		LaserTimer_Select = LASER_SELECT_CH0;
+		LaserTimer_TMate = 10;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 15;//激光脉冲周期 25mS
 		STLAR();
 	}
 	if(st == 13){//CH1 DERMA模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_DERMA;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH1;
-		NVRAM0[SPREG_LASER_TMATE] = 19;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 86;//激光脉冲周期 25mS
+		LaserTimer_Mode = LASER_MODE_DERMA;
+		LaserTimer_Select = LASER_SELECT_CH1;
+		LaserTimer_TMate = 19;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 86;//激光脉冲周期 25mS
 		STLAR();
 	}
 	if(st == 14){//CH0+CH1 DERMA模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_DERMA;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_ALL;
-		NVRAM0[SPREG_LASER_TMATE] = 5;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 24;//激光脉冲周期 25mS
+		LaserTimer_Mode = LASER_MODE_DERMA;
+		LaserTimer_Select = LASER_SELECT_ALL;
+		LaserTimer_TMate = 5;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 24;//激光脉冲周期 25mS
 		STLAR();
 	}	
 	if(st == 15){//CH0 SIGNAL模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_SIGNAL;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH0;
-		NVRAM0[SPREG_LASER_TMATE] = 10;//激光脉冲正脉宽 10mS
-		NVRAM0[SPREG_LASER_TOVERTIME] = 15;//激光脉冲周期 25mS
+		LaserTimer_Mode = LASER_MODE_SIGNAL;
+		LaserTimer_Select = LASER_SELECT_CH0;
+		LaserTimer_TMate = 10;//激光脉冲正脉宽 10mS
+		LaserTimer_TOvertime = 15;//激光脉冲周期 25mS
 		STLAR();
 	}
 	if(st == 16){//CH1 SIGNAL模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_SIGNAL;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_CH1;
+		LaserTimer_Mode = LASER_MODE_SIGNAL;
+		LaserTimer_Select = LASER_SELECT_CH1;
 		STLAR();
 	}
 	if(st == 17){//CH0+CH1 SIGNAL模式测试
-		NVRAM0[SPREG_LASER_MODE] = LASER_MODE_SIGNAL;
-		NVRAM0[SPREG_LASER_SELECT] = LASER_SELECT_ALL;
+		LaserTimer_Mode = LASER_MODE_SIGNAL;
+		LaserTimer_Select = LASER_SELECT_ALL;
 		STLAR();
 	}
 }
 
 #endif
-void STLAR(void){//开始发射脉冲
-#if CONFIG_SPLC_USING_LASER_TIMER == 1			
-//	if(LD(MR_BEEM_TONE) || (LaserTimer_Mode == LASER_MODE_SIGNAL)){
-//		BeemMode = BEEM_MODE_1;	
-//	}
-//	else{
-//		BeemMode = BEEM_MODE_2;
-//	}
-//	BeemFreq = BEEM_FREQ_0;
-//	BeemDuty = getBeemDuty(NVRAM0[DM_BEEM_VOLUME]);
-//	BeemCounter = 0;
-	//BeemEnable = true;
+void STLAR(void){//开始发射脉冲		
+	SetMusicVolume(NVRAM0[DM_BEEM_VOLUME]);//向GDDC触摸屏发送音量
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
 	LaserTimer_ReleaseCounter = 0x0;
@@ -179,9 +169,9 @@ void STLAR(void){//开始发射脉冲
 	LaserFlag_Emitover = false;
 	__HAL_TIM_SET_COUNTER(&htim11, 0x0);//清零计数值
 	HAL_TIM_Base_Start_IT(&htim11);//打开计时器
-#endif
 }
 void EDLAR(void){//停止发射脉冲
+	NVRAM0[EM_DC_CONTROL_MUSIC] = GDDC_MUSICID_STOP;//关闭MP3
 	__HAL_TIM_SET_COUNTER(&htim11, 0x0);//清零计数值
 	HAL_TIM_Base_Stop_IT(&htim11);//停止计时器
 	laserStop();//关闭DAC输出
@@ -216,15 +206,29 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserRelease_TotalEnergy = 0;
 }
 static void laserStart(void){//按通道选择打开激光
-	//setLedEmit(true);//打开激光发射指示
+	setBlueLed(true);//打开激光发射指示
 	LASER_CH0_ON; 
 	LASER_CH1_ON;
-	LaserFlag_Emiting = true;	
+	LaserFlag_Emiting = true;
+	if(LD(MR_BEEM_TONE) || LaserTimer_Mode == LASER_MODE_SIGNAL){//声光同步
+		//播放MP3 ID 0
+		NVRAM0[EM_DC_PLAYING_MUSIC_ID] = 0;
+		NVRAM0[EM_DC_NEXT_MUSIC_ID] = GDDC_MUSICID_PLAY;
+	}
+	else{//间隔
+		//播放MP3 ID 1
+		NVRAM0[EM_DC_PLAYING_MUSIC_ID] = 1;
+		NVRAM0[EM_DC_NEXT_MUSIC_ID] = GDDC_MUSICID_PLAY;
+	}
 }
 static void laserStop(void){//按通道选择关闭激光
 	LASER_CH0_OFF;
-	LASER_CH1_OFF;//翻转输出	
-	LaserFlag_Emiting = false;	
+	LASER_CH1_OFF;//翻转输出
+	LASER_CH2_OFF;
+	LASER_CH3_OFF;
+	LASER_CH4_OFF;	
+	LaserFlag_Emiting = false;
+	setBlueLed(false);
 }
 void laserTimerCallback(void){//TIM 中断回调 激光发射	
 	switch(LaserTimer_Mode){
@@ -244,7 +248,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 			}
 			break;
 		}
-		case LASER_MODE_SIGNAL:{
+		case LASER_MODE_SIGNAL:{//连续模式 音频改变
 			if(LaserTimer_TCounter == 0){
 				laserStart();
 				LaserTimer_TCounter ++;
@@ -263,16 +267,14 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 					}
 				}
 				if((((int32_t)LaserTimer_BeemSwitchCounter * NVRAM0[EM_TOTAL_POWER]) / 10000) >= NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
-					//if(TH0 != BEEM_FREQ_1){
-//						TH0 = BEEM_FREQ_1;
-//						TL0 = TH0;
-					//LaserTimer_BeemSwtichLength ++;
+					NVRAM0[EM_DC_NEXT_MUSIC_ID] = 1;//开始播放MP3 ID 1
+					NVRAM0[EM_DC_CONTROL_MUSIC] = GDDC_MUSICID_PLAY;
+					LaserTimer_BeemSwtichLength ++;
 				}
 				if(LaserTimer_BeemSwtichLength >= CONFIG_BEEM_ENERGY_INTERVAL_TIME){
-//					if(TH0 != BEEM_FREQ_0){
-//						TH0 = BEEM_FREQ_0;
-//						TL0 = TH0;
-	//				}
+					//停止播放
+					NVRAM0[EM_DC_NEXT_MUSIC_ID] = 0;//开始播放MP3 ID0
+					NVRAM0[EM_DC_CONTROL_MUSIC] = GDDC_MUSICID_PLAY;
 					LaserTimer_BeemSwitchCounter = 0;
 					LaserTimer_BeemSwtichLength = 0;
 				}
@@ -345,10 +347,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 			}
 			if(LaserTimer_TCounter >= LaserTimer_TMate){//计时器匹配
 				laserStop();//关闭DAC输出
-				//TMR3CN &= ~(uint8_t)(1 << 2);//Stop Timer 4
-				//EIE2 &= ~(uint8_t)(1 << 0);//关闭Timer4中断
-				//TMR3CN &= ~(uint8_t)(1 << 7);//Clear Timer 4 High Byte Overflow Flag.
-				//EIP2 &= 0xFB;//T3 低优先级
+				HAL_TIM_Base_Stop(&htim11);
 				LaserFlag_Emitover = true;
 			}
 			if(LaserTimer_ReleaseTime < CONFIG_RELEASE_SECOND_DEF){

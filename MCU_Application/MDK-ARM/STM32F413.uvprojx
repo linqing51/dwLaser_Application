@@ -185,7 +185,6 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
-            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -339,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F413xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Middlewares/Third_Party/FatFs/src; ../Middlewares/Third_Party/FreeRTOS/Source/include; ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2; ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F; ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc; ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ..\sPlc; ..\sPlcPort; ..\dcHMI; ..\MainApp</IncludePath>
+              <IncludePath>../Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;   ../Middlewares/Third_Party/FatFs/src;   ../Middlewares/Third_Party/FreeRTOS/Source/include;   ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;   ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;   ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;   ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;   ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;   ../Drivers/CMSIS/Include;   ..\sPlc;   ..\sPlcPort;   ..\dcHMI;   ..\MainApp;   ..\myDrivers</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -352,7 +351,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>4</ClangAsOpt>
+            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -522,6 +521,16 @@
               <FileName>stm32f4xx_hal_exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_adc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_hal_crc.c</FileName>
@@ -730,14 +739,14 @@
               <FilePath>..\sPlcPort\sPlcLaser.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcChipDac.c</FileName>
+              <FileName>sPlcAdc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sPlcPort\sPlcChipDac.c</FilePath>
+              <FilePath>..\sPlcPort\sPlcAdc.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcChipAdc.c</FileName>
+              <FileName>sPlcDac.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sPlcPort\sPlcChipAdc.c</FilePath>
+              <FilePath>..\sPlcPort\sPlcDac.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -772,6 +781,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>myDrivers</GroupName>
+          <Files>
+            <File>
+              <FileName>myLed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myDrivers\myLed.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -790,20 +809,5 @@
     </components>
     <files/>
   </RTE>
-
-  <LayerInfo>
-    <Layers>
-      <Layer>
-        <LayName>&lt;Project Info&gt;</LayName>
-        <LayDesc></LayDesc>
-        <LayUrl></LayUrl>
-        <LayKeys></LayKeys>
-        <LayCat></LayCat>
-        <LayLic></LayLic>
-        <LayTarg>0</LayTarg>
-        <LayPrjMark>1</LayPrjMark>
-      </Layer>
-    </Layers>
-  </LayerInfo>
 
 </Project>

@@ -17,6 +17,12 @@
 #include "sPlcFun.h"
 #include "sPlcTimer.h"
 #include "sPlcLaser.h"
+#if CONFIG_SPLC_USING_ADC == 1
+#include "sPlcAdc.h"
+#endif
+#if CONFIG_SPLC_USING_DAC == 1
+#include "sPlcDac.h"
+#endif
 /*****************************************************************************/
 #include "main.h"
 //#include "sPlcPort.h"

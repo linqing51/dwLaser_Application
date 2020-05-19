@@ -191,16 +191,15 @@ void sPlcSpwmLoop(void){//SPWM轮询
 
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化
-	//CLDAC();
-	//checkEprom();
 	loadNvram();//上电恢复NVRAM
 	initSplcTimer();//初始化硬件计时器模块
 	SSET(SPCOIL_ON);
 	inputInit();
 	outputInit();	
-	//initChipDac();//初始化DAC模块
-	//initChipAdc();//初始化ADC模块
-	//sPlcLaserInit();
+	initChipDac();//初始化DAC模块
+	initChipAdc();//初始化ADC模块
+	sPlcLaserInit();
+	
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
 	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
@@ -224,10 +223,10 @@ void sPlcProcessStart(void){//sPLC轮询起始
 		TD_1000MS_SP = 0;
 	}
 	if(LD(SPCOIL_PS1000MS)){
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+		//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
 	}
 	else{
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+		//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 	}
 #if CONFIG_SPLC_USING_CLEAR_NVRAM == 1 && CONFIG_SPLC_USING_EPROM == 1
 	if(NVRAM0[SPREG_CLEAR_NVRAM] == CONFIG_SPLC_CLEAR_CODE){
@@ -248,6 +247,9 @@ void sPlcProcessStart(void){//sPLC轮询起始
 #endif
 #if CONFIG_SPLC_USING_SPWM == 1
 	sPlcSpwmLoop();
+#endif
+#if CONFIG_SPLC_USING_ADC == 1
+	chipAdcProcess();//ADC 更新NVRAM
 #endif
 }
 void sPlcProcessEnd(void){//sPLC轮询结束

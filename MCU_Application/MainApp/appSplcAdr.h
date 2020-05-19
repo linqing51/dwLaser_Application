@@ -1,6 +1,7 @@
 #ifndef __APPSPLCADR_H__
 #define __APPSPLCADR_H__
 /*****************************************************************************/
+/*****************************************************************************/
 #define EM_LASER_SCHEME_NAME									(EM_START + 0)//方案名称
 #define EM_LASER_SELECT											(EM_START + 13)//通道选择
 #define EM_LASER_PULSE_MODE										(EM_START + 14)//脉冲模式
@@ -51,6 +52,14 @@
 #define EM_DC_DEFAULT_PASSCODE3									(EM_START + 73)//默认密码1				
 #define EM_DC_DISPLAY_RELEASE_TIME								(EM_START + 74)//显示发射时间			
 #define EM_DC_DISPLAY_RELEASE_ENERGY							(EM_START + 75)//显示发射能量
+/*****************************************************************************/
+#define EM_DC_PLAYING_MUSIC_ID									(EM_START + 80)//当前播放的音频文件ID
+#define EM_DC_NEXT_MUSIC_ID										(EM_START + 81)//下一个播放的音频文件ID
+#define EM_DC_CONTROL_MUSIC										(EM_START + 82)//播放控制 01:播放 02:暂停 03:恢复 00:停止
+/*****************************************************************************/
+#define EM_DC_RED_LED_BR										(EM_START + 90)//红色LED亮度->故障
+#define EM_DC_GREEN_LED_BR										(EM_START + 91)//绿色LED亮度->电源
+#define EM_DC_BLUE_LED_BR										(EM_START + 92)//蓝色LED亮度->激光指示
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME									(FD_START +  0)//方案名称
 #define FD_LASER_SELECT											(FD_START +  13)//通道选择
@@ -314,6 +323,7 @@
 #define R_RENAME_KEY_ENTER_DOWN									(R_START * 16 + 170)
 #define R_RENAME_KEY_EXIT_DOWN									(R_START * 16 + 171)
 #define R_RENAME_TEXTDISPLAY_READ_DONE							(R_START * 16 + 172)
+/*****************************************************************************/
 /*****************************************************************************/
 #define MR_FOOSWITCH_HAND_SWITCH								(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
 #define MR_BEEM_TONE											(MR_START * 16 + 11)//蜂鸣器模式
