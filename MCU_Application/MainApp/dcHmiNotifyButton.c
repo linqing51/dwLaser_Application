@@ -261,7 +261,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						standbyDebugInfoVisiable(true);						
 					}else if((NVRAM0[EM_DC_NEW_PASSCODE0] == NVRAM0[DM_DC_OLD_PASSCODE0]) && (NVRAM0[EM_DC_NEW_PASSCODE1] == NVRAM0[DM_DC_OLD_PASSCODE1])){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						RES(R_ENGINEER_MODE);
+						RRES(R_ENGINEER_MODE);
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
 						standbyDebugInfoVisiable(false);
@@ -780,7 +780,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_SP);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+						RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 						T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -792,7 +792,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_SP);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+						RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 						T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -986,7 +986,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_MP);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+						RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 						T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -998,7 +998,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_MP);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);	
+						RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);	
 						T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1010,7 +1010,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay(LASER_MODE_MP);
 					}
 					else{
-						RES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
+						RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
 						T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1022,7 +1022,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay(LASER_MODE_MP);
 					}
 					else{
-						RES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
+						RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
 						T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1215,7 +1215,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_GP);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+						RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 						T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1227,7 +1227,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_GP);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+						RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 						T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1239,7 +1239,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay(LASER_MODE_GP);
 					}
 					else{
-						RES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
+						RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
 						T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1251,7 +1251,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay(LASER_MODE_GP);
 					}
 					else{
-						RES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
+						RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
 						T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1268,7 +1268,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateTimesDisplay();
 					}
 					else{
-						RES(R_STANDBY_KEY_TIMES_ADD_DOWN);
+						RRES(R_STANDBY_KEY_TIMES_ADD_DOWN);
 						T10MS(T10MS_TIMES_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1285,7 +1285,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateTimesDisplay();
 					}
 					else{
-						RES(R_STANDBY_KEY_TIMES_DEC_DOWN);
+						RRES(R_STANDBY_KEY_TIMES_DEC_DOWN);
 						T10MS(T10MS_TIMES_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1297,7 +1297,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateGroupOffDisplay();
 					}
 					else{
-						RES(R_STANDBY_KEY_GROUP_OFF_ADD_DOWN);
+						RRES(R_STANDBY_KEY_GROUP_OFF_ADD_DOWN);
 						T10MS(T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1309,7 +1309,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateGroupOffDisplay();
 					}
 					else{
-						RES(R_STANDBY_KEY_GROUP_OFF_DEC_DOWN);
+						RRES(R_STANDBY_KEY_GROUP_OFF_DEC_DOWN);
 						T10MS(T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1681,7 +1681,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_DERMA);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+						RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 						T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1693,7 +1693,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay(LASER_MODE_DERMA);
 					}
 					else{
-						RES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+						RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 						T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1705,7 +1705,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay(LASER_MODE_DERMA);
 					}
 					else{
-						RES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
+						RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
 						T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1717,7 +1717,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay(LASER_MODE_DERMA);
 					}
 					else{
-						RES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
+						RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
 						T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
 					break;
@@ -1908,7 +1908,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(MR_BEEM_TONE);
 					}
 					else{
-						RES(MR_BEEM_TONE);
+						RRES(MR_BEEM_TONE);
 					}
 					break;
 				}
@@ -1997,7 +1997,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(MR_FOOSWITCH_HAND_SWITCH);
 					}
 					else{
-						RES(MR_FOOSWITCH_HAND_SWITCH);
+						RRES(MR_FOOSWITCH_HAND_SWITCH);
 					}
 					break;
 				}
@@ -2397,7 +2397,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_DISABLE_RFID);
 					}
 					else{
-						RES(R_DISABLE_RFID);
+						RRES(R_DISABLE_RFID);
 					}
 					break;
 				}
@@ -2406,7 +2406,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_DISABLE_FIBER_PROBE);
 					}
 					else{
-						RES(R_DISABLE_FIBER_PROBE);
+						RRES(R_DISABLE_FIBER_PROBE);
 					}
 					break;
 				}
@@ -2415,7 +2415,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_DISABLE_FAN_SPEED);
 					}
 					else{
-						RES(R_DISABLE_FAN_SPEED);
+						RRES(R_DISABLE_FAN_SPEED);
 					}
 					break;
 				}

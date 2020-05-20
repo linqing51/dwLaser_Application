@@ -1,4 +1,4 @@
-#include "backgroundApp.h"
+#include "MainAppLib.h"
 /*****************************************************************************/
 #if CONFIG_USING_BACKGROUND_APP == 1
 int16_t pulseWidthAdd(int16_t ps){//Âö¿íÔö¼Ó

@@ -1,5 +1,5 @@
-#ifndef __BACKGROUNDAPP_H__
-#define __BACKGROUNDAPP_H__
+#ifndef __MAINAPPLIB_H__
+#define __MAINAPPLIB_H__
 /*****************************************************************************/
 #include "sPlc.h"
 #include "appConfig.h"

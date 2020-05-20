@@ -1,5 +1,5 @@
-#ifndef __HMI_H__
-#define __HMI_H__
+#ifndef __DCHMIAPP_H__
+#define __DCHMIAPP_H__
 /*****************************************************************************/
 #define FSMSTEP_POWERUP												0//上电
 //HMI初始操作
@@ -48,13 +48,9 @@
 #define	MSG_FIBER_MISSMATE											15
 /*****************************************************************************/
 #include "sPlc.h"
-#include "appConfig.h"
-#include "appSplcAdr.h"
-#include "dcHmiRes.h"
-#include "backgroundApp.h"
 #include "hmiLib.h"
-#include "dcHmiNotifyProgress.h"
-#include "dcHmiNotifyButton.h"
+#include "dcHmiRes.h"
+#include "MainAppLib.h"
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);

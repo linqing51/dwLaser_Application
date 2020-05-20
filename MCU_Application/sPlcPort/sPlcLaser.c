@@ -34,7 +34,7 @@ static void laserStart(void);
 /*****************************************************************************/
 extern TIM_HandleTypeDef htim11;
 /*****************************************************************************/
-#if CONFIG_SPLC_USING_LASER_TIMER_TEST == 1
+#if CONFIG_SPLC_USING_LASER_TEST == 1
 void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 	EDLAR();
 	if(st == 0){//CH0 CW模式测试
@@ -160,7 +160,7 @@ void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 
 #endif
 void STLAR(void){//开始发射脉冲		
-	SetMusicVolume(NVRAM0[DM_BEEM_VOLUME]);//向GDDC触摸屏发送音量
+	SetMusicVolume(NVRAM0[SPREG_MUSIC_VOLUME]);//向GDDC触摸屏发送音量
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
 	LaserTimer_ReleaseCounter = 0x0;
@@ -171,7 +171,7 @@ void STLAR(void){//开始发射脉冲
 	HAL_TIM_Base_Start_IT(&htim11);//打开计时器
 }
 void EDLAR(void){//停止发射脉冲
-	NVRAM0[EM_DC_CONTROL_MUSIC] = GDDC_MUSICID_STOP;//关闭MP3
+	NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_STOP;//关闭MP3
 	__HAL_TIM_SET_COUNTER(&htim11, 0x0);//清零计数值
 	HAL_TIM_Base_Stop_IT(&htim11);//停止计时器
 	laserStop();//关闭DAC输出
@@ -212,13 +212,13 @@ static void laserStart(void){//按通道选择打开激光
 	LaserFlag_Emiting = true;
 	if(LD(MR_BEEM_TONE) || LaserTimer_Mode == LASER_MODE_SIGNAL){//声光同步
 		//播放MP3 ID 0
-		NVRAM0[EM_DC_PLAYING_MUSIC_ID] = 0;
-		NVRAM0[EM_DC_NEXT_MUSIC_ID] = GDDC_MUSICID_PLAY;
+		NVRAM0[SPREG_PLAYING_MUSIC_ID] = 0;
+		NVRAM0[SPREG_NEXT_MUSIC_ID] = CMD_MUSIC_PLAY;
 	}
 	else{//间隔
 		//播放MP3 ID 1
-		NVRAM0[EM_DC_PLAYING_MUSIC_ID] = 1;
-		NVRAM0[EM_DC_NEXT_MUSIC_ID] = GDDC_MUSICID_PLAY;
+		NVRAM0[SPREG_PLAYING_MUSIC_ID] = 1;
+		NVRAM0[SPREG_NEXT_MUSIC_ID] = CMD_MUSIC_PLAY;
 	}
 }
 static void laserStop(void){//按通道选择关闭激光
@@ -237,7 +237,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 				laserStart();
 				LaserTimer_TCounter ++;
 			}
-			if(LaserTimer_ReleaseTime < CONFIG_RELEASE_SECOND_DEF){
+			if(LaserTimer_ReleaseTime < 1000){
 				LaserTimer_ReleaseTime ++;//发射时间累计
 			}
 			else{
@@ -257,7 +257,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 			}
 			else{
 				LaserTimer_BeemSwitchCounter += 1;
-				if(LaserTimer_ReleaseTime < CONFIG_RELEASE_SECOND_DEF){
+				if(LaserTimer_ReleaseTime < 1000){
 					LaserTimer_ReleaseTime ++;//发射时间累计
 				}
 				else{
@@ -268,13 +268,13 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 				}
 				if((((int32_t)LaserTimer_BeemSwitchCounter * NVRAM0[EM_TOTAL_POWER]) / 10000) >= NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
 					NVRAM0[EM_DC_NEXT_MUSIC_ID] = 1;//开始播放MP3 ID 1
-					NVRAM0[EM_DC_CONTROL_MUSIC] = GDDC_MUSICID_PLAY;
+					NVRAM0[EM_DC_CONTROL_MUSIC] = CMD_MUSIC_PLAY;
 					LaserTimer_BeemSwtichLength ++;
 				}
 				if(LaserTimer_BeemSwtichLength >= CONFIG_BEEM_ENERGY_INTERVAL_TIME){
 					//停止播放
 					NVRAM0[EM_DC_NEXT_MUSIC_ID] = 0;//开始播放MP3 ID0
-					NVRAM0[EM_DC_CONTROL_MUSIC] = GDDC_MUSICID_PLAY;
+					NVRAM0[EM_DC_CONTROL_MUSIC] = CMD_MUSIC_PLAY;
 					LaserTimer_BeemSwitchCounter = 0;
 					LaserTimer_BeemSwtichLength = 0;
 				}
@@ -291,7 +291,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 				laserStop();
 			}
 			if(LaserTimer_TCounter < LaserTimer_TMate){//激光发射中
-				if(LaserTimer_ReleaseTime < CONFIG_RELEASE_SECOND_DEF){
+				if(LaserTimer_ReleaseTime < 1000){
 					LaserTimer_ReleaseTime ++;//发射时间累计
 				}
 				else{
@@ -313,7 +313,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 					laserStart();
 				}
 				if(LaserTimer_TCounter < LaserTimer_PMate){//激光发射中
-					if(LaserTimer_ReleaseTime < CONFIG_RELEASE_SECOND_DEF){
+					if(LaserTimer_ReleaseTime < 1000){
 						LaserTimer_ReleaseTime ++;//发射时间累计
 					}
 					else{
@@ -350,7 +350,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 				HAL_TIM_Base_Stop(&htim11);
 				LaserFlag_Emitover = true;
 			}
-			if(LaserTimer_ReleaseTime < CONFIG_RELEASE_SECOND_DEF){
+			if(LaserTimer_ReleaseTime < 1000){
 				LaserTimer_ReleaseTime ++;//发射时间累计
 			}
 			else{

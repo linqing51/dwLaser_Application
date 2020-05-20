@@ -748,6 +748,26 @@
               <FileType>1</FileType>
               <FilePath>..\sPlcPort\sPlcDac.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcIoOut.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcIoOut.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcIoIn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcIoIn.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcMcu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcMcu.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcBeem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcBeem.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

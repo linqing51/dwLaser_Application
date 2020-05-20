@@ -14,6 +14,7 @@
 #include "stdint.h"
 /*****************************************************************************/
 #include "sPlcConfig.h"
+#include "sPlcMcu.h"
 #include "sPlcFun.h"
 #include "sPlcTimer.h"
 #include "sPlcLaser.h"

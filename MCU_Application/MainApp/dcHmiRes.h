@@ -1,11 +1,6 @@
 #ifndef __DCHMIRES_H__
 #define __DCHMIRES_H__
 /*****************************************************************************/
-#define GDDC_MUSICID_PLAY													0x01
-#define GDDC_MUSICID_SUSPEND												0x02
-#define GDDC_MUSICID_RESUME													0x03
-#define GDDC_MUSICID_STOP													0x04
-/*****************************************************************************/
 #define HMI_BLACK     													0x0000//黑色    
 #define HMI_ NAVY      													0x000F//深蓝色  
 #define HMI_DGREEN    													0x03E0//深绿色  
