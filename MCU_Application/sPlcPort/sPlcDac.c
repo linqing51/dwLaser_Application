@@ -43,7 +43,6 @@ static void spiWrite(uint32_t dat){//DAC8568 SPI–¥»Î
 	setSYNC(true);
 }
 
-
 static void dac8568_Init(void){//DAC8568≥ı ºªØ
 	uint32_t tmp;
 	tmp = 0x07000000;//Software Reset
@@ -67,9 +66,7 @@ static void dac8568_WriteDacRegister(uint8_t ch, uint16_t dat){//–¥»Î ‰»Îºƒ¥Ê∆˜≤
 }
 
 void initChipDac(void){//DAC≥ı ºªØ
-#if CONFIG_SPLC_USING_DAC == 1
 	dac8568_Init();
-#endif
 }
 void UPDAC0(void){//¡¢º¥¥”SPREG_DAC_0÷–∏¸–¬DAC0
 	uint16_t temp;

@@ -9,6 +9,10 @@ void UPDAC0(void);//立即更新DAC0
 void UPDAC1(void);//立即更新DAC1
 void UPDAC2(void);
 void UPDAC3(void);
+void UPDAC4(void);
+void UPDAC5(void);
+void UPDAC6(void);
+void UPDAC7(void);
 void CLDAC(void);//立即清空DAC0和DAC1
 #endif
 

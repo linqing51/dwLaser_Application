@@ -112,6 +112,35 @@ void checkEprom(void){
 	}
 #endif
 }
+
+void loadFdram(void){//从EPROM中载入FDRAM
+#if CONFIG_SPLC_USING_EPROM == 1
+	epromRead(CONFIG_EPROM_FDRAM_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
+	feedWatchDog();
+#endif
+}
+void saveFdram(void){//强制将FDRAM存入EPROM
+#if CONFIG_SPLC_USING_EPROM == 1
+	epromWrite(CONFIG_EPROM_FDRAM_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
+	feedWatchDog();
+#endif
+}
+void clearFdram(void){//清楚FDRAM数据
+	uint16_t i;
+	disableWatchDog();
+#if CONFIG_SPLC_USING_EPROM == 1
+	for(i = CONFIG_EPROM_FDRAM_START; i< (CONFIG_FDRAM_SIZE * 2) ; i++){
+#if CONFIG_SPLC_USING_EPROM == 1
+		epromWriteOneByte(i, 0x0);
+#endif
+	}
+#endif
+	memset(FDRAM, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
+}
+
+
+
+
 void sPlcSpwmLoop(void){//SPWM轮询	
 	if(LDP(SPCOIL_PS10MS)){//每10mS执行一次
 		//SPWM0
@@ -194,16 +223,25 @@ void sPlcInit(void){//软逻辑初始化
 	loadNvram();//上电恢复NVRAM
 	initSplcTimer();//初始化硬件计时器模块
 	SSET(SPCOIL_ON);
+#if CONFIG_SPLC_USING_IO_INPUT == 1
 	inputInit();
-	outputInit();	
+#endif
+#if CONFIG_SPLC_USING_IO_OUTPUT == 1
+	outputInit();
+#endif
+#if CONFIG_SPLC_USING_DAC == 1	
 	initChipDac();//初始化DAC模块
+#endif
+#if CONFIG_SPLC_USING_ADC == 1
 	initChipAdc();//初始化ADC模块
+#endif
+#if CONFIG_SPLC_USING_LASER == 1
 	sPlcLaserInit();
-	
+#endif
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
 	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
-	enableSplcIsr();
+	//enableSplcIsr();
 #if CONFIG_SPLC_USING_DK25L == 1
 	delayMs(100);
 	DL25L_Init();//打开中断后运行

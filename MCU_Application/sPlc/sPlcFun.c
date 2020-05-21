@@ -167,12 +167,7 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
-void TENV(uint16_t dist, uint16_t src){//CODE转换为环境温度
-	int16_t temp;
-	temp = (int16_t)(CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096);//单位mV
-	temp = (int16_t)(((fp32_t)temp - CONFIG_ADC_TEMP_SENSOR_OFFSET) / CONFIG_ADC_TEMP_SENSOR_SLOPE * 10);
-	NVRAM0[dist] = temp;
-}
+
 void ADD1(uint16_t Sa){//16位非饱和自加
 	NVRAM0[Sa] += 1;
 }
@@ -437,13 +432,26 @@ void NVLOAD(void){
 	loadNvram();
 	enableSplcIsr();	
 }
+
+void FDSAV(void){//FDRAM->EPROM
+	disableSplcIsr();
+	saveFdram();
+	enableSplcIsr();
+}
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	disableSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
-	//epromWrite((cn * 60 + CONFIG_EPROM_FDRAM_START), (uint8_t*)(cn * 30 + FDRAM), 60);
+	epromWrite((cn * 60 + CONFIG_EPROM_FDRAM_START), (uint8_t*)(cn * 30 + FDRAM), 60);
 #endif
 	enableSplcIsr();
 }
+void FDLAD(void){//FDRAM<-EPROM
+	disableSplcIsr();
+	loadFdram();
+	enableSplcIsr();
+}
+
+
 
 /*****************************************************************************/
 //IO指令

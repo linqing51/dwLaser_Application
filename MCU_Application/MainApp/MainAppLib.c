@@ -1,6 +1,5 @@
 #include "MainAppLib.h"
 /*****************************************************************************/
-#if CONFIG_USING_BACKGROUND_APP == 1
 int16_t pulseWidthAdd(int16_t ps){//脉宽增加
 	if(ps >= 1 && ps < 10){
 		ps += 1;
@@ -33,12 +32,12 @@ int16_t pulseWidthDec(int16_t ps){//脉宽减少
 }
 void loadDefault(void){//恢复默认值
 	uint8_t i;	
-	RES(MR_FOOSWITCH_HAND_SWITCH);
-	RES(MR_BEEM_TONE);			
-	RES(R_DISABLE_RFID);
-	RES(R_DISABLE_FIBER_PROBE);
-	RES(R_DISABLE_FAN_SPEED);
-	NVRAM0[DM_BEEM_VOLUME] = CONFIG_MAX_BEEM_VOLUME;
+	RRES(MR_FOOSWITCH_HAND_SWITCH);
+	RRES(MR_BEEM_TONE);			
+	RRES(R_DISABLE_RFID);
+	RRES(R_DISABLE_FIBER_PROBE);
+	RRES(R_DISABLE_FAN_SPEED);
+	NVRAM0[DM_MUSIC_VOLUME] = CONFIG_MAX_MUSIC_VOLUME;
 	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_AIM_BRG;
 	NVRAM0[DM_LCD_BRG] = CONFIG_MAX_LCD_BRG;
 	NVSAV();//强制储存NVRAM
@@ -277,4 +276,7 @@ int16_t fitLaserToCode(uint8_t ch, int16_t power){//功率->DAC CODE
 	return out;
 }
 
-#endif
+
+
+
+

@@ -58,15 +58,12 @@
 #define CONFIG_SPLC_ADC_CHANNEL									8//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM								8//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
-#define CONFIG_SPLC_ADC_CHANNLE									9//ADC通道数
-#define CONFIG_ADC_TEMP_SENSOR_SLOPE							2.86F
-#define CONFIG_ADC_TEMP_SENSOR_OFFSET  							776L// Temp Sensor Offset in mV
-#define CONFIG_ADC_INTERNAL_VREF     							2430L// ADC Voltage Reference (mV)
 #define CONFIG_ADC_AMBIENT             							25L// Ambient temp in deg C
+#define CONFIG_ADC_INTERNAL_VREF     							3300L// ADC Voltage Reference (mV)
 #define CONFIG_NTC_RS											3300L
 #define CONFIG_NTC_B											3500L
 #define CONFIG_NTC_RB											10000L
-#define CONFIG_NTC_VREF											5000L
+#define CONFIG_NTC_VREF											3300L
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DAC									1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0										0xFFFF
@@ -93,6 +90,7 @@
 #define CONFIG_DK25L_RXBUF_SIZE									16
 #define CONFIG_DK25L_TXBUF_SIZE									16
 /*****************************************************************************/
+#define CONFIG_SPLC_USING_LASER									1
 #define CONFIG_SPLC_USING_LASER_TEST							1
 /*****************************************************************************/
 #define CONFIG_USING_DCHMI_APP									0//广东大彩人机交互应用
@@ -153,8 +151,8 @@
 
 #define CONFIG_MAX_AIM_BRG										100//红光最大调光占空比
 #define CONFIG_MIN_AIM_BRG										0//红光最小调光占空比
-#define CONFIG_MAX_BEEM_VOLUME									100//蜂鸣器最大音量
-#define CONFIG_MIN_BEEM_VOLUME									0//蜂鸣器最小音量
+#define CONFIG_MAX_MUSIC_VOLUME									100//蜂鸣器最大音量
+#define CONFIG_MIN_MUSIC_VOLUME									0//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG										100//屏幕亮度最大值
 #define CONFIG_MIN_LCD_BRG										0//屏幕亮度最小值
 #define CONFIG_COOL_SET_TEMP									280//冷却温度
@@ -621,7 +619,7 @@
 #define TMP_NAME_31												(TMP_START + 465)//临时名称储存区
 /*****************************************************************************/
 #define DM_SCHEME_NUM											(DM_START + 0)//选择的方案编号 低8位方案号 高8位方案使能
-#define DM_VOLUME												(DM_START + 1)//音量
+#define DM_MUSIC_VOLUME											(DM_START + 1)//音量
 #define DM_AIM_BRG												(DM_START + 2)//指示激光亮度
 #define DM_LCD_BRG												(DM_START + 3)//屏幕亮度
 #define DM_DC_OLD_PASSCODE0										(DM_START + 4)//屏旧密码0-1

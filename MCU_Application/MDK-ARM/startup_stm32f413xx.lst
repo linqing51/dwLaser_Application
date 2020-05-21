@@ -741,9 +741,9 @@ interwork --depend=stm32f413\startup_stm32f413xx.d -ostm32f413\startup_stm32f41
 3xx.o -I..\Inc -I.\RTE\_STM32F413 -IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\
 CMSIS\5.7.0\CMSIS\Core\Include -IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\ST
 M32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__MIC
-ROLIB SETA 1" --predefine="__UVISION_VERSION SETA 529" --predefine="_RTE_ SETA 
-1" --predefine="STM32F413xx SETA 1" --list=startup_stm32f413xx.lst startup_stm3
-2f413xx.s
+ROLIB SETA 1" --predefine="__UVISION_VERSION SETA 530" --predefine="_RTE_ SETA 
+1" --predefine="STM32F413xx SETA 1" --predefine="_RTE_ SETA 1" --list=startup_s
+tm32f413xx.lst startup_stm32f413xx.s
 
 
 

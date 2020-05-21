@@ -32,7 +32,6 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "myLed.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -56,8 +55,8 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-extern __IO uint16_t adcDmaBuffer0[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池
-extern __IO uint16_t adcDmaBuffer1[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池
+extern __IO uint16_t adcDmaBuffer0[];//ADC DMA采集储存池
+extern __IO uint16_t adcDmaBuffer1[];//ADC DMA采集储存池
 extern __IO uint8_t adcBufferSelect;//ADC BUFFER选择指示
 extern __IO uint8_t adcBufferDone;//ADC 采集完毕
 

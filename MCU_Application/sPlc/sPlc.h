@@ -14,6 +14,7 @@
 #include "stdint.h"
 /*****************************************************************************/
 #include "sPlcConfig.h"
+#include "sPlcMisc.h"
 #include "sPlcMcu.h"
 #include "sPlcFun.h"
 #include "sPlcTimer.h"
@@ -79,6 +80,8 @@ __weak void updateNvram(void);//更新NVRAM->EPROM
 __weak void clearNvram(void);//清除NVRAM数据	
 __weak void loadNvram(void);
 __weak void saveNvram(void);
+__weak void loadFdram(void);
+__weak void saveFdram(void);
 __weak void mucReboot(void);//软件复位
 __weak void setLed(uint8_t color, uint8_t state);//设置LED灯
 /*****************************************************************************/

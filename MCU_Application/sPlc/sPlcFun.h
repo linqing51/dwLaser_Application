@@ -59,6 +59,12 @@ void HSPWM(int16_t *pos, int16_t *neg, int16_t pot) ;//硬件PWM输出
 /*****************************************************************************/
 void NVSAV(void);//强制立即更新NVRAM
 void NVLOAD(void);
+/*****************************************************************************/
+//存档寄存器操作
+void FDSAV(void);
+void FDLAD(void);
+void FDSAV_ONE(int16_t cn);
+void FDLAD_ONE(int16_t cn);
 #endif
 
 

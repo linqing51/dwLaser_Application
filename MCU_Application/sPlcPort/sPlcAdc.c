@@ -4,12 +4,10 @@ extern ADC_HandleTypeDef hadc1;
 extern DMA_HandleTypeDef hdma_adc1;
 /*****************************************************************************/
 void initChipAdc(void){//ADC模块初始化
-#if CONFIG_SPLC_USING_ADC == 1
 	adcBufferSelect = 0;
 	memset((uint8_t*)adcDmaBuffer0, 0x0, (CONFIG_ADC_DMA_BUFFER_SIZE * 2));
 	memset((uint8_t*)adcDmaBuffer1, 0x0, (CONFIG_ADC_DMA_BUFFER_SIZE * 2));
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adcDmaBuffer0, CONFIG_ADC_DMA_BUFFER_SIZE); //启用DMA的ADC转换，AD_DMA 0~3 对应ADC 0~3，这里注意最后一个参数的大小
-#endif
 }
 void chipAdcProcess(void){//循环采集ADC
 	uint8_t i, j;

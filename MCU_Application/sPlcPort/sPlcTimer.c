@@ -64,9 +64,6 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 		}
 		TimerCounter_100mS = 0;
 	}
-//#if CONFIG_SPLC_USING_ADC == 1
-//	chipAdcProcess();//ADC扫描
-//#endif
 	TimerCounter_1mS ++;
 }
 
