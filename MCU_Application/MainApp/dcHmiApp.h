@@ -1,6 +1,11 @@
 #ifndef __DCHMIAPP_H__
 #define __DCHMIAPP_H__
 /*****************************************************************************/
+#include "sPlc.h"
+#include "hmiLib.h"
+#include "dcHmiRes.h"
+#include "MainAppLib.h"
+/*****************************************************************************/
 #define FSMSTEP_POWERUP												0//上电
 //HMI初始操作
 #define FSMSTEP_RESTORE_HMI											100//HMI 恢复储存数据
@@ -46,11 +51,6 @@
 #define	MSG_LASER_EMIT												13
 #define	MSG_WAIT_TRIGGER											14
 #define	MSG_FIBER_MISSMATE											15
-/*****************************************************************************/
-#include "sPlc.h"
-#include "hmiLib.h"
-#include "dcHmiRes.h"
-#include "MainAppLib.h"
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);

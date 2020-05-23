@@ -804,6 +804,31 @@
               <FileType>1</FileType>
               <FilePath>..\MainApp\MainAppLib.c</FilePath>
             </File>
+            <File>
+              <FileName>dcHmiNotifyText.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\dcHmiNotifyText.c</FilePath>
+            </File>
+            <File>
+              <FileName>dcHmiNotifyReadRTC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\dcHmiNotifyReadRTC.c</FilePath>
+            </File>
+            <File>
+              <FileName>dcHmiNotifyButton.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\dcHmiNotifyButton.c</FilePath>
+            </File>
+            <File>
+              <FileName>dcHmiNotifyProgress.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\dcHmiNotifyProgress.c</FilePath>
+            </File>
+            <File>
+              <FileName>dcHmiApp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\dcHmiApp.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

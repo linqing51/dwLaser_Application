@@ -257,14 +257,19 @@ int16_t fitLaserToCode(uint8_t ch, int16_t power){//功率->DAC CODE
 			notesB3 = LASER_CH3_NOTES_B3;
 			break;
 		}
-		default:{
-			return 0;
-		}break;
+		default:{	
+			notesIntercept = 0x0;			
+			notesB1 = 0x0;
+			notesB2 = 0x0;
+			notesB3 = 0x0;
+			break;
+		}
 	}
-	ftemp0 = pow((fp64_t)fin, 3) * notesB3;
-	ftemp1 = pow((fp64_t)fin, 2) * notesB2;
-	ftemp2 = (fp32_t)fin * notesB1;
-	ftemp3 = ftemp2 + notesIntercept;
+	//进行3次多项式拟合Y = A*X^3 + B*X^2 + C*X + D
+	ftemp0 = pow((fp64_t)fin, 3) * notesB3;//3次方
+	ftemp1 = pow((fp64_t)fin, 2) * notesB2;//2次方
+	ftemp2 = (fp32_t)fin * notesB1;//1次方
+	ftemp3 = ftemp0 + ftemp1 + ftemp2 + notesIntercept;
 	if(ftemp3 >= 0x0FFF){
 		ftemp3 = 0x0FFF;
 	}

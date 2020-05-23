@@ -1,8 +1,7 @@
 #include "sPlcDK25L.h"
 /*****************************************************************************/
-#if CONFIG_SPLC_USING_DK25L == 1
-uint8_t xdata DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//指令发送缓冲区
-uint8_t xdata DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//指令接收缓冲区
+uint8_t DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//指令发送缓冲区
+uint8_t DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//指令接收缓冲区
 static uint8_t DL25L_TxIndex;//发送位置索引
 static uint8_t DL25L_RxIndex;//接收位置索引
 static uint8_t DL25L_TXLength;//发送长度
@@ -10,7 +9,7 @@ static uint8_t DL25L_TXLength;//发送长度
 void DL25L_Init(void){//DK25L NFC模块初始化
 	uint8_t fwver, hwver;
 	uint16_t overTime;
-	RES(SPCOIL_DK25L_INIT_FAIL);
+	RRES(SPCOIL_DK25L_INIT_FAIL);
 	NVRAM0[SPREG_DK25L_VER] = 0xFFFF;
 	DK25L_GET_HWVER();
 	while(LDB(SPCOIL_DK25L_TXCMD_DONE));

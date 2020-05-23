@@ -16,8 +16,8 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 			switch(control_id){
 				case GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME:{
 					tmp = NVRAM0[EM_SCHEME_NUM_TMP];
-					if(strlen(str) <= CONFIG_SCHEME_NAME_SIZE){
-						strcpy((uint8_t*)(FDRAM + (tmp * 30)), str);
+					if(strlen((const char*)str) <= CONFIG_SCHEME_NAME_SIZE){
+						strcpy((char*)(FDRAM + (tmp * 30)), (const char*)str);
 						if(tmp < 16){
 							SetTextValue(GDDC_PAGE_SCHEME_0, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
 						}
@@ -35,3 +35,9 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 		default:break;
 	}
 }   
+
+
+
+
+
+

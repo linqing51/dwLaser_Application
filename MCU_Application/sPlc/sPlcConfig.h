@@ -48,6 +48,7 @@
 #define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
+#define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
 #if CONFIG_SPLC_USING_EPROM == 1
 #define CONFIG_SPLC_USING_CLEAR_NVRAM							1//启用清除NVRAM功能
 #else
@@ -105,7 +106,7 @@
 #define CONFIG_APP_ENVI_HIGH_TEMP								750
 /*****************************************************************************/
 #define CONFIG_USING_SINGLE_WAVE								1//单波长
-#define CONFIG_USING_DUAL_WAVE									0//双波长
+#define CONFIG_USING_DUAL_WAVE									1//双波长
 #define CONFIG_HMI_SCHEME_NUM									32//方案数
 #define CONFIG_HMI_DEFAULT_PASSSWORD0							0x3235//默认密码
 #define CONFIG_HMI_DEFAULT_PASSSWORD1							0x3830//默认密码
@@ -150,11 +151,11 @@
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME						250//变音持续时间
 
 #define CONFIG_MAX_AIM_BRG										100//红光最大调光占空比
-#define CONFIG_MIN_AIM_BRG										0//红光最小调光占空比
+#define CONFIG_MIN_AIM_BRG										1//红光最小调光占空比
 #define CONFIG_MAX_MUSIC_VOLUME									100//蜂鸣器最大音量
-#define CONFIG_MIN_MUSIC_VOLUME									0//蜂鸣器最小音量
+#define CONFIG_MIN_MUSIC_VOLUME									1//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG										100//屏幕亮度最大值
-#define CONFIG_MIN_LCD_BRG										0//屏幕亮度最小值
+#define CONFIG_MIN_LCD_BRG										1//屏幕亮度最小值
 #define CONFIG_COOL_SET_TEMP									280//冷却温度
 #define CONFIG_COOL_DIFF_TEMP									20//冷却温度变化范围
 

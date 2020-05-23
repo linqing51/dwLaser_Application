@@ -1,7 +1,7 @@
 #ifndef __SPLCDK25L_H__
 #define __SPLCDK25L_H__
 /*****************************************************************************/
-#include "sPlcPort.h"
+#include "sPlc.h"
 /*****************************************************************************/
 #define DK25L_FWVER												0x12
 #define DK25L_HWVER												0x34
@@ -61,8 +61,8 @@
 #define CARD_ISO14443A											0x04
 #define CARD_ISO15693											0x05
 /*****************************************************************************/
-extern uint8_t xdata DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//指令发送缓冲区
-extern uint8_t xdata DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//指令接收缓冲区
+extern uint8_t DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//指令发送缓冲区
+extern uint8_t DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//指令接收缓冲区
 /*****************************************************************************/
 void DL25L_Init(void);//DK25L NFC模块初始化
 void DK25L_GET_UID(void);//获取卡片 UID
@@ -85,3 +85,7 @@ void DL25L_ISO14443A_ACTIVATE(void);//ISO14443A 卡激活指令
 void DL25L_ISO14443A_APDU(uint8_t length, uint8_t *pdat);//ISO14443A PDU指令接口
 void DK25L_EnableRx(int8_t ena);
 #endif
+
+
+
+

@@ -19,6 +19,9 @@
 #include "sPlcFun.h"
 #include "sPlcTimer.h"
 #include "sPlcLaser.h"
+#if CONFIG_SPLC_USING_EPROM == 1
+#include "sPlcEprom.h"
+#endif
 #if CONFIG_SPLC_USING_ADC == 1
 #include "sPlcAdc.h"
 #endif
