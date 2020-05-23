@@ -32,7 +32,7 @@ void assertRegisterAddress(uint16_t adr){//检查寄存器地址
 void loadNvram(void){//从EPROM中载入NVRAM
 	uint16_t i;
 #if CONFIG_SPLC_USING_EPROM == 1
-	//epromRead(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));//从EPROM中恢复MR
+	epromRead(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));//从EPROM中恢复MR
 #endif
 	for(i = R_START;i <= TM_END;i ++){
 		NVRAM0[i] = 0x0;
@@ -53,7 +53,7 @@ void updateNvram(void){//更新NVRAM->EPROM
 	for(i = (CONFIG_EPROM_NVRAM_START + (MR_START * 2));i < ((DM_END + 1) * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
 #if CONFIG_SPLC_USING_EPROM == 1
-			//epromWriteOneByte(i, *sp0);
+			epromWriteByte(i, *sp0);
 #endif
 		}
 		sp0 ++;
@@ -66,7 +66,7 @@ void clearNvram(void){//清除NVRAM数据
 	enterSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_NVRAM_START; i< (CONFIG_NVRAM_SIZE * 2);i ++){
-		//epromWriteOneByte(i, 0x0);
+		epromWriteByte(i, 0x0);
 	}
 #endif
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM0
@@ -78,13 +78,13 @@ void clearEprom(void){
 	//清空EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
 	for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
-		//epromWriteOneByte(i, 0x0);
+		epromWriteByte(i, 0x0);
 	}
 	//写入校验码
-	//epromWriteOneByte((CONFIG_EPROM_SIZE - 4), 0x55);
-	//epromWriteOneByte((CONFIG_EPROM_SIZE - 3), 0xAA);
-	//epromWriteOneByte((CONFIG_EPROM_SIZE - 2), 0xBC);
-	//epromWriteOneByte((CONFIG_EPROM_SIZE - 1), 0xD4);
+	epromWriteByte((CONFIG_EPROM_SIZE - 4), 0x55);
+	epromWriteByte((CONFIG_EPROM_SIZE - 3), 0xAA);
+	epromWriteByte((CONFIG_EPROM_SIZE - 2), 0xBC);
+	epromWriteByte((CONFIG_EPROM_SIZE - 1), 0xD4);
 #endif
 }
 extern void loadDefault(void);
@@ -96,17 +96,17 @@ void checkEprom(void){
 	checkCode[1] = 0;
 	checkCode[2] = 0;
 	checkCode[3] = 0;
-	//epromRead((CONFIG_EPROM_SIZE - 4), checkCode, 4);//从EPROM中恢复MR
+	epromRead((CONFIG_EPROM_SIZE - 4), checkCode, 4);//从EPROM中恢复MR
 	if((checkCode[0] != 0x55) || (checkCode[1] != 0xAA) || (checkCode[2] != 0xBC) || (checkCode[3] != 0xD1)){
 		//检测到校验码错误清空EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
 		for(i = 0; i< CONFIG_EPROM_SIZE;i ++){
-			//epromWriteOneByte(i, 0x0);
+			epromWriteByte(i, 0x0);
 		}
-		//epromWriteOneByte((CONFIG_EPROM_SIZE - 4), 0x55);
-		//epromWriteOneByte((CONFIG_EPROM_SIZE - 3), 0xAA);
-		//epromWriteOneByte((CONFIG_EPROM_SIZE - 2), 0xBC);
-		//epromWriteOneByte((CONFIG_EPROM_SIZE - 1), 0xD1);
+		epromWriteByte((CONFIG_EPROM_SIZE - 4), 0x55);
+		epromWriteByte((CONFIG_EPROM_SIZE - 3), 0xAA);
+		epromWriteByte((CONFIG_EPROM_SIZE - 2), 0xBC);
+		epromWriteByte((CONFIG_EPROM_SIZE - 1), 0xD1);
 #endif
 		loadDefault();
 	}
@@ -131,15 +131,12 @@ void clearFdram(void){//清楚FDRAM数据
 #if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_FDRAM_START; i< (CONFIG_FDRAM_SIZE * 2) ; i++){
 #if CONFIG_SPLC_USING_EPROM == 1
-		epromWriteOneByte(i, 0x0);
+		epromWriteByte(i, 0x0);
 #endif
 	}
 #endif
 	memset(FDRAM, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
 }
-
-
-
 
 void sPlcSpwmLoop(void){//SPWM轮询	
 	if(LDP(SPCOIL_PS10MS)){//每10mS执行一次
@@ -269,10 +266,11 @@ void sPlcProcessStart(void){//sPLC轮询起始
 #if CONFIG_SPLC_USING_CLEAR_NVRAM == 1 && CONFIG_SPLC_USING_EPROM == 1
 	if(NVRAM0[SPREG_CLEAR_NVRAM] == CONFIG_SPLC_CLEAR_CODE){
 		disableSplcIsr();//关闭中断	
-		setLedRun(true);//
-		setLedEprom(true);
+		//setLedRun(true);//
+		//setLedEprom(true);
 		if(epromTest()){//EPROM测试成功
-			setLedEprom(false);
+			__nop();
+			//setLedEprom(false);
 		}
 		else{//EPROM测试失败
 		}

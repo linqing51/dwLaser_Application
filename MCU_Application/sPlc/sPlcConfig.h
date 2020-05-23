@@ -47,9 +47,9 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_EPROM									0//EPROM
+#define CONFIG_SPLC_USING_EPROM									1//EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
-#define CONFIG_SPLC_USING_CLEAR_NVRAM							0//启用清除NVRAM功能
+#define CONFIG_SPLC_USING_CLEAR_NVRAM							1//启用清除NVRAM功能
 #else
 #define CONFIG_SPLC_USING_CLEAR_NVRAM							0//启用清除NVRAM功能
 #endif												
