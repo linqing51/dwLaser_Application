@@ -1,5 +1,9 @@
 #include "sPlcMisc.h"
 /*****************************************************************************/
+extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim4;
+/*****************************************************************************/
 /* Name                       : "XMODEM", also known as "ZMODEM", "CRC-16/ACORN"
  * Width                      : 16 bit
  * Poly                       : 1021 (That is actually x^16 + x^12 + x^5 + 1)
@@ -100,38 +104,93 @@ const uint32_t crc32Tab[] = { /* CRC polynomial 0xedb88320 */
 static uint16_t oldcrc16;
 static uint32_t oldcrc32;
 /*****************************************************************************/
-void setRedLed(uint8_t st){
-	if(st){
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+void setLedAimFreq(uint32_t freq){//设置LED灯和瞄准光闪烁频率
+	htim3.Instance = TIM3;
+	htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
+	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim3.Init.Period = 255;
+	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+	if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
+		Error_Handler();
 	}
-	else{
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+	htim4.Instance = TIM4;
+	htim4.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
+	htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim4.Init.Period = 255;
+	htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+	if (HAL_TIM_PWM_Init(&htim4) != HAL_OK){
+		Error_Handler();
 	}
-}
-void setGreenLed(uint8_t st){
-	if(st){
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-	}
-	else{
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-	}
-}
-void setBlueLed(uint8_t st){
-	if(st){
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	}
-	else{
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-	}	
-}
-void setBeem(uint8_t st){//设置蜂鸣器状态
-	
-}
-void setAim(uint8_t st){//设置瞄准光状态
-}
-void setAimBright(uint16_t br){//设置瞄准光亮度
 }
 
+void setRedLedDutyCycle(uint8_t dc){//设置R LED亮度
+	uint16_t temp;
+	temp = 255 * dc / 100;
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, temp);
+	if(dc != 0){
+		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);//打开TIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);//关闭TIM
+	}
+}
+void setGreenLedDutyCycle(uint8_t dc){//设置G LED亮度
+	uint16_t temp;
+	temp = 255 * dc / 100;
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, dc);
+	if(dc != 0){
+		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);//打开TIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1);//关闭TIM
+	}
+}
+void setBlueLedDutyCycle(uint8_t dc){//设置B LED亮度
+	uint16_t temp;
+	temp = 255 * dc / 100;
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, dc);
+	if(dc != 0){
+		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);//打开TIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);//关闭TIM
+	}	
+}
+void setBeemFreq(uint32_t freq){//设置蜂鸣器频率
+	htim2.Instance = TIM2;
+	htim2.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
+	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim2.Init.Period = 255;
+	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+	if (HAL_TIM_PWM_Init(&htim2) != HAL_OK){
+		Error_Handler();
+	}
+}
+void setBeemDutyCycle(uint8_t dc){//设置蜂鸣器占空比
+	uint16_t temp;
+	temp = 255 * dc / 100;
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, dc);
+	if(dc != 0){
+		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);//打开TIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);//关闭TIM
+	}
+}
+void setAimDutyCycle(uint8_t dc){//设置瞄准光亮度
+	uint16_t temp;
+	temp = 255 * dc / 100;
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, dc);
+	if(dc != 0){
+		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);//打开TIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);//关闭TIM
+	}
+}
 void initWatchDog(void){//看门狗初始化
 	
 }
@@ -199,4 +258,107 @@ void crc32Clear(void){//CRC32清楚计算值
 void crc32SetCrcOld(uint32_t old){//CRC32设置计算值
 	oldcrc32 = old;
 }
+
+void sPlcBeemLoop(void){//蜂鸣器轮询
+	uint8_t temp;
+	if(LD(SPCOIL_BEEM_ENABLE)){
+		if(NVRAM0[SPREG_BEEM_FREQ] != NVRAM0[DM_BEEM_VOLUME]){//调频率
+			NVRAM0[SPREG_BEEM_FREQ] = NVRAM0[DM_BEEM_VOLUME];
+			setBeemFreq(NVRAM0[SPREG_BEEM_FREQ]);
+		}
+		switch(NVRAM0[SPREG_BEEM_MODE]){//调模式
+			case BEEM_MODE_0:{
+				if(LD(SPCOIL_BEEM_BUSY) != 1){//如果PWM无输出-> 有输出
+					setBeemDutyCycle(NVRAM0[SPREG_BEEM_DUTYCYCLE]);
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				if(NVRAM0[SPREG_BEEM_DUTYCYCLE] != NVRAM0[DM_BEEM_VOLUME]){
+					setBeemDutyCycle(NVRAM0[SPREG_BEEM_DUTYCYCLE]);
+				}
+				break;
+			}
+			case BEEM_MODE_1:{//模式1 声光同步
+				temp = 0;
+				temp |= GET_LASER_STATE_CH0;
+				temp |= GET_LASER_STATE_CH1;
+				temp |= GET_LASER_STATE_CH2;
+				temp |= GET_LASER_STATE_CH3;
+				temp |= GET_LASER_STATE_CH4;
+				if(temp){//LT3763 ON
+					if(LD(SPCOIL_BEEM_BUSY) != 1){//如果PWM无输出-> 有输出
+						setBeemDutyCycle(NVRAM0[SPREG_BEEM_DUTYCYCLE]);
+						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					}
+					if(NVRAM0[SPREG_BEEM_DUTYCYCLE] != NVRAM0[DM_BEEM_VOLUME]){
+						setBeemDutyCycle(NVRAM0[SPREG_BEEM_DUTYCYCLE]);
+					}
+				}
+				else{
+					setBeemDutyCycle(0);
+					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+				}
+				break;
+			}
+			case BEEM_MODE_2:{//模式2 长间隔 激光发射音		
+				if(NVRAM0[SPREG_BEEM_COUNTER] == 0){//1
+					setBeemDutyCycle(NVRAM0[SPREG_BEEM_DUTYCYCLE]);
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] == 10){//0
+					setBeemDutyCycle(0);
+					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] == 59){
+					NVRAM0[SPREG_BEEM_COUNTER] = 0xffff;
+				}
+				NVRAM0[SPREG_BEEM_COUNTER] ++;
+				break;
+			}
+			case BEEM_MODE_3:{//模式3 滴滴两下一停 报警音		
+				if(NVRAM0[SPREG_BEEM_COUNTER] == 0){//1
+					setBeemDutyCycle(NVRAM0[SPREG_BEEM_DUTYCYCLE]);
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] == 5){//0
+					setBeemDutyCycle(0);
+					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] == 10){//1
+					setBeemDutyCycle(NVRAM0[SPREG_BEEM_DUTYCYCLE]);
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] == 15){//0
+					setBeemDutyCycle(0);
+					RRES(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] == 25){//停1秒
+					NVRAM0[SPREG_BEEM_COUNTER] = 0xffff;
+				}
+				NVRAM0[SPREG_BEEM_COUNTER] ++;
+				break;
+			}
+			default:break;
+		}
+	}
+	else{
+		setBeemDutyCycle(0);
+		RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
+	}
+}
+
+void sPlcAimLoop(void){//AIM轮询程序
+	if(LD(SPCOIL_AIM_ENABEL) && (NVRAM0[SPREG_AIM_DUTYCYCLE] > 0)){
+		setAimDutyCycle(NVRAM0[SPREG_AIM_DUTYCYCLE]);
+		SSET(SPCOIL_AIM_BUSY);
+	}
+	else{
+		setAimDutyCycle(NVRAM0[0]);
+		RRES(SPCOIL_AIM_BUSY);
+	}
+}
+
+
+
+
 

@@ -16,6 +16,22 @@
 #define LASER_SELECT_CH3						0x08
 #define LASER_SELECT_ALL						0x10
 /*****************************************************************************/
+#define LASER_CH0_ON				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);						
+#define LASER_CH1_ON				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
+#define LASER_CH2_ON				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+#define LASER_CH3_ON				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
+#define LASER_CH4_ON				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+#define LASER_CH0_OFF				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_RESET);			
+#define LASER_CH1_OFF				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
+#define LASER_CH2_OFF				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+#define LASER_CH3_OFF				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
+#define LASER_CH4_OFF				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+#define GET_LASER_STATE_CH0			HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4);	
+#define GET_LASER_STATE_CH1			HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7);
+#define GET_LASER_STATE_CH2			HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5);
+#define GET_LASER_STATE_CH3			HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6);
+#define GET_LASER_STATE_CH4			HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4);
+/*****************************************************************************/
 extern volatile int8_t  LaserTimer_Mode;
 extern volatile int8_t  LaserTimer_Select;
 extern volatile int16_t  LaserTimer_TCounter;

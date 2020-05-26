@@ -54,6 +54,6 @@ SourcePath#2=C:/Github/dwLaser_Application/MCU_Application/FATFS/App
 SourcePath#3=C:/Github/dwLaser_Application/MCU_Application/USB_HOST/App
 SourcePath#4=C:/Github/dwLaser_Application/MCU_Application/USB_HOST/Target
 SourceFiles=;usbh_diskio.c;fatfs.c;freertos.c;usb_host.c;usbh_conf.c;usbh_platform.c;stm32f4xx_it.c;stm32f4xx_hal_msp.c;stm32f4xx_hal_timebase_tim.c;main.c;
-HeaderPath=E:/Github/dwLaser_Application/MCU_Application/Inc
-SourcePath=E:/Github/dwLaser_Application/MCU_Application/Src
+HeaderPath=C:/Github/dwLaser_Application/MCU_Application/Inc
+SourcePath=C:/Github/dwLaser_Application/MCU_Application/Src
 

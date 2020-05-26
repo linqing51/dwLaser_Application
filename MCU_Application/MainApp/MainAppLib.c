@@ -1,5 +1,9 @@
 #include "MainAppLib.h"
 /*****************************************************************************/
+
+/*****************************************************************************/
+
+
 int16_t pulseWidthAdd(int16_t ps){//脉宽增加
 	if(ps >= 1 && ps < 10){
 		ps += 1;
@@ -279,6 +283,40 @@ int16_t fitLaserToCode(uint8_t ch, int16_t power){//功率->DAC CODE
 	out = (int16_t)ftemp3;
 	out &= 0x0FFF;
 	return out;
+}
+
+uint8_t saveSchemeToUdisk(void){//将FDRAM写入USB DISK
+	//返回 1:写入成功 0:写入失败
+//	FRESULT retUsbH;
+//	FATFS	USBH_fatfs;
+//	FIL saveFile;//FATFS File Object 下载完成信息
+//	FILINFO FileInfo;//FATFS 文件信息
+//	char fileName[64];
+//	retUsbH = f_mount(&USBH_fatfs, FATFS_ROOT, 0);
+//	if(retUsbH != FR_OK){//挂载U盘失败
+//		printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
+//		return false
+//	}
+//	else{//挂载U盘成功
+//		printf("Bootloader:Mount Fatfs sucess!\n");
+//	}
+//	sprintf(fileName, "/las.cfg");
+//	retUsbH = f_open(&saveFile, CFG_FIRMWARE_FILENAME, FA_CREATE_ALWAYS | FA_READ | FA_WRITE);//读取完成信息文件
+//	if(retUsbH != FR_OK){//读取失败跳过固件更新直接运行程序
+//		printf("BootLoader:Open %s fail,ECODE=0x%02XH\n", CFG_FIRMWARE_FILENAME, retUsbH);
+//	}
+//	else{//读取成功检查文件内容
+//		f_lseek(&CfgFile, 0);//读取指针移动到开头
+//		if(f_write(&CfgFile, fileBuff, 3, (void *)&bwByte) != FR_OK){
+//				bootLoadFailHandler(BT_FAIL_WRITE_CFG);
+//			}
+//			f_close(&CfgFile);
+//	}
+	return 0;
+}
+uint8_t loadSchemeFromUdisk(void){//从USB DISK载入FDRAM
+	//返回 1:写入成功 0:写入失败
+	return 0;
 }
 
 

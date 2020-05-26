@@ -1,11 +1,21 @@
 #include "sPlc.h"
 /*****************************************************************************/
-void setRedLed(uint8_t st);
-void setGreenLed(uint8_t st);
-void setBlueLed(uint8_t st);
-void setBeem(uint8_t st);
-void setAim(uint8_t st);//设置瞄准光状态
-void setAimBright(uint16_t br);//设置瞄准光亮度
+#define BEEM_MODE_0													0x10//连续模式
+#define BEEM_MODE_1													0x11//声光同步
+#define BEEM_MODE_2													0x12//激光发射固定间隔
+#define BEEM_MODE_3													0x13//异常报警
+#define BEEM_FREQ_0													0xF2//正常频率
+#define BEEM_FREQ_1													0xF1//变调
+/*****************************************************************************/
+void sPlcBeemLoop(void);//蜂鸣器轮询
+void sPlcAimLoop(void);//瞄准光轮询
+void setBeemFreq(uint32_t freq);//设置蜂鸣器频率和占空比
+void setBeemDutyCycle(uint8_t dc);//设置蜂鸣器占空比
+void setLedAimFreq(uint32_t freq);//设置LED灯和瞄准光闪烁频率
+void setAimDutyCycle(uint8_t dc);//设置瞄准光亮度
+void setRedLedDutyCycle(uint8_t dc);//设置R LED亮度
+void setGreenLedDutyCycle(uint8_t dc);//设置G LED亮度
+void setBlueLedDutyCycle(uint8_t dc);//设置B LED亮度
 void initWatchDog(void);
 void enableWatchDog(void);
 void disableWatchDog(void);

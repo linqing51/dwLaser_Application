@@ -1,4 +1,5 @@
 #include "sPlc.h"
+//避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
 /*****************************************************************************/
 int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
@@ -220,6 +221,17 @@ void sPlcInit(void){//软逻辑初始化
 	loadNvram();//上电恢复NVRAM
 	initSplcTimer();//初始化硬件计时器模块
 	SSET(SPCOIL_ON);
+#if CONFIG_SPLC_USING_BEEM == 1
+	setBeemFreq(CONFIG_SPLC_DEFAULT_BEEM_FREQ);
+	setBeemDutyCycle(0);
+#endif
+#if CONFIG_SPLC_USING_LEDAIM == 1
+	setLedAimFreq(CONFIG_SPLC_LEDAIM_FREQ);
+	setAimDutyCycle(0);
+	setRedLedDutyCycle(0);//设置R LED亮度
+	setGreenLedDutyCycle(0);//设置G LED亮度
+	setBlueLedDutyCycle(0);//设置B LED亮度
+#endif
 #if CONFIG_SPLC_USING_IO_INPUT == 1
 	inputInit();
 #endif
@@ -291,6 +303,12 @@ void sPlcProcessStart(void){//sPLC轮询起始
 void sPlcProcessEnd(void){//sPLC轮询结束
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
 	outputRefresh();//更新Y口输出
+#endif
+#if CONFIG_SPLC_USING_BEEM == 1
+	sPlcBeemLoop();
+#endif
+#if	CONFIG_SPLC_USING_LEDAIM == 1
+	sPlcAimLoop();
 #endif
 	updateNvram();//更新NVRAM
 	RRES(SPCOIL_START_UP);

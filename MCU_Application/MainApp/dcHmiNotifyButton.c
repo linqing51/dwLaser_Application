@@ -3,6 +3,7 @@
 //按钮控件通知当按钮状态改变(或调用GetControlValue)时，执行此函数
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
 void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){ 
+	char dispBuf[64];
 	//PASSCODE 密码输入页面
 	switch(screen_id){
 		case GDDC_PAGE_PASSCODE:{//等待密码输入
@@ -2203,6 +2204,32 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_SCHEME_KEY_NEXT_PAGE:{
 					if(state){
 						SSET(R_SCHEME_KEY_NEXT_SCHEME);
+					}
+					break;
+				}
+				case GDDC_PAGE_SCHEME_KEY_SAVE_UDISK:{//将FDRAM写入USB DISK
+					if(state){
+						if(saveSchemeToUdisk()){//成功
+							//显示提示信息
+							//sprintf(,"Save Done!");
+							SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE, (uint8_t*)dispBuf);
+							//等待1秒
+							
+						}
+						else{//失败
+						}
+					}
+					break;
+				}
+				case GDDC_PAGE_SCHEME_KEY_LOAD_UDISK:{//从UDISK载入方案
+					if(state){
+						if(loadSchemeFromUdisk()){//成功
+							//显示提示信息
+							//等待1秒
+						}
+						else{//失败
+							
+						}
 					}
 					break;
 				}
