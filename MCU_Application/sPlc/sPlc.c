@@ -10,6 +10,7 @@ uint8_t TimerCounter_100mS = 0;
 uint8_t TD_10MS_SP = 0;
 uint8_t TD_100MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
+uint32_t sPlcEnterTime, sPlcExitTime, sPlcScanTime;
 /******************************************************************************/
 void assertCoilAddress(uint16_t adr){//检查线圈地址
 #if CONFIG_SPLC_ASSERT == 1
@@ -35,7 +36,7 @@ void loadNvram(void){//从EPROM中载入NVRAM
 #if CONFIG_SPLC_USING_EPROM == 1
 	epromRead(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));//从EPROM中恢复MR
 #endif
-	for(i = R_START;i <= TM_END;i ++){
+	for(i = R_START;i <= TMP_END;i ++){
 		NVRAM0[i] = 0x0;
 	}
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
@@ -268,6 +269,7 @@ void sPlcInit(void){//软逻辑初始化
 #endif
 }
 void sPlcProcessStart(void){//sPLC轮询起始
+	sPlcEnterTime = HAL_GetTick();
 	if(TD_10MS_SP >= 1){
 		FLIP(SPCOIL_PS10MS);
 		TD_10MS_SP = 0;
@@ -280,22 +282,14 @@ void sPlcProcessStart(void){//sPLC轮询起始
 		FLIP(SPCOIL_PS1000MS);
 		TD_1000MS_SP = 0;
 	}
-	if(LD(SPCOIL_PS1000MS)){
-		//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-	}
-	else{
-		//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-	}
 #if CONFIG_SPLC_USING_CLEAR_NVRAM == 1 && CONFIG_SPLC_USING_EPROM == 1
-	if(NVRAM0[SPREG_CLEAR_NVRAM] == CONFIG_SPLC_CLEAR_CODE){
-		disableSplcIsr();//关闭中断	
-		//setLedRun(true);//
-		//setLedEprom(true);
+	if(NVRAM0[SPREG_CLEAR_NVRAM] == (int16_t)CONFIG_SPLC_CLEAR_CODE){
+		disableSplcTimer();//关闭中断	
 		if(epromTest()){//EPROM测试成功
 			__nop();
-			//setLedEprom(false);
 		}
 		else{//EPROM测试失败
+			__nop();
 		}
 		clearNvram();
 		REBOOT();	
@@ -323,6 +317,11 @@ void sPlcProcessEnd(void){//sPLC轮询结束
 #endif
 	updateNvram();//更新NVRAM
 	RRES(SPCOIL_START_UP);
+	sPlcExitTime = HAL_GetTick();
+	sPlcScanTime = sPlcExitTime - sPlcEnterTime;
+	NVRAM0[SPREG_SCAN_TIME] = (uint16_t)sPlcScanTime;
 }
+
+
 
 

@@ -46,9 +46,10 @@ void ADL1(uint16_t Sa) ;//32位非饱和自加
 void ADLS1(uint16_t Sa) ;//32位饱和自加
 void DEL1(uint16_t Sa) ;//32位非饱和自减
 void DELS1(uint16_t Sa) ;//32位饱和自减
-void TNTC(uint16_t dist, uint16_t src) ;//CODE转换为环境温度
-void TENV(uint16_t dist, uint16_t src) ;//CODE转换为NTC测量温度温度
-void BCPY(uint16_t dist, uint16_t src, uint16_t length) ;//块复制
+void TNTC(uint16_t dist, uint16_t src);//CODE转换为环境温度
+void TENV(uint16_t dist, uint16_t src);//CODE转换为NTC测量温度温度
+void BCPY(uint16_t dist, uint16_t src, uint16_t length);//块复制
+void LIMS16(uint16_t src, uint16_t min, uint16_t max);//有符号16位数限制幅度指令
 /*****************************************************************************/
 //void XTAB(int16_t *distY, int16_t *srcX, int16_t *index, int16_t *length) ;//线性查表从X计算Y值
 //void YTAB(int16_t *distX, int16_t *srcY, int16_t *index, int16_t *length) ;//线性查表从Y计算X值
@@ -65,6 +66,9 @@ void FDSAV(void);
 void FDLAD(void);
 void FDSAV_ONE(int16_t cn);
 void FDLAD_ONE(int16_t cn);
+/*****************************************************************************/
+void STPID(uint16_t adr);//位置PID指令
+void FUPID(uint16_t adr);//模糊PID指令
 #endif
 
 

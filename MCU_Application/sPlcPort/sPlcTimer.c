@@ -3,6 +3,8 @@
 /*****************************************************************************/
 extern TIM_HandleTypeDef htim7;
 /*****************************************************************************/
+uint32_t sPlcTick;
+/*****************************************************************************/
 void initSplcTimer(void){//硬件sTimer计时器初始化
 	HAL_TIM_Base_Start_IT(&htim7);
 	TD_10MS_SP = 0;
@@ -11,6 +13,8 @@ void initSplcTimer(void){//硬件sTimer计时器初始化
 	TimerCounter_1mS = 0;
 	TimerCounter_10mS = 0;
 	TimerCounter_100mS = 0;
+	sPlcTick = 0;
+
 }
 void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 	uint16_t i;
@@ -65,6 +69,7 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 		TimerCounter_100mS = 0;
 	}
 	TimerCounter_1mS ++;
+	sPlcTick ++;
 }
 
 

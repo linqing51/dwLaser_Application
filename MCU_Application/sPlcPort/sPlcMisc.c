@@ -3,6 +3,7 @@
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim7;
 /*****************************************************************************/
 /* Name                       : "XMODEM", also known as "ZMODEM", "CRC-16/ACORN"
  * Width                      : 16 bit
@@ -206,17 +207,11 @@ void feedWatchDog(void) {//喂狗
 void mucReboot(void)  {//复位
 	
 }
-void enterSplcIsr(void) {//SPLC 进入中断
-	
+void disableSplcTimer(void) {//SPLC关闭计时器
+	HAL_TIM_Base_Stop_IT(&htim7);
 }
-void exitSplcIsr(void) {//SPLC 退出中断
-	
-}
-void disableSplcIsr(void) {//SPLC关闭全局中断
-	
-}
-void enableSplcIsr(void) {//SPLC打开全局中断
-	
+void enableSplcTimer(void) {//SPLC打开计时器
+	HAL_TIM_Base_Start_IT(&htim7);
 }
 void disalbeModbusSerialIsr(void){
 	

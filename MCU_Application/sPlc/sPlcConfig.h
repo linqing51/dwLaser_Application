@@ -64,8 +64,10 @@
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM								8//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
-#define CONFIG_ADC_AMBIENT             							25L// Ambient temp in deg C
-#define CONFIG_ADC_INTERNAL_VREF     							3300L// ADC Voltage Reference (mV)
+#define CONFIG_ADC_AMBIENT             							25// Ambient temp in deg C
+#define CONFIG_ADC_INTERNAL_VREF     							3300// ADC Voltage Reference (mV)
+#define CONFIG_ADC_AVG_SLOPE									2.5F
+#define CONFIG_ADC_V25											760.0F//0.76V@25D
 #define CONFIG_NTC_RS											3300L
 #define CONFIG_NTC_B											3500L
 #define CONFIG_NTC_RB											10000L
@@ -157,6 +159,14 @@
 #define CONFIG_MIN_MUSIC_VOLUME									1//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG										100//屏幕亮度最大值
 #define CONFIG_MIN_LCD_BRG										1//屏幕亮度最小值
+#define CONFIG_MAX_BEEM_VOLUME									60
+#define CONFIG_MIN_BEEM_VOLUME									10
+#define CONFIG_MAX_RLED_BRG										100	
+#define CONFIG_MIN_RLED_BRG										10
+#define CONFIG_MAX_GLED_BRG										100
+#define CONFIG_MIN_GLED_BRG										10
+#define CONFIG_MAX_BLED_BRG										100
+#define CONFIG_MIN_BLED_BRG										10
 #define CONFIG_COOL_SET_TEMP									280//冷却温度
 #define CONFIG_COOL_DIFF_TEMP									20//冷却温度变化范围
 //功率设定校正系数
@@ -329,10 +339,10 @@
 #define SPCOIL_START											2920
 #define SPCOIL_END												2927
 //临时寄存器 64
-#define TM_START												2928
-#define TM_END													2991
+#define TMP_START												2928
+#define TMP_END													2991
 /*****************************************************************************/
-#define CONFIG_NVRAM_SIZE 										(TM_END + 1)
+#define CONFIG_NVRAM_SIZE 										(TMP_END + 1)
 /*****************************************************************************/
 //存档寄存器
 #define FD_START												0
@@ -388,6 +398,8 @@
 #define SPREG_ADC_5												(SPREG_START + 6)//ADC5采集值 IVINMON0
 #define SPREG_ADC_6												(SPREG_START + 7)//ADC6采集值 ISMON1
 #define SPREG_ADC_7												(SPREG_START + 8)//ADC7采集值 IVINMON1
+#define SPREG_ADC_8												(SPREG_START + 8)//ADC8采集值 片内温度传感器
+#define SPREG_ADC_9												(SPREG_START + 8)//ADC9采集值 片内电压基准
 
 #define SPREG_DAC_0												(SPREG_START + 10)//DAC0设定值 LSET0
 #define SPREG_DAC_1												(SPREG_START + 11)//DAC1设定值 LSET1
@@ -436,7 +448,8 @@
 /*****************************************************************************/
 #define SPREG_DK25L_VER											(SPREG_START + 55)//DK25L NFC模块版本
 /*****************************************************************************/
-#define SPREG_IDENTITY											(SPREG_END + 0)//平台ID号
+#define SPREG_SCAN_TIME											(SPREG_END - 1)//扫描时间
+#define SPREG_IDENTITY											(SPREG_END - 0)//平台ID号
 /*****************************************************************************/
 #define EM_LASER_SCHEME_NAME									(EM_START + 0)//方案名称
 #define EM_LASER_SELECT											(EM_START + 46)//通道选择
@@ -607,71 +620,71 @@
 #define FD_SCHEME_START_31										(FD_START + 1984)//方案31存储区起始
 #define FD_SCHEME_END_31										(FD_START + 2047)//方案31存储区结束
 /*****************************************************************************/
-#define TMP_NAME_0												(TMP_START + 0)//临时名称储存区
-#define TMP_NAME_1												(TMP_START + 15)//临时名称储存区
-#define TMP_NAME_2												(TMP_START + 30)//临时名称储存区
-#define TMP_NAME_3												(TMP_START + 45)//临时名称储存区
-#define TMP_NAME_4												(TMP_START + 60)//临时名称储存区
-#define TMP_NAME_5												(TMP_START + 75)//临时名称储存区
-#define TMP_NAME_6												(TMP_START + 90)//临时名称储存区
-#define TMP_NAME_7												(TMP_START + 105)//临时名称储存区
-#define TMP_NAME_8												(TMP_START + 120)//临时名称储存区
-#define TMP_NAME_9												(TMP_START + 135)//临时名称储存区
-#define TMP_NAME_10												(TMP_START + 150)//临时名称储存区
-#define TMP_NAME_11												(TMP_START + 165)//临时名称储存区
-#define TMP_NAME_12												(TMP_START + 180)//临时名称储存区
-#define TMP_NAME_13												(TMP_START + 195)//临时名称储存区
-#define TMP_NAME_14												(TMP_START + 210)//临时名称储存区
-#define TMP_NAME_15												(TMP_START + 225)//临时名称储存区
-#define TMP_NAME_16												(TMP_START + 240)//临时名称储存区
-#define TMP_NAME_17												(TMP_START + 255)//临时名称储存区
-#define TMP_NAME_18												(TMP_START + 270)//临时名称储存区
-#define TMP_NAME_19												(TMP_START + 285)//临时名称储存区
-#define TMP_NAME_20												(TMP_START + 300)//临时名称储存区
-#define TMP_NAME_21												(TMP_START + 315)//临时名称储存区
-#define TMP_NAME_22												(TMP_START + 330)//临时名称储存区
-#define TMP_NAME_23												(TMP_START + 345)//临时名称储存区
-#define TMP_NAME_24												(TMP_START + 360)//临时名称储存区
-#define TMP_NAME_25												(TMP_START + 375)//临时名称储存区
-#define TMP_NAME_26												(TMP_START + 390)//临时名称储存区
-#define TMP_NAME_27												(TMP_START + 405)//临时名称储存区
-#define TMP_NAME_28												(TMP_START + 420)//临时名称储存区
-#define TMP_NAME_29												(TMP_START + 435)//临时名称储存区
-#define TMP_NAME_30												(TMP_START + 450)//临时名称储存区
-#define TMP_NAME_31												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_0												(TMP_START + 0)//临时名称储存区
+#define TMP_REG_1												(TMP_START + 15)//临时名称储存区
+#define TMP_REG_2												(TMP_START + 30)//临时名称储存区
+#define TMP_REG_3												(TMP_START + 45)//临时名称储存区
+#define TMP_REG_4												(TMP_START + 60)//临时名称储存区
+#define TMP_REG_5												(TMP_START + 75)//临时名称储存区
+#define TMP_REG_6												(TMP_START + 90)//临时名称储存区
+#define TMP_REG_7												(TMP_START + 105)//临时名称储存区
+#define TMP_REG_8												(TMP_START + 120)//临时名称储存区
+#define TMP_REG_9												(TMP_START + 135)//临时名称储存区
+#define TMP_REG_10												(TMP_START + 150)//临时名称储存区
+#define TMP_REG_11												(TMP_START + 165)//临时名称储存区
+#define TMP_REG_12												(TMP_START + 180)//临时名称储存区
+#define TMP_REG_13												(TMP_START + 195)//临时名称储存区
+#define TMP_REG_14												(TMP_START + 210)//临时名称储存区
+#define TMP_REG_15												(TMP_START + 225)//临时名称储存区
+#define TMP_REG_16												(TMP_START + 240)//临时名称储存区
+#define TMP_REG_17												(TMP_START + 255)//临时名称储存区
+#define TMP_REG_18												(TMP_START + 270)//临时名称储存区
+#define TMP_REG_19												(TMP_START + 285)//临时名称储存区
+#define TMP_REG_20												(TMP_START + 300)//临时名称储存区
+#define TMP_REG_21												(TMP_START + 315)//临时名称储存区
+#define TMP_REG_22												(TMP_START + 330)//临时名称储存区
+#define TMP_REG_23												(TMP_START + 345)//临时名称储存区
+#define TMP_REG_24												(TMP_START + 360)//临时名称储存区
+#define TMP_REG_25												(TMP_START + 375)//临时名称储存区
+#define TMP_REG_26												(TMP_START + 390)//临时名称储存区
+#define TMP_REG_27												(TMP_START + 405)//临时名称储存区
+#define TMP_REG_28												(TMP_START + 420)//临时名称储存区
+#define TMP_REG_29												(TMP_START + 435)//临时名称储存区
+#define TMP_REG_30												(TMP_START + 450)//临时名称储存区
+#define TMP_REG_31												(TMP_START + 465)//临时名称储存区
 
-#define TMP_NAME_32												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_33												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_34												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_35												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_36												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_37												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_38												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_39												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_40												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_41												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_42												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_43												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_44												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_45												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_46												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_47												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_48												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_49												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_50												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_51												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_52												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_53												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_54												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_55												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_56												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_57												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_58												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_59												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_60												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_61												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_62												(TMP_START + 465)//临时名称储存区
-#define TMP_NAME_63												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_32												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_33												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_34												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_35												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_36												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_37												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_38												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_39												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_40												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_41												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_42												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_43												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_44												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_45												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_46												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_47												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_48												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_49												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_50												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_51												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_52												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_53												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_54												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_55												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_56												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_57												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_58												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_59												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_60												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_61												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_62												(TMP_START + 465)//临时名称储存区
+#define TMP_REG_63												(TMP_START + 465)//临时名称储存区
 /*****************************************************************************/
 #define DM_SCHEME_NUM											(DM_START + 0)//选择的方案编号 低8位方案号 高8位方案使能
 #define DM_LANGUAGE												(DM_START + 1)//语言ID

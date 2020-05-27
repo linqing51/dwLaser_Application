@@ -16,6 +16,9 @@ void setAimDutyCycle(uint8_t dc);//设置瞄准光亮度
 void setRedLedDutyCycle(uint8_t dc);//设置R LED亮度
 void setGreenLedDutyCycle(uint8_t dc);//设置G LED亮度
 void setBlueLedDutyCycle(uint8_t dc);//设置B LED亮度
+void disableSplcTimer(void);//SPLC关闭计时器
+void enableSplcTimer(void);//SPLC打开计时器
+
 void initWatchDog(void);
 void enableWatchDog(void);
 void disableWatchDog(void);

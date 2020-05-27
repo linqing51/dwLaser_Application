@@ -16,14 +16,14 @@ void initChipAdc(void){//ADC模块初始化
 }
 void chipAdcProcess(void){//循环采集ADC
 	uint8_t i, j;
-	uint32_t sum[8];
+	uint32_t sum[CONFIG_SPLC_ADC_CHANNEL];
 	while(adcBufferDone != 1);
 	adcBufferDone = false;
 	if(adcBufferSelect == 0){	
 		HAL_ADC_Stop_DMA(&hadc1);
 		HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adcDmaBuffer1, CONFIG_ADC_DMA_BUFFER_SIZE);//再次启动ADC
 		adcBufferSelect = 1;
-		memset(sum, 0x0, sizeof(sum));
+		memset((uint8_t*)sum, 0x0, (CONFIG_SPLC_ADC_CHANNEL * 4));
 		for(i = 0;i < (CONFIG_ADC_DMA_BUFFER_SIZE - CONFIG_SPLC_ADC_CHANNEL);i = (i + CONFIG_SPLC_ADC_CHANNEL)){//计算平均值
 			for(j = 0;j < CONFIG_SPLC_ADC_CHANNEL;j ++){
 				sum[j] += adcDmaBuffer0[(i + CONFIG_SPLC_ADC_CHANNEL)];
@@ -36,6 +36,8 @@ void chipAdcProcess(void){//循环采集ADC
 			NVRAM0[SPREG_ADC_5] = (uint16_t)((fp32_t)sum[5] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
 			NVRAM0[SPREG_ADC_6] = (uint16_t)((fp32_t)sum[6] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
 			NVRAM0[SPREG_ADC_7] = (uint16_t)((fp32_t)sum[7] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
+			NVRAM0[SPREG_ADC_8] = (uint16_t)((fp32_t)sum[8] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
+			NVRAM0[SPREG_ADC_9] = (uint16_t)((fp32_t)sum[9] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
 		}
 	}
 	else{//adcBufferSelect = 1
@@ -55,6 +57,8 @@ void chipAdcProcess(void){//循环采集ADC
 			NVRAM0[SPREG_ADC_5] = (uint16_t)((fp32_t)sum[5] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
 			NVRAM0[SPREG_ADC_6] = (uint16_t)((fp32_t)sum[6] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
 			NVRAM0[SPREG_ADC_7] = (uint16_t)((fp32_t)sum[7] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
+			NVRAM0[SPREG_ADC_8] = (uint16_t)((fp32_t)sum[8] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
+			NVRAM0[SPREG_ADC_9] = (uint16_t)((fp32_t)sum[9] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
 		}
 	}
 }

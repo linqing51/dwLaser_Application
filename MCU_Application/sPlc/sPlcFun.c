@@ -1,7 +1,8 @@
 #include "sPlcFun.h"
 /*****************************************************************************/
 void REBOOT(void) {//软件复位	
-	//mucReboot();
+	__set_FAULTMASK(1);
+	NVIC_SystemReset();
 }
 void ORG(uint16_t A) {
 }
@@ -155,10 +156,9 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	assertRegisterAddress(dist);//检查寄存器地址
 	assertRegisterAddress(src);//检查寄存器地址
 #endif
-	if(NVRAM0[src] >= CONFIG_ADC_INTERNAL_VREF) 
-		NVRAM0[src] = CONFIG_ADC_INTERNAL_VREF;//限制输入最大值
-	if(NVRAM0[src] < 0) 
-		NVRAM0[src] = 0;
+	NVRAM0[TMP_REG_0] = 0;
+	NVRAM0[TMP_REG_1] = CONFIG_ADC_INTERNAL_VREF;
+	LIMS16(src, TMP_REG_0, TMP_REG_1);
 	temp = (int16_t)(CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096);//单位mV
 	temp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - temp) / temp);
 	ftemp = ((1.0 / CONFIG_NTC_B) * log((fp32_t)(temp) / 10000)) + (1 / (CONFIG_ADC_AMBIENT + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
@@ -167,7 +167,12 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
-
+void TENV(uint16_t dist, uint16_t src){//CODE转换为环境温度
+	int16_t temp;
+	temp = (int16_t)(CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096);//单位mV
+	temp = (int16_t)((fp32_t)(temp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE + CONFIG_ADC_AMBIENT);
+	NVRAM0[dist] = temp;
+}
 void ADD1(uint16_t Sa){//16位非饱和自加
 	NVRAM0[Sa] += 1;
 }
@@ -415,6 +420,15 @@ void SWAP(uint16_t dist, uint16_t src){//交换A的高低字节
 	tmpH |= tmpL;
 	NVRAM0[dist] = tmpH;
 }
+void LIMS16(uint16_t src, uint16_t min, uint16_t max){//有符号16位数限制幅度指令
+	if(NVRAM0[src] > NVRAM0[max]){
+		NVRAM0[src] = NVRAM0[max];
+	}
+	if(NVRAM0[src] < NVRAM0[min]){
+		NVRAM0[src] = NVRAM0[min];
+	}
+}
+
 /*****************************************************************************/
 void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//块复制
 	uint16_t i;
@@ -460,11 +474,11 @@ void IMDIO(void) {//立即更新IO点状态含输入输出
 }
 /*****************************************************************************/
 /*****************************************************************************/
-void STD_PID(uint16_t adr){//标准PID指令
+void STPID(uint16_t adr){//位置PID指令
 	//adr + 0:Input 输入值
 	//adr + 1:ref 设定值
 	//adr + 2:Output 输出值
-	//adr + 3:Ts 采样周期 0.01-60.00Sec       	[1-6000] 
+	//adr + 3:Ts 采样周期 1-60000mS       		[1-60000] 
 	//adr + 4:Kp 比例操作的常数 0.01-60.000   	[1-60000]
 	//adr + 5:Ki 积分操作的常数 0.00-600.00	  	[1-30000]
 	//adr + 6:Td 微分操作的常数 0.00-600.00   	[1-30000]
@@ -474,6 +488,7 @@ void STD_PID(uint16_t adr){//标准PID指令
 	//adr + 10:dead 误差死区 0.000-60.000		[0-60000]
 	//adr + 11:separate 积分分离常数 0.0-6000.0 [0-60000]
 	//adr + 12:工作区 计时
+	//adr + 13:工作区 计时
 	//adr + 16:工作区 当前偏差pek0 FP32
 	//adr + 17:工作区 当前偏差pek0 FP32
 	//adr + 18:工作区 上次偏差pek1 FP32 
@@ -482,35 +497,43 @@ void STD_PID(uint16_t adr){//标准PID指令
 	//adr + 21:工作区 累计偏差plocSum FP32
 	fp32_t kp, ki, kd, pidOut, dead, separate;
 	fp32_t *pek0, *pek1, *plocSum;
-	kp = (fp32_t)NVRAM0[adr + 4] / 1000.0F;
-	ki = (fp32_t)NVRAM0[adr + 5] / 100.0F;
-	kd = (fp32_t)NVRAM0[adr + 6] / 100.0F;
-	dead = (fp32_t)NVRAM0[adr + 10] / 1000.0F;
-	separate = (fp32_t)NVRAM0[adr + 11] / 10.0F;
-	pek0 = (fp32_t*)&NVRAM0[adr + 11];
-	pek1 = (fp32_t*)&NVRAM0[adr + 13];
-	plocSum = (fp32_t*)&NVRAM0[adr + 15]; 
-	*pek0 = (fp32_t)NVRAM0[adr + 0] - (fp32_t)NVRAM0[adr + 1];//计算误差
-	if(fabs(*pek0) < dead){//计算误差死区
-		*pek0 = 0;
+	uint32_t lastTime, nextTime;
+	lastTime = (uint32_t)&NVRAM0[adr + 12];//上次PID执行时间
+	nextTime = lastTime + NVRAM0[adr + 3];//下次PID执行时间
+	if(sPlcTick > nextTime){
+		kp = (fp32_t)NVRAM0[adr + 4] / 1000.0F;
+		ki = (fp32_t)NVRAM0[adr + 5] / 100.0F;
+		kd = (fp32_t)NVRAM0[adr + 6] / 100.0F;
+		dead = (fp32_t)NVRAM0[adr + 10] / 1000.0F;
+		separate = (fp32_t)NVRAM0[adr + 11] / 10.0F;
+		pek0 = (fp32_t*)&NVRAM0[adr + 11];
+		pek1 = (fp32_t*)&NVRAM0[adr + 13];
+		plocSum = (fp32_t*)&NVRAM0[adr + 15]; 
+		*pek0 = (fp32_t)NVRAM0[adr + 0] - (fp32_t)NVRAM0[adr + 1];//计算误差
+		if(fabs(*pek0) < dead){//计算误差死区
+			*pek0 = 0;
+		}
+		if(*pek0 > separate){//分离积分
+			pidOut = (kp * (*pek0)) + kd * (*pek1 - *pek0);
+			*plocSum = 0;
+		}
+		else{//不分离积分
+			*plocSum = *plocSum + *pek0;//计算累计误差
+			pidOut = (kp * (*pek0)) + (ki * (*plocSum)) + kd * (*pek1 - *pek0);
+		}
+		*pek1 = *pek0;
+		if(pidOut > NVRAM0[adr + 8]){
+			pidOut = (fp32_t)NVRAM0[adr + 8];
+		}
+		if(pidOut < NVRAM0[adr + 7]){
+			pidOut = (fp32_t)NVRAM0[adr + 7];
+		}
+		NVRAM0[adr + 2] = (int16_t)pidOut;
+		lastTime = sPlcTick;
 	}
-	if(*pek0 > separate){//分离积分
-		pidOut = (kp * (*pek0)) + kd * (*pek1 - *pek0);
-	}
-	else{//不分离积分
-		*plocSum = *plocSum + *pek0;//计算累计误差
-		pidOut = (kp * (*pek0)) + (ki * (*plocSum)) + kd * (*pek1 - *pek0);
-	}
-	*pek1 = *pek0;
-	if(pidOut > NVRAM0[adr + 8]){
-		pidOut = (fp32_t)NVRAM0[adr + 8];
-	}
-	if(pidOut < NVRAM0[adr + 7]){
-		pidOut = (fp32_t)NVRAM0[adr + 7];
-	}
-	NVRAM0[adr + 2] = (int16_t)pidOut;
 }
-
+void FUPID(uint16_t adr){//模糊PID指令
+}
 //步指令
 //void TO(uint16_t SA) {//步进开始指令
 //}
