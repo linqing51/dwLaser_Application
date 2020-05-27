@@ -6,45 +6,26 @@
 #define CMD_MUSIC_RESUME										0x03
 #define CMD_MUSIC_STOP											0x04
 /*****************************************************************************/
+#define CONFIG_DEBUG_SERIAL_PORT								uart1
 #define CONFIG_DEBUG_CHARGE										0//调试充电
 #define CONFIG_DEBUG_DAC										0//调试DAC
 #define CONFIG_DEBUB_ADC										0//调试ADC
 #define CONFIG_DEBUG_EPROM										0//调试EPROM
 #define CONFIG_DEBUG_IO											0//调试输入输出IO
 #define CONFIG_DEBUG_BEEM										0//调试蜂鸣器
-#define CONFIG_DEBUG_LCD_MUSIC									0//调试LCD音乐
-#define CONFIG_DEBUG_APP										0
+#define CONFIG_DEBUG_MUSIC										0//调试LCD音乐
+#define CONFIG_DEBUG_APP										1
 /*****************************************************************************/
-#define CONFIG_UART0_BAUDRATE									115200//串口0 波特率
-#define CONFIG_UART1_BAUDRATE									115200//串口1 波特率
-/*****************************************************************************/
-#define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
-#define	CONFIG_AT24C02_SIZE 									256
-#define	CONFIG_AT24C04_SIZE  									512
-#define	CONFIG_AT24C08_SIZE 									1024
-#define	CONFIG_AT24C16_SIZE 									2048
-#define	CONFIG_AT24C32_SIZE 									4096
-#define	CONFIG_AT24C64_SIZE										8192
-#define	CONFIG_AT24C128_SIZE 									16384
-#define	CONFIG_AT24C256_SIZE 									32768
-#define CONFIG_EPROM_ADDRESS									0x50
-#define CONFIG_EPROM_FRAM										1//铁电存储体无写入等待
-#define CONFIG_EPROM_PAGEWRITE									0//页写入
-#define CONFIG_EPROM_NVRAM_START								0x0
-#define CONFIG_EPROM_FDRAM_START								0x800//2048
-/*****************************************************************************/
-#define CONFIG_SPLC_USING_LCD_MUSIC								0//使能LCD自带音乐播放						
+#define CONFIG_SPLC_USING_MUSIC									1//使能LCD自带音乐播放						
 #define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
 #define CONFIG_SPLC_DEFAULT_BEEM_FREQ							4000L//蜂鸣器默认频率
 #define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						127//蜂鸣器默认占空比
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
-#define CONFIG_SPLC_RLED_DEFAULT_DUTYCYCLE						127//红灯亮度
-#define CONFIG_SPLC_GLED_DEFAULT_DUTYCYCLE						127//绿灯亮度
-#define CONFIG_SPLC_BLED_DEFAULT_DUTYCYCLE						127//蓝灯亮度
-#define CONFIG_SPLC_LED_MIN_DC									10//LED最小占空比
-#define CONFIG_SPLC_LED_MAX_DC									200//LED最大占空比
+#define CONFIG_SPLC_RLED_DEFAULT_DUTYCYCLE						60//红灯亮度
+#define CONFIG_SPLC_GLED_DEFAULT_DUTYCYCLE						60//绿灯亮度
+#define CONFIG_SPLC_BLED_DEFAULT_DUTYCYCLE						60//蓝灯亮度
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能
 /*****************************************************************************/
@@ -62,10 +43,25 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
-#define CONFIG_SPLC_USING_CLEAR_NVRAM							1//启用清除NVRAM功能											
+#define CONFIG_SPLC_USING_CLEAR_NVRAM							1//启用清除NVRAM功能
+#define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
+#define	CONFIG_AT24C02_SIZE 									256
+#define	CONFIG_AT24C04_SIZE  									512
+#define	CONFIG_AT24C08_SIZE 									1024
+#define	CONFIG_AT24C16_SIZE 									2048
+#define	CONFIG_AT24C32_SIZE 									4096
+#define	CONFIG_AT24C64_SIZE										8192
+#define	CONFIG_AT24C128_SIZE 									16384
+#define	CONFIG_AT24C256_SIZE 									32768
+#define CONFIG_EPROM_ADDRESS									0x50//EPROM I2C地址
+#define CONFIG_EPROM_WIRTE_DELAY								10//EPROM写入时间 10mS
+#define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
+#define CONFIG_EPROM_PAGE_SIZE									32//EPROM 页大小
+#define CONFIG_EPROM_NVRAM_START								0x0
+#define CONFIG_EPROM_FDRAM_START								0x800//2048
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
-#define CONFIG_SPLC_ADC_CHANNEL									8//ADC采集通道
+#define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM								8//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_ADC_AMBIENT             							25L// Ambient temp in deg C
@@ -114,15 +110,13 @@
 /*****************************************************************************/
 #define CONFIG_USING_SINGLE_WAVE								0//单波长
 #define CONFIG_USING_DUAL_WAVE									1//双波长
+#define CONFIG_USING_TRIPE_WAVE									0//三波长
+#define CONFIG_USING_QUAD_WAVE									0//四波长
+#define CONFIG_USING_FIVE_WAVE									0//五波长
 #define CONFIG_HMI_SCHEME_NUM									32//方案数
 #define CONFIG_HMI_DEFAULT_PASSSWORD0							0x3235//默认密码
 #define CONFIG_HMI_DEFAULT_PASSSWORD1							0x3830//默认密码
 #define CONFIG_SCHEME_NAME_SIZE									22//12*2
-//故障码
-#define ERROR_CODE_EPROM										0x0001//EPRON 错误
-#define ERROR_CODE_USBHOST										0x0008//USB HOST模块错误
-#define ERROR_CODE_NFC											0x0009//NFC模块错误
-#define ERRPR_CODE_NOERR										0xFFFF//无错误
 //光斑直径定义
 #define DERMA_SPOT_SIZE_0MM5									0x100A//光斑直径0.5					
 #define DERMA_SPOT_SIZE_1MM0									0x200B//光斑直径1.0

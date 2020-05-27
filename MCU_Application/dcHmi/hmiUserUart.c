@@ -1,13 +1,14 @@
 /*****************************************************************************/
 #include "hmiUserUart.h"
 /*****************************************************************************/
-extern UART_HandleTypeDef huart5;
-extern uint8_t uart5_rxBuf[64];
+extern UART_HandleTypeDef huart3;
+/*****************************************************************************/
+uint8_t gddcHmiRxBuf[256];
 /*****************************************************************************/
 void hmiUartInit(void){
-	HAL_UART_Receive_IT(&huart5, uart5_rxBuf, 1);
+	HAL_UART_Receive_IT(&huart3, gddcHmiRxBuf, 1);
 }
 void hmiUartSendChar(uint8_t sdat){
-	HAL_UART_Transmit(&huart5, &sdat, 1, 1000);//发送一个字节
+	HAL_UART_Transmit(&huart3, &sdat, 1, 1000);//发送一个字节
 }
 /*****************************************************************************/

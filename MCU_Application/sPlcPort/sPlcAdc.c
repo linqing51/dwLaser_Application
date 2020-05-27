@@ -3,6 +3,11 @@
 extern ADC_HandleTypeDef hadc1;
 extern DMA_HandleTypeDef hdma_adc1;
 /*****************************************************************************/
+__IO uint16_t adcDmaBuffer0[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池
+__IO uint16_t adcDmaBuffer1[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池
+__IO uint8_t adcBufferSelect;//ADC BUFFER选择指示
+__IO uint8_t adcBufferDone;//ADC 采集完毕
+/*****************************************************************************/
 void initChipAdc(void){//ADC模块初始化
 	adcBufferSelect = 0;
 	memset((uint8_t*)adcDmaBuffer0, 0x0, (CONFIG_ADC_DMA_BUFFER_SIZE * 2));

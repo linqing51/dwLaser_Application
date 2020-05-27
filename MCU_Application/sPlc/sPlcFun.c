@@ -459,6 +459,57 @@ void IMDIO(void) {//立即更新IO点状态含输入输出
 
 }
 /*****************************************************************************/
+/*****************************************************************************/
+void STD_PID(uint16_t adr){//标准PID指令
+	//adr + 0:Input 输入值
+	//adr + 1:ref 设定值
+	//adr + 2:Output 输出值
+	//adr + 3:Ts 采样周期 0.01-60.00Sec       	[1-6000] 
+	//adr + 4:Kp 比例操作的常数 0.01-60.000   	[1-60000]
+	//adr + 5:Ki 积分操作的常数 0.00-600.00	  	[1-30000]
+	//adr + 6:Td 微分操作的常数 0.00-600.00   	[1-30000]
+	//adr + 7:Mvll 操作量的下限值		      	[-32768-32766]
+	//adr + 8:Mvhl 操作量的上限制			  	[-32767-32767]
+	//adr + 9:Oper 正操作/反操作 1正操作 0反操作
+	//adr + 10:dead 误差死区 0.000-60.000		[0-60000]
+	//adr + 11:separate 积分分离常数 0.0-6000.0 [0-60000]
+	//adr + 12:工作区 计时
+	//adr + 16:工作区 当前偏差pek0 FP32
+	//adr + 17:工作区 当前偏差pek0 FP32
+	//adr + 18:工作区 上次偏差pek1 FP32 
+	//adr + 19:工作区 上次偏差pek1 FP32
+	//adr + 20:工作区 累计偏差plocSum FP32 
+	//adr + 21:工作区 累计偏差plocSum FP32
+	fp32_t kp, ki, kd, pidOut, dead, separate;
+	fp32_t *pek0, *pek1, *plocSum;
+	kp = (fp32_t)NVRAM0[adr + 4] / 1000.0F;
+	ki = (fp32_t)NVRAM0[adr + 5] / 100.0F;
+	kd = (fp32_t)NVRAM0[adr + 6] / 100.0F;
+	dead = (fp32_t)NVRAM0[adr + 10] / 1000.0F;
+	separate = (fp32_t)NVRAM0[adr + 11] / 10.0F;
+	pek0 = (fp32_t*)&NVRAM0[adr + 11];
+	pek1 = (fp32_t*)&NVRAM0[adr + 13];
+	plocSum = (fp32_t*)&NVRAM0[adr + 15]; 
+	*pek0 = (fp32_t)NVRAM0[adr + 0] - (fp32_t)NVRAM0[adr + 1];//计算误差
+	if(fabs(*pek0) < dead){//计算误差死区
+		*pek0 = 0;
+	}
+	if(*pek0 > separate){//分离积分
+		pidOut = (kp * (*pek0)) + kd * (*pek1 - *pek0);
+	}
+	else{//不分离积分
+		*plocSum = *plocSum + *pek0;//计算累计误差
+		pidOut = (kp * (*pek0)) + (ki * (*plocSum)) + kd * (*pek1 - *pek0);
+	}
+	*pek1 = *pek0;
+	if(pidOut > NVRAM0[adr + 8]){
+		pidOut = (fp32_t)NVRAM0[adr + 8];
+	}
+	if(pidOut < NVRAM0[adr + 7]){
+		pidOut = (fp32_t)NVRAM0[adr + 7];
+	}
+	NVRAM0[adr + 2] = (int16_t)pidOut;
+}
 
 //步指令
 //void TO(uint16_t SA) {//步进开始指令

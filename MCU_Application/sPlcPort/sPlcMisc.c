@@ -139,7 +139,7 @@ void setRedLedDutyCycle(uint8_t dc){//设置R LED亮度
 void setGreenLedDutyCycle(uint8_t dc){//设置G LED亮度
 	uint16_t temp;
 	temp = 255 * dc / 100;
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, dc);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, temp);
 	if(dc != 0){
 		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);//打开TIM
 	}
@@ -150,7 +150,7 @@ void setGreenLedDutyCycle(uint8_t dc){//设置G LED亮度
 void setBlueLedDutyCycle(uint8_t dc){//设置B LED亮度
 	uint16_t temp;
 	temp = 255 * dc / 100;
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, dc);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, temp);
 	if(dc != 0){
 		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);//打开TIM
 	}
@@ -172,7 +172,7 @@ void setBeemFreq(uint32_t freq){//设置蜂鸣器频率
 void setBeemDutyCycle(uint8_t dc){//设置蜂鸣器占空比
 	uint16_t temp;
 	temp = 255 * dc / 100;
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, dc);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, temp);
 	if(dc != 0){
 		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);//打开TIM
 	}
@@ -183,7 +183,7 @@ void setBeemDutyCycle(uint8_t dc){//设置蜂鸣器占空比
 void setAimDutyCycle(uint8_t dc){//设置瞄准光亮度
 	uint16_t temp;
 	temp = 255 * dc / 100;
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, dc);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, temp);
 	if(dc != 0){
 		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);//打开TIM
 	}

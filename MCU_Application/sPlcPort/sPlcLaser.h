@@ -14,6 +14,7 @@
 #define LASER_SELECT_CH1						0x02
 #define LASER_SELECT_CH2						0x04
 #define LASER_SELECT_CH3						0x08
+#define LASER_SELECT_CH4						0x10
 #define LASER_SELECT_ALL						0x10
 /*****************************************************************************/
 #define LASER_CH0_ON				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);						

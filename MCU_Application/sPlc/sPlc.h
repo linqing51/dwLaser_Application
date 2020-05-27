@@ -28,6 +28,9 @@
 #if CONFIG_SPLC_USING_DAC == 1
 #include "sPlcDac.h"
 #endif
+#if CONFIG_USING_DCHMI_APP == 1
+#include "dcHmiApp.h"
+#endif
 /*****************************************************************************/
 #include "main.h"
 //#include "sPlcPort.h"

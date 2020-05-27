@@ -42,7 +42,7 @@ void loadNvram(void){//从EPROM中载入NVRAM
 }
 void saveNvram(void){//强制将NVRAM存入EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
-	//epromWrite(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, ((MR_END + 1) * 2));
+	epromWrite(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, ((MR_END + 1) * 2));
 #endif
 }
 void updateNvram(void){//更新NVRAM->EPROM
@@ -67,7 +67,7 @@ void clearNvram(void){//清除NVRAM数据
 	enterSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_NVRAM_START; i< (CONFIG_NVRAM_SIZE * 2);i ++){
-		epromWriteByte(i, 0x0);
+		epromWriteByte(i, 0x0);//?BUG
 	}
 #endif
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM0
@@ -222,16 +222,27 @@ void sPlcInit(void){//软逻辑初始化
 	initSplcTimer();//初始化硬件计时器模块
 	SSET(SPCOIL_ON);
 #if CONFIG_SPLC_USING_BEEM == 1
-	setBeemFreq(CONFIG_SPLC_DEFAULT_BEEM_FREQ);
-	setBeemDutyCycle(0);
+	RRES(SPCOIL_BEEM_ENABLE);
+	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
+	NVRAM0[SPREG_BEEM_DUTYCYCLE] = CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE;
+	NVRAM0[SPREG_BEEM_COUNTER] = 0;
 #endif
+
 #if CONFIG_SPLC_USING_LEDAIM == 1
-	setLedAimFreq(CONFIG_SPLC_LEDAIM_FREQ);
-	setAimDutyCycle(0);
-	setRedLedDutyCycle(0);//设置R LED亮度
-	setGreenLedDutyCycle(0);//设置G LED亮度
-	setBlueLedDutyCycle(0);//设置B LED亮度
+	RRES(SPCOIL_AIM_ENABEL);
+	NVRAM0[SPREG_AIM_DUTYCYCLE] = 0;
+	NVRAM0[SPREG_RED_LED_DUTYCYCLE] = 0;
+	NVRAM0[SPREG_GREEN_LED_DUTYCYCLE] = 0;
+	NVRAM0[SPREG_BLUE_LED_DUTYCYCLE] = 0;
 #endif
+
+#if CONFIG_SPLC_USING_MUSIC == 1
+	NVRAM0[SPREG_MUSIC_VOLUME] = 0;									
+	NVRAM0[SPREG_PLAYING_MUSIC_ID] = 0;							
+	NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;									
+	NVRAM0[SPREG_CONTROL_MUSIC]	= CMD_MUSIC_STOP;									
+#endif
+
 #if CONFIG_SPLC_USING_IO_INPUT == 1
 	inputInit();
 #endif

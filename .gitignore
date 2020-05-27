@@ -62,3 +62,4 @@ Objects
 dciot_build
 output
 STM32F413
+MCU_Application
