@@ -16,7 +16,7 @@
 #define CONFIG_DEBUG_MUSIC										0//调试LCD音乐
 #define CONFIG_DEBUG_APP										1
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_MUSIC									1//使能LCD自带音乐播放						
+#define CONFIG_SPLC_USING_MUSIC									0//使能LCD自带音乐播放						
 #define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
 #define CONFIG_SPLC_DEFAULT_BEEM_FREQ							4000L//蜂鸣器默认频率
 #define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						127//蜂鸣器默认占空比
@@ -110,14 +110,14 @@
 #define CONFIG_APP_DRIVE_HIGH_TEMP								650
 #define CONFIG_APP_ENVI_HIGH_TEMP								750
 /*****************************************************************************/
-#define CONFIG_USING_SINGLE_WAVE								0//单波长
-#define CONFIG_USING_DUAL_WAVE									1//双波长
+#define CONFIG_USING_SINGLE_WAVE								1//单波长
+#define CONFIG_USING_DUAL_WAVE									0//双波长
 #define CONFIG_USING_TRIPE_WAVE									0//三波长
 #define CONFIG_USING_QUAD_WAVE									0//四波长
 #define CONFIG_USING_FIVE_WAVE									0//五波长
 #define CONFIG_HMI_SCHEME_NUM									32//方案数
-#define CONFIG_HMI_DEFAULT_PASSSWORD0							0x3235//默认密码
-#define CONFIG_HMI_DEFAULT_PASSSWORD1							0x3830//默认密码
+#define CONFIG_HMI_DEFAULT_PASSSWORD0							0x3532//默认密码
+#define CONFIG_HMI_DEFAULT_PASSSWORD1							0x3038//默认密码
 #define CONFIG_SCHEME_NAME_SIZE									22//12*2
 //光斑直径定义
 #define DERMA_SPOT_SIZE_0MM5									0x100A//光斑直径0.5					

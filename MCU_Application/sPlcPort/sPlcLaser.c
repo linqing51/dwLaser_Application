@@ -148,8 +148,10 @@ void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 }
 
 #endif
-void STLAR(void){//开始发射脉冲		
+void STLAR(void){//开始发射脉冲	
+#if CONFIG_SPLC_USING_MUSIC == 1	
 	SetMusicVolume(NVRAM0[SPREG_MUSIC_VOLUME]);//向GDDC触摸屏发送音量
+#endif
 	if(LD(MR_BEEM_TONE) || (LaserTimer_Mode == LASER_MODE_SIGNAL)){
 		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;	
 	}

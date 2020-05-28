@@ -1422,6 +1422,10 @@ void standbyKeyValue(uint8_t value){//设置Standby键值
 }
 void dcHmiLoopInit(void){//初始化模块
 	uint8_t i;
+	setGreenLedDutyCycle(NVRAM0[SPREG_GREEN_LED_DUTYCYCLE]);//打开绿灯
+#if CONFIG_USING_DCHMI_APP == 1
+	hmiUartInit();
+#endif
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
 	//检查MUSIC VOLUME储存值是否合规
 #if CONFIG_USING_SINGLE_WAVE == 1
@@ -1445,9 +1449,6 @@ void dcHmiLoopInit(void){//初始化模块
 		NVRAM0[EM_LASER_SELECT] = LASER_SELECT_CH0;
 	}
 #endif
-	
-	
-	
 	NVRAM0[TMP_REG_0] = CONFIG_MIN_MUSIC_VOLUME;
 	NVRAM0[TMP_REG_1] = CONFIG_MAX_MUSIC_VOLUME;
 	LIMS16(DM_MUSIC_VOLUME, TMP_REG_0, TMP_REG_1);
@@ -1478,22 +1479,30 @@ void dcHmiLoopInit(void){//初始化模块
 		
 	NVRAM0[EM_COOL_SET_TEMP] = CONFIG_COOL_SET_TEMP;
 	NVRAM0[EM_COOL_DIFF_TEMP] = CONFIG_COOL_DIFF_TEMP;
+	
+	NVRAM0[TMP_REG_0] = 0;
+	NVRAM0[TMP_REG_1] = 7;
+	LIMS16(DM_LANGUAGE, TMP_REG_0, TMP_REG_1);
+	
 	RRES(Y_TEC0);
 	SSET(Y_FAN0);
 	SSET(Y_FAN1);
 	SSET(R_RFID_PASS);
 	RRES(R_DRIVE_TEMP_HIGH);//屏蔽驱动器过热报警
+	
 #if CONFIG_USING_SINGLE_WAVE == 1
 	NVRAM0[EM_LASER_POWER_CH1] = 0;
 	NVRAM0[EM_LASER_POWER_CH2] = 0;
 	NVRAM0[EM_LASER_POWER_CH3] = 0;
 	NVRAM0[EM_LASER_POWER_CH4] = 0;
 #endif
+
 #if	CONFIG_USING_DUAL_WAVE == 1
 	NVRAM0[EM_LASER_POWER_CH2] = 0;
 	NVRAM0[EM_LASER_POWER_CH3] = 0;
 	NVRAM0[EM_LASER_POWER_CH4] = 0;
 #endif
+
 }
 static void temperatureLoop(void){//温度轮询顺序
 	TNTC(EM_DIODE_TEMP0, SPREG_ADC_2);//CODE转换为NTC测量温度温度
@@ -1575,15 +1584,7 @@ static void faultLoop(void){//故障轮询
 		RRES(Y_LED_ALARM);
 	}
 }
-void dcHmiLoop(void){//HMI轮训程序
-	if(NVRAM0[DM_LANGUAGE] >= 8){
-		NVRAM0[DM_LANGUAGE] = 0;
-	}
-	if(NVRAM0[DM_LANGUAGE] < 0){
-		NVRAM0[DM_LANGUAGE] = 0;
-	}
-	
-	setGreenLedDutyCycle(NVRAM0[SPREG_GREEN_LED_DUTYCYCLE]);//打开绿灯
+void dcHmiLoop(void){//HMI轮训程序	
 	if(LDP(SPCOIL_PS100MS)){//每100mS更新一次温度
 		temperatureLoop();
 		faultLoop();
@@ -1605,10 +1606,16 @@ void dcHmiLoop(void){//HMI轮训程序
 		SSET(R_FAN_ENABLE);
 		SSET(Y_LED_POWERON);//电源灯常亮
 		loadScheme();//从掉电存储寄存器中恢复方案参数
-#if CONFIG_USING_DUAL_WAVE == 0
-	NVRAM0[EM_LASER_POWER_CH1] = 0;
-	NVRAM0[EM_LASER_POWER_CH2] = 0;
-	NVRAM0[EM_LASER_POWER_CH3] = 0;
+#if CONFIG_USING_SINGLE_WAVE == 1
+		NVRAM0[EM_LASER_POWER_CH1] = 0;
+		NVRAM0[EM_LASER_POWER_CH2] = 0;
+		NVRAM0[EM_LASER_POWER_CH3] = 0;
+		NVRAM0[EM_LASER_POWER_CH4] = 0;
+#endif		
+#if CONFIG_USING_DUAL_WAVE == 1
+		NVRAM0[EM_LASER_POWER_CH2] = 0;
+		NVRAM0[EM_LASER_POWER_CH3] = 0;
+		NVRAM0[EM_LASER_POWER_CH4] = 0;
 #endif		
 		NVRAM0[EM_DC_DEFAULT_PASSCODE0] = CONFIG_HMI_DEFAULT_PASSSWORD0;
 		NVRAM0[EM_DC_DEFAULT_PASSCODE1] = CONFIG_HMI_DEFAULT_PASSSWORD1;
@@ -1720,7 +1727,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_STANDBY){//待机状态机
-#if	CONFIG_APP_DEBUG == 1
+#if	CONFIG_DEBUG_APP == 1
 		if(LDP(SPCOIL_PS1000MS)){		
 			updateStandbyDebugInfo();
 		}
@@ -1934,14 +1941,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			//设置喇叭声音模式
 			//设置喇叭声音音量
 			//启动喇叭
-			//BeemMode = BEEM_MODE_3;
-			//BeemDuty = getBeemDuty(NVRAM0[DM_MUSIC_VOLUME]);
-			//BeemFreq = BEEM_FREQ_0;
-			//BeemEnable = true;
+			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
+			NVRAM0[SPREG_BEEM_FREQ] = BEEM_FREQ_0;
+			NVRAM0[SPREG_BEEM_DUTYCYCLE] = NVRAM0[DM_BEEM_VOLUME]; 
+			NVRAM0[SPREG_BEEM_COUNTER] = 0;
+			SSET(SPCOIL_BEEM_ENABLE);
 		}
 		else{//无故障显示
-			
-			//BeemEnable = false;
+			RRES(SPCOIL_BEEM_ENABLE);
 			updateWarnMsgDisplay(MSG_NO_ERROR);
 		}
 		if(LDP(R_FAULT)){
@@ -1952,7 +1959,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 
 		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//点击OPTION
-			//BeemEnable = false;//关闭蜂鸣器
+			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			if(LD(R_ENGINEER_MODE)){
 				SetControlVisiable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, true);//显示控件
 				SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER ,true);//使能控件
@@ -1967,7 +1974,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_STANDBY_KEY_ENTER_OPTION_DOWN);
 		}else if(LD(R_STANDBY_KEY_ENTER_SCHEME_DOWN)){//点击SCHEME 默认显示第一页
-			//BeemEnable = false;//关闭蜂鸣器
+			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			if(NVRAM0[DM_SCHEME_NUM] < 16){//第一页
 				updateScheme_0_Display();//更新方案第一页名称
 				seletcSchemeNum(NVRAM0[DM_SCHEME_NUM]);
@@ -1986,11 +1993,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			standbyTouchEnable(false);			
 			if(LD(X_FOOTSWITCH_NO)){//检测脚踏踩下
 				//打开蜂鸣器
-				//BeemMode = BEEM_MODE_3;
-				//BeemDuty = getBeemDuty(NVRAM0[DM_MUSIC_VOLUME]);
-				//BeemCounter = 0;
-				//BeemFreq = BEEM_FREQ_0;
-				//BeemEnable = true;
+				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
+				NVRAM0[SPREG_BEEM_DUTYCYCLE] = NVRAM0[DM_MUSIC_VOLUME];
+				NVRAM0[SPREG_BEEM_FREQ] = BEEM_FREQ_0;
+				NVRAM0[SPREG_BEEM_COUNTER] = 0;
+				SSET(SPCOIL_BEEM_ENABLE);
 				updateWarnMsgDisplay(MSG_FOOT_DEPRESSED);//显示错误信息
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_ERROR;	
 			}

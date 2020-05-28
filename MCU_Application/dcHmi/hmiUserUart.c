@@ -9,6 +9,10 @@ void hmiUartInit(void){
 	HAL_UART_Receive_IT(&huart3, gddcHmiRxBuf, 1);
 }
 void hmiUartSendChar(uint8_t sdat){
-	HAL_UART_Transmit(&huart3, &sdat, 1, 1000);//发送一个字节
+	HAL_StatusTypeDef ret;
+	ret = HAL_UART_Transmit(&huart3, &sdat, 1, 1000);//发送一个字节
+	if(ret != HAL_OK){
+		__nop();
+	}
 }
 /*****************************************************************************/

@@ -7,205 +7,228 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 	//PASSCODE 密码输入页面
 	switch(screen_id){
 		case GDDC_PAGE_PASSCODE:{//等待密码输入
+			dispBuf[4] = 0;
 			switch(control_id){
 				case GDDC_PAGE_PASSCODE_KEY_NUM1:{//按键1
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3100;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0031;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0031;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3100;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3100;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0031;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0031;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3100;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(screen_id, 15, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM2:{//按键2
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3200;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0032;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0032;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3200;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3200;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0032;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0032;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3200;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(screen_id, 15, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM3:{//按键3
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3300;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0033;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0033;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3300;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3300;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0033;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0033;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3300;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(screen_id, 15, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));					
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					dispBuf[4] = 0x0;
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));				
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM4:{//按键4
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3400;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0034;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0034;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3400;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3400;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0034;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0034;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3400;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));	
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM5:{//按键5
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3500;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0035;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0035;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3500;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3500;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0035;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0035;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3500;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM6:{//按键6
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3600;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0036;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0036;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3600;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3600;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0036;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0036;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3600;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));		
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM7:{//按键7
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3700;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0037;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0037;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3700;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3700;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0037;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0037;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3700;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM8:{//按键8
 						if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3800;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0038;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0038;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3800;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3800;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0038;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0038;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3800;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM9:{//按键9
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3900;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0039;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0039;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3900;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3900;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0039;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0039;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3900;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					dispBuf[4] = 0x0;
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_NUM0:{//按键0
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3000;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0030;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0030;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3000;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3000;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0030;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0030;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3000;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_CANCEL:{//按键CANCEL
@@ -213,27 +236,29 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					CLR(EM_DC_NEW_PASSCODE1);
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_PASSCODE;
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_BACKSPACE:{//按键BACKSPACE
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 4){
-						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0xFF00;
+						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0x00FF;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x3;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0x00FF;
+						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0xFF00;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0xFF00;	
+						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0x00FF;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x1;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0x00FF;
+						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0xFF00;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x0;	
 					}
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_CHANGEPASSCODE:{//按键CHANGEPASSCODE
@@ -250,7 +275,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					CLR(EM_DC_NEW_PASSCODE0);//清空已输入密码
 					CLR(EM_DC_NEW_PASSCODE1);
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引
-					SetTextValue(screen_id, 15 , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					dispBuf[4] = 0x0;
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_PASSCODE_KEY_ENTER:{//按键ENTER
@@ -271,7 +299,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					CLR(EM_DC_NEW_PASSCODE0);//清空已输入密码
 					CLR(EM_DC_NEW_PASSCODE1);
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引 
-					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					dispBuf[4] = 0x0;
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				default:break;
@@ -279,232 +310,257 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			break;
 		}
 		case GDDC_PAGE_NEW_PASSCODE:{//新密码输入页面
+			dispBuf[4] = 0x0;
 			switch(control_id){
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM1:{//按键1
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3100;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0031;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0031;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3100;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3100;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0031;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0031;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3100;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM2:{//按键2	
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3200;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0032;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0032;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3200;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3200;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0032;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0032;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3200;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM3:{//按键3
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3300;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0033;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0033;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3300;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3300;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0033;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0033;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3300;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM4:{//按键4
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3400;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0034;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0034;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3400;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3400;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0034;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0034;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3400;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM5:{//按键5
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3500;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0035;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0035;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3500;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3500;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0035;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0035;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3500;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM6:{//按键6
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3600;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0036;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0036;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3600;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3600;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0036;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0036;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3600;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;	
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM7:{//按键7
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3700;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0037;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0037;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3700;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3700;	
-						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0037;	
+						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0037;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3700;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM8:{//按键8
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3800;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0038;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0038;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3800;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3800;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0038;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0038;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3800;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM9:{//按键9
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3900;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0039;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0039;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3900;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3900;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0039;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0039;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3900;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));	
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;	
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_NUM0:{//按键0
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3000;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0030;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0030;
+						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x3000;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3000;	
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0030;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 3;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x0030;
+						NVRAM0[EM_DC_NEW_PASSCODE1] |= 0x3000;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 4;
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_CANCEL:{
 					CLR(EM_DC_NEW_PASSCODE0);
 					CLR(EM_DC_NEW_PASSCODE1);
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引 
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;	
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_BACKSPACE:{
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 4){
-						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0xFF00;
+						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0x00FF;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x3;
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 3){
-						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0x00FF;
+						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0xFF00;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x2;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 2){
-						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0xFF00;	
+						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0x00FF;	
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x1;	
 					}
 					else if(NVRAM0[EM_DC_PASSCODE_INDEX] == 1){
-						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0x00FF;
+						NVRAM0[EM_DC_NEW_PASSCODE0] &= 0xFF00;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x0;	
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_SAVE:{
@@ -526,7 +582,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_NEW0;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_NEW_PASSCODE;
 					}
-					SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
 				case GDDC_PAGE_NEWPASSCODE_KEY_BACK:{//放弃新密码修改
@@ -535,7 +593,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引 
 					NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_INPUT;
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_PASSCODE;
-					SetTextValue(screen_id, GDDC_PAGE_NEWPASSCODE_KEY_BACK , (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
+					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
+					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					SetScreen(NVRAM0[EM_DC_PAGE]);
 					break;
 				}

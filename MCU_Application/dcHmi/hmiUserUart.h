@@ -4,6 +4,6 @@
 #include "hmiLib.h"
 /*****************************************************************************/
 void hmiUartSendChar(uint8_t t);
-void hmiInitUart(uint32_t baudrate);
+void hmiUartInit(void);
 void Uart0sr(void);
 #endif

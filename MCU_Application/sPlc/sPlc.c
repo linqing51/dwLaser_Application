@@ -220,30 +220,20 @@ void sPlcSpwmLoop(void){//SPWM轮询
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化
 	loadNvram();//上电恢复NVRAM
-	initSplcTimer();//初始化硬件计时器模块
 	SSET(SPCOIL_ON);
-#if CONFIG_SPLC_USING_BEEM == 1
 	RRES(SPCOIL_BEEM_ENABLE);
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
 	NVRAM0[SPREG_BEEM_DUTYCYCLE] = CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE;
 	NVRAM0[SPREG_BEEM_COUNTER] = 0;
-#endif
-
-#if CONFIG_SPLC_USING_LEDAIM == 1
 	RRES(SPCOIL_AIM_ENABEL);
 	NVRAM0[SPREG_AIM_DUTYCYCLE] = 0;
 	NVRAM0[SPREG_RED_LED_DUTYCYCLE] = 0;
 	NVRAM0[SPREG_GREEN_LED_DUTYCYCLE] = 0;
 	NVRAM0[SPREG_BLUE_LED_DUTYCYCLE] = 0;
-#endif
-
-#if CONFIG_SPLC_USING_MUSIC == 1
 	NVRAM0[SPREG_MUSIC_VOLUME] = 0;									
 	NVRAM0[SPREG_PLAYING_MUSIC_ID] = 0;							
 	NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;									
 	NVRAM0[SPREG_CONTROL_MUSIC]	= CMD_MUSIC_STOP;									
-#endif
-
 #if CONFIG_SPLC_USING_IO_INPUT == 1
 	inputInit();
 #endif
@@ -262,11 +252,11 @@ void sPlcInit(void){//软逻辑初始化
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
 	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
-	//enableSplcIsr();
 #if CONFIG_SPLC_USING_DK25L == 1
 	delayMs(100);
 	DL25L_Init();//打开中断后运行
 #endif
+	initSplcTimer();//初始化硬件计时器模块 启动计时器
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	sPlcEnterTime = HAL_GetTick();
