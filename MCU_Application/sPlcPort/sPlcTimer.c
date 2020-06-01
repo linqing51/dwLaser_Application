@@ -14,10 +14,10 @@ void initSplcTimer(void){//硬件sTimer计时器初始化
 	TimerCounter_10mS = 0;
 	TimerCounter_100mS = 0;
 	sPlcTick = 0;
-
 }
 void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 	uint16_t i;
+	uint32_t temp;
 	for(i = TD_1MS_START;i <= TD_1MS_END;i ++){
 		if(LD(T_1MS_ENA_START * 16 + (i - TD_1MS_START))){
 			if(NVRAM0[i] < SHRT_MAX){
@@ -67,6 +67,11 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 			TD_1000MS_SP ++;
 		}
 		TimerCounter_100mS = 0;
+		temp = *(uint32_t*)(NVRAM0 + SPREG_TICK_L);
+		if(temp < UINT_MAX){
+			temp ++;
+			*(uint32_t*)(NVRAM0 + SPREG_TICK_L) = temp;
+		}
 	}
 	TimerCounter_1mS ++;
 	sPlcTick ++;
