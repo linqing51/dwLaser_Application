@@ -18,25 +18,25 @@ void initSplcTimer(void){//硬件sTimer计时器初始化
 void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 	uint16_t i;
 	uint32_t temp;
-	for(i = TD_1MS_START;i <= TD_1MS_END;i ++){
-		if(LD(T_1MS_ENA_START * 16 + (i - TD_1MS_START))){
-			if(NVRAM0[i] < SHRT_MAX){
-				NVRAM0[i] ++;
+	for(i = 0;i <= TD_1MS_SIZE;i ++){
+		if(LD(TYPE_T_1MS_ENA, i)){
+			if(NVRAM0_TD_1MS[i] < SHRT_MAX){
+				NVRAM0_TD_1MS[i] ++;
 			}
 		}
 		else{
-			NVRAM0[i] = 0;
+			NVRAM0_TD_1MS[i] = 0;
 		}
 	}
 	if(TimerCounter_1mS >= 10){//10mS计算
-		for(i = TD_10MS_START;i <= TD_10MS_END;i ++){
-			if(LD(T_10MS_ENA_START * 16 + (i - TD_10MS_START))){
-				if(NVRAM0[i] < SHRT_MAX){
-					NVRAM0[i] ++;
+		for(i = 0;i <= TD_10MS_SIZE;i ++){
+			if(LD(TYPE_T_10MS_ENA, i)){
+				if(NVRAM0_TD_10MS[i] < SHRT_MAX){
+					NVRAM0_TD_10MS[i] ++;
 				}
 			}
 			else{
-				NVRAM0[i] = 0;
+				NVRAM0_TD_10MS[i] = 0;
 			}
 		}
 		if(TD_10MS_SP < CHAR_MAX){
@@ -46,14 +46,14 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 		TimerCounter_1mS = 0;
 	}
 	if(TimerCounter_10mS >= 10){//100ms计算
-		for(i = TD_100MS_START;i < TD_100MS_END;i ++){
-			if(LD(T_100MS_ENA_START * 16 + (i - TD_100MS_START))){
-				if(NVRAM0[i] < SHRT_MAX){
-					NVRAM0[i] ++;
+		for(i = 0;i < TD_100MS_SIZE;i ++){
+			if(LD(TYPE_T_100MS_ENA,  i)){
+				if(NVRAM0_TD_100MS[i] < SHRT_MAX){
+					NVRAM0_TD_100MS[i] ++;
 				}
 			}
 			else{
-				NVRAM0[i] = 0;
+				NVRAM0_TD_100MS[i] = 0;
 			}
 		}
 		if(TD_100MS_SP < CHAR_MAX){
@@ -67,10 +67,10 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 			TD_1000MS_SP ++;
 		}
 		TimerCounter_100mS = 0;
-		temp = *(uint32_t*)(NVRAM0 + SPREG_TICK_L);
+		temp = *(uint32_t*)(NVRAM0_SPREG + SPREG_TICK_L);
 		if(temp < UINT_MAX){
 			temp ++;
-			*(uint32_t*)(NVRAM0 + SPREG_TICK_L) = temp;
+			*(uint32_t*)(NVRAM0_SPREG + SPREG_TICK_L) = temp;
 		}
 	}
 	TimerCounter_1mS ++;

@@ -1,5 +1,104 @@
 #include "sPlcFun.h"
 /*****************************************************************************/
+static int16_t* getCoilNvram(uint8_t type);//获取线圈软原件指针
+static int16_t* getRegNvram(uint8_t type);//获取寄存器软原件指针
+/*****************************************************************************/
+static int16_t* getCoilNvram(uint8_t type){//获取软原件指针
+	int16_t *p = NULL;
+	switch(type){
+		case TYPE_MR:{
+			p = NVRAM0_MR;
+			break;
+		}
+		case TYPE_R:{
+			p = NVRAM0_R;
+			break;
+		}
+		case TYPE_T_1MS:{
+			p = NVRAM0_T_1MS;
+			break;
+		}
+		case TYPE_T_10MS:{
+			p = NVRAM0_T_10MS;
+			break;
+		}
+		case TYPE_T_100MS:{
+			p = NVRAM0_T_100MS;
+			break;
+		}
+		case TYPE_T_1MS_ENA:{
+			p = NVRAM0_T_1MS_ENA;
+			break;
+		}
+		case TYPE_T_10MS_ENA:{
+			p = NVRAM0_T_10MS_ENA;
+			break;
+		}
+		case TYPE_T_100MS_ENA:{
+			p = NVRAM0_T_100MS_ENA;
+			break;
+		}
+		case TYPE_X:{
+			p = NVRAM0_X;
+			break;
+		}
+		case TYPE_Y:{
+			p = NVRAM0_Y;
+			break;
+		}
+		case TYPE_SPCOIL:{
+			p = NVRAM0_SPCOIL;
+			break;
+		}
+		default:{
+			break;
+		}
+	}
+	return p;
+}
+static int16_t* getRegNvram(uint8_t type){//获取软原件指针
+	int16_t *p = NULL;
+	switch(type){
+		case TYPE_DM:{
+			p = NVRAM0_DM;
+			break;
+		}
+		case TYPE_EM:{
+			p = NVRAM0_EM;
+			break;
+		}
+		case TYPE_TD_1MS:{
+			p = NVRAM0_TD_1MS;
+			break;
+		}
+		case TYPE_TD_10MS:{
+			p = NVRAM0_TD_10MS;
+			break;
+		}
+		case TYPE_TD_100MS:{
+			p = NVRAM0_TD_100MS;
+			break;
+		}
+		case TYPE_SPREG:{
+			p = NVRAM0_SPREG;
+			break;
+		}
+		case TYPE_TMP:{
+			p = NVRAM0_TMP;
+			break;
+		}
+		case TYPE_FDRAM:{
+			p = FDRAM0;
+			break;
+		}
+		default:{
+			break;
+		}
+	}
+	return p;
+}
+
+
 void REBOOT(void) {//软件复位	
 	__set_FAULTMASK(1);
 	NVIC_SystemReset();
@@ -9,34 +108,255 @@ void ORG(uint16_t A) {
 //位指令
 void OUT(uint16_t A) {
 }
-void SSET(uint16_t A){//线圈置位
+void SSET(uint8_t type, uint16_t A){//线圈置位
+	int16_t *p;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	assertAddress(type, A);//检查地址范围
 #endif
-	NVRAM0[(A / 16)] |= 1 << (A % 16);
+	p = getTypeNvram(type);
+	NVRAM0_T_100MS_ENA[(A / 16)] |= 1 << (A % 16); 
+	switch(type){
+		case TYPE_MR:{
+			NVRAM0_MR[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_R:{
+			NVRAM0_R[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_1MS:{
+			NVRAM0_T_1MS[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_10MS:{
+			NVRAM0_T_10MS[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_100MS:{
+			NVRAM0_T_100MS[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_1MS_ENA:{
+			NVRAM0_T_1MS_ENA[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_10MS_ENA:{
+			NVRAM0_T_10MS_ENA[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_100MS_ENA:{
+			NVRAM0_T_100MS_ENA[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_X:{
+			NVRAM0_X[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_Y:{
+			NVRAM0_Y[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_SPCOIL:{
+			NVRAM0_SPCOIL[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		default:break;
+	}
 }
-void RRES(uint16_t A){//线圈置零
-#if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
-#endif
-	NVRAM0[(A / 16)] &= ~(1 << (A % 16));
+
+void REBOOT(void) {//软件复位	
+	__set_FAULTMASK(1);
+	NVIC_SystemReset();
 }
-void FLIP(uint16_t A){//翻转
-	uint16_t temp;
+void ORG(uint16_t A) {
+}
+//位指令
+void OUT(uint16_t A) {
+}
+void SSET(uint8_t type, uint16_t A){//线圈置位
+	int16_t *p;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	assertAddress(type, A);//检查地址范围
 #endif
-	temp= (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;;
-	if(temp)
-		RRES(A);
+	p = getTypeNvram(type);
+	NVRAM0_T_100MS_ENA[(A / 16)] |= 1 << (A % 16); 
+	switch(type){
+		case TYPE_MR:{
+			NVRAM0_MR[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_R:{
+			NVRAM0_R[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_1MS:{
+			NVRAM0_T_1MS[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_10MS:{
+			NVRAM0_T_10MS[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_100MS:{
+			NVRAM0_T_100MS[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_1MS_ENA:{
+			NVRAM0_T_1MS_ENA[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_10MS_ENA:{
+			NVRAM0_T_10MS_ENA[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_T_100MS_ENA:{
+			NVRAM0_T_100MS_ENA[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_X:{
+			NVRAM0_X[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_Y:{
+			NVRAM0_Y[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		case TYPE_SPCOIL:{
+			NVRAM0_SPCOIL[(A / 16)] |= 1 << (A % 16); 
+			break;
+		}
+		default:break;
+	}
+}
+
+
+
+void RRES(uint8_t type, uint16_t A){//线圈置零
+#if CONFIG_SPLC_ASSERT == 1
+	assertAddress(type, A);//检查地址范围
+#endif
+	switch(type){
+		case TYPE_MR:{
+			NVRAM0_MR[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_DM:{
+			NVRAM0_DM[A] = 0x00;
+			break;
+		}
+		case TYPE_R:{
+			NVRAM0_R[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_EM:{
+			NVRAM0_EM[A] = 0;
+			break;
+		}
+		case TYPE_T_1MS:{
+			NVRAM0_T_1MS[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_T_10MS:{
+			NVRAM0_T_10MS[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_T_100MS:{
+			NVRAM0_T_100MS[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_T_1MS_ENA:{
+			NVRAM0_T_1MS_ENA[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_T_10MS_ENA:{
+			NVRAM0_T_10MS_ENA[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_T_100MS_ENA:{
+			NVRAM0_T_100MS_ENA[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_TD_1MS:{
+			NVRAM0_TD_1MS[A] = 0;
+			break;
+		}
+		case TYPE_TD_10MS:{
+			NVRAM0_TD_10MS[A] = 0;
+			break;
+		}
+		case TYPE_TD_100MS:{
+			NVRAM0_TD_100MS[A] = 0;
+			break;
+		}
+		case TYPE_X:{
+			NVRAM0_X[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_Y:{
+			NVRAM0_Y[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_SPREG:{
+			NVRAM0_SPREG[A] = 0;
+			break;
+		}
+		case TYPE_SPCOIL:{
+			NVRAM0_SPCOIL[(A / 16)] &= ~(1 << (A % 16));
+			break;
+		}
+		case TYPE_TMP:{
+			NVRAM0_TMP[A] = 0;
+			break;
+		}
+		case TYPE_FDRAM:{
+			FDRAM0[A] = 0;
+			break;
+		}
+		default:break;
+	}
+}
+void FLIP(uint8_t type, uint16_t A){//翻转
+#if CONFIG_SPLC_ASSERT == 1
+	assertCoilAddress(type, A);//检查地址范围
+#endif
+	if(LD(type, A))
+		RRES(type, A);
 	else
-		SSET(A);
+		SSET(type, A);
 }
-uint8_t LD(uint16_t A){//载入
+uint8_t LD(uint8_t type, uint16_t A){//载入
 	uint8_t res = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	assertCoilAddress(type, A);//检查地址范围
 #endif
+	switch(type){
+		case TYPE_MR 												0x01
+case	TYPE_DM													0x02
+case	TYPE_R													0x03
+case	TYPE_EM													0x04
+case	TYPE_T_1MS												0x05
+case	TYPE_T_10MS												0x06
+case	TYPE_T_100MS											0x07
+case	TYPE_T_1MS_ENA											0x08
+case	TYPE_T_10MS_ENA											0x09
+case	TYPE_T_100MS_ENA										0x0A
+case	TYPE_TD_1MS												0x0B
+case	TYPE_TD_10MS											0x0C
+case	TYPE_TD_100MS											0x0D
+case	TYPE_X													0x0E
+case	TYPE_Y													0x0F
+case	TYPE_SPREG												0x10
+#define	TYPE_SPCOIL												0x11
+#define	TYPE_TMP												0x12
+#define	TYPE_FDRAM												0x13
+		
+		
+		
+		default:{
+			res = false;
+			break;
+		}
+	}
 	res = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	if(res)
 		return true;
