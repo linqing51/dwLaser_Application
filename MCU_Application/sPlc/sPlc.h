@@ -46,50 +46,9 @@
 typedef float						fp32_t;
 typedef double						fp64_t;
 /*****************************************************************************/
-extern int16_t NVRAM0_MR[];//线圈 保持
-extern int16_t NVRAM1_MR[];//线圈 保持
-/*****************************************************************************/
-extern int16_t NVRAM0_DM[];//数据寄存器
-extern int16_t NVRAM1_DM[];//数据寄存器
-/*****************************************************************************/
-extern int16_t NVRAM0_R[];//线圈非保持
-extern int16_t NVRAM1_R[];//线圈非保持
-/*****************************************************************************/
-extern int16_t NVRAM0_EM[];//数据寄存器非保持
-/*****************************************************************************/
-extern int16_t NVRAM0_T_1MS[];//延时线圈1MS
-extern int16_t NVRAM1_T_1MS[];//延时线圈1MS
-extern int16_t NVRAM0_T_10MS[];//延时线圈10MS
-extern int16_t NVRAM1_T_10MS[];//延时线圈10MS
-extern int16_t NVRAM0_T_100MS[];//延时线圈100MS
-extern int16_t NVRAM1_T_100MS[];//延时线圈100MS
-/*****************************************************************************/
-extern int16_t NVRAM0_T_1MS_ENA[];//延时器使能1MS
-extern int16_t NVRAM1_T_1MS_ENA[];//延时器使能1MS
-extern int16_t NVRAM0_T_10MS_ENA[];//延时器使能10MS
-extern int16_t NVRAM1_T_10MS_ENA[];//延时器使能10MS
-extern int16_t NVRAM0_T_100MS_ENA[];//延时器使能100MS
-extern int16_t NVRAM1_T_100MS_ENA[];//延时器使能100MS
-/*****************************************************************************/
-extern int16_t NVRAM0_TD_1MS[];//延时计时器1MS
-extern int16_t NVRAM0_TD_10MS[];//延时计时器10MS
-extern int16_t NVRAM0_TD_100MS[];//延时计时器100MS
-/*****************************************************************************/
-extern int16_t NVRAM0_X[];//输入位寄存器
-extern int16_t NVRAM1_X[];//输入位寄存器
-/*****************************************************************************/
-extern int16_t NVRAM0_Y[];//输出位寄存器
-extern int16_t NVRAM1_Y[];//输出位寄存器
-/*****************************************************************************/
-extern int16_t NVRAM0_SPREG[];//特殊寄存器
-/*****************************************************************************/
-extern int16_t NVRAM0_SPCOIL[];//特殊线圈
-extern int16_t NVRAM1_SPCOIL[];//特殊线圈
-/*****************************************************************************/
-extern int16_t NVRAM0_TMP[];//临时寄存器
-/*****************************************************************************/
-extern int16_t FDRAM0[];//存档寄存器
-/*****************************************************************************/
+extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
+extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
+extern int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
 extern uint8_t TimerCounter_1mS;
 extern uint8_t TimerCounter_10mS;
 extern uint8_t TimerCounter_100mS;
@@ -102,7 +61,8 @@ void sPlcProcessStart(void);//sPLC轮询起始
 void sPlcProcessEnd(void);//sPLC轮询结束
 void sPlcPortProcess(void);//sPLC平台程序
 /*****************************************************************************/
-void assertAddress(uint8_t type, uint16_t adr);//检查地址
+void assertCoilAddress(uint16_t adr);
+void assertRegisterAddress(uint16_t adr);
 /*****************************************************************************/
 void clearX(void);
 void clearY(void);

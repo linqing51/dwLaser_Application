@@ -4,7 +4,7 @@ void mainAppTask(void *argument){
 	sPlcInit();
 	while(1){
 		sPlcProcessStart();
-		if(LD(TYPE_SPCOIL, SPCOIL_START_UP)){//
+		if(LD(SPCOIL_START_UP)){//
 			testBenchLaserTimer(3);
 #if CONFIG_USING_DCHMI_APP == 1			
 			dcHmiLoopInit();

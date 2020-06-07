@@ -1,47 +1,6 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define MR_SIZE 												64//线圈 保持 16 * 32 = 512 
-#define DM_SIZE 												2048//数据寄存器 保持 2048
-#define R_SIZE 													64//线圈寄存器 非保持 16 * 32 = 512
-#define EM_SIZE 												2048//数据寄存器 非保持 512
-#define T_1MS_SIZE 												8//16*8=128//延时线圈
-#define T_10MS_SIZE 											8//16*8=128//延时线圈
-#define T_100MS_SIZE 											8//16*8=128//延时线圈
-#define X_SIZE 													8//16*8=//输入位寄存器 16 * 8 = 128
-#define Y_SIZE 													8//16*8=//输出位寄存器 16 * 8 = 128
-#define SPREG_SIZE 												128//特殊寄存器 64
-#define SPCOIL_SIZE 											8//特殊线圈 16 * 8 = 128
-#define TMP_SIZE 												128//临时寄存器 64
-#define FDRAM_SIZE 												4096//存档寄存器
-/*****************************************************************************/
-#define T_1MS_ENA_SIZE											T_1MS_SIZE//延时器使能
-#define T_10MS_ENA_SIZE 										T_10MS_SIZE//延时器使能
-#define T_100MS_ENA_SIZE  										T_100MS_SIZE//延时器使能
-#define TD_1MS_SIZE 											(T_1MS_SIZE * 16)//延时计时器
-#define TD_10MS_SIZE 											(T_10MS_SIZE * 16)//延时计时器
-#define TD_100MS_SIZE  											(T_100MS_SIZE * 16)//延时计时器
-/*****************************************************************************/
-#define TYPE_MR 												0x01
-#define	TYPE_DM													0x02
-#define	TYPE_R													0x03
-#define	TYPE_EM													0x04
-#define	TYPE_T_1MS												0x05
-#define	TYPE_T_10MS												0x06
-#define	TYPE_T_100MS											0x07
-#define	TYPE_T_1MS_ENA											0x08
-#define	TYPE_T_10MS_ENA											0x09
-#define	TYPE_T_100MS_ENA										0x0A
-#define	TYPE_TD_1MS												0x0B
-#define	TYPE_TD_10MS											0x0C
-#define	TYPE_TD_100MS											0x0D
-#define	TYPE_X													0x0E
-#define	TYPE_Y													0x0F
-#define	TYPE_SPREG												0x10
-#define	TYPE_SPCOIL												0x11
-#define	TYPE_TMP												0x12
-#define	TYPE_FDRAM												0x13
-/*****************************************************************************/
 #define CMD_MUSIC_PLAY											0x01
 #define CMD_MUSIC_SUSPEND										0x02
 #define CMD_MUSIC_RESUME										0x03
@@ -57,15 +16,12 @@
 #define CONFIG_DEBUG_MUSIC										0//调试LCD音乐
 #define CONFIG_DEBUG_APP										1
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LINK									0
-#define CONFIG_SPLC_LINK_BUF_SIZE								128
-/*****************************************************************************/
 #define CONFIG_SPLC_USING_MUSIC									0//使能LCD自带音乐播放						
-#define CONFIG_SPLC_USING_BEEM									0//使能板载蜂鸣器
+#define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
 #define CONFIG_SPLC_DEFAULT_BEEM_FREQ							4000L//蜂鸣器默认频率
 #define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						127//蜂鸣器默认占空比
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LEDAIM								0	
+#define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
 #define CONFIG_SPLC_RLED_DEFAULT_DUTYCYCLE						60//红灯亮度
 #define CONFIG_SPLC_GLED_DEFAULT_DUTYCYCLE						60//绿灯亮度
@@ -81,13 +37,13 @@
 #define CONFIG_SOFTPLC_TICK										200L//5mS
 #define CONFIG_INPUT_FILTER_TIME								1//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_INPUT								0//输入IO刷新启用
+#define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_OUTPUT								0//输出IO刷新启用
+#define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_EPROM									0//EPROM
-#define CONFIG_SPLC_USING_EPROM_TEST							0//EPROM自检
-#define CONFIG_SPLC_USING_CLEAR_NVRAM							0//启用清除NVRAM功能
+#define CONFIG_SPLC_USING_EPROM									1//EPROM
+#define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
+#define CONFIG_SPLC_USING_CLEAR_NVRAM							1//启用清除NVRAM功能
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
 #define	CONFIG_AT24C02_SIZE 									256
 #define	CONFIG_AT24C04_SIZE  									512
@@ -104,7 +60,7 @@
 #define CONFIG_EPROM_NVRAM_START								0x0
 #define CONFIG_EPROM_FDRAM_START								0x800//2048
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_ADC									0//使能ADC模块
+#define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM								8//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
@@ -117,7 +73,7 @@
 #define CONFIG_NTC_RB											10000L
 #define CONFIG_NTC_VREF											3300L
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_DAC									0//是能DAC模块
+#define CONFIG_SPLC_USING_DAC									1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0										0xFFFF
 #define CONFIG_MIN_DAC_CH0										0
 #define CONFIG_MAX_DAC_CH1										0xFFFF
@@ -140,10 +96,10 @@
 #define CONFIG_DK25L_RXBUF_SIZE									16
 #define CONFIG_DK25L_TXBUF_SIZE									16
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LASER									0
-#define CONFIG_SPLC_USING_LASER_TEST							0
+#define CONFIG_SPLC_USING_LASER									1
+#define CONFIG_SPLC_USING_LASER_TEST							1
 /*****************************************************************************/
-#define CONFIG_USING_DCHMI_APP									0//广东大彩人机交互应用
+#define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
 /*****************************************************************************/
 #define CONFIG_CHECK_DELAY_TIME									10
 #define CONFIG_KEY_REPEAT_DELAY_TIME							50
@@ -328,121 +284,176 @@
 #define POWER_REAL_CH3_95P										3800
 #define POWER_REAL_CH3_100P										4000
 /*****************************************************************************/
-#define SPCOIL_ON												0//长通线圈
-#define SPCOIL_START_UP											1//初次上电
-#define SPCOIL_PS10MS											2//10mS
-#define SPCOIL_PS50MS											3//50mS
-#define SPCOIL_PS100MS											4//100mS
-#define SPCOIL_PS1000MS											5//1000mS
-#define SPCOIL_MODBUS_S0_ERROR									6//Modbus Slave->Uart0 错误
-#define SPCOIL_NVRAM_FAIL										7//NVRAM校验码错误
-#define SPCOIL_WATCHDOG_OVERFLOW								8//看门狗溢出
+//线圈 保持 16 * 32 = 512 
+#define MR_START												0
+#define MR_END   												31
+//数据寄存器 保持 2048
+#define DM_START												32
+#define DM_END													2079
+//线圈寄存器 非保持 16 * 32 = 512
+#define R_START													2080
+#define R_END													2111						
+//数据寄存器 非保持 512
+#define EM_START												2112
+#define EM_END													2623
+//延时线圈
+//1MS  16 * 4 = 64
+#define T_1MS_START												2624
+#define T_1MS_END												2627
+//10MS 16 * 4 = 64
+#define T_10MS_START											2628
+#define T_10MS_END												2631
+//100MS 16 * 4 = 64
+#define T_100MS_START											2632
+#define T_100MS_END												2635
+//延时器使能
+//1MS  16 * 4 = 64
+#define T_1MS_ENA_START											2636
+#define T_1MS_ENA_END											2639
+//10MS 16 * 4 = 64
+#define T_10MS_ENA_START										2640
+#define T_10MS_ENA_END											2643
+//100MS 16 * 4 = 64
+#define T_100MS_ENA_START										2644
+#define T_100MS_ENA_END											2647
+//延时计时器
+//1MS  16 * 4 = 64
+#define TD_1MS_START											2648
+#define TD_1MS_END												2711
+//10MS 16 * 4 = 64
+#define TD_10MS_START											2712											
+#define TD_10MS_END												2775
+//100MS 16 * 4 = 64
+#define TD_100MS_START											2776
+#define TD_100MS_END											2839
+//输入位寄存器 16 * 8 = 128
+#define X_START													2840
+#define X_END													2847
+//输出位寄存器 16 * 8 = 128
+#define Y_START													2848
+#define Y_END													2855
+//特殊寄存器 64
+#define SPREG_START												2856
+#define SPREG_END												2919
+//特殊线圈 16 * 8 = 128
+#define SPCOIL_START											2920
+#define SPCOIL_END												2927
+//临时寄存器 64
+#define TMP_START												2928
+#define TMP_END													2991
 /*****************************************************************************/
-#define SPCOIL_BEEM_ENABLE										10//蜂鸣器使能
-#define SPCOIL_BEEM_BUSY										11//蜂鸣器工作状态
-#define SPCOIL_AIM_ENABEL										12//瞄准光使能
-#define SPCOIL_AIM_BUSY											13//瞄准光工作状态
+#define CONFIG_NVRAM_SIZE 										(TMP_END + 1)
 /*****************************************************************************/
-#define SPCOIL_SPWM_OUT_0										20//SPWM0输出状态
-#define SPCOIL_SPWM_RESET_0										21//SPWM0复位
-#define SPCOIL_SPWM_OUT_1										22//SPWM1输出状态
-#define SPCOIL_SPWM_RESET_1										23//SPWM1复位
-#define SPCOIL_SPWM_OUT_2										24//SPWM2输出状态
-#define SPCOIL_SPWM_RESET_2										25//SPWM2复位
-#define SPCOIL_SPWM_OUT_3										26//SPWM3输出状态
-#define SPCOIL_SPWM_RESET_3										27//SPWM3复位
+//存档寄存器
+#define FD_START												0
+#define FD_END													2047
 /*****************************************************************************/
-#define SPCOIL_DK25L_INIT_FAIL									30//NFC模块初始化失败
-#define SPCOIL_LASER_DRIVER_INIT_FAIL							31//激光驱动器初始化失败
-#define SPCOIL_WIRELESS_FOOTCONTROL_INIT_FAIL					32//无线脚踏初始化失败
-#define SPCOIL_PROBATION_INIT_FAIL								33//试用期初始化失败
+#define CONFIG_FDRAM_SIZE										(FD_END + 1)
 /*****************************************************************************/
-#define SPCOIL_DK25L_RXCMD_DONE									40//接收指令完成
-#define SPCOIL_DK25L_RXCMD_DOING								41//接收指令进行中
-#define SPCOIL_DK25L_RXCMD_OVERFLOW								42//接收指令溢出
-#define SPCOIL_DK25L_RXCMD_ERROR								43//接收指错误
-#define SPCOIL_DK25L_TXCMD_DONE									44//写指令完成
-#define SPCOIL_DK25L_TXCMD_DOING								45//写指令进行中
-#define SPCOIL_DK25L_TXCMD_OVERFLOW								46//写指令溢出
-#define SPCOIL_DK25L_TXCMD_ERROR								47//写指令错误
+#define SPCOIL_ON												(SPCOIL_START * 16 + 0)//长通线圈
+#define SPCOIL_START_UP											(SPCOIL_START * 16 + 1)//初次上电
+#define SPCOIL_PS10MS											(SPCOIL_START * 16 + 2)//10mS
+#define SPCOIL_PS50MS											(SPCOIL_START * 16 + 3)//50mS
+#define SPCOIL_PS100MS											(SPCOIL_START * 16 + 4)//100mS
+#define SPCOIL_PS1000MS											(SPCOIL_START * 16 + 5)//1000mS
+#define SPCOIL_MODBUS_S0_ERROR									(SPCOIL_START * 16 + 6)//Modbus Slave->Uart0 错误
+#define SPCOIL_NVRAM_FAIL										(SPCOIL_START * 16 + 7)//NVRAM校验码错误
+#define SPCOIL_WATCHDOG_OVERFLOW								(SPCOIL_START * 16 + 8)//看门狗溢出
 /*****************************************************************************/
-#define SPREG_ADC_0												0//ADC0采集值 PD0
-#define SPREG_ADC_1												1//ADC1采集值 PD1
-#define SPREG_ADC_2												2//ADC2采集值 NTC0
-#define SPREG_ADC_3												3//ADC3采集值 NTC1
-#define SPREG_ADC_4												4//ADC4采集值 ISMON0
-#define SPREG_ADC_5												5//ADC5采集值 IVINMON0
-#define SPREG_ADC_6												6//ADC6采集值 ISMON1
-#define SPREG_ADC_7												7//ADC7采集值 IVINMON1
-#define SPREG_ADC_8												8//ADC8采集值 片内温度传感器
-#define SPREG_ADC_9												9//ADC9采集值 片内电压基准
-#define SPREG_ADC_10											10//ADC9采集值 片内电压基准
-#define SPREG_ADC_11											11//ADC9采集值 片内电压基准
-#define SPREG_ADC_12											12//ADC9采集值 片内电压基准
-#define SPREG_ADC_13											13//ADC9采集值 片内电压基准
-#define SPREG_ADC_14											14//ADC9采集值 片内电压基准
-#define SPREG_ADC_15											15//ADC9采集值 片内电压基准
-#define SPREG_DAC_0												16//DAC0设定值 LSET0
-#define SPREG_DAC_1												17//DAC1设定值 LSET1
-#define SPREG_DAC_2												18//DAC2设定值 LSET2
-#define SPREG_DAC_3												19//DAC3设定值 LSET3
-#define SPREG_DAC_4												20//DAC3设定值 LSET4
-#define SPREG_DAC_5												21//DAC3设定值 LSET5
-#define SPREG_DAC_6												22//DAC3设定值 LSET6
-#define SPREG_DAC_7												23//DAC3设定值 LSET7
+#define SPCOIL_BEEM_ENABLE										(SPCOIL_START * 16 + 10)//蜂鸣器使能
+#define SPCOIL_BEEM_BUSY										(SPCOIL_START * 16 + 11)//蜂鸣器工作状态
+#define SPCOIL_AIM_ENABEL										(SPCOIL_START * 16 + 12)//瞄准光使能
+#define SPCOIL_AIM_BUSY											(SPCOIL_START * 16 + 13)//瞄准光工作状态
 /*****************************************************************************/
-#define SPREG_SPWM_POS_0										24//软件PWM0正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_0									25//软件PWM0正脉宽阴影
-#define SPREG_SPWM_CYCLE_0										26//软件PWM0周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_0								27//软件PWM0周期阴影
-#define SPREG_SPWM_COUNTER_0									28//软件PWM0计数器
-#define SPREG_SPWM_POS_1										29//软件PWM1正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_1									30//软件PWM1正脉宽阴影
-#define SPREG_SPWM_CYCLE_1										31//软件PWM1周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_1								32//软件PWM1周期阴影
-#define SPREG_SPWM_COUNTER_1									33//软件PWM1计数器
-#define SPREG_SPWM_POS_2										34//软件PWM2正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_2									35//软件PWM2正脉宽阴影
-#define SPREG_SPWM_CYCLE_2										36//软件PWM2周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_2								37//软件PWM2周期阴影
-#define SPREG_SPWM_COUNTER_2									38//软件PWM2计数器
-#define SPREG_SPWM_POS_3										39//软件PWM3正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_3									40//软件PWM3正脉宽阴影
-#define SPREG_SPWM_CYCLE_3										41//软件PWM3周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_3								42//软件PWM3周期阴影
-#define SPREG_SPWM_COUNTER_3									43//软件PWM3计数器
+#define SPCOIL_SPWM_OUT_0										(SPCOIL_START * 16 + 34)//SPWM0输出状态
+#define SPCOIL_SPWM_RESET_0										(SPCOIL_START * 16 + 35)//SPWM0复位
+#define SPCOIL_SPWM_OUT_1										(SPCOIL_START * 16 + 36)//SPWM1输出状态
+#define SPCOIL_SPWM_RESET_1										(SPCOIL_START * 16 + 37)//SPWM1复位
+#define SPCOIL_SPWM_OUT_2										(SPCOIL_START * 16 + 38)//SPWM2输出状态
+#define SPCOIL_SPWM_RESET_2										(SPCOIL_START * 16 + 39)//SPWM2复位
+#define SPCOIL_SPWM_OUT_3										(SPCOIL_START * 16 + 40)//SPWM3输出状态
+#define SPCOIL_SPWM_RESET_3										(SPCOIL_START * 16 + 41)//SPWM3复位
 /*****************************************************************************/
-#define SPREG_MUSIC_VOLUME										44//音乐播放音量 0-100%
-#define SPREG_PLAYING_MUSIC_ID									45//当前播放音乐ID
-#define SPREG_NEXT_MUSIC_ID										46//下一个播放音乐ID
-#define SPREG_CONTROL_MUSIC										47//音乐播放控制寄存器
+#define SPCOIL_DK25L_INIT_FAIL									(SPCOIL_START * 16 + 51)//NFC模块初始化失败
+#define SPCOIL_LASER_DRIVER_INIT_FAIL							(SPCOIL_START * 16 + 53)//激光驱动器初始化失败
+#define SPCOIL_WIRELESS_FOOTCONTROL_INIT_FAIL					(SPCOIL_START * 16 + 56)//无线脚踏初始化失败
+#define SPCOIL_PROBATION_INIT_FAIL								(SPCOIL_START * 16 + 57)//试用期初始化失败
 /*****************************************************************************/
-#define SPREG_BEEM_DUTYCYCLE									48//蜂鸣器占空比 0-100%
-#define SPREG_BEEM_FREQ											49//蜂鸣器频率
-#define SPREG_BEEM_MODE											50//蜂鸣器模式
-#define SPREG_BEEM_COUNTER										51//蜂鸣器计时器
+#define SPCOIL_DK25L_RXCMD_DONE									(SPCOIL_START * 16 + 70)//接收指令完成
+#define SPCOIL_DK25L_RXCMD_DOING								(SPCOIL_START * 16 + 71)//接收指令进行中
+#define SPCOIL_DK25L_RXCMD_OVERFLOW								(SPCOIL_START * 16 + 72)//接收指令溢出
+#define SPCOIL_DK25L_RXCMD_ERROR								(SPCOIL_START * 16 + 73)//接收指错误
+#define SPCOIL_DK25L_TXCMD_DONE									(SPCOIL_START * 16 + 74)//写指令完成
+#define SPCOIL_DK25L_TXCMD_DOING								(SPCOIL_START * 16 + 75)//写指令进行中
+#define SPCOIL_DK25L_TXCMD_OVERFLOW								(SPCOIL_START * 16 + 76)//写指令溢出
+#define SPCOIL_DK25L_TXCMD_ERROR								(SPCOIL_START * 16 + 77)//写指令错误
 /*****************************************************************************/
-#define SPREG_RED_LED_DUTYCYCLE									52//红色LED亮度->故障 0-100%
-#define SPREG_GREEN_LED_DUTYCYCLE								53//绿色LED亮度->电源 0-100%
-#define SPREG_BLUE_LED_DUTYCYCLE								54//蓝色LED亮度->激光指示 0-100%
-#define SPREG_AIM_DUTYCYCLE										55//瞄准光亮度->650红激光 0-100%
+#define SPREG_CLEAR_NVRAM										(SPREG_START + 0)//清除NVRAM后重新启动
 /*****************************************************************************/
-#define SPREG_DK25L_VER											56//DK25L NFC模块版本
-#define SPREG_DK25L_RES0										57//DK25L 保留
-#define SPREG_DK25L_RES1										58//DK25L 保留
-#define SPREG_DK25L_RES2										59//DK25L 保留
-#define SPREG_DK25L_RES3										60//DK25L 保留
-#define SPREG_DK25L_RES4										61//DK25L 保留
-#define SPREG_DK25L_RES5										62//DK25L 保留
-#define SPREG_DK25L_RES6										63//DK25L 保留
+#define SPREG_ADC_0												(SPREG_START + 1)//ADC0采集值 PD0
+#define SPREG_ADC_1												(SPREG_START + 2)//ADC1采集值 PD1
+#define SPREG_ADC_2												(SPREG_START + 3)//ADC2采集值 NTC0
+#define SPREG_ADC_3												(SPREG_START + 4)//ADC3采集值 NTC1
+#define SPREG_ADC_4												(SPREG_START + 5)//ADC4采集值 ISMON0
+#define SPREG_ADC_5												(SPREG_START + 6)//ADC5采集值 IVINMON0
+#define SPREG_ADC_6												(SPREG_START + 7)//ADC6采集值 ISMON1
+#define SPREG_ADC_7												(SPREG_START + 8)//ADC7采集值 IVINMON1
+#define SPREG_ADC_8												(SPREG_START + 8)//ADC8采集值 片内温度传感器
+#define SPREG_ADC_9												(SPREG_START + 8)//ADC9采集值 片内电压基准
+
+#define SPREG_DAC_0												(SPREG_START + 10)//DAC0设定值 LSET0
+#define SPREG_DAC_1												(SPREG_START + 11)//DAC1设定值 LSET1
+#define SPREG_DAC_2												(SPREG_START + 12)//DAC2设定值 LSET2
+#define SPREG_DAC_3												(SPREG_START + 13)//DAC3设定值 LSET3
+#define SPREG_DAC_4												(SPREG_START + 14)//DAC3设定值 LSET4
+#define SPREG_DAC_5												(SPREG_START + 15)//DAC3设定值 LSET5
+#define SPREG_DAC_6												(SPREG_START + 16)//DAC3设定值 LSET6
+#define SPREG_DAC_7												(SPREG_START + 17)//DAC3设定值 LSET7
 /*****************************************************************************/
-#define SPREG_TICK_L											(SPREG_SIZE - 5)//累计运行时间 1S
-#define SPREG_TICK_H											(SPREG_SIZE - 4)//累计运行时间
-#define SPREG_SCAN_TIME											(SPREG_SIZE - 3)//扫描时间
-#define SPREG_CLEAR_NVRAM										(SPREG_SIZE - 3)//清除NVRAM后重新启动
-#define SPREG_IDENTITY											(SPREG_SIZE - 2)//平台ID号
+#define SPREG_SPWM_POS_0										(SPREG_START + 20)//软件PWM0正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_0									(SPREG_START + 21)//软件PWM0正脉宽阴影
+#define SPREG_SPWM_CYCLE_0										(SPREG_START + 22)//软件PWM0周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_0								(SPREG_START + 23)//软件PWM0周期阴影
+#define SPREG_SPWM_COUNTER_0									(SPREG_START + 24)//软件PWM0计数器
+#define SPREG_SPWM_POS_1										(SPREG_START + 25)//软件PWM1正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_1									(SPREG_START + 26)//软件PWM1正脉宽阴影
+#define SPREG_SPWM_CYCLE_1										(SPREG_START + 27)//软件PWM1周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_1								(SPREG_START + 28)//软件PWM1周期阴影
+#define SPREG_SPWM_COUNTER_1									(SPREG_START + 29)//软件PWM1计数器
+#define SPREG_SPWM_POS_2										(SPREG_START + 30)//软件PWM2正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_2									(SPREG_START + 31)//软件PWM2正脉宽阴影
+#define SPREG_SPWM_CYCLE_2										(SPREG_START + 32)//软件PWM2周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_2								(SPREG_START + 33)//软件PWM2周期阴影
+#define SPREG_SPWM_COUNTER_2									(SPREG_START + 34)//软件PWM2计数器
+#define SPREG_SPWM_POS_3										(SPREG_START + 35)//软件PWM3正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_3									(SPREG_START + 36)//软件PWM3正脉宽阴影
+#define SPREG_SPWM_CYCLE_3										(SPREG_START + 37)//软件PWM3周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_3								(SPREG_START + 38)//软件PWM3周期阴影
+#define SPREG_SPWM_COUNTER_3									(SPREG_START + 39)//软件PWM3计数器
 /*****************************************************************************/
-#define EM_LASER_SCHEME_NAME									0//方案名称
+#define SPREG_MUSIC_VOLUME										(SPREG_START + 40)//音乐播放音量 0-100%
+#define SPREG_PLAYING_MUSIC_ID									(SPREG_START + 41)//当前播放音乐ID
+#define SPREG_NEXT_MUSIC_ID										(SPREG_START + 42)//下一个播放音乐ID
+#define SPREG_CONTROL_MUSIC										(SPREG_START + 43)//音乐播放控制寄存器
+/*****************************************************************************/
+#define SPREG_RED_LED_DUTYCYCLE									(SPREG_START + 45)//红色LED亮度->故障 0-100%
+#define SPREG_GREEN_LED_DUTYCYCLE								(SPREG_START + 46)//绿色LED亮度->电源 0-100%
+#define SPREG_BLUE_LED_DUTYCYCLE								(SPREG_START + 47)//蓝色LED亮度->激光指示 0-100%
+#define SPREG_AIM_DUTYCYCLE										(SPREG_START + 48)//瞄准光亮度->650红激光 0-100%
+/*****************************************************************************/
+#define SPREG_BEEM_DUTYCYCLE									(SPREG_START + 50)//蜂鸣器占空比 0-100%
+#define SPREG_BEEM_FREQ											(SPREG_START + 51)//蜂鸣器频率
+#define SPREG_BEEM_MODE											(SPREG_START + 52)//蜂鸣器模式
+#define SPREG_BEEM_COUNTER										(SPREG_START + 53)//蜂鸣器计时器
+/*****************************************************************************/
+#define SPREG_DK25L_VER											(SPREG_START + 55)//DK25L NFC模块版本
+/*****************************************************************************/
+#define SPREG_TICK_L											(SPREG_END - 3)//累计运行时间 1S
+#define SPREG_TICK_H											(SPREG_END - 2)//累计运行时间
+#define SPREG_SCAN_TIME											(SPREG_END - 1)//扫描时间
+#define SPREG_IDENTITY											(SPREG_END - 0)//平台ID号
+/*****************************************************************************/
+#define EM_LASER_SCHEME_NAME									(EM_START + 0)//方案名称
 #define EM_LASER_SELECT											(EM_START + 46)//通道选择
 #define EM_LASER_PULSE_MODE										(EM_START + 47)//脉冲模式
 #define EM_LASER_POWER_CH0										(EM_START + 48)//通道0功率
