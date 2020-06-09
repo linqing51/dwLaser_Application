@@ -73,6 +73,12 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
 			*(uint32_t*)(NVRAM0 + SPREG_TICK_L) = temp;
 		}
 	}
+	if(NVRAM0[SPREG_LINK_SEND_TCOUNTER] < USHRT_MAX){
+		NVRAM0[SPREG_LINK_SEND_TCOUNTER] ++;
+	}
+	if(NVRAM0[SPREG_LINK_RECE_TCOUNTER] < USHRT_MAX){
+		NVRAM0[SPREG_LINK_RECE_TCOUNTER] ++;
+	}
 	TimerCounter_1mS ++;
 	sPlcTick ++;
 }

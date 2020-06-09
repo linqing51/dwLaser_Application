@@ -6,7 +6,7 @@
 #define CMD_MUSIC_RESUME										0x03
 #define CMD_MUSIC_STOP											0x04
 /*****************************************************************************/
-#define CONFIG_DEBUG_SERIAL_PORT								uart1
+#define CONFIG_DEBUG_SERIAL_PORT								"uart1"
 #define CONFIG_DEBUG_CHARGE										0//调试充电
 #define CONFIG_DEBUG_DAC										0//调试DAC
 #define CONFIG_DEBUB_ADC										0//调试ADC
@@ -14,20 +14,24 @@
 #define CONFIG_DEBUG_IO											0//调试输入输出IO
 #define CONFIG_DEBUG_BEEM										0//调试蜂鸣器
 #define CONFIG_DEBUG_MUSIC										0//调试LCD音乐
-#define CONFIG_DEBUG_APP										1
+#define CONFIG_DEBUG_APP										0
+#define CONFIG_SPLC_USING_HW_RNG								0//硬件随机数模块
+/*****************************************************************************/
+#define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
+#define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_MUSIC									0//使能LCD自带音乐播放						
-#define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
+#define CONFIG_SPLC_USING_BEEM									0//使能板载蜂鸣器
 #define CONFIG_SPLC_DEFAULT_BEEM_FREQ							4000L//蜂鸣器默认频率
 #define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						127//蜂鸣器默认占空比
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LEDAIM								1	
+#define CONFIG_SPLC_USING_LEDAIM								0	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
 #define CONFIG_SPLC_RLED_DEFAULT_DUTYCYCLE						60//红灯亮度
 #define CONFIG_SPLC_GLED_DEFAULT_DUTYCYCLE						60//绿灯亮度
 #define CONFIG_SPLC_BLED_DEFAULT_DUTYCYCLE						60//蓝灯亮度
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能
+#define CONFIG_SPLC_USING_SPWM									0//使了软件PWM功能
 /*****************************************************************************/
 #define CONFIG_SPLC_FUNTEST										0//功能指令测试
 /*****************************************************************************/
@@ -37,13 +41,13 @@
 #define CONFIG_SOFTPLC_TICK										200L//5mS
 #define CONFIG_INPUT_FILTER_TIME								1//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
+#define CONFIG_SPLC_USING_IO_INPUT								0//输入IO刷新启用
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
+#define CONFIG_SPLC_USING_IO_OUTPUT								0//输出IO刷新启用
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
-#define CONFIG_SPLC_USING_CLEAR_NVRAM							1//启用清除NVRAM功能
+#define CONFIG_SPLC_USING_CLEAR_NVRAM							0//启用清除NVRAM功能
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
 #define	CONFIG_AT24C02_SIZE 									256
 #define	CONFIG_AT24C04_SIZE  									512
@@ -53,14 +57,15 @@
 #define	CONFIG_AT24C64_SIZE										8192
 #define	CONFIG_AT24C128_SIZE 									16384
 #define	CONFIG_AT24C256_SIZE 									32768
-#define CONFIG_EPROM_ADDRESS									0x50//EPROM I2C地址
-#define CONFIG_EPROM_WIRTE_DELAY								10//EPROM写入时间 10mS
+#define CONFIG_EPROM_ADD_WRITE									0xA0//EPROM I2C地址
+#define CONFIG_EPROM_ADR_READ									0xA1
+#define CONFIG_EPROM_WIRTE_DELAY								0//EPROM写入时间 10mS
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
 #define CONFIG_EPROM_PAGE_SIZE									32//EPROM 页大小
 #define CONFIG_EPROM_NVRAM_START								0x0
 #define CONFIG_EPROM_FDRAM_START								0x800//2048
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_ADC									1//使能ADC模块
+#define CONFIG_SPLC_USING_ADC									0//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM								8//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
@@ -73,7 +78,7 @@
 #define CONFIG_NTC_RB											10000L
 #define CONFIG_NTC_VREF											3300L
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_DAC									1//是能DAC模块
+#define CONFIG_SPLC_USING_DAC									0//是能DAC模块
 #define CONFIG_MAX_DAC_CH0										0xFFFF
 #define CONFIG_MIN_DAC_CH0										0
 #define CONFIG_MAX_DAC_CH1										0xFFFF
@@ -96,10 +101,10 @@
 #define CONFIG_DK25L_RXBUF_SIZE									16
 #define CONFIG_DK25L_TXBUF_SIZE									16
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LASER									1
-#define CONFIG_SPLC_USING_LASER_TEST							1
+#define CONFIG_SPLC_USING_LASER									0
+#define CONFIG_SPLC_USING_LASER_TEST							0
 /*****************************************************************************/
-#define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
+#define CONFIG_USING_DCHMI_APP									0//广东大彩人机交互应用
 /*****************************************************************************/
 #define CONFIG_CHECK_DELAY_TIME									10
 #define CONFIG_KEY_REPEAT_DELAY_TIME							50
@@ -350,6 +355,9 @@
 /*****************************************************************************/
 #define CONFIG_FDRAM_SIZE										(FD_END + 1)
 /*****************************************************************************/
+#define CONFIG_LKSRAM_SIZE										128
+#define CONFIG_LKRRAM_SIZE										128
+/*****************************************************************************/
 #define SPCOIL_ON												(SPCOIL_START * 16 + 0)//长通线圈
 #define SPCOIL_START_UP											(SPCOIL_START * 16 + 1)//初次上电
 #define SPCOIL_PS10MS											(SPCOIL_START * 16 + 2)//10mS
@@ -359,6 +367,13 @@
 #define SPCOIL_MODBUS_S0_ERROR									(SPCOIL_START * 16 + 6)//Modbus Slave->Uart0 错误
 #define SPCOIL_NVRAM_FAIL										(SPCOIL_START * 16 + 7)//NVRAM校验码错误
 #define SPCOIL_WATCHDOG_OVERFLOW								(SPCOIL_START * 16 + 8)//看门狗溢出
+/*****************************************************************************/
+#define SPCOIL_LINK_SEND_BUSY									(SPCOIL_START * 16 + 8)//发送进行中
+#define SPCOIL_LINK_SEND_DONE									(SPCOIL_START * 16 + 8)//发送完成
+#define SPCOIL_LINK_SEND_ERR									(SPCOIL_START * 16 + 8)//发送错误
+#define SPCOIL_LINK_RECE_BUSY									(SPCOIL_START * 16 + 8)//接收进行中
+#define SPCOIL_LINK_RECE_DONE									(SPCOIL_START * 16 + 8)//接收完成
+#define SPCOIL_LINK_RECE_ERR									(SPCOIL_START * 16 + 8)//发送错误
 /*****************************************************************************/
 #define SPCOIL_BEEM_ENABLE										(SPCOIL_START * 16 + 10)//蜂鸣器使能
 #define SPCOIL_BEEM_BUSY										(SPCOIL_START * 16 + 11)//蜂鸣器工作状态
@@ -389,6 +404,15 @@
 #define SPCOIL_DK25L_TXCMD_ERROR								(SPCOIL_START * 16 + 77)//写指令错误
 /*****************************************************************************/
 #define SPREG_CLEAR_NVRAM										(SPREG_START + 0)//清除NVRAM后重新启动
+/*****************************************************************************/
+#define SPREG_LINK_DEVICE_ID									(SPREG_START + 1)//自身设备ID
+#define SPREG_LINK_SEND_SIZE									(SPREG_START + 0)//发送字节数
+#define SPREG_LINK_RECE_SIZE									(SPREG_START + 0)//接收字节数
+#define SPREG_LINK_SEND_OVERTIME								(SPREG_START + 0)//发送超时设置
+#define SPREG_LINK_RECE_OVERTIME								(SPREG_START + 0)//接收超时设置
+#define SPREG_LINK_SEND_TCOUNTER								(SPREG_START + 0)//发送时间计时器
+#define SPREG_LINK_RECE_TCOUNTER								(SPREG_START + 0)//接收时间计时器
+#define SPREG_LINK_STATE										(SPREG_START + 0)//状态
 /*****************************************************************************/
 #define SPREG_ADC_0												(SPREG_START + 1)//ADC0采集值 PD0
 #define SPREG_ADC_1												(SPREG_START + 2)//ADC1采集值 PD1

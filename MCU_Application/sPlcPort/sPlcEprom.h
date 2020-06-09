@@ -11,5 +11,5 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t DataToWrite);//在
 HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t DataToWrite);//在AT24CXX里面的指定地址开始写入32位数
 HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
 HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
-uint8_t epromTest(void);
+uint8_t sPlcEpromTest(void);
 #endif

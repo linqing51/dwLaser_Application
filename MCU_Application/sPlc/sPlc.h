@@ -49,6 +49,8 @@ typedef double						fp64_t;
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 extern int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
+extern uint8_t LKSRAM[CONFIG_LKSRAM_SIZE];//通信发送缓冲区
+extern uint8_t LKRRAM[CONFIG_LKRRAM_SIZE];//通信接收缓冲区
 extern uint8_t TimerCounter_1mS;
 extern uint8_t TimerCounter_10mS;
 extern uint8_t TimerCounter_100mS;
@@ -93,5 +95,8 @@ __weak void mucReboot(void);//软件复位
 __weak void setLed(uint8_t color, uint8_t state);//设置LED灯
 /*****************************************************************************/
 void sPlcInit(void);
+/*****************************************************************************/
+__weak void LINKS(void);//从机接收
+__weak void LINKM(void);//主机发送
 /*****************************************************************************/
 #endif

@@ -4,6 +4,8 @@
 int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
+uint8_t LKSRAM[CONFIG_LKSRAM_SIZE];//通信发送缓冲区
+uint8_t LKRRAM[CONFIG_LKRRAM_SIZE];//通信接收缓冲区
 uint8_t TimerCounter_1mS = 0;
 uint8_t TimerCounter_10mS = 0;
 uint8_t TimerCounter_100mS = 0;
@@ -12,6 +14,11 @@ uint8_t TD_100MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
 uint32_t sPlcEnterTime, sPlcExitTime, sPlcScanTime;
 /******************************************************************************/
+void errorHandler(uint16_t errCode){
+	while(1);
+}
+
+
 void assertCoilAddress(uint16_t adr){//检查线圈地址
 #if CONFIG_SPLC_ASSERT == 1
 	uint32_t maxCoilAdr = CONFIG_NVRAM_SIZE * 16 - 1;
@@ -233,7 +240,21 @@ void sPlcInit(void){//软逻辑初始化
 	NVRAM0[SPREG_MUSIC_VOLUME] = 0;									
 	NVRAM0[SPREG_PLAYING_MUSIC_ID] = 0;							
 	NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;									
-	NVRAM0[SPREG_CONTROL_MUSIC]	= CMD_MUSIC_STOP;									
+	NVRAM0[SPREG_CONTROL_MUSIC]	= CMD_MUSIC_STOP;
+	sPlcEpromTest();
+#if CONFIG_SPLC_USING_CLEAR_NVRAM == 1 && CONFIG_SPLC_USING_EPROM == 1
+	if(NVRAM0[SPREG_CLEAR_NVRAM] == (int16_t)CONFIG_SPLC_CLEAR_CODE){
+		disableSplcTimer();//关闭中断	
+		if(epromTest()){//EPROM测试成功
+			__nop();
+		}
+		else{//EPROM测试失败
+			__nop();
+		}
+		clearNvram();
+		REBOOT();	
+	}
+#endif	
 #if CONFIG_SPLC_USING_IO_INPUT == 1
 	inputInit();
 #endif
@@ -272,19 +293,6 @@ void sPlcProcessStart(void){//sPLC轮询起始
 		FLIP(SPCOIL_PS1000MS);
 		TD_1000MS_SP = 0;
 	}
-#if CONFIG_SPLC_USING_CLEAR_NVRAM == 1 && CONFIG_SPLC_USING_EPROM == 1
-	if(NVRAM0[SPREG_CLEAR_NVRAM] == (int16_t)CONFIG_SPLC_CLEAR_CODE){
-		disableSplcTimer();//关闭中断	
-		if(epromTest()){//EPROM测试成功
-			__nop();
-		}
-		else{//EPROM测试失败
-			__nop();
-		}
-		clearNvram();
-		REBOOT();	
-	}
-#endif
 #if CONFIG_SPLC_USING_IO_INPUT == 1
 	inputRefresh();//读取X口输入
 #endif
