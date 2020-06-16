@@ -10,7 +10,7 @@ void inputInit(void){//IO输入滤波器初始化
 void inputRefresh(void){//获取输入IO
 	uint8_t	temp;
 	//X0
-	temp = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_11);//PC11
+	temp = HAL_GPIO_ReadPin(ESTOP_IN_GPIO_Port, ESTOP_IN_Pin);//急停
 	if(temp){
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
@@ -28,7 +28,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X1
-	temp = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_12);//PC12
+	temp = HAL_GPIO_ReadPin(INTLOCK_IN_GPIO_Port, INTLOCK_IN_Pin);//安全连锁
 	if(temp){
 		if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[1] ++;
@@ -46,7 +46,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X2
-	temp = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_10);//PC10
+	temp = HAL_GPIO_ReadPin(FSWITCH_NO_GPIO_Port, FSWITCH_NO_Pin);//脚踏常开
 	if(temp){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;
@@ -64,7 +64,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X3
-	temp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_15);//PA15
+	temp = HAL_GPIO_ReadPin(FSWITCH_NC_GPIO_Port, FSWITCH_NC_Pin);//脚踏常闭
 	if(temp){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
@@ -82,7 +82,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X4
-	temp = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8);//PC8
+	temp = HAL_GPIO_ReadPin(PWR_KEY_GPIO_Port, PWR_KEY_Pin);//电源开关
 	if(temp){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;

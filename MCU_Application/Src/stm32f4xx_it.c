@@ -59,11 +59,13 @@
 
 /* External variables --------------------------------------------------------*/
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
-extern DMA_HandleTypeDef hdma_adc1;
-extern ADC_HandleTypeDef hadc1;
 extern I2C_HandleTypeDef hi2c1;
+extern RNG_HandleTypeDef hrng;
 extern TIM_HandleTypeDef htim7;
-extern TIM_HandleTypeDef htim11;
+extern TIM_HandleTypeDef htim12;
+extern UART_HandleTypeDef huart5;
+extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart6;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -167,34 +169,6 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles ADC1 global interrupt.
-  */
-void ADC_IRQHandler(void)
-{
-  /* USER CODE BEGIN ADC_IRQn 0 */
-
-  /* USER CODE END ADC_IRQn 0 */
-  HAL_ADC_IRQHandler(&hadc1);
-  /* USER CODE BEGIN ADC_IRQn 1 */
-
-  /* USER CODE END ADC_IRQn 1 */
-}
-
-/**
-  * @brief This function handles TIM1 trigger and commutation interrupts and TIM11 global interrupt.
-  */
-void TIM1_TRG_COM_TIM11_IRQHandler(void)
-{
-  /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 0 */
-
-  /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim11);
-  /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 1 */
-
-  /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 1 */
-}
-
-/**
   * @brief This function handles I2C1 event interrupt.
   */
 void I2C1_EV_IRQHandler(void)
@@ -220,6 +194,48 @@ void I2C1_ER_IRQHandler(void)
   /* USER CODE BEGIN I2C1_ER_IRQn 1 */
 
   /* USER CODE END I2C1_ER_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART1 global interrupt.
+  */
+void USART1_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART1_IRQn 0 */
+
+  /* USER CODE END USART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 1 */
+
+  /* USER CODE END USART1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM8 break interrupt and TIM12 global interrupt.
+  */
+void TIM8_BRK_TIM12_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM8_BRK_TIM12_IRQn 0 */
+
+  /* USER CODE END TIM8_BRK_TIM12_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim12);
+  /* USER CODE BEGIN TIM8_BRK_TIM12_IRQn 1 */
+
+  /* USER CODE END TIM8_BRK_TIM12_IRQn 1 */
+}
+
+/**
+  * @brief This function handles UART5 global interrupt.
+  */
+void UART5_IRQHandler(void)
+{
+  /* USER CODE BEGIN UART5_IRQn 0 */
+
+  /* USER CODE END UART5_IRQn 0 */
+  HAL_UART_IRQHandler(&huart5);
+  /* USER CODE BEGIN UART5_IRQn 1 */
+
+  /* USER CODE END UART5_IRQn 1 */
 }
 
 /**
@@ -251,20 +267,6 @@ void TIM7_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles DMA2 stream0 global interrupt.
-  */
-void DMA2_Stream0_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA2_Stream0_IRQn 0 */
-
-  /* USER CODE END DMA2_Stream0_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_adc1);
-  /* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
-
-  /* USER CODE END DMA2_Stream0_IRQn 1 */
-}
-
-/**
   * @brief This function handles USB On The Go FS global interrupt.
   */
 void OTG_FS_IRQHandler(void)
@@ -276,6 +278,34 @@ void OTG_FS_IRQHandler(void)
   /* USER CODE BEGIN OTG_FS_IRQn 1 */
 
   /* USER CODE END OTG_FS_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART6 global interrupt.
+  */
+void USART6_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART6_IRQn 0 */
+
+  /* USER CODE END USART6_IRQn 0 */
+  HAL_UART_IRQHandler(&huart6);
+  /* USER CODE BEGIN USART6_IRQn 1 */
+
+  /* USER CODE END USART6_IRQn 1 */
+}
+
+/**
+  * @brief This function handles RNG global interrupt.
+  */
+void RNG_IRQHandler(void)
+{
+  /* USER CODE BEGIN RNG_IRQn 0 */
+
+  /* USER CODE END RNG_IRQn 0 */
+  HAL_RNG_IRQHandler(&hrng);
+  /* USER CODE BEGIN RNG_IRQn 1 */
+
+  /* USER CODE END RNG_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

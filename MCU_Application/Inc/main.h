@@ -29,6 +29,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -49,8 +50,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -63,22 +62,74 @@ extern __IO uint8_t adcBufferDone;//ADC ²É¼¯Íê±Ï
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LED_RED_Pin GPIO_PIN_3
-#define LED_RED_GPIO_Port GPIOE
-#define LED_GREEN_Pin GPIO_PIN_5
-#define LED_GREEN_GPIO_Port GPIOC
-#define PWM0_BEEM_Pin GPIO_PIN_10
-#define PWM0_BEEM_GPIO_Port GPIOB
-#define USB_OTG_FS_PWR_EN_Pin GPIO_PIN_8
-#define USB_OTG_FS_PWR_EN_GPIO_Port GPIOG
-#define USB_OTG_FS_DM_Pin GPIO_PIN_11
-#define USB_OTG_FS_DM_GPIO_Port GPIOA
-#define USB_OTG_FS_DP_Pin GPIO_PIN_12
-#define USB_OTG_FS_DP_GPIO_Port GPIOA
-#define I2C1_SDA_Pin GPIO_PIN_7
-#define I2C1_SDA_GPIO_Port GPIOB
-#define I2C1_SCL_Pin GPIO_PIN_8
-#define I2C1_SCL_GPIO_Port GPIOB
+#define DA_SYNC_Pin GPIO_PIN_13
+#define DA_SYNC_GPIO_Port GPIOC
+#define DA_SCLK_Pin GPIO_PIN_14
+#define DA_SCLK_GPIO_Port GPIOC
+#define DA_DIN_Pin GPIO_PIN_15
+#define DA_DIN_GPIO_Port GPIOC
+#define IPC_ISMON0_Pin GPIO_PIN_0
+#define IPC_ISMON0_GPIO_Port GPIOC
+#define LPB_ISMON1_Pin GPIO_PIN_1
+#define LPB_ISMON1_GPIO_Port GPIOC
+#define LPB_ISMON0_Pin GPIO_PIN_2
+#define LPB_ISMON0_GPIO_Port GPIOC
+#define LPA_ISMON1_Pin GPIO_PIN_3
+#define LPA_ISMON1_GPIO_Port GPIOC
+#define LPA_ISMON0_Pin GPIO_PIN_0
+#define LPA_ISMON0_GPIO_Port GPIOA
+#define LASER_NTC_Pin GPIO_PIN_1
+#define LASER_NTC_GPIO_Port GPIOA
+#define LASER_PD_Pin GPIO_PIN_2
+#define LASER_PD_GPIO_Port GPIOA
+#define FIBER_PD_Pin GPIO_PIN_3
+#define FIBER_PD_GPIO_Port GPIOA
+#define LPC_PWM0_Pin GPIO_PIN_4
+#define LPC_PWM0_GPIO_Port GPIOA
+#define LPB_PWM1_Pin GPIO_PIN_5
+#define LPB_PWM1_GPIO_Port GPIOA
+#define LPB_PWM0_Pin GPIO_PIN_6
+#define LPB_PWM0_GPIO_Port GPIOA
+#define LPA_PWM1_Pin GPIO_PIN_7
+#define LPA_PWM1_GPIO_Port GPIOA
+#define LPA_PWM0_Pin GPIO_PIN_4
+#define LPA_PWM0_GPIO_Port GPIOC
+#define I2C_SCL_Pin GPIO_PIN_5
+#define I2C_SCL_GPIO_Port GPIOC
+#define I2C_SDA_Pin GPIO_PIN_0
+#define I2C_SDA_GPIO_Port GPIOB
+#define PM_ALERT_Pin GPIO_PIN_1
+#define PM_ALERT_GPIO_Port GPIOB
+#define LCD_PWR_Pin GPIO_PIN_2
+#define LCD_PWR_GPIO_Port GPIOB
+#define TEC0_PWM_Pin GPIO_PIN_14
+#define TEC0_PWM_GPIO_Port GPIOB
+#define TEC1_PWM_Pin GPIO_PIN_15
+#define TEC1_PWM_GPIO_Port GPIOB
+#define PWR_KEY_Pin GPIO_PIN_8
+#define PWR_KEY_GPIO_Port GPIOC
+#define OTG_FS_PSOC_Pin GPIO_PIN_9
+#define OTG_FS_PSOC_GPIO_Port GPIOC
+#define OTG_FS_PSON_Pin GPIO_PIN_8
+#define OTG_FS_PSON_GPIO_Port GPIOA
+#define FSWITCH_NC_Pin GPIO_PIN_15
+#define FSWITCH_NC_GPIO_Port GPIOA
+#define FSWITCH_NO_Pin GPIO_PIN_10
+#define FSWITCH_NO_GPIO_Port GPIOC
+#define ESTOP_IN_Pin GPIO_PIN_11
+#define ESTOP_IN_GPIO_Port GPIOC
+#define INTLOCK_IN_Pin GPIO_PIN_12
+#define INTLOCK_IN_GPIO_Port GPIOC
+#define FAN_PWR_Pin GPIO_PIN_2
+#define FAN_PWR_GPIO_Port GPIOD
+#define AIM_PWM_Pin GPIO_PIN_4
+#define AIM_PWM_GPIO_Port GPIOB
+#define LED_RED_Pin GPIO_PIN_5
+#define LED_RED_GPIO_Port GPIOB
+#define LED_GREEN_Pin GPIO_PIN_6
+#define LED_GREEN_GPIO_Port GPIOB
+#define LDE_B_Pin GPIO_PIN_7
+#define LDE_B_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

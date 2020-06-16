@@ -1,6 +1,8 @@
 //TIM11->计时
 #include "sPlcLaser.h"
 /*****************************************************************************/
+extern TIM_HandleTypeDef htim10;
+/*****************************************************************************/
 volatile int8_t LaserTimer_Mode;
 volatile int8_t LaserTimer_Select;
 volatile int16_t LaserTimer_TCounter;
@@ -20,8 +22,6 @@ volatile int32_t LaserRelease_TotalEnergy;//激光发射总能量
 /*****************************************************************************/
 static void laserStop(void);
 static void laserStart(void);
-/*****************************************************************************/
-extern TIM_HandleTypeDef htim11;
 /*****************************************************************************/
 #if CONFIG_SPLC_USING_LASER_TEST == 1
 void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
@@ -168,13 +168,13 @@ void STLAR(void){//开始发射脉冲
 	LaserTimer_BeemSwitchCounter = 0x0;
 	LaserFlag_Emiting = false;
 	LaserFlag_Emitover = false;
-	__HAL_TIM_SET_COUNTER(&htim11, 0x0);//清零计数值
-	HAL_TIM_Base_Start_IT(&htim11);//打开计时器
+	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
+	HAL_TIM_Base_Start_IT(&htim10);//打开计时器
 }
 void EDLAR(void){//停止发射脉冲
 	NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_STOP;//关闭MP3
-	__HAL_TIM_SET_COUNTER(&htim11, 0x0);//清零计数值
-	HAL_TIM_Base_Stop_IT(&htim11);//停止计时器
+	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
+	HAL_TIM_Base_Stop_IT(&htim10);//停止计时器
 	laserStop();//关闭DAC输出
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
@@ -364,7 +364,7 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 			}
 			if(LaserTimer_TCounter >= LaserTimer_TMate){//计时器匹配
 				laserStop();//关闭DAC输出
-				HAL_TIM_Base_Stop(&htim11);
+				HAL_TIM_Base_Stop(&htim10);
 				LaserFlag_Emitover = true;
 			}
 			if(LaserTimer_ReleaseTime < 1000){

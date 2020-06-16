@@ -25,13 +25,13 @@
 #define CONFIG_SPLC_DEFAULT_BEEM_FREQ							4000L//蜂鸣器默认频率
 #define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						127//蜂鸣器默认占空比
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LEDAIM								0	
+#define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
 #define CONFIG_SPLC_RLED_DEFAULT_DUTYCYCLE						60//红灯亮度
 #define CONFIG_SPLC_GLED_DEFAULT_DUTYCYCLE						60//绿灯亮度
 #define CONFIG_SPLC_BLED_DEFAULT_DUTYCYCLE						60//蓝灯亮度
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_SPWM									0//使了软件PWM功能
+#define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能
 /*****************************************************************************/
 #define CONFIG_SPLC_FUNTEST										0//功能指令测试
 /*****************************************************************************/
@@ -41,31 +41,24 @@
 #define CONFIG_SOFTPLC_TICK										200L//5mS
 #define CONFIG_INPUT_FILTER_TIME								1//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_INPUT								0//输入IO刷新启用
+#define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_OUTPUT								0//输出IO刷新启用
+#define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
 #define CONFIG_SPLC_USING_CLEAR_NVRAM							0//启用清除NVRAM功能
-#define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
-#define	CONFIG_AT24C02_SIZE 									256
-#define	CONFIG_AT24C04_SIZE  									512
-#define	CONFIG_AT24C08_SIZE 									1024
-#define	CONFIG_AT24C16_SIZE 									2048
-#define	CONFIG_AT24C32_SIZE 									4096
+#define CONFIG_EPROM_SIZE 										CONFIG_AT24C256_SIZE
 #define	CONFIG_AT24C64_SIZE										8192
 #define	CONFIG_AT24C128_SIZE 									16384
 #define	CONFIG_AT24C256_SIZE 									32768
-#define CONFIG_EPROM_ADD_WRITE									0xA0//EPROM I2C地址
-#define CONFIG_EPROM_ADR_READ									0xA1
-#define CONFIG_EPROM_WIRTE_DELAY								0//EPROM写入时间 10mS
-#define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
-#define CONFIG_EPROM_PAGE_SIZE									32//EPROM 页大小
+#define CONFIG_EPROM_SLAVE_ADDR									0xA0//EPROM 从机地址
+#define CONFIG_EPROM_TIMEOUT									100//EPROM读写超时
+#define CONFIG_EPROM_PAGE_SIZE									0xFFFF//EPROM 页大小
 #define CONFIG_EPROM_NVRAM_START								0x0
 #define CONFIG_EPROM_FDRAM_START								0x800//2048
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_ADC									0//使能ADC模块
+#define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM								8//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
@@ -77,8 +70,10 @@
 #define CONFIG_NTC_B											3500L
 #define CONFIG_NTC_RB											10000L
 #define CONFIG_NTC_VREF											3300L
+#define CONFIG_FIBER_PD_HIGH									1240
+#define CONFIG_FIBER_PD_LOW										1100
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_DAC									0//是能DAC模块
+#define CONFIG_SPLC_USING_DAC									1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0										0xFFFF
 #define CONFIG_MIN_DAC_CH0										0
 #define CONFIG_MAX_DAC_CH1										0xFFFF
@@ -101,10 +96,10 @@
 #define CONFIG_DK25L_RXBUF_SIZE									16
 #define CONFIG_DK25L_TXBUF_SIZE									16
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LASER									0
+#define CONFIG_SPLC_USING_LASER									1
 #define CONFIG_SPLC_USING_LASER_TEST							0
 /*****************************************************************************/
-#define CONFIG_USING_DCHMI_APP									0//广东大彩人机交互应用
+#define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
 /*****************************************************************************/
 #define CONFIG_CHECK_DELAY_TIME									10
 #define CONFIG_KEY_REPEAT_DELAY_TIME							50
@@ -414,14 +409,14 @@
 #define SPREG_LINK_RECE_TCOUNTER								(SPREG_START + 0)//接收时间计时器
 #define SPREG_LINK_STATE										(SPREG_START + 0)//状态
 /*****************************************************************************/
-#define SPREG_ADC_0												(SPREG_START + 1)//ADC0采集值 PD0
-#define SPREG_ADC_1												(SPREG_START + 2)//ADC1采集值 PD1
-#define SPREG_ADC_2												(SPREG_START + 3)//ADC2采集值 NTC0
-#define SPREG_ADC_3												(SPREG_START + 4)//ADC3采集值 NTC1
-#define SPREG_ADC_4												(SPREG_START + 5)//ADC4采集值 ISMON0
-#define SPREG_ADC_5												(SPREG_START + 6)//ADC5采集值 IVINMON0
-#define SPREG_ADC_6												(SPREG_START + 7)//ADC6采集值 ISMON1
-#define SPREG_ADC_7												(SPREG_START + 8)//ADC7采集值 IVINMON1
+#define SPREG_ADC_0												(SPREG_START + 1)//ADC0采集值 LASER_NTC
+#define SPREG_ADC_1												(SPREG_START + 2)//ADC1采集值 LASER_PD
+#define SPREG_ADC_2												(SPREG_START + 3)//ADC2采集值 FIBER_PD
+#define SPREG_ADC_3												(SPREG_START + 4)//ADC3采集值 PA0_ISMON0
+#define SPREG_ADC_4												(SPREG_START + 5)//ADC4采集值 PA1_ISMON1
+#define SPREG_ADC_5												(SPREG_START + 6)//ADC5采集值 PB0_ISMON0
+#define SPREG_ADC_6												(SPREG_START + 7)//ADC6采集值 PB0_ISMON1
+#define SPREG_ADC_7												(SPREG_START + 8)//ADC7采集值 PC0_ISMON1
 #define SPREG_ADC_8												(SPREG_START + 8)//ADC8采集值 片内温度传感器
 #define SPREG_ADC_9												(SPREG_START + 8)//ADC9采集值 片内电压基准
 
@@ -726,11 +721,11 @@
 #define DM_DC_OLD_PASSCODE2										(DM_START + 11)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3										(DM_START + 12)//屏旧密码2-3
 /*****************************************************************************/
-#define X_FOOTSWITCH_NC											(X_START * 16 + 1)//XIN0 脚踏常闭
-#define X_ESTOP													(X_START * 16 + 0)//XIN1 紧急停止开关
-#define X_FOOTSWITCH_NO											(X_START * 16 + 2)//XIN2 脚踏常开
-#define X_INTERLOCK												(X_START * 16 + 3)//XIN0 安全连锁
-#define X_FIBER_PROBE											(X_START * 16 + 7)//XIN6 光纤探测0
+#define X_ESTOP													(X_START * 16 + 0)//XIN0 紧急停止开关
+#define X_INTERLOCK												(X_START * 16 + 1)//XIN1 安全连锁
+#define X_FOOTSWITCH_NC											(X_START * 16 + 2)//XIN2 脚踏常闭
+#define X_FOOTSWITCH_NO											(X_START * 16 + 3)//XIN3 脚踏常开
+#define X_PWR_KEY												(X_START * 16 + 4)//XIN4 电源开关 
 /*****************************************************************************/
 #define Y_LED_POWERON											(Y_START * 16 + 0)//YOUT0 电源灯
 #define Y_LED_EMIT												(Y_START * 16 + 1)//YOUT1 激光指示灯
@@ -745,10 +740,10 @@
 #define Y_TEC0													(Y_START * 16 + 10)//YOUT10 制冷开关0
 #define Y_TEC1													(Y_START * 16 + 11)//YOUT11 制冷开关1
 /*****************************************************************************/
-#define R_FOOTSWITCH_NC											(R_START * 16 + 0)//脚踏常开
-#define R_FOOTSWITCH_NO											(R_START * 16 + 0)//脚踏常闭
-#define R_ESTOP													(R_START * 16 + 1)//
-#define R_INTERLOCK												(R_START * 16 + 2)//
+//#define R_FOOTSWITCH_NC											(R_START * 16 + 0)//脚踏常开
+//#define R_FOOTSWITCH_NO											(R_START * 16 + 0)//脚踏常闭
+//#define R_ESTOP													(R_START * 16 + 1)//
+//#define R_INTERLOCK												(R_START * 16 + 2)//
 #define R_FIBER_PROBE											(R_START * 16 + 3)//
 #define R_RFID_PASS												(R_START * 16 + 4)
 #define R_DIODE_TEMP_HIGH										(R_START * 16 + 5)//通道0二极管高温标志
