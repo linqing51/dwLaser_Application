@@ -6,7 +6,6 @@
 #define CMD_MUSIC_RESUME										0x03
 #define CMD_MUSIC_STOP											0x04
 /*****************************************************************************/
-#define CONFIG_DEBUG_SERIAL_PORT								"uart1"
 #define CONFIG_DEBUG_CHARGE										0//调试充电
 #define CONFIG_DEBUG_DAC										0//调试DAC
 #define CONFIG_DEBUB_ADC										0//调试ADC
@@ -14,7 +13,7 @@
 #define CONFIG_DEBUG_IO											0//调试输入输出IO
 #define CONFIG_DEBUG_BEEM										0//调试蜂鸣器
 #define CONFIG_DEBUG_MUSIC										0//调试LCD音乐
-#define CONFIG_DEBUG_APP										0
+#define CONFIG_DEBUG_APP										1
 #define CONFIG_SPLC_USING_HW_RNG								0//硬件随机数模块
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
@@ -725,7 +724,8 @@
 #define X_INTERLOCK												(X_START * 16 + 1)//XIN1 安全连锁
 #define X_FOOTSWITCH_NC											(X_START * 16 + 2)//XIN2 脚踏常闭
 #define X_FOOTSWITCH_NO											(X_START * 16 + 3)//XIN3 脚踏常开
-#define X_PWR_KEY												(X_START * 16 + 4)//XIN4 电源开关 
+#define X_PWR_KEY												(X_START * 16 + 4)//XIN4 电源开关
+#define X_FIBER_PROBE											(X_START * 16 + 5)//XIN5 光纤探测
 /*****************************************************************************/
 #define Y_LED_POWERON											(Y_START * 16 + 0)//YOUT0 电源灯
 #define Y_LED_EMIT												(Y_START * 16 + 1)//YOUT1 激光指示灯

@@ -1,5 +1,6 @@
 #include "sPlcMisc.h"
 /*****************************************************************************/
+extern UART_HandleTypeDef huart1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
@@ -373,7 +374,9 @@ void _ttywrch(int ch){
 
 //重定义fputc函数
 int fputc(int ch, FILE *f){
-//com_snd(COM1,?1,?(unsigned?char*)&ch);?
+	uint8_t txDat;
+	txDat = ch & 0xFF;
+	HAL_UART_Transmit(&huart1, &txDat , 1, 100);
 	return ch;
 }
 

@@ -395,6 +395,8 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 	int16_t times;
 	int16_t	groupOff;
 	int16_t energyInterval;
+	power0 ^= power0;
+	power1 ^= power1;
 	if(cn < 0)
 		cn = 0;
 	if(cn > CONFIG_HMI_SCHEME_NUM)
@@ -1594,13 +1596,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	else{
 		RRES(Y_LED_EMIT);
-	}
-	if(NVRAM0[] > CONFIG_FIBER_PD_HIGH){
-	}
-	if(VNRAM0[]< CONFIG_FIBER_PD_LOW){
-	}
-	
-	
+	}	
 	if(LD(R_DCHMI_RESET_DONE) && LD(R_DCHMI_RESTORE_DONE)){//HMI复位完成后处理串口指令
 		hmiCmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE);//从缓冲区中获取一条指令         
         if(hmiCmdSize > 0){//接收到指令及判断是否为开机提示                                                            

@@ -2,10 +2,10 @@
 /*****************************************************************************/
 static void setSYNC(uint8_t dat){//PC13
 	if(dat){
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DA_SYNC_GPIO_Port, DA_SYNC_Pin, GPIO_PIN_SET);
 	}
 	else{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(DA_SYNC_GPIO_Port, DA_SYNC_Pin, GPIO_PIN_RESET);
 	}
 }
 static void setCLK(uint8_t dat){//PC15

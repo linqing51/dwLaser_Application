@@ -63,10 +63,10 @@
   */
 
 /*----------   -----------*/
-#define USBH_MAX_NUM_ENDPOINTS      5U
+#define USBH_MAX_NUM_ENDPOINTS      2U
  
 /*----------   -----------*/
-#define USBH_MAX_NUM_INTERFACES      10U
+#define USBH_MAX_NUM_INTERFACES      2U
  
 /*----------   -----------*/
 #define USBH_MAX_NUM_CONFIGURATION      1U
@@ -75,7 +75,7 @@
 #define USBH_KEEP_CFG_DESCRIPTOR      1U
  
 /*----------   -----------*/
-#define USBH_MAX_NUM_SUPPORTED_CLASS      5U
+#define USBH_MAX_NUM_SUPPORTED_CLASS      1U
  
 /*----------   -----------*/
 #define USBH_MAX_SIZE_CONFIGURATION      256U
@@ -84,7 +84,7 @@
 #define USBH_MAX_DATA_BUFFER      512U
  
 /*----------   -----------*/
-#define USBH_DEBUG_LEVEL      0U
+#define USBH_DEBUG_LEVEL      3U
  
 /*----------   -----------*/
 #define USBH_USE_OS      1U
@@ -100,7 +100,7 @@
 #if (USBH_USE_OS == 1)
   #include "cmsis_os.h"
   #define USBH_PROCESS_PRIO          osPriorityNormal
-  #define USBH_PROCESS_STACK_SIZE    ((uint16_t)512)
+  #define USBH_PROCESS_STACK_SIZE    ((uint16_t)128)
 #endif /* (USBH_USE_OS == 1) */
 
 /**

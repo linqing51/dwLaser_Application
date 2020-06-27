@@ -22,15 +22,13 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "adc.h"
-#include "crc.h"
+#include "dma.h"
 #include "fatfs.h"
 #include "i2c.h"
 #include "iwdg.h"
-#include "rng.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
-#include "wwdg.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -98,22 +96,19 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
-  MX_CRC_Init();
   MX_I2C1_Init();
-  MX_IWDG_Init();
-  MX_RNG_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  MX_TIM12_Init();
   MX_UART5_Init();
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
-  MX_WWDG_Init();
   MX_FATFS_Init();
   MX_TIM7_Init();
   MX_TIM10_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */

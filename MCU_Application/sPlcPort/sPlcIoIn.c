@@ -84,21 +84,37 @@ void inputRefresh(void){//获取输入IO
 	//X4
 	temp = HAL_GPIO_ReadPin(PWR_KEY_GPIO_Port, PWR_KEY_Pin);//电源开关
 	if(temp){
-		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[2] ++;
+		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
+			inputFilter[4] ++;
 		}
 		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 2);
+			NVRAM0[X_START] |= (int16_t)(1 << 4);
 		}
 	}
 	else{
-		if(inputFilter[2] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[2] --;
+		if(inputFilter[4] > (CONFIG_INPUT_FILTER_TIME * -1)){
+			inputFilter[4] --;
 		}
 		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 2);
+			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
 		}
 	}
-	
+	//X5
+	if(NVRAM0[SPREG_ADC_2] > CONFIG_FIBER_PD_HIGH){
+		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
+			inputFilter[5] ++;
+		}
+		else{
+			NVRAM0[X_START] |= (int16_t)(1 << 5);
+		}
+	}
+	else{
+		if(inputFilter[5] > (CONFIG_INPUT_FILTER_TIME * -1)){
+			inputFilter[5] --;
+		}
+		else{
+			NVRAM0[X_START] &= ~(uint16_t)(1 << 5);
+		}
+	}
 }
 

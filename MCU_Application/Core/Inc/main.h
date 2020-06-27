@@ -95,14 +95,16 @@ void Error_Handler(void);
 #define I2C_SCL_GPIO_Port GPIOC
 #define I2C_SDA_Pin GPIO_PIN_0
 #define I2C_SDA_GPIO_Port GPIOB
-#define PM_ALERT_Pin GPIO_PIN_1
-#define PM_ALERT_GPIO_Port GPIOB
+#define PM_ALARM_Pin GPIO_PIN_1
+#define PM_ALARM_GPIO_Port GPIOB
 #define LCD_PWR_Pin GPIO_PIN_2
 #define LCD_PWR_GPIO_Port GPIOB
-#define TEC0_PWM_Pin GPIO_PIN_14
-#define TEC0_PWM_GPIO_Port GPIOB
-#define TEC1_PWM_Pin GPIO_PIN_15
-#define TEC1_PWM_GPIO_Port GPIOB
+#define BEEM_PWM_Pin GPIO_PIN_10
+#define BEEM_PWM_GPIO_Port GPIOB
+#define TEC_OUT_Pin GPIO_PIN_14
+#define TEC_OUT_GPIO_Port GPIOB
+#define FAN1_OUT_Pin GPIO_PIN_15
+#define FAN1_OUT_GPIO_Port GPIOB
 #define PWR_KEY_Pin GPIO_PIN_8
 #define PWR_KEY_GPIO_Port GPIOC
 #define OTG_FS_PSOC_Pin GPIO_PIN_9
@@ -117,16 +119,16 @@ void Error_Handler(void);
 #define ESTOP_IN_GPIO_Port GPIOC
 #define INTLOCK_IN_Pin GPIO_PIN_12
 #define INTLOCK_IN_GPIO_Port GPIOC
-#define FAN_PWR_Pin GPIO_PIN_2
-#define FAN_PWR_GPIO_Port GPIOD
+#define FAN0_OUT_Pin GPIO_PIN_2
+#define FAN0_OUT_GPIO_Port GPIOD
 #define AIM_PWM_Pin GPIO_PIN_4
 #define AIM_PWM_GPIO_Port GPIOB
-#define LED_RED_Pin GPIO_PIN_5
-#define LED_RED_GPIO_Port GPIOB
-#define LED_GREEN_Pin GPIO_PIN_6
-#define LED_GREEN_GPIO_Port GPIOB
-#define LDE_B_Pin GPIO_PIN_7
-#define LDE_B_GPIO_Port GPIOB
+#define GREEN_PWM_Pin GPIO_PIN_5
+#define GREEN_PWM_GPIO_Port GPIOB
+#define RED_PWM_Pin GPIO_PIN_6
+#define RED_PWM_GPIO_Port GPIOB
+#define BLUE_PWM_Pin GPIO_PIN_7
+#define BLUE_PWM_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
