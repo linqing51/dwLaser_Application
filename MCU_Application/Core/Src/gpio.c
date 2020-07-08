@@ -58,7 +58,7 @@ void MX_GPIO_Init(void)
                           |OTG_FS_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, I2C_SDA_Pin|LCD_PWR_Pin|TEC_OUT_Pin|FAN1_OUT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, I2C_SDA_Pin|LCD_PWR_Pin|TEC_OUT_Pin|FAN_OUT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(FAN0_OUT_GPIO_Port, FAN0_OUT_Pin, GPIO_PIN_RESET);
@@ -85,7 +85,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(LPA_PWM0_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = I2C_SDA_Pin|LCD_PWR_Pin|FAN1_OUT_Pin;
+  GPIO_InitStruct.Pin = I2C_SDA_Pin|LCD_PWR_Pin|FAN_OUT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

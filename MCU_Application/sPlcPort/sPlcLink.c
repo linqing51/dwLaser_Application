@@ -92,7 +92,7 @@ static void LINKM(void){//主机发送
 	HAL_StatusTypeDef ret;
 	uint16_t sendSize, receSize, temp0, temp1, temp2;
 	uint8_t lrc0, lrc1, slaveFun;
-	ret = NULL;
+	ret = HAL_ERROR;
 	switch(mLinkState){
 		case LINK_STATE_M_IDEL:{//主机发送空闲
 			RRES(SPCOIL_LINK_SEND_DONE);
@@ -305,10 +305,10 @@ static uint8_t asciiToUint8(uint8_t *pdat){//ASCII转UINT8
 }
 
 static uint16_t asciiToUint16(uint8_t *pdat){//ASCII转为无符号16位数
-	
+	return 0;
 }
 static uint32_t asciiToUint32(uint8_t *pdat){//ASCII转为无符号32位数
-
+	return 0;
 }
 
 

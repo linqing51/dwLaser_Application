@@ -53,12 +53,6 @@
 #define	MSG_WAIT_TRIGGER											14
 #define	MSG_FIBER_MISSMATE											15
 /*****************************************************************************/
-#define BEEM_MODE_0													0x10//连续模式
-#define BEEM_MODE_1													0x11//声光同步
-#define BEEM_MODE_2													0x12//激光发射固定间隔
-#define BEEM_MODE_3													0x13//异常报警
-#define BEEM_FREQ_0													0xF2//正常频率
-#define BEEM_FREQ_1													0xF1//变调
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);

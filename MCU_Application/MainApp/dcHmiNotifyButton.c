@@ -3,7 +3,7 @@
 //按钮控件通知当按钮状态改变(或调用GetControlValue)时，执行此函数
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
 void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){ 
-	char dispBuf[64];
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	//PASSCODE 密码输入页面
 	switch(screen_id){
 		case GDDC_PAGE_PASSCODE:{//等待密码输入

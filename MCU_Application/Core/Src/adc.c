@@ -21,7 +21,6 @@
 #include "adc.h"
 
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 ADC_HandleTypeDef hadc1;
@@ -54,7 +53,7 @@ void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES;
+  sConfig.SamplingTime = ADC_SAMPLETIME_56CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -119,6 +118,7 @@ void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
   sConfig.Rank = 9;
+  sConfig.SamplingTime = ADC_SAMPLETIME_144CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -150,7 +150,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     PA2     ------> ADC1_IN2
     PA3     ------> ADC1_IN3 
     */
-    GPIO_InitStruct.Pin = IPC_ISMON0_Pin|LPB_ISMON1_Pin|LPB_ISMON0_Pin|LPA_ISMON1_Pin;
+    GPIO_InitStruct.Pin = LPC_ISMON0_Pin|LPB_ISMON1_Pin|LPB_ISMON0_Pin|LPA_ISMON1_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
@@ -180,7 +180,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     __HAL_LINKDMA(adcHandle,DMA_Handle,hdma_adc1);
 
     /* ADC1 interrupt Init */
-    HAL_NVIC_SetPriority(ADC_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(ADC_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(ADC_IRQn);
   /* USER CODE BEGIN ADC1_MspInit 1 */
 
@@ -209,7 +209,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     PA2     ------> ADC1_IN2
     PA3     ------> ADC1_IN3 
     */
-    HAL_GPIO_DeInit(GPIOC, IPC_ISMON0_Pin|LPB_ISMON1_Pin|LPB_ISMON0_Pin|LPA_ISMON1_Pin);
+    HAL_GPIO_DeInit(GPIOC, LPC_ISMON0_Pin|LPB_ISMON1_Pin|LPB_ISMON0_Pin|LPA_ISMON1_Pin);
 
     HAL_GPIO_DeInit(GPIOA, LPA_ISMON0_Pin|LASER_NTC_Pin|LASER_PD_Pin|FIBER_PD_Pin);
 
@@ -225,7 +225,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-
+/* USER CODE BEGIN 4 */
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

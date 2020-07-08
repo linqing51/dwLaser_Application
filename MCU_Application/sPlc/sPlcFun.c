@@ -161,17 +161,22 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	LIMS16(src, TMP_REG_0, TMP_REG_1);
 	temp = (int16_t)(CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096);//单位mV
 	temp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - temp) / temp);
-	ftemp = ((1.0 / CONFIG_NTC_B) * log((fp32_t)(temp) / 10000)) + (1 / (CONFIG_ADC_AMBIENT + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
+	ftemp = ((1.0 / CONFIG_NTC_B) * log((fp32_t)(temp) / 10000)) + (1 / (CONFIG_AMBIENT_TEMP + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
 	ftemp = (fp32_t)(( 1.0F / ftemp ) - 273.0F);
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
-void TENV(uint16_t dist, uint16_t src){//CODE转换为环境温度
-	int16_t temp;
-	temp = (int16_t)(CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096);//单位mV
-	temp = (int16_t)((fp32_t)(temp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE + CONFIG_ADC_AMBIENT);
-	NVRAM0[dist] = temp;
+void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
+	fp32_t ftemp;
+	ftemp = (fp32_t)CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096.0F;//单位mV
+	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
+	if(ftemp >= 100)
+		ftemp =100;
+	if(ftemp <= -40){
+		ftemp = -40;
+	}
+	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 void ADD1(uint16_t Sa){//16位非饱和自加
 	NVRAM0[Sa] += 1;

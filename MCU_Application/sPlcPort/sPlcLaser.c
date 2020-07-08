@@ -148,7 +148,10 @@ void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 }
 
 #endif
-void STLAR(void){//开始发射脉冲	
+void STLAR(void){//开始发射脉冲
+#if CONFIG_DEBUG_LASER == 1
+	printf("sPlc->sPlcLaser:Laser start!\n");
+#endif	
 #if CONFIG_SPLC_USING_MUSIC == 1	
 	SetMusicVolume(NVRAM0[SPREG_MUSIC_VOLUME]);//向GDDC触摸屏发送音量
 #endif
@@ -158,9 +161,8 @@ void STLAR(void){//开始发射脉冲
 	else{
 		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;
 	}
-	NVRAM0[SPREG_BEEM_FREQ] = BEEM_FREQ_0;
-	NVRAM0[SPREG_BEEM_DUTYCYCLE] = NVRAM0[DM_BEEM_VOLUME];
-	NVRAM0[SPREG_MUSIC_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
+	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
+	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 	NVRAM0[SPREG_BEEM_COUNTER]= 0;
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
@@ -172,6 +174,9 @@ void STLAR(void){//开始发射脉冲
 	HAL_TIM_Base_Start_IT(&htim10);//打开计时器
 }
 void EDLAR(void){//停止发射脉冲
+#if CONFIG_DEBUG_LASER == 1
+	printf("sPlc->sPlcLaser:Laser stop!\n");
+#endif
 	NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_STOP;//关闭MP3
 	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
 	HAL_TIM_Base_Stop_IT(&htim10);//停止计时器
@@ -181,12 +186,15 @@ void EDLAR(void){//停止发射脉冲
 	LaserFlag_Emiting = false;
 	LaserFlag_Emitover = true;
 }
-void sPlcLaserInit(void){//激光脉冲功能初始化	
-	LASER_CH0_OFF;
-	LASER_CH1_OFF;
-	LASER_CH2_OFF;
-	LASER_CH3_OFF;
-	LASER_CH4_OFF;
+void sPlcLaserInit(void){//激光脉冲功能初始化
+#if CONFIG_DEBUG_LASER == 1
+	printf("sPlc->sPlcLaser:Laser init!\n");
+#endif	
+	SET_LASER_CH0(GPIO_PIN_RESET);
+	SET_LASER_CH1(GPIO_PIN_RESET);
+	SET_LASER_CH2(GPIO_PIN_RESET);
+	SET_LASER_CH3(GPIO_PIN_RESET);
+	SET_LASER_CH4(GPIO_PIN_RESET);
 	//设定计时器
 	RRES(SPCOIL_LASER_DRIVER_INIT_FAIL);
 	LaserTimer_Mode = 0;
@@ -208,10 +216,43 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 }
 static void laserStart(void){//按通道选择打开激光
 #if CONFIG_SPLC_USING_LEDAIM == 1
-	setBlueLedDutyCycle(NVRAM0[SPREG_BLUE_LED_DUTYCYCLE]);//打开激光发射指示
+	SSET(Y_BLED);//打开激光发射指示
+#endif	
+#if CONFIG_USING_SINGLE_WAVE == 1//单波长
+	SET_LASER_CH0(GPIO_PIN_SET);
+	SET_LASER_CH1(GPIO_PIN_RESET);
+	SET_LASER_CH2(GPIO_PIN_RESET);
+	SET_LASER_CH3(GPIO_PIN_RESET);
+	SET_LASER_CH4(GPIO_PIN_RESET);
 #endif
-	LASER_CH0_ON; 
-	LASER_CH1_ON;
+#if CONFIG_USING_DUAL_WAVE == 1//双波长
+	SET_LASER_CH0(GPIO_PIN_SET);
+	SET_LASER_CH1(GPIO_PIN_SET);
+	SET_LASER_CH2(GPIO_PIN_RESET);
+	SET_LASER_CH3(GPIO_PIN_RESET);
+	SET_LASER_CH4(GPIO_PIN_RESET);
+#endif
+#if CONFIG_USING_TRIPE_WAVE == 1//三波长
+	SET_LASER_CH0(GPIO_PIN_SET);
+	SET_LASER_CH1(GPIO_PIN_SET);
+	SET_LASER_CH2(GPIO_PIN_SET);
+	SET_LASER_CH3(GPIO_PIN_RESET);
+	SET_LASER_CH4(GPIO_PIN_RESET);
+#endif
+#if CONFIG_USING_QUAD_WAVE == 1//四波长
+	SET_LASER_CH0(GPIO_PIN_SET);
+	SET_LASER_CH1(GPIO_PIN_SET);
+	SET_LASER_CH2(GPIO_PIN_SET);
+	SET_LASER_CH3(GPIO_PIN_SET);
+	SET_LASER_CH4(GPIO_PIN_RESET);
+#endif
+#if CONFIG_USING_FIVE_WAVE == 1//五波长
+	SET_LASER_CH0(GPIO_PIN_SET);
+	SET_LASER_CH1(GPIO_PIN_SET);
+	SET_LASER_CH2(GPIO_PIN_SET);
+	SET_LASER_CH3(GPIO_PIN_SET);
+	SET_LASER_CH4(GPIO_PIN_SET);
+#endif
 	LaserFlag_Emiting = true;
 	if(LD(MR_BEEM_TONE) || LaserTimer_Mode == LASER_MODE_SIGNAL){//声光同步
 		//播放MP3 ID 0
@@ -225,11 +266,11 @@ static void laserStart(void){//按通道选择打开激光
 	}
 }
 static void laserStop(void){//按通道选择关闭激光
-	LASER_CH0_OFF;
-	LASER_CH1_OFF;//翻转输出
-	LASER_CH2_OFF;
-	LASER_CH3_OFF;
-	LASER_CH4_OFF;	
+	SET_LASER_CH0(GPIO_PIN_RESET);
+	SET_LASER_CH1(GPIO_PIN_RESET);
+	SET_LASER_CH2(GPIO_PIN_RESET);
+	SET_LASER_CH3(GPIO_PIN_RESET);
+	SET_LASER_CH4(GPIO_PIN_RESET);	
 	LaserFlag_Emiting = false;
 #if CONFIG_SPLC_USING_LEDAIM == 1
 	setBlueLedDutyCycle(0);//打开激光发射指示
@@ -275,8 +316,8 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 					NVRAM0[SPREG_NEXT_MUSIC_ID] = 1;//开始播放MP3 ID 1
 					NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_PLAY;
 #if CONFIG_SPLC_USING_BEEM == 1
-					if(NVRAM0[SPREG_BEEM_FREQ] != BEEM_FREQ_1){
-						NVRAM0[SPREG_BEEM_FREQ] = BEEM_FREQ_1;
+					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFORM_BEEM_FREQ){
+						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFORM_BEEM_FREQ;
 						setBeemFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}
 #endif
@@ -287,8 +328,8 @@ void laserTimerCallback(void){//TIM 中断回调 激光发射
 					NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;//开始播放MP3 ID0
 					NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_PLAY;
 #if CONFIG_SPLC_USING_BEEM == 1					
-					if(NVRAM0[SPREG_BEEM_FREQ] != BEEM_FREQ_0){
-						NVRAM0[SPREG_BEEM_FREQ] = BEEM_FREQ_0;
+					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFAULT_BEEM_FREQ){
+						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
 						setBeemFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}
 #endif			

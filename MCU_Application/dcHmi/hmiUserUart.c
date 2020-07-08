@@ -3,10 +3,10 @@
 /*****************************************************************************/
 extern UART_HandleTypeDef huart5;
 /*****************************************************************************/
-uint8_t gddcHmiRxBuf[256];
+uint8_t uart5_rxDat;
 /*****************************************************************************/
 void hmiUartInit(void){
-	HAL_UART_Receive_IT(&huart5, gddcHmiRxBuf, 1);
+	HAL_UART_Receive_IT(&huart5, &uart5_rxDat, 1);
 }
 void hmiUartSendChar(uint8_t sdat){
 	HAL_StatusTypeDef ret;
@@ -14,5 +14,11 @@ void hmiUartSendChar(uint8_t sdat){
 	if(ret != HAL_OK){
 		__nop();
 	}
+}
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	if(huart == &huart5){//´¥ÃþÆÁ´®¿Ú
+		queue_push(uart5_rxDat);
+	}
+	HAL_UART_Receive_IT(&huart5, &uart5_rxDat, 1);
 }
 /*****************************************************************************/

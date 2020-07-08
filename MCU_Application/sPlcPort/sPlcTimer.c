@@ -15,7 +15,8 @@ void initSplcTimer(void){//硬件sTimer计时器初始化
 	TimerCounter_100mS = 0;
 	sPlcTick = 0;
 }
-void sPlcTimerIsr(void){//硬件sTimer计时器中断 10mS
+
+void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	uint16_t i;
 	uint32_t temp;
 	for(i = TD_1MS_START;i <= TD_1MS_END;i ++){

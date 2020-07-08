@@ -11,7 +11,7 @@ void inputRefresh(void){//获取输入IO
 	uint8_t	temp;
 	//X0
 	temp = HAL_GPIO_ReadPin(ESTOP_IN_GPIO_Port, ESTOP_IN_Pin);//急停
-	if(temp){
+	if(temp){//急停常闭
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
 		}
@@ -19,7 +19,7 @@ void inputRefresh(void){//获取输入IO
 			NVRAM0[X_START] |= (int16_t)(1 << 0);
 		}
 	}
-	else{
+	else{//急停常开
 		if(inputFilter[0] > (CONFIG_INPUT_FILTER_TIME * -1)){
 			inputFilter[0] --;
 		}
@@ -99,7 +99,7 @@ void inputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
 		}
 	}
-	//X5
+	//X5 光纤探测
 	if(NVRAM0[SPREG_ADC_2] > CONFIG_FIBER_PD_HIGH){
 		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[5] ++;

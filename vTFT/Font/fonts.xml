@@ -1,12 +1,7 @@
-<fonts>
-	<font id="0" type="2" name="ASCII-6*12" width="6" height="12" ttf="verdana.ttf"/>
-	<font id="1" type="2" name="ASCII-8*16" width="8" height="16" ttf="verdana.ttf"/>
-	<font id="2" type="2" name="ASCII-12*24" width="12" height="24" ttf="verdana.ttf"/>
-	<font id="3" type="2" name="ASCII-16*32" width="16" height="32" ttf="verdana.ttf"/>
-	<font id="4" type="2" name="GBK-12*12" width="6" height="12" ttf="verdana.ttf"/>
-	<font id="5" type="2" name="GBK-16*16" width="8" height="16" ttf="verdana.ttf"/>
-	<font id="6" type="2" name="GBK-24*24" width="12" height="24" ttf="verdana.ttf"/>
-	<font id="7" type="2" name="GB2312-32*32" width="16" height="32" ttf="fangsong_GB2312.ttf"/>
-	<font id="15" type="2" name="GB2312-20*40[黑体]" width="20" height="40" ttf="songti_GB2312.ttf"/>
-	<font id="18" type="2" name="ASCII-24*48[宋体]" width="24" height="48" ttf="verdana.ttf"/>
+<fonts ttf="arial.ttf">
+	<font id="0" type="9" name="ASCII_12" width="6" height="12" ttf="verdana.ttf"/>
+	<font id="1" type="9" name="ASCII_16" width="8" height="16" ttf="verdana.ttf"/>
+	<font id="2" type="9" name="ASCII_24" width="12" height="24" ttf="verdana.ttf"/>
+	<font id="3" type="9" name="ASCII_32" width="16" height="32" ttf="verdana.ttf"/>
+	<font id="9" type="9" name="ASCII_48" width="24" height="48" ttf="verdana.ttf"/>
 </fonts>

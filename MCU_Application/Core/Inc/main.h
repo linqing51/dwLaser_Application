@@ -65,8 +65,8 @@ void Error_Handler(void);
 #define DA_SCLK_GPIO_Port GPIOC
 #define DA_DIN_Pin GPIO_PIN_15
 #define DA_DIN_GPIO_Port GPIOC
-#define IPC_ISMON0_Pin GPIO_PIN_0
-#define IPC_ISMON0_GPIO_Port GPIOC
+#define LPC_ISMON0_Pin GPIO_PIN_0
+#define LPC_ISMON0_GPIO_Port GPIOC
 #define LPB_ISMON1_Pin GPIO_PIN_1
 #define LPB_ISMON1_GPIO_Port GPIOC
 #define LPB_ISMON0_Pin GPIO_PIN_2
@@ -103,8 +103,8 @@ void Error_Handler(void);
 #define BEEM_PWM_GPIO_Port GPIOB
 #define TEC_OUT_Pin GPIO_PIN_14
 #define TEC_OUT_GPIO_Port GPIOB
-#define FAN1_OUT_Pin GPIO_PIN_15
-#define FAN1_OUT_GPIO_Port GPIOB
+#define FAN_OUT_Pin GPIO_PIN_15
+#define FAN_OUT_GPIO_Port GPIOB
 #define PWR_KEY_Pin GPIO_PIN_8
 #define PWR_KEY_GPIO_Port GPIOC
 #define OTG_FS_PSOC_Pin GPIO_PIN_9

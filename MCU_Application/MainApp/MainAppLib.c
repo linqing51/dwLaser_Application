@@ -84,6 +84,12 @@ uint8_t getBeemDuty(int16_t volume){//获取蜂鸣器占空比设置
 	return temp;
 }
 void defaultScheme(void){//当前选择方案恢复默认值
+	NVRAM0[DM_SCHEME_NUM] = 0x0;
+	NVRAM0[DM_LANGUAGE] = 0x0;
+	NVRAM0[DM_MUSIC_VOLUME]	= 50;							
+	NVRAM0[DM_BEEM_VOLUME]	= 51;										
+	NVRAM0[DM_AIM_BRG] = 52;
+	NVRAM0[DM_LCD_BRG] = 53;							
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d",NVRAM0[DM_SCHEME_NUM]);		
 	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
@@ -104,7 +110,19 @@ void defaultScheme(void){//当前选择方案恢复默认值
 
 void loadScheme(void){//FD->EM
 	uint8_t *psrc, *pdist;
-	psrc = (uint8_t*)&FDRAM[(FD_SCHEME_START_0 + NVRAM0[DM_SCHEME_NUM] * 30)];
+	if(NVRAM0[DM_SCHEME_NUM] > 31){
+#if CONFIG_DEBUG_APP == 1
+		printf("App:loadScheme NVRAM0[DM_SCHEME_NUM] > 31 !\n");
+#endif
+		NVRAM0[DM_SCHEME_NUM] = 31;
+	}
+	if(NVRAM0[DM_SCHEME_NUM] < 0){
+#if CONFIG_DEBUG_APP == 1
+		printf("App:loadScheme NVRAM0[DM_SCHEME_NUM] < 0 !\n");
+#endif
+		NVRAM0[DM_SCHEME_NUM] = 0;
+	}
+	psrc = (uint8_t*)&FDRAM[(FD_SCHEME_START_0 + NVRAM0[DM_SCHEME_NUM] * 64)];
 	pdist = (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME];
 	memcpy(pdist, psrc, ((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2));
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){
@@ -127,6 +145,9 @@ void loadScheme(void){//FD->EM
 			break;
 		}
 		default:{
+#if CONFIG_DEBUG_APP == 1
+			printf("App:load default scheme!\n");
+#endif			
 			defaultScheme();
 			break;
 		}

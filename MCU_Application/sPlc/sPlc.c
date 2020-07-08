@@ -39,13 +39,10 @@ void assertRegisterAddress(uint16_t adr){//检查寄存器地址
 #endif
 }
 void loadNvram(void){//从EPROM中载入NVRAM
-	uint16_t i;
+	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
 #if CONFIG_SPLC_USING_EPROM == 1
-	epromRead(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));//从EPROM中恢复MR
+	epromRead(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, ((DM_END -  DM_START + 1) * 2));//从EPROM中恢复MR
 #endif
-	for(i = R_START;i <= TMP_END;i ++){
-		NVRAM0[i] = 0x0;
-	}
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
 }
 void saveNvram(void){//强制将NVRAM存入EPROM
@@ -75,7 +72,7 @@ void clearNvram(void){//清除NVRAM数据
 	enterSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_NVRAM_START; i< (CONFIG_NVRAM_SIZE * 2);i ++){
-		epromWriteByte(i, 0x0);//?BUG
+		epromWriteByte(i, 0x0);//
 	}
 #endif
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM0
@@ -125,18 +122,16 @@ void checkEprom(void){
 void loadFdram(void){//从EPROM中载入FDRAM
 #if CONFIG_SPLC_USING_EPROM == 1
 	epromRead(CONFIG_EPROM_FDRAM_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
-	feedWatchDog();
 #endif
 }
 void saveFdram(void){//强制将FDRAM存入EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
 	epromWrite(CONFIG_EPROM_FDRAM_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
-	feedWatchDog();
 #endif
 }
 void clearFdram(void){//清楚FDRAM数据
 	uint16_t i;
-	disableWatchDog();
+	//disableWatchDog();
 #if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_FDRAM_START; i< (CONFIG_FDRAM_SIZE * 2) ; i++){
 #if CONFIG_SPLC_USING_EPROM == 1
@@ -226,22 +221,23 @@ void sPlcSpwmLoop(void){//SPWM轮询
 
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化
+	//sPlcEpromTest();
+#if CONFIG_DEBUG_SPLC == 1
+	printf("\r\r\r\n\n\n");
+	printf("sPlc:Start load Nvram......\n");
+#endif
 	loadNvram();//上电恢复NVRAM
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start load Fdram......\n");
+#endif
+	loadFdram();//上电恢复FDRAM
 	SSET(SPCOIL_ON);
-	RRES(SPCOIL_BEEM_ENABLE);
-	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
-	NVRAM0[SPREG_BEEM_DUTYCYCLE] = CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE;
-	NVRAM0[SPREG_BEEM_COUNTER] = 0;
-	RRES(SPCOIL_AIM_ENABEL);
-	NVRAM0[SPREG_AIM_DUTYCYCLE] = 0;
-	NVRAM0[SPREG_RED_LED_DUTYCYCLE] = 0;
-	NVRAM0[SPREG_GREEN_LED_DUTYCYCLE] = 0;
-	NVRAM0[SPREG_BLUE_LED_DUTYCYCLE] = 0;
-	NVRAM0[SPREG_MUSIC_VOLUME] = 0;									
-	NVRAM0[SPREG_PLAYING_MUSIC_ID] = 0;							
-	NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;									
-	NVRAM0[SPREG_CONTROL_MUSIC]	= CMD_MUSIC_STOP;
-	sPlcEpromTest();
+	SSET(SPCOIL_START_UP);
+	//NVRAM0[SPREG_MUSIC_VOLUME] = 0;									
+	//NVRAM0[SPREG_PLAYING_MUSIC_ID] = 0;							
+	//NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;									
+	//NVRAM0[SPREG_CONTROL_MUSIC]	= CMD_MUSIC_STOP;
+	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
 #if CONFIG_SPLC_USING_CLEAR_NVRAM == 1 && CONFIG_SPLC_USING_EPROM == 1
 	if(NVRAM0[SPREG_CLEAR_NVRAM] == (int16_t)CONFIG_SPLC_CLEAR_CODE){
 		disableSplcTimer();//关闭中断	
@@ -254,28 +250,54 @@ void sPlcInit(void){//软逻辑初始化
 		clearNvram();
 		REBOOT();	
 	}
-#endif	
+#endif
+
 #if CONFIG_SPLC_USING_IO_INPUT == 1
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start input init......\n");
+#endif	
 	inputInit();
 #endif
+
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start output init......\n");
+#endif	
 	outputInit();
 #endif
+
 #if CONFIG_SPLC_USING_DAC == 1	
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start Dac init......\n");
+#endif	
 	initChipDac();//初始化DAC模块
 #endif
+
 #if CONFIG_SPLC_USING_ADC == 1
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start Adc init......\n");
+#endif	
 	initChipAdc();//初始化ADC模块
 #endif
+
+
 #if CONFIG_SPLC_USING_LASER == 1
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start laser timer init......\n");
+#endif
 	sPlcLaserInit();
 #endif
-	SSET(SPCOIL_ON);
-	SSET(SPCOIL_START_UP);
-	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
+
 #if CONFIG_SPLC_USING_DK25L == 1
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start NFC init......\n");
+#endif
 	delayMs(100);
 	DL25L_Init();//打开中断后运行
+#endif
+
+#if CONFIG_DEBUG_SPLC == 1
+	printf("sPlc:Start splc timer init......\n");
 #endif
 	initSplcTimer();//初始化硬件计时器模块 启动计时器
 }

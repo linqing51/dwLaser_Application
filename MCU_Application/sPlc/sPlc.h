@@ -1,7 +1,7 @@
 #ifndef __SPLC_H__
 #define __SPLC_H__
 /*****************************************************************************/
-#include "cmsis_os.h"
+//#include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
 //#include "arm_math.h"
 /*****************************************************************************/
@@ -76,27 +76,26 @@ void clearTD(void);
 void clearSPCOIL(void);
 void clearSPREG(void);
 /*****************************************************************************/
-__weak void inputInit(void);
-__weak void inputRefresh(void);
-__weak void outputInit(void);
-__weak void outputRefresh(void);
-__weak void loadDefault(void);
-__weak void enterSplcIsr(void);
-__weak void exitSplcIsr(void);
-__weak void disableSplcIsr(void);
-__weak void enableSplcIsr(void);
-__weak void updateNvram(void);//更新NVRAM->EPROM
-__weak void clearNvram(void);//清除NVRAM数据	
-__weak void loadNvram(void);
-__weak void saveNvram(void);
-__weak void loadFdram(void);
-__weak void saveFdram(void);
-__weak void mucReboot(void);//软件复位
-__weak void setLed(uint8_t color, uint8_t state);//设置LED灯
+extern void inputInit(void);
+extern void inputRefresh(void);
+extern void outputInit(void);
+extern void outputRefresh(void);
+extern void loadDefault(void);
+extern void enterSplcIsr(void);
+extern void exitSplcIsr(void);
+extern void disableSplcIsr(void);
+extern void enableSplcIsr(void);
+extern void updateNvram(void);//更新NVRAM->EPROM
+extern void clearNvram(void);//清除NVRAM数据	
+extern void loadNvram(void);
+extern void saveNvram(void);
+extern void loadFdram(void);
+extern void saveFdram(void);
+extern void mucReboot(void);//软件复位
 /*****************************************************************************/
 void sPlcInit(void);
 /*****************************************************************************/
-__weak void LINKS(void);//从机接收
-__weak void LINKM(void);//主机发送
+extern void LINKS(void);//从机接收
+extern void LINKM(void);//主机发送
 /*****************************************************************************/
 #endif
