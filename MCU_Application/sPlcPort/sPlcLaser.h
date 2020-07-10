@@ -46,7 +46,7 @@ extern volatile int32_t  LaserRelease_TotalTime;//激光发射总时间
 extern volatile int32_t  LaserRelease_TotalEnergy;//激光发射总能量
 /*****************************************************************************/
 void sPlcLaserInit(void);
-void laserTimerCallback(void);//中断 激光发射
+void laserTimerIsr(void);//中断 激光发射
 void testBenchLaserTimer(uint8_t st);//LASER激光发射测试
 void EDLAR(void);//停止发射脉冲
 void STLAR(void);//开始发射脉冲

@@ -85,12 +85,14 @@ extern void enterSplcIsr(void);
 extern void exitSplcIsr(void);
 extern void disableSplcIsr(void);
 extern void enableSplcIsr(void);
-extern void updateNvram(void);//更新NVRAM->EPROM
-extern void clearNvram(void);//清除NVRAM数据	
+extern void updateNvram(void);//更新NVRAM->EPROM	
 extern void loadNvram(void);
 extern void saveNvram(void);
+extern void clearNvram(void);//清除NVRAM数据
 extern void loadFdram(void);
 extern void saveFdram(void);
+extern void clearFdram(void);
+extern void delayMs(uint32_t delayMs);//SPLC 阻塞延时
 extern void mucReboot(void);//软件复位
 /*****************************************************************************/
 void sPlcInit(void);

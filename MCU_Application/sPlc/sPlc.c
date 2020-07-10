@@ -38,42 +38,58 @@ void assertRegisterAddress(uint16_t adr){//检查寄存器地址
 	adr = ~adr;
 #endif
 }
-void loadNvram(void){//从EPROM中载入NVRAM
+void loadNvram(void){//从EPROM中载入NVRAM MR和DM
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
 #if CONFIG_SPLC_USING_EPROM == 1
-	epromRead(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, ((DM_END -  DM_START + 1) * 2));//从EPROM中恢复MR
+	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//从EPROM中恢复MR
+	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//从EPROM中恢复DM
 #endif
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
 }
 void saveNvram(void){//强制将NVRAM存入EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
-	epromWrite(CONFIG_EPROM_NVRAM_START, (uint8_t*)NVRAM0, ((MR_END + 1) * 2));
+	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//将NVRAM中MR储存入EPROM																				
+	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//将NVRAM中DM储存入EPROM
 #endif
 }
 void updateNvram(void){//更新NVRAM->EPROM
 	uint8_t *sp0, *sp1;
 	uint16_t i;
-	sp0 = (uint8_t*)NVRAM0;
-	sp1 = (uint8_t*)NVRAM1;
-	//储存MR和DM
-	for(i = (CONFIG_EPROM_NVRAM_START + (MR_START * 2));i < ((DM_END + 1) * 2);i ++){//储存MR
+	//储存MR
+	sp0 = (uint8_t*)(NVRAM0 + MR_START);
+	sp1 = (uint8_t*)(NVRAM1 + MR_START);
+	for(i = 0;i < (CONFIG_MRRAM_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
 #if CONFIG_SPLC_USING_EPROM == 1
-			epromWriteByte(i, *sp0);
+			epromWriteByte((i + CONFIG_EPROM_MR_START), *sp0);
 #endif
 		}
 		sp0 ++;
 		sp1 ++;
 	}
+	//储存DM
+	sp0 = (uint8_t*)(NVRAM0 + DM_START);
+	sp1 = (uint8_t*)(NVRAM1 + DM_START);
+	for(i = 0;i < (CONFIG_DMRAM_SIZE * 2);i ++){//储存MR
+		if(*sp0 != *sp1){
+#if CONFIG_SPLC_USING_EPROM == 1
+			epromWriteByte((i + CONFIG_EPROM_DM_START), *sp0);
+#endif
+		}
+		sp0 ++;
+		sp1 ++;
+	}
+	
 	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//更新NVRAM1 非保持寄存器
 }
 void clearNvram(void){//清除NVRAM数据	
 	uint16_t i = 0;
 	enterSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
-	for(i = CONFIG_EPROM_NVRAM_START; i< (CONFIG_NVRAM_SIZE * 2);i ++){
+	//清除EPROM DM区
+	for(i = CONFIG_EPROM_DM_START; i< (CONFIG_DMRAM_SIZE * 2);i ++){
 		epromWriteByte(i, 0x0);//
-	}
+	}	
 #endif
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM0
 	memset((uint8_t*)NVRAM1, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM1
@@ -121,25 +137,26 @@ void checkEprom(void){
 
 void loadFdram(void){//从EPROM中载入FDRAM
 #if CONFIG_SPLC_USING_EPROM == 1
-	epromRead(CONFIG_EPROM_FDRAM_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
+	epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
 #endif
 }
 void saveFdram(void){//强制将FDRAM存入EPROM
 #if CONFIG_SPLC_USING_EPROM == 1
-	epromWrite(CONFIG_EPROM_FDRAM_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
+	epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
 #endif
 }
-void clearFdram(void){//清楚FDRAM数据
+void clearFdram(void){//清除FDRAM数据
 	uint16_t i;
-	//disableWatchDog();
+	enterSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
-	for(i = CONFIG_EPROM_FDRAM_START; i< (CONFIG_FDRAM_SIZE * 2) ; i++){
+	for(i = CONFIG_EPROM_FD_START; i< (CONFIG_FDRAM_SIZE * 2) ; i++){
 #if CONFIG_SPLC_USING_EPROM == 1
 		epromWriteByte(i, 0x0);
 #endif
 	}
 #endif
 	memset(FDRAM, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
+	exitSplcIsr();//恢复中断
 }
 
 void sPlcSpwmLoop(void){//SPWM轮询	

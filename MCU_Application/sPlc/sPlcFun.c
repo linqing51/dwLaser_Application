@@ -150,26 +150,27 @@ void MOVD(uint16_t dist, uint16_t src){//32位寄存器传输
 //void ANDD(uint16_t dist){//32位数 按位求与
 //}
 void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
-	uint16_t temp;
 	fp32_t ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	assertRegisterAddress(dist);//检查寄存器地址
 	assertRegisterAddress(src);//检查寄存器地址
 #endif
 	NVRAM0[TMP_REG_0] = 0;
-	NVRAM0[TMP_REG_1] = CONFIG_ADC_INTERNAL_VREF;
+	NVRAM0[TMP_REG_1] = 0xFFF;
 	LIMS16(src, TMP_REG_0, TMP_REG_1);
-	temp = (int16_t)(CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096);//单位mV
-	temp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - temp) / temp);
-	ftemp = ((1.0 / CONFIG_NTC_B) * log((fp32_t)(temp) / 10000)) + (1 / (CONFIG_AMBIENT_TEMP + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
-	ftemp = (fp32_t)(( 1.0F / ftemp ) - 273.0F);
+	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);
+	ftemp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - ftemp) / ftemp);
+	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / CONFIG_NTC_B * log(ftemp / CONFIG_NTC_R25)) - 273.15;
+	//ftemp = ((1.0 / CONFIG_NTC_B) * log(ftemp) / 10000) + (1 / (CONFIG_AMBIENT_TEMP + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
+	//ftemp = (fp32_t)(( 1.0F / ftemp ) - 273.0F);
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
 	fp32_t ftemp;
-	ftemp = (fp32_t)CONFIG_ADC_INTERNAL_VREF * NVRAM0[src] / 4096.0F;//单位mV
+	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);
+	//ftemp = NVRAM0[SPREG_VREF]* NVRAM0[src] / 4096;//单位mV
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
 	if(ftemp >= 100)
 		ftemp =100;
@@ -459,8 +460,14 @@ void FDSAV(void){//FDRAM->EPROM
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	disableSplcIsr();
+	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
+		cn = (CONFIG_HMI_SCHEME_NUM - 1);
+	}
+	if(cn < 0){
+		cn = 0;
+	}
 #if CONFIG_SPLC_USING_EPROM == 1
-	epromWrite((cn * 60 + CONFIG_EPROM_FDRAM_START), (uint8_t*)(cn * 30 + FDRAM), 60);
+	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM), 128);
 #endif
 	enableSplcIsr();
 }

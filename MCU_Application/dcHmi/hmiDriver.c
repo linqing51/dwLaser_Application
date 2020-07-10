@@ -2041,8 +2041,14 @@ void StopMusicId(void){//Õ£÷π≤•∑≈
 	END_CMD();
 }
 
-
-
-
+void resetGddcHmi(void){//÷ÿ∆ÙGDDC HMI
+    BEGIN_CMD();//EE
+    TX_8(0x07);
+    TX_8(0x35);
+	TX_8(0x5A);
+	TX_8(0x53);
+	TX_8(0xA5);
+    END_CMD();
+}
 
 

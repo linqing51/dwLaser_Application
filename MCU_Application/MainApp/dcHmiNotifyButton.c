@@ -2074,7 +2074,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						loadDefault();
 						updateOptionDisplay();//更新Option显示
 						SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
-						optionKeyEnable(true);//解说按键
+						optionKeyEnable(true);//解锁按键
 					}
 					break;
 				}
@@ -2508,6 +2508,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM:{
 					if(state){
+						SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 						SSET(R_CLEAR_EPROM);
 					}
 					break;

@@ -62,23 +62,25 @@
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
 #define CONFIG_EPROM_PAGE_SIZE									0x08//EPROM 页大小
 #define CONFIG_EPROM_WRITE_DELAY								0//写入等待时间mS
-#define CONFIG_EPROM_NVRAM_START								0x0
-#define CONFIG_EPROM_FDRAM_START								0x800//2048
+#define CONFIG_EPROM_MR_START									0x0
+#define CONFIG_EPROM_DM_START									(CONFIG_MRRAM_SIZE * 2)//NVRAM中DM在EPROM储存地址
+#define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_START + (CONFIG_DMRAM_SIZE * 2))
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
-#define CONFIG_SPLC_ADC_CHANNEL									9//ADC采集通道
+#define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM								6//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_AMBIENT_TEMP             						25// Ambient temp in deg C
-#define CONFIG_ADC_INTERNAL_VREF     							3350// ADC Voltage Reference (mV)
+#define CONFIG_ADC_VREFINT										1121//STM32 内部基准电压
+#define CONFIG_VREF_CAL                         				*(__IO uint16_t *)(0x1FFF7A2A)
+#define CONFIG_ADC_INTERNAL_VREF     							3400// ADC Voltage Reference (mV)
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25											760.0F//0.76V@25D
 #define CONFIG_NTC_RS											3300L
-#define CONFIG_NTC_B											3500L
-#define CONFIG_NTC_RB											10000L
-#define CONFIG_NTC_VREF											5000L
-#define CONFIG_FIBER_PD_HIGH									1240
-#define CONFIG_FIBER_PD_LOW										1100
+#define CONFIG_NTC_B											3500.0F
+#define CONFIG_NTC_R25											10000.0F//25摄氏度时电阻
+#define CONFIG_NTC_VREF											5000L//
+#define CONFIG_FIBER_PD_PLUG									300//光纤插入
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DAC									1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0										0xFFFF
@@ -107,16 +109,15 @@
 #define CONFIG_SPLC_USING_LASER_TEST							0
 /*****************************************************************************/
 #define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
-#define CONFIG_DCHMI_DISKBUF_SIZE								0xFF//显示缓冲区大小
+#define CONFIG_DCHMI_DISKBUF_SIZE								0x80//显示缓冲区大小
 /*****************************************************************************/
 #define CONFIG_CHECK_DELAY_TIME									10
 #define CONFIG_KEY_REPEAT_DELAY_TIME							50
 #define CONFIG_STANDBY_BEEM_DELAY_TIME							20
 /*****************************************************************************/
-#define CONFIG_APP_DIODE_HIGH_TEMP								400
-#define CONFIG_APP_DIODE_LOW_TEMP								-100
-#define CONFIG_APP_DRIVE_HIGH_TEMP								650
-#define CONFIG_APP_ENVI_HIGH_TEMP								750
+#define CONFIG_APP_DIODE_HIGH_TEMP								400//激光器高温极限 40.0C
+#define CONFIG_APP_DIODE_LOW_TEMP								-100//激光器低温极限 - 10.0C
+#define CONFIG_APP_ENVI_HIGH_TEMP								700//处理器高温极限 75.0C
 /*****************************************************************************/
 #define CONFIG_USING_SINGLE_WAVE								1//单波长
 #define CONFIG_USING_DUAL_WAVE									0//双波长
@@ -128,7 +129,7 @@
 #define CONFIG_HMI_DEFAULT_PASSWORD1							0x3038//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD2							0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD3							0x3030//默认密码
-#define CONFIG_SCHEME_NAME_SIZE									22//12*2
+#define CONFIG_SCHEME_NAME_SIZE									22//10*2
 //光斑直径定义
 #define DERMA_SPOT_SIZE_0MM5									0x100A//光斑直径0.5					
 #define DERMA_SPOT_SIZE_1MM0									0x200B//光斑直径1.0
@@ -171,7 +172,7 @@
 #define CONFIG_MIN_LCD_BRG										1//屏幕亮度最小值
 #define CONFIG_MAX_BEEM_VOLUME									60
 #define CONFIG_MIN_BEEM_VOLUME									10
-#define CONFIG_COOL_SET_TEMP									280//冷却温度
+#define CONFIG_COOL_SET_TEMP									220//冷却温度
 #define CONFIG_COOL_DIFF_TEMP									20//冷却温度变化范围
 //功率设定校正系数
 #define LASER_CH0_NOTES_INTERCEPT								393.7F	
@@ -352,7 +353,9 @@
 #define FD_START												0
 #define FD_END													2047
 /*****************************************************************************/
-#define CONFIG_FDRAM_SIZE										(FD_END + 1)
+#define CONFIG_MRRAM_SIZE										(MR_END - MR_START + 1)									
+#define CONFIG_DMRAM_SIZE										(DM_END - DM_START + 1)
+#define CONFIG_FDRAM_SIZE										(FD_END - FD_START + 1)
 /*****************************************************************************/
 #define CONFIG_LKSRAM_SIZE										128//
 #define CONFIG_LKRRAM_SIZE										128//
@@ -420,15 +423,16 @@
 #define SPREG_ADC_6												(SPREG_START + 16)//ADC6采集值 LPB_ISMON0
 #define SPREG_ADC_7												(SPREG_START + 17)//ADC7采集值 LPA_ISMON1
 #define SPREG_ADC_8												(SPREG_START + 18)//ADC8采集值 片内温度传感器
+#define SPREG_ADC_9												(SPREG_START + 19)//ADC9采集值 片内基准源
 
-#define SPREG_DAC_0												(SPREG_START + 19)//DAC0设定值 LSET0
-#define SPREG_DAC_1												(SPREG_START + 20)//DAC1设定值 LSET1
-#define SPREG_DAC_2												(SPREG_START + 21)//DAC2设定值 LSET2
-#define SPREG_DAC_3												(SPREG_START + 22)//DAC3设定值 LSET3
-#define SPREG_DAC_4												(SPREG_START + 23)//DAC3设定值 LSET4
-#define SPREG_DAC_5												(SPREG_START + 24)//DAC3设定值 LSET5
-#define SPREG_DAC_6												(SPREG_START + 25)//DAC3设定值 LSET6
-#define SPREG_DAC_7												(SPREG_START + 26)//DAC3设定值 LSET7
+#define SPREG_DAC_0												(SPREG_START + 20)//DAC0设定值 LSET0
+#define SPREG_DAC_1												(SPREG_START + 21)//DAC1设定值 LSET1
+#define SPREG_DAC_2												(SPREG_START + 22)//DAC2设定值 LSET2
+#define SPREG_DAC_3												(SPREG_START + 23)//DAC3设定值 LSET3
+#define SPREG_DAC_4												(SPREG_START + 24)//DAC3设定值 LSET4
+#define SPREG_DAC_5												(SPREG_START + 25)//DAC3设定值 LSET5
+#define SPREG_DAC_6												(SPREG_START + 26)//DAC3设定值 LSET6
+#define SPREG_DAC_7												(SPREG_START + 27)//DAC3设定值 LSET7
 /*****************************************************************************/
 #define SPREG_SPWM_POS_0										(SPREG_START + 30)//软件PWM0正脉宽设置
 #define SPREG_SPWM_POS_SHADOW_0									(SPREG_START + 31)//软件PWM0正脉宽阴影

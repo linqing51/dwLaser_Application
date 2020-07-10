@@ -42,10 +42,11 @@ void loadDefault(void){//恢复默认值
 	RRES(R_DISABLE_FIBER_PROBE);
 	RRES(R_DISABLE_FAN_SPEED);
 	NVRAM0[DM_MUSIC_VOLUME] = CONFIG_MAX_MUSIC_VOLUME;
+	NVRAM0[DM_BEEM_VOLUME] = CONFIG_MAX_BEEM_VOLUME;
 	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_AIM_BRG;
 	NVRAM0[DM_LCD_BRG] = CONFIG_MAX_LCD_BRG;
 	NVSAV();//强制储存NVRAM
-	for(i=0;i<CONFIG_HMI_SCHEME_NUM;i++){
+	for(i = 0;i < CONFIG_HMI_SCHEME_NUM;i ++){
 		NVRAM0[DM_SCHEME_NUM] = i;
 		defaultScheme();
 		saveScheme();
@@ -83,13 +84,7 @@ uint8_t getBeemDuty(int16_t volume){//获取蜂鸣器占空比设置
 	temp = (uint8_t)(0xFF - (int32_t)volume * 200 / 100);
 	return temp;
 }
-void defaultScheme(void){//当前选择方案恢复默认值
-	NVRAM0[DM_SCHEME_NUM] = 0x0;
-	NVRAM0[DM_LANGUAGE] = 0x0;
-	NVRAM0[DM_MUSIC_VOLUME]	= 50;							
-	NVRAM0[DM_BEEM_VOLUME]	= 51;										
-	NVRAM0[DM_AIM_BRG] = 52;
-	NVRAM0[DM_LCD_BRG] = 53;							
+void defaultScheme(void){//当前选择方案恢复默认值						
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d",NVRAM0[DM_SCHEME_NUM]);		
 	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
@@ -155,13 +150,13 @@ void loadScheme(void){//FD->EM
 }
 void saveScheme(void){//EM->FD
 	uint8_t *psrc, *pdist;
-	if(NVRAM0[DM_SCHEME_NUM] > CONFIG_HMI_SCHEME_NUM)
-		NVRAM0[DM_SCHEME_NUM] = CONFIG_HMI_SCHEME_NUM;
+	if(NVRAM0[DM_SCHEME_NUM] > (CONFIG_HMI_SCHEME_NUM - 1))
+		NVRAM0[DM_SCHEME_NUM] = (CONFIG_HMI_SCHEME_NUM - 1);
 	if(NVRAM0[DM_SCHEME_NUM] < 0)
 		NVRAM0[DM_SCHEME_NUM] = 0;
-	pdist = (uint8_t*)&FDRAM[NVRAM0[DM_SCHEME_NUM] * 30];
+	pdist = (uint8_t*)&FDRAM[NVRAM0[DM_SCHEME_NUM] * 64];
 	psrc = (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME];
-	memcpy(pdist, psrc, 60);
+	memcpy(pdist, psrc, 128);
 }
 int8_t checkScheme(int8_t cn){
 	uint16_t strSize;

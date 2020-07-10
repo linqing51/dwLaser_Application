@@ -100,7 +100,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X5 光纤探测
-	if(NVRAM0[SPREG_ADC_2] > CONFIG_FIBER_PD_HIGH){
+	if(NVRAM0[SPREG_ADC_2] < CONFIG_FIBER_PD_PLUG){//光纤加入
 		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[5] ++;
 		}

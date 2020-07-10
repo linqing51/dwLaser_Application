@@ -276,7 +276,7 @@ static void laserStop(void){//按通道选择关闭激光
 	setBlueLedDutyCycle(0);//打开激光发射指示
 #endif
 }
-void laserTimerCallback(void){//TIM 中断回调 激光发射	
+void laserTimerIsr(void){//TIM 中断回调 激光发射	
 	switch(LaserTimer_Mode){
 		case LASER_MODE_CW:{//CW连续模式
 			if(LaserTimer_TCounter == 0){

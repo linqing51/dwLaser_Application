@@ -909,5 +909,6 @@ void PlayMusicId(uint16_t id, uint8_t loop);
 void SuspendMusicId(void);
 void ResumeMusicId(void);
 void StopMusicId(void);
-
+/*****************************************************************************/
+void resetGddcHmi(void);//÷ÿ∆ÙGDDC HMI
 #endif      //_HMI_DRIVER_

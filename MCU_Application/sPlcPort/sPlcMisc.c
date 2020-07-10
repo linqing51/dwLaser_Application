@@ -113,6 +113,10 @@ const uint32_t crc32Tab[] = { /* CRC polynomial 0xedb88320 */
 static uint16_t oldcrc16;
 static uint32_t oldcrc32;
 /*****************************************************************************/
+void delayMs(uint32_t delayMs){//SPLC ×èÈûÑÓÊ±
+	HAL_Delay(delayMs);
+}
+
 void enableSplcIsr(void){
 }
 void disableSplcIsr(void){
