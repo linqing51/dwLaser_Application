@@ -126,7 +126,13 @@ void enterSplcIsr(void){
 void exitSplcIsr(void){
 }
 
-void setLedAimFreq(uint32_t freq){//设置LED灯和瞄准光闪烁频率
+void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
+	if(freq < 500){
+		freq = 500;
+	}
+	if(freq > 6000){
+		freq = 6000;
+	}
 	htim3.Instance = TIM3;
 	htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
 	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -146,8 +152,14 @@ void setLedAimFreq(uint32_t freq){//设置LED灯和瞄准光闪烁频率
 		Error_Handler();
 	}
 }
-void setRedLedDutyCycle(uint8_t dc){//设置R LED亮度
+void setRedLedDutyCycle(int16_t dc){//设置R LED亮度
 	uint16_t temp;
+	if(dc > 100){
+		dc = 100;
+	}
+	if(dc < 0){
+		dc = 0;
+	}
 	temp = 255 * dc / 100;
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, temp);
 	if(dc != 0){
@@ -157,8 +169,14 @@ void setRedLedDutyCycle(uint8_t dc){//设置R LED亮度
 		HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1);//关闭TIM
 	}
 }
-void setGreenLedDutyCycle(uint8_t dc){//设置G LED亮度
+void setGreenLedDutyCycle(int16_t dc){//设置G LED亮度
 	uint16_t temp;
+	if(dc > 100){
+		dc = 100;
+	}
+	if(dc < 0){
+		dc = 0;
+	}
 	temp = 255 * dc / 100;
 	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, temp);
 	if(dc != 0){
@@ -168,8 +186,14 @@ void setGreenLedDutyCycle(uint8_t dc){//设置G LED亮度
 		HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);//关闭TIM
 	}
 }
-void setBlueLedDutyCycle(uint8_t dc){//设置B LED亮度
+void setBlueLedDutyCycle(int16_t dc){//设置B LED亮度
 	uint16_t temp;
+	if(dc > 100){
+		dc = 100;
+	}
+	if(dc < 0){
+		dc = 0;
+	}
 	temp = 255 * dc / 100;
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, temp);
 	if(dc != 0){
@@ -179,7 +203,13 @@ void setBlueLedDutyCycle(uint8_t dc){//设置B LED亮度
 		HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);//关闭TIM
 	}	
 }
-void setBeemFreq(uint32_t freq){//设置蜂鸣器频率
+void setBeemFreq(int16_t freq){//设置蜂鸣器频率
+	if(freq > 5000){
+		freq = 5000;
+	}
+	if(freq < 1000){
+		freq = 1000;
+	}
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -190,8 +220,14 @@ void setBeemFreq(uint32_t freq){//设置蜂鸣器频率
 		Error_Handler();
 	}
 }
-void setBeemVolume(uint8_t dc){//设置蜂鸣器占空比
+void setBeemVolume(int16_t dc){//设置蜂鸣器占空比
 	uint16_t temp;
+	if(dc > 100){
+		dc = 100;
+	}
+	if(dc < 0){
+		dc = 0;
+	}
 	temp = 255 * dc / 100 / 2;
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, temp);
 	if(dc != 0){
@@ -201,8 +237,14 @@ void setBeemVolume(uint8_t dc){//设置蜂鸣器占空比
 		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);//关闭TIM
 	}
 }
-void setAimDutyCycle(uint8_t dc){//设置瞄准光亮度
+void setAimDutyCycle(int16_t dc){//设置瞄准光亮度
 	uint16_t temp;
+	if(dc > 100){
+		dc = 100;
+	}
+	if(dc < 0){
+		dc = 0;
+	}
 	temp = 255 * dc / 100;
 	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, temp);
 	if(dc != 0){

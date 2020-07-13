@@ -41,7 +41,6 @@ void loadDefault(void){//»Ö¸´Ä¬ÈÏÖµ
 	RRES(R_DISABLE_RFID);
 	RRES(R_DISABLE_FIBER_PROBE);
 	RRES(R_DISABLE_FAN_SPEED);
-	NVRAM0[DM_MUSIC_VOLUME] = CONFIG_MAX_MUSIC_VOLUME;
 	NVRAM0[DM_BEEM_VOLUME] = CONFIG_MAX_BEEM_VOLUME;
 	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_AIM_BRG;
 	NVRAM0[DM_LCD_BRG] = CONFIG_MAX_LCD_BRG;
@@ -107,13 +106,13 @@ void loadScheme(void){//FD->EM
 	uint8_t *psrc, *pdist;
 	if(NVRAM0[DM_SCHEME_NUM] > 31){
 #if CONFIG_DEBUG_APP == 1
-		printf("App:loadScheme NVRAM0[DM_SCHEME_NUM] > 31 !\n");
+		printf("App->loadScheme:NVRAM0[DM_SCHEME_NUM] > 31 !\n");
 #endif
 		NVRAM0[DM_SCHEME_NUM] = 31;
 	}
 	if(NVRAM0[DM_SCHEME_NUM] < 0){
 #if CONFIG_DEBUG_APP == 1
-		printf("App:loadScheme NVRAM0[DM_SCHEME_NUM] < 0 !\n");
+		printf("App->loadScheme:NVRAM0[DM_SCHEME_NUM] < 0 !\n");
 #endif
 		NVRAM0[DM_SCHEME_NUM] = 0;
 	}
@@ -141,7 +140,7 @@ void loadScheme(void){//FD->EM
 		}
 		default:{
 #if CONFIG_DEBUG_APP == 1
-			printf("App:load default scheme!\n");
+			printf("App->loadScheme:load default scheme!\n");
 #endif			
 			defaultScheme();
 			break;

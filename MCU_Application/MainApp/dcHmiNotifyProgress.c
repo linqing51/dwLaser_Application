@@ -172,14 +172,14 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					break;
 				}
 				case GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME:{
-					if(value < CONFIG_MIN_MUSIC_VOLUME){
-						value = CONFIG_MIN_MUSIC_VOLUME;
+					if(value < CONFIG_MIN_BEEM_VOLUME){
+						value = CONFIG_MIN_BEEM_VOLUME;
 					}
-					if(value > CONFIG_MAX_MUSIC_VOLUME){
-						value = CONFIG_MAX_MUSIC_VOLUME;
+					if(value > CONFIG_MAX_BEEM_VOLUME){
+						value = CONFIG_MAX_BEEM_VOLUME;
 					}
-					NVRAM0[DM_MUSIC_VOLUME] = (int16_t)value;
-					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_MUSIC_VOLUME], 1, 0);
+					NVRAM0[DM_BEEM_VOLUME] = (int16_t)value;
+					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
 					break;
 				}
 				case GDDC_PAGE_OPTION_PROGRESS_LCD_BRG:{

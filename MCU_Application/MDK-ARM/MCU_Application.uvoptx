@@ -153,27 +153,32 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>adcDmaBuffer1,0x0A</ItemText>
+          <ItemText>NVRAM0[32],0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>adcDmaBuffer0,0x0A</ItemText>
+          <ItemText>NVRAM0[33],0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>uwTick</ItemText>
+          <ItemText>NVRAM0[34],0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>FDRAM</ItemText>
+          <ItemText>NVRAM0[35],0x0A</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>adcDmaBuffer0</ItemText>
+          <ItemText>NVRAM0[36],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>NVRAM0[1375]</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

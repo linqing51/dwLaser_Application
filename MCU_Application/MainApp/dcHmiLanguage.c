@@ -34,7 +34,7 @@ char WARN_MSG_ESTOP_PRESS[8][64]                 = {{"ESTOP Press"},
 													{""},
 													{""},
 													{""},
-													{""}};
+													{""}};//急停按下
 
 char WARN_MSG_FIBER_UNPLUG[8][64] 				 = {{"No fiber connected"},
 													{""},

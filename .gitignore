@@ -50,16 +50,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-/MCU/Listings
-/MCU/Objects
-/MCU_Application/Listings
-Objects
-Listings
-Objects
-Listings
-Listings
-Objects
-dciot_build
-output
-STM32F413
-MCU_Application

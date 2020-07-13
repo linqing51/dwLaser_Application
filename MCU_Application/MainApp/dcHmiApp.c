@@ -101,6 +101,7 @@ void updateEnergyDensity(void){//更新能量密度显示
 void updateScheme_0_Display(void){//更新选项界面方案名称
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	
 	if(strlen((char*)(&FDRAM[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
 		strcpy(dispBuf, (char*)(&FDRAM[FD_SCHEME_START_0]));
 		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -412,12 +413,12 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 		cn = 0;
 	if(cn > CONFIG_HMI_SCHEME_NUM)
 		cn = CONFIG_HMI_SCHEME_NUM;
-	mode = FDRAM[cn * 30 + FD_LASER_PULSE_MODE]; 
-	power0 = FDRAM[cn * 30 + FD_LASER_POWER_CH0];
-	power1 = FDRAM[cn * 30 + FD_LASER_POWER_CH1];
+	mode = FDRAM[cn * 64 + FD_LASER_PULSE_MODE]; 
+	power0 = FDRAM[cn * 64 + FD_LASER_POWER_CH0];
+	power1 = FDRAM[cn * 64 + FD_LASER_POWER_CH1];
 	
-	memset(dispBuf1, 0x0, 32);	
-	memset(dispBuf2, 0x0, 32);
+	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);	
+	memset(dispBuf2, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	switch(mode){
 		case LASER_MODE_CW:{
 			if(cn < 16){
@@ -1310,11 +1311,11 @@ void updateOptionDisplay(void){//更新选项显示
 		SetButtonValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_TONE, 0x00);
 	}
 	BatchBegin(GDDC_PAGE_OPTION);
-	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_MUSIC_VOLUME]);//更新BEEM音量进度条
+	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//更新BEEM音量进度条
 	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新AIM亮度进度条
 	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);//更新LCD亮度
 	BatchEnd();
-	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME ,NVRAM0[DM_MUSIC_VOLUME], 1, 0);
+	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME ,NVRAM0[DM_BEEM_VOLUME], 1, 0);
 	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG ,NVRAM0[DM_LCD_BRG], 1, 0);
 	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_AIM_BRG ,NVRAM0[DM_AIM_BRG], 1, 0);
 }
@@ -1440,7 +1441,7 @@ void dcHmiLoopInit(void){//初始化模块
 	uint8_t i;
 #if CONFIG_USING_DCHMI_APP == 1
 #if CONFIG_DEBUG_APP == 1
-	printf("App:Start hmi uart init......\n");
+	printf("dcHmiApp->dcHmiLoopInit:Start hmi uart init......\n");
 #endif
 	hmiUartInit();
 #endif
@@ -1466,11 +1467,7 @@ void dcHmiLoopInit(void){//初始化模块
 	if(NVRAM0[EM_LASER_SELECT] != (LASER_SELECT_CH0 | LASER_SELECT_CH1)){
 		NVRAM0[EM_LASER_SELECT] = LASER_SELECT_CH0;
 	}
-#endif
-	NVRAM0[TMP_REG_0] = CONFIG_MIN_MUSIC_VOLUME;
-	NVRAM0[TMP_REG_1] = CONFIG_MAX_MUSIC_VOLUME;
-	LIMS16(DM_MUSIC_VOLUME, TMP_REG_0, TMP_REG_1);
-	
+#endif	
 	NVRAM0[TMP_REG_0] = CONFIG_MIN_BEEM_VOLUME;
 	NVRAM0[TMP_REG_1] = CONFIG_MAX_BEEM_VOLUME;
 	LIMS16(DM_BEEM_VOLUME, TMP_REG_0, TMP_REG_1);
@@ -1538,21 +1535,31 @@ static void temperatureLoop(void){//温度轮询顺序
 	else{
 		RRES(R_MCU_TEMP_HIGH);
 	}
+	if(LDP(R_FAN_ENABLE)){
+		printf("dcHmiApp->temperatureLoop:FAN ON!\n");
+	}
+	if(LDN(R_FAN_ENABLE)){
+		printf("dcHmiApp->temperatureLoop:FAN OFF!\n");
+	}
 	//温控执行 激光等待发射及错误状态启动温控	
 	if(LD(R_FAN_ENABLE) || LD(R_LASER_TEMP_HIGH) || LD(R_MCU_TEMP_HIGH)){
 		SSET(Y_FAN);
 		if(NVRAM0[EM_LASER_TEMP] >= (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
+			if(LD(Y_TEC)){
 #if CONFIG_DEBUG_APP == 1
-			printf("App:temperatureLoop->TLAS=%05d,TEC=ON!\n", NVRAM0[EM_LASER_TEMP]);
+				printf("dcHmiApp->temperatureLoop:TLAS=%05d,TEC ON!\n", NVRAM0[EM_LASER_TEMP]);
 #endif
-			SSET(Y_TEC);
+				SSET(Y_TEC);
+			}
 		}
 		if(NVRAM0[EM_LASER_TEMP] <= (CONFIG_COOL_SET_TEMP - CONFIG_COOL_DIFF_TEMP)){
+			if(LDB(Y_TEC)){
 #if CONFIG_DEBUG_APP == 1
-			printf("App:temperatureLoop->TLAS=%05d,TEC=OFF!\n", NVRAM0[EM_LASER_TEMP]);
+				printf("dcHmidcHmiApp->temperatureLoop:TLAS=%05d,TEC OFF!\n", NVRAM0[EM_LASER_TEMP]);
 #endif
-			RRES(Y_TEC);
-		}   
+				RRES(Y_TEC);
+			}
+		}			
 	}
 	else{
 		RRES(Y_TEC);
@@ -1707,7 +1714,15 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetControlEnable(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
 
 			SetTextValue(GDDC_PAGE_PASSCODE, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
-			SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));	
+			SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+
+			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
+			
 			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
 		}
@@ -2003,7 +2018,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(X_FOOTSWITCH_NO)){//检测脚踏踩下
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
-				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_MUSIC_VOLUME];
+				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
 				NVRAM0[SPREG_BEEM_COUNTER] = 0;
 				SSET(SPCOIL_BEEM_ENABLE);
@@ -2045,8 +2060,15 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_SELECT_CH4, NVRAM0[EM_LASER_POWER_CH4]);
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
-				NVRAM0[SPREG_BEEM_FREQ] = NVRAM0[DM_BEEM_VOLUME];
+				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
+				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
 				SSET(SPCOIL_BEEM_ENABLE);
+#if CONFIG_DEBUG_APP == 1
+				printf("dcHmiApp->dcHmiLoop:Set Beem mode:%d\n", NVRAM0[SPREG_BEEM_MODE]);
+				printf("dcHmiApp->dcHmiLoop:Set Beem volume:%d\n", NVRAM0[SPREG_BEEM_VOLUME]);
+				printf("dcHmiApp->dcHmiLoop:Set Beem freq:%d\n", NVRAM0[SPREG_BEEM_FREQ]);
+				printf("dcHmiApp->dcHmiLoop:Set Beem on\n");
+#endif
 				//打开指示激光
 				SSET(SPCOIL_AIM_ENABEL);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
@@ -2136,6 +2158,18 @@ void dcHmiLoop(void){//HMI轮训程序
 			standbyKeyValue(false);
 			standbyKeyEnable(true);
 			RRES(R_STANDBY_KEY_STNADBY_UP);
+			updateWarnMsgDisplay(MSG_NO_ERROR);//显示警告信息
+#if CONFIG_DEBUG_APP == 1
+				printf("dcHmiApp->dcHmiLoop:Set DAC0=%d\n", NVRAM0[SPREG_DAC_0]);
+				printf("dcHmiApp->dcHmiLoop:Set DAC1=%d\n", NVRAM0[SPREG_DAC_1]);
+				printf("dcHmiApp->dcHmiLoop:Set DAC2=%d\n", NVRAM0[SPREG_DAC_2]);
+				printf("dcHmiApp->dcHmiLoop:Set DAC3=%d\n", NVRAM0[SPREG_DAC_3]);
+				printf("dcHmiApp->dcHmiLoop:Set DAC4=%d\n", NVRAM0[SPREG_DAC_4]);
+				printf("dcHmiApp->dcHmiLoop:HMI_OPERA_STEP=%d\n", NVRAM0[EM_HMI_OPERA_STEP]);
+				printf("dcHmiApp->dcHmiLoop:Return Standby!\n");
+				
+#endif			
+			
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
 			if(LDP(X_FOOTSWITCH_NO)){//发射激光

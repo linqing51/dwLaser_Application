@@ -112,7 +112,7 @@
 #define CONFIG_DCHMI_DISKBUF_SIZE								0x80//显示缓冲区大小
 /*****************************************************************************/
 #define CONFIG_CHECK_DELAY_TIME									10
-#define CONFIG_KEY_REPEAT_DELAY_TIME							50
+#define CONFIG_KEY_REPEAT_DELAY_TIME							100
 #define CONFIG_STANDBY_BEEM_DELAY_TIME							20
 /*****************************************************************************/
 #define CONFIG_APP_DIODE_HIGH_TEMP								400//激光器高温极限 40.0C
@@ -166,12 +166,10 @@
 
 #define CONFIG_MAX_AIM_BRG										100//红光最大调光占空比
 #define CONFIG_MIN_AIM_BRG										1//红光最小调光占空比
-#define CONFIG_MAX_MUSIC_VOLUME									100//蜂鸣器最大音量
-#define CONFIG_MIN_MUSIC_VOLUME									1//蜂鸣器最小音量
+#define CONFIG_MAX_BEEM_VOLUME									100//蜂鸣器最大音量
+#define CONFIG_MIN_BEEM_VOLUME									1//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG										100//屏幕亮度最大值
 #define CONFIG_MIN_LCD_BRG										1//屏幕亮度最小值
-#define CONFIG_MAX_BEEM_VOLUME									60
-#define CONFIG_MIN_BEEM_VOLUME									10
 #define CONFIG_COOL_SET_TEMP									220//冷却温度
 #define CONFIG_COOL_DIFF_TEMP									20//冷却温度变化范围
 //功率设定校正系数
@@ -707,14 +705,13 @@
 /*****************************************************************************/
 #define DM_SCHEME_NUM											(DM_START + 0)//选择的方案编号 低8位方案号 高8位方案使能
 #define DM_LANGUAGE												(DM_START + 1)//语言ID
-#define DM_MUSIC_VOLUME											(DM_START + 2)//音乐音量 0-100%
-#define DM_BEEM_VOLUME											(DM_START + 3)//蜂鸣器音量 0-100% 32+3=35
-#define DM_AIM_BRG												(DM_START + 4)//指示激光亮度
-#define DM_LCD_BRG												(DM_START + 5)//屏幕亮度
-#define DM_DC_OLD_PASSCODE0										(DM_START + 9)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE1										(DM_START + 10)//屏旧密码2-3
-#define DM_DC_OLD_PASSCODE2										(DM_START + 11)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE3										(DM_START + 12)//屏旧密码2-3
+#define DM_BEEM_VOLUME											(DM_START + 2)//蜂鸣器音量 0-100% 32+3=35
+#define DM_AIM_BRG												(DM_START + 3)//指示激光亮度
+#define DM_LCD_BRG												(DM_START + 4)//屏幕亮度
+#define DM_DC_OLD_PASSCODE0										(DM_START + 5)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE1										(DM_START + 6)//屏旧密码2-3
+#define DM_DC_OLD_PASSCODE2										(DM_START + 7)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE3										(DM_START + 8)//屏旧密码2-3
 /*****************************************************************************/
 #define X_ESTOP													(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK												(X_START * 16 + 1)//XIN1 安全连锁
