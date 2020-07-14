@@ -111,7 +111,7 @@
 #define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
 #define CONFIG_DCHMI_DISKBUF_SIZE								0x80//显示缓冲区大小
 /*****************************************************************************/
-#define CONFIG_CHECK_DELAY_TIME									10
+#define CONFIG_CHECK_DELAY_TIME									40
 #define CONFIG_KEY_REPEAT_DELAY_TIME							100
 #define CONFIG_STANDBY_BEEM_DELAY_TIME							20
 /*****************************************************************************/
@@ -715,8 +715,8 @@
 /*****************************************************************************/
 #define X_ESTOP													(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK												(X_START * 16 + 1)//XIN1 安全连锁
-#define X_FOOTSWITCH_NC											(X_START * 16 + 2)//XIN2 脚踏常开
-#define X_FOOTSWITCH_NO											(X_START * 16 + 3)//XIN3 脚踏常闭
+#define X_FOOTSWITCH_NC											(X_START * 16 + 2)//XIN2 脚踏常闭
+#define X_FOOTSWITCH_NO											(X_START * 16 + 3)//XIN3 脚踏常开
 #define X_PWR_KEY												(X_START * 16 + 4)//XIN4 电源开关
 #define X_FIBER_PROBE											(X_START * 16 + 5)//XIN5 光纤探测
 /*****************************************************************************/
@@ -734,13 +734,14 @@
 #define R_MCU_TEMP_HIGH											(R_START * 16 + 4)//处理器高温标志
 #define R_MCU_TEMP_LOW											(R_START * 16 + 5)//处理器低温标志
 #define R_FOOTSWITCH_PLUG										(R_START * 16 + 6)//脚踏插入标志
-#define R_FAULT													(R_START * 16 + 7)//故障标志
-#define R_FAN_ENABLE											(R_START * 16 + 8)//风扇使能
-#define R_DISABLE_RFID											(R_START * 16 + 9)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE									(R_START * 16 + 10)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED										(R_START * 16 + 11)//屏蔽风扇控制
-#define R_CLEAR_EPROM											(R_START * 16 + 12)//完全清空EPROM
-#define R_ENGINEER_MODE											(R_START * 16 + 13)//工程师模式
+#define R_FOOTSWITCH_PRESS										(R_START * 16 + 7)//脚踏按下标志
+#define R_FAULT													(R_START * 16 + 8)//故障标志
+#define R_FAN_ENABLE											(R_START * 16 + 9)//风扇使能
+#define R_DISABLE_RFID											(R_START * 16 + 10)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE									(R_START * 16 + 11)//屏蔽光纤探测
+#define R_DISABLE_FAN_SPEED										(R_START * 16 + 12)//屏蔽风扇控制
+#define R_CLEAR_EPROM											(R_START * 16 + 13)//完全清空EPROM
+#define R_ENGINEER_MODE											(R_START * 16 + 14)//工程师模式
 //HMI相关状态
 #define R_DCHMI_RESET_REQ										(R_START * 16 + 20)//HMI复位请求
 #define R_DCHMI_RESET_DOING										(R_START * 16 + 21)//HMI复位中

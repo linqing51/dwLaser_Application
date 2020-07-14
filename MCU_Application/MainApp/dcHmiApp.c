@@ -1593,7 +1593,7 @@ static void faultLoop(void){//故障轮询
 	}
 	temp |= LDB(X_ESTOP);//正常1 
 	temp |=	LDB(X_INTERLOCK);//正常1
-	temp |= LDB(X_FOOTSWITCH_NC);//正常1
+	temp |= LDB(R_FOOTSWITCH_PLUG);//正常1
 	temp |= LDB(R_FIBER_PROBE);//正常1
 	temp |= LDB(R_RFID_PASS);//正常1
 	temp |= LD(R_LASER_TEMP_HIGH);//正常0
@@ -1607,7 +1607,38 @@ static void faultLoop(void){//故障轮询
 		RRES(Y_RLED);
 	}
 }
-void dcHmiLoop(void){//HMI轮训程序	
+void dcHmiLoop(void){//HMI轮训程序
+	//检查脚踏状态
+	if(LD(X_FOOTSWITCH_NC) == true && LD(X_FOOTSWITCH_NO) == false){//脚踏插入 未按下
+		SSET(R_FOOTSWITCH_PLUG);
+		RRES(R_FOOTSWITCH_PRESS);
+	}
+	else if(LD(X_FOOTSWITCH_NC) == false && LD(X_FOOTSWITCH_NO) == true){//脚踏插入 已按下
+		SSET(R_FOOTSWITCH_PLUG);
+		SSET(R_FOOTSWITCH_PRESS);
+	}
+	else if(LD(X_FOOTSWITCH_NC) == false && LD(X_FOOTSWITCH_NO) == false){//脚踏未插入
+		RRES(R_FOOTSWITCH_PLUG);
+		RRES(R_FOOTSWITCH_PRESS);
+	}
+	else if(LD(X_FOOTSWITCH_NC) == false && LD(X_FOOTSWITCH_NO) == false){//脚踏故障
+		RRES(R_FOOTSWITCH_PLUG);
+		RRES(R_FOOTSWITCH_PRESS);
+	}
+#if CONFIG_DEBUG_APP == 1
+	if(LDP(R_FOOTSWITCH_PLUG)){
+		printf("dcHmiApp->dcHmiLoop:Footswitch  Plug\n");
+	}
+	if(LDN(R_FOOTSWITCH_PLUG)){
+		printf("dcHmiApp->dcHmiLoop:Footswitch  UnPlug\n");
+	}
+	if(LDP(R_FOOTSWITCH_PRESS)){
+		printf("dcHmiApp->dcHmiLoop:Footswitch  Pressed\n");
+	}
+	if(LDN(R_FOOTSWITCH_PRESS)){
+		printf("dcHmiApp->dcHmiLoop:Footswitch  UnPressed\n");
+	}
+#endif
 	if(LDP(SPCOIL_PS100MS)){//每100mS更新一次温度
 		temperatureLoop();
 		faultLoop();
@@ -1970,7 +2001,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			else if(LDB(R_FIBER_PROBE)){//光纤拔出
 				updateWarnMsgDisplay(MSG_FIBER_UNPLUG);
 			}
-			else if(LDB(X_FOOTSWITCH_NC)){//脚踏拔出
+			else if(LDB(R_FOOTSWITCH_PLUG)){//脚踏拔出
 				updateWarnMsgDisplay(MSG_FOOTSWITCH_UNPLUG);
 			}
 			else if(LDB(R_RFID_PASS)){//光纤ID不匹配
@@ -2016,7 +2047,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_STANDBY_KEY_ENTER_SCHEME_DOWN);
 		}else if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
 			standbyTouchEnable(false);			
-			if(LD(X_FOOTSWITCH_NO)){//检测脚踏踩下
+			if(LD(R_FOOTSWITCH_PRESS)){//检测脚踏踩下
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
 				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
@@ -2173,7 +2204,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
-			if(LDP(X_FOOTSWITCH_NO)){//发射激光
+			if(LDP(R_FOOTSWITCH_PRESS)){//发射激光
 				//禁止Standby触摸
 				standbyKeyEnable(false);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
@@ -2182,7 +2213,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			}
 		}
 		else{//电平触发
-			if(LD(X_FOOTSWITCH_NO)){//发射激光	
+			if(LD(R_FOOTSWITCH_PRESS)){//发射激光	
 				standbyKeyEnable(false);
 				HAL_Delay(10);				
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
@@ -2235,7 +2266,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			updateWarnMsgDisplay(MSG_NO_ERROR);
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
-			if(LDP(X_FOOTSWITCH_NO)){//关闭激光
+			if(LDP(R_FOOTSWITCH_PRESS)){//关闭激光
 				EDLAR();
 				updateWarnMsgDisplay(MSG_NO_ERROR);
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
@@ -2244,7 +2275,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			}
 		}
 		else{
-			if(LDB(X_FOOTSWITCH_NO)){//关闭激光
+			if(LDB(R_FOOTSWITCH_PRESS)){//关闭激光
 				EDLAR(); 
 				updateWarnMsgDisplay(MSG_NO_ERROR);
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
@@ -2255,7 +2286,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_ERROR){//Ready检测到脚踏踩下
-		if(LDB(X_FOOTSWITCH_NO)){//检测到脚踏状态恢复正常
+		if(LDB(R_FOOTSWITCH_PRESS)){//检测到脚踏状态恢复正常
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			standbyKeyValue(false);
 			standbyKeyEnable(true);
