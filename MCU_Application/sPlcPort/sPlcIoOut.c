@@ -61,6 +61,13 @@ void outputRefresh(void){//设置输出IO
 		setBlueLedDutyCycle(CONFIG_SPLC_BLED_OFF_DC);
 #endif
 	}
+	//YOUT5 LCD电源
+	if((NVRAM0[Y_START] >> 5) & 0x01){
+		HAL_GPIO_WritePin(LCD_PWR_GPIO_Port, LCD_PWR_Pin, GPIO_PIN_RESET);
+	}
+	else{
+		HAL_GPIO_WritePin(LCD_PWR_GPIO_Port, LCD_PWR_Pin, GPIO_PIN_SET);
+	}
 	
 }
 

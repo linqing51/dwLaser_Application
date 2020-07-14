@@ -1439,12 +1439,13 @@ void standbyKeyValue(uint8_t value){//设置Standby键值
 }
 void dcHmiLoopInit(void){//初始化模块
 	uint8_t i;
-#if CONFIG_USING_DCHMI_APP == 1
+#if CONFIG_USING_DCHMI_APP == 1	
 #if CONFIG_DEBUG_APP == 1
 	printf("dcHmiApp->dcHmiLoopInit:Start hmi uart init......\n");
 #endif
 	hmiUartInit();
 #endif
+	//SSET();//打开LCD电源
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
 	//检查MUSIC VOLUME储存值是否合规
 #if CONFIG_USING_SINGLE_WAVE == 1
@@ -2323,7 +2324,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
 			//将EM_SCHEME_NUM_TMP指向的名称更新RENAME输入框
-			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM + (NVRAM0[EM_SCHEME_NUM_TMP] * 30)));
+			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_SCHEME_KEY_RENAME_DOWN);
 		}
@@ -2358,7 +2359,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
 			//将EM_SCHEME_NUM_TMP指向的名称更新RENAME输入框
-			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM + (NVRAM0[EM_SCHEME_NUM_TMP] * 30)));
+			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_SCHEME_KEY_RENAME_DOWN);
 		}

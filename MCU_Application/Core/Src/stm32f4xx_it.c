@@ -93,11 +93,7 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* USER CODE BEGIN HardFault_IRQn 0 */
-	uint32_t r_sp;
-	char sPoiont[7] = {0};
-	r_sp = __get_PSP();
-	
+  /* USER CODE BEGIN HardFault_IRQn 0 */	
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {

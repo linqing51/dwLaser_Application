@@ -51,20 +51,20 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, DA_SYNC_Pin|DA_SCLK_Pin|DA_DIN_Pin|LPA_PWM0_Pin 
-                          |I2C_SCL_Pin, GPIO_PIN_RESET);
+                          |SI2C_SCL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LPC_PWM0_Pin|LPB_PWM1_Pin|LPB_PWM0_Pin|LPA_PWM1_Pin 
                           |OTG_FS_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, I2C_SDA_Pin|LCD_PWR_Pin|TEC_OUT_Pin|FAN_OUT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SI2C_SDA_Pin|LCD_PWR_Pin|TEC_OUT_Pin|FAN_OUT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(FAN0_OUT_GPIO_Port, FAN0_OUT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PCPin PCPin PCPin PCPin */
-  GPIO_InitStruct.Pin = DA_SYNC_Pin|DA_SCLK_Pin|DA_DIN_Pin|I2C_SCL_Pin;
+  GPIO_InitStruct.Pin = DA_SYNC_Pin|DA_SCLK_Pin|DA_DIN_Pin|SI2C_SCL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -85,7 +85,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(LPA_PWM0_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = I2C_SDA_Pin|LCD_PWR_Pin|FAN_OUT_Pin;
+  GPIO_InitStruct.Pin = SI2C_SDA_Pin|LCD_PWR_Pin|FAN_OUT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

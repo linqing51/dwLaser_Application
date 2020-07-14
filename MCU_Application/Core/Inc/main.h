@@ -91,10 +91,10 @@ void Error_Handler(void);
 #define LPA_PWM1_GPIO_Port GPIOA
 #define LPA_PWM0_Pin GPIO_PIN_4
 #define LPA_PWM0_GPIO_Port GPIOC
-#define I2C_SCL_Pin GPIO_PIN_5
-#define I2C_SCL_GPIO_Port GPIOC
-#define I2C_SDA_Pin GPIO_PIN_0
-#define I2C_SDA_GPIO_Port GPIOB
+#define SI2C_SCL_Pin GPIO_PIN_5
+#define SI2C_SCL_GPIO_Port GPIOC
+#define SI2C_SDA_Pin GPIO_PIN_0
+#define SI2C_SDA_GPIO_Port GPIOB
 #define PM_ALARM_Pin GPIO_PIN_1
 #define PM_ALARM_GPIO_Port GPIOB
 #define LCD_PWR_Pin GPIO_PIN_2

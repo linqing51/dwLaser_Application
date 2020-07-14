@@ -725,6 +725,7 @@
 #define Y_GLED													(Y_START * 16 + 2)//YOUT2 绿灯开关
 #define Y_RLED													(Y_START * 16 + 3)//YOUT3 红灯开关
 #define Y_BLED													(Y_START * 16 + 4)//YOUT4 蓝灯开关
+#define Y_LCDPWR												(Y_START * 16 + 5)//YOUT5 LCD电源开关
 /*****************************************************************************/
 #define R_FIBER_PROBE											(R_START * 16 + 0)//光纤插入标志
 #define R_RFID_PASS												(R_START * 16 + 1)//NFC光纤插入标志
