@@ -56,6 +56,8 @@ extern uint8_t TimerCounter_10mS;
 extern uint8_t TimerCounter_100mS;
 extern uint8_t TD_10MS_SP;
 extern uint8_t TD_100MS_SP;
+extern uint8_t TD_200MS_SP;
+extern uint8_t TD_500MS_SP;
 extern uint8_t TD_1000MS_SP;
 /*****************************************************************************/
 void sPlcInit(void);//»Ì¬ﬂº≠≥ı ºªØ

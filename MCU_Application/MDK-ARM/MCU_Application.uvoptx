@@ -153,32 +153,12 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[32],0x0A</ItemText>
+          <ItemText>LaserTimer_TCounter</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[33],0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[34],0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[35],0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[36],0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[1375]</ItemText>
+          <ItemText>LaserTimer_BeemSwitchCounter,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

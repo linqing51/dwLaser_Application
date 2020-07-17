@@ -7,9 +7,7 @@
 #include "usbh_core.h"
 #include "usbh_msc.h"
 /*****************************************************************************/
-uint8_t getBeemDuty(int16_t volume);
 uint8_t getLcdDuty(int16_t LcdBrg);//屏幕亮度值转换为占空比
-uint8_t getAimDuty(int16_t AimBrg);//指示光亮度值转换为占空比
 int16_t pulseWidthAdd(int16_t ps);
 int16_t pulseWidthDec(int16_t ps);
 void loadScheme(void);//DM->EM

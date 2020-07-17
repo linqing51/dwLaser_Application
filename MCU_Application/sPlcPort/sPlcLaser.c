@@ -17,8 +17,10 @@ volatile int16_t LaserTimer_BeemSwitchCounter;
 volatile int16_t LaserTimer_BeemSwtichLength;
 volatile int8_t LaserFlag_Emiting;//激光发射中标志
 volatile int8_t LaserFlag_Emitover;//激光发射完毕标志
-volatile int32_t LaserRelease_TotalTime;//激光发射总时间
-volatile int32_t LaserRelease_TotalEnergy;//激光发射总能量
+volatile int32_t LaserRelease_TotalTime0;//激光发射总时间
+volatile int32_t LaserRelease_TotalEnergy0;//激光发射总能量
+int32_t LaserRelease_TotalTime1;//激光发射总时间
+int32_t LaserRelease_TotalEnergy1;//激光发射总能量
 /*****************************************************************************/
 static void laserStop(void);
 static void laserStart(void);
@@ -156,10 +158,60 @@ void STLAR(void){//开始发射脉冲
 	SetMusicVolume(NVRAM0[SPREG_MUSIC_VOLUME]);//向GDDC触摸屏发送音量
 #endif
 	if(LD(MR_BEEM_TONE) || (LaserTimer_Mode == LASER_MODE_SIGNAL)){
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;	
+		//判断是否有脉冲 如果正脉宽或脉冲间隔长度小于100mS则选择MODE2
+		switch(NVRAM0[EM_LASER_PULSE_MODE]){
+			case LASER_MODE_CW:{
+				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+				break;
+			}
+			case LASER_MODE_SP:{
+				if(NVRAM0[EM_LASER_SP_POSWIDTH] > 100){//正脉宽大于100mS
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+				}
+				else{
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
+				}
+				break;
+			}
+			case LASER_MODE_MP:{
+				if((NVRAM0[EM_LASER_MP_POSWIDTH] > 100) && (NVRAM0[EM_LASER_MP_NEGWIDTH] > 100)){//正脉宽大于100mS
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+				}
+				else{
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
+				}
+				break;
+			}
+			case LASER_MODE_GP:{
+				if((NVRAM0[EM_LASER_GP_POSWIDTH] > 100) && (NVRAM0[EM_LASER_GP_NEGWIDTH] > 100)){//正脉宽大于100mS
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+				}
+				else{
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
+				}
+				break;
+			}
+			case LASER_MODE_DERMA:{
+				if((NVRAM0[EM_LASER_DERMA_POSWIDTH] > 100) && (NVRAM0[EM_LASER_DERMA_NEGWIDTH] > 100)){//正脉宽大于100mS
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+				}
+				else{
+					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
+				}
+				break;
+			}
+			case LASER_MODE_SIGNAL:{
+				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+				break;
+			}
+			default:{
+				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+				break;
+			}
+		}
 	}
 	else{
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;
+		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
 	}
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
 	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
@@ -211,8 +263,10 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserTimer_BeemSwtichLength = 0;
 	LaserFlag_Emiting = false;//激光发射中标志
 	LaserFlag_Emitover = false;
-	LaserRelease_TotalTime = 0;
-	LaserRelease_TotalEnergy = 0;
+	LaserRelease_TotalTime0 = 0;
+	LaserRelease_TotalEnergy0 = 0;
+	LaserRelease_TotalTime1 = -1;
+	LaserRelease_TotalEnergy1 = -1;
 }
 static void laserStart(void){//按通道选择打开激光
 #if CONFIG_SPLC_USING_LEDAIM == 1
@@ -273,7 +327,7 @@ static void laserStop(void){//按通道选择关闭激光
 	SET_LASER_CH4(GPIO_PIN_RESET);	
 	LaserFlag_Emiting = false;
 #if CONFIG_SPLC_USING_LEDAIM == 1
-	setBlueLedDutyCycle(0);//打开激光发射指示
+	SSET(Y_BLED);//打开激光发射指示
 #endif
 }
 void laserTimerIsr(void){//TIM 中断回调 激光发射	
@@ -288,8 +342,8 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 			}
 			else{
 				LaserTimer_ReleaseTime = 0;
-				if(LaserRelease_TotalTime < 99999){
-					LaserRelease_TotalTime ++;
+				if(LaserRelease_TotalTime0 < 99999){
+					LaserRelease_TotalTime0 ++;
 				}
 			}
 			break;
@@ -308,31 +362,33 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				}
 				else{
 					LaserTimer_ReleaseTime = 0;
-					if(LaserRelease_TotalTime < 99999){
-						LaserRelease_TotalTime ++;
+					if(LaserRelease_TotalTime0 < 99999){
+						LaserRelease_TotalTime0 ++;
 					}
 				}
-				if((((int32_t)LaserTimer_BeemSwitchCounter * NVRAM0[EM_TOTAL_POWER]) / 10000) >= NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
+				if((((fp32_t)LaserTimer_BeemSwitchCounter * (fp32_t)NVRAM0[EM_TOTAL_POWER]) / 10000.0F) >= (fp32_t)NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
 					NVRAM0[SPREG_NEXT_MUSIC_ID] = 1;//开始播放MP3 ID 1
 					NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_PLAY;
-#if CONFIG_SPLC_USING_BEEM == 1
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFORM_BEEM_FREQ){
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFORM_BEEM_FREQ;
+#if CONFIG_SPLC_USING_BEEM == 1
 						setBeemFreq(NVRAM0[SPREG_BEEM_FREQ]);
-					}
 #endif
+						__NOP();
+					}
 					LaserTimer_BeemSwtichLength ++;			
 				}
 				if(LaserTimer_BeemSwtichLength >= CONFIG_BEEM_ENERGY_INTERVAL_TIME){
 					//停止播放
 					NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;//开始播放MP3 ID0
-					NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_PLAY;
-#if CONFIG_SPLC_USING_BEEM == 1					
+					NVRAM0[SPREG_CONTROL_MUSIC] = CMD_MUSIC_PLAY;					
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFAULT_BEEM_FREQ){
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
+#if CONFIG_SPLC_USING_BEEM == 1						
 						setBeemFreq(NVRAM0[SPREG_BEEM_FREQ]);
-					}
-#endif			
+#endif
+						__NOP();
+					}			
 					LaserTimer_BeemSwitchCounter = 0;
 					LaserTimer_BeemSwtichLength = 0;
 				}
@@ -354,8 +410,8 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				}
 				else{
 					LaserTimer_ReleaseTime = 0;
-					if(LaserRelease_TotalTime < 99999){
-						LaserRelease_TotalTime ++;
+					if(LaserRelease_TotalTime0 < 99999){
+						LaserRelease_TotalTime0 ++;
 					}
 				}
 			}
@@ -376,8 +432,8 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 					}
 					else{
 						LaserTimer_ReleaseTime = 0;
-						if(LaserRelease_TotalTime < 99999){
-							LaserRelease_TotalTime ++;
+						if(LaserRelease_TotalTime0 < 99999){
+							LaserRelease_TotalTime0 ++;
 						}
 					}
 				}
@@ -413,8 +469,8 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 			}
 			else{
 				LaserTimer_ReleaseTime = 0;
-				if(LaserRelease_TotalTime < 99999){
-					LaserRelease_TotalTime ++;
+				if(LaserRelease_TotalTime0 < 99999){
+					LaserRelease_TotalTime0 ++;
 				}
 			}
 			LaserTimer_TCounter ++;

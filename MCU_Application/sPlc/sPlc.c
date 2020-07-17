@@ -11,6 +11,8 @@ uint8_t TimerCounter_10mS = 0;
 uint8_t TimerCounter_100mS = 0;
 uint8_t TD_10MS_SP = 0;
 uint8_t TD_100MS_SP = 0;
+uint8_t TD_200MS_SP = 0;
+uint8_t TD_500MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
 uint32_t sPlcEnterTime, sPlcExitTime, sPlcScanTime;
 /******************************************************************************/
@@ -241,11 +243,11 @@ void sPlcInit(void){//软逻辑初始化
 	//sPlcEpromTest();
 #if CONFIG_DEBUG_SPLC == 1
 	printf("\r\r\r\n\n\n");
-	printf("sPlc:Start load Nvram......\n");
+	printf("sPlc->sPlcInit:Start load Nvram......\n");
 #endif
 	loadNvram();//上电恢复NVRAM
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start load Fdram......\n");
+	printf("sPlc->sPlcInit:Start load Fdram......\n");
 #endif
 	loadFdram();//上电恢复FDRAM
 	SSET(SPCOIL_ON);
@@ -271,28 +273,28 @@ void sPlcInit(void){//软逻辑初始化
 
 #if CONFIG_SPLC_USING_IO_INPUT == 1
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start input init......\n");
+	printf("sPlc->sPlcInit:Start input init......\n");
 #endif	
 	inputInit();
 #endif
 
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start output init......\n");
+	printf("sPlc->sPlcInit:Start output init......\n");
 #endif	
 	outputInit();
 #endif
 
 #if CONFIG_SPLC_USING_DAC == 1	
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start Dac init......\n");
+	printf("sPlc->sPlcInit:Start Dac init......\n");
 #endif	
 	initChipDac();//初始化DAC模块
 #endif
 
 #if CONFIG_SPLC_USING_ADC == 1
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start Adc init......\n");
+	printf("sPlc->sPlcInit:Start Adc init......\n");
 #endif	
 	initChipAdc();//初始化ADC模块
 #endif
@@ -300,21 +302,21 @@ void sPlcInit(void){//软逻辑初始化
 
 #if CONFIG_SPLC_USING_LASER == 1
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start laser timer init......\n");
+	printf("sPlc->sPlcInit:Start laser timer init......\n");
 #endif
 	sPlcLaserInit();
 #endif
 
 #if CONFIG_SPLC_USING_DK25L == 1
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start NFC init......\n");
+	printf("sPlc->sPlcInit:Start NFC init......\n");
 #endif
 	delayMs(100);
 	DL25L_Init();//打开中断后运行
 #endif
 
 #if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc:Start splc timer init......\n");
+	printf("sPlc->sPlcInit:Start splc timer init......\n");
 #endif
 	initSplcTimer();//初始化硬件计时器模块 启动计时器
 }
@@ -323,10 +325,19 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	if(TD_10MS_SP >= 1){
 		FLIP(SPCOIL_PS10MS);
 		TD_10MS_SP = 0;
+		NVRAM0[SPREG_BEEM_COUNTER] ++;
 	}
 	if(TD_100MS_SP >= 1){
 		FLIP(SPCOIL_PS100MS);
 		TD_100MS_SP = 0;
+	}
+	if(TD_200MS_SP >= 1){
+		FLIP(SPCOIL_PS200MS);
+		TD_200MS_SP = 0;
+	}
+	if(TD_500MS_SP >= 1){
+		FLIP(SPCOIL_PS500MS);
+		TD_500MS_SP = 0;
 	}
 	if(TD_1000MS_SP >= 1){
 		FLIP(SPCOIL_PS1000MS);

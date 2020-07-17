@@ -209,7 +209,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance == TIM7) {
 		sPlcTimerIsr();
 	}
-	if(htim->Instance == TIM11){
+	if(htim->Instance == TIM10){
 		laserTimerIsr();
 	}
   /* USER CODE END Callback 1 */

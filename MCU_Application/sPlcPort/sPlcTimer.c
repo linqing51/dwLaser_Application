@@ -9,6 +9,8 @@ void initSplcTimer(void){//硬件sTimer计时器初始化
 	HAL_TIM_Base_Start_IT(&htim7);
 	TD_10MS_SP = 0;
 	TD_100MS_SP = 0;
+	TD_200MS_SP = 0;
+	TD_500MS_SP = 0;
 	TD_1000MS_SP = 0;
 	TimerCounter_1mS = 0;
 	TimerCounter_10mS = 0;
@@ -29,7 +31,7 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 			NVRAM0[i] = 0;
 		}
 	}
-	if(TimerCounter_1mS >= 10){//10mS计算
+	if(TimerCounter_1mS > 10){//10mS计算
 		for(i = TD_10MS_START;i <= TD_10MS_END;i ++){
 			if(LD(T_10MS_ENA_START * 16 + (i - TD_10MS_START))){
 				if(NVRAM0[i] < SHRT_MAX){
@@ -46,7 +48,7 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 		TimerCounter_10mS ++;
 		TimerCounter_1mS = 0;
 	}
-	if(TimerCounter_10mS >= 10){//100ms计算
+	if(TimerCounter_10mS > 10){//100ms计算
 		for(i = TD_100MS_START;i < TD_100MS_END;i ++){
 			if(LD(T_100MS_ENA_START * 16 + (i - TD_100MS_START))){
 				if(NVRAM0[i] < SHRT_MAX){
@@ -63,7 +65,17 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 		TimerCounter_100mS ++;
 		TimerCounter_10mS = 0;
 	}
-	if(TimerCounter_100mS >= 10){
+	if(TimerCounter_100mS > 2){
+		if(TD_200MS_SP < CHAR_MAX){
+			TD_200MS_SP ++;
+		}
+	}
+	if(TimerCounter_100mS > 5){
+		if(TD_500MS_SP < CHAR_MAX){
+			TD_500MS_SP ++;
+		}
+	}
+	if(TimerCounter_100mS > 10){
 		if(TD_1000MS_SP < CHAR_MAX){
 			TD_1000MS_SP ++;
 		}

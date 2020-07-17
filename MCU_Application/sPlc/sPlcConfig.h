@@ -23,17 +23,17 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_MUSIC									0//使能LCD自带音乐播放						
 #define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
-#define CONFIG_SPLC_DEFAULT_BEEM_FREQ							2000L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_BEEM_FREQ							1000L//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFAULT_BEEM_FREQ							4000L//蜂鸣器默认频率
+#define CONFIG_SPLC_DEFORM_BEEM_FREQ							1500L//蜂鸣器变声频率
 #define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						50//蜂鸣器默认占空比
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
-#define CONFIG_SPLC_RLED_ON_DC									30//红灯亮度
+#define CONFIG_SPLC_RLED_ON_DC									35//红灯亮度
 #define CONFIG_SPLC_RLED_OFF_DC									0//红灯亮度
-#define CONFIG_SPLC_GLED_ON_DC									30//绿灯亮度
+#define CONFIG_SPLC_GLED_ON_DC									35//绿灯亮度
 #define CONFIG_SPLC_GLED_OFF_DC									0//绿灯亮度
-#define CONFIG_SPLC_BLED_ON_DC									30//蓝灯亮度
+#define CONFIG_SPLC_BLED_ON_DC									25//蓝灯亮度
 #define CONFIG_SPLC_BLED_OFF_DC									0//蓝灯亮度
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能
@@ -65,6 +65,7 @@
 #define CONFIG_EPROM_MR_START									0x0
 #define CONFIG_EPROM_DM_START									(CONFIG_MRRAM_SIZE * 2)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_START + (CONFIG_DMRAM_SIZE * 2))
+#define CONFIG_EPROM_SN_START									(1024 * 4)
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
@@ -72,7 +73,7 @@
 #define CONFIG_ADC_DMA_BUFFER_SIZE								(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_AMBIENT_TEMP             						25// Ambient temp in deg C
 #define CONFIG_ADC_VREFINT										1121//STM32 内部基准电压
-#define CONFIG_VREF_CAL                         				*(__IO uint16_t *)(0x1FFF7A2A)
+#define CONFIG_VREF_CAL                         				*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 #define CONFIG_ADC_INTERNAL_VREF     							3400// ADC Voltage Reference (mV)
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25											760.0F//0.76V@25D
@@ -111,7 +112,7 @@
 #define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
 #define CONFIG_DCHMI_DISKBUF_SIZE								0x80//显示缓冲区大小
 /*****************************************************************************/
-#define CONFIG_CHECK_DELAY_TIME									40
+#define CONFIG_CHECK_DELAY_TIME									10
 #define CONFIG_KEY_REPEAT_DELAY_TIME							100
 #define CONFIG_STANDBY_BEEM_DELAY_TIME							20
 /*****************************************************************************/
@@ -363,10 +364,12 @@
 #define SPCOIL_PS10MS											(SPCOIL_START * 16 + 2)//10mS
 #define SPCOIL_PS50MS											(SPCOIL_START * 16 + 3)//50mS
 #define SPCOIL_PS100MS											(SPCOIL_START * 16 + 4)//100mS
-#define SPCOIL_PS1000MS											(SPCOIL_START * 16 + 5)//1000mS
-#define SPCOIL_MODBUS_S0_ERROR									(SPCOIL_START * 16 + 6)//Modbus Slave->Uart0 错误
-#define SPCOIL_NVRAM_FAIL										(SPCOIL_START * 16 + 7)//NVRAM校验码错误
-#define SPCOIL_WATCHDOG_OVERFLOW								(SPCOIL_START * 16 + 8)//看门狗溢出
+#define SPCOIL_PS200MS											(SPCOIL_START * 16 + 5)//200mS
+#define SPCOIL_PS500MS											(SPCOIL_START * 16 + 6)//500mS
+#define SPCOIL_PS1000MS											(SPCOIL_START * 16 + 7)//1000mS
+#define SPCOIL_MODBUS_S0_ERROR									(SPCOIL_START * 16 + 8)//Modbus Slave->Uart0 错误
+#define SPCOIL_NVRAM_FAIL										(SPCOIL_START * 16 + 9)//NVRAM校验码错误
+#define SPCOIL_WATCHDOG_OVERFLOW								(SPCOIL_START * 16 + 10)//看门狗溢出
 /*****************************************************************************/
 #define SPCOIL_LINK_SEND_BUSY									(SPCOIL_START * 16 + 16)//发送进行中
 #define SPCOIL_LINK_SEND_DONE									(SPCOIL_START * 16 + 17)//发送完成
@@ -512,12 +515,12 @@
 #define EM_DC_PASSCODE_INDEX									(EM_START + 91)//密码输入位索引		
 #define EM_DC_NEW_PASSCODE0										(EM_START + 92)//输入新密码0			
 #define EM_DC_NEW_PASSCODE1										(EM_START + 93)//输入新密码1			
-#define EM_DC_NEW_PASSCODE2										(EM_START + 94)//输入新密码0			
-#define EM_DC_NEW_PASSCODE3										(EM_START + 95)//输入新密码1			
+#define EM_DC_NEW_PASSCODE2										(EM_START + 94)//输入新密码2			
+#define EM_DC_NEW_PASSCODE3										(EM_START + 95)//输入新密码3			
 #define EM_DC_DEFAULT_PASSCODE0									(EM_START + 96)//默认密码0				
 #define EM_DC_DEFAULT_PASSCODE1									(EM_START + 97)//默认密码1				
-#define EM_DC_DEFAULT_PASSCODE2									(EM_START + 98)//默认密码1	
-#define EM_DC_DEFAULT_PASSCODE3									(EM_START + 99)//默认密码1				
+#define EM_DC_DEFAULT_PASSCODE2									(EM_START + 98)//默认密码2	
+#define EM_DC_DEFAULT_PASSCODE3									(EM_START + 99)//默认密码3				
 #define EM_DC_DISPLAY_RELEASE_TIME								(EM_START + 100)//显示发射时间			
 #define EM_DC_DISPLAY_RELEASE_ENERGY							(EM_START + 101)//显示发射能量
 /*****************************************************************************/

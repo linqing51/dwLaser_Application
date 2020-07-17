@@ -8,12 +8,12 @@
 void sPlcBeemLoop(void);//蜂鸣器轮询
 void sPlcAimLoop(void);//瞄准光轮询
 void setBeemFreq(int16_t freq);//设置蜂鸣器频率和占空比
-void setBeemVolume(int16_t dc);//设置蜂鸣器占空比
+void setBeemVolume(int16_t volume);//设置蜂鸣器占空比
 void setLedAimFreq(int16_t freq);//设置LED灯和瞄准光闪烁频率
-void setAimDutyCycle(int16_t dc);//设置瞄准光亮度
-void setRedLedDutyCycle(int16_t dc);//设置R LED亮度
-void setGreenLedDutyCycle(int16_t dc);//设置G LED亮度
-void setBlueLedDutyCycle(int16_t dc);//设置B LED亮度
+void setAimBrightness(int16_t brg);//设置瞄准光亮度
+void setRedLedBrightness(int16_t brg);//设置R LED亮度
+void setGreenLedBrightness(int16_t brg);//设置G LED亮度
+void setBlueLedBrightness(int16_t brg);//设置B LED亮度
 void disableSplcTimer(void);//SPLC关闭计时器
 void enableSplcTimer(void);//SPLC打开计时器
 /*****************************************************************************/

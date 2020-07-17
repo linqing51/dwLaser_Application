@@ -1,9 +1,5 @@
 #include "MainAppLib.h"
 /*****************************************************************************/
-
-/*****************************************************************************/
-
-
 int16_t pulseWidthAdd(int16_t ps){//脉宽增加
 	if(ps >= 1 && ps < 10){
 		ps += 1;
@@ -64,25 +60,7 @@ uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 	temp = temp / 100;
 	return (uint8_t)(temp);
 }
-uint8_t getAimDuty(int16_t AimBrg){//指示光亮度值转换为占空比
-	uint16_t temp;
-	temp = AimBrg * 255;
-	temp = temp / 100;
-	return (uint8_t)(temp);
-	
-}
-uint8_t getBeemDuty(int16_t volume){//获取蜂鸣器占空比设置
-	//最大音量占空比0xB0
-	//最小音量占空比0xF1
-	uint8_t temp;
-	if(volume > 100)
-		volume = 100;
-	if(volume < 0)
-		volume = 0;
-	//temp = (0xFF - (250* volume / 100));
-	temp = (uint8_t)(0xFF - (int32_t)volume * 200 / 100);
-	return temp;
-}
+
 void defaultScheme(void){//当前选择方案恢复默认值						
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d",NVRAM0[DM_SCHEME_NUM]);		
 	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择

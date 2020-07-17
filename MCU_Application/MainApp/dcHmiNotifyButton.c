@@ -762,8 +762,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime = 0;
-						LaserRelease_TotalEnergy = 0;
+						LaserRelease_TotalTime0 = 0;
+						LaserRelease_TotalEnergy0 = 0;
 						updateReleaseTimeEnergy();
 					}
 					break;
@@ -968,8 +968,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime = 0;
-						LaserRelease_TotalEnergy = 0;
+						LaserRelease_TotalTime0 = 0;
+						LaserRelease_TotalEnergy0 = 0;
 						updateReleaseTimeEnergy();
 					}
 					break;
@@ -1197,8 +1197,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime = 0;
-						LaserRelease_TotalEnergy = 0;
+						LaserRelease_TotalTime0 = 0;
+						LaserRelease_TotalEnergy0 = 0;
 						updateReleaseTimeEnergy();
 					}
 					break;
@@ -1484,8 +1484,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime = 0;
-						LaserRelease_TotalEnergy = 0;
+						LaserRelease_TotalTime0 = 0;
+						LaserRelease_TotalEnergy0 = 0;
 						updateReleaseTimeEnergy();
 					}
 					break;
@@ -1683,8 +1683,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime = 0;
-						LaserRelease_TotalEnergy = 0;
+						LaserRelease_TotalTime0 = 0;
+						LaserRelease_TotalEnergy0 = 0;
 						updateReleaseTimeEnergy();
 					}
 					break;
@@ -1940,8 +1940,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime = 0;
-						LaserRelease_TotalEnergy = 0;
+						LaserRelease_TotalTime0 = 0;
+						LaserRelease_TotalEnergy0 = 0;
 						updateReleaseTimeEnergy();
 					}
 					break;
