@@ -714,6 +714,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #endif
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
+						clearReleaseTimeEnergy();			
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -722,6 +723,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -729,7 +731,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
-					if(state){
+					if(state){	
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_GP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -738,6 +741,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -746,6 +750,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SIGNAL;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -754,6 +759,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
 					if(state){
+						clearReleaseTimeEnergy();	
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_DERMA;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -762,9 +768,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime0 = 0;
-						LaserRelease_TotalEnergy0 = 0;
-						updateReleaseTimeEnergy();
+						clearReleaseTimeEnergy();
 					}
 					break;
 				}	
@@ -920,6 +924,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #endif				
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -927,7 +932,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
-					if(state){
+					if(state){	
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -936,6 +942,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
 					if(state){
+						clearReleaseTimeEnergy();	
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_GP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -944,6 +951,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
 					if(state){
+						clearReleaseTimeEnergy();			
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -952,6 +960,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SIGNAL;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -960,6 +969,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_DERMA;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -968,9 +978,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime0 = 0;
-						LaserRelease_TotalEnergy0 = 0;
-						updateReleaseTimeEnergy();
+						clearReleaseTimeEnergy();	
 					}
 					break;
 				}	
@@ -1149,6 +1157,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #endif
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1157,6 +1166,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1165,6 +1175,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_GP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1173,6 +1184,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1181,6 +1193,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SIGNAL;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1189,6 +1202,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_DERMA;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1197,9 +1211,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime0 = 0;
-						LaserRelease_TotalEnergy0 = 0;
-						updateReleaseTimeEnergy();
+						clearReleaseTimeEnergy();
 					}
 					break;
 				}	
@@ -1436,6 +1448,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #endif
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1444,14 +1457,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
-						updateStandbyDisplay();
 						standbyTouchEnable(true);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
 					if(state){
+						clearReleaseTimeEnergy();			
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_GP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1460,6 +1474,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1468,6 +1483,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SIGNAL;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1476,6 +1492,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_DERMA;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1484,9 +1501,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime0 = 0;
-						LaserRelease_TotalEnergy0 = 0;
-						updateReleaseTimeEnergy();
+						clearReleaseTimeEnergy();
 					}
 					break;
 				}	
@@ -1635,6 +1650,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #endif
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1643,6 +1659,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1651,6 +1668,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_GP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1659,6 +1677,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1667,6 +1686,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SIGNAL;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1675,6 +1695,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_DERMA;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1683,9 +1704,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime0 = 0;
-						LaserRelease_TotalEnergy0 = 0;
-						updateReleaseTimeEnergy();
+						clearReleaseTimeEnergy();
 					}
 					break;
 				}	
@@ -1892,6 +1911,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #endif				
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
+						clearReleaseTimeEnergy();	
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1900,6 +1920,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1908,6 +1929,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_GP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1916,6 +1938,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1924,6 +1947,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
 					if(state){
+						clearReleaseTimeEnergy();	
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SIGNAL;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1932,6 +1956,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
 					if(state){
+						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_DERMA;
 						updateStandbyDisplay();
 						standbyTouchEnable(true);
@@ -1940,9 +1965,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
 					if(state){
-						LaserRelease_TotalTime0 = 0;
-						LaserRelease_TotalEnergy0 = 0;
-						updateReleaseTimeEnergy();
+						clearReleaseTimeEnergy();
 					}
 					break;
 				}	

@@ -10,7 +10,7 @@
       <TargetName>MCU_Application</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::.\ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -883,6 +883,11 @@
               <FileName>MainAppLib.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\MainApp\MainAppLib.c</FilePath>
+            </File>
+            <File>
+              <FileName>deviceConfig.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\deviceConfig.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -6,6 +6,7 @@
 #include "dcHmiRes.h"
 #include "MainAppLib.h"
 #include "dcHmiLanguage.H"
+#include "deviceConfig.h"
 /*****************************************************************************/
 #define FSMSTEP_POWERUP												0//上电
 //HMI初始操作
@@ -72,6 +73,7 @@ void unselectScheme_1_All(void);
 void seletcSchemeNum(int16_t sel);
 void unselectSchemeNum(int16_t sel);
 /*****************************************************************************/
+void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
 void updateSchemeInfo(int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);

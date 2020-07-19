@@ -19,7 +19,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){    //ADC转换完成回调
     if(hadc->Instance == ADC1){
 		adcBufferDone = 1;
 	}
-	
 }
 void chipAdcProcess(void){//循环采集ADC
 	uint8_t i, j;

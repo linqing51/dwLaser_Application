@@ -220,53 +220,18 @@ int8_t checkScheme(int8_t cn){
 	}
 	return true;
 }
-int16_t fitLaserToCode(uint8_t ch, int16_t power){//功率->DAC CODE
+int16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->DAC CODE
 	fp32_t fin, ftemp0, ftemp1, ftemp2, ftemp3;
-	fp32_t notesB1, notesB2, notesB3, notesIntercept;
 	int16_t out;
-	fin = (fp32_t)power;	
-	switch(ch){
-		case LASER_SELECT_CH0:{
-			notesIntercept = LASER_CH0_NOTES_INTERCEPT;			
-			notesB1 = LASER_CH0_NOTES_B1;
-			notesB2 = LASER_CH0_NOTES_B2;
-			notesB3 = LASER_CH0_NOTES_B3;
-			break;
-		}
-		case LASER_SELECT_CH1:{
-			notesIntercept = LASER_CH1_NOTES_INTERCEPT;			
-			notesB1 = LASER_CH1_NOTES_B1;
-			notesB2 = LASER_CH1_NOTES_B2;
-			notesB3 = LASER_CH1_NOTES_B3;
-			break;
-		}
-		case LASER_SELECT_CH2:{
-			notesIntercept = LASER_CH2_NOTES_INTERCEPT;			
-			notesB1 = LASER_CH2_NOTES_B1;
-			notesB2 = LASER_CH2_NOTES_B2;
-			notesB3 = LASER_CH2_NOTES_B3;
-			break;
-		}
-		case LASER_SELECT_CH3:{
-			notesIntercept = LASER_CH3_NOTES_INTERCEPT;			
-			notesB1 = LASER_CH3_NOTES_B1;
-			notesB2 = LASER_CH3_NOTES_B2;
-			notesB3 = LASER_CH3_NOTES_B3;
-			break;
-		}
-		default:{	
-			notesIntercept = 0x0;			
-			notesB1 = 0x0;
-			notesB2 = 0x0;
-			notesB3 = 0x0;
-			break;
-		}
+	if(ch > 8){
+		ch = 8;
 	}
+	fin = (fp32_t)power;	
 	//进行3次多项式拟合Y = A*X^3 + B*X^2 + C*X + D
-	ftemp0 = pow((fp64_t)fin, 3) * notesB3;//3次方
-	ftemp1 = pow((fp64_t)fin, 2) * notesB2;//2次方
-	ftemp2 = (fp32_t)fin * notesB1;//1次方
-	ftemp3 = ftemp0 + ftemp1 + ftemp2 + notesIntercept;
+	ftemp0 = pow((fp64_t)fin, 3) * pcfg->laserNotesB3[ch];//3次方
+	ftemp1 = pow((fp64_t)fin, 2) * pcfg->laserNotesB2[ch];//2次方
+	ftemp2 = (fp32_t)fin * pcfg->laserNotesB1[ch];//1次方
+	ftemp3 = ftemp0 + ftemp1 + ftemp2 + pcfg->laserNotesIntercept[ch];
 	if(ftemp3 >= 0x0FFF){
 		ftemp3 = 0x0FFF;
 	}

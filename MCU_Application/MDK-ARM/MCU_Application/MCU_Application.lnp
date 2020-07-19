@@ -85,6 +85,7 @@
 "mcu_application\dchminotifytext.o"
 "mcu_application\mainapp.o"
 "mcu_application\mainapplib.o"
+"mcu_application\deviceconfig.o"
 "mcu_application\croutine.o"
 "mcu_application\event_groups.o"
 "mcu_application\list.o"

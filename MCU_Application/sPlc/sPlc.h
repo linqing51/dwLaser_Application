@@ -14,6 +14,7 @@
 #include "stdbool.h"
 #include "stdint.h"
 /*****************************************************************************/
+#include "deviceConfig.h"
 #include "sPlcConfig.h"
 #include "sPlcMisc.h"
 #include "sPlcMcu.h"

@@ -65,7 +65,7 @@
 #define CONFIG_EPROM_MR_START									0x0
 #define CONFIG_EPROM_DM_START									(CONFIG_MRRAM_SIZE * 2)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_START + (CONFIG_DMRAM_SIZE * 2))
-#define CONFIG_EPROM_SN_START									(1024 * 4)
+#define CONFIG_EPROM_CONFIG_START								(1024 * 4)
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
