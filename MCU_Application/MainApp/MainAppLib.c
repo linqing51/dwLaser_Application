@@ -220,7 +220,7 @@ int8_t checkScheme(int8_t cn){
 	}
 	return true;
 }
-int16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->DAC CODE
+uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->DAC CODE
 	fp32_t fin, ftemp0, ftemp1, ftemp2, ftemp3;
 	int16_t out;
 	if(ch > 8){
@@ -232,14 +232,13 @@ int16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->
 	ftemp1 = pow((fp64_t)fin, 2) * pcfg->laserNotesB2[ch];//2次方
 	ftemp2 = (fp32_t)fin * pcfg->laserNotesB1[ch];//1次方
 	ftemp3 = ftemp0 + ftemp1 + ftemp2 + pcfg->laserNotesIntercept[ch];
-	if(ftemp3 >= 0x0FFF){
-		ftemp3 = 0x0FFF;
+	if(ftemp3 >= 0xFFFF){
+		ftemp3 = 0xFFFF;
 	}
 	if(ftemp3 < 0x0){
 		ftemp3 = 0;
 	}
-	out = (int16_t)ftemp3;
-	out &= 0x0FFF;
+	out = (uint16_t)ftemp3;
 	return out;
 }
 

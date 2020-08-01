@@ -44,7 +44,7 @@
 #define CONFIG_SPLC_DEV											0x0A01//设备号
 #define CONFIG_SPLC_CLEAR_CODE									0xA58E
 #define CONFIG_SOFTPLC_TICK										200L//5mS
-#define CONFIG_INPUT_FILTER_TIME								1//输入数字滤波扫描周期 1mS * N
+#define CONFIG_INPUT_FILTER_TIME								8//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
 /*****************************************************************************/
@@ -65,7 +65,8 @@
 #define CONFIG_EPROM_MR_START									0x0
 #define CONFIG_EPROM_DM_START									(CONFIG_MRRAM_SIZE * 2)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_START + (CONFIG_DMRAM_SIZE * 2))
-#define CONFIG_EPROM_CONFIG_START								(1024 * 4)
+#define CONFIG_EPROM_CONFIG_START								(4096L)
+#define CONFIG_EPROM_LOGINFO_START								(4608L)
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
@@ -171,7 +172,7 @@
 #define CONFIG_MIN_BEEM_VOLUME									1//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG										100//屏幕亮度最大值
 #define CONFIG_MIN_LCD_BRG										1//屏幕亮度最小值
-#define CONFIG_COOL_SET_TEMP									220//冷却温度
+#define CONFIG_COOL_SET_TEMP									280//冷却温度
 #define CONFIG_COOL_DIFF_TEMP									20//冷却温度变化范围
 //功率设定校正系数
 #define LASER_CH0_NOTES_INTERCEPT								393.7F	
@@ -367,9 +368,10 @@
 #define SPCOIL_PS200MS											(SPCOIL_START * 16 + 5)//200mS
 #define SPCOIL_PS500MS											(SPCOIL_START * 16 + 6)//500mS
 #define SPCOIL_PS1000MS											(SPCOIL_START * 16 + 7)//1000mS
-#define SPCOIL_MODBUS_S0_ERROR									(SPCOIL_START * 16 + 8)//Modbus Slave->Uart0 错误
-#define SPCOIL_NVRAM_FAIL										(SPCOIL_START * 16 + 9)//NVRAM校验码错误
-#define SPCOIL_WATCHDOG_OVERFLOW								(SPCOIL_START * 16 + 10)//看门狗溢出
+#define SPCOIL_PS1MINS											(SPCOIL_START * 16 + 8)//1mins
+#define SPCOIL_MODBUS_S0_ERROR									(SPCOIL_START * 16 + 9)//Modbus Slave->Uart0 错误
+#define SPCOIL_NVRAM_FAIL										(SPCOIL_START * 16 + 10)//NVRAM校验码错误
+#define SPCOIL_WATCHDOG_OVERFLOW								(SPCOIL_START * 16 + 11)//看门狗溢出
 /*****************************************************************************/
 #define SPCOIL_LINK_SEND_BUSY									(SPCOIL_START * 16 + 16)//发送进行中
 #define SPCOIL_LINK_SEND_DONE									(SPCOIL_START * 16 + 17)//发送完成
@@ -469,8 +471,8 @@
 #define SPREG_DK25L_VER											(SPREG_START + 59)//DK25L NFC模块版本
 /*****************************************************************************/
 #define SPREG_CLEAR_NVRAM										(SPREG_END - 4)//清除NVRAM后重新启动
-#define SPREG_TICK_L											(SPREG_END - 3)//累计运行时间 1S
-#define SPREG_TICK_H											(SPREG_END - 2)//累计运行时间
+#define SPREG_TICK_L											(SPREG_END - 3)//累计运行时间 秒低位
+#define SPREG_TICK_H											(SPREG_END - 2)//累计运行时间 秒高位
 #define SPREG_SCAN_TIME											(SPREG_END - 1)//扫描时间
 #define SPREG_IDENTITY											(SPREG_END - 0)//平台ID号
 /*****************************************************************************/
@@ -500,10 +502,8 @@
 /*****************************************************************************/
 #define EM_LASER_TEMP											(EM_START + 67)//激光二极管模块温度
 #define EM_MCU_TEMP												(EM_START + 68)//处理器温度
-#define EM_DIODE_HIGH_TEMP										(EM_START + 69)//激光二极管模块过热阈值
-#define EM_ENVI_HIGH_TEMP										(EM_START + 70)//处理器过热阈值
-#define EM_COOL_SET_TEMP										(EM_START + 71)//设定冷却温度
-#define EM_COOL_DIFF_TEMP										(EM_START + 72)//设定冷却回差调节
+#define EM_LASER_CURRENT										(EM_START + 69)//激光二极管模块电流
+#define EM_LASER_PHOTODIODE										(EM_START + 70)//激光二极管模块功率
 /*****************************************************************************/				
 #define EM_TOTAL_POWER											(EM_START + 73)//发射总功率
 #define EM_HMI_OPERA_STEP										(EM_START +	74)//操作步骤								
@@ -723,12 +723,13 @@
 #define X_PWR_KEY												(X_START * 16 + 4)//XIN4 电源开关
 #define X_FIBER_PROBE											(X_START * 16 + 5)//XIN5 光纤探测
 /*****************************************************************************/
-#define Y_FAN													(Y_START * 16 + 0)//YOUT0 制冷开关
-#define Y_TEC													(Y_START * 16 + 1)//YOUT1 风扇开关
-#define Y_GLED													(Y_START * 16 + 2)//YOUT2 绿灯开关
-#define Y_RLED													(Y_START * 16 + 3)//YOUT3 红灯开关
-#define Y_BLED													(Y_START * 16 + 4)//YOUT4 蓝灯开关
-#define Y_LCDPWR												(Y_START * 16 + 5)//YOUT5 LCD电源开关
+#define Y_FAN_SP												(Y_START * 16 + 0)//YOUT0 电源风扇开关
+#define Y_FAN_LD												(Y_START * 16 + 1)//YOUT1 制冷风扇开关
+#define Y_TEC													(Y_START * 16 + 2)//YOUT1 制冷开关
+#define Y_GLED													(Y_START * 16 + 3)//YOUT2 绿灯开关
+#define Y_RLED													(Y_START * 16 + 4)//YOUT3 红灯开关
+#define Y_BLED													(Y_START * 16 + 5)//YOUT4 蓝灯开关
+#define Y_LCDPWR												(Y_START * 16 + 6)//YOUT5 LCD电源开关
 /*****************************************************************************/
 #define R_FIBER_PROBE											(R_START * 16 + 0)//光纤插入标志
 #define R_RFID_PASS												(R_START * 16 + 1)//NFC光纤插入标志
@@ -739,12 +740,11 @@
 #define R_FOOTSWITCH_PLUG										(R_START * 16 + 6)//脚踏插入标志
 #define R_FOOTSWITCH_PRESS										(R_START * 16 + 7)//脚踏按下标志
 #define R_FAULT													(R_START * 16 + 8)//故障标志
-#define R_FAN_ENABLE											(R_START * 16 + 9)//风扇使能
-#define R_DISABLE_RFID											(R_START * 16 + 10)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE									(R_START * 16 + 11)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED										(R_START * 16 + 12)//屏蔽风扇控制
-#define R_CLEAR_EPROM											(R_START * 16 + 13)//完全清空EPROM
-#define R_ENGINEER_MODE											(R_START * 16 + 14)//工程师模式
+#define R_DISABLE_RFID											(R_START * 16 + 9)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE									(R_START * 16 + 10)//屏蔽光纤探测
+#define R_DISABLE_FAN_SPEED										(R_START * 16 + 11)//屏蔽风扇控制
+#define R_CLEAR_EPROM											(R_START * 16 + 12)//完全清空EPROM
+#define R_ENGINEER_MODE											(R_START * 16 + 13)//工程师模式
 //HMI相关状态
 #define R_DCHMI_RESET_REQ										(R_START * 16 + 20)//HMI复位请求
 #define R_DCHMI_RESET_DOING										(R_START * 16 + 21)//HMI复位中

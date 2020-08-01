@@ -6,20 +6,25 @@ int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
 uint8_t LKSRAM[CONFIG_LKSRAM_SIZE];//通信发送缓冲区
 uint8_t LKRRAM[CONFIG_LKRRAM_SIZE];//通信接收缓冲区
-uint8_t TimerCounter_1mS = 0;
-uint8_t TimerCounter_10mS = 0;
-uint8_t TimerCounter_100mS = 0;
+/*****************************************************************************/
+uint16_t TimerCounter_10mS = 0;//10毫秒
+uint16_t TimerCounter_100mS = 0;//100毫秒
+uint16_t TimerCounter_200mS = 0;//200毫秒
+uint16_t TimerCounter_500mS = 0;//500毫秒
+uint16_t TimerCounter_1000mS = 0;//1秒
+uint16_t TimerCounter_60000mS = 0;//1分钟
+/*****************************************************************************/
 uint8_t TD_10MS_SP = 0;
 uint8_t TD_100MS_SP = 0;
 uint8_t TD_200MS_SP = 0;
 uint8_t TD_500MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
+uint8_t TD_60000MS_SP = 0;
 uint32_t sPlcEnterTime, sPlcExitTime, sPlcScanTime;
 /******************************************************************************/
 void errorHandler(uint16_t errCode){
 	while(1);
 }
-
 
 void assertCoilAddress(uint16_t adr){//检查线圈地址
 #if CONFIG_SPLC_ASSERT == 1
@@ -80,8 +85,7 @@ void updateNvram(void){//更新NVRAM->EPROM
 		}
 		sp0 ++;
 		sp1 ++;
-	}
-	
+	}	
 	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//更新NVRAM1 非保持寄存器
 }
 void clearNvram(void){//清除NVRAM数据	
@@ -290,6 +294,14 @@ void sPlcInit(void){//软逻辑初始化
 	printf("sPlc->sPlcInit:Start Dac init......\n");
 #endif	
 	initChipDac();//初始化DAC模块
+	UPDAC0();
+	UPDAC1();
+	UPDAC2();
+	UPDAC3();
+	UPDAC4();
+	UPDAC5();
+	UPDAC6();
+	UPDAC7();
 #endif
 
 #if CONFIG_SPLC_USING_ADC == 1
@@ -342,6 +354,10 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	if(TD_1000MS_SP >= 1){
 		FLIP(SPCOIL_PS1000MS);
 		TD_1000MS_SP = 0;
+	}
+	if(TD_60000MS_SP >= 1){
+		FLIP(SPCOIL_PS1MINS);
+		TD_60000MS_SP = 0;
 	}
 #if CONFIG_SPLC_USING_IO_INPUT == 1
 	inputRefresh();//读取X口输入

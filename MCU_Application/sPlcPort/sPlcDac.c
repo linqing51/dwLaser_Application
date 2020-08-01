@@ -1,6 +1,6 @@
 #include "sPlcDac.h"
 /*****************************************************************************/
-static void setSYNC(uint8_t dat){//PC13
+static void setSYNC(uint8_t dat){
 	if(dat){
 		HAL_GPIO_WritePin(DA_SYNC_GPIO_Port, DA_SYNC_Pin, GPIO_PIN_SET);
 	}
@@ -8,37 +8,62 @@ static void setSYNC(uint8_t dat){//PC13
 		HAL_GPIO_WritePin(DA_SYNC_GPIO_Port, DA_SYNC_Pin, GPIO_PIN_RESET);
 	}
 }
-static void setCLK(uint8_t dat){//PC15
+static void setCLK(uint8_t dat){
 	if(dat){
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_15, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DA_SCLK_GPIO_Port, DA_SCLK_Pin, GPIO_PIN_SET);
 	}
 	else{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_15, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(DA_SCLK_GPIO_Port, DA_SCLK_Pin, GPIO_PIN_RESET);
 	}
 }
-static void setDIN(uint8_t dat){//PC14
+static void setDIN(uint8_t dat){
 	if(dat){
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DA_DIN_GPIO_Port, DA_DIN_Pin, GPIO_PIN_SET);
 	}
 	else{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(DA_DIN_GPIO_Port, DA_DIN_Pin, GPIO_PIN_RESET);
 	}
 }
 static void spiWrite(uint32_t dat){//DAC8568 SPI写入
 	uint8_t tmp, i;
 	setSYNC(true);
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	setCLK(true);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	setSYNC(false);
 	for(i = 0;i < 32;i ++){
 		tmp = (uint8_t)(dat >> (31 - i)) & 0x01;
 		setDIN(tmp);
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		setCLK(false);
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		setCLK(true);
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	}
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	setSYNC(true);
 }
@@ -76,6 +101,9 @@ void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	if(temp <= CONFIG_MIN_DAC_CH0)
 		temp = CONFIG_MIN_DAC_CH0;
 	dac8568_WriteDacRegister(0x06, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC0=%d\n", temp);
+#endif
 }
 void UPDAC1(void){//立即从SPREG_DAC_1更新DAC1
 	uint16_t temp;
@@ -85,6 +113,9 @@ void UPDAC1(void){//立即从SPREG_DAC_1更新DAC1
 	if(temp <= CONFIG_MIN_DAC_CH1)
 		temp = CONFIG_MIN_DAC_CH1;
 	dac8568_WriteDacRegister(0x04, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC1=%d\n", temp);
+#endif
 }
 void UPDAC2(void){
 	uint16_t temp;
@@ -94,6 +125,9 @@ void UPDAC2(void){
 	if(temp <= CONFIG_MIN_DAC_CH2)
 		temp = CONFIG_MIN_DAC_CH2;
 	dac8568_WriteDacRegister(0x02, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC2=%d\n", temp);
+#endif
 }
 void UPDAC3(void){
 	uint16_t temp;
@@ -103,6 +137,9 @@ void UPDAC3(void){
 	if(temp <= CONFIG_MIN_DAC_CH3)
 		temp = CONFIG_MIN_DAC_CH3;
 	dac8568_WriteDacRegister(0x00, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC3=%d\n", temp);
+#endif
 }
 void UPDAC4(void){
 	uint16_t temp;
@@ -112,6 +149,9 @@ void UPDAC4(void){
 	if(temp <= CONFIG_MIN_DAC_CH4)
 		temp = CONFIG_MIN_DAC_CH4;
 	dac8568_WriteDacRegister(0x01, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC4=%d\n", temp);
+#endif
 }
 void UPDAC5(void){
 	uint16_t temp;
@@ -121,6 +161,9 @@ void UPDAC5(void){
 	if(temp <= CONFIG_MIN_DAC_CH5)
 		temp = CONFIG_MIN_DAC_CH5;
 	//dac8568_WriteDacRegister(0x01, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC5=%d\n", temp);
+#endif
 }
 void UPDAC6(void){
 	uint16_t temp;
@@ -130,6 +173,9 @@ void UPDAC6(void){
 	if(temp <= CONFIG_MIN_DAC_CH6)
 		temp = CONFIG_MIN_DAC_CH6;
 	//dac8568_WriteDacRegister(0x01, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC6=%d\n", temp);
+#endif
 }
 void UPDAC7(void){
 	uint16_t temp;
@@ -139,6 +185,9 @@ void UPDAC7(void){
 	if(temp <= CONFIG_MIN_DAC_CH7)
 		temp = CONFIG_MIN_DAC_CH7;
 	//dac8568_WriteDacRegister(0x01, temp);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Update DAC7=%d\n", temp);
+#endif
 }
 void CLDAC(void){//立即清空全部DAC
 	dac8568_WriteDacRegister(0x00, 0);
@@ -149,6 +198,9 @@ void CLDAC(void){//立即清空全部DAC
 	dac8568_WriteDacRegister(0x05, 0);
 	dac8568_WriteDacRegister(0x06, 0);
 	dac8568_WriteDacRegister(0x07, 0);
+#if CONFIG_DEBUG_APP == 1
+	printf("dcHmiApp->dcHmiLoop:Clear all DAC\n");
+#endif
 }
 
 

@@ -1,5 +1,4 @@
 #include "sPlcTimer.h"
-//#include "main.h"
 /*****************************************************************************/
 extern TIM_HandleTypeDef htim7;
 /*****************************************************************************/
@@ -12,9 +11,12 @@ void initSplcTimer(void){//硬件sTimer计时器初始化
 	TD_200MS_SP = 0;
 	TD_500MS_SP = 0;
 	TD_1000MS_SP = 0;
-	TimerCounter_1mS = 0;
-	TimerCounter_10mS = 0;
-	TimerCounter_100mS = 0;
+	TimerCounter_10mS = 0;//10毫秒
+	TimerCounter_100mS = 0;//100毫秒
+	TimerCounter_200mS = 0;//200毫秒
+	TimerCounter_500mS = 0;//500毫秒
+	TimerCounter_1000mS = 0;//1秒
+	TimerCounter_60000mS = 0;//1分钟
 	sPlcTick = 0;
 }
 
@@ -31,7 +33,7 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 			NVRAM0[i] = 0;
 		}
 	}
-	if(TimerCounter_1mS > 10){//10mS计算
+	if(TimerCounter_10mS > 10){//10mS计算
 		for(i = TD_10MS_START;i <= TD_10MS_END;i ++){
 			if(LD(T_10MS_ENA_START * 16 + (i - TD_10MS_START))){
 				if(NVRAM0[i] < SHRT_MAX){
@@ -42,13 +44,10 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 				NVRAM0[i] = 0;
 			}
 		}
-		if(TD_10MS_SP < CHAR_MAX){
-			TD_10MS_SP ++;
-		}
-		TimerCounter_10mS ++;
-		TimerCounter_1mS = 0;
+		TD_10MS_SP = 1;
+		TimerCounter_10mS = 0;
 	}
-	if(TimerCounter_10mS > 10){//100ms计算
+	if(TimerCounter_100mS > 100){//100ms计算
 		for(i = TD_100MS_START;i < TD_100MS_END;i ++){
 			if(LD(T_100MS_ENA_START * 16 + (i - TD_100MS_START))){
 				if(NVRAM0[i] < SHRT_MAX){
@@ -59,40 +58,44 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 				NVRAM0[i] = 0;
 			}
 		}
-		if(TD_100MS_SP < CHAR_MAX){
-			TD_100MS_SP ++;
-		}
-		TimerCounter_100mS ++;
-		TimerCounter_10mS = 0;
-	}
-	if(TimerCounter_100mS > 2){
-		if(TD_200MS_SP < CHAR_MAX){
-			TD_200MS_SP ++;
-		}
-	}
-	if(TimerCounter_100mS > 5){
-		if(TD_500MS_SP < CHAR_MAX){
-			TD_500MS_SP ++;
-		}
-	}
-	if(TimerCounter_100mS > 10){
-		if(TD_1000MS_SP < CHAR_MAX){
-			TD_1000MS_SP ++;
-		}
+		TD_100MS_SP = 1;
 		TimerCounter_100mS = 0;
+	}
+	if(TimerCounter_200mS > 200){//200ms计算
+		TD_200MS_SP = 1;
+		TimerCounter_200mS = 0;
+	}
+	if(TimerCounter_500mS > 500){//500ms计算
+		TD_500MS_SP = 1;
+		TimerCounter_500mS = 0;
+	}
+	if(TimerCounter_1000mS > 1000){//1000ms计算
 		temp = *(uint32_t*)(NVRAM0 + SPREG_TICK_L);
 		if(temp < UINT_MAX){
 			temp ++;
 			*(uint32_t*)(NVRAM0 + SPREG_TICK_L) = temp;
 		}
+		TD_1000MS_SP = 1;
+		TimerCounter_1000mS = 0;
 	}
+	if(TimerCounter_60000mS > 60000){//1分钟计时
+		TD_60000MS_SP = 1;
+		TimerCounter_60000mS = 0;
+	}
+	
 	if(NVRAM0[SPREG_LINK_SEND_TCOUNTER] < USHRT_MAX){
 		NVRAM0[SPREG_LINK_SEND_TCOUNTER] ++;
 	}
 	if(NVRAM0[SPREG_LINK_RECE_TCOUNTER] < USHRT_MAX){
 		NVRAM0[SPREG_LINK_RECE_TCOUNTER] ++;
 	}
-	TimerCounter_1mS ++;
+	TimerCounter_10mS ++;//10毫秒
+	TimerCounter_100mS ++;//100毫秒
+	TimerCounter_200mS ++;//200毫秒
+	TimerCounter_500mS ++;//500毫秒
+	TimerCounter_1000mS ++;//1秒
+	TimerCounter_60000mS ++;//1分钟
+	
 	sPlcTick ++;
 }
 
