@@ -22,16 +22,16 @@ typedef struct{
 	uint32_t lcdAppCrc;//触摸屏程序校验码
 }firmwareInfo_t;//固件信息
 
-
 typedef struct{
 	uint32_t powerUpCycle;//开机次数
-	uint32_t runTime;//运行累计时间
-	uint32_t laserOnTime;//激光发射累计时间
-	fp32_t laserMaxTemper;//激光器最大温度
-	fp32_t laserMinTemper;//激光器最低温度
-	fp32_t laserMaxCurrent[5];//激光器最大电流
-	fp32_t mucMaxTemper;//处理器最高温度
-	fp32_t mucMinTemper;//处理器最低温度
+	uint32_t runTime;//运行累计时间 单位分钟
+	uint32_t laserOnTime[5];//激光发射累计时间 单位秒
+	int16_t laserMaxTemper;//激光器最大温度
+	int16_t laserMinTemper;//激光器最低温度
+	int16_t laserMaxCurrent[5];//激光器最大电流
+	int16_t laserMaxPhotoDiode;//激光器最大功率
+	int16_t mucMaxTemper;//处理器最高温度
+	int16_t mucMinTemper;//处理器最低温度
 }deviceLogInfo_t;
 /*****************************************************************************/
 extern deviceConfig_t deviceConfig;

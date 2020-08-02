@@ -89,8 +89,58 @@ void scanDeviceLogInfo(void){//检查记录
 		deviceLogInfo.mucMinTemper = NVRAM0[EM_MCU_TEMP];
 		upReq |= 1;
 	}
+	if(NVRAM0[EM_LASER_CURRENT_CH0] > deviceLogInfo.laserMaxCurrent[0]){//记录最大电流 通道0
+		deviceLogInfo.laserMaxCurrent[0] = NVRAM0[EM_LASER_CURRENT_CH0];
+		upReq |= 1;
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH1] > deviceLogInfo.laserMaxCurrent[1]){//记录最大电流 通道1
+		deviceLogInfo.laserMaxCurrent[1] = NVRAM0[EM_LASER_CURRENT_CH1];
+		upReq |= 1;
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH2] > deviceLogInfo.laserMaxCurrent[2]){//记录最大电流 通道2
+		deviceLogInfo.laserMaxCurrent[2] = NVRAM0[EM_LASER_CURRENT_CH2];
+		upReq |= 1;
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH3] > deviceLogInfo.laserMaxCurrent[3]){//记录最大电流 通道3
+		deviceLogInfo.laserMaxCurrent[3] = NVRAM0[EM_LASER_CURRENT_CH3];
+		upReq |= 1;
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH4] > deviceLogInfo.laserMaxCurrent[4]){//记录最大电流 通道4
+		deviceLogInfo.laserMaxCurrent[4] = NVRAM0[EM_LASER_CURRENT_CH4];
+		upReq |= 1;
+	}
+	if(NVRAM0[EM_LASER_PHOTODIODE] > deviceLogInfo.laserMaxPhotoDiode){//记录最大功率
+		deviceLogInfo.laserMaxPhotoDiode = NVRAM0[EM_LASER_PHOTODIODE];
+		upReq |= 1;
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH0] > CONFIG_LASER_THRESHOLD_CH0){//通道0电流大于阈值激光发射
+		if(LDP(SPCOIL_PS1000MS)){
+			deviceLogInfo.laserOnTime[0] ++;
+		}
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH1] > CONFIG_LASER_THRESHOLD_CH1){//通道1电流大于阈值激光发射
+		if(LDP(SPCOIL_PS1000MS)){
+			deviceLogInfo.laserOnTime[1] ++;
+		}
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH2] > CONFIG_LASER_THRESHOLD_CH2){//通道2电流大于阈值激光发射
+		if(LDP(SPCOIL_PS1000MS)){
+			deviceLogInfo.laserOnTime[2] ++;
+		}
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH3] > CONFIG_LASER_THRESHOLD_CH3){//通道3电流大于阈值激光发射
+		if(LDP(SPCOIL_PS1000MS)){
+			deviceLogInfo.laserOnTime[3] ++;
+		}
+	}
+	if(NVRAM0[EM_LASER_CURRENT_CH4] > CONFIG_LASER_THRESHOLD_CH4){//通道4电流大于阈值激光发射
+		if(LDP(SPCOIL_PS1000MS)){
+			deviceLogInfo.laserOnTime[4] ++;
+		}
+	}
 	if(LDP(SPCOIL_PS1MINS) || upReq){//每分钟记录Log
 		deviceLogInfo.runTime ++;
+		saveDeviceLogInfo();
 		upReq = 0;
 	}
 }
@@ -125,7 +175,7 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 void updateStandbyDebugInfo(void){//更新Standby调试信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "TLAS:%05d, TMCU:%05d,LD:%05d, PD:%05d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_LASER_CURRENT], NVRAM0[EM_LASER_PHOTODIODE]);
+	sprintf(dispBuf, "TLAS:%05d, TMCU:%05d,LD:%05d, PD:%05d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_LASER_CURRENT_CH0], NVRAM0[EM_LASER_PHOTODIODE]);
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){
 		case LASER_MODE_CW:{
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
@@ -174,17 +224,26 @@ void updateDiognosisInfo(void){//更新诊断信息
 	sprintf(dispBuf, "DAC0:%05d,DAC1:%05d,DAC2:%05d,DAC3:%05d", NVRAM0[SPREG_DAC_0], NVRAM0[SPREG_DAC_1], NVRAM0[SPREG_DAC_2], NVRAM0[SPREG_DAC_3]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
 	
-	sprintf(dispBuf, "NFC VER:%05d, PLATFORM VER:%05d", NVRAM0[SPREG_DK25L_VER], NVRAM0[SPREG_IDENTITY]);
+	sprintf(dispBuf, "DAC4:%05d,DAC5:%05d,DAC6:%05d,DAC7:%05d", NVRAM0[SPREG_DAC_4], NVRAM0[SPREG_DAC_5], NVRAM0[SPREG_DAC_6], NVRAM0[SPREG_DAC_7]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO3, (uint8_t*)dispBuf);
 	
-	sprintf(dispBuf, "FS NC:%1d, FS NO:%1d, ES:%d, IL:%1d, FP:%1d", LD(X_FOOTSWITCH_NC),  LD(X_FOOTSWITCH_NO), LD(X_ESTOP), LD(X_INTERLOCK), LD(X_FIBER_PROBE));
+	sprintf(dispBuf, "NFC VER:%05d, PLATFORM VER:%05d", NVRAM0[SPREG_DK25L_VER], NVRAM0[SPREG_IDENTITY]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4, (uint8_t*)dispBuf);
 	
-	sprintf(dispBuf, "FAN:%1d, TEC:%1d", LD(Y_FAN_LD),  LD(Y_TEC));
+	sprintf(dispBuf, "FS NC:%1d, FS NO:%1d, ES:%d, IL:%1d, FP:%1d", LD(X_FOOTSWITCH_NC),  LD(X_FOOTSWITCH_NO), LD(X_ESTOP), LD(X_INTERLOCK), LD(X_FIBER_PROBE));
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO5, (uint8_t*)dispBuf);
 	
-	sprintf(dispBuf, "TLAS:%05d,TMCU:%05d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP]);
+	sprintf(dispBuf, "FAN:%1d,TEC:%1d,TLAS:%05d,TMCU:%05d", LD(Y_FAN_LD),  LD(Y_TEC),NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO6, (uint8_t*)dispBuf);
+	
+	sprintf(dispBuf, "PowerUp Cycle:%d,RunTime:%d",deviceLogInfo.powerUpCycle, deviceLogInfo.runTime);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO7, (uint8_t*)dispBuf);
+	
+	sprintf(dispBuf, "Max Laser Temper:%d,Max Mcu Temper:%d", deviceLogInfo.laserMaxTemper, deviceLogInfo.mucMaxTemper);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO8, (uint8_t*)dispBuf);
+	
+	sprintf(dispBuf, "Max Laser Current:%d,Max Laser Power:%d", deviceLogInfo.laserMaxCurrent[0], deviceLogInfo.laserMaxPhotoDiode);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO9, (uint8_t*)dispBuf);
 }
 void updateEnergyDensity(void){//更新能量密度显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -1905,10 +1964,26 @@ static void faultLoop(void){//故障轮询
 }
 static void laserStateLoop(void){//激光状态轮询
 	fp32_t cur, power;
-	//计算激光电流
+	//计算激光电流 CH0
 	cur = (3300.0F * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_0]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压值
 	cur = cur / 100.0F / 20.0F / 0.003F;//计算电流值
-	NVRAM0[EM_LASER_CURRENT] = cur;
+	NVRAM0[EM_LASER_CURRENT_CH0] = cur;
+	//计算激光电流 CH1
+	cur = (3300.0F * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_7]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压值
+	cur = cur / 100.0F / 20.0F / 0.003F;//计算电流值
+	NVRAM0[EM_LASER_CURRENT_CH1] = cur;
+	//计算激光电流 CH2
+	cur = (3300.0F * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_6]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压值
+	cur = cur / 100.0F / 20.0F / 0.003F;//计算电流值
+	NVRAM0[EM_LASER_CURRENT_CH2] = cur;
+	//计算激光电流 CH3
+	cur = (3300.0F * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_5]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压值
+	cur = cur / 100.0F / 20.0F / 0.003F;//计算电流值
+	NVRAM0[EM_LASER_CURRENT_CH3] = cur;
+	//激光激光电流 CH4
+	cur = (3300.0F * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_4]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压值
+	cur = cur / 100.0F / 20.0F / 0.003F;//计算电流值
+	NVRAM0[EM_LASER_CURRENT_CH4] = cur;
 	//计算激光功率
 	power = (3300.0F * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_2]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压值
 	if(power > 3.3F){
@@ -2127,6 +2202,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_SP_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_SP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_SP);
+							if(NVRAM0[EM_LASER_SP_POSWIDTH] >= 10000){//达到最大值后停止自加
+								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}		
@@ -2136,6 +2215,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_SP_POSWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_SP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_SP);
+							if(NVRAM0[EM_LASER_SP_POSWIDTH] <= 1){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+								T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2148,6 +2231,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_MP_POSWIDTH]);
 							updatePosWidthDisplay(LASER_MODE_MP);
+							if(NVRAM0[EM_LASER_MP_POSWIDTH] >= 10000){//达到最大值后停止自加
+								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}				
@@ -2157,6 +2244,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_POSWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_MP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_MP);
+							if(NVRAM0[EM_LASER_MP_POSWIDTH] <= 1){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+								T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2166,6 +2257,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_NEGWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_MP_NEGWIDTH]);
 							updateNegWidthDisplay(LASER_MODE_MP);
+							if(NVRAM0[EM_LASER_MP_NEGWIDTH] >= 10000){//达到最大值后停止自加
+								RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
+								T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}							
 						}
 					}
 				}
@@ -2175,6 +2270,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_NEGWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_MP_NEGWIDTH]);
 							updateNegWidthDisplay(LASER_MODE_MP);
+							if(NVRAM0[EM_LASER_MP_NEGWIDTH] <= 1){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
+								T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2187,6 +2286,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_GP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_GP);
+							if(NVRAM0[EM_LASER_GP_POSWIDTH] >= 10000){//达到最大值后停止自加
+								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}						
 						}
 					}
 				}				
@@ -2196,6 +2299,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_POSWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_GP_POSWIDTH]);		
 							updatePosWidthDisplay(LASER_MODE_GP);
+							if(NVRAM0[EM_LASER_GP_POSWIDTH] <= 1){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+								T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2205,6 +2312,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_NEGWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_GP_NEGWIDTH]);		
 							updateNegWidthDisplay(LASER_MODE_GP);
+							if(NVRAM0[EM_LASER_GP_NEGWIDTH] >= 10000){//达到最大值后停止自加
+								RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
+								T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2214,6 +2325,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_NEGWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_GP_NEGWIDTH]);	
 							updateNegWidthDisplay(LASER_MODE_GP);
+							if(NVRAM0[EM_LASER_GP_NEGWIDTH] <= 1){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
+								T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}						
 						}
 					}
 				}
@@ -2223,7 +2338,11 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							if(NVRAM0[EM_LASER_GP_TIMES] < CONFIG_MAX_LASER_TIMES){
 								NVRAM0[EM_LASER_GP_TIMES] += 1;
-								updateTimesDisplay();	
+								updateTimesDisplay();
+							}
+							else{
+								RRES(R_STANDBY_KEY_TIMES_ADD_DOWN);
+								T10MS(T10MS_TIMES_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
 						}
 					}
@@ -2236,6 +2355,10 @@ void dcHmiLoop(void){//HMI轮训程序
 								NVRAM0[EM_LASER_GP_TIMES] -= 1;
 								updateTimesDisplay();	
 							}
+							else{
+								RRES(R_STANDBY_KEY_TIMES_DEC_DOWN);
+								T10MS(T10MS_TIMES_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}			
@@ -2245,7 +2368,11 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_GROUP_OFF] =	pulseWidthAdd(NVRAM0[EM_LASER_GP_GROUP_OFF]);	
 							updateGroupOffDisplay();			
-						}								
+							if(NVRAM0[EM_LASER_GP_GROUP_OFF] >= 10000){
+								RRES(R_STANDBY_KEY_GROUP_OFF_ADD_DOWN);
+								T10MS(T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
+						}
 					}
 				}
 				if(LD(R_STANDBY_KEY_GROUP_OFF_DEC_DOWN)){//脉冲间隔减按键
@@ -2253,7 +2380,11 @@ void dcHmiLoop(void){//HMI轮训程序
 					if(LD(T_10MS_START * 16 + T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY)){	
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_GROUP_OFF] =	pulseWidthDec(NVRAM0[EM_LASER_GP_GROUP_OFF]);	
-							updateGroupOffDisplay();	
+							updateGroupOffDisplay();
+							if(NVRAM0[EM_LASER_GP_GROUP_OFF] <= 1){
+								RRES(R_STANDBY_KEY_GROUP_OFF_DEC_DOWN);
+								T10MS(T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2266,6 +2397,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_DERMA_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_DERMA_POSWIDTH]);		
 							updatePosWidthDisplay(LASER_MODE_DERMA);
+							if(NVRAM0[EM_LASER_DERMA_POSWIDTH] >= 10000){//达到最大值后停止自加
+								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}						
 						}
 					}
 				}				
@@ -2284,6 +2419,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_DERMA_NEGWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_DERMA_NEGWIDTH]);	
 							updateNegWidthDisplay(LASER_MODE_DERMA);
+							if(NVRAM0[EM_LASER_DERMA_NEGWIDTH] >= 10000){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
+								T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2293,6 +2432,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_DERMA_NEGWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_DERMA_NEGWIDTH]);
 							updateNegWidthDisplay(LASER_MODE_DERMA);
+							if(NVRAM0[EM_LASER_DERMA_NEGWIDTH] <= 1){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+								T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}					

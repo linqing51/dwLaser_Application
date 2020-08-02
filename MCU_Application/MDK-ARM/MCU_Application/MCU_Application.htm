@@ -3,7 +3,7 @@
 <title>Static Call Graph - [MCU_Application\MCU_Application.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image MCU_Application\MCU_Application.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Aug 01 23:34:03 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Aug 02 23:18:09 2020
 <BR><P>
 <H3>Maximum Stack Usage =        800 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1341,8 +1341,8 @@ Global Symbols
 <LI>Call Chain = EDLAR &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Stop_IT
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;laserStop
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;laserStop
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
@@ -2251,8 +2251,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_WaitOnFlagUntilTimeout
 <LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmiUartSendChar
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fputc
+<BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fputc
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmiUartSendChar
 </UL>
 
 <P><STRONG><a name="[21d]"></a>HAL_UART_TxCpltCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_hal_uart.o(i.HAL_UART_TxCpltCallback))
@@ -2521,13 +2521,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 744 + Unknown Stack Size
 <LI>Call Chain = NotifyButton &rArr; updateStandbyDisplay &rArr; updatePowerDisplay &rArr; updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextInt32
-<LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetScreen
-<LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetProgressValue
-<LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlEnable
-<LI><a href="#[1ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetBackLight
-<LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T10MS
+<BR>[Calls]<UL><LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T10MS
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSET
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RRES
 <LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVSAV
@@ -2535,6 +2529,12 @@ Global Symbols
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLR
 <LI><a href="#[1e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADDS1
 <LI><a href="#[1ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadDefault
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
+<LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextInt32
+<LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetScreen
+<LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetProgressValue
+<LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlEnable
+<LI><a href="#[1ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetBackLight
 <LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;saveSchemeToUdisk
 <LI><a href="#[1f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadSchemeFromUdisk
 <LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulseWidthDec
@@ -2579,8 +2579,8 @@ Global Symbols
 <P><STRONG><a name="[1f5]"></a>NotifyText</STRONG> (Thumb, 104 bytes, Stack size 24 bytes, dchminotifytext.o(i.NotifyText))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = NotifyText &rArr; SetTextValue &rArr; SendStrings &rArr; hmiUartSendChar &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSET
+<BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSET
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcpy
 </UL>
@@ -2656,8 +2656,8 @@ Global Symbols
 <LI>Call Chain = STLAR &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
-<LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LD
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LD
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
@@ -2897,8 +2897,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = UPDAC0 &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -2908,8 +2908,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = UPDAC1 &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -2919,8 +2919,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = UPDAC2 &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -2930,8 +2930,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = UPDAC3 &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -2941,8 +2941,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = UPDAC4 &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dac8568_WriteDacRegister
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -3278,9 +3278,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadNew
 <LI><a href="#[266]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_Init
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueNew
 <LI><a href="#[264]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DeInitStateMachine
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USB_HOST_Init
 </UL>
@@ -3743,6 +3743,7 @@ Global Symbols
 <LI><a href="#[26b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_GetSpeed
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_Delay
 <LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_Start
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
 <LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SetFeature
 <LI><a href="#[293]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SetCfg
@@ -3750,7 +3751,6 @@ Global Symbols
 <LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AllocPipe
 <LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HandleEnum
 <LI><a href="#[264]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DeInitStateMachine
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_Process_OS
 </UL>
@@ -4200,21 +4200,12 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadDeviceConfig
 </UL>
 
-<P><STRONG><a name="[2b5]"></a>dcHmiLoop</STRONG> (Thumb, 8052 bytes, Stack size 8 bytes, dchmiapp.o(i.dcHmiLoop))
+<P><STRONG><a name="[2b5]"></a>dcHmiLoop</STRONG> (Thumb, 8542 bytes, Stack size 8 bytes, dchmiapp.o(i.dcHmiLoop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 800 + Unknown Stack Size
 <LI>Call Chain = dcHmiLoop &rArr; ProcessMessage &rArr; NotifyButton &rArr; updateStandbyDisplay &rArr; updatePowerDisplay &rArr; updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[2c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resetGddcHmi
-<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetScreen
-<LI><a href="#[20e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlVisiable
-<LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlEnable
-<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetButtonValue
-<LI><a href="#[1ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetBackLight
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FlashRestoreControl
-<LI><a href="#[2ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_reset
-<LI><a href="#[2b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_find_cmd
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[2c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadFdram
 <LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T10MS
 <LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T100MS
@@ -4236,7 +4227,16 @@ Global Symbols
 <LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UPDAC0
 <LI><a href="#[2b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearNvram
 <LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearFdram
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[2c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resetGddcHmi
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
+<LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetScreen
+<LI><a href="#[20e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlVisiable
+<LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlEnable
+<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetButtonValue
+<LI><a href="#[1ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetBackLight
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FlashRestoreControl
+<LI><a href="#[2ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_reset
+<LI><a href="#[2b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_find_cmd
 <LI><a href="#[2c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;saveScheme
 <LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulseWidthDec
 <LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulseWidthAdd
@@ -4274,11 +4274,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 240 + Unknown Stack Size
 <LI>Call Chain = dcHmiLoopInit &rArr; loadDeviceConfig &rArr; epromRead &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmiUartInit
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSET
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RRES
 <LI><a href="#[215]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LIMS16
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[2cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmiUartInit
 <LI><a href="#[2ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;saveDeviceLogInfo
 <LI><a href="#[2cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadDeviceLogInfo
 <LI><a href="#[2cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadDeviceConfig
@@ -4499,11 +4499,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 232 + Unknown Stack Size
 <LI>Call Chain = loadDeviceConfig &rArr; epromRead &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crc16Calculate
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[2dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crc16Calculate
 <LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crc16Clear
 <LI><a href="#[2d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;epromRead
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoopInit
 </UL>
@@ -4512,8 +4512,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 216 + Unknown Stack Size
 <LI>Call Chain = loadDeviceLogInfo &rArr; epromRead &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;epromRead
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[2d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;epromRead
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoopInit
 </UL>
@@ -4735,12 +4735,12 @@ Global Symbols
 <LI>Call Chain = outputRefresh &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[171]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[1b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LDP
 <LI><a href="#[1b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LDN
 <LI><a href="#[2f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setRedLedBrightness
 <LI><a href="#[2f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setGreenLedBrightness
 <LI><a href="#[2f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setBlueLedBrightness
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcProcessEnd
 </UL>
@@ -4774,8 +4774,8 @@ Global Symbols
 <P><STRONG><a name="[2b9]"></a>queue_find_cmd</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, hmicmdqueue.o(i.queue_find_cmd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = queue_find_cmd
 </UL>
-<BR>[Calls]<UL><LI><a href="#[320]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_size
-<LI><a href="#[31f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_pop
+<BR>[Calls]<UL><LI><a href="#[31f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_pop
+<LI><a href="#[320]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;queue_size
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
@@ -4831,7 +4831,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 224 + Unknown Stack Size
 <LI>Call Chain = sPlcInit &rArr; loadNvram &rArr; epromRead &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadNvram
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[2dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadNvram
 <LI><a href="#[2c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadFdram
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSET
 <LI><a href="#[325]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcLaserInit
@@ -4848,7 +4849,6 @@ Global Symbols
 <LI><a href="#[221]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UPDAC2
 <LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UPDAC1
 <LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UPDAC0
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mainAppTask
 </UL>
@@ -4858,8 +4858,8 @@ Global Symbols
 <LI>Call Chain = sPlcLaserInit &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[171]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RRES
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RRES
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
 </UL>
@@ -4913,10 +4913,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 216 + Unknown Stack Size
 <LI>Call Chain = saveDeviceLogInfo &rArr; epromWrite &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;epromWrite
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;epromWrite
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoopInit
+<BR>[Called By]<UL><LI><a href="#[2ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;scanDeviceLogInfo
+<LI><a href="#[2cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoopInit
 </UL>
 
 <P><STRONG><a name="[116]"></a>saveFdram</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, splc.o(i.saveFdram))
@@ -4941,10 +4942,12 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
 </UL>
 
-<P><STRONG><a name="[2ca]"></a>scanDeviceLogInfo</STRONG> (Thumb, 246 bytes, Stack size 8 bytes, dchmiapp.o(i.scanDeviceLogInfo))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = scanDeviceLogInfo &rArr; LDP
+<P><STRONG><a name="[2ca]"></a>scanDeviceLogInfo</STRONG> (Thumb, 500 bytes, Stack size 8 bytes, dchmiapp.o(i.scanDeviceLogInfo))
+<BR><BR>[Stack]<UL><LI>Max Depth = 224 + Unknown Stack Size
+<LI>Call Chain = scanDeviceLogInfo &rArr; saveDeviceLogInfo &rArr; epromWrite &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LDP
+<LI><a href="#[2ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;saveDeviceLogInfo
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
@@ -5081,13 +5084,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateScheme_1_Display
 </UL>
 
-<P><STRONG><a name="[2c9]"></a>updateDiognosisInfo</STRONG> (Thumb, 328 bytes, Stack size 168 bytes, dchmiapp.o(i.updateDiognosisInfo))
+<P><STRONG><a name="[2c9]"></a>updateDiognosisInfo</STRONG> (Thumb, 440 bytes, Stack size 168 bytes, dchmiapp.o(i.updateDiognosisInfo))
 <BR><BR>[Stack]<UL><LI>Max Depth = 304 + Unknown Stack Size
 <LI>Call Chain = updateDiognosisInfo &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LD
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -5097,8 +5100,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
 <LI>Call Chain = updateEnergyDensity &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
@@ -5110,8 +5113,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 296 + Unknown Stack Size
 <LI>Call Chain = updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
@@ -5126,8 +5129,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 432 + Unknown Stack Size
 <LI>Call Chain = updateGroupOffDisplay &rArr; updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[32e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
@@ -5139,8 +5142,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 440 + Unknown Stack Size
 <LI>Call Chain = updateNegWidthDisplay &rArr; updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[32e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
@@ -5162,12 +5165,12 @@ Global Symbols
 <P><STRONG><a name="[1ef]"></a>updateOptionDisplay</STRONG> (Thumb, 170 bytes, Stack size 8 bytes, dchmiapp.o(i.updateOptionDisplay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = updateOptionDisplay &rArr; SetTextInt32 &rArr; hmiUartSendChar &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextInt32
+<BR>[Calls]<UL><LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LD
+<LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextInt32
 <LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetButtonValue
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchSetProgressValue
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchEnd
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchBegin
-<LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LD
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -5177,8 +5180,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 440 + Unknown Stack Size
 <LI>Call Chain = updatePosWidthDisplay &rArr; updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[32e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
@@ -5190,8 +5193,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 448 + Unknown Stack Size
 <LI>Call Chain = updatePowerDisplay &rArr; updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[32e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 <LI><a href="#[1ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateEnergyDensity
 <LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -5216,8 +5219,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 448 + Unknown Stack Size
 <LI>Call Chain = updateSchemeInfo &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
@@ -5254,8 +5257,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
 <LI>Call Chain = updateStandbyDebugInfo &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -5265,7 +5268,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 592 + Unknown Stack Size
 <LI>Call Chain = updateStandbyDisplay &rArr; updatePowerDisplay &rArr; updateExtralDisplay &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextInt32
 <LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetScreen
 <LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetProgressValue
@@ -5273,7 +5277,6 @@ Global Symbols
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchSetButtonValue
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchEnd
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchBegin
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReleaseTimeEnergy
 <LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePowerDisplay
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePosWidthDisplay
@@ -5410,8 +5413,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[2ec]"></a>vQueueAddToRegistry</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, queue.o(i.vQueueAddToRegistry))
-<BR><BR>[Called By]<UL><LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueNew
-<LI><a href="#[2fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCheckForValidListAndQueue
+<BR><BR>[Called By]<UL><LI><a href="#[2fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCheckForValidListAndQueue
+<LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueNew
 </UL>
 
 <P><STRONG><a name="[315]"></a>vQueueWaitForMessageRestricted</STRONG> (Thumb, 74 bytes, Stack size 24 bytes, queue.o(i.vQueueWaitForMessageRestricted))
@@ -5477,9 +5480,9 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[313]"></a>vTaskSuspendAll</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, tasks.o(i.vTaskSuspendAll))
-<BR><BR>[Called By]<UL><LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortFree
+<BR><BR>[Called By]<UL><LI><a href="#[312]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvProcessTimerOrBlockTask
+<LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortFree
 <LI><a href="#[31c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pvPortMalloc
-<LI><a href="#[312]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvProcessTimerOrBlockTask
 <LI><a href="#[2e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
 <LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[2ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
@@ -5513,8 +5516,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[306]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInitialiseNewQueue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueNew
-<LI><a href="#[2fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCheckForValidListAndQueue
+<BR>[Called By]<UL><LI><a href="#[2fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCheckForValidListAndQueue
+<LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueNew
 </UL>
 
 <P><STRONG><a name="[307]"></a>xQueueGenericReset</STRONG> (Thumb, 146 bytes, Stack size 16 bytes, queue.o(i.xQueueGenericReset))
@@ -5544,8 +5547,8 @@ Global Symbols
 <LI><a href="#[30d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvIsQueueFull
 <LI><a href="#[303]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCopyDataToQueue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
-<LI><a href="#[30f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerGenericCommand
+<BR>[Called By]<UL><LI><a href="#[30f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerGenericCommand
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
 </UL>
 
 <P><STRONG><a name="[2ed]"></a>xQueueGenericSendFromISR</STRONG> (Thumb, 248 bytes, Stack size 40 bytes, queue.o(i.xQueueGenericSendFromISR))
@@ -5555,8 +5558,8 @@ Global Symbols
 <LI><a href="#[32f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortValidateInterruptPriority
 <LI><a href="#[303]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCopyDataToQueue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
-<LI><a href="#[30f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerGenericCommand
+<BR>[Called By]<UL><LI><a href="#[30f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerGenericCommand
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
 </UL>
 
 <P><STRONG><a name="[2e9]"></a>xQueueReceive</STRONG> (Thumb, 356 bytes, Stack size 48 bytes, queue.o(i.xQueueReceive))
@@ -5575,8 +5578,8 @@ Global Symbols
 <LI><a href="#[30c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvIsQueueEmpty
 <LI><a href="#[302]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCopyDataFromQueue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[295]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
-<LI><a href="#[310]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvProcessReceivedCommands
+<BR>[Called By]<UL><LI><a href="#[310]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvProcessReceivedCommands
+<LI><a href="#[295]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
 </UL>
 
 <P><STRONG><a name="[2e8]"></a>xQueueReceiveFromISR</STRONG> (Thumb, 202 bytes, Stack size 40 bytes, queue.o(i.xQueueReceiveFromISR))
@@ -5678,9 +5681,9 @@ Global Symbols
 <LI><a href="#[211]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskIncrementTick
 <LI><a href="#[33c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvResetNextTaskUnblockTime
 </UL>
-<BR>[Called By]<UL><LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortFree
+<BR>[Called By]<UL><LI><a href="#[312]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvProcessTimerOrBlockTask
+<LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortFree
 <LI><a href="#[31c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pvPortMalloc
-<LI><a href="#[312]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvProcessTimerOrBlockTask
 <LI><a href="#[2e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
 <LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[2ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
@@ -6214,6 +6217,7 @@ Local Symbols
 <LI>Call Chain = USBH_HandleEnum &rArr; USBH_Get_StringDesc &rArr; USBH_GetDescriptor &rArr; USBH_CtlReq &rArr; USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
 <BR>[Calls]<UL><LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_Delay
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
 <LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SetAddress
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_OpenPipe
@@ -6221,7 +6225,6 @@ Local Symbols
 <LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_Get_DevDesc
 <LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_Get_CfgDesc
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FreePipe
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[292]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_Process
 </UL>
@@ -6246,12 +6249,12 @@ Local Symbols
 <LI>Call Chain = USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
 <BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_GetURBState
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[251]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_CtlSendSetup
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_CtlSendData
 <LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_CtlReceiveData
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FreePipe
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_CtlReq
 </UL>
@@ -6382,10 +6385,10 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 408 + Unknown Stack Size
 <LI>Call Chain = USBH_AUDIO_ClassRequest &rArr; USBH_AUDIO_HandleCSRequest &rArr; USBH_AUDIO_CSRequest &rArr; USBH_AC_GetRes &rArr; USBH_CtlReq &rArr; USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AUDIO_HandleCSRequest
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AUDIO_HandleCSRequest
 <LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SetInterface
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_audio.o(.data)
 </UL>
@@ -6444,9 +6447,9 @@ Local Symbols
 <P><STRONG><a name="[a]"></a>USBH_AUDIO_InterfaceDeInit</STRONG> (Thumb, 152 bytes, Stack size 16 bytes, usbh_audio.o(i.USBH_AUDIO_InterfaceDeInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = USBH_AUDIO_InterfaceDeInit &rArr; USBH_ClosePipe &rArr; USBH_LL_ClosePipe &rArr; HAL_HCD_HC_Halt &rArr; USB_HC_Halt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
+<BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
+<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FreePipe
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_audio.o(.data)
 </UL>
@@ -6455,6 +6458,8 @@ Local Symbols
 <LI>Call Chain = USBH_AUDIO_InterfaceInit &rArr; USBH_OpenPipe &rArr; USBH_LL_OpenPipe &rArr; HAL_HCD_HC_Init &rArr; USB_HC_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_SetToggle
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AUDIO_ParseCSDescriptors
 <LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AUDIO_FindHIDControl
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AUDIO_FindAudioStreamingOUT
@@ -6464,8 +6469,6 @@ Local Symbols
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_OpenPipe
 <LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AllocPipe
 <LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FindInterface
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_audio.o(.data)
@@ -6486,10 +6489,10 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 184 + Unknown Stack Size
 <LI>Call Chain = USBH_AUDIO_ParseCSDescriptors &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ParseCSDescriptors
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ParseCSDescriptors
 <LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_GetNextDesc
 <LI><a href="#[243]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FindInterfaceIndex
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AUDIO_InterfaceInit
 </UL>
@@ -6584,17 +6587,17 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 296 + Unknown Stack Size
 <LI>Call Chain = USBH_CDC_ClassRequest &rArr; GetLineCoding &rArr; USBH_CtlReq &rArr; USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetLineCoding
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetLineCoding
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_cdc.o(.data)
 </UL>
 <P><STRONG><a name="[f]"></a>USBH_CDC_InterfaceDeInit</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, usbh_cdc.o(i.USBH_CDC_InterfaceDeInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = USBH_CDC_InterfaceDeInit &rArr; USBH_ClosePipe &rArr; USBH_LL_ClosePipe &rArr; HAL_HCD_HC_Halt &rArr; USB_HC_Halt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
+<BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
+<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FreePipe
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_cdc.o(.data)
 </UL>
@@ -6603,12 +6606,12 @@ Local Symbols
 <LI>Call Chain = USBH_CDC_InterfaceInit &rArr; USBH_OpenPipe &rArr; USBH_LL_OpenPipe &rArr; HAL_HCD_HC_Init &rArr; USB_HC_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_SetToggle
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_OpenPipe
 <LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AllocPipe
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SelectInterface
 <LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FindInterface
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_cdc.o(.data)
@@ -6633,20 +6636,20 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
 <LI>Call Chain = USBH_HID_ClassRequest &rArr; USBH_HID_GetHIDReportDescriptor &rArr; USBH_GetDescriptor &rArr; USBH_CtlReq &rArr; USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[25d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HID_SetProtocol
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[25d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HID_SetProtocol
 <LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HID_SetIdle
 <LI><a href="#[25b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HID_GetHIDReportDescriptor
 <LI><a href="#[25a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HID_ParseHIDDesc
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_hid.o(.data)
 </UL>
 <P><STRONG><a name="[14]"></a>USBH_HID_InterfaceDeInit</STRONG> (Thumb, 88 bytes, Stack size 16 bytes, usbh_hid.o(i.USBH_HID_InterfaceDeInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = USBH_HID_InterfaceDeInit &rArr; USBH_ClosePipe &rArr; USBH_LL_ClosePipe &rArr; HAL_HCD_HC_Halt &rArr; USB_HC_Halt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
+<BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
+<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FreePipe
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_hid.o(.data)
 </UL>
@@ -6655,12 +6658,12 @@ Local Symbols
 <LI>Call Chain = USBH_HID_InterfaceInit &rArr; USBH_OpenPipe &rArr; USBH_LL_OpenPipe &rArr; HAL_HCD_HC_Init &rArr; USB_HC_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_SetToggle
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_OpenPipe
 <LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AllocPipe
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SelectInterface
 <LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FindInterface
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_hid.o(.data)
@@ -6699,18 +6702,18 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 304 + Unknown Stack Size
 <LI>Call Chain = USBH_MSC_ClassRequest &rArr; USBH_MSC_BOT_REQ_GetMaxLUN &rArr; USBH_CtlReq &rArr; USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_BOT_REQ_GetMaxLUN
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_BOT_REQ_GetMaxLUN
 <LI><a href="#[24c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClrFeature
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_msc.o(.data)
 </UL>
 <P><STRONG><a name="[19]"></a>USBH_MSC_InterfaceDeInit</STRONG> (Thumb, 88 bytes, Stack size 16 bytes, usbh_msc.o(i.USBH_MSC_InterfaceDeInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = USBH_MSC_InterfaceDeInit &rArr; USBH_ClosePipe &rArr; USBH_LL_ClosePipe &rArr; HAL_HCD_HC_Halt &rArr; USB_HC_Halt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
+<BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
+<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FreePipe
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_msc.o(.data)
 </UL>
@@ -6719,13 +6722,13 @@ Local Symbols
 <LI>Call Chain = USBH_MSC_InterfaceInit &rArr; USBH_OpenPipe &rArr; USBH_LL_OpenPipe &rArr; HAL_HCD_HC_Init &rArr; USB_HC_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_SetToggle
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_BOT_Init
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_OpenPipe
 <LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AllocPipe
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SelectInterface
 <LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FindInterface
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_msc.o(.data)
@@ -6734,12 +6737,12 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 392 + Unknown Stack Size
 <LI>Call Chain = USBH_MSC_Process &rArr; USBH_MSC_SCSI_TestUnitReady &rArr; USBH_MSC_BOT_Process &rArr; USBH_MSC_BOT_Abort &rArr; USBH_ClrFeature &rArr; USBH_CtlReq &rArr; USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_TestUnitReady
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_TestUnitReady
 <LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_RequestSense
 <LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_ReadCapacity
 <LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_Inquiry
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_msc.o(.data)
 </UL>
@@ -6747,11 +6750,11 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 416 + Unknown Stack Size
 <LI>Call Chain = USBH_MSC_RdWrProcess &rArr; USBH_MSC_SCSI_Write &rArr; USBH_MSC_BOT_Process &rArr; USBH_MSC_BOT_Abort &rArr; USBH_ClrFeature &rArr; USBH_CtlReq &rArr; USBH_HandleControl &rArr; USBH_CtlSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_Write
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_Write
 <LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_RequestSense
 <LI><a href="#[27f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_Read
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[283]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_Write
 <LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_Read
@@ -6781,8 +6784,8 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 168 + Unknown Stack Size
 <LI>Call Chain = MTP_DecodeEvent &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MTP_EventsCallback
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[1bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MTP_EventsCallback
 </UL>
 <BR>[Called By]<UL><LI><a href="#[284]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MTP_Events
 </UL>
@@ -6826,9 +6829,9 @@ Local Symbols
 <P><STRONG><a name="[1e]"></a>USBH_MTP_InterfaceDeInit</STRONG> (Thumb, 160 bytes, Stack size 16 bytes, usbh_mtp.o(i.USBH_MTP_InterfaceDeInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = USBH_MTP_InterfaceDeInit &rArr; USBH_ClosePipe &rArr; USBH_LL_ClosePipe &rArr; HAL_HCD_HC_Halt &rArr; USB_HC_Halt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
+<BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
+<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_ClosePipe
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_FreePipe
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_mtp.o(.data)
 </UL>
@@ -6837,6 +6840,8 @@ Local Symbols
 <LI>Call Chain = USBH_MTP_InterfaceInit &rArr; USBH_OpenPipe &rArr; USBH_LL_OpenPipe &rArr; HAL_HCD_HC_Init &rArr; USB_HC_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_SetToggle
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_OpenPipe
 <LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AllocPipe
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_SelectInterface
@@ -6845,8 +6850,6 @@ Local Symbols
 <LI><a href="#[287]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MTP_FindDataOutEndpoint
 <LI><a href="#[286]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MTP_FindDataInEndpoint
 <LI><a href="#[285]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MTP_FindCtlEndpoint
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_mtp.o(.data)
@@ -6856,13 +6859,13 @@ Local Symbols
 <LI>Call Chain = USBH_MTP_Process &rArr; USBH_PTP_GetStorageInfo &rArr; USBH_PTP_Process &rArr; USBH_BulkSendData &rArr; USBH_LL_SubmitURB &rArr; HAL_HCD_HC_SubmitRequest &rArr; USB_HC_StartXfer &rArr; USB_WritePacket
 </UL>
 <BR>[Calls]<UL><LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
 <LI><a href="#[289]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_PTP_OpenSession
 <LI><a href="#[28c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_PTP_GetStorageInfo
 <LI><a href="#[28b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_PTP_GetStorageIds
 <LI><a href="#[28a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_PTP_GetDeviceInfo
 <LI><a href="#[284]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MTP_Events
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> usbh_mtp.o(.data)
 </UL>
@@ -6883,9 +6886,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 176 + Unknown Stack Size
 <LI>Call Chain = PTP_DecodeDeviceInfo &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PTP_GetString
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PTP_GetString
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PTP_GetArray16
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PTP_BufferFullCallback
 <LI><a href="#[28a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_PTP_GetDeviceInfo
@@ -7077,7 +7080,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
 
-<P><STRONG><a name="[2b8]"></a>laserStateLoop</STRONG> (Thumb, 246 bytes, Stack size 0 bytes, dchmiapp.o(i.laserStateLoop))
+<P><STRONG><a name="[2b8]"></a>laserStateLoop</STRONG> (Thumb, 686 bytes, Stack size 0 bytes, dchmiapp.o(i.laserStateLoop))
 <BR><BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
 
@@ -7265,10 +7268,10 @@ Local Symbols
 <P><STRONG><a name="[310]"></a>prvProcessReceivedCommands</STRONG> (Thumb, 350 bytes, Stack size 48 bytes, timers.o(i.prvProcessReceivedCommands))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = prvProcessReceivedCommands &rArr; prvSampleTimeNow &rArr; prvSwitchTimerLists &rArr; xTimerGenericCommand &rArr; xQueueGenericSend &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
 </UL>
-<BR>[Calls]<UL><LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortFree
-<LI><a href="#[30f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerGenericCommand
+<BR>[Calls]<UL><LI><a href="#[30f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerGenericCommand
 <LI><a href="#[311]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSampleTimeNow
 <LI><a href="#[30b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInsertTimerInActiveList
+<LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortFree
 <LI><a href="#[2f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uxListRemove
 <LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 </UL>

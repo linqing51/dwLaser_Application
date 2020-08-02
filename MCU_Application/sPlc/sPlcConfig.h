@@ -153,6 +153,12 @@
 #define CONFIG_MIN_LASERPOWER_CH2								0//通道2最大激光功率
 #define CONFIG_MIN_LASERPOWER_CH3								0//通道3最大激光功率
 
+#define CONFIG_LASER_THRESHOLD_CH0								0010//通道0激光阈值电流
+#define CONFIG_LASER_THRESHOLD_CH1								9999//通道1激光阈值电流
+#define CONFIG_LASER_THRESHOLD_CH2								9999//通道2激光阈值电流
+#define CONFIG_LASER_THRESHOLD_CH3								9999//通道3激光阈值电流
+#define CONFIG_LASER_THRESHOLD_CH4								9999//通道4激光阈值电流
+
 #define CONFIG_MAX_LASER_POSWIDTH								10000
 #define CONFIG_MIN_LASER_POSWIDTH								1
 #define CONFIG_MAX_LASER_NEGWIDTH								10000
@@ -502,14 +508,18 @@
 /*****************************************************************************/
 #define EM_LASER_TEMP											(EM_START + 67)//激光二极管模块温度
 #define EM_MCU_TEMP												(EM_START + 68)//处理器温度
-#define EM_LASER_CURRENT										(EM_START + 69)//激光二极管模块电流
-#define EM_LASER_PHOTODIODE										(EM_START + 70)//激光二极管模块功率
+#define EM_LASER_CURRENT_CH0									(EM_START + 69)//激光二极管模块电流
+#define EM_LASER_CURRENT_CH1									(EM_START + 70)//激光二极管模块电流
+#define EM_LASER_CURRENT_CH2									(EM_START + 71)//激光二极管模块电流
+#define EM_LASER_CURRENT_CH3									(EM_START + 72)//激光二极管模块电流
+#define EM_LASER_CURRENT_CH4									(EM_START + 73)//激光二极管模块电流
+#define EM_LASER_PHOTODIODE										(EM_START + 74)//激光二极管模块功率
 /*****************************************************************************/				
-#define EM_TOTAL_POWER											(EM_START + 73)//发射总功率
-#define EM_HMI_OPERA_STEP										(EM_START +	74)//操作步骤								
-#define EM_ERROR_CODE											(EM_START + 75)//错误码					
-#define EM_SCHEME_NUM_TMP										(EM_START + 76)//待确认方案编号			
-#define EM_DK25L_VER											(EM_START + 77)//DK25L模块版本
+#define EM_TOTAL_POWER											(EM_START + 80)//发射总功率
+#define EM_HMI_OPERA_STEP										(EM_START +	81)//操作步骤								
+#define EM_ERROR_CODE											(EM_START + 82)//错误码					
+#define EM_SCHEME_NUM_TMP										(EM_START + 83)//待确认方案编号			
+#define EM_DK25L_VER											(EM_START + 84)//DK25L模块版本
 /*****************************************************************************/
 #define EM_DC_PAGE												(EM_START + 90)//HMI页面编号 			
 #define EM_DC_PASSCODE_INDEX									(EM_START + 91)//密码输入位索引		
