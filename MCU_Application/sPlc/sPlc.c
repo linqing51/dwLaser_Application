@@ -127,7 +127,6 @@ void checkEprom(void){
 	epromRead((CONFIG_EPROM_SIZE - 4), checkCode, 4);//从EPROM中恢复MR
 	if((checkCode[0] != 0x55) || (checkCode[1] != 0xAA) || (checkCode[2] != 0xBC) || (checkCode[3] != 0xD1)){
 		//检测到校验码错误清空EPROM
-#if CONFIG_SPLC_USING_EPROM == 1
 		for(i = 0; i< CONFIG_EPROM_SIZE;i ++){
 			epromWriteByte(i, 0x0);
 		}
@@ -135,7 +134,6 @@ void checkEprom(void){
 		epromWriteByte((CONFIG_EPROM_SIZE - 3), 0xAA);
 		epromWriteByte((CONFIG_EPROM_SIZE - 2), 0xBC);
 		epromWriteByte((CONFIG_EPROM_SIZE - 1), 0xD1);
-#endif
 		loadDefault();
 	}
 #endif
@@ -156,13 +154,32 @@ void clearFdram(void){//清除FDRAM数据
 	enterSplcIsr();
 #if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_FD_START; i< (CONFIG_FDRAM_SIZE * 2) ; i++){
-#if CONFIG_SPLC_USING_EPROM == 1
 		epromWriteByte(i, 0x0);
-#endif
 	}
 #endif
 	memset(FDRAM, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
 	exitSplcIsr();//恢复中断
+}
+
+void clearDeviceConfig(void){//清除设备配置参数
+	uint16_t i;
+	enterSplcIsr();
+#if CONFIG_SPLC_USING_EPROM == 1
+	for(i = CONFIG_EPROM_CONFIG_START; i< CONFIG_EPROM_LOGINFO_START; i++){
+		epromWriteByte(i, 0x0);
+	}
+#endif
+	exitSplcIsr();//恢复中断	
+}
+void clearDeviceLog(void){//清除设备记录
+	uint16_t i;
+	enterSplcIsr();
+#if CONFIG_SPLC_USING_EPROM == 1
+	for(i = CONFIG_EPROM_LOGINFO_START; i< (CONFIG_EPROM_LOGINFO_START + 512); i++){
+		epromWriteByte(i, 0x0);
+	}
+#endif
+	exitSplcIsr();//恢复中断	
 }
 
 void sPlcSpwmLoop(void){//SPWM轮询	

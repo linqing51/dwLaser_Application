@@ -7,7 +7,7 @@ static void UpdateUI(void);
 /*****************************************************************************/
 void loadDeviceLogInfo(void){//从EPROM载入记录文件
 	HAL_StatusTypeDef ret;
-	ret = epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//从EPROM载入设备配置
+	ret = epromRead(CONFIG_EPROM_LOGINFO_START, (uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//从EPROM载入设备配置
 	if(ret != HAL_OK){
 		printf("dcHmiApp->loadDeviceLogInfo:Load device config fail!!!\n");
 	}
@@ -23,7 +23,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 	ret2 = epromRead((CONFIG_EPROM_CONFIG_START + 512 - 2), (uint8_t*)&crc2, 2);//从EPROM载入设备配置
 	if(ret1 != HAL_OK || ret2 != HAL_OK || crc1 != crc2){//校验码不同使用默认配置
 #if CONFIG_DEBUG_APP == 1
-		printf("dcHmiApp->loadDeviceConfig:Load device log fail!!!\n");
+		printf("dcHmiApp->loadDeviceConfig:Load device config fail!!!\n");
 		printf("dcHmiApp->loadDeviceConfig:Using default device config!\n");
 #endif		
 		//进行3次多项式拟合Y = A*X^3 + B*X^2 + C*X + D
@@ -70,7 +70,7 @@ void saveDeviceLogInfo(void){//将记录写入EPROM
 		printf("dcHmiApp->saveDeviceLogInfo:Save device log to eprom fail!!!\n");
 	}
 }
-void scanDeviceLogInfo(void){//检查记录
+void deviceLogInfoLoop(void){//检查记录
 	uint8_t upReq;
 	upReq = 0;
 	if(NVRAM0[EM_LASER_TEMP] > deviceLogInfo.laserMaxTemper){//记录激光器最高温度
@@ -138,8 +138,10 @@ void scanDeviceLogInfo(void){//检查记录
 			deviceLogInfo.laserOnTime[4] ++;
 		}
 	}
-	if(LDP(SPCOIL_PS1MINS) || upReq){//每分钟记录Log
+	if(LDP(SPCOIL_PS1MINS)){//每分钟记录Log
 		deviceLogInfo.runTime ++;
+	}
+	if(upReq){
 		saveDeviceLogInfo();
 		upReq = 0;
 	}
@@ -1805,9 +1807,7 @@ void dcHmiLoopInit(void){//初始化模块
 	loadDeviceLogInfo();
 	deviceLogInfo.powerUpCycle ++;
 	saveDeviceLogInfo();
-#if CONFIG_DEBUG_APP == 1
 	printf("dcHmiApp->dcHmiLoopInit:Start hmi uart init......\n");
-#endif
 	hmiUartInit();
 #endif
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
@@ -2050,8 +2050,15 @@ void dcHmiLoop(void){//HMI轮训程序
 	else{
 		RRES(Y_BLED);
 	}
+//	if(LaserFlag_Emiting){		
+//		SSET(SPCOIL_BEEM_ENABLE);//打开蜂鸣器
+//	}
+//	else{
+//		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
+//	}
 /*****************************************************************************/
 	laserStateLoop();
+	deviceLogInfoLoop();
 /*****************************************************************************/
 	if(LD(R_DCHMI_RESET_DONE) && LD(R_DCHMI_RESTORE_DONE)){//HMI复位完成后处理串口指令
 		hmiCmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE);//从缓冲区中获取一条指令         
@@ -2704,6 +2711,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
 				updateWarnMsgDisplay(MSG_LASER_EMIT);
+				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}
 		}
 		else{//电平触发
@@ -2713,6 +2721,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
 				updateWarnMsgDisplay(MSG_LASER_EMIT);
+				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}	
 		}
 		return;
@@ -2729,12 +2738,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LDP(SPCOIL_PS1000MS)){		
 				updateStandbyDebugInfo();
 			}
-		}
-		if(LaserFlag_Emiting){		
-			SSET(SPCOIL_BEEM_ENABLE);//打开蜂鸣器
-		}
-		else{
-			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 		}		
 		if(LD(R_FAULT)){//发现故障
 			EDLAR();
@@ -2785,9 +2788,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 				standbyKeyEnable(true);
-#if CONFIG_DEBUG_APP == 1
-				printf("dcHmiApp->dcHmiLoop:Footswitch press, Stop Laser emit\n");
-#endif
+				printf("dcHmiApp->dcHmiLoop:Hand switch mode,Footswitch press, Stop Laser emit req!!!\n");
 			}
 		}
 		else{
@@ -2797,9 +2798,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 				standbyKeyEnable(true);
-#if CONFIG_DEBUG_APP == 1
-				printf("dcHmiApp->dcHmiLoop:Footswitch unpress, Stop Laser emit\n");
-#endif
+				printf("dcHmiApp->dcHmiLoop:Foot switch mode,Footswitch unpress, Stop Laser emit req!!!\n");
 			}
 		}
 		return;
@@ -2959,6 +2958,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			resetGddcHmi();
 			clearNvram();
 			clearFdram();
+			clearDeviceConfig();
+			clearDeviceLog();
 			resetGddcHmi();
 			delayMs(4000);//等待4秒
 			REBOOT();	
@@ -2969,8 +2970,6 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 /*****************************************************************************/
-	//记录检查
-	scanDeviceLogInfo();
 }
 
 //消息处理流程

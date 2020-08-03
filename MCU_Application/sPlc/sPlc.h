@@ -99,6 +99,8 @@ extern void clearNvram(void);//清除NVRAM数据
 extern void loadFdram(void);
 extern void saveFdram(void);
 extern void clearFdram(void);
+extern void clearDeviceConfig(void);
+extern void clearDeviceLog(void);
 extern void delayMs(uint32_t delayMs);//SPLC 阻塞延时
 extern void mucReboot(void);//软件复位
 /*****************************************************************************/

@@ -16,6 +16,7 @@ volatile int16_t LaserTimer_ReleaseCounter;
 volatile int16_t LaserTimer_BeemSwitchCounter;
 volatile int16_t LaserTimer_BeemSwtichLength;
 volatile int8_t LaserFlag_Emiting;//激光发射中标志
+volatile int8_t LaserFlag_Request;//激光发射脚踏请求
 volatile int8_t LaserFlag_Emitover;//激光发射完毕标志
 volatile int32_t LaserRelease_TotalTime0;//激光发射总时间
 volatile int32_t LaserRelease_TotalEnergy0;//激光发射总能量
@@ -269,9 +270,6 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserRelease_TotalEnergy1 = -1;
 }
 static void laserStart(void){//按通道选择打开激光
-#if CONFIG_SPLC_USING_LEDAIM == 1
-	SSET(Y_BLED);//打开激光发射指示
-#endif	
 #if CONFIG_USING_SINGLE_WAVE == 1//单波长
 	SET_LASER_CH0(GPIO_PIN_SET);
 	SET_LASER_CH1(GPIO_PIN_RESET);
@@ -326,16 +324,13 @@ static void laserStop(void){//按通道选择关闭激光
 	SET_LASER_CH3(GPIO_PIN_RESET);
 	SET_LASER_CH4(GPIO_PIN_RESET);	
 	LaserFlag_Emiting = false;
-#if CONFIG_SPLC_USING_LEDAIM == 1
-	SSET(Y_BLED);//打开激光发射指示
-#endif
 }
 void laserTimerIsr(void){//TIM 中断回调 激光发射	
 	switch(LaserTimer_Mode){
 		case LASER_MODE_CW:{//CW连续模式
 			if(LaserTimer_TCounter == 0){
 				laserStart();
-				LaserTimer_TCounter ++;
+				LaserTimer_TCounter ++;				
 			}
 			if(LaserTimer_ReleaseTime < 1000){
 				LaserTimer_ReleaseTime ++;//发射时间累计
