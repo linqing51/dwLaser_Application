@@ -402,7 +402,6 @@ void sPlcBeemLoop(void){//·äÃùÆ÷ÂÖÑ¯
 		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
 	}
 }
-
 void sPlcAimLoop(void){//AIMÂÖÑ¯³ÌÐò
 	if(LD(SPCOIL_AIM_ENABEL) && (NVRAM0[DM_AIM_BRG] > 0)){
 		setAimBrightness(NVRAM0[DM_AIM_BRG]);

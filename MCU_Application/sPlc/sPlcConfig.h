@@ -29,9 +29,9 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED∫ÕAIM…¡À∏∆µ¬ 
-#define CONFIG_SPLC_RLED_ON_DC									35//∫Ïµ∆¡¡∂»
+#define CONFIG_SPLC_RLED_ON_DC									25//∫Ïµ∆¡¡∂»
 #define CONFIG_SPLC_RLED_OFF_DC									0//∫Ïµ∆¡¡∂»
-#define CONFIG_SPLC_GLED_ON_DC									35//¬Ãµ∆¡¡∂»
+#define CONFIG_SPLC_GLED_ON_DC									25//¬Ãµ∆¡¡∂»
 #define CONFIG_SPLC_GLED_OFF_DC									0//¬Ãµ∆¡¡∂»
 #define CONFIG_SPLC_BLED_ON_DC									25//¿∂µ∆¡¡∂»
 #define CONFIG_SPLC_BLED_OFF_DC									0//¿∂µ∆¡¡∂»

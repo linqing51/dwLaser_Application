@@ -166,7 +166,7 @@ void STLAR(void){//开始发射脉冲
 				break;
 			}
 			case LASER_MODE_SP:{
-				if(NVRAM0[EM_LASER_SP_POSWIDTH] > 100){//正脉宽大于100mS
+				if(NVRAM0[EM_LASER_SP_POSWIDTH] > 30){//正脉宽大于100mS
 					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
 				}
 				else{
@@ -175,7 +175,7 @@ void STLAR(void){//开始发射脉冲
 				break;
 			}
 			case LASER_MODE_MP:{
-				if((NVRAM0[EM_LASER_MP_POSWIDTH] > 100) && (NVRAM0[EM_LASER_MP_NEGWIDTH] > 100)){//正脉宽大于100mS
+				if((NVRAM0[EM_LASER_MP_POSWIDTH] > 30) || (NVRAM0[EM_LASER_MP_NEGWIDTH] > 30)){//正脉宽大于30mS
 					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
 				}
 				else{
@@ -184,7 +184,7 @@ void STLAR(void){//开始发射脉冲
 				break;
 			}
 			case LASER_MODE_GP:{
-				if((NVRAM0[EM_LASER_GP_POSWIDTH] > 100) && (NVRAM0[EM_LASER_GP_NEGWIDTH] > 100)){//正脉宽大于100mS
+				if((NVRAM0[EM_LASER_GP_POSWIDTH] > 30) || (NVRAM0[EM_LASER_GP_NEGWIDTH] > 30)){//正脉宽大于30mS
 					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
 				}
 				else{
@@ -193,7 +193,7 @@ void STLAR(void){//开始发射脉冲
 				break;
 			}
 			case LASER_MODE_DERMA:{
-				if((NVRAM0[EM_LASER_DERMA_POSWIDTH] > 100) && (NVRAM0[EM_LASER_DERMA_NEGWIDTH] > 100)){//正脉宽大于100mS
+				if((NVRAM0[EM_LASER_DERMA_POSWIDTH] > 30) || (NVRAM0[EM_LASER_DERMA_NEGWIDTH] > 30)){//正脉宽大于30mS
 					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
 				}
 				else{

@@ -305,7 +305,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -320,7 +320,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3234,7 +3234,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcTimer.h)(0x5ECDF611)
@@ -3248,7 +3248,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3321,7 +3321,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3336,7 +3336,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3410,7 +3410,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3424,7 +3424,7 @@ I (..\dcHmi\hmiCmdProcess.h)(0x5ECD2392)
 I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3498,7 +3498,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3512,7 +3512,7 @@ I (..\dcHmi\hmiCmdProcess.h)(0x5ECD2392)
 I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3537,7 +3537,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h)(0x5E971C9E
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h)(0x5E971C9E)
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h)(0x5E971C9E)
 I (..\MainApp\dcHmiLanguage.H)(0x5ECD2392)
-F (..\sPlcPort\sPlcEprom.c)(0x5F00A539)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\splceprom.o --omf_browse mcu_application\splceprom.crf --depend mcu_application\splceprom.d)
+F (..\sPlcPort\sPlcEprom.c)(0x5F296A8F)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\splceprom.o --omf_browse mcu_application\splceprom.crf --depend mcu_application\splceprom.d)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
@@ -3586,7 +3586,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3600,7 +3600,7 @@ I (..\dcHmi\hmiCmdProcess.h)(0x5ECD2392)
 I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3674,7 +3674,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3689,7 +3689,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3763,7 +3763,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3778,7 +3778,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3803,7 +3803,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h)(0x5E971C9E
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h)(0x5E971C9E)
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h)(0x5E971C9E)
 I (..\MainApp\dcHmiLanguage.H)(0x5ECD2392)
-F (..\sPlcPort\sPlcLaser.c)(0x5F281D3E)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\splclaser.o --omf_browse mcu_application\splclaser.crf --depend mcu_application\splclaser.d)
+F (..\sPlcPort\sPlcLaser.c)(0x5F29763A)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\splclaser.o --omf_browse mcu_application\splclaser.crf --depend mcu_application\splclaser.d)
 I (..\sPlcPort\sPlcLaser.h)(0x5F13C346)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
@@ -3852,7 +3852,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3860,7 +3860,7 @@ I (..\sPlcPort\sPlcTimer.h)(0x5ECDF611)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\dcHmi\hmiLib.h)(0x5ECD2392)
 I (..\dcHmi\hmiCmdQueue.h)(0x5ECD2392)
 I (..\dcHmi\hmiDriver.h)(0x5F0C33EA)
@@ -3940,7 +3940,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -3955,7 +3955,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -3980,7 +3980,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h)(0x5E971C9E
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h)(0x5E971C9E)
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h)(0x5E971C9E)
 I (..\MainApp\dcHmiLanguage.H)(0x5ECD2392)
-F (..\sPlcPort\sPlcMisc.c)(0x5F13C346)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\splcmisc.o --omf_browse mcu_application\splcmisc.crf --depend mcu_application\splcmisc.d)
+F (..\sPlcPort\sPlcMisc.c)(0x5F296039)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\splcmisc.o --omf_browse mcu_application\splcmisc.crf --depend mcu_application\splcmisc.d)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
@@ -4029,7 +4029,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
 I (..\sPlcPort\sPlcTimer.h)(0x5ECDF611)
@@ -4043,7 +4043,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -4117,7 +4117,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4131,7 +4131,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -4291,8 +4291,8 @@ I (..\dcHmi\hmiCmdQueue.h)(0x5ECD2392)
 I (..\dcHmi\hmiDriver.h)(0x5F0C33EA)
 I (..\dcHmi\hmiCmdProcess.h)(0x5ECD2392)
 I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
-F (..\MainApp\dcHmiApp.c)(0x5F281DD1)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\dchmiapp.o --omf_browse mcu_application\dchmiapp.crf --depend mcu_application\dchmiapp.d)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+F (..\MainApp\dcHmiApp.c)(0x5F297468)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\dchmiapp.o --omf_browse mcu_application\dchmiapp.crf --depend mcu_application\dchmiapp.d)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x5F253046)
@@ -4340,7 +4340,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4428,7 +4428,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4443,7 +4443,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -4467,9 +4467,9 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h)(0x5E971C9E)
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h)(0x5E971C9E)
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h)(0x5E971C9E)
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h)(0x5E971C9E)
-F (..\MainApp\dcHmiNotifyButton.c)(0x5F1436CD)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\dchminotifybutton.o --omf_browse mcu_application\dchminotifybutton.crf --depend mcu_application\dchminotifybutton.d)
+F (..\MainApp\dcHmiNotifyButton.c)(0x5F296D5D)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\dchminotifybutton.o --omf_browse mcu_application\dchminotifybutton.crf --depend mcu_application\dchminotifybutton.d)
 I (..\MainApp\dcHmiNotifyButton.h)(0x5ECD2392)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x5F253046)
@@ -4517,7 +4517,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4558,7 +4558,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h)(0x5E9
 I (..\MainApp\dcHmiLanguage.H)(0x5ECD2392)
 F (..\MainApp\dcHmiNotifyProgress.c)(0x5F0E532D)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\dchminotifyprogress.o --omf_browse mcu_application\dchminotifyprogress.crf --depend mcu_application\dchminotifyprogress.d)
 I (..\MainApp\dcHmiNotifyProgress.h)(0x5ECD2392)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x5F253046)
@@ -4606,7 +4606,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4647,7 +4647,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h)(0x5E9
 I (..\MainApp\dcHmiLanguage.H)(0x5ECD2392)
 F (..\MainApp\dcHmiNotifyReadRTC.c)(0x5ECD2392)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\dchminotifyreadrtc.o --omf_browse mcu_application\dchminotifyreadrtc.crf --depend mcu_application\dchminotifyreadrtc.d)
 I (..\MainApp\dcHmiNotifyReadRTC.h)(0x5ECD2392)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x5F253046)
@@ -4695,7 +4695,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4736,7 +4736,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h)(0x5E9
 I (..\MainApp\dcHmiLanguage.H)(0x5ECD2392)
 F (..\MainApp\dcHmiNotifyText.c)(0x5F0C33EA)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\sPlc -I ..\sPlcPort -I ..\dcHmi -I ..\MainApp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc -I ..\deviceInfo-I.\RTE\_MCU_Application-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\linqi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F413xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F413xx-o mcu_application\dchminotifytext.o --omf_browse mcu_application\dchminotifytext.crf --depend mcu_application\dchminotifytext.d)
 I (..\MainApp\dcHmiNotifyText.h)(0x5ECD2392)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\sPlc\sPlc.h)(0x5F2809E3)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5E971C9D)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x5F253046)
@@ -4784,7 +4784,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4872,7 +4872,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4887,7 +4887,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\MainAppLib.h)(0x5F244075)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h)(0x5E971C9E)
@@ -4961,7 +4961,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E53505C)
 I (..\deviceInfo\deviceConfig.h)(0x5F280327)
-I (..\sPlc\sPlcConfig.h)(0x5F280327)
+I (..\sPlc\sPlcConfig.h)(0x5F2963BC)
 I (..\sPlcPort\sPlcMisc.h)(0x5F13C346)
 I (..\sPlcPort\sPlcMcu.h)(0x5ECD239D)
 I (..\sPlc\sPlcFun.h)(0x5EDCEDEB)
@@ -4976,7 +4976,7 @@ I (..\dcHmi\hmiCmdExtern.h)(0x5ECD2392)
 I (..\sPlcPort\sPlcEprom.h)(0x5EFB4A55)
 I (..\sPlcPort\sPlcAdc.h)(0x5ECD239D)
 I (..\sPlcPort\sPlcDac.h)(0x5ECD239D)
-I (..\MainApp\dcHmiApp.h)(0x5F144421)
+I (..\MainApp\dcHmiApp.h)(0x5F29666E)
 I (..\MainApp\dcHmiRes.h)(0x5F280327)
 I (..\MainApp\dcHmiLanguage.H)(0x5ECD2392)
 I (../Core/Inc/main.h)(0x5F253046)

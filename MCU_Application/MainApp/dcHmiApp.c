@@ -6,10 +6,20 @@ static uint8_t MsgId;//当前显示的信息ID
 static void UpdateUI(void);
 /*****************************************************************************/
 void loadDeviceLogInfo(void){//从EPROM载入记录文件
-	HAL_StatusTypeDef ret;
-	ret = epromRead(CONFIG_EPROM_LOGINFO_START, (uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//从EPROM载入设备配置
-	if(ret != HAL_OK){
-		printf("dcHmiApp->loadDeviceLogInfo:Load device config fail!!!\n");
+	uint16_t crc1, crc2;
+	HAL_StatusTypeDef ret1, ret2;
+	ret1 = epromRead(CONFIG_EPROM_LOGINFO_START, (uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//从EPROM载入设备配置
+	crc16Clear();
+	crc1 = crc16Calculate((uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//CRC16 计算数组
+	ret2 = epromRead((CONFIG_EPROM_LOGINFO_START + 512 - 2), (uint8_t*)&crc2, 2);//从EPROM载入LOG CRC
+	if(ret1 != HAL_OK || ret2 != HAL_OK || crc1 != crc2){//校验码不同使用默认配置
+		printf("dcHmiApp->loadDeviceLogInfo:Load device log fail!!!\n");
+		printf("dcHmiApp->loadDeviceLogInfo:Reset device log!\n");
+		memset((uint8_t*)&deviceLogInfo, 0x0, sizeof(deviceLogInfo));
+		saveDeviceLogInfo();
+	}
+	else{
+		printf("dcHmiApp->loadDeviceLogInfo:Load device log ok!\n");
 	}
 }
 void loadDeviceConfig(void){//从EPROM载入配置文件
@@ -54,20 +64,45 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.laserNotesIntercept[2] = 0;
 		deviceConfig.laserNotesIntercept[3] = 0;
 		deviceConfig.laserNotesIntercept[4] = 0;
+		
+		saveDeviceConfig();
+	}
+	else{
+		printf("dcHmiApp->loadDeviceConfig:Load device config ok!\n");
 	}
 }
 void saveDeviceConfig(void){//将配置写入EPROM
+	uint16_t crc;
 	HAL_StatusTypeDef ret;
 	ret = epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM
 	if(ret != HAL_OK){
 		printf("dcHmiApp->saveDeviceConfig:Save device config to eprom fail!!!\n");
 	}
+	else{
+		printf("dcHmiApp->saveDeviceConfig:Save device config to eprom ok!\n");
+	}
+	crc16Clear();
+	crc = crc16Calculate((uint8_t*)&deviceConfig, sizeof(deviceConfig));//CRC16 计算数组
+	ret = epromWrite((CONFIG_EPROM_CONFIG_START + 512 - 2), (uint8_t*)&crc, 2);//写入校验值
+	if(ret != HAL_OK){
+		printf("dcHmiApp->saveDeviceConfig:Save device config crc to eprom fail!!!\n");
+	}
+	else{
+		printf("dcHmiApp->saveDeviceConfig:Save device config crc to eprom ok!\n");
+	}
 }
 void saveDeviceLogInfo(void){//将记录写入EPROM
+	uint16_t crc;
 	HAL_StatusTypeDef ret;
 	ret = epromWrite(CONFIG_EPROM_LOGINFO_START, (uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//写入EPROM
 	if(ret != HAL_OK){
 		printf("dcHmiApp->saveDeviceLogInfo:Save device log to eprom fail!!!\n");
+	}
+	crc16Clear();
+	crc = crc16Calculate((uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//CRC16 计算数组
+	ret = epromWrite((CONFIG_EPROM_LOGINFO_START + 512 - 2), (uint8_t*)&crc, 2);//写入校验值
+	if(ret != HAL_OK){
+		printf("dcHmiApp->saveDeviceLogInfo:Save device log crc to eprom fail!!!\n");
 	}
 }
 void deviceLogInfoLoop(void){//检查记录
@@ -1918,7 +1953,12 @@ static void temperatureLoop(void){//温度轮询轮询
 		}
 		else{
 			RRES(Y_TEC);
-			RRES(Y_FAN_LD);
+			if(LD(R_DISABLE_FAN_SPEED)){
+				SSET(Y_FAN_LD);
+			}
+			else{
+				RRES(Y_FAN_LD);
+			}
 		}
 	}
 }
@@ -2050,12 +2090,6 @@ void dcHmiLoop(void){//HMI轮训程序
 	else{
 		RRES(Y_BLED);
 	}
-//	if(LaserFlag_Emiting){		
-//		SSET(SPCOIL_BEEM_ENABLE);//打开蜂鸣器
-//	}
-//	else{
-//		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-//	}
 /*****************************************************************************/
 	laserStateLoop();
 	deviceLogInfoLoop();
@@ -2163,7 +2197,13 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
 			SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
 			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
-			
+					
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FAN_CONTRAL, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
+	
 			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
 		}

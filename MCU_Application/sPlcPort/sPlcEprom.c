@@ -210,14 +210,16 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 		if(ret != HAL_OK){
 			ret = HAL_I2C_DeInit(&hi2c1);        //释放IO口为GPIO，复位句柄状态标志
 			ret = HAL_I2C_Init(&hi2c1);          //这句重新初始化I2C控制器
+#if CONFIG_DEBUG_EPROM == 1
+			printf("sPlc->sPlcEprom:Eprom read rbyte fail\n");
+#endif
 		}
+		else{
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom read rbyte fail\n");
+			printf("sPlc->sPlcEprom:Eprom read multibyte done!\n");
 #endif
+		}
 	}
-#if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom read multibyte done!\n");
-#endif
 	return ret;	
 }  
 HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite){//在的指定地址开始写入指定个数的数据

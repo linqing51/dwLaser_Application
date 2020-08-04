@@ -2514,6 +2514,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE:{
 					if(state){
 						SSET(R_DISABLE_FIBER_PROBE);
+						RRES(SPCOIL_BEEM_ENABLE);
+						updateWarnMsgDisplay(MSG_NO_ERROR);
+						standbyKeyEnable(true);
 					}
 					else{
 						RRES(R_DISABLE_FIBER_PROBE);
