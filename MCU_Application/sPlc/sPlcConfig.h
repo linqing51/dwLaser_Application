@@ -533,6 +533,9 @@
 #define EM_DC_DEFAULT_PASSCODE3									(EM_START + 99)//默认密码3				
 #define EM_DC_DISPLAY_RELEASE_TIME								(EM_START + 100)//显示发射时间			
 #define EM_DC_DISPLAY_RELEASE_ENERGY							(EM_START + 101)//显示发射能量
+
+#define EM_TPID_START											(EM_START + 128)//
+#define EM_TPID_END												(EM_START + 128 + 32)//
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME									(FD_START +  0)//方案名称
 #define FD_LASER_SELECT											(FD_START +  46)//通道选择

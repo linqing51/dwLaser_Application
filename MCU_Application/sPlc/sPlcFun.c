@@ -487,61 +487,78 @@ void IMDIO(void) {//立即更新IO点状态含输入输出
 /*****************************************************************************/
 /*****************************************************************************/
 void STPID(uint16_t adr){//位置PID指令
+	int16_t temp;
 	//adr + 0:Input 输入值
 	//adr + 1:ref 设定值
 	//adr + 2:Output 输出值
-	//adr + 3:Ts 采样周期 1-60000mS       		[1-60000] 
-	//adr + 4:Kp 比例操作的常数 0.01-60.000   	[1-60000]
+	//adr + 3:Ts 采样周期 10-300000mS           [1-30000] 
+	//adr + 4:Kp 比例操作的常数 0.01-60.000   	[1-30000]
 	//adr + 5:Ki 积分操作的常数 0.00-600.00	  	[1-30000]
 	//adr + 6:Td 微分操作的常数 0.00-600.00   	[1-30000]
 	//adr + 7:Mvll 操作量的下限值		      	[-32768-32766]
 	//adr + 8:Mvhl 操作量的上限制			  	[-32767-32767]
 	//adr + 9:Oper 正操作/反操作 1正操作 0反操作
-	//adr + 10:dead 误差死区 0.000-60.000		[0-60000]
-	//adr + 11:separate 积分分离常数 0.0-6000.0 [0-60000]
+	//adr + 10:dead 误差死区 0-30000	        [0-30000]
+	//adr + 11:separate 积分分离常数 0.0-6000.0 [0-30000]
 	//adr + 12:工作区 计时
-	//adr + 13:工作区 计时
-	//adr + 16:工作区 当前偏差pek0 FP32
-	//adr + 17:工作区 当前偏差pek0 FP32
+	//adr + 13:工作区 
+	//adr + 16:工作区 
+	//adr + 17:工作区 
 	//adr + 18:工作区 上次偏差pek1 FP32 
 	//adr + 19:工作区 上次偏差pek1 FP32
 	//adr + 20:工作区 累计偏差plocSum FP32 
 	//adr + 21:工作区 累计偏差plocSum FP32
 	fp32_t kp, ki, kd, pidOut, dead, separate;
-	fp32_t *pek0, *pek1, *plocSum;
-	uint32_t lastTime, nextTime;
-	lastTime = (uint32_t)&NVRAM0[adr + 12];//上次PID执行时间
-	nextTime = lastTime + NVRAM0[adr + 3];//下次PID执行时间
-	if(sPlcTick > nextTime){
-		kp = (fp32_t)NVRAM0[adr + 4] / 1000.0F;
-		ki = (fp32_t)NVRAM0[adr + 5] / 100.0F;
-		kd = (fp32_t)NVRAM0[adr + 6] / 100.0F;
-		dead = (fp32_t)NVRAM0[adr + 10] / 1000.0F;
-		separate = (fp32_t)NVRAM0[adr + 11] / 10.0F;
-		pek0 = (fp32_t*)&NVRAM0[adr + 11];
-		pek1 = (fp32_t*)&NVRAM0[adr + 13];
-		plocSum = (fp32_t*)&NVRAM0[adr + 15]; 
-		*pek0 = (fp32_t)NVRAM0[adr + 0] - (fp32_t)NVRAM0[adr + 1];//计算误差
-		if(fabs(*pek0) < dead){//计算误差死区
-			*pek0 = 0;
+	fp32_t pek0, pek1, plocSum;
+	if(LDP(SPCOIL_PS10MS)){//发现10mS
+		temp = (uint16_t)NVRAM0[adr + 12];
+		if(temp >= (uint16_t)NVRAM0[adr + 3] || temp > 30000){//计时器周期达到
+			kp = (fp32_t)NVRAM0[adr + 4] / 100.0F;
+			ki = (fp32_t)NVRAM0[adr + 5] / 100.0F;
+			kd = (fp32_t)NVRAM0[adr + 6] / 100.0F;
+			dead = (fp32_t)NVRAM0[adr + 10];
+			separate = (fp32_t)NVRAM0[adr + 11] / 10.0F;
+			pek0 = (fp32_t)NVRAM0[adr + 0] - (fp32_t)NVRAM0[adr + 1];//计算误差
+			plocSum = *((fp32_t*)&NVRAM0[adr + 20]);
+			if(fabs(pek0) < dead){//计算误差死区
+				pek0 = 0;
+			}
+			//if(fabs(pek0) > separate){//分离积分
+			//	pidOut = kp * pek0 + kd * (pek1 - pek0);
+			//	plocSum = 0;
+			//}
+			//else{//不分离积分
+				plocSum = plocSum + pek0;//计算累计误差
+				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
+			//}
+			//限制积分值
+			if(plocSum > (fp32_t)NVRAM0[adr + 8]){
+				plocSum = (fp32_t)NVRAM0[adr + 8];
+			}
+			if(plocSum < (fp32_t)NVRAM0[adr + 8] * -1.0F){
+				plocSum = (fp32_t)NVRAM0[adr + 8] * -1.0F;
+			}
+			pek1 = pek0;
+			if(NVRAM0[adr + 9] == 0){
+				pidOut = pidOut * -1;
+			}
+			//回写NVRAM0
+			*((fp32_t*)&NVRAM0[adr + 18]) = pek1;
+			*((fp32_t*)&NVRAM0[adr + 20]) = plocSum;
+			if(pidOut > (fp32_t)NVRAM0[adr + 8]){
+				pidOut = (fp32_t)NVRAM0[adr + 8];
+			}
+			if(pidOut < (fp32_t)NVRAM0[adr + 7]){
+				pidOut = (fp32_t)NVRAM0[adr + 7];
+			}
+			NVRAM0[adr + 2] = (int16_t)pidOut;
+			NVRAM0[adr + 3] = 0;
+			printf("STPID:In=%d,Ref=%d,Out=%d\n",NVRAM0[adr + 0],NVRAM0[adr + 1],NVRAM0[adr + 2]);
 		}
-		if(*pek0 > separate){//分离积分
-			pidOut = (kp * (*pek0)) + kd * (*pek1 - *pek0);
-			*plocSum = 0;
+		else{
+			temp ++;
+			NVRAM0[adr + 12] = temp;
 		}
-		else{//不分离积分
-			*plocSum = *plocSum + *pek0;//计算累计误差
-			pidOut = (kp * (*pek0)) + (ki * (*plocSum)) + kd * (*pek1 - *pek0);
-		}
-		*pek1 = *pek0;
-		if(pidOut > NVRAM0[adr + 8]){
-			pidOut = (fp32_t)NVRAM0[adr + 8];
-		}
-		if(pidOut < NVRAM0[adr + 7]){
-			pidOut = (fp32_t)NVRAM0[adr + 7];
-		}
-		NVRAM0[adr + 2] = (int16_t)pidOut;
-		lastTime = sPlcTick;
 	}
 }
 void FUPID(uint16_t adr){//模糊PID指令
@@ -555,5 +572,4 @@ void FUPID(uint16_t adr){//模糊PID指令
 //}
 //void FROM(uint16_t SA) {//步进执行指令
 //}
-
 

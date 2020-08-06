@@ -1908,9 +1908,43 @@ void dcHmiLoopInit(void){//初始化模块
 	NVRAM0[EM_LASER_POWER_CH3] = 0;
 	NVRAM0[EM_LASER_POWER_CH4] = 0;
 #endif
-
+	//初始化TPID
+	//adr + 0:Input 输入值
+	//adr + 1:ref 设定值
+	//adr + 2:Output 输出值
+	//adr + 3:Ts 采样周期 1-60000mS       		[1-60000] 
+	//adr + 4:Kp 比例操作的常数 0.01-60.000   	[1-60000]
+	//adr + 5:Ki 积分操作的常数 0.00-600.00	  	[1-30000]
+	//adr + 6:Td 微分操作的常数 0.00-600.00   	[1-30000]
+	//adr + 7:Mvll 操作量的下限值		      	[-32768-32766]
+	//adr + 8:Mvhl 操作量的上限制			  	[-32767-32767]
+	//adr + 9:Oper 正操作/反操作 1正操作 0反操作
+	//adr + 10:dead 误差死区 0.000-60.000		[0-60000]
+	//adr + 11:separate 积分分离常数 0.0-6000.0 [0-60000]
+	//adr + 12:工作区 计时
+	//adr + 13:工作区 计时
+	//adr + 16:工作区 当前偏差pek0 FP32
+	//adr + 17:工作区 当前偏差pek0 FP32
+	//adr + 18:工作区 上次偏差pek1 FP32 
+	//adr + 19:工作区 上次偏差pek1 FP32
+	//adr + 20:工作区 累计偏差plocSum FP32 
+	//adr + 21:工作区 累计偏差plocSum FP32
+	NVRAM0[EM_TPID_START + 1] =  CONFIG_COOL_SET_TEMP;
+	NVRAM0[EM_TPID_START + 3] =  50;//200mS
+	NVRAM0[EM_TPID_START + 4] =  110;//KP
+	NVRAM0[EM_TPID_START + 5] =  80;//KI
+	NVRAM0[EM_TPID_START + 6] =  50;//KD
+	NVRAM0[EM_TPID_START + 7] =  0;//
+	NVRAM0[EM_TPID_START + 8] =  100;//
+	NVRAM0[EM_TPID_START + 9] =  1;//正向操作
+	NVRAM0[EM_TPID_START + 10] = 1;//死区
+	NVRAM0[EM_TPID_START + 11] = 1000;//积分分离参数
+	NVRAM0[EM_TPID_START + 12] = 0;
+	NVRAM0[EM_TPID_START + 13] = 0;
+	NVRAM0[SPREG_SPWM_CYCLE_0]	= 100;
 }
 static void temperatureLoop(void){//温度轮询轮询
+	int16_t temp;
 	TNTC(EM_LASER_TEMP, SPREG_ADC_1);//CODE转换为NTC测量温度温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_8);//CODE转换为NTC测量温度温度
 	//判断二极管0是否过热
@@ -1944,12 +1978,19 @@ static void temperatureLoop(void){//温度轮询轮询
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS) ||
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION)){//激光工作或异常状态风扇开
 			SSET(Y_FAN_LD);
-			if(NVRAM0[EM_LASER_TEMP] > (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
+			if(LD(SPCOIL_SPWM_OUT_0)){
 				SSET(Y_TEC);
 			}
-			if(NVRAM0[EM_LASER_TEMP] < (CONFIG_COOL_SET_TEMP - CONFIG_COOL_DIFF_TEMP)){
+			else{
 				RRES(Y_TEC);
 			}
+			   
+			//if(NVRAM0[EM_LASER_TEMP] > (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
+			//	SSET(Y_TEC);
+			//}
+			//if(NVRAM0[EM_LASER_TEMP] < (CONFIG_COOL_SET_TEMP - CONFIG_COOL_DIFF_TEMP)){
+			//	RRES(Y_TEC);
+			//}
 		}
 		else{
 			RRES(Y_TEC);
@@ -2035,7 +2076,11 @@ static void laserStateLoop(void){//激光状态轮询
 	NVRAM0[EM_LASER_PHOTODIODE] = power * 1000;
 }
 void dcHmiLoop(void){//HMI轮训程序
-	//检查脚踏状态 常开/常闭脚踏
+	if(LDP(SPCOIL_PS10MS)){
+		NVRAM0[EM_TPID_START + 0] = NVRAM0[EM_LASER_TEMP];
+		STPID(EM_TPID_START);
+		NVRAM0[SPREG_SPWM_POS_0] =	NVRAM0[EM_TPID_START + 2];//软件PWM0正脉宽设置
+	}
 //	if(LD(X_FOOTSWITCH_NC) == true && LD(X_FOOTSWITCH_NO) == false){//脚踏插入 未按下
 //		SSET(R_FOOTSWITCH_PLUG);
 //		RRES(R_FOOTSWITCH_PRESS);
@@ -2080,10 +2125,12 @@ void dcHmiLoop(void){//HMI轮训程序
 		printf("dcHmiApp->dcHmiLoop:Footswitch  UnPressed\n");
 	}
 #endif
-	if(LDP(SPCOIL_PS100MS)){//每100mS更新一次温度
-		temperatureLoop();
-		faultLoop();
-	}
+//	if(LDP(SPCOIL_PS100MS)){//每100mS更新一次温度
+//		temperatureLoop();
+//		faultLoop();
+//	}
+	temperatureLoop();
+	faultLoop();
 	if(LaserFlag_Emiting){
 		SSET(Y_BLED);
 	}
