@@ -118,6 +118,83 @@ static int16_t gLedBrg = -1;
 static int16_t bLedBrg = -1;
 static int16_t aimBrg = -1;
 /*****************************************************************************/
+static void softDelayMs(uint16_t ms){
+	uint32_t i;
+	for(i = 0;i < 1000;i ++){
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	}
+}
+//HAL 初始化
+static void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
+	GPIO_InitTypeDef GPIO_InitStruct;
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+	/*Configure GPIO pin : PA12 */
+	GPIO_InitStruct.Pin = GPIO_PIN_12;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);                                            
+	softDelayMs(100);
+	//先把PA12拉低再拉高，利用D+模拟USB的拔插动作   
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
+	softDelayMs(100);
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
+	__HAL_RCC_GPIOA_CLK_DISABLE();
+	__HAL_RCC_GPIOG_CLK_ENABLE();
+	HAL_GPIO_WritePin(GPIOG,GPIO_PIN_8, GPIO_PIN_RESET);
+	GPIO_InitStruct.Pin = GPIO_PIN_8;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+	softDelayMs(200);
+	HAL_GPIO_DeInit(GPIOG, GPIO_PIN_12);
+	__HAL_RCC_GPIOG_CLK_DISABLE();	
+	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//关闭USB时钟
+	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//关闭USB 中断
+	HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);//清楚 USB 中断标志
+}
+static void SystemClock_Reset(void){
+	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+	__HAL_RCC_BACKUPRESET_RELEASE();
+	__HAL_RCC_BACKUPRESET_FORCE();
+	__HAL_RCC_PLL_DISABLE();
+	__HAL_RCC_HSI_DISABLE();
+	/** Configure the main internal regulator output voltage */
+	__HAL_RCC_PWR_CLK_DISABLE();
+	__HAL_RCC_PWR_CLK_ENABLE();
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+	/** Initializes the CPU, AHB and APB busses clocks */
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK){
+		Error_Handler();
+	}
+	/** Initializes the CPU, AHB and APB busses clocks */
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK){
+		Error_Handler();
+	}
+}
+void resetInit(void){//复位后初始化
+	HAL_DeInit();
+	//复位RCC时钟
+	SystemClock_Reset();
+	UsbGpioReset();
+	__enable_irq();
+}
+
 void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	HAL_Delay(delayMs);
 }

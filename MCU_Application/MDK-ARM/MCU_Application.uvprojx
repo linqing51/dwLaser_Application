@@ -275,8 +275,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x180000</Size>
+                <StartAddress>0x8010000</StartAddress>
+                <Size>0x150000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F413xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;     ../FATFS/Target;     ../FATFS/App;     ../USB_HOST/App;     ../USB_HOST/Target;     ../Drivers/STM32F4xx_HAL_Driver/Inc;     ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;     ../Middlewares/Third_Party/FatFs/src;     ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;     ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;     ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;     ../Drivers/CMSIS/Include;     ..\sPlc;     ..\sPlcPort;     ..\dcHmi;     ..\MainApp;     ../Middlewares/Third_Party/FreeRTOS/Source/include;     ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;     ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;     ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;     ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;     ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;     ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;     ..\deviceInfo</IncludePath>
+              <IncludePath>../Core/Inc; ../FATFS/Target; ../FATFS/App; ../USB_HOST/App; ../USB_HOST/Target; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Middlewares/Third_Party/FatFs/src; ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc; ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ..\sPlc; ..\sPlcPort; ..\dcHmi; ..\MainApp; ../Middlewares/Third_Party/FreeRTOS/Source/include; ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2; ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F; ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc; ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc; ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc; ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc; ..\deviceInfo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -404,6 +404,11 @@
               <FilePath>../Core/Src/gpio.c</FilePath>
             </File>
             <File>
+              <FileName>freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/freertos.c</FilePath>
+            </File>
+            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/adc.c</FilePath>
@@ -417,11 +422,6 @@
               <FileName>dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>freertos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/freertos.c</FilePath>
             </File>
             <File>
               <FileName>i2c.c</FileName>

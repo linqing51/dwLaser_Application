@@ -18,6 +18,20 @@
 #define CONFIG_DEBUG_APP										1
 #define CONFIG_SPLC_USING_HW_RNG								0//硬件随机数模块
 /*****************************************************************************/
+#define STM32_UNIQUE_ID_SIZE 				12//MCU序列号  8*12=96Bit
+#define BOOTLOADER_VER						0x00010001//版本
+#define DEVID_H								'0'//设备ID
+#define DEVID_L								'A'//设备ID
+#define BUFFER_SIZE        					((uint16_t)512*64)//512的整数倍
+#define CONFIG_JUMP_DELAY					4000//检测U盘时间
+#define FATFS_ROOT							"0:"
+#define LOG_FIRMWARE_FILENAME				"/log.txt"//操作记录文件
+#define CFG_FIRMWARE_FILENAME				"/las.cfg"//操作配置文件
+#define LMCU_FIRMWARE_FILENAME				"/ld_mcu.bin"//更新MCU固件地址
+#define LLCD_FIRMWARE_FILENAME				"/ld_lcd.pkg"//更新LCD固件地址
+#define SAVE_EPROM_FILENAME					"/seprom.bin"//EPROM->UDISK 储存名称
+#define LOAD_EPROM_FILENAME					"/leprom.bin"//UDISK->EPROM 恢复名称
+/*****************************************************************************/
 #define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式
 /*****************************************************************************/
@@ -62,11 +76,20 @@
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
 #define CONFIG_EPROM_PAGE_SIZE									0x08//EPROM 页大小
 #define CONFIG_EPROM_WRITE_DELAY								0//写入等待时间mS
-#define CONFIG_EPROM_MR_START									0x0
+/*****************************************************************************/
+#define CONFIG_EPROM_NVRAM_START								(0x0L)
+#define CONFIG_EPROM_NVRAM_END									(2047L)
+#define CONFIG_EPROM_FDRAM_START								(2048L)
+#define CONFIG_EPROM_FDRAM_END									(4095L)
+#define CONFIG_EPROM_MR_START									(0x0L)//
 #define CONFIG_EPROM_DM_START									(CONFIG_MRRAM_SIZE * 2)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_START + (CONFIG_DMRAM_SIZE * 2))
-#define CONFIG_EPROM_CONFIG_START								(4096L)
-#define CONFIG_EPROM_LOGINFO_START								(4608L)
+#define CONFIG_EPROM_FWINFO_START								(4096L)//固件信息区
+#define CONFIG_EPROM_FWINFO_END									(4607L)
+#define CONFIG_EPROM_CONFIG_START								(4608L)//配置信息区
+#define CONFIG_EPROM_CONFIG_END									(5119L)
+#define CONFIG_EPROM_LOGINFO_START								(5120L)//记录信息区
+#define CONFIG_EPROM_LOGINFO_END								(5632L)
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道
@@ -178,8 +201,8 @@
 #define CONFIG_MIN_BEEM_VOLUME									1//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG										100//屏幕亮度最大值
 #define CONFIG_MIN_LCD_BRG										1//屏幕亮度最小值
-#define CONFIG_COOL_SET_TEMP									280//冷却温度
-#define CONFIG_COOL_DIFF_TEMP									20//冷却温度变化范围
+#define CONFIG_COOL_SET_TEMP									300//冷却温度
+#define CONFIG_COOL_DIFF_TEMP									10//冷却温度变化范围
 //功率设定校正系数
 #define LASER_CH0_NOTES_INTERCEPT								393.7F	
 #define LASER_CH0_NOTES_B1										12.34F

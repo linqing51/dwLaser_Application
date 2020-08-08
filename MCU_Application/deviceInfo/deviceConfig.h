@@ -37,7 +37,10 @@ typedef struct{
 extern deviceConfig_t deviceConfig;
 extern firmwareInfo_t firmwareInfo;//固件信息
 extern deviceLogInfo_t deviceLogInfo;
+extern uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
+extern uint16_t cpuGetFlashSize(void);
+extern void readStm32UniqueID(void);
 #endif
 
 

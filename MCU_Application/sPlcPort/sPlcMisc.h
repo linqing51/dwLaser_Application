@@ -5,6 +5,9 @@
 #define BEEM_MODE_2													0x12//激光发射固定间隔
 #define BEEM_MODE_3													0x13//异常报警
 /*****************************************************************************/
+void resetInit(void);
+void bootLoadInit(void);
+/*****************************************************************************/
 void sPlcBeemLoop(void);//蜂鸣器轮询
 void sPlcAimLoop(void);//瞄准光轮询
 void setBeemFreq(int16_t freq);//设置蜂鸣器频率和占空比

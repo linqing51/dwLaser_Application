@@ -65,6 +65,7 @@ void updateNegWidthDisplay(int16_t mode);
 void updateTimesDisplay(void);
 void updateGroupOffDisplay(void);
 void updateOptionDisplay(void);
+void updateInformationDisplay(void);
 /*****************************************************************************/
 void updateScheme_0_Display(void);
 void updateScheme_1_Display(void);

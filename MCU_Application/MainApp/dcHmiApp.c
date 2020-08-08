@@ -457,6 +457,18 @@ void updateScheme_1_Display(void){//更新选项界面方案名称
 	SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)"");
 	SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL2, (uint8_t*)"");
 }
+void updateInformationDisplay(void){//更新信息界面显示
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "UUID:%08X%08X%08X",  UniqueId[0], UniqueId[1], UniqueId[2]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE[NVRAM0[DM_LANGUAGE]]);	
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_SN, (uint8_t*)INFO_MSG_SN[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_VERSION, (uint8_t*)INFO_MSG_VERSION[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)INFO_MSG_MANUFACTURE_DATE[NVRAM0[DM_LANGUAGE]]);			
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);				
+}
 void returnStandbyDisplay(void){//返回STANDBY界面
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){	
 		case LASER_MODE_CW:{
@@ -491,7 +503,7 @@ void returnStandbyDisplay(void){//返回STANDBY界面
 	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;	
 	SetScreen(NVRAM0[EM_DC_PAGE]);
 }
-void clearReleaseTimeEnergy(void){
+void clearReleaseTimeEnergy(void){//清除发射时间与能量显示
 	LaserRelease_TotalTime0 = 0;
 	LaserRelease_TotalTime1 = -1;
 	LaserRelease_TotalEnergy0 = 0;
@@ -1908,40 +1920,6 @@ void dcHmiLoopInit(void){//初始化模块
 	NVRAM0[EM_LASER_POWER_CH3] = 0;
 	NVRAM0[EM_LASER_POWER_CH4] = 0;
 #endif
-	//初始化TPID
-	//adr + 0:Input 输入值
-	//adr + 1:ref 设定值
-	//adr + 2:Output 输出值
-	//adr + 3:Ts 采样周期 1-60000mS       		[1-60000] 
-	//adr + 4:Kp 比例操作的常数 0.01-60.000   	[1-60000]
-	//adr + 5:Ki 积分操作的常数 0.00-600.00	  	[1-30000]
-	//adr + 6:Td 微分操作的常数 0.00-600.00   	[1-30000]
-	//adr + 7:Mvll 操作量的下限值		      	[-32768-32766]
-	//adr + 8:Mvhl 操作量的上限制			  	[-32767-32767]
-	//adr + 9:Oper 正操作/反操作 1正操作 0反操作
-	//adr + 10:dead 误差死区 0.000-60.000		[0-60000]
-	//adr + 11:separate 积分分离常数 0.0-6000.0 [0-60000]
-	//adr + 12:工作区 计时
-	//adr + 13:工作区 计时
-	//adr + 16:工作区 当前偏差pek0 FP32
-	//adr + 17:工作区 当前偏差pek0 FP32
-	//adr + 18:工作区 上次偏差pek1 FP32 
-	//adr + 19:工作区 上次偏差pek1 FP32
-	//adr + 20:工作区 累计偏差plocSum FP32 
-	//adr + 21:工作区 累计偏差plocSum FP32
-	NVRAM0[EM_TPID_START + 1] =  CONFIG_COOL_SET_TEMP;
-	NVRAM0[EM_TPID_START + 3] =  50;//200mS
-	NVRAM0[EM_TPID_START + 4] =  110;//KP
-	NVRAM0[EM_TPID_START + 5] =  80;//KI
-	NVRAM0[EM_TPID_START + 6] =  50;//KD
-	NVRAM0[EM_TPID_START + 7] =  0;//
-	NVRAM0[EM_TPID_START + 8] =  100;//
-	NVRAM0[EM_TPID_START + 9] =  1;//正向操作
-	NVRAM0[EM_TPID_START + 10] = 1;//死区
-	NVRAM0[EM_TPID_START + 11] = 1000;//积分分离参数
-	NVRAM0[EM_TPID_START + 12] = 0;
-	NVRAM0[EM_TPID_START + 13] = 0;
-	NVRAM0[SPREG_SPWM_CYCLE_0]	= 100;
 }
 static void temperatureLoop(void){//温度轮询轮询
 	int16_t temp;
@@ -1983,14 +1961,13 @@ static void temperatureLoop(void){//温度轮询轮询
 			}
 			else{
 				RRES(Y_TEC);
+			}   
+			if(NVRAM0[EM_LASER_TEMP] > (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
+				SSET(Y_TEC);
 			}
-			   
-			//if(NVRAM0[EM_LASER_TEMP] > (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
-			//	SSET(Y_TEC);
-			//}
-			//if(NVRAM0[EM_LASER_TEMP] < (CONFIG_COOL_SET_TEMP - CONFIG_COOL_DIFF_TEMP)){
-			//	RRES(Y_TEC);
-			//}
+			if(NVRAM0[EM_LASER_TEMP] < (CONFIG_COOL_SET_TEMP - CONFIG_COOL_DIFF_TEMP)){
+				RRES(Y_TEC);
+			}
 		}
 		else{
 			RRES(Y_TEC);
@@ -2076,11 +2053,11 @@ static void laserStateLoop(void){//激光状态轮询
 	NVRAM0[EM_LASER_PHOTODIODE] = power * 1000;
 }
 void dcHmiLoop(void){//HMI轮训程序
-	if(LDP(SPCOIL_PS10MS)){
-		NVRAM0[EM_TPID_START + 0] = NVRAM0[EM_LASER_TEMP];
-		STPID(EM_TPID_START);
-		NVRAM0[SPREG_SPWM_POS_0] =	NVRAM0[EM_TPID_START + 2];//软件PWM0正脉宽设置
-	}
+//	if(LDP(SPCOIL_PS10MS)){
+//		NVRAM0[EM_TPID_START + 0] = NVRAM0[EM_LASER_TEMP];
+//		STPID(EM_TPID_START);
+//		NVRAM0[SPREG_SPWM_POS_0] =	NVRAM0[EM_TPID_START + 2];//软件PWM0正脉宽设置
+//	}
 //	if(LD(X_FOOTSWITCH_NC) == true && LD(X_FOOTSWITCH_NO) == false){//脚踏插入 未按下
 //		SSET(R_FOOTSWITCH_PLUG);
 //		RRES(R_FOOTSWITCH_PRESS);
@@ -2905,13 +2882,8 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_OPTION){//选项界面
-		if(LD(R_OPTION_KEY_ENTER_INFORMATION_DOWN)){
-			SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE[NVRAM0[DM_LANGUAGE]]);	
-			SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_SN, (uint8_t*)INFO_MSG_SN[NVRAM0[DM_LANGUAGE]]);
-			SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH[NVRAM0[DM_LANGUAGE]]);
-			SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER[NVRAM0[DM_LANGUAGE]]);
-			SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_VERSION, (uint8_t*)INFO_MSG_VERSION[NVRAM0[DM_LANGUAGE]]);
-			SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)INFO_MSG_MANUFACTURE_DATE[NVRAM0[DM_LANGUAGE]]);			
+		if(LD(R_OPTION_KEY_ENTER_INFORMATION_DOWN)){		
+			updateInformationDisplay();		
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_INFORMATION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_INFORMATION;
 			SetScreen(NVRAM0[EM_DC_PAGE]);

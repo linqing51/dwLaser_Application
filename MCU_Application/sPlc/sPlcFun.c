@@ -499,44 +499,57 @@ void STPID(uint16_t adr){//位置PID指令
 	//adr + 8:Mvhl 操作量的上限制			  	[-32767-32767]
 	//adr + 9:Oper 正操作/反操作 1正操作 0反操作
 	//adr + 10:dead 误差死区 0-30000	        [0-30000]
-	//adr + 11:separate 积分分离常数 0.0-6000.0 [0-30000]
-	//adr + 12:工作区 计时
-	//adr + 13:工作区 
-	//adr + 16:工作区 
-	//adr + 17:工作区 
+	//adr + 11:umax 积分饱和误差上限			[0-30000]
+	//adr + 12:umin 积分饱和误差下限			[0-30000]
+	//adr + 13:工作区 计时
+	//adr + 14:工作区 
+	//adr + 15:工作区 
+	//adr + 16:工作区
+	//adr + 17:工作区
 	//adr + 18:工作区 上次偏差pek1 FP32 
 	//adr + 19:工作区 上次偏差pek1 FP32
 	//adr + 20:工作区 累计偏差plocSum FP32 
 	//adr + 21:工作区 累计偏差plocSum FP32
-	fp32_t kp, ki, kd, pidOut, dead, separate;
+	fp32_t kp, ki, kd, pidOut, dead, umax, umin;
 	fp32_t pek0, pek1, plocSum;
 	if(LDP(SPCOIL_PS10MS)){//发现10mS
-		temp = (uint16_t)NVRAM0[adr + 12];
+		temp = (uint16_t)NVRAM0[adr + 13];
 		if(temp >= (uint16_t)NVRAM0[adr + 3] || temp > 30000){//计时器周期达到
 			kp = (fp32_t)NVRAM0[adr + 4] / 100.0F;
 			ki = (fp32_t)NVRAM0[adr + 5] / 100.0F;
 			kd = (fp32_t)NVRAM0[adr + 6] / 100.0F;
 			dead = (fp32_t)NVRAM0[adr + 10];
-			separate = (fp32_t)NVRAM0[adr + 11] / 10.0F;
+			umax = (fp32_t)NVRAM0[adr + 11];
+			umin = (fp32_t)NVRAM0[adr + 12];
 			pek0 = (fp32_t)NVRAM0[adr + 0] - (fp32_t)NVRAM0[adr + 1];//计算误差
 			plocSum = *((fp32_t*)&NVRAM0[adr + 20]);
+			//抗积分饱和
 			if(fabs(pek0) < dead){//计算误差死区
 				pek0 = 0;
 			}
-			//if(fabs(pek0) > separate){//分离积分
-			//	pidOut = kp * pek0 + kd * (pek1 - pek0);
-			//	plocSum = 0;
-			//}
-			//else{//不分离积分
-				plocSum = plocSum + pek0;//计算累计误差
-				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
-			//}
-			//限制积分值
-			if(plocSum > (fp32_t)NVRAM0[adr + 8]){
-				plocSum = (fp32_t)NVRAM0[adr + 8];
+//			if(pek1 >= umax){//只减少累加量
+//				if(pek0 <= 0){	
+//					plocSum = plocSum + pek0;//计算累计误差
+//				}
+//				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
+//			}
+//			else if(pek1 <= umin){//只增加累加量
+//				if(pek0 >= 0){
+//					plocSum = plocSum + pek0;//计算累计误差
+//				}
+//				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
+//			}
+//			else{//正常计算积分
+//				plocSum = plocSum + pek0;
+//				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
+//			}
+			plocSum = plocSum + pek0;
+			pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
+			if(plocSum >= 1000){
+				plocSum = 1000;
 			}
-			if(plocSum < (fp32_t)NVRAM0[adr + 8] * -1.0F){
-				plocSum = (fp32_t)NVRAM0[adr + 8] * -1.0F;
+			if(plocSum <= -1000){
+				plocSum = -1000;
 			}
 			pek1 = pek0;
 			if(NVRAM0[adr + 9] == 0){
@@ -557,7 +570,7 @@ void STPID(uint16_t adr){//位置PID指令
 		}
 		else{
 			temp ++;
-			NVRAM0[adr + 12] = temp;
+			NVRAM0[adr + 13] = temp;
 		}
 	}
 }
