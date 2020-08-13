@@ -2013,11 +2013,25 @@ static void faultLoop(void){//故障轮询
 	temp |= LD(R_MCU_TEMP_LOW);//正常0
 	if(temp){
 		SSET(R_FAULT);
-		SSET(Y_RLED);
 	}
 	else{
 		RRES(R_FAULT);
-		RRES(Y_RLED);
+	}
+	//
+	if(LD(R_FAULT)){
+		RRES(Y_GLED);//关闭绿灯
+		RRES(Y_BLED);//关闭蓝灯
+		SSET(Y_RLED);//打开红灯
+	}
+	else if(LaserFlag_Emiting){
+		RRES(Y_GLED);//关闭绿灯
+		SSET(Y_BLED);//打开蓝灯
+		RRES(Y_RLED);//关闭红灯
+	}
+	else{
+		SSET(Y_GLED);//打开绿灯
+		RRES(Y_BLED);//关闭蓝灯
+		RRES(Y_RLED);//关闭红灯
 	}
 }
 static void laserStateLoop(void){//激光状态轮询
@@ -2108,12 +2122,6 @@ void dcHmiLoop(void){//HMI轮训程序
 //	}
 	temperatureLoop();
 	faultLoop();
-	if(LaserFlag_Emiting){
-		SSET(Y_BLED);
-	}
-	else{
-		RRES(Y_BLED);
-	}
 /*****************************************************************************/
 	laserStateLoop();
 	deviceLogInfoLoop();
@@ -2126,7 +2134,6 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	//状态机
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
-		SSET(Y_GLED);//电源灯常亮
 		loadScheme();//从掉电存储寄存器中恢复方案参数
 #if CONFIG_USING_SINGLE_WAVE == 1
 		NVRAM0[EM_LASER_POWER_CH1] = 0;
@@ -2169,9 +2176,10 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RESTORE_HMI){//等待HMI复位
-		T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_CHECK_DELAY_TIME);
+		T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_WAIT_HMI_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
-			T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_CHECK_DELAY_TIME);
+			printf("dcHmiApp->dcHmiLoop:Hmi delay done......\n");
+			T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_WAIT_HMI_DELAY_TIME);
 			RRES(R_DCHMI_RESET_DOING);
 			SSET(R_DCHMI_RESET_DONE);	
 			//HMI从内置FLASH中恢复设置	
@@ -2240,9 +2248,15 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_WAIT_ENTER_PASSCODE){//等待开机密码输入
-		T100MS(T100MS_ENTER_PASSCODE_DELAY, true, CONFIG_CHECK_DELAY_TIME);
+		//打开蜂鸣器
+		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
+		NVRAM0[SPREG_BEEM_VOLUME] = 100;
+		NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
+		SSET(SPCOIL_BEEM_ENABLE);
+		T100MS(T100MS_ENTER_PASSCODE_DELAY, true, CONFIG_WAIT_PASSWORD_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_ENTER_PASSCODE_DELAY)){
-			T100MS(T100MS_ENTER_PASSCODE_DELAY, false, CONFIG_CHECK_DELAY_TIME);
+			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
+			T100MS(T100MS_ENTER_PASSCODE_DELAY, false, CONFIG_WAIT_PASSWORD_DELAY_TIME);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_INPUT;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_PASSCODE;
 			SetScreen(NVRAM0[EM_DC_PAGE]);

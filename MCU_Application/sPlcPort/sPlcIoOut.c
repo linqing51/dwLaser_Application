@@ -5,9 +5,9 @@ void outputInit(void){//IOÊä³ö³õÊ¼»¯
 	HAL_GPIO_WritePin(FAN_SP_GPIO_Port, FAN_SP_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(FAN_LD_GPIO_Port, FAN_LD_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(TEC_OUT_GPIO_Port, TEC_OUT_Pin, GPIO_PIN_RESET);
-	setGreenLedBrightness(CONFIG_SPLC_GLED_OFF_DC);
-	setRedLedBrightness(CONFIG_SPLC_RLED_OFF_DC);
-	setBlueLedBrightness(CONFIG_SPLC_BLED_OFF_DC);
+	HAL_GPIO_WritePin(RLED_OUT_GPIO_Port, RLED_OUT_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GLED_OUT_GPIO_Port, GLED_OUT_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(BLED_OUT_GPIO_Port, BLED_OUT_Pin, GPIO_PIN_RESET);
 }
 
 void outputRefresh(void){//ÉèÖÃÊä³öIO
@@ -55,55 +55,43 @@ void outputRefresh(void){//ÉèÖÃÊä³öIO
 	
 	//YOUT3 ÂÌµÆ
 	if(LDP(Y_GLED)){
-#if CONFIG_SPLC_USING_LEDAIM == 1
-		setGreenLedBrightness(CONFIG_SPLC_GLED_ON_DC);
+		HAL_GPIO_WritePin(GLED_OUT_GPIO_Port, GLED_OUT_Pin, GPIO_PIN_SET);
 #if CONFIG_DEBUG_APP == 1
 		printf("sPlcIoOut->outputRefresh:SET Y3 GLED\n");
 #endif
-#endif
 	}
 	if(LDN(Y_GLED)){
-#if CONFIG_SPLC_USING_LEDAIM == 1
-		setGreenLedBrightness(CONFIG_SPLC_GLED_OFF_DC);
+		HAL_GPIO_WritePin(GLED_OUT_GPIO_Port, GLED_OUT_Pin, GPIO_PIN_RESET);
 #if CONFIG_DEBUG_APP == 1
 		printf("sPlcIoOut->outputRefresh:RESET Y3 GLED\n");
-#endif
 #endif
 	}
 	
 	//YOUT4 ºìµÆ
 	if(LDP(Y_RLED)){
-#if CONFIG_SPLC_USING_LEDAIM == 1
-		setRedLedBrightness(CONFIG_SPLC_RLED_ON_DC);
+		HAL_GPIO_WritePin(RLED_OUT_GPIO_Port, RLED_OUT_Pin, GPIO_PIN_SET);
 #if CONFIG_DEBUG_APP == 1
 		printf("sPlcIoOut->outputRefresh:SET Y4 RLED\n");
 #endif
-#endif
 	}
 	if(LDN(Y_RLED)){
-#if CONFIG_SPLC_USING_LEDAIM == 1
-		setRedLedBrightness(CONFIG_SPLC_RLED_OFF_DC);
+		HAL_GPIO_WritePin(RLED_OUT_GPIO_Port, RLED_OUT_Pin, GPIO_PIN_RESET);
 #if CONFIG_DEBUG_APP == 1
 		printf("sPlcIoOut->outputRefresh:RESET Y4 RLED\n");
-#endif
 #endif
 	}
 	
 	//YOUT5 À¶µÆ
 	if(LDP(Y_BLED)){
-#if CONFIG_SPLC_USING_LEDAIM == 1
-		setBlueLedBrightness(CONFIG_SPLC_BLED_ON_DC);
+		HAL_GPIO_WritePin(BLED_OUT_GPIO_Port, BLED_OUT_Pin, GPIO_PIN_SET);
 #if CONFIG_DEBUG_APP == 1
 		printf("sPlcIoOut->outputRefresh:SET Y5 BLED\n");
 #endif
-#endif	
 	}
 	if(LDN(Y_BLED)){
-#if CONFIG_SPLC_USING_LEDAIM == 1
-		setBlueLedBrightness(CONFIG_SPLC_BLED_OFF_DC);
+		HAL_GPIO_WritePin(BLED_OUT_GPIO_Port, BLED_OUT_Pin, GPIO_PIN_RESET);
 #if CONFIG_DEBUG_APP == 1
 		printf("sPlcIoOut->outputRefresh:RESET Y5 BLED\n");
-#endif
 #endif
 	}
 	

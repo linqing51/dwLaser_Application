@@ -1,16 +1,8 @@
 #include "sPlcMisc.h"
 /*****************************************************************************/
-#define SET_RLED_ON()												setRedLedDutyCycle(CONFIG_SPLC_RLED_ON_DC)
-#define SET_RLED_OFF()												setRedLedDutyCycle(CONFIG_SPLC_RLED_OFF_DC)
-#define SET_GLED_ON()												setGreenLedDutyCycle(CONFIG_SPLC_GLED_ON_DC)
-#define SET_GLED_OFF()												setGreenLedDutyCycle(CONFIG_SPLC_GLED_OFF_DC)
-#define SET_BLED_ON()												setBlueLedDutyCycle(CONFIG_SPLC_BLED_ON_DC)
-#define SET_BLED_OFF()												setBlueLedDutyCycle(CONFIG_SPLC_BLED_OFF_DC)
-/*****************************************************************************/
 extern UART_HandleTypeDef huart1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
-extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim7;
 /*****************************************************************************/
 /* Name                       : "XMODEM", also known as "ZMODEM", "CRC-16/ACORN"
@@ -113,9 +105,6 @@ const uint32_t crc32Tab[] = { /* CRC polynomial 0xedb88320 */
 static uint16_t oldcrc16;
 static uint32_t oldcrc32;
 static int16_t beemVolume = -1;
-static int16_t rLedBrg = -1;
-static int16_t gLedBrg = -1;
-static int16_t bLedBrg = -1;
 static int16_t aimBrg = -1;
 /*****************************************************************************/
 static void softDelayMs(uint16_t ms){
@@ -224,75 +213,6 @@ void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
 	if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
 		Error_Handler();
 	}
-	htim4.Instance = TIM4;
-	htim4.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
-	htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim4.Init.Period = 255;
-	htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-	if (HAL_TIM_PWM_Init(&htim4) != HAL_OK){
-		Error_Handler();
-	}
-}
-void setRedLedBrightness(int16_t brg){//设置R LED亮度
-	uint16_t temp;
-	if(brg != rLedBrg){
-		if(brg > 100){
-			brg = 100;
-		}
-		if(brg < 0){
-			brg = 0;
-		}
-		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, temp);
-		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1);//关闭TIM
-		}
-		rLedBrg = brg;
-	}
-}
-void setGreenLedBrightness(int16_t brg){//设置G LED亮度
-	uint16_t temp;
-	if(gLedBrg != brg){
-		if(brg > 100){
-			brg = 100;
-		}
-		if(brg < 0){
-			brg = 0;
-		}
-		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, temp);
-		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);//关闭TIM
-		}
-		gLedBrg = brg;
-	}
-}
-void setBlueLedBrightness(int16_t brg){//设置B LED亮度
-	uint16_t temp;
-	if(bLedBrg != brg){
-		if(brg > 100){
-			brg = 100;
-		}
-		if(brg < 0){
-			brg = 0;
-		}
-		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, temp);
-		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);//关闭TIM
-		}
-		bLedBrg = brg;
-	}		
 }
 void setBeemFreq(int16_t freq){//设置蜂鸣器频率
 	if(freq > 5000){

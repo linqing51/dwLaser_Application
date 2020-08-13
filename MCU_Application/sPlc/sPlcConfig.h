@@ -43,11 +43,11 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
-#define CONFIG_SPLC_RLED_ON_DC									25//红灯亮度
+#define CONFIG_SPLC_RLED_ON_DC									35//红灯亮度
 #define CONFIG_SPLC_RLED_OFF_DC									0//红灯亮度
-#define CONFIG_SPLC_GLED_ON_DC									25//绿灯亮度
+#define CONFIG_SPLC_GLED_ON_DC									35//绿灯亮度
 #define CONFIG_SPLC_GLED_OFF_DC									0//绿灯亮度
-#define CONFIG_SPLC_BLED_ON_DC									25//蓝灯亮度
+#define CONFIG_SPLC_BLED_ON_DC									35//蓝灯亮度
 #define CONFIG_SPLC_BLED_OFF_DC									0//蓝灯亮度
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能
@@ -136,7 +136,8 @@
 #define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
 #define CONFIG_DCHMI_DISKBUF_SIZE								0x80//显示缓冲区大小
 /*****************************************************************************/
-#define CONFIG_CHECK_DELAY_TIME									10
+#define CONFIG_WAIT_HMI_DELAY_TIME								20
+#define CONFIG_WAIT_PASSWORD_DELAY_TIME							5
 #define CONFIG_KEY_REPEAT_DELAY_TIME							100
 #define CONFIG_STANDBY_BEEM_DELAY_TIME							20
 /*****************************************************************************/

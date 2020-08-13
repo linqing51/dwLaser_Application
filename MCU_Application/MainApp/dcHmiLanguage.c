@@ -153,7 +153,7 @@ char INFO_MSG_TYPE[8][64] 						 = {{"TYPE: Dual Git Engineering Sample"},
 													{""},
 													{""}};
 													
-char INFO_MSG_SN[8][64] 						 = {{"SN: 0000-00-00"},
+char INFO_MSG_SN[8][64] 						 = {{"SN: 1234-67-AAAA"},
 													{""},
 													{""},
 													{""},
@@ -180,7 +180,7 @@ char INFO_MSG_LASER_POWER[8][64] 				 = {{"LASER_POWER: 30W"},
 													{""},
 													{""}};
 													
-char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.00"},
+char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.01"},
 													{""},
 													{""},
 													{""},
@@ -189,7 +189,7 @@ char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.00"},
 													{""},
 													{""}};
 													
-char INFO_MSG_MANUFACTURE_DATE[8][64] 			 = {{"MANUFACTURE DATE:1970-01-01"},
+char INFO_MSG_MANUFACTURE_DATE[8][64] 			 = {{"MANUFACTURE DATE:2020-08-13"},
 													{""},
 													{""},
 													{""},
