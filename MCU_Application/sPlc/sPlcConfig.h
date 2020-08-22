@@ -172,7 +172,7 @@
 #define CONFIG_MAX_LASERPOWER_CH2								100//通道2最大激光功率
 #define CONFIG_MAX_LASERPOWER_CH3								100//通道3最大激光功率
 
-#define CONFIG_MIN_LASERPOWER_CH0								0//通道0最小激光功率
+#define CONFIG_MIN_LASERPOWER_CH0								1//通道0最小激光功率
 #define CONFIG_MIN_LASERPOWER_CH1								0//通道1最小激光功率
 #define CONFIG_MIN_LASERPOWER_CH2								0//通道2最大激光功率
 #define CONFIG_MIN_LASERPOWER_CH3								0//通道3最大激光功率
