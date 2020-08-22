@@ -190,6 +190,10 @@ void optionKeyEnable(uint8_t enable){//选项界面按键锁定
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_DEC, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_LCD_BRG_DEC, enable);
+	BatchEnd();
+	//等待5mS HMI处理器
+	delayMs(5);
+	BatchBegin(GDDC_PAGE_OPTION);
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_ENTER_OK, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON, enable);
@@ -199,6 +203,7 @@ void optionKeyEnable(uint8_t enable){//选项界面按键锁定
 	BatchSetEnable(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, enable);
 	BatchEnd();
+	delayMs(5);
 	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_RESTORE, enable);
 }
 void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
