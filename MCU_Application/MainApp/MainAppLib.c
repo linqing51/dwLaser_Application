@@ -62,7 +62,7 @@ uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 }
 
 void defaultScheme(void){//当前选择方案恢复默认值						
-	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d",NVRAM0[DM_SCHEME_NUM]);		
+	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d", (NVRAM0[DM_SCHEME_NUM] + 1));		
 	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
 	NVRAM0[EM_LASER_POWER_CH0] = NVRAM0[DM_SCHEME_NUM] * 5 + 20;//通道0功率

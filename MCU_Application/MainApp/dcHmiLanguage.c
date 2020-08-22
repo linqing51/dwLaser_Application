@@ -180,7 +180,7 @@ char INFO_MSG_LASER_POWER[8][64] 				 = {{"LASER_POWER: 30W"},
 													{""},
 													{""}};
 													
-char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.01"},
+char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.02"},
 													{""},
 													{""},
 													{""},

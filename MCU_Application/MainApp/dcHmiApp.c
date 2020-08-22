@@ -1274,7 +1274,6 @@ void updatePowerDisplay(int16_t ch, int16_t mode){//更新功率显示
 				}
 				default:break;
 			}
-			updateEnergyDensity();
 			break;		
 		}
 		case LASER_MODE_SIGNAL:{
@@ -1325,7 +1324,8 @@ void updateExtralDisplay(int16_t mode){//更新额外显示
 			sprintf(dispBuf, "N/A");
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_DUTYCYCLE, (uint8_t*)dispBuf);
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_FREQUENCY, (uint8_t*)dispBuf);			
-			averagePower = (fp32_t)(NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
+			//averagePower = (fp32_t)(NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
+			averagePower = (fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10.0F;
 			sprintf(dispBuf, "%3.1f", averagePower);
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_AVERAGE_POWER, (uint8_t*)dispBuf);
 			break;
