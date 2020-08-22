@@ -355,15 +355,15 @@ void sPlcBeemLoop(void){//·äÃùÆ÷ÂÖÑ¯
 				break;
 			}
 			case BEEM_MODE_2:{//Ä£Ê½2 ³¤¼ä¸ô ¼¤¹â·¢ÉäÒô		
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 80){//1
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 20){//1
 					setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
 					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 80 && NVRAM0[SPREG_BEEM_COUNTER] < 160){//0
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 20 && NVRAM0[SPREG_BEEM_COUNTER] < 120){//0
 					setBeemVolume(0);
 					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 160){
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 120){
 					NVRAM0[SPREG_BEEM_COUNTER] = 0xffff;
 				}
 				break;
