@@ -718,7 +718,7 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 			else{
 				SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"Mode:Single");
 			}
-			posWidth = FDRAM[cn * 30 + FD_LASER_SP_POSWIDTH];
+			posWidth = FDRAM[cn * 64 + FD_LASER_SP_POSWIDTH];
 			sprintf(dispBuf2, "OnTime:%dmS", posWidth);
 			break;
 		}
@@ -729,8 +729,8 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 			else{
 				SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"Mode:Pulsed");
 			}
-			posWidth = FDRAM[cn * 30 + FD_LASER_MP_POSWIDTH];
-			negWidth = FDRAM[cn * 30 + FD_LASER_MP_NEGWIDTH];
+			posWidth = FDRAM[cn * 64 + FD_LASER_MP_POSWIDTH];
+			negWidth = FDRAM[cn * 64 + FD_LASER_MP_NEGWIDTH];
 			sprintf(dispBuf2, "OnTime:%dmS, OffTime:%dmS", posWidth, negWidth);
 			break;
 		}
@@ -741,16 +741,16 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 			else{
 				SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"Mode:Group");
 			}
-			posWidth = FDRAM[cn * 30 + FD_LASER_GP_POSWIDTH];
-			negWidth = FDRAM[cn * 30 + FD_LASER_GP_NEGWIDTH];
-			times = FDRAM[cn * 30 + FD_LASER_GP_TIMES];
-			groupOff = FDRAM[cn * 30 + FD_LASER_GP_GROUP_OFF];
+			posWidth = FDRAM[cn * 64 + FD_LASER_GP_POSWIDTH];
+			negWidth = FDRAM[cn * 64 + FD_LASER_GP_NEGWIDTH];
+			times = FDRAM[cn * 64 + FD_LASER_GP_TIMES];
+			groupOff = FDRAM[cn * 64 + FD_LASER_GP_GROUP_OFF];
 			sprintf(dispBuf2, "OnTime:%dmS, OffTime:%dmS, Times:%d, GroupOff:%dmS", posWidth, negWidth, times, groupOff);
 			break;
 		}
 		case LASER_MODE_DERMA:{
-			posWidth = FDRAM[cn * 30 + FD_LASER_DERMA_POSWIDTH];
-			negWidth = FDRAM[cn * 30 + FD_LASER_DERMA_NEGWIDTH];
+			posWidth = FDRAM[cn * 64 + FD_LASER_DERMA_POSWIDTH];
+			negWidth = FDRAM[cn * 64 + FD_LASER_DERMA_NEGWIDTH];
 			if(cn < 16){
 				SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"Mode:DERAM");
 			}
@@ -761,7 +761,7 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 			break;
 		}
 		case LASER_MODE_SIGNAL:{
-			energyInterval = FDRAM[cn * 30 + FD_LASER_SIGNAL_ENERGY_INTERVAL];
+			energyInterval = FDRAM[cn * 64 + FD_LASER_SIGNAL_ENERGY_INTERVAL];
 			if(cn < 16){
 				SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"Mode:SIGNAL");
 			}
