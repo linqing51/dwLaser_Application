@@ -199,6 +199,9 @@ void optionKeyEnable(uint8_t enable){//选项界面按键锁定
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_KEY_ENTER_CORRECTION, enable);
+	BatchEnd();
+	delayMs(5);
+	BatchBegin(GDDC_PAGE_OPTION);
 	BatchSetEnable(GDDC_PAGE_OPTION_PROGRESS_AIM_BRG, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, enable);
 	BatchSetEnable(GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, enable);

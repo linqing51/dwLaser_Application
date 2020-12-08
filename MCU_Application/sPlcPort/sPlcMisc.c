@@ -3,6 +3,7 @@
 extern UART_HandleTypeDef huart1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim7;
 /*****************************************************************************/
 /* Name                       : "XMODEM", also known as "ZMODEM", "CRC-16/ACORN"
@@ -267,6 +268,66 @@ void setAimBrightness(int16_t brg){//设置瞄准光亮度
 		}
 		else{
 			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);//关闭TIM
+		}
+		aimBrg = brg;
+	}
+}
+void setBlueLedBrightness(int16_t brg){//设置蓝灯亮度
+	uint16_t temp;
+	if(aimBrg != brg){
+		if(brg > 100){
+			brg = 100;
+		}
+		if(brg < 0){
+			brg = 0;
+		}
+		temp = 255 * brg / 100;
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, temp);
+		if(brg != 0){
+			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);//打开TIM
+		}
+		else{
+			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);//关闭TIM
+		}
+		aimBrg = brg;
+	}
+}
+void setRedLedBrightness(int16_t brg){//设置红灯亮度
+	uint16_t temp;
+	if(aimBrg != brg){
+		if(brg > 100){
+			brg = 100;
+		}
+		if(brg < 0){
+			brg = 0;
+		}
+		temp = 255 * brg / 100;
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, temp);
+		if(brg != 0){
+			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);//打开TIM
+		}
+		else{
+			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1);//关闭TIM
+		}
+		aimBrg = brg;
+	}
+}
+void setGreenLedBrightness(int16_t brg){//设置绿灯亮度
+	uint16_t temp;
+	if(aimBrg != brg){
+		if(brg > 100){
+			brg = 100;
+		}
+		if(brg < 0){
+			brg = 0;
+		}
+		temp = 255 * brg / 100;
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, temp);
+		if(brg != 0){
+			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);//打开TIM
+		}
+		else{
+			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);//关闭TIM
 		}
 		aimBrg = brg;
 	}

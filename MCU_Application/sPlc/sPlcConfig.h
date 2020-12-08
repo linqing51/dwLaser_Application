@@ -37,17 +37,17 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_MUSIC									0//使能LCD自带音乐播放						
 #define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
-#define CONFIG_SPLC_DEFAULT_BEEM_FREQ							4000L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_BEEM_FREQ							1500L//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFAULT_BEEM_FREQ							2000L//蜂鸣器默认频率
+#define CONFIG_SPLC_DEFORM_BEEM_FREQ							1000L//蜂鸣器变声频率
 #define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						50//蜂鸣器默认占空比
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
-#define CONFIG_SPLC_RLED_ON_DC									35//红灯亮度
+#define CONFIG_SPLC_RLED_ON_DC									15//红灯亮度
 #define CONFIG_SPLC_RLED_OFF_DC									0//红灯亮度
-#define CONFIG_SPLC_GLED_ON_DC									35//绿灯亮度
+#define CONFIG_SPLC_GLED_ON_DC									15//绿灯亮度
 #define CONFIG_SPLC_GLED_OFF_DC									0//绿灯亮度
-#define CONFIG_SPLC_BLED_ON_DC									35//蓝灯亮度
+#define CONFIG_SPLC_BLED_ON_DC									15//蓝灯亮度
 #define CONFIG_SPLC_BLED_OFF_DC									0//蓝灯亮度
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能

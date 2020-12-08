@@ -123,12 +123,12 @@ void Error_Handler(void);
 #define FAN_SP_GPIO_Port GPIOD
 #define AIM_PWM_Pin GPIO_PIN_4
 #define AIM_PWM_GPIO_Port GPIOB
-#define GLED_OUT_Pin GPIO_PIN_5
-#define GLED_OUT_GPIO_Port GPIOB
-#define RLED_OUT_Pin GPIO_PIN_6
-#define RLED_OUT_GPIO_Port GPIOB
-#define BLED_OUT_Pin GPIO_PIN_7
-#define BLED_OUT_GPIO_Port GPIOB
+#define GLED_Pin GPIO_PIN_5
+#define GLED_GPIO_Port GPIOB
+#define RLED_Pin GPIO_PIN_6
+#define RLED_GPIO_Port GPIOB
+#define BLED_Pin GPIO_PIN_7
+#define BLED_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
