@@ -17,16 +17,9 @@
 #define LASER_SELECT_CH4						0x10
 #define LASER_SELECT_ALL						0x10
 /*****************************************************************************/
-#define SET_LASER_CH0(b)						HAL_GPIO_WritePin(LPA_PWM0_GPIO_Port, LPA_PWM0_Pin, (GPIO_PinState)b)						
-#define SET_LASER_CH1(b)						HAL_GPIO_WritePin(LPA_PWM1_GPIO_Port, LPA_PWM1_Pin, (GPIO_PinState)b)		
-#define SET_LASER_CH2(b)						HAL_GPIO_WritePin(LPB_PWM0_GPIO_Port, LPB_PWM0_Pin, (GPIO_PinState)b)		
-#define SET_LASER_CH3(b)						HAL_GPIO_WritePin(LPB_PWM1_GPIO_Port, LPB_PWM1_Pin, (GPIO_PinState)b)		
-#define SET_LASER_CH4(b)						HAL_GPIO_WritePin(LPC_PWM0_GPIO_Port, LPC_PWM0_Pin, (GPIO_PinState)b)
-#define GET_LASER_CH0()							HAL_GPIO_ReadPin(LPA_PWM0_GPIO_Port, LPA_PWM0_Pin)	
-#define GET_LASER_CH1()							HAL_GPIO_ReadPin(LPA_PWM1_GPIO_Port, LPA_PWM1_Pin)
-#define GET_LASER_CH2()							HAL_GPIO_ReadPin(LPB_PWM0_GPIO_Port, LPB_PWM0_Pin)
-#define GET_LASER_CH3()							HAL_GPIO_ReadPin(LPB_PWM1_GPIO_Port, LPB_PWM1_Pin)
-#define GET_LASER_CH4()							HAL_GPIO_ReadPin(LPC_PWM0_GPIO_Port, LPC_PWM0_Pin)
+#define SET_LASER_PWM(b)						HAL_GPIO_WritePin(LP_PWM_GPIO_Port, LP_PWM_Pin, (GPIO_PinState)b)						
+#define GET_LASER_PWM()							HAL_GPIO_ReadPin(LP_PWM_GPIO_Port, LP_PWM_Pin)	
+
 /*****************************************************************************/
 extern volatile int8_t  LaserTimer_Mode;
 extern volatile int8_t  LaserTimer_Select;

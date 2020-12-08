@@ -18,19 +18,19 @@
 #define CONFIG_DEBUG_APP										1
 #define CONFIG_SPLC_USING_HW_RNG								0//硬件随机数模块
 /*****************************************************************************/
-#define STM32_UNIQUE_ID_SIZE 				12//MCU序列号  8*12=96Bit
-#define BOOTLOADER_VER						0x00010001//版本
-#define DEVID_H								'0'//设备ID
-#define DEVID_L								'A'//设备ID
-#define BUFFER_SIZE        					((uint16_t)512*64)//512的整数倍
-#define CONFIG_JUMP_DELAY					4000//检测U盘时间
-#define FATFS_ROOT							"0:"
-#define LOG_FIRMWARE_FILENAME				"/log.txt"//操作记录文件
-#define CFG_FIRMWARE_FILENAME				"/las.cfg"//操作配置文件
-#define LMCU_FIRMWARE_FILENAME				"/ld_mcu.bin"//更新MCU固件地址
-#define LLCD_FIRMWARE_FILENAME				"/ld_lcd.pkg"//更新LCD固件地址
-#define SAVE_EPROM_FILENAME					"/seprom.bin"//EPROM->UDISK 储存名称
-#define LOAD_EPROM_FILENAME					"/leprom.bin"//UDISK->EPROM 恢复名称
+#define STM32_UNIQUE_ID_SIZE 									12//MCU序列号  8*12=96Bit
+#define BOOTLOADER_VER											0x00010001//版本
+#define DEVID_H													'0'//设备ID
+#define DEVID_L													'A'//设备ID
+#define BUFFER_SIZE        										((uint16_t)512*64)//512的整数倍
+#define CONFIG_JUMP_DELAY										4000//检测U盘时间
+#define FATFS_ROOT												"0:"
+#define LOG_FIRMWARE_FILENAME									"/log.txt"//操作记录文件
+#define CFG_FIRMWARE_FILENAME									"/las.cfg"//操作配置文件
+#define LMCU_FIRMWARE_FILENAME									"/ld_mcu.bin"//更新MCU固件地址
+#define LLCD_FIRMWARE_FILENAME									"/ld_lcd.pkg"//更新LCD固件地址
+#define SAVE_EPROM_FILENAME										"/seprom.bin"//EPROM->UDISK 储存名称
+#define LOAD_EPROM_FILENAME										"/leprom.bin"//UDISK->EPROM 恢复名称
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式

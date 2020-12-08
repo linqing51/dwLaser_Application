@@ -73,7 +73,6 @@
 #define configUSE_RECURSIVE_MUTEXES              1
 #define configUSE_COUNTING_SEMAPHORES            1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION  0
-#define configUSE_POSIX_ERRNO                    1
 /* USER CODE BEGIN MESSAGE_BUFFER_LENGTH_TYPE */
 /* Defaults to size_t for backward compatibility, but can be changed
    if lengths will always be less than the number of bytes in a size_t. */
@@ -82,7 +81,7 @@
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES                    0
-#define configMAX_CO_ROUTINE_PRIORITIES          ( 10 )
+#define configMAX_CO_ROUTINE_PRIORITIES          ( 2 )
 
 /* Software timer definitions. */
 #define configUSE_TIMERS                         1
