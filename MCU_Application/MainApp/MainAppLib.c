@@ -124,6 +124,21 @@ void loadScheme(void){//FD->EM
 			break;
 		}
 	}
+#if CONFIG_USING_SINGLE_WAVE == 1
+	NVRAM0[EM_LASER_POWER_CH1] = 0;
+	NVRAM0[EM_LASER_POWER_CH2] = 0;
+	NVRAM0[EM_LASER_POWER_CH3] = 0;
+#endif
+#if CONFIG_USING_DUAL_WAVE == 1
+#endif
+#if CONFIG_USING_TRIPE_WAVE	== 1
+#endif
+#if CONFIG_USING_QUAD_WAVE == 1
+#endif
+#if CONFIG_USING_FIVE_WAVE == 1
+#endif
+#if CONFIG_HMI_SCHEME_NUM == 1
+#endif
 }
 void saveScheme(void){//EM->FD
 	uint8_t *psrc, *pdist;

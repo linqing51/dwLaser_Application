@@ -858,253 +858,85 @@ void unselectScheme_1_All(void){//反选第二页全部方案条
 	BatchEnd();
 }
 void standbyTouchEnable(int8_t enable){//使能STANDBY界面触摸
+	uint16_t screen_id;
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){
 		case LASER_MODE_CW:{
-			BatchBegin(GDDC_PAGE_STANDBY_CW);
-			
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_DEC, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_GP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_DERMA, enable);
-			BatchEnd();
-			
-			BatchBegin(GDDC_PAGE_STANDBY_CW);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH1, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_BOTH, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_RESET, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH0, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH1, enable);
-#endif				
-			BatchEnd();
+			screen_id = GDDC_PAGE_STANDBY_CW;
 			break;
 		}
 		case LASER_MODE_SP:{
-			BatchBegin(GDDC_PAGE_STANDBY_SP);
-			
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_DEC, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_GP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_DERMA, enable);
-			BatchEnd();
-			
-			BatchBegin(GDDC_PAGE_STANDBY_SP);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH1, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_BOTH, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_RESET, enable);
-			
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH0, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH1, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_SP_KEY_POSWIDTH_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_SP_KEY_POSWIDTH_DEC, enable);
-			BatchEnd();
+			screen_id = GDDC_PAGE_STANDBY_SP;
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_SP_KEY_POSWIDTH_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_SP_KEY_POSWIDTH_DEC, enable);		
 			break;
 		}
 		case LASER_MODE_MP:{
-			BatchBegin(GDDC_PAGE_STANDBY_MP);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_DEC, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_GP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_DERMA, enable);
-			BatchEnd();
-			
-			BatchBegin(GDDC_PAGE_STANDBY_MP);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);
-#if CONFIG_USING_DUAL_WAVE == 1				
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH1, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_BOTH, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_RESET, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH0, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH1, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_MP_KEY_POSWIDTH_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_MP_KEY_POSWIDTH_DEC, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_MP_KEY_NEGWIDTH_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_MP_KEY_NEGWIDTH_DEC, enable);
-			
-			BatchEnd();
+			screen_id = GDDC_PAGE_STANDBY_MP;
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_MP_KEY_POSWIDTH_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_MP_KEY_POSWIDTH_DEC, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_MP_KEY_NEGWIDTH_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_MP_KEY_NEGWIDTH_DEC, enable);			
 			break;
 		}
 		case LASER_MODE_GP:{
-			BatchBegin(GDDC_PAGE_STANDBY_GP);
-			
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_DEC, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_GP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_DERMA, enable);
-			BatchEnd();
-			
-			BatchBegin(GDDC_PAGE_STANDBY_GP);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH1, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_BOTH, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_RESET, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH0, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH1, enable);
-#endif				
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_POSWIDTH_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_POSWIDTH_DEC, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_NEGWIDTH_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_NEGWIDTH_DEC, enable);
-
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_TIMES_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_TIMES_DEC, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_GROUP_OFF_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_GP_KEY_GROUP_OFF_DEC, enable);
-			
-			BatchEnd();
+			screen_id = GDDC_PAGE_STANDBY_GP;
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_POSWIDTH_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_POSWIDTH_DEC, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_NEGWIDTH_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_NEGWIDTH_DEC, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_TIMES_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_TIMES_DEC, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_GROUP_OFF_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_GP_KEY_GROUP_OFF_DEC, enable);				
 			break;
 		}
 		case LASER_MODE_DERMA:{
-			BatchBegin(GDDC_PAGE_STANDBY_DERMA);
-			
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_DEC, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_GP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_DERMA, enable);
-			BatchEnd();
-			
-			BatchBegin(GDDC_PAGE_STANDBY_DERMA);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);
-#if CONFIG_USING_DUAL_WAVE == 1				
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH1, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_BOTH, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_RESET, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH0, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH1, enable);
-#endif				
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_POSWIDTH_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_POSWIDTH_DEC, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_NEGWIDTH_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_NEGWIDTH_DEC, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_0MM5, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_1MM0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_2MM0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_3MM0, enable);	
-			
-			BatchEnd();
+			screen_id = GDDC_PAGE_STANDBY_DERMA;
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_POSWIDTH_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_POSWIDTH_DEC, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_NEGWIDTH_ADD, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_NEGWIDTH_DEC, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_0MM5, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_1MM0, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_2MM0, enable);		
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_3MM0, enable);		
 			break;
 		}
 		case LASER_MODE_SIGNAL:{
-			BatchBegin(GDDC_PAGE_STANDBY_SIGNAL);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH0_DEC, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_GP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SP, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_MODE_DERMA, enable);
-			BatchEnd();
-			
-			BatchBegin(GDDC_PAGE_STANDBY_SIGNAL);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);
-#if CONFIG_USING_DUAL_WAVE == 1
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH0, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_CH1, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_SELECT_BOTH, enable);
-#endif
-			BatchSetEnable(GDDC_PAGE_STANDBY_KEY_RESET, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH0, enable);
-#if CONFIG_USING_DUAL_WAVE == 1				
-			BatchSetEnable(GDDC_PAGE_STANDBY_PROGRESS_CH1, enable);
-#endif				
-			BatchSetEnable(GDDC_PAGE_STANDBY_SIGNAL_KEY_ENERGY_INTERVAL_ADD, enable);
-			BatchSetEnable(GDDC_PAGE_STANDBY_SIGNAL_KEY_ENERGY_INTERVAL_DEC, enable);
-		
-			BatchEnd();
+			screen_id = GDDC_PAGE_STANDBY_SIGNAL;
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_SIGNAL_KEY_ENERGY_INTERVAL_ADD, enable);	
+			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_SIGNAL_KEY_ENERGY_INTERVAL_DEC, enable);					
 			break;
 		}
 		default:break;
 	}
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POWER_CH0_DEC, enable);
+#if CONFIG_USING_DUAL_WAVE == 1
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC, enable);
+#endif
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_GP, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_SP, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_DERMA, enable);		
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);		
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);	
+#if CONFIG_USING_DUAL_WAVE == 1
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, enable);
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SELECT_BOTH, enable);
+#endif
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_RESET, enable);	
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_PROGRESS_CH0, enable);	
+#if CONFIG_USING_DUAL_WAVE == 1
+	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_PROGRESS_CH1, enable);
+#endif				
 }
 void updatePowerDisplay(int16_t ch, int16_t mode){//更新功率显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -1333,8 +1165,12 @@ void updateExtralDisplay(int16_t mode){//更新额外显示
 			sprintf(dispBuf, "N/A");
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_DUTYCYCLE, (uint8_t*)dispBuf);
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_FREQUENCY, (uint8_t*)dispBuf);			
-			//averagePower = (fp32_t)(NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
+#if CONFIG_USING_SINGLE_WAVE == 1
 			averagePower = (fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10.0F;
+#endif
+#if CONFIG_USING_DUAL_WAVE == 1
+			averagePower = (fp32_t)(NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
+#endif
 			sprintf(dispBuf, "%3.1f", averagePower);
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_AVERAGE_POWER, (uint8_t*)dispBuf);
 			break;
@@ -1354,8 +1190,12 @@ void updateExtralDisplay(int16_t mode){//更新额外显示
 			dutyCycle = (fp32_t)NVRAM0[EM_LASER_MP_POSWIDTH] / (fp32_t)(NVRAM0[EM_LASER_MP_POSWIDTH] + NVRAM0[EM_LASER_MP_NEGWIDTH]);
 			sprintf(dispBuf, "%4.1f", dutyCycle * 100.0F);
 			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_DUTYCYCLE, (uint8_t*)dispBuf);
-			
+#if CONFIG_USING_SINGLE_WAVE == 1
+			averagePower = dutyCycle * (fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10.0F;
+#endif
+#if 	CONFIG_USING_DUAL_WAVE == 1		
 			averagePower = dutyCycle * (fp32_t)(NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
+#endif
 			sprintf(dispBuf, "%3.1f", averagePower);
 			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_AVERAGE_POWER, (uint8_t*)dispBuf);
 			break;
@@ -1367,8 +1207,12 @@ void updateExtralDisplay(int16_t mode){//更新额外显示
 			dutyCycle = ((fp32_t)NVRAM0[EM_LASER_GP_POSWIDTH] * NVRAM0[EM_LASER_GP_TIMES]) / ((fp32_t)(NVRAM0[EM_LASER_GP_POSWIDTH] + NVRAM0[EM_LASER_GP_NEGWIDTH]) * NVRAM0[EM_LASER_GP_TIMES] + NVRAM0[EM_LASER_GP_GROUP_OFF]);
 			sprintf(dispBuf, "%4.1f", dutyCycle * 100.0F);
 			SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_DUTYCYCLE, (uint8_t*)dispBuf);
-			
+#if CONFIG_USING_SINGLE_WAVE == 1
+			averagePower = dutyCycle * (fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10.0F;
+#endif			
+#if CONFIG_USING_DUAL_WAVE == 1			
 			averagePower = dutyCycle * (fp32_t)(NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
+#endif
 			sprintf(dispBuf, "%3.1f", averagePower);
 			SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_AVERAGE_POWER, (uint8_t*)dispBuf);		
 			
@@ -1382,8 +1226,12 @@ void updateExtralDisplay(int16_t mode){//更新额外显示
 			dutyCycle = (fp32_t)NVRAM0[EM_LASER_DERMA_POSWIDTH] / (fp32_t)(NVRAM0[EM_LASER_DERMA_POSWIDTH] + NVRAM0[EM_LASER_DERMA_NEGWIDTH]);
 			sprintf(dispBuf, "%4.1f", dutyCycle * 100.0F);
 			SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DUTYCYCLE, (uint8_t*)dispBuf);
-			
+#if CONFIG_USING_SINGLE_WAVE == 1
+			averagePower = dutyCycle * (fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10.0F;
+#endif
+#if CONFIG_USING_DUAL_WAVE == 1				
 			averagePower = dutyCycle * (fp32_t)(NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
+#endif
 			sprintf(dispBuf, "%3.1f", averagePower);
 			SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_AVERAGE_POWER, (uint8_t*)dispBuf);
 			break;
@@ -1392,7 +1240,12 @@ void updateExtralDisplay(int16_t mode){//更新额外显示
 			sprintf(dispBuf, "N/A");
 			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_DUTYCYCLE, (uint8_t*)dispBuf);
 			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_FREQUENCY, (uint8_t*)dispBuf);
+#if CONFIG_USING_SINGLE_WAVE == 1			
+			averagePower = (fp32_t)(NVRAM0[EM_LASER_POWER_CH0]);
+#endif
+#if CONFIG_USING_DUAL_WAVE == 1			
 			averagePower = (fp32_t)((NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1]) / 10.0F);
+#endif
 			sprintf(dispBuf, "%3.1f", averagePower);
 			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_AVERAGE_POWER, (uint8_t*)dispBuf);
 			break;
@@ -1403,7 +1256,12 @@ void updateExtralDisplay(int16_t mode){//更新额外显示
 void updateStandbyDisplay(void){//更新方案显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+#if CONFIG_USING_SINGLE_WAVE == 1	
+	NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
+#endif
+#if CONFIG_USING_DUAL_WAVE == 1		
 	NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
+#endif
 	updateReleaseTimeEnergy();
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){
 		case LASER_MODE_CW:{
@@ -2150,15 +2008,19 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
 		loadScheme();//从掉电存储寄存器中恢复方案参数
 #if CONFIG_USING_SINGLE_WAVE == 1
-		NVRAM0[EM_LASER_POWER_CH1] = 0;
 		NVRAM0[EM_LASER_POWER_CH2] = 0;
 		NVRAM0[EM_LASER_POWER_CH3] = 0;
 		NVRAM0[EM_LASER_POWER_CH4] = 0;
 #endif		
 #if CONFIG_USING_DUAL_WAVE == 1
-		NVRAM0[EM_LASER_POWER_CH2] = 0;
 		NVRAM0[EM_LASER_POWER_CH3] = 0;
 		NVRAM0[EM_LASER_POWER_CH4] = 0;
+#endif	
+#if CONFIG_USING_TRIPE_WAVE == 1
+		NVRAM0[EM_LASER_POWER_CH4] = 0;
+#endif		
+#if CONFIG_USING_QUAD_WAVE == 1
+
 #endif		
 		NVRAM0[EM_DC_DEFAULT_PASSCODE0] = CONFIG_HMI_DEFAULT_PASSWORD0;
 		NVRAM0[EM_DC_DEFAULT_PASSCODE1] = CONFIG_HMI_DEFAULT_PASSWORD1;
