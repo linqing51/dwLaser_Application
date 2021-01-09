@@ -10,7 +10,7 @@
       <TargetName>MCU_Application</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F413xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;      ../FATFS/Target;      ../FATFS/App;      ../USB_HOST/App;      ../USB_HOST/Target;      ../Drivers/STM32F4xx_HAL_Driver/Inc;      ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;      ../Middlewares/Third_Party/FatFs/src;      ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;      ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;      ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;      ../Drivers/CMSIS/Include;      ..\sPlc;      ..\sPlcPort;      ..\dcHmi;      ..\MainApp;      ../Middlewares/Third_Party/FreeRTOS/Source/include;      ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;      ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;      ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;      ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;      ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;      ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;      ..\deviceInfo</IncludePath>
+              <IncludePath>../Core/Inc;       ../FATFS/Target;       ../FATFS/App;       ../USB_HOST/App;       ../USB_HOST/Target;       ../Drivers/STM32F4xx_HAL_Driver/Inc;       ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;       ../Middlewares/Third_Party/FatFs/src;       ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;       ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;       ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;       ../Drivers/CMSIS/Include;       ..\sPlc;       ..\sPlcPort;       ..\dcHmi;       ..\MainApp;       ../Middlewares/Third_Party/FreeRTOS/Source/include;       ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;       ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;       ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;       ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;       ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;       ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;       ..\deviceInfo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
