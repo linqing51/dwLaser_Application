@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -65,6 +65,10 @@ void Error_Handler(void);
 #define DA_DIN_GPIO_Port GPIOC
 #define DA_SCLK_Pin GPIO_PIN_15
 #define DA_SCLK_GPIO_Port GPIOC
+#define RCC_OSC_IN_Pin GPIO_PIN_0
+#define RCC_OSC_IN_GPIO_Port GPIOH
+#define RCC_OSC_OUT_Pin GPIO_PIN_1
+#define RCC_OSC_OUT_GPIO_Port GPIOH
 #define LPC_ISMON0_Pin GPIO_PIN_0
 #define LPC_ISMON0_GPIO_Port GPIOC
 #define LPB_ISMON1_Pin GPIO_PIN_1
@@ -89,8 +93,8 @@ void Error_Handler(void);
 #define SPK_SD_GPIO_Port GPIOA
 #define LP_PWM_Pin GPIO_PIN_7
 #define LP_PWM_GPIO_Port GPIOA
-#define FSWITCH_NC_Pin GPIO_PIN_4
-#define FSWITCH_NC_GPIO_Port GPIOC
+#define SOFTPOWER_IN_Pin GPIO_PIN_4
+#define SOFTPOWER_IN_GPIO_Port GPIOC
 #define SYS_LED_ERR_Pin GPIO_PIN_5
 #define SYS_LED_ERR_GPIO_Port GPIOC
 #define SYS_LED_RUN_Pin GPIO_PIN_0
@@ -127,8 +131,12 @@ void Error_Handler(void);
 #define USB_OTG_FS_DM_GPIO_Port GPIOA
 #define USB_OTG_FS_DP_Pin GPIO_PIN_12
 #define USB_OTG_FS_DP_GPIO_Port GPIOA
-#define FSWITCH_NO_km_Pin GPIO_PIN_15
-#define FSWITCH_NO_km_GPIO_Port GPIOA
+#define SWDIO_Pin GPIO_PIN_13
+#define SWDIO_GPIO_Port GPIOA
+#define SWCLK_Pin GPIO_PIN_14
+#define SWCLK_GPIO_Port GPIOA
+#define FSWITCH_NC_Pin GPIO_PIN_15
+#define FSWITCH_NC_GPIO_Port GPIOA
 #define FSWITCH_NO_Pin GPIO_PIN_10
 #define FSWITCH_NO_GPIO_Port GPIOC
 #define ESTOP_IN_Pin GPIO_PIN_11
@@ -137,14 +145,16 @@ void Error_Handler(void);
 #define INTLOCK_IN_GPIO_Port GPIOC
 #define FAN5V_OUT_Pin GPIO_PIN_2
 #define FAN5V_OUT_GPIO_Port GPIOD
-#define LED_AIM_PWM_Pin GPIO_PIN_4
-#define LED_AIM_PWM_GPIO_Port GPIOB
-#define LED_RED_PWM_Pin GPIO_PIN_5
-#define LED_RED_PWM_GPIO_Port GPIOB
-#define LED_GREEN_Pin GPIO_PIN_6
-#define LED_GREEN_GPIO_Port GPIOB
-#define LED_BLUDE_PWM_Pin GPIO_PIN_7
-#define LED_BLUDE_PWM_GPIO_Port GPIOB
+#define SWO_Pin GPIO_PIN_3
+#define SWO_GPIO_Port GPIOB
+#define AIM_PWM_Pin GPIO_PIN_4
+#define AIM_PWM_GPIO_Port GPIOB
+#define GLED_PWM_Pin GPIO_PIN_5
+#define GLED_PWM_GPIO_Port GPIOB
+#define RLED_PWM_Pin GPIO_PIN_6
+#define RLED_PWM_GPIO_Port GPIOB
+#define BLED_PWM_Pin GPIO_PIN_7
+#define BLED_PWM_GPIO_Port GPIOB
 #define I2C1_SCL_Pin GPIO_PIN_8
 #define I2C1_SCL_GPIO_Port GPIOB
 #define I2C1_SDA_Pin GPIO_PIN_9

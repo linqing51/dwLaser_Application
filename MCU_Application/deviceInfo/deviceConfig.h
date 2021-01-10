@@ -2,17 +2,16 @@
 #define __DEVICECONFIG_H__
 /*****************************************************************************/
 #include "stm32f4xx_hal.h"
-typedef float						fp32_t;
-typedef double						fp64_t;
+#include "arm_math.h"
 /*****************************************************************************/
 typedef struct{
 	char serialNumber[32];//序列号
 	char dateOfManufacture[32];//生产日期
 	//进行3次多项式拟合Y = A*X^3 + B*X^2 + C*X + D
-	fp32_t laserNotesIntercept[5];//D
-	fp32_t laserNotesB1[5];//C
-	fp32_t laserNotesB2[5];//B
-	fp32_t laserNotesB3[5];//A
+	float32_t laserNotesIntercept[5];//D
+	float32_t laserNotesB1[5];//C
+	float32_t laserNotesB2[5];//B
+	float32_t laserNotesB3[5];//A
 	uint16_t crc;
 }deviceConfig_t;
 

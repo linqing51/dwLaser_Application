@@ -1,9 +1,10 @@
 #include "sPlcMisc.h"
 /*****************************************************************************/
 extern UART_HandleTypeDef huart1;
-extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim7;
+extern TIM_HandleTypeDef htim5;
 /*****************************************************************************/
 /* Name                       : "XMODEM", also known as "ZMODEM", "CRC-16/ACORN"
  * Width                      : 16 bit
@@ -104,9 +105,55 @@ const uint32_t crc32Tab[] = { /* CRC polynomial 0xedb88320 */
 };
 static uint16_t oldcrc16;
 static uint32_t oldcrc32;
-static int16_t beemVolume = -1;
 static int16_t aimBrg = -1;
-/*****************************************************************************/
+uint16_t audioSineTable[256] = {0};
+// convert volume steps to natural log scale  
+// change this value to change volume scaling  
+static const float32_t dBPerStep = 0.50f;  
+// shouldn't need to touch these  
+static const float32_t dBConvert = -dBPerStep * 2.302585093f / 20.0f;  
+static const float32_t dBConvertInverse = 1.0f / dBConvert;  
+  
+static float32_t linearToLog(int16_t volume){//线性音量转化为对数音量  
+    // float v = volume ? exp(float(100 - volume) * dBConvert) : 0;  
+    // LOGD("linearToLog(%d)=%f", volume, v);  
+    // return v;
+	if(volume > 100){
+		volume = 100;
+	}
+	if(volume < 0){
+		volume = 0;
+	}
+	return volume ? exp((float64_t)(100 - volume) * dBConvert) : 0;
+}  
+static int16_t logToLinear(float32_t volume){//对数音量转化为线性音量  
+    // int v = volume ? 100 - int(dBConvertInverse * log(volume) + 0.5) : 0;  
+    // LOGD("logTolinear(%d)=%f", v, volume);  
+    // return v;  
+    return volume ? 100 - (int16_t)(dBConvertInverse * log(volume) + 0.5) : 0;  
+}
+static void initAudioSineTable(float32_t volume){
+	int16_t i;
+	float32_t  ftemp = 0;
+	if(volume < 0){
+		volume = 0;
+	}
+	if(volume > 1.0F){
+		volume = 1.0F;
+	}
+	for(i = 0;i < 256;i ++){
+		ftemp = i * 0.0246374;//当i =127时,表示为180度,由于sin()是弧度制,所以需要转换
+		audioSineTable[i] = (uint16_t)(volume * ((1.0F + arm_sin_f32(ftemp)) * 256.0F));//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
+	}			
+}
+static void startAudioBeem(void){
+	HAL_TIM_Base_Start(&htim5);
+	HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);//高电平功放芯片打开
+}
+static void stopAudioBeem(void){
+	HAL_TIM_Base_Stop(&htim5);
+	HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_RESET);//低电平功放芯片关闭
+}
 static void softDelayMs(uint16_t ms){
 	uint32_t i;
 	for(i = 0;i < 1000;i ++){
@@ -182,6 +229,7 @@ void resetInit(void){//复位后初始化
 	SystemClock_Reset();
 	UsbGpioReset();
 	__enable_irq();
+	initAudioSineTable(1);//初始化音频正弦表
 }
 
 void delayMs(uint32_t delayMs){//SPLC 阻塞延时
@@ -221,35 +269,10 @@ void setBeemFreq(int16_t freq){//设置蜂鸣器频率
 	if(freq < 1000){
 		freq = 1000;
 	}
-	htim2.Instance = TIM2;
-	htim2.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
-	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 255;
-	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-	if (HAL_TIM_PWM_Init(&htim2) != HAL_OK){
-		Error_Handler();
-	}
+	//
 }
-void setBeemVolume(int16_t volume){//设置蜂鸣器占空比
-	uint16_t temp;
-	if(volume != beemVolume){
-		if(volume > 100){
-			volume = 100;
-		}
-		if(volume < 0){
-			volume = 0;
-		}
-		temp = 255 * volume / 100 / 6;
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, temp);
-		if(volume != 0){
-			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);//关闭TIM
-		}
-		beemVolume = volume;
-	}
+void setBeemVolume(int16_t volume){//设置喇叭音量
+	initAudioSineTable(linearToLog(volume));
 }
 void setAimBrightness(int16_t brg){//设置瞄准光亮度
 	uint16_t temp;
@@ -267,6 +290,66 @@ void setAimBrightness(int16_t brg){//设置瞄准光亮度
 		}
 		else{
 			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);//关闭TIM
+		}
+		aimBrg = brg;
+	}
+}
+void setBlueLedBrightness(int16_t brg){//设置蓝灯亮度
+	uint16_t temp;
+	if(aimBrg != brg){
+		if(brg > 100){
+			brg = 100;
+		}
+		if(brg < 0){
+			brg = 0;
+		}
+		temp = 255 * brg / 100;
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, temp);
+		if(brg != 0){
+			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);//打开TIM
+		}
+		else{
+			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);//关闭TIM
+		}
+		aimBrg = brg;
+	}
+}
+void setRedLedBrightness(int16_t brg){//设置红灯亮度
+	uint16_t temp;
+	if(aimBrg != brg){
+		if(brg > 100){
+			brg = 100;
+		}
+		if(brg < 0){
+			brg = 0;
+		}
+		temp = 255 * brg / 100;
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, temp);
+		if(brg != 0){
+			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);//打开TIM
+		}
+		else{
+			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1);//关闭TIM
+		}
+		aimBrg = brg;
+	}
+}
+void setGreenLedBrightness(int16_t brg){//设置绿灯亮度
+	uint16_t temp;
+	if(aimBrg != brg){
+		if(brg > 100){
+			brg = 100;
+		}
+		if(brg < 0){
+			brg = 0;
+		}
+		temp = 255 * brg / 100;
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, temp);
+		if(brg != 0){
+			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);//打开TIM
+		}
+		else{
+			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);//关闭TIM
 		}
 		aimBrg = brg;
 	}
@@ -319,36 +402,40 @@ void crc32SetCrcOld(uint32_t old){//CRC32设置计算值
 }
 
 void sPlcBeemLoop(void){//蜂鸣器轮询
-	uint8_t temp;
 	if(LD(SPCOIL_BEEM_ENABLE)){
 		switch(NVRAM0[SPREG_BEEM_MODE]){//模式
 			case BEEM_MODE_0:{
-				if(LD(SPCOIL_BEEM_BUSY) != 1){//如果PWM无输出-> 有输出
+				if(LD(SPCOIL_BEEM_BUSY) != 1){//如果音频无输出-> 有输出
+					stopAudioBeem();//停止音频
 					setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					startAudioBeem();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
-				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[SPREG_BEEM_VOLUME]){
+				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
+					stopAudioBeem();//停止音频
 					setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
+					startAudioBeem();//启动蜂鸣器
 				}
 				break;
 			}
 			case BEEM_MODE_1:{//模式1 声光同步
-				temp = 0;
-				temp |= GET_LASER_CH0();
-				temp |= GET_LASER_CH1();
-				temp |= GET_LASER_CH2();
-				temp |= GET_LASER_CH3();
-				temp |= GET_LASER_CH4();
-				if(temp){//LT3763 ON
+				if(GET_LASER_PWM() & 0X01){//LT3763 ON
 					if(LD(SPCOIL_BEEM_BUSY) != 1){//如果PWM无输出-> 有输出
+						stopAudioBeem();
 						setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+						startAudioBeem();//启动音频
 						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 					}
 					if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
+						stopAudioBeem();//停止音频
 						setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+						NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
+						startAudioBeem();//启动蜂鸣器
 					}
 				}
 				else{
+					stopAudioBeem();//停止音频
 					setBeemVolume(0);
 					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
@@ -356,10 +443,13 @@ void sPlcBeemLoop(void){//蜂鸣器轮询
 			}
 			case BEEM_MODE_2:{//模式2 长间隔 激光发射音		
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 20){//1
+					stopAudioBeem();
 					setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					startAudioBeem();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 20 && NVRAM0[SPREG_BEEM_COUNTER] < 120){//0
+					stopAudioBeem();//停止音频
 					setBeemVolume(0);
 					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
@@ -370,20 +460,26 @@ void sPlcBeemLoop(void){//蜂鸣器轮询
 			}
 			case BEEM_MODE_3:{//模式3 滴滴两下一停 报警音		
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
+					stopAudioBeem();
 					setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					startAudioBeem();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
+					stopAudioBeem();//停止音频
 					setBeemVolume(0);
 					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100 && NVRAM0[SPREG_BEEM_COUNTER] < 150){//1
+					stopAudioBeem();
 					setBeemVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					startAudioBeem();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 150 && NVRAM0[SPREG_BEEM_COUNTER] < 250){//0
+					stopAudioBeem();//停止音频
 					setBeemVolume(0);
-					RRES(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 250){//停1秒
 					NVRAM0[SPREG_BEEM_COUNTER] = 0xffff;
@@ -394,6 +490,7 @@ void sPlcBeemLoop(void){//蜂鸣器轮询
 		}
 	}
 	else{
+		stopAudioBeem();//停止音频
 		setBeemVolume(0);
 		RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
