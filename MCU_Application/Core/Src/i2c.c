@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -53,23 +53,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
   if(i2cHandle->Instance==I2C1)
   {
   /* USER CODE BEGIN I2C1_MspInit 0 */
-__I2C1_CLK_ENABLE();
 
-    // PB6    ---->  I2C1_SCL
-
-    // PB7    ---->  I2C1_SDA
-
-    // strong pull-uphigh to recover from locking in BUSY state
-	__HAL_RCC_GPIOB_CLK_ENABLE();  
-	GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;//GPIO配置为输出
-    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;//强上拉
-	  
-	HAL_GPIO_Init(GPIOB,&GPIO_InitStruct);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);//拉高SCL
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);//拉高SDA
-	i2cHandle->Instance->CR1= I2C_CR1_SWRST;//复位I2C控制器
-	i2cHandle->Instance->CR1= 0;//解除复位（不会自动清除）
   /* USER CODE END I2C1_MspInit 0 */
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -80,7 +64,7 @@ __I2C1_CLK_ENABLE();
     GPIO_InitStruct.Pin = I2C1_SCL_Pin|I2C1_SDA_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 

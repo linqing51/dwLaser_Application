@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -23,7 +23,11 @@
 
 #include "usb_host.h"
 #include "usbh_core.h"
+#include "usbh_audio.h"
+#include "usbh_cdc.h"
 #include "usbh_msc.h"
+#include "usbh_hid.h"
+#include "usbh_mtp.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -69,7 +73,7 @@ static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id);
 void MX_USB_HOST_Init(void)
 {
   /* USER CODE BEGIN USB_HOST_Init_PreTreatment */
-  
+
   /* USER CODE END USB_HOST_Init_PreTreatment */
 
   /* Init host Library, add supported class and start the library. */
@@ -77,7 +81,23 @@ void MX_USB_HOST_Init(void)
   {
     Error_Handler();
   }
+  if (USBH_RegisterClass(&hUsbHostFS, USBH_AUDIO_CLASS) != USBH_OK)
+  {
+    Error_Handler();
+  }
+  if (USBH_RegisterClass(&hUsbHostFS, USBH_CDC_CLASS) != USBH_OK)
+  {
+    Error_Handler();
+  }
   if (USBH_RegisterClass(&hUsbHostFS, USBH_MSC_CLASS) != USBH_OK)
+  {
+    Error_Handler();
+  }
+  if (USBH_RegisterClass(&hUsbHostFS, USBH_HID_CLASS) != USBH_OK)
+  {
+    Error_Handler();
+  }
+  if (USBH_RegisterClass(&hUsbHostFS, USBH_MTP_CLASS) != USBH_OK)
   {
     Error_Handler();
   }
@@ -86,7 +106,7 @@ void MX_USB_HOST_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USB_HOST_Init_PostTreatment */
-  
+
   /* USER CODE END USB_HOST_Init_PostTreatment */
 }
 
