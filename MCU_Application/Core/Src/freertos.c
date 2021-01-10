@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "mainApp.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +58,12 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+osThreadId_t mainAppTaskHandle;
+const osThreadAttr_t mainAppTask_attributes = {
+  .name = "mainAppTask",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 16
+};    
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -73,7 +78,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-
+       
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -97,6 +102,7 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
+    mainAppTaskHandle = osThreadNew(mainAppTask, NULL, &mainAppTask_attributes);
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
@@ -109,7 +115,7 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
   * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
+  * @param  argument: Not used 
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
@@ -128,7 +134,7 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
+     
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

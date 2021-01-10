@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -21,12 +21,9 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "adc.h"
-#include "crc.h"
 #include "dac.h"
-#include "dma.h"
 #include "fatfs.h"
 #include "i2c.h"
-#include "rng.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
@@ -76,7 +73,7 @@ void MX_FREERTOS_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	resetInit();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -92,26 +89,20 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+	//__enable_irq();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_ADC1_Init();
   MX_I2C1_Init();
   MX_UART5_Init();
   MX_USART1_UART_Init();
-  MX_USART6_UART_Init();
   MX_FATFS_Init();
-  MX_TIM7_Init();
-  MX_TIM10_Init();
+  MX_ADC1_Init();
+  MX_DAC_Init();
+  MX_USART6_UART_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  MX_DAC_Init();
-  MX_CRC_Init();
-  MX_RNG_Init();
-  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -130,7 +121,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_Delay(1000);
+		HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -187,7 +178,8 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+extern void sPlcTimerIsr(void);//硬件sTimer计时器中断 1mS
+extern void laserTimerIsr(void);
 /* USER CODE END 4 */
 
  /**
@@ -207,7 +199,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+	if(htim->Instance == TIM7) {
+		sPlcTimerIsr();
+	}
+	if(htim->Instance == TIM10){
+		laserTimerIsr();
+	}
   /* USER CODE END Callback 1 */
 }
 
@@ -219,10 +216,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -238,7 +232,7 @@ void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

@@ -82,7 +82,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X4
-	temp = HAL_GPIO_ReadPin(SOFTPOWER_IN_GPIO_Port, SOFTPOWER_IN_Pin);//电源开关
+	temp = HAL_GPIO_ReadPin(PWR_KEY_GPIO_Port, PWR_KEY_Pin);//电源开关
 	if(temp != true){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
@@ -100,7 +100,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X5 光纤探测
-	if(NVRAM0[SPREG_ADC_3] < CONFIG_FIBER_PD_PLUG){//光纤插入
+	if(NVRAM0[SPREG_ADC_3] < CONFIG_FIBER_PD_PLUG){//光纤加入
 		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[5] ++;
 		}

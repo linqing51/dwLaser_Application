@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file    rng.c
-  * @brief   This file provides code for the configuration
-  *          of the RNG instances.
+  * File Name          : RNG.c
+  * Description        : This file provides code for the configuration
+  *                      of the RNG instances.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -48,6 +48,10 @@ void HAL_RNG_MspInit(RNG_HandleTypeDef* rngHandle)
   /* USER CODE END RNG_MspInit 0 */
     /* RNG clock enable */
     __HAL_RCC_RNG_CLK_ENABLE();
+
+    /* RNG interrupt Init */
+    HAL_NVIC_SetPriority(RNG_IRQn, 7, 0);
+    HAL_NVIC_EnableIRQ(RNG_IRQn);
   /* USER CODE BEGIN RNG_MspInit 1 */
 
   /* USER CODE END RNG_MspInit 1 */
@@ -64,6 +68,9 @@ void HAL_RNG_MspDeInit(RNG_HandleTypeDef* rngHandle)
   /* USER CODE END RNG_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_RNG_CLK_DISABLE();
+
+    /* RNG interrupt Deinit */
+    HAL_NVIC_DisableIRQ(RNG_IRQn);
   /* USER CODE BEGIN RNG_MspDeInit 1 */
 
   /* USER CODE END RNG_MspDeInit 1 */

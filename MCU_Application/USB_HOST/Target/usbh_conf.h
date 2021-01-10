@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -63,10 +63,10 @@
   */
 
 /*----------   -----------*/
-#define USBH_MAX_NUM_ENDPOINTS      5U
+#define USBH_MAX_NUM_ENDPOINTS      2U
 
 /*----------   -----------*/
-#define USBH_MAX_NUM_INTERFACES      10U
+#define USBH_MAX_NUM_INTERFACES      2U
 
 /*----------   -----------*/
 #define USBH_MAX_NUM_CONFIGURATION      1U
@@ -75,7 +75,7 @@
 #define USBH_KEEP_CFG_DESCRIPTOR      1U
 
 /*----------   -----------*/
-#define USBH_MAX_NUM_SUPPORTED_CLASS      5U
+#define USBH_MAX_NUM_SUPPORTED_CLASS      1U
 
 /*----------   -----------*/
 #define USBH_MAX_SIZE_CONFIGURATION      256U

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -53,16 +53,8 @@ void MemManage_Handler(void);
 void BusFault_Handler(void);
 void UsageFault_Handler(void);
 void DebugMon_Handler(void);
-void RCC_IRQHandler(void);
-void DMA1_Stream6_IRQHandler(void);
-void ADC_IRQHandler(void);
-void TIM1_UP_TIM10_IRQHandler(void);
-void UART5_IRQHandler(void);
 void TIM6_DAC_IRQHandler(void);
-void TIM7_IRQHandler(void);
 void OTG_FS_IRQHandler(void);
-void USART6_IRQHandler(void);
-void FPU_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

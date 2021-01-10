@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -39,7 +39,7 @@ void MX_DriverVbusFS(uint8_t state)
   /* USER CODE BEGIN PREPARE_GPIO_DATA_VBUS_FS */
   if(state == 0)
   {
-    /* Drive high Charge pump */
+    /* Drive high Charge pump */ 	     
     data = GPIO_PIN_SET;
   }
   else
