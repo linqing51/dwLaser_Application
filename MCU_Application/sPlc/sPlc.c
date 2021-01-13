@@ -282,10 +282,6 @@ void sPlcInit(void){//软逻辑初始化
 	loadFdram();//上电恢复FDRAM
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
-	//NVRAM0[SPREG_MUSIC_VOLUME] = 0;									
-	//NVRAM0[SPREG_PLAYING_MUSIC_ID] = 0;							
-	//NVRAM0[SPREG_NEXT_MUSIC_ID] = 0;									
-	//NVRAM0[SPREG_CONTROL_MUSIC]	= CMD_MUSIC_STOP;
 	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
 #if CONFIG_SPLC_USING_CLEAR_NVRAM == 1 && CONFIG_SPLC_USING_EPROM == 1
 	if(NVRAM0[SPREG_CLEAR_NVRAM] == (int16_t)CONFIG_SPLC_CLEAR_CODE){
@@ -396,6 +392,12 @@ void sPlcProcessStart(void){//sPLC轮询起始
 #endif
 }
 void sPlcProcessEnd(void){//sPLC轮询结束
+	if(LD(SPCOIL_PS1000MS)){
+		SSET(Y_RUN_LED);
+	}
+	else{
+		RRES(Y_RUN_LED);
+	}
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
 	outputRefresh();//更新Y口输出
 #endif

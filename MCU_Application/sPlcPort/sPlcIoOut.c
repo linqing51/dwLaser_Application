@@ -108,6 +108,33 @@ void outputRefresh(void){//ÉèÖÃÊä³öIO
 		printf("sPlcIoOut->outputRefresh:RESET Y6 LCD PWR\n");
 #endif
 	}
+	
+	//YOUT7 °åÔØLED RUN
+	if(LDP(Y_RUN_LED)){
+		HAL_GPIO_WritePin(SYS_LED_RUN_GPIO_Port, SYS_LED_RUN_Pin, GPIO_PIN_RESET);
+#if CONFIG_DEBUG_APP == 1
+		printf("sPlcIoOut->outputRefresh:SET Y7 RUN LED\n");
+#endif
+	}
+	if(LDN(Y_RUN_LED)){
+		HAL_GPIO_WritePin(SYS_LED_RUN_GPIO_Port, SYS_LED_RUN_Pin, GPIO_PIN_SET);
+#if CONFIG_DEBUG_APP == 1
+		printf("sPlcIoOut->outputRefresh:RESET Y7 RUN LED\n");
+#endif
+	}
+	//YOUT8 °åÔØLED ERR
+	if(LDP(Y_ERR_LED)){
+		HAL_GPIO_WritePin(SYS_LED_ERR_GPIO_Port, SYS_LED_ERR_Pin, GPIO_PIN_RESET);
+#if CONFIG_DEBUG_APP == 1
+		printf("sPlcIoOut->outputRefresh:SET Y8 ERR LED\n");
+#endif
+	}
+	if(LDN(Y_RUN_LED)){
+		HAL_GPIO_WritePin(SYS_LED_ERR_GPIO_Port, SYS_LED_ERR_Pin, GPIO_PIN_SET);
+#if CONFIG_DEBUG_APP == 1
+		printf("sPlcIoOut->outputRefresh:RESET Y8 ERR LED\n");
+#endif
+	}
 }
 
 

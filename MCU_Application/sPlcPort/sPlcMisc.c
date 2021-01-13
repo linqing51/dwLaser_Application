@@ -143,7 +143,7 @@ static void initAudioSineTable(float32_t volume){
 	}
 	for(i = 0;i < 256;i ++){
 		ftemp = i * 0.0246374;//当i =127时,表示为180度,由于sin()是弧度制,所以需要转换
-		audioSineTable[i] = (uint16_t)(volume * ((1.0F + arm_sin_f32(ftemp)) * 256.0F));//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
+		//audioSineTable[i] = (uint16_t)(volume * ((1.0F + arm_sin_f32(ftemp)) * 256.0F));//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
 	}			
 }
 static void startAudioBeem(void){
@@ -263,13 +263,21 @@ void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
 	}
 }
 void setBeemFreq(int16_t freq){//设置蜂鸣器频率
-	if(freq > 5000){
-		freq = 5000;
+	if(freq > 4500){
+		freq = 4500;
 	}
-	if(freq < 1000){
-		freq = 1000;
+	if(freq < 2000){
+		freq = 2000;
 	}
-	//
+	htim5.Instance = TIM5;
+	htim5.Init.Prescaler = 1;
+	htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim5.Init.Period = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);;
+	htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+	if (HAL_TIM_Base_Init(&htim5) != HAL_OK){
+		Error_Handler();
+	}
 }
 void setBeemVolume(int16_t volume){//设置喇叭音量
 	initAudioSineTable(linearToLog(volume));

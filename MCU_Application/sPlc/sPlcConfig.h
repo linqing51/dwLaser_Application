@@ -15,7 +15,7 @@
 #define CONFIG_DEBUG_MUSIC										0//调试LCD音乐驱动
 #define CONFIG_DEBUG_LASER										1//调试LASER驱动
 #define CONFIG_DEBUG_SPLC										1//调试SPLC
-#define CONFIG_DEBUG_APP										1
+#define CONFIG_DEBUG_APP										0
 #define CONFIG_SPLC_USING_HW_RNG								0//硬件随机数模块
 /*****************************************************************************/
 #define STM32_UNIQUE_ID_SIZE 									12//MCU序列号  8*12=96Bit
@@ -34,8 +34,7 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式
-/*****************************************************************************/
-#define CONFIG_SPLC_USING_MUSIC									0//使能LCD自带音乐播放						
+/*****************************************************************************/				
 #define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
 #define CONFIG_SPLC_DEFAULT_BEEM_FREQ							2000L//蜂鸣器默认频率
 #define CONFIG_SPLC_DEFORM_BEEM_FREQ							1000L//蜂鸣器变声频率
@@ -762,6 +761,8 @@
 #define Y_RLED													(Y_START * 16 + 4)//YOUT3 红灯开关
 #define Y_BLED													(Y_START * 16 + 5)//YOUT4 蓝灯开关
 #define Y_LCDPWR												(Y_START * 16 + 6)//YOUT5 LCD电源开关
+#define Y_RUN_LED												(Y_START * 16 + 7)//YOUT7 板载运行LED指示灯
+#define Y_ERR_LED												(Y_START * 16 + 8)//YOUT8 板载错误LED指示灯
 /*****************************************************************************/
 #define R_FIBER_PROBE											(R_START * 16 + 0)//光纤插入标志
 #define R_RFID_PASS												(R_START * 16 + 1)//NFC光纤插入标志

@@ -150,7 +150,7 @@ void MOVD(uint16_t dist, uint16_t src){//32位寄存器传输
 //void ANDD(uint16_t dist){//32位数 按位求与
 //}
 void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
-	fp32_t ftemp;
+	float32_t ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	assertRegisterAddress(dist);//检查寄存器地址
 	assertRegisterAddress(src);//检查寄存器地址
@@ -158,17 +158,24 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = 0xFFF;
 	LIMS16(src, TMP_REG_0, TMP_REG_1);
+	
+	if(NVRAM0[SPREG_ADC_9]  == 0){
+		NVRAM0[SPREG_ADC_9] = 1;
+	}
 	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);
+	if(ftemp == 0){
+		ftemp = 3300.0F;
+	}
 	ftemp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - ftemp) / ftemp);
 	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / CONFIG_NTC_B * log(ftemp / CONFIG_NTC_R25)) - 273.15;
 	//ftemp = ((1.0 / CONFIG_NTC_B) * log(ftemp) / 10000) + (1 / (CONFIG_AMBIENT_TEMP + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
-	//ftemp = (fp32_t)(( 1.0F / ftemp ) - 273.0F);
+	//ftemp = (float32_t)(( 1.0F / ftemp ) - 273.0F);
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
-	fp32_t ftemp;
+	float32_t ftemp;
 	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);
 	//ftemp = NVRAM0[SPREG_VREF]* NVRAM0[src] / 4096;//单位mV
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
@@ -510,19 +517,19 @@ void STPID(uint16_t adr){//位置PID指令
 	//adr + 19:工作区 上次偏差pek1 FP32
 	//adr + 20:工作区 累计偏差plocSum FP32 
 	//adr + 21:工作区 累计偏差plocSum FP32
-	fp32_t kp, ki, kd, pidOut, dead, umax, umin;
-	fp32_t pek0, pek1, plocSum;
+	float32_t kp, ki, kd, pidOut, dead, umax, umin;
+	float32_t pek0, pek1, plocSum;
 	if(LDP(SPCOIL_PS10MS)){//发现10mS
 		temp = (uint16_t)NVRAM0[adr + 13];
 		if(temp >= (uint16_t)NVRAM0[adr + 3] || temp > 30000){//计时器周期达到
-			kp = (fp32_t)NVRAM0[adr + 4] / 100.0F;
-			ki = (fp32_t)NVRAM0[adr + 5] / 100.0F;
-			kd = (fp32_t)NVRAM0[adr + 6] / 100.0F;
-			dead = (fp32_t)NVRAM0[adr + 10];
-			umax = (fp32_t)NVRAM0[adr + 11];
-			umin = (fp32_t)NVRAM0[adr + 12];
-			pek0 = (fp32_t)NVRAM0[adr + 0] - (fp32_t)NVRAM0[adr + 1];//计算误差
-			plocSum = *((fp32_t*)&NVRAM0[adr + 20]);
+			kp = (float32_t)NVRAM0[adr + 4] / 100.0F;
+			ki = (float32_t)NVRAM0[adr + 5] / 100.0F;
+			kd = (float32_t)NVRAM0[adr + 6] / 100.0F;
+			dead = (float32_t)NVRAM0[adr + 10];
+			umax = (float32_t)NVRAM0[adr + 11];
+			umin = (float32_t)NVRAM0[adr + 12];
+			pek0 = (float32_t)NVRAM0[adr + 0] - (float32_t)NVRAM0[adr + 1];//计算误差
+			plocSum = *((float32_t*)&NVRAM0[adr + 20]);
 			//抗积分饱和
 			if(fabs(pek0) < dead){//计算误差死区
 				pek0 = 0;
@@ -556,13 +563,13 @@ void STPID(uint16_t adr){//位置PID指令
 				pidOut = pidOut * -1;
 			}
 			//回写NVRAM0
-			*((fp32_t*)&NVRAM0[adr + 18]) = pek1;
-			*((fp32_t*)&NVRAM0[adr + 20]) = plocSum;
-			if(pidOut > (fp32_t)NVRAM0[adr + 8]){
-				pidOut = (fp32_t)NVRAM0[adr + 8];
+			*((float32_t*)&NVRAM0[adr + 18]) = pek1;
+			*((float32_t*)&NVRAM0[adr + 20]) = plocSum;
+			if(pidOut > (float32_t)NVRAM0[adr + 8]){
+				pidOut = (float32_t)NVRAM0[adr + 8];
 			}
-			if(pidOut < (fp32_t)NVRAM0[adr + 7]){
-				pidOut = (fp32_t)NVRAM0[adr + 7];
+			if(pidOut < (float32_t)NVRAM0[adr + 7]){
+				pidOut = (float32_t)NVRAM0[adr + 7];
 			}
 			NVRAM0[adr + 2] = (int16_t)pidOut;
 			NVRAM0[adr + 3] = 0;
