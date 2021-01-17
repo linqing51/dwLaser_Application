@@ -80,7 +80,7 @@ void updateSchemeInfo(int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);
 void standbyKeyValue(uint8_t value);//设置Standby键值
-void standbyKeyEnable(uint8_t ena);
+void standbyKeyEnableSet(uint8_t ena);
 /*****************************************************************************/
 void updateEnergyDensity(void);
 void updateExtralDisplay(int16_t mode);//更新额外显示

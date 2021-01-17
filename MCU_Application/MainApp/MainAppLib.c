@@ -94,7 +94,7 @@ void loadScheme(void){//FD->EM
 #endif
 		NVRAM0[DM_SCHEME_NUM] = 0;
 	}
-	psrc = (uint8_t*)&FDRAM[(FD_SCHEME_START_0 + NVRAM0[DM_SCHEME_NUM] * 64)];
+	psrc = (uint8_t*)&FDRAM[FD_SCHEME_START_0 + (NVRAM0[DM_SCHEME_NUM] * 64)];
 	pdist = (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME];
 	memcpy(pdist, psrc, ((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2));
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){

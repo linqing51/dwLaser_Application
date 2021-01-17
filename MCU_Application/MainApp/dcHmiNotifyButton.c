@@ -604,7 +604,16 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			break;
 		}
 		case GDDC_PAGE_STANDBY_CW:{//主界面STANDBY CW
-			switch(control_id){				
+			switch(control_id){
+				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
+					if(state){
+						SSET(R_HMI_FOOTSWITCH_PRESS);
+					}
+					else{
+						RRES(R_HMI_FOOTSWITCH_PRESS);
+					}
+					break;
+				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
@@ -713,12 +722,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 #endif
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
-					if(state){
-						clearReleaseTimeEnergy();			
-						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
-						updateStandbyDisplay();
-						standbyTouchEnable(true);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
@@ -790,6 +793,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_STANDBY_SP:{//主界面STANDBY SP
 			switch(control_id){
+				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
+					if(state){
+						SSET(R_HMI_FOOTSWITCH_PRESS);
+					}
+					else{
+						RRES(R_HMI_FOOTSWITCH_PRESS);
+					}
+					break;
+				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
@@ -950,12 +962,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
-					if(state){
-						clearReleaseTimeEnergy();			
-						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
-						updateStandbyDisplay();
-						standbyTouchEnable(true);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
@@ -1000,6 +1006,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_STANDBY_MP:{//主界面STANDBY MP
 			switch(control_id){				
+				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
+					if(state){
+						SSET(R_HMI_FOOTSWITCH_PRESS);
+					}
+					else{
+						RRES(R_HMI_FOOTSWITCH_PRESS);
+					}
+					break;
+				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
@@ -1165,12 +1180,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
-					if(state){
-						clearReleaseTimeEnergy();
-						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
-						updateStandbyDisplay();
-						standbyTouchEnable(true);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
@@ -1233,6 +1242,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_STANDBY_GP:{//主界面STANDBY GP
 			switch(control_id){				
+				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
+					if(state){
+						SSET(R_HMI_FOOTSWITCH_PRESS);
+					}
+					else{
+						RRES(R_HMI_FOOTSWITCH_PRESS);
+					}
+					break;
+				}				
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
@@ -1459,17 +1477,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
+						updateStandbyDisplay();
 						standbyTouchEnable(true);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_GP:{
-					if(state){
-						clearReleaseTimeEnergy();			
-						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_GP;
-						updateStandbyDisplay();
-						standbyTouchEnable(true);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
@@ -1523,6 +1536,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_STANDBY_SIGNAL:{//主界面STANDBY EVLA SIGNAL
 			switch(control_id){				
+				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
+					if(state){
+						SSET(R_HMI_FOOTSWITCH_PRESS);
+					}
+					else{
+						RRES(R_HMI_FOOTSWITCH_PRESS);
+					}
+					break;
+				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
@@ -1685,12 +1707,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SIGNAL:{
-					if(state){
-						clearReleaseTimeEnergy();
-						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SIGNAL;
-						updateStandbyDisplay();
-						standbyTouchEnable(true);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
@@ -1726,8 +1742,20 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_STANDBY_DERMA:{//主界面STNADBY DERMA
 			switch(control_id){	
+				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
+					if(state){
+						SSET(R_HMI_FOOTSWITCH_PRESS);
+					}
+					else{
+						RRES(R_HMI_FOOTSWITCH_PRESS);
+					}
+					break;
+				}
 				case GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_0MM5:{
 					if(state){
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_1MM0, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_2MM0, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_3MM0, false);
 						NVRAM0[EM_LASER_DERMA_SPOT_SIZE] = DERMA_SPOT_SIZE_0MM5;
 						updateEnergyDensity();
 					}
@@ -1735,6 +1763,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}			
 				case GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_1MM0:{
 					if(state){					
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_0MM5, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_2MM0, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_3MM0, false);
 						NVRAM0[EM_LASER_DERMA_SPOT_SIZE] = DERMA_SPOT_SIZE_1MM0;
 						updateEnergyDensity();
 					}
@@ -1742,6 +1773,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}	
 				case GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_2MM0:{
 					if(state){
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_0MM5, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_1MM0, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_3MM0, false);
 						NVRAM0[EM_LASER_DERMA_SPOT_SIZE] = DERMA_SPOT_SIZE_2MM0;
 						updateEnergyDensity();
 					}
@@ -1749,6 +1783,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_3MM0:{
 					if(state){
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_0MM5, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_1MM0, false);
+						SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_DERMA_KEY_SPOT_2MM0, false);
 						NVRAM0[EM_LASER_DERMA_SPOT_SIZE] = DERMA_SPOT_SIZE_3MM0;
 						updateEnergyDensity();
 					}
@@ -1808,6 +1845,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							ADDS1(EM_LASER_POWER_CH0);
 							NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];					
 							updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_DERMA);
+							updateEnergyDensity();
 							SetProgressValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_PROGRESS_CH0, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));						
 						}
 					}
@@ -1819,6 +1857,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							DECS1(EM_LASER_POWER_CH0);
 							NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
 							updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_DERMA);
+							updateEnergyDensity();
 							SetProgressValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_PROGRESS_CH0, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));
 						}
 					}
@@ -1955,12 +1994,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_DERMA:{	
-					if(state){
-						clearReleaseTimeEnergy();
-						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_DERMA;
-						updateStandbyDisplay();
-						standbyTouchEnable(true);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_RESET:{
@@ -2295,7 +2328,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						if(saveSchemeToUdisk()){//成功
 							//显示提示信息
 							//sprintf(,"Save Done!");
-							SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE, (uint8_t*)dispBuf);
+							//SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE, (uint8_t*)dispBuf);
+							//SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE, (uint8_t*)dispBuf);
 							//等待1秒
 							
 						}
@@ -2502,6 +2536,42 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
+				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH:{
+					if(state){
+						SSET(R_DISABLE_FOOTSWITCH);
+					}
+					else{
+						RRES(R_DISABLE_FOOTSWITCH);
+					}
+					break;
+				}					
+				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE:{
+					if(state){
+						SSET(R_DISABLE_TEMPERATURE);
+					}
+					else{
+						RRES(R_DISABLE_TEMPERATURE);
+					}
+					break;
+				}					
+				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP:{
+					if(state){
+						SSET(R_DISABLE_ESTOP);
+					}
+					else{
+						RRES(R_DISABLE_ESTOP);
+					}
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK:{
+					if(state){
+						SSET(R_DISABLE_INTERLOCK);
+					}
+					else{
+						RRES(R_DISABLE_INTERLOCK);
+					}
+					break;
+				}					
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID:{
 					if(state){
 						SSET(R_DISABLE_RFID);
@@ -2514,9 +2584,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE:{
 					if(state){
 						SSET(R_DISABLE_FIBER_PROBE);
-						RRES(SPCOIL_BEEM_ENABLE);
-						updateWarnMsgDisplay(MSG_NO_ERROR);
-						standbyKeyEnable(true);
 					}
 					else{
 						RRES(R_DISABLE_FIBER_PROBE);

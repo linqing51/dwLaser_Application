@@ -141,6 +141,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					NVRAM0[EM_LASER_POWER_CH0] = (int16_t)(value * CONFIG_MAX_LASERPOWER_CH0 / 100);
 					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
 					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_DERMA);
+					updateEnergyDensity();
 					break;
 				}
 #if CONFIG_USING_DUAL_WAVE == 1

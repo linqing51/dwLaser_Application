@@ -11,7 +11,7 @@ void inputRefresh(void){//获取输入IO
 	uint8_t	temp;
 	//X0
 	temp = HAL_GPIO_ReadPin(ESTOP_IN_GPIO_Port, ESTOP_IN_Pin);//急停
-	if(temp){//急停常闭
+	if(temp == GPIO_PIN_RESET){//急停常闭
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
 		}
@@ -47,7 +47,7 @@ void inputRefresh(void){//获取输入IO
 	}
 	//X2
 	temp = HAL_GPIO_ReadPin(FSWITCH_NO_GPIO_Port, FSWITCH_NO_Pin);//脚踏常开
-	if(temp != true){
+	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;
 		}
@@ -65,7 +65,7 @@ void inputRefresh(void){//获取输入IO
 	}
 	//X3
 	temp = HAL_GPIO_ReadPin(FSWITCH_NC_GPIO_Port, FSWITCH_NC_Pin);//脚踏常闭
-	if(temp != true){
+	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
 		}
@@ -83,7 +83,7 @@ void inputRefresh(void){//获取输入IO
 	}
 	//X4
 	temp = HAL_GPIO_ReadPin(SOFTPOWER_IN_GPIO_Port, SOFTPOWER_IN_Pin);//电源开关
-	if(temp != true){
+	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
 		}
@@ -100,7 +100,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X5 光纤探测
-	if(NVRAM0[SPREG_ADC_3] < CONFIG_FIBER_PD_PLUG){//光纤插入
+	if(NVRAM0[SPREG_ADC_3] > CONFIG_FIBER_PD_THRESHOLD){//光纤插入
 		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[5] ++;
 		}

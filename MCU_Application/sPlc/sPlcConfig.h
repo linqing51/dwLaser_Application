@@ -104,7 +104,7 @@
 #define CONFIG_NTC_B											3500.0F
 #define CONFIG_NTC_R25											10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF											5000L//
-#define CONFIG_FIBER_PD_PLUG									300//光纤插入
+#define CONFIG_FIBER_PD_THRESHOLD								300//光纤插入时ADC阈值
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DAC									1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0										0xFFFF
@@ -186,12 +186,12 @@
 #define CONFIG_MIN_LASER_POSWIDTH								1
 #define CONFIG_MAX_LASER_NEGWIDTH								10000
 #define CONFIG_MIN_LASER_NEGWIDTH								1
-#define CONFIG_MAX_LASER_TIMES									20//最大可计数脉冲数
+#define CONFIG_MAX_LASER_TIMES									10//最大可计数脉冲数
 #define CONFIG_MIN_LASER_TIMES									1//最小可计数脉冲数
 #define CONFIG_MAX_LASER_GROUP_OFF								1000
 #define CONFIG_MIN_LASER_GROUP_OFF								10
 #define CONFIG_MAX_LASER_ENERGY_INTERVAL						200
-#define CONFIG_MIN_LASER_ENERGY_INTERVAL						40
+#define CONFIG_MIN_LASER_ENERGY_INTERVAL						30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL						10
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME						250//变音持续时间
 
@@ -764,31 +764,38 @@
 #define Y_RUN_LED												(Y_START * 16 + 7)//YOUT7 板载运行LED指示灯
 #define Y_ERR_LED												(Y_START * 16 + 8)//YOUT8 板载错误LED指示灯
 /*****************************************************************************/
-#define R_FIBER_PROBE											(R_START * 16 + 0)//光纤插入标志
-#define R_RFID_PASS												(R_START * 16 + 1)//NFC光纤插入标志
-#define R_LASER_TEMP_HIGH										(R_START * 16 + 2)//激光二极管激光模块高温标志
-#define R_LASER_TEMP_LOW										(R_START * 16 + 3)//激光二极管激光模块低温标志
-#define R_MCU_TEMP_HIGH											(R_START * 16 + 4)//处理器高温标志
-#define R_MCU_TEMP_LOW											(R_START * 16 + 5)//处理器低温标志
-#define R_FOOTSWITCH_PLUG										(R_START * 16 + 6)//脚踏插入标志
-#define R_FOOTSWITCH_PRESS										(R_START * 16 + 7)//脚踏按下标志
-#define R_FAULT													(R_START * 16 + 8)//故障标志
-#define R_DISABLE_RFID											(R_START * 16 + 9)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE									(R_START * 16 + 10)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED										(R_START * 16 + 11)//屏蔽风扇控制
-#define R_CLEAR_EPROM											(R_START * 16 + 12)//完全清空EPROM
-#define R_ENGINEER_MODE											(R_START * 16 + 13)//工程师模式
+#define R_ESTOP													(R_START * 16 + 0)//急停标志
+#define R_INTERLOCK												(R_START * 16 + 1)//连锁标志
+#define R_FIBER_PROBE											(R_START * 16 + 2)//光纤插入标志
+#define R_RFID_PASS												(R_START * 16 + 3)//NFC光纤插入标志
+#define R_LASER_TEMP_HIGH										(R_START * 16 + 4)//激光二极管激光模块高温标志
+#define R_LASER_TEMP_LOW										(R_START * 16 + 5)//激光二极管激光模块低温标志
+#define R_MCU_TEMP_HIGH											(R_START * 16 + 6)//处理器高温标志
+#define R_MCU_TEMP_LOW											(R_START * 16 + 7)//处理器低温标志
+#define R_FOOTSWITCH_PLUG										(R_START * 16 + 8)//脚踏插入标志
+#define R_FOOTSWITCH_PRESS										(R_START * 16 + 9)//脚踏按下标志
+#define R_HMI_FOOTSWITCH_PRESS									(R_START * 16 + 10)//屏幕模拟脚踏按下标志
+#define R_FAULT													(R_START * 16 + 11)//故障标志
+#define R_DISABLE_ESTOP											(R_START * 16 + 12)//屏蔽急停开关检测
+#define R_DISABLE_TEMPERATURE									(R_START * 16 + 13)//屏蔽温度检测
+#define	R_DISABLE_FOOTSWITCH									(R_START * 16 + 14)//屏蔽脚踏开关检测
+#define R_DISABLE_RFID											(R_START * 16 + 15)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE									(R_START * 16 + 16)//屏蔽光纤探测
+#define R_DISABLE_FAN_SPEED										(R_START * 16 + 17)//屏蔽风扇控制
+#define R_DISABLE_INTERLOCK										(R_START * 16 + 18)//屏蔽安全连锁
+#define R_CLEAR_EPROM											(R_START * 16 + 19)//完全清空EPROM
+#define R_ENGINEER_MODE											(R_START * 16 + 20)//工程师模式
 //HMI相关状态
-#define R_DCHMI_RESET_REQ										(R_START * 16 + 20)//HMI复位请求
-#define R_DCHMI_RESET_DOING										(R_START * 16 + 21)//HMI复位中
-#define R_DCHMI_RESET_DONE										(R_START * 16 + 22)//HMI复位完成	
-#define R_DCHMI_UPDATEUI_REQ									(R_START * 16 + 23)//HMI内容更新请求
-#define R_DCHMI_UPDATEUI_DOING									(R_START * 16 + 24)//HMI内容更新中
-#define R_DCHMI_UPDATEUI_DONE									(R_START * 16 + 25)//HMI内容更新请求完成
-#define R_DCHMI_RESTORE_REQ										(R_START * 16 + 26)//HMI从FLASH中恢复设置请求
-#define R_DCHMI_RESTORE_DOING									(R_START * 16 + 27)//HMI从FLASH中恢复中
-#define R_DCHMI_RESTORE_DONE									(R_START * 16 + 28)//HMI从FLASH中恢复设置完成	
-#define R_DCHMI_DISPLAY_WARN									(R_START * 16 + 30)//HMI显示报警信息
+#define R_DCHMI_RESET_REQ										(R_START * 16 + 30)//HMI复位请求
+#define R_DCHMI_RESET_DOING										(R_START * 16 + 31)//HMI复位中
+#define R_DCHMI_RESET_DONE										(R_START * 16 + 32)//HMI复位完成	
+#define R_DCHMI_UPDATEUI_REQ									(R_START * 16 + 33)//HMI内容更新请求
+#define R_DCHMI_UPDATEUI_DOING									(R_START * 16 + 34)//HMI内容更新中
+#define R_DCHMI_UPDATEUI_DONE									(R_START * 16 + 35)//HMI内容更新请求完成
+#define R_DCHMI_RESTORE_REQ										(R_START * 16 + 36)//HMI从FLASH中恢复设置请求
+#define R_DCHMI_RESTORE_DOING									(R_START * 16 + 37)//HMI从FLASH中恢复中
+#define R_DCHMI_RESTORE_DONE									(R_START * 16 + 38)//HMI从FLASH中恢复设置完成	
+#define R_DCHMI_DISPLAY_WARN									(R_START * 16 + 39)//HMI显示报警信息
 #define R_DCHMI_KEY_STANDBY_ENABLE								(R_START * 16 + 40)//STANDBY 使能
 /*****************************************************************************/
 #define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 80)
