@@ -76,19 +76,17 @@
 #define CONFIG_EPROM_PAGE_SIZE									0x08//EPROM 页大小
 #define CONFIG_EPROM_WRITE_DELAY								0//写入等待时间mS
 /*****************************************************************************/
-#define CONFIG_EPROM_NVRAM_START								(0x0L)
-#define CONFIG_EPROM_NVRAM_END									(2047L)
-#define CONFIG_EPROM_FDRAM_START								(2048L)
-#define CONFIG_EPROM_FDRAM_END									(4095L)
 #define CONFIG_EPROM_MR_START									(0x0L)//
 #define CONFIG_EPROM_DM_START									(CONFIG_MRRAM_SIZE * 2)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_START + (CONFIG_DMRAM_SIZE * 2))
-#define CONFIG_EPROM_FWINFO_START								(4096L)//固件信息区
-#define CONFIG_EPROM_FWINFO_END									(4607L)
-#define CONFIG_EPROM_CONFIG_START								(4608L)//配置信息区
-#define CONFIG_EPROM_CONFIG_END									(5119L)
-#define CONFIG_EPROM_LOGINFO_START								(5120L)//记录信息区
-#define CONFIG_EPROM_LOGINFO_END								(5632L)
+
+#define CONFIG_EPROM_FWINFO_START								(7808L)//128B 固件信息区
+#define CONFIG_EPROM_FWINFO_END									(7935L)
+#define CONFIG_EPROM_CONFIG_START								(7936L)//128B 配置信息区
+#define CONFIG_EPROM_CONFIG_END									(8063L)
+#define CONFIG_EPROM_LOGINFO_START								(8064L)//128B 记录信息区 
+#define CONFIG_EPROM_LOGINFO_END								(8191L)
+
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道

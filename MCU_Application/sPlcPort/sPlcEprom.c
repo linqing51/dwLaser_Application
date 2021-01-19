@@ -31,7 +31,7 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地址读
 		ret = HAL_I2C_DeInit(&hi2c1);//释放IO口为GPIO，复位句柄状态标志
 		ret = HAL_I2C_Init(&hi2c1);//这句重新初始化I2C控制器
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom read byte fail!\n");
+		printf("sPlc->sPlcEprom:Eprom read byte fail,Addr:%d,rDat:%d\n", ReadAddr, (uint8_t*)rdat);
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
@@ -63,7 +63,7 @@ HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//在指定地址
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom read hword done!\n");
+	printf("sPlc->sPlcEprom:Eprom read hword done,Addr:%d\n", ReadAddr);
 #endif
 	return ret;												    
 }
@@ -266,7 +266,7 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 	HAL_Delay(CONFIG_EPROM_WRITE_DELAY);
 #endif
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom write multibyte done!\n");
+	printf("sPlc->sPlcEprom:Eprom write multibyte done,Addr:%d,Num:%d\n", WriteAddr, NumToWrite);
 #endif
 	return ret;
 }
