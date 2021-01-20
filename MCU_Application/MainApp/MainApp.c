@@ -11,6 +11,7 @@
 //TIM10 LASER TIMER
 void mainAppTask(void *argument){
 	sPlcInit();
+	spkTest();
 	while(1){
 		sPlcProcessStart();
 		if(LD(SPCOIL_START_UP)){//

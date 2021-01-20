@@ -444,7 +444,6 @@ void LIMS16(uint16_t src, uint16_t min, uint16_t max){//有符号16位数限制幅度指令
 		NVRAM0[src] = NVRAM0[min];
 	}
 }
-
 /*****************************************************************************/
 void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//块复制
 	uint16_t i;
@@ -602,47 +601,24 @@ void FUPID(uint16_t adr){//模糊PID指令
 //void FROM(uint16_t SA) {//步进执行指令
 //}
 
-void printNvram(uint16_t adr,uint8_t len){//在串口中断上打印内存数据
-	uint16_t tableX, tableY;
+void PRTM(uint16_t adr, uint8_t len){//在串口中断上打印内存数据
 	uint16_t index;
 	index = adr;
 	printf("NVRAM MEMORY TABLE:\n");
 	printf("  ADR:  +0,  +1,  +2,  +3,  +4,  +5,  +6   +7,  +8,  +9, +10, +11, +12, +13, +14, +15\n");
-	printf("00000:FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF\n")
-	
+	printf("00000:FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF\n");
 	for(index = adr & 0xFFF0;index < (adr + len);index ++){
+		if(index > UINT16_MAX){
+			printf("\n\n");
+			printf("END OF NVRAM\n");
+			break;
+		}
 		if((index & 0x000F) == 0x0){//行起始
 			printf("%5d:", (index & 0xFFF0));
 		}
-		
-	}
-	
-	
-	
-	
-	
-	
-	while(tableY < 0xFFFF){//列显示循环
-		printf("%05d:", (index & 0xFFF0));
-		for(tableX = 0;tableX < 16;tableX ++){//行显示循环
-			if(index > UINT16_MAX){
-				printf("\n\n");
-				printf("NVRAM MEMORY OVER RANGE!\n");
-				printf("EXIT PRINT NVRAM\n");
-				break;
-			}
-			else if((index & 0xFFF0) < index){
-				printf("----");
-			}
-			else{
-				printf(",%04X",NVRAM0[index]);
-			}
-			index ++;
-			if(index - adr > len){
-				break;
-			}	
+		printf(",%04X",NVRAM0[index]);
+		if((index & 0x000F) == 0xF){//最后一个
+			printf("\n");
 		}
-		printf("\n");
-		tableY ++;
-	}	
+	}
 }

@@ -1404,7 +1404,7 @@ void updateStandbyDisplay(void){//更新方案显示
 			BatchEnd();
 			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)(&NVRAM0[EM_LASER_SCHEME_NAME]));				
 			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-			sprintf(dispBuf, "%d J/cM^2", NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
+			sprintf(dispBuf, "%d J/cM", NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
 			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_SIGNAL_TEXTDISPLAY_ENERGY_INTERVAL, (uint8_t*)dispBuf); 
 			break;
 		}

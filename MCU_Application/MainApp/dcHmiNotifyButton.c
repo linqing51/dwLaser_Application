@@ -1599,7 +1599,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] += CONFIG_STEP_LASER_ENERGY_INTERVAL;
 						}
 						memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-						sprintf(dispBuf, "%d J/cM^2", NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
+						sprintf(dispBuf, "%d J/cM", NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
 						SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_SIGNAL_TEXTDISPLAY_ENERGY_INTERVAL, (uint8_t*)dispBuf); 	
 					}
 					break;
@@ -1610,7 +1610,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] -= CONFIG_STEP_LASER_ENERGY_INTERVAL;
 						}
 						memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-						sprintf(dispBuf, "%d J/cM^2", NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
+						sprintf(dispBuf, "%d J/cM", NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
 						SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_SIGNAL_TEXTDISPLAY_ENERGY_INTERVAL, (uint8_t*)dispBuf); 
 					}
 					break;

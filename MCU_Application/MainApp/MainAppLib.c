@@ -62,6 +62,7 @@ uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 }
 
 void defaultScheme(void){//当前选择方案恢复默认值						
+	char *psrc, *pdist;
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d", (NVRAM0[DM_SCHEME_NUM] + 1));		
 	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
@@ -78,6 +79,112 @@ void defaultScheme(void){//当前选择方案恢复默认值
 	NVRAM0[EM_LASER_DERMA_POSWIDTH]	= 550;//DERMA正脉宽
 	NVRAM0[EM_LASER_DERMA_NEGWIDTH]	= 650;//DERMA负脉宽
 	NVRAM0[EM_LASER_DERMA_SPOT_SIZE] = DERMA_SPOT_SIZE_0MM5;//DERMA光斑直径
+#if	CONFIG_SPLC_USING_DEFAULT_SCHEME == 1
+	switch(NVRAM0[DM_SCHEME_NUM]){
+		case 0:{
+			psrc = (char*)PRE_SCHEME_TABLE[0];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 80;//EVLA_SIGNAL能量间隔
+			break;
+		}
+		case 1:{
+			psrc = (char*)PRE_SCHEME_TABLE[1];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//8.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 60;//EVLA_SIGNAL能量间隔
+			break;
+		}
+		case 2:{
+			psrc = (char*)PRE_SCHEME_TABLE[2];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_POWER_CH0] = 30;//8.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 30;//EVLA_SIGNAL能量间隔
+			break;
+		}
+		case 3:{
+			psrc = (char*)PRE_SCHEME_TABLE[3];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
+			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
+			break;
+		}
+		case 4:{
+			psrc = (char*)PRE_SCHEME_TABLE[4];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
+			break;
+		}
+		case 5:{
+			psrc = (char*)PRE_SCHEME_TABLE[5];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
+			break;
+		}
+		case 6:{
+			psrc = (char*)PRE_SCHEME_TABLE[6];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔
+			break;
+		}
+		case 7:{
+			psrc = (char*)PRE_SCHEME_TABLE[7];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔
+			break;
+		}
+		case 8:{
+			psrc = (char*)PRE_SCHEME_TABLE[8];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔
+			break;
+		}
+		case 9:{
+			psrc = (char*)PRE_SCHEME_TABLE[9];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 5000;//多脉冲负脉宽 5S
+			break;
+		}
+		case 10:{
+			psrc = (char*)PRE_SCHEME_TABLE[10];
+			pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
+			memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 5000;//多脉冲负脉宽 5S
+			break;
+		}
+		default:break;
+	}
+#endif
 }
 
 void loadScheme(void){//FD->EM

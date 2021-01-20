@@ -1,11 +1,6 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define CMD_MUSIC_PLAY											0x01
-#define CMD_MUSIC_SUSPEND										0x02
-#define CMD_MUSIC_RESUME										0x03
-#define CMD_MUSIC_STOP											0x04
-/*****************************************************************************/
 #define CONFIG_DEBUG_CHARGE										0//调试充电
 #define CONFIG_DEBUG_DAC										0//调试DAC驱动
 #define CONFIG_DEBUB_ADC										0//调试ADC驱动
@@ -13,7 +8,7 @@
 #define CONFIG_DEBUG_IO											0//调试IO
 #define CONFIG_DEBUG_SPK										1//调试蜂鸣器驱动
 #define CONFIG_DEBUG_LED										1//调试指示灯驱动
-#define CONFIG_DEBUG_AIM										1//调试指示光驱动
+#define CONFIG_DEBUG_AIM										0//调试指示光驱动
 #define CONFIG_DEBUG_LASER										1//调试LASER驱动
 #define CONFIG_DEBUG_SPLC										1//调试SPLC命令
 #define CONFIG_DEBUG_APP										0//调试应用程序
@@ -64,6 +59,9 @@
 #define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
+/*****************************************************************************/
+#define CONFIG_SPLC_USING_DEFAULT_SCHEME						1//是能预设模式
+#define CONFIG_SPLC_MAX_SCHEME_NAME_SIZE
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
@@ -234,6 +232,9 @@
 #define PD_NOTES_B2												-2.75859E-13
 #define PD_NOTES_B3												7.12301E-20
 /*****************************************************************************/
+#define CONFIG_USING_DEFAULT_SCHEME								1//是能预设模式
+#define CONFIG_MAX_SCHEME_NAME_SIZE								45//方案名称长度
+/******************************************************************************/
 #define POWER_REAL_CH0_5P										200
 #define POWER_REAL_CH0_10P										400
 #define POWER_REAL_CH0_15P										600

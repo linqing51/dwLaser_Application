@@ -9,7 +9,7 @@
 #define LASER_MODE_MP							0x04//多脉冲模式
 #define LASER_MODE_GP							0x08//群脉冲模式
 #define LASER_MODE_DERMA						0x10//
-#define LASER_MODE_SIGNAL						0x20//单脉冲模式
+#define LASER_MODE_SIGNAL						0x20//
 #define LASER_SELECT_CH0						0x01
 #define LASER_SELECT_CH1						0x02
 #define LASER_SELECT_CH2						0x04
