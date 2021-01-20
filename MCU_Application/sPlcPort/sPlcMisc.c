@@ -118,19 +118,39 @@ static float32_t linearToLog(int16_t volume){//线性音量转化为对数音量
     // float v = volume ? exp(float(100 - volume) * dBConvert) : 0;  
     // LOGD("linearToLog(%d)=%f", volume, v);  
     // return v;
+	float32_t logVolume = 0.0F;
 	if(volume > 100){
 		volume = 100;
 	}
 	if(volume < 0){
 		volume = 0;
 	}
-	return volume ? exp((float64_t)(100 - volume) * dBConvert) : 0;
+	if(volume != 0){
+		logVolume = exp((float64_t)(100 - volume) * dBConvert);
+	}
+	else{
+		logVolume = 0.0F;
+	}
+#if CONFIG_DEBUG_SPK == 1
+	printf("%s,%d,%s:convert log volume:%f\n",__FILE__, __LINE__, __func__, logVolume);
+#endif
+	return logVolume;
 }  
 static int16_t logToLinear(float32_t volume){//对数音量转化为线性音量  
     // int v = volume ? 100 - int(dBConvertInverse * log(volume) + 0.5) : 0;  
     // LOGD("logTolinear(%d)=%f", v, volume);  
-    // return v;  
-    return volume ? 100 - (int16_t)(dBConvertInverse * log(volume) + 0.5) : 0;  
+    // return v;
+	int16_t lineVolume = 0;
+	if(volume != 0){
+		lineVolume = 100 - (int16_t)(dBConvertInverse * log(volume) + 0.5);
+	}
+	else{
+		lineVolume = 0;
+	}
+#if CONFIG_DEBUG_SPK == 1
+	printf("%s,%d,%s:convert line volume:%d\n",__FILE__, __LINE__, __func__, lineVolume);
+#endif
+    return lineVolume;  
 }
 static void initAudioSineTable(float32_t volume){
 	int16_t i;
@@ -143,16 +163,25 @@ static void initAudioSineTable(float32_t volume){
 	}
 	for(i = 0;i < 256;i ++){
 		ftemp = i * 0.0246374;//当i =127时,表示为180度,由于sin()是弧度制,所以需要转换
-		//audioSineTable[i] = (uint16_t)(volume * ((1.0F + arm_sin_f32(ftemp)) * 256.0F));//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
-	}			
+		audioSineTable[i] = (uint16_t)(volume * ((1.0F + arm_sin_f32(ftemp)) * 256.0F));//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
+	}
+#if CONFIG_DEBUG_SPK == 1
+	printf("%s,%d,%s:audio wave table init done...\n",__FILE__, __LINE__, __func__);
+#endif	
 }
 static void startAudioBeem(void){
 	HAL_TIM_Base_Start(&htim5);
 	HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);//高电平功放芯片打开
+#if CONFIG_DEBUG_SPK == 1
+	printf("%s,%d,%s:start audio output\n",__FILE__, __LINE__, __func__);
+#endif
 }
 static void stopAudioBeem(void){
 	HAL_TIM_Base_Stop(&htim5);
 	HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_RESET);//低电平功放芯片关闭
+#if CONFIG_DEBUG_SPK == 1
+	printf("%s,%d,%s:stop audio output\n",__FILE__, __LINE__, __func__);
+#endif
 }
 static void softDelayMs(uint16_t ms){
 	uint32_t i;
@@ -261,6 +290,9 @@ void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
 	if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
 		Error_Handler();
 	}
+#if CONFIG_DEBUG_AIM == 1
+	printf("%s,%d,%s:set aim pwm freq:%d\n",__FILE__, __LINE__, __func__, freq);
+#endif
 }
 void setBeemFreq(int16_t freq){//设置蜂鸣器频率
 	if(freq > 4500){
@@ -278,6 +310,9 @@ void setBeemFreq(int16_t freq){//设置蜂鸣器频率
 	if (HAL_TIM_Base_Init(&htim5) != HAL_OK){
 		Error_Handler();
 	}
+#if CONFIG_DEBUG_SPK == 1
+	printf("%s,%d,%s:Start audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
+#endif
 }
 void setBeemVolume(int16_t volume){//设置喇叭音量
 	initAudioSineTable(linearToLog(volume));
@@ -301,6 +336,9 @@ void setAimBrightness(int16_t brg){//设置瞄准光亮度
 		}
 		aimBrg = brg;
 	}
+#if CONFIG_DEBUG_AIM == 1
+	printf("%s,%d,%s:set aim brightness:%d\n",__FILE__, __LINE__, __func__, brg);
+#endif	
 }
 void setBlueLedBrightness(int16_t brg){//设置蓝灯亮度
 	uint16_t temp;
@@ -321,6 +359,9 @@ void setBlueLedBrightness(int16_t brg){//设置蓝灯亮度
 		}
 		aimBrg = brg;
 	}
+#if CONFIG_DEBUG_LED == 1
+	printf("%s,%d,%s:set blue led brightness:%d\n",__FILE__, __LINE__, __func__, brg);
+#endif
 }
 void setRedLedBrightness(int16_t brg){//设置红灯亮度
 	uint16_t temp;
@@ -341,6 +382,9 @@ void setRedLedBrightness(int16_t brg){//设置红灯亮度
 		}
 		aimBrg = brg;
 	}
+#if CONFIG_DEBUG_LED == 1
+	printf("%s,%d,%s:set red led brightness:%d\n",__FILE__, __LINE__, __func__, brg);
+#endif	
 }
 void setGreenLedBrightness(int16_t brg){//设置绿灯亮度
 	uint16_t temp;
@@ -361,6 +405,9 @@ void setGreenLedBrightness(int16_t brg){//设置绿灯亮度
 		}
 		aimBrg = brg;
 	}
+#if CONFIG_DEBUG_LED == 1
+	printf("%s,%d,%s:set green led brightness:%d\n",__FILE__, __LINE__, __func__, brg);
+#endif
 }
 void disableSplcTimer(void) {//SPLC关闭计时器
 	HAL_TIM_Base_Stop_IT(&htim7);

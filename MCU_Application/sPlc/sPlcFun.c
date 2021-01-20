@@ -469,6 +469,7 @@ void FDSAV(void){//FDRAM->EPROM
 	enableSplcIsr();
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
+	uint16_t x, y;
 	disableSplcIsr();
 	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
 		cn = (CONFIG_HMI_SCHEME_NUM - 1);
@@ -478,6 +479,11 @@ void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	}
 #if CONFIG_SPLC_USING_EPROM == 1
 	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM), 128);
+#endif
+#if CONFIG_DEBUG_SPLC == 1
+	for(y = 0;y < 16;y ++)//
+	for(x = 0;x < 16;x++){
+	}
 #endif
 	enableSplcIsr();
 }
@@ -596,3 +602,47 @@ void FUPID(uint16_t adr){//模糊PID指令
 //void FROM(uint16_t SA) {//步进执行指令
 //}
 
+void printNvram(uint16_t adr,uint8_t len){//在串口中断上打印内存数据
+	uint16_t tableX, tableY;
+	uint16_t index;
+	index = adr;
+	printf("NVRAM MEMORY TABLE:\n");
+	printf("  ADR:  +0,  +1,  +2,  +3,  +4,  +5,  +6   +7,  +8,  +9, +10, +11, +12, +13, +14, +15\n");
+	printf("00000:FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF,FFFF\n")
+	
+	for(index = adr & 0xFFF0;index < (adr + len);index ++){
+		if((index & 0x000F) == 0x0){//行起始
+			printf("%5d:", (index & 0xFFF0));
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	while(tableY < 0xFFFF){//列显示循环
+		printf("%05d:", (index & 0xFFF0));
+		for(tableX = 0;tableX < 16;tableX ++){//行显示循环
+			if(index > UINT16_MAX){
+				printf("\n\n");
+				printf("NVRAM MEMORY OVER RANGE!\n");
+				printf("EXIT PRINT NVRAM\n");
+				break;
+			}
+			else if((index & 0xFFF0) < index){
+				printf("----");
+			}
+			else{
+				printf(",%04X",NVRAM0[index]);
+			}
+			index ++;
+			if(index - adr > len){
+				break;
+			}	
+		}
+		printf("\n");
+		tableY ++;
+	}	
+}

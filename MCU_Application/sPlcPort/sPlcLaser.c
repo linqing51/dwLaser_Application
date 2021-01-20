@@ -153,11 +153,8 @@ void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 #endif
 void STLAR(void){//开始发射脉冲
 #if CONFIG_DEBUG_LASER == 1
-	printf("sPlc->sPlcLaser:Laser start!\n");
+	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
 #endif	
-#if CONFIG_SPLC_USING_MUSIC == 1	
-	SetMusicVolume(NVRAM0[SPREG_MUSIC_VOLUME]);//向GDDC触摸屏发送音量
-#endif
 	if(LD(MR_BEEM_TONE) || (LaserTimer_Mode == LASER_MODE_SIGNAL)){
 		//判断是否有脉冲 如果正脉宽或脉冲间隔长度小于100mS则选择MODE2
 		switch(NVRAM0[EM_LASER_PULSE_MODE]){

@@ -31,11 +31,11 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//ÔÚÖ¸¶¨µØÖ·¶Á
 		ret = HAL_I2C_DeInit(&hi2c1);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 		ret = HAL_I2C_Init(&hi2c1);//Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom read byte fail,Addr:%d,rDat:%d\n", ReadAddr, (uint8_t*)rdat);
+		printf("sPlc->sPlcEprom:Eprom read byte fail,adr:%d,dat:%d\n", ReadAddr, *rdat);
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom read byte done!\n");
+	printf("sPlc->sPlcEprom:Eprom read byte done,adr:%d,dat:%d\n", ReadAddr, *rdat);
 #endif
 	return ret;
 }
@@ -59,11 +59,11 @@ HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//ÔÚÖ¸¶¨µØÖ·
 		ret = HAL_I2C_DeInit(&hi2c1);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 		ret = HAL_I2C_Init(&hi2c1);          //Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom read hword fail!\n");
+		printf("sPlc->sPlcEprom:Eprom read hword fail,adr:%d,dat:%d\n", ReadAddr, *rdat);
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom read hword done,Addr:%d\n", ReadAddr);
+	printf("sPlc->sPlcEprom:Eprom read hword done,adr:%d,dat:%d\n", ReadAddr, *rdat);
 #endif
 	return ret;												    
 }
@@ -87,11 +87,11 @@ HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////ÔÚÖ¸¶¨µØ
 		ret = HAL_I2C_DeInit(&hi2c1);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 		ret = HAL_I2C_Init(&hi2c1);          //Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom read dword fail!\n");
+		printf("sPlc->sPlcEprom:Eprom read dword fail,adr:%d,dat:%d\n", ReadAddr, *rdat);
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom read dword done!\n");
+	printf("sPlc->sPlcEprom:Eprom read dword done,adr:%d,dat:%d\n", ReadAddr, *rdat);
 #endif
 	return ret;	
 }
@@ -114,11 +114,11 @@ HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t wdat){//ÔÚÖ¸¶¨µØÖ·Ð
 		ret = HAL_I2C_DeInit(&hi2c1);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 		ret = HAL_I2C_Init(&hi2c1);//Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom write byte fail!\n");
+		printf("sPlc->sPlcEprom:Eprom write byte fail,adr:%d,dat:%d\n", WriteAddr, wdat);
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom write byte done!\n");
+	printf("sPlc->sPlcEprom:Eprom write byte done,adr:%d,dat:%d\n", WriteAddr, wdat);
 #endif
 	return ret;
 }
@@ -142,11 +142,11 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t wdat){//ÔÚµÄÖ¸¶¨µ
 		ret = HAL_I2C_DeInit(&hi2c1);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 		ret = HAL_I2C_Init(&hi2c1);//Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷	
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom write hword fail!\n");
+		printf("sPlc->sPlcEprom:Eprom write hword fail,adr:%d,dat:%d\n",WriteAddr, wdat);
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom write hword done!\n");
+	printf("sPlc->sPlcEprom:Eprom write hword done,adr:%d,dat:%d\n", WriteAddr, wdat);
 #endif
 	return ret;
 }
@@ -170,11 +170,11 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t wdat){//ÔÚµÄÖ¸¶¨µ
 		ret = HAL_I2C_DeInit(&hi2c1);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 		ret = HAL_I2C_Init(&hi2c1);          //Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-		printf("sPlc->sPlcEprom:Eprom write dword fail!\n");
+		printf("sPlc->sPlcEprom:Eprom write dword fail,adr:%d,dat:%d\n", WriteAddr, wdat);
 #endif
 	}
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom write hword done!\n");
+	printf("sPlc->sPlcEprom:Eprom write hword done,adr:%d,dat:%d\n", WriteAddr, wdat);
 #endif
 	return ret;
 }   
@@ -199,7 +199,7 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 			ret = HAL_I2C_DeInit(&hi2c1);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 			ret = HAL_I2C_Init(&hi2c1);//Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-			printf("sPlc->sPlcEprom:Eprom read block fail!\n");
+			printf("sPlc->sPlcEprom:Eprom read block fail,adr:%d,num:%d\n", ReadAddr, NumToRead);
 #endif
 		}
 		rAddr += CONFIG_EPROM_PAGE_SIZE;
@@ -211,12 +211,12 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 			ret = HAL_I2C_DeInit(&hi2c1);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 			ret = HAL_I2C_Init(&hi2c1);          //Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-			printf("sPlc->sPlcEprom:Eprom read rbyte fail\n");
+			printf("sPlc->sPlcEprom:Eprom read rbyte fail,adr:%d,num:%d\n", ReadAddr, NumToRead);
 #endif
 		}
 		else{
 #if CONFIG_DEBUG_EPROM == 1
-			printf("sPlc->sPlcEprom:Eprom read multibyte done!\n");
+			printf("sPlc->sPlcEprom:Eprom read multibyte done,adr:%d,num:%d\n", ReadAddr, NumToRead);
 #endif
 		}
 	}
@@ -243,7 +243,7 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 			ret = HAL_I2C_DeInit(&hi2c1);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 			ret = HAL_I2C_Init(&hi2c1);          //Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-			printf("sPlc->sPlcEprom:Eprom write block fail!\n");
+			printf("sPlc->sPlcEprom:Eprom write block fail,adr:%d,num:%d\n", WriteAddr, NumToWrite);
 #endif		
 		}
 		wAddr += CONFIG_EPROM_PAGE_SIZE;
@@ -258,7 +258,7 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 			ret = HAL_I2C_DeInit(&hi2c1);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
 			ret = HAL_I2C_Init(&hi2c1);          //Õâ¾äÖØÐÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
 #if CONFIG_DEBUG_EPROM == 1
-			printf("sPlc->sPlcEprom:Eprom write remain byte fail!\n");
+			printf("sPlc->sPlcEprom:Eprom write remain byte fail,adr:%d,num:%d\n", WriteAddr, NumToWrite);
 #endif	
 		}
 	}
@@ -266,7 +266,7 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 	HAL_Delay(CONFIG_EPROM_WRITE_DELAY);
 #endif
 #if CONFIG_DEBUG_EPROM == 1
-	printf("sPlc->sPlcEprom:Eprom write multibyte done,Addr:%d,Num:%d\n", WriteAddr, NumToWrite);
+	printf("sPlc->sPlcEprom:Eprom write multibyte done,adr:%d,num:%d\n", WriteAddr, NumToWrite);
 #endif
 	return ret;
 }

@@ -10,13 +10,15 @@
 #define CONFIG_DEBUG_DAC										0//调试DAC驱动
 #define CONFIG_DEBUB_ADC										0//调试ADC驱动
 #define CONFIG_DEBUG_EPROM										1//调试EPROM驱动
-#define CONFIG_DEBUG_IO											0//调试输入输出IO
-#define CONFIG_DEBUG_BEEM										1//调试蜂鸣器驱动
-#define CONFIG_DEBUG_MUSIC										0//调试LCD音乐驱动
+#define CONFIG_DEBUG_IO											0//调试IO
+#define CONFIG_DEBUG_SPK										1//调试蜂鸣器驱动
+#define CONFIG_DEBUG_LED										1//调试指示灯驱动
+#define CONFIG_DEBUG_AIM										1//调试指示光驱动
 #define CONFIG_DEBUG_LASER										1//调试LASER驱动
-#define CONFIG_DEBUG_SPLC										1//调试SPLC
-#define CONFIG_DEBUG_APP										0
-#define CONFIG_SPLC_USING_HW_RNG								0//硬件随机数模块
+#define CONFIG_DEBUG_SPLC										1//调试SPLC命令
+#define CONFIG_DEBUG_APP										0//调试应用程序
+#define CONFIG_SPLC_USING_HW_RNG								0//使能硬件随机数模块
+#define CONFIG_SPLC_USING_HW_CRC								0//使能硬件CRC校验
 /*****************************************************************************/
 #define STM32_UNIQUE_ID_SIZE 									12//MCU序列号  8*12=96Bit
 #define BOOTLOADER_VER											0x00010001//版本
