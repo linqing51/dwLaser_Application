@@ -7,11 +7,11 @@
 //TIM4->CH1 LED RED ºìµÆ
 //TIM4->CH2 LED BLUE À¶µÆ
 //TIM6->RTOS
-//TIM7 SPLC TIMER
+//TIM7->DAC DMA
+//TIM14 SPLC TIMER
 //TIM10 LASER TIMER
 void mainAppTask(void *argument){
 	sPlcInit();
-	spkTest();
 	while(1){
 		sPlcProcessStart();
 		if(LD(SPCOIL_START_UP)){//

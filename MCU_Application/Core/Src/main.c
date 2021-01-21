@@ -112,6 +112,7 @@ int main(void)
   MX_CRC_Init();
   MX_RNG_Init();
   MX_TIM5_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -207,7 +208,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-	if(htim->Instance == TIM7) {
+	if(htim->Instance == TIM14) {
 		sPlcTimerIsr();
 	}
 	if(htim->Instance == TIM10){

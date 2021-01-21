@@ -1,11 +1,11 @@
 #include "sPlcTimer.h"
 /*****************************************************************************/
-extern TIM_HandleTypeDef htim7;
+extern TIM_HandleTypeDef htim14;
 /*****************************************************************************/
 uint32_t sPlcTick;
 /*****************************************************************************/
 void initSplcTimer(void){//硬件sTimer计时器初始化
-	HAL_TIM_Base_Start_IT(&htim7);
+	HAL_TIM_Base_Start_IT(&htim14);
 	TD_10MS_SP = 0;
 	TD_100MS_SP = 0;
 	TD_200MS_SP = 0;

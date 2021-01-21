@@ -41,7 +41,7 @@ void MX_DAC_Init(void)
   }
   /** DAC channel OUT2 config
   */
-  sConfig.DAC_Trigger = DAC_TRIGGER_T5_TRGO;
+  sConfig.DAC_Trigger = DAC_TRIGGER_T7_TRGO;
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_2) != HAL_OK)
   {
@@ -81,7 +81,7 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef* dacHandle)
     hdma_dac2.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
     hdma_dac2.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
     hdma_dac2.Init.Mode = DMA_CIRCULAR;
-    hdma_dac2.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+    hdma_dac2.Init.Priority = DMA_PRIORITY_LOW;
     hdma_dac2.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_dac2) != HAL_OK)
     {

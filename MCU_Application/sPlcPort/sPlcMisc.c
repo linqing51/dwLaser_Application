@@ -167,7 +167,7 @@ static void initAudioSineTable(float32_t volume){
 	}
 	for(i = 0;i < 256;i ++){
 		ftemp = i * 0.0246374;//当i =127时,表示为180度,由于sin()是弧度制,所以需要转换
-		audioSineTable[i] = (uint16_t)(volume * ((1.0F + arm_sin_f32(ftemp)) * 256.0F));//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
+		audioSineTable[i] = (uint16_t)(volume * 16 * ((1.0F + arm_sin_f32(ftemp)) * 256.0F))  ;//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
 	}
 #if CONFIG_DEBUG_SPK == 1
 	printf("%s,%d,%s:audio wave table init done...\n",__FILE__, __LINE__, __func__);
@@ -175,7 +175,7 @@ static void initAudioSineTable(float32_t volume){
 }
 static void startAudioBeem(void){
 	if(SpkRunStatus != true){
-		HAL_TIM_Base_Start(&htim5);
+		HAL_TIM_Base_Start(&htim7);
 		HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);//高电平功放芯片打开
 		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 #if CONFIG_DEBUG_SPK == 1
@@ -186,7 +186,7 @@ static void startAudioBeem(void){
 }
 static void stopAudioBeem(void){
 	if(SpkRunStatus == true){
-		HAL_TIM_Base_Stop(&htim5);
+		HAL_TIM_Base_Stop(&htim7);
 		HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_RESET);//低电平功放芯片关闭
 		HAL_DAC_Stop(&hdac, DAC_CHANNEL_2);
 #if CONFIG_DEBUG_SPK == 1
@@ -266,13 +266,8 @@ static void SystemClock_Reset(void){
 }
 
 void spkTest(void){
-	//setBeemVolume(80);
-	int i;
-	float  jiaodu=0;
-	for(i=0;i<256;i++){
-		jiaodu=i*0.0246374;      //当i =127时,表示为180度,由于sin()是弧度制,所以需要转换
-		audioSineTable[i]=  (uint16_t)((1+sin(jiaodu))*256) << 4 ;     //1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
-	}  	
+	setBeemVolume(50);
+	setBeemFreq(1500);
 	startAudioBeem();
 	while(1);
 }
@@ -299,47 +294,49 @@ void exitSplcIsr(void){
 }
 
 void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
-//	if(freq < 500){
-//		freq = 500;
-//	}
-//	if(freq > 6000){
-//		freq = 6000;
-//	}
-//	htim3.Instance = TIM3;
-//	htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
-//	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-//	htim3.Init.Period = 256;
-//	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-//	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-//	if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
-//		Error_Handler();
-//	}
-//#if CONFIG_DEBUG_AIM == 1
-//	printf("%s,%d,%s:set aim pwm freq:%d\n",__FILE__, __LINE__, __func__, freq);
-//#endif
+	if(freq < 500){
+		freq = 500;
+	}
+	if(freq > 6000){
+		freq = 6000;
+	}
+	htim3.Instance = TIM3;
+	htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
+	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim3.Init.Period = 256;
+	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+	if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
+		Error_Handler();
+	}
+#if CONFIG_DEBUG_AIM == 1
+	printf("%s,%d,%s:set aim pwm freq:%d\n",__FILE__, __LINE__, __func__, freq);
+#endif
 }
 void setBeemFreq(int16_t freq){//设置蜂鸣器频率
-//	if(SpkRunFreq != freq){
-//		if(freq > 4500){
-//			freq = 4500;
-//		}
-//		if(freq < 2000){
-//			freq = 2000;
-//		}
-//		htim5.Instance = TIM5;
-//		htim5.Init.Prescaler = 1;
-//		htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
-//		htim5.Init.Period = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);;
-//		htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-//		htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-//		if (HAL_TIM_Base_Init(&htim5) != HAL_OK){
-//			Error_Handler();
-//		}
-//#if CONFIG_DEBUG_SPK == 1
-//		printf("%s,%d,%s:Start audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
-//#endif
-//		SpkRunFreq = freq;
-//	}
+	float32_t f1;
+	if(SpkRunFreq != freq){
+		if(freq > 4500){
+			freq = 4500;
+		}
+		if(freq < 1000){
+			freq = 1000;
+		}
+		f1 = HAL_RCC_GetPCLK1Freq() / sizeof(audioSineTable) * 2 / freq;
+		htim7.Instance = TIM7;
+		htim7.Init.Prescaler = 1;
+		htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+		htim7.Init.Period = (uint16_t)f1;
+		htim7.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+		htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+		if (HAL_TIM_Base_Init(&htim7) != HAL_OK){
+			Error_Handler();
+		}
+#if CONFIG_DEBUG_SPK == 1
+		printf("%s,%d,%s:Start audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
+#endif
+		SpkRunFreq = freq;
+	}
 }
 void setBeemVolume(int16_t volume){//设置喇叭音量
 	if(SpkRunVolume != volume){
