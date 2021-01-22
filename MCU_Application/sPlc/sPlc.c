@@ -402,7 +402,7 @@ void sPlcProcessEnd(void){//sPLC轮询结束
 	outputRefresh();//更新Y口输出
 #endif
 #if CONFIG_SPLC_USING_BEEM == 1
-	sPlcBeemLoop();
+	sPlcLoudspeakerLoop();
 #endif
 #if	CONFIG_SPLC_USING_LEDAIM == 1
 	sPlcAimLoop();

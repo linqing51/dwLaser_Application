@@ -142,6 +142,8 @@
 #define CONFIG_APP_DIODE_LOW_TEMP								-100//激光器低温极限 - 10.0C
 #define CONFIG_APP_ENVI_HIGH_TEMP								700//处理器高温极限 75.0C
 /*****************************************************************************/
+#define CONFIG_APP_LONGNAME_SCHEME								0//预设长名称
+#define CONFIG_APP_SHORTNAME_SCHEME								1//预设短名称
 #define CONFIG_USING_SINGLE_WAVE								1//单波长
 #define CONFIG_USING_DUAL_WAVE									0//双波长
 #define CONFIG_USING_TRIPE_WAVE									0//三波长

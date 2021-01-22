@@ -308,21 +308,15 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				if((((fp32_t)LaserTimer_BeemSwitchCounter * (fp32_t)NVRAM0[EM_TOTAL_POWER]) / 10000.0F) >= (fp32_t)NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFORM_BEEM_FREQ){
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFORM_BEEM_FREQ;
-#if CONFIG_SPLC_USING_BEEM == 1
-						setBeemFreq(NVRAM0[SPREG_BEEM_FREQ]);
-#endif
-						__NOP();
+						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}
 					LaserTimer_BeemSwtichLength ++;			
 				}
 				if(LaserTimer_BeemSwtichLength >= CONFIG_BEEM_ENERGY_INTERVAL_TIME){
 					//停止播放				
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFAULT_BEEM_FREQ){
-						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;
-#if CONFIG_SPLC_USING_BEEM == 1						
-						setBeemFreq(NVRAM0[SPREG_BEEM_FREQ]);
-#endif
-						__NOP();
+						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_BEEM_FREQ;					
+						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}			
 					LaserTimer_BeemSwitchCounter = 0;
 					LaserTimer_BeemSwtichLength = 0;

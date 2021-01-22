@@ -8,10 +8,10 @@
 void resetInit(void);
 void bootLoadInit(void);
 /*****************************************************************************/
-void sPlcBeemLoop(void);//蜂鸣器轮询
+void sPlcLoudspeakerLoop(void);//蜂鸣器轮询
 void sPlcAimLoop(void);//瞄准光轮询
-void setBeemFreq(int16_t freq);//设置蜂鸣器频率和占空比
-void setBeemVolume(int16_t volume);//设置蜂鸣器占空比
+void setLoudspeakerFreq(int16_t freq);//设置蜂鸣器频率和占空比
+void setLoudspeakerVolume(int16_t volume);//设置蜂鸣器占空比
 void setLedAimFreq(int16_t freq);//设置LED灯和瞄准光闪烁频率
 void setAimBrightness(int16_t brg);//设置瞄准光亮度
 void setRedLedBrightness(int16_t brg);//设置R LED亮度
