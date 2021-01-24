@@ -61,7 +61,6 @@
 #define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DEFAULT_SCHEME						1//是能预设模式
-#define CONFIG_SPLC_MAX_SCHEME_NAME_SIZE
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
