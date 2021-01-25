@@ -82,98 +82,70 @@ void defaultScheme(void){//当前选择方案恢复默认值
 #if	CONFIG_SPLC_USING_DEFAULT_SCHEME == 1
 	switch(NVRAM0[DM_SCHEME_NUM]){
 		case 0:{
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[0]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S0);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 80;//EVLA_SIGNAL能量间隔
 			break;
 		}
 		case 1:{
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[1]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S1);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
 			NVRAM0[EM_LASER_POWER_CH0] = 60;//8.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 60;//EVLA_SIGNAL能量间隔
 			break;
 		}
 		case 2:{
-			//psrc = (char*)PRE_SCHEME_TABLE[2];
-			//pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
-			//memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[2]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S2);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
 			NVRAM0[EM_LASER_POWER_CH0] = 30;//8.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 30;//EVLA_SIGNAL能量间隔
 			break;
 		}
 		case 3:{
-			//psrc = (char*)PRE_SCHEME_TABLE[3];
-			//pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
-			//memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[3]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S3);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
 			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
 			break;
 		}
 		case 4:{
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[4]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S4);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
 			break;
 		}
 		case 5:{
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[5]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S5);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
 			break;
 		}
 		case 6:{
-			//psrc = (char*)PRE_SCHEME_TABLE[6];
-			//pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
-			//memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[6]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S6);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
 			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔
 			break;
 		}
 		case 7:{
-			//psrc = (char*)PRE_SCHEME_TABLE[7];
-			//pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
-			//memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[7]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S7);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
 			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔
 			break;
 		}
 		case 8:{
-			//psrc = (char*)PRE_SCHEME_TABLE[8];
-			//pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
-			//memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[8]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S8);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔
 			break;
 		}
 		case 9:{
-			//psrc = (char*)PRE_SCHEME_TABLE[9];
-			//pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
-			//memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[9]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S9);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
@@ -181,11 +153,7 @@ void defaultScheme(void){//当前选择方案恢复默认值
 			break;
 		}
 		case 10:{
-			//psrc = (char*)PRE_SCHEME_TABLE[10];
-			//pdist = (char*)&NVRAM0[EM_LASER_SCHEME_NAME];
-			//memcpy(pdist, psrc, CONFIG_MAX_SCHEME_NAME_SIZE);
-			memset((char*)&NVRAM0[EM_LASER_SCHEME_NAME], 0x0, ((EM_LASER_SELECT - EM_LASER_SCHEME_NAME - 1) * 2));
-			sprintf((char*)&NVRAM0[EM_LASER_SCHEME_NAME], "%s", PRE_SCHEME_TABLE[10]);
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S10);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
@@ -194,6 +162,26 @@ void defaultScheme(void){//当前选择方案恢复默认值
 		}
 		default:break;
 	}
+#if CONFIG_DEBUG_APP == 1
+	printf("%s,%d,%s:scheme num:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
+	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);
+	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SELECT]);
+	printf("%s,%d,%s:scheme mode:%d\n", __FILE__, __LINE__, __func__,  NVRAM0[EM_LASER_PULSE_MODE]);
+	printf("%s,%d,%s:scheme power ch0:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH0]);
+	printf("%s,%d,%s:scheme power ch1:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH1]);
+	printf("%s,%d,%s:scheme sp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SP_POSWIDTH]);
+	printf("%s,%d,%s:scheme mp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_POSWIDTH]);
+	printf("%s,%d,%s:scheme mp negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_NEGWIDTH]);
+	printf("%s,%d,%s:scheme gp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_POSWIDTH]);
+	printf("%s,%d,%s:scheme gp negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_NEGWIDTH]);
+	printf("%s,%d,%s:scheme gp times:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_TIMES]);
+	printf("%s,%d,%s:scheme gp group off:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_GROUP_OFF]);
+	printf("%s,%d,%s:scheme signal energy interval:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
+	printf("%s,%d,%s:scheme derma poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_POSWIDTH]);
+	printf("%s,%d,%s:scheme derma negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
+	printf("%s,%d,%s:scheme derma spot size:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
+	printf("\n\n\n\n");
+#endif
 #endif
 }
 
@@ -255,6 +243,28 @@ void loadScheme(void){//FD->EM
 #if CONFIG_USING_FIVE_WAVE == 1
 #endif
 #if CONFIG_HMI_SCHEME_NUM == 1
+#endif
+#if CONFIG_DEBUG_APP == 1
+	printf("\n\n\n\n");
+	printf("%s,%d,%s:load scheme \n", __FILE__, __LINE__, __func__);
+	printf("%s,%d,%s:scheme num:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
+	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);
+	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SELECT]);
+	printf("%s,%d,%s:scheme mode:%d\n", __FILE__, __LINE__, __func__,  NVRAM0[EM_LASER_PULSE_MODE]);
+	printf("%s,%d,%s:scheme power ch0:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH0]);
+	printf("%s,%d,%s:scheme power ch1:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH1]);
+	printf("%s,%d,%s:scheme sp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SP_POSWIDTH]);
+	printf("%s,%d,%s:scheme mp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_POSWIDTH]);
+	printf("%s,%d,%s:scheme mp negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_NEGWIDTH]);
+	printf("%s,%d,%s:scheme gp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_POSWIDTH]);
+	printf("%s,%d,%s:scheme gp negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_NEGWIDTH]);
+	printf("%s,%d,%s:scheme gp times:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_TIMES]);
+	printf("%s,%d,%s:scheme gp group off:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_GP_GROUP_OFF]);
+	printf("%s,%d,%s:scheme signal energy interval:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]);
+	printf("%s,%d,%s:scheme derma poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_POSWIDTH]);
+	printf("%s,%d,%s:scheme derma negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
+	printf("%s,%d,%s:scheme derma spot size:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
+	printf("\n\n\n\n");
 #endif
 }
 void saveScheme(void){//EM->FD

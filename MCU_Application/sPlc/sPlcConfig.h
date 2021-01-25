@@ -2,18 +2,16 @@
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
 #define CONFIG_DEBUG_CHARGE										0//调试充电
-#define CONFIG_DEBUG_DAC										0//调试DAC驱动
-#define CONFIG_DEBUB_ADC										0//调试ADC驱动
+#define CONFIG_DEBUG_DAC										1//调试DAC驱动
+#define CONFIG_DEBUB_ADC										1//调试ADC驱动
 #define CONFIG_DEBUG_EPROM										1//调试EPROM驱动
-#define CONFIG_DEBUG_IO											0//调试IO
+#define CONFIG_DEBUG_IO											1//调试IO
 #define CONFIG_DEBUG_SPK										1//调试蜂鸣器驱动
 #define CONFIG_DEBUG_LED										1//调试指示灯驱动
-#define CONFIG_DEBUG_AIM										0//调试指示光驱动
+#define CONFIG_DEBUG_AIM										1//调试指示光驱动
 #define CONFIG_DEBUG_LASER										1//调试LASER驱动
 #define CONFIG_DEBUG_SPLC										1//调试SPLC命令
-#define CONFIG_DEBUG_APP										0//调试应用程序
-#define CONFIG_SPLC_USING_HW_RNG								0//使能硬件随机数模块
-#define CONFIG_SPLC_USING_HW_CRC								0//使能硬件CRC校验
+#define CONFIG_DEBUG_APP										1//调试应用程序
 /*****************************************************************************/
 #define STM32_UNIQUE_ID_SIZE 									12//MCU序列号  8*12=96Bit
 #define BOOTLOADER_VER											0x00010001//版本
@@ -29,13 +27,14 @@
 #define SAVE_EPROM_FILENAME										"/seprom.bin"//EPROM->UDISK 储存名称
 #define LOAD_EPROM_FILENAME										"/leprom.bin"//UDISK->EPROM 恢复名称
 /*****************************************************************************/
+#define CONFIG_SPLC_USING_HW_RNG								0//使能硬件随机数模块
+#define CONFIG_SPLC_USING_HW_CRC								0//使能硬件CRC校验
 #define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式
 /*****************************************************************************/				
-#define CONFIG_SPLC_USING_BEEM									1//使能板载蜂鸣器
-#define CONFIG_SPLC_DEFAULT_BEEM_FREQ							2000L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_BEEM_FREQ							1000L//蜂鸣器变声频率
-#define CONFIG_SPLC_DEFAULT_BEEM_DUTYCYCLE						50//蜂鸣器默认占空比
+#define CONFIG_SPLC_USING_SPK									1//使能板载蜂鸣器
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ							2000L//蜂鸣器默认频率
+#define CONFIG_SPLC_DEFORM_SPK_FREQ								1000L//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
@@ -153,7 +152,7 @@
 #define CONFIG_HMI_DEFAULT_PASSWORD1							0x3038//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD2							0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD3							0x3030//默认密码
-#define CONFIG_SCHEME_NAME_SIZE									22//10*2
+#define CONFIG_SCHEME_NAME_SIZE									((FD_LASER_SELECT - FD_LASER_SCHEME_NAME -1) * 2)//10*2
 //光斑直径定义
 #define DERMA_SPOT_SIZE_0MM5									0x100A//光斑直径0.5					
 #define DERMA_SPOT_SIZE_1MM0									0x200B//光斑直径1.0
@@ -234,7 +233,7 @@
 #define PD_NOTES_B3												7.12301E-20
 /*****************************************************************************/
 #define CONFIG_USING_DEFAULT_SCHEME								1//是能预设模式
-#define CONFIG_MAX_SCHEME_NAME_SIZE								45//方案名称长度
+#define CONFIG_MAX_SCHEME_NAME_SIZE								40//方案名称长度
 /******************************************************************************/
 #define POWER_REAL_CH0_5P										200
 #define POWER_REAL_CH0_10P										400

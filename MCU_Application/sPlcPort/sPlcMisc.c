@@ -242,12 +242,7 @@ static void SystemClock_Reset(void){//复位系统时钟
 	}
 }
 
-void spkTest(void){
-	setLoudspeakerVolume(50);
-	setLoudspeakerFreq(1500);
-	setLoudspeakerPower(true);
-	while(1);
-}
+
 void resetInit(void){//复位后初始化
 	HAL_DeInit();
 	//复位RCC时钟
@@ -288,6 +283,11 @@ void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
 	printf("%s,%d,%s:set aim pwm freq:%d\n",__FILE__, __LINE__, __func__, freq);
 #endif
 }
+void initLoudspeaker(void){//喇叭初始化
+	setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
+	HAL_TIM_Base_Start(&htim7);
+	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+}
 void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 	float32_t f1;
 	if(freq > 4500){
@@ -298,7 +298,7 @@ void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 	}
 	f1 = HAL_RCC_GetPCLK1Freq() / sizeof(audioSineTable) * 2 / freq;
 	htim7.Instance = TIM7;
-	htim7.Init.Prescaler = 1;
+	htim7.Init.Prescaler = 8;
 	htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
 	htim7.Init.Period = (uint16_t)f1;
 	htim7.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -316,7 +316,7 @@ void setLoudspeakerVolume(int16_t volume){//设置喇叭音量
 	fvolume = linearToLog(volume);
 	for(i = 0;i < 256;i ++){
 		ftemp = i * 0.0246374;//当i =127时,表示为180度,由于sin()是弧度制,所以需要转换
-		audioSineTable[i] = (uint16_t)(volume * 16 * ((1.0F + arm_sin_f32(ftemp)) * 256.0F))  ;//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
+		audioSineTable[i] = (uint16_t)(fvolume * 16 * ((1.0F + arm_sin_f32(ftemp)) * 256.0F))  ;//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
 	}
 #if CONFIG_DEBUG_SPK == 1
 	printf("%s,%d,%s:audio wave table initialization done...\n",__FILE__, __LINE__, __func__);
@@ -465,13 +465,13 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 	if(LD(SPCOIL_BEEM_ENABLE)){
 		switch(NVRAM0[SPREG_BEEM_MODE]){//模式
 			case BEEM_MODE_0:{
-				if(LD(SPCOIL_BEEM_BUSY) != 1){//如果音频无输出-> 有输出
+				if(LDB(SPCOIL_BEEM_BUSY)){//如果音频无输出-> 有输出
 					setLoudspeakerPower(true);//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
 				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
 					setLoudspeakerPower(false);//停止音频
-					setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 					setLoudspeakerPower(true);//启动蜂鸣器
 				}
@@ -485,7 +485,7 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 					}
 					if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
 						setLoudspeakerPower(false);//停止音频
-						setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+						setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 						NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 						setLoudspeakerPower(true);//启动蜂鸣器
 					}
@@ -499,7 +499,7 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 			case BEEM_MODE_2:{//模式2 长间隔 激光发射音		
 				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
 					setLoudspeakerPower(false);//停止音频
-					setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 					setLoudspeakerPower(true);//启动蜂鸣器
 				}
@@ -519,25 +519,33 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 			case BEEM_MODE_3:{//模式3 滴滴两下一停 报警音
 				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
 					setLoudspeakerPower(false);//停止音频
-					setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+					setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 					setLoudspeakerPower(true);//启动蜂鸣器
 				}				
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
-					setLoudspeakerPower(true);//启动音频
-					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					if(LDB(SPCOIL_BEEM_BUSY)){
+						setLoudspeakerPower(true);//启动音频
+						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					}
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
-					setLoudspeakerPower(false);//启动音频
-					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+					if(LD(SPCOIL_BEEM_BUSY)){
+						setLoudspeakerPower(false);//启动音频
+						RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+					}
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100 && NVRAM0[SPREG_BEEM_COUNTER] < 150){//1
-					setLoudspeakerPower(true);//启动音频
-					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					if(LDB(SPCOIL_BEEM_BUSY)){
+						setLoudspeakerPower(true);//启动音频
+						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					}
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 150 && NVRAM0[SPREG_BEEM_COUNTER] < 250){//0
-					setLoudspeakerPower(false);//启动音频
-					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+					if(LD(SPCOIL_BEEM_BUSY)){
+						setLoudspeakerPower(false);//启动音频
+						RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+					}
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 250){//停1秒
 					NVRAM0[SPREG_BEEM_COUNTER] = 0xffff;
@@ -548,9 +556,11 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 		}
 	}
 	else{
-		setLoudspeakerPower(false);//启动音频
-		RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
-		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
+		if(LD(SPCOIL_BEEM_BUSY)){
+			setLoudspeakerPower(false);//启动音频
+			RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+			NVRAM0[SPREG_BEEM_COUNTER]  = 0;
+		}
 	}
 }
 void sPlcAimLoop(void){//AIM轮询程序
@@ -559,8 +569,10 @@ void sPlcAimLoop(void){//AIM轮询程序
 		SSET(SPCOIL_AIM_BUSY);
 	}
 	else{
-		setAimBrightness(0);
-		RRES(SPCOIL_AIM_BUSY);
+		if(LD(SPCOIL_AIM_BUSY)){
+			setAimBrightness(0);
+			RRES(SPCOIL_AIM_BUSY);
+		}
 	}
 }
 //加入以下代码,支持printf函数,而不需要选择MicroLIB

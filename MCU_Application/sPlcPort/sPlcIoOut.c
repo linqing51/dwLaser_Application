@@ -129,7 +129,7 @@ void outputRefresh(void){//ÉèÖÃÊä³öIO
 		printf("sPlcIoOut->outputRefresh:SET Y8 ERR LED\n");
 #endif
 	}
-	if(LDN(Y_RUN_LED)){
+	if(LDN(Y_ERR_LED)){
 		HAL_GPIO_WritePin(SYS_LED_ERR_GPIO_Port, SYS_LED_ERR_Pin, GPIO_PIN_SET);
 #if CONFIG_DEBUG_APP == 1
 		printf("sPlcIoOut->outputRefresh:RESET Y8 ERR LED\n");

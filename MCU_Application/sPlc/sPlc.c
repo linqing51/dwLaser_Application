@@ -353,6 +353,9 @@ void sPlcInit(void){//软逻辑初始化
 	printf("sPlc->sPlcInit:Start splc timer init......\n");
 #endif
 	initSplcTimer();//初始化硬件计时器模块 启动计时器
+#if CONFIG_SPLC_USING_SPK == 1	
+	initLoudspeaker();
+#endif
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	sPlcEnterTime = HAL_GetTick();
@@ -401,7 +404,7 @@ void sPlcProcessEnd(void){//sPLC轮询结束
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
 	outputRefresh();//更新Y口输出
 #endif
-#if CONFIG_SPLC_USING_BEEM == 1
+#if CONFIG_SPLC_USING_SPK == 1
 	sPlcLoudspeakerLoop();
 #endif
 #if	CONFIG_SPLC_USING_LEDAIM == 1
