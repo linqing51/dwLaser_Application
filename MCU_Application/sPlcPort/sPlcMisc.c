@@ -159,15 +159,19 @@ static int16_t logToLinear(float32_t volume){//对数音量转化为线性音量
 #endif
     return lineVolume;  
 }
-static void setLoudspeakerPower(uint8_t st){//打开喇叭功放
+void setLoudspeakerPower(uint8_t st){//打开喇叭功放
 	if(st){
-		HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);//高电平功放芯片打开
+		HAL_TIM_Base_Start(&htim7);
+		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+		//HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);//高电平功放芯片打开
 #if CONFIG_DEBUG_SPK == 1
 		printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	else{
-		HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_RESET);//高电平功放芯片打开
+		HAL_TIM_Base_Stop(&htim7);
+		HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
+		//HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_RESET);//高电平功放芯片打开
 #if CONFIG_DEBUG_SPK == 1
 		printf("%s,%d,%s:set loadspeaker off!\n",__FILE__, __LINE__, __func__);
 #endif
@@ -284,9 +288,11 @@ void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
 #endif
 }
 void initLoudspeaker(void){//喇叭初始化
+	HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);
+	setLoudspeakerFreq(CONFIG_SPLC_DEFAULT_SPK_FREQ);
 	setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-	HAL_TIM_Base_Start(&htim7);
-	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+	//HAL_TIM_Base_Start(&htim7);
+	//HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 }
 void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 	float32_t f1;
@@ -303,20 +309,35 @@ void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 	htim7.Init.Period = (uint16_t)f1;
 	htim7.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+	HAL_TIM_Base_Stop(&htim7);
+	HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
 	if (HAL_TIM_Base_Init(&htim7) != HAL_OK){
+		printf("%s,%d,%s:tim7 init fail!\n",__FILE__, __LINE__, __func__);
 		Error_Handler();
 	}
 #if CONFIG_DEBUG_SPK == 1
 	printf("%s,%d,%s:set audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
 #endif
+	HAL_TIM_Base_Start(&htim7);
+	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 }
 void setLoudspeakerVolume(int16_t volume){//设置喇叭音量
 	int16_t i;
-	float32_t  ftemp,fvolume = 0;
+	float64_t  ftemp,fvolume = 0;
+	float64_t piStep;
 	fvolume = linearToLog(volume);
+	fvolume = 1;
+	piStep = 2.0F * PI / 256.0F;
 	for(i = 0;i < 256;i ++){
-		ftemp = i * 0.0246374;//当i =127时,表示为180度,由于sin()是弧度制,所以需要转换
-		audioSineTable[i] = (uint16_t)(fvolume * 16 * ((1.0F + arm_sin_f32(ftemp)) * 256.0F))  ;//1241.212是比例,等于4096/3.3   //(uint16_t)((sin(jiaodu)*2048.00)+2048);     //            
+		ftemp = 1.0F + arm_sin_f32(i * piStep + PI + (PI /2));
+		ftemp = fvolume * ftemp * 2048.0F;
+		if(ftemp >= 4095.0F){
+			ftemp = 4095.0F;
+		}
+		if(ftemp < 0){
+			ftemp = 0;
+		}
+		audioSineTable[i] = (uint16_t)(ftemp);            
 	}
 #if CONFIG_DEBUG_SPK == 1
 	printf("%s,%d,%s:audio wave table initialization done...\n",__FILE__, __LINE__, __func__);
@@ -479,7 +500,7 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 			}
 			case BEEM_MODE_1:{//模式1 声光同步
 				if(GET_LASER_PWM() & 0X01){//LT3763 ON
-					if(LD(SPCOIL_BEEM_BUSY) != 1){//如果PWM无输出-> 有输出
+					if(LDB(SPCOIL_BEEM_BUSY)){//如果PWM无输出-> 有输出
 						setLoudspeakerPower(true);//启动音频
 						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 					}
@@ -491,8 +512,11 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 					}
 				}
 				else{
-					setLoudspeakerPower(false);//启动音频
-					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+					if(LD(SPCOIL_BEEM_BUSY)){
+						setLoudspeakerPower(false);//启动音频
+						RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器	
+					}
+
 				}
 				break;
 			}
@@ -564,15 +588,13 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 	}
 }
 void sPlcAimLoop(void){//AIM轮询程序
-	if(LD(SPCOIL_AIM_ENABEL) && (NVRAM0[DM_AIM_BRG] > 0)){
+	if(LDP(SPCOIL_AIM_ENABEL) && (NVRAM0[DM_AIM_BRG] > 0)){
 		setAimBrightness(NVRAM0[DM_AIM_BRG]);
 		SSET(SPCOIL_AIM_BUSY);
 	}
-	else{
-		if(LD(SPCOIL_AIM_BUSY)){
-			setAimBrightness(0);
-			RRES(SPCOIL_AIM_BUSY);
-		}
+	if(LDN(SPCOIL_AIM_ENABEL)){
+		setAimBrightness(0);
+		RRES(SPCOIL_AIM_BUSY);
 	}
 }
 //加入以下代码,支持printf函数,而不需要选择MicroLIB

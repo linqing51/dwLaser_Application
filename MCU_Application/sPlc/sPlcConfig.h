@@ -2,16 +2,16 @@
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
 #define CONFIG_DEBUG_CHARGE										0//调试充电
-#define CONFIG_DEBUG_DAC										1//调试DAC驱动
-#define CONFIG_DEBUB_ADC										1//调试ADC驱动
-#define CONFIG_DEBUG_EPROM										1//调试EPROM驱动
-#define CONFIG_DEBUG_IO											1//调试IO
+#define CONFIG_DEBUG_DAC										0//调试DAC驱动
+#define CONFIG_DEBUB_ADC										0//调试ADC驱动
+#define CONFIG_DEBUG_EPROM										0//调试EPROM驱动
+#define CONFIG_DEBUG_IO											0//调试IO
 #define CONFIG_DEBUG_SPK										1//调试蜂鸣器驱动
-#define CONFIG_DEBUG_LED										1//调试指示灯驱动
-#define CONFIG_DEBUG_AIM										1//调试指示光驱动
-#define CONFIG_DEBUG_LASER										1//调试LASER驱动
-#define CONFIG_DEBUG_SPLC										1//调试SPLC命令
-#define CONFIG_DEBUG_APP										1//调试应用程序
+#define CONFIG_DEBUG_LED										0//调试指示灯驱动
+#define CONFIG_DEBUG_AIM										0//调试指示光驱动
+#define CONFIG_DEBUG_LASER										0//调试LASER驱动
+#define CONFIG_DEBUG_SPLC										0//调试SPLC命令
+#define CONFIG_DEBUG_APP										0//调试应用程序
 /*****************************************************************************/
 #define STM32_UNIQUE_ID_SIZE 									12//MCU序列号  8*12=96Bit
 #define BOOTLOADER_VER											0x00010001//版本
@@ -33,8 +33,8 @@
 #define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式
 /*****************************************************************************/				
 #define CONFIG_SPLC_USING_SPK									1//使能板载扬声器
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ							4000L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_SPK_FREQ								2000L//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ							3000//蜂鸣器默认频率
+#define CONFIG_SPLC_DEFORM_SPK_FREQ								4000L//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
 #define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
@@ -188,7 +188,7 @@
 #define CONFIG_MAX_LASER_ENERGY_INTERVAL						200
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL						30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL						10
-#define CONFIG_BEEM_ENERGY_INTERVAL_TIME						250//变音持续时间
+#define CONFIG_BEEM_ENERGY_INTERVAL_TIME						300//变音持续时间
 
 #define CONFIG_MAX_AIM_BRG										100//红光最大调光占空比
 #define CONFIG_MIN_AIM_BRG										1//红光最小调光占空比
