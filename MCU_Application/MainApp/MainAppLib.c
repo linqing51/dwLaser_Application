@@ -49,6 +49,16 @@ void loadDefault(void){//恢复默认值
 	NVRAM0[DM_SCHEME_NUM] = 0;
 	FDSAV();
 }
+void lockPreScheme(void){//恢复预设方案
+	uint8_t i;	
+	for(i = 0;i <= 10;i ++){
+		NVRAM0[DM_SCHEME_NUM] = i;
+		defaultScheme();
+		saveScheme();
+	}
+	NVRAM0[DM_SCHEME_NUM] = 0;
+	FDSAV();
+}
 uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 	uint16_t temp;
 	LcdBrg = 100 - LcdBrg; 
@@ -62,7 +72,6 @@ uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 }
 
 void defaultScheme(void){//当前选择方案恢复默认值						
-	char *psrc, *pdist;
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d", (NVRAM0[DM_SCHEME_NUM] + 1));		
 	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
@@ -79,7 +88,7 @@ void defaultScheme(void){//当前选择方案恢复默认值
 	NVRAM0[EM_LASER_DERMA_POSWIDTH]	= 550;//DERMA正脉宽
 	NVRAM0[EM_LASER_DERMA_NEGWIDTH]	= 650;//DERMA负脉宽
 	NVRAM0[EM_LASER_DERMA_SPOT_SIZE] = DERMA_SPOT_SIZE_0MM5;//DERMA光斑直径
-#if	CONFIG_SPLC_USING_DEFAULT_SCHEME == 1
+#if	CONFIG_APP_USING_PRESCHEME == 1
 	switch(NVRAM0[DM_SCHEME_NUM]){
 		case 0:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S0);
@@ -106,21 +115,21 @@ void defaultScheme(void){//当前选择方案恢复默认值
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S3);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
-			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 3000;//Ton 3S
 			break;
 		}
 		case 4:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S4);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
-			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 3000;//Ton 3S
 			break;
 		}
 		case 5:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S5);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
-			NVRAM0[EM_LASER_GP_POSWIDTH]= 3000;//Ton 3S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 3000;//Ton 3S
 			break;
 		}
 		case 6:{

@@ -32,9 +32,13 @@
 #define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式
 /*****************************************************************************/				
-#define CONFIG_SPLC_USING_SPK									1//使能板载蜂鸣器
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ							2000L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_SPK_FREQ								1000L//蜂鸣器变声频率
+#define CONFIG_SPLC_USING_SPK									1//使能板载扬声器
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ							4000L//蜂鸣器默认频率
+#define CONFIG_SPLC_DEFORM_SPK_FREQ								2000L//蜂鸣器变声频率
+/*****************************************************************************/
+#define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
+#define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
+#define CONFIG_INPUT_FILTER_TIME								8//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LEDAIM								1	
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
@@ -44,22 +48,15 @@
 #define CONFIG_SPLC_GLED_OFF_DC									0//绿灯亮度
 #define CONFIG_SPLC_BLED_ON_DC									15//蓝灯亮度
 #define CONFIG_SPLC_BLED_OFF_DC									0//蓝灯亮度
-/*****************************************************************************/
 #define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能
-/*****************************************************************************/
 #define CONFIG_SPLC_FUNTEST										0//功能指令测试
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT										1//检查地址范围
 #define CONFIG_SPLC_DEV											0x0A01//设备号
 #define CONFIG_SPLC_CLEAR_CODE									0xA58E
 #define CONFIG_SOFTPLC_TICK										200L//5mS
-#define CONFIG_INPUT_FILTER_TIME								8//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_INPUT								1//输入IO刷新启用
-/*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_OUTPUT								1//输出IO刷新启用
-/*****************************************************************************/
-#define CONFIG_SPLC_USING_DEFAULT_SCHEME						1//是能预设模式
+#define CONFIG_APP_USING_PRESCHEME								1//是能预设模式
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检

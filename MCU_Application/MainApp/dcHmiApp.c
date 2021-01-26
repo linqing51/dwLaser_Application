@@ -1822,16 +1822,16 @@ static void laserStateLoop(void){//激光状态轮询
 void dcHmiLoop(void){//HMI轮训程序	
 #if CONFIG_DEBUG_APP == 1
 	if(LDP(R_FOOTSWITCH_PLUG)){
-		printf("dcHmiApp->dcHmiLoop:Footswitch  Plug\n");
+		printf("%s,%d,%s:Footswitch Plug!\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDN(R_FOOTSWITCH_PLUG)){
-		printf("dcHmiApp->dcHmiLoop:Footswitch  UnPlug\n");
+		printf("%s,%d,%s:Footswitch UnPlug!\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDP(R_FOOTSWITCH_PRESS)){
-		printf("dcHmiApp->dcHmiLoop:Footswitch  Pressed\n");
+		printf("%s,%d,%s:Footswitch Pressed!\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDN(R_FOOTSWITCH_PRESS)){
-		printf("dcHmiApp->dcHmiLoop:Footswitch  UnPressed\n");
+		printf("%s,%d,%s:Footswitch UnPressed!\n",__FILE__, __LINE__, __func__);
 	}
 #endif
 	temperatureLoop();
@@ -1946,12 +1946,12 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetTextValue(GDDC_PAGE_PASSCODE, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
 			SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
 
-			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
-			SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
-			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
-			SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
-			SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
-			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, "");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
 					
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE, false);
@@ -2287,8 +2287,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			standbyKeyEnableSet(false);//禁止Standby触摸
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//设置喇叭声音模式
 			NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
-			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME]; //设置喇叭声音音量
-			//NVRAM0[SPREG_BEEM_COUNTER] = 0;
 			SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 		}
 		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//点击OPTION
@@ -2328,7 +2326,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(R_FOOTSWITCH_PRESS)){//检测脚踏踩下
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
-				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
 				NVRAM0[SPREG_BEEM_COUNTER] = 0;
 				SSET(SPCOIL_BEEM_ENABLE);
@@ -2339,8 +2336,8 @@ void dcHmiLoop(void){//HMI轮训程序
 				LaserTimer_Select = (int8_t)NVRAM0[EM_LASER_SELECT];
 				LaserTimer_Mode = (int8_t)NVRAM0[EM_LASER_PULSE_MODE];
 #if CONFIG_DEBUG_APP == 1
-				printf("dcHmiApp->dcHmiLoop:Set laser channel=%d\n", LaserTimer_Select);
-				printf("dcHmiApp->dcHmiLoop:Set laser mode=%d\n", LaserTimer_Mode);
+				printf("%s,%d,%s:set laser channel=%d\n",__FILE__, __LINE__, __func__, LaserTimer_Select);
+				printf("%s,%d,%s:set laser mode=%d\n",__FILE__, __LINE__, __func__, LaserTimer_Mode);
 #endif
 				switch(LaserTimer_Mode){
 					case LASER_MODE_SP:{
@@ -2367,10 +2364,10 @@ void dcHmiLoop(void){//HMI轮训程序
 					default:break;
 				}
 #if CONFIG_DEBUG_APP == 1
-				printf("dcHmiApp->dcHmiLoop:Set LaserTimer_TMate=%d\n", LaserTimer_TMate);
-				printf("dcHmiApp->dcHmiLoop:Set LaserTimer_TOvertime=%d\n", LaserTimer_TOvertime);
-				printf("dcHmiApp->dcHmiLoop:Set LaserTimer_PMate=%d\n", LaserTimer_PMate);
-				printf("dcHmiApp->dcHmiLoop:Set LaserTimer_PMate=%d\n", LaserTimer_PMate);
+				printf("%s,%d,%s:set LaserTimer_TMate=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TMate);
+				printf("%s,%d,%s:set LaserTimer_TOvertime=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TOvertime);
+				printf("%s,%d,%s:set LaserTimer_PMate=%d\n", __FILE__, __LINE__, __func__, LaserTimer_PMate);
+				printf("%s,%d,%s:set LaserTimer_PMate=%d\n", __FILE__, __LINE__, __func__, LaserTimer_PMate);
 #endif
 				//校正输出功率
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
@@ -2379,11 +2376,14 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_3] = fitLaserToCode(3, NVRAM0[EM_LASER_POWER_CH3], &deviceConfig);
 				NVRAM0[SPREG_DAC_4] = fitLaserToCode(4, NVRAM0[EM_LASER_POWER_CH4], &deviceConfig);
 #if CONFIG_DEBUG_APP == 1
-				printf("dcHmiApp->dcHmiLoop:Set SPEG_DAC_0=%d\n", (uint16_t)NVRAM0[SPREG_DAC_0]);
-				printf("dcHmiApp->dcHmiLoop:Set SPEG_DAC_1=%d\n", (uint16_t)NVRAM0[SPREG_DAC_1]);
-				printf("dcHmiApp->dcHmiLoop:Set SPEG_DAC_2=%d\n", (uint16_t)NVRAM0[SPREG_DAC_2]);
-				printf("dcHmiApp->dcHmiLoop:Set SPEG_DAC_3=%d\n", (uint16_t)NVRAM0[SPREG_DAC_3]);
-				printf("dcHmiApp->dcHmiLoop:Set SPEG_DAC_4=%d\n", (uint16_t)NVRAM0[SPREG_DAC_4]);
+				printf("%s,%d,%s:set SPEG_DAC_0=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_0]);
+				printf("%s,%d,%s:set SPEG_DAC_1=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_1]);
+				printf("%s,%d,%s:set SPEG_DAC_2=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_2]);
+				printf("%s,%d,%s:set SPEG_DAC_3=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_3]);
+				printf("%s,%d,%s:set SPEG_DAC_4=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_4]);
+				printf("%s,%d,%s:set SPEG_DAC_5=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_5]);
+				printf("%s,%d,%s:set SPEG_DAC_6=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_6]);
+				printf("%s,%d,%s:set SPEG_DAC_7=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_7]);
 #endif
 #if CONFIG_USING_SINGLE_WAVE == 1
 				UPDAC0();
@@ -2402,14 +2402,12 @@ void dcHmiLoop(void){//HMI轮训程序
 #endif				
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
-				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
 				SSET(SPCOIL_BEEM_ENABLE);
 #if CONFIG_DEBUG_APP == 1
-				printf("dcHmiApp->dcHmiLoop:Set Beem mode:%d\n", NVRAM0[SPREG_BEEM_MODE]);
-				printf("dcHmiApp->dcHmiLoop:Set Beem volume:%d\n", NVRAM0[SPREG_BEEM_VOLUME]);
-				printf("dcHmiApp->dcHmiLoop:Set Beem freq:%d\n", NVRAM0[SPREG_BEEM_FREQ]);
-				printf("dcHmiApp->dcHmiLoop:Set Beem on\n");
+				printf("%s,%d,%s:set Beem mode:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_MODE]);
+				printf("%s,%d,%s:set Beem freq:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_FREQ]);
+				printf("%s,%d,%s:set Beem on\n", __FILE__, __LINE__, __func__);
 #endif
 				//打开指示激光
 				SSET(SPCOIL_AIM_ENABEL);
@@ -2447,10 +2445,9 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_DONE){//参数载入完毕并停止蜂鸣器
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 		standbyKeyEnableSet(true);
-		//standbyKeyValue(true);
 		RRES(R_STANDBY_KEY_STNADBY_DOWN);
+		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;	
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_WAIT_TRIGGER){//等待触发激光	
@@ -2478,8 +2475,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			standbyKeyValue(false);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 #if CONFIG_DEBUG_APP == 1
-			printf("dcHmiApp->dcHmiLoop:Detect Fault,goto  FSMSTEP_STANDBY!\n");
-			printf("dcHmiApp->dcHmiLoop:Clear All DAC!\n");
+			printf("%s,%d,%s:detect fault,goto FSMSTEP_STANDBY!\n", __FILE__, __LINE__, __func__);
+			printf("%s,%d,%s:clear all dac!\n", __FILE__, __LINE__, __func__);
 #endif
 		}
 		else if(LD(R_STANDBY_KEY_STNADBY_UP)){//回到等待状态
@@ -2497,18 +2494,21 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(SPCOIL_AIM_ENABEL);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			standbyTouchEnable(true);
-			//standbyKeyEnableSet(true);
-			//standbyKeyValue(false);
+			standbyKeyEnableSet(true);
+			standbyKeyValue(false);
 			RRES(R_STANDBY_KEY_STNADBY_UP);
 			updateWarnMsgDisplay(MSG_NO_ERROR);//显示警告信息
 #if CONFIG_DEBUG_APP == 1
-				printf("dcHmiApp->dcHmiLoop:Set DAC0=%d\n", NVRAM0[SPREG_DAC_0]);
-				printf("dcHmiApp->dcHmiLoop:Set DAC1=%d\n", NVRAM0[SPREG_DAC_1]);
-				printf("dcHmiApp->dcHmiLoop:Set DAC2=%d\n", NVRAM0[SPREG_DAC_2]);
-				printf("dcHmiApp->dcHmiLoop:Set DAC3=%d\n", NVRAM0[SPREG_DAC_3]);
-				printf("dcHmiApp->dcHmiLoop:Set DAC4=%d\n", NVRAM0[SPREG_DAC_4]);
-				printf("dcHmiApp->dcHmiLoop:HMI_OPERA_STEP=%d\n", NVRAM0[EM_HMI_OPERA_STEP]);
-				printf("dcHmiApp->dcHmiLoop:Return Standby!\n");	
+				printf("%s,%d,%s:set DAC0 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_0]);
+				printf("%s,%d,%s:set DAC1 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_1]);
+				printf("%s,%d,%s:set DAC2 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_2]);
+				printf("%s,%d,%s:set DAC3 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_3]);
+				printf("%s,%d,%s:set DAC4 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_4]);
+				printf("%s,%d,%s:set DAC5 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_5]);
+				printf("%s,%d,%s:set DAC6 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_6]);
+				printf("%s,%d,%s:set DAC7 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_7]);
+				printf("%s,%d,%s:HMI_OPERA_STEP=%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_HMI_OPERA_STEP]);
+				printf("%s,%d,%s:Return Standby!\n", __FILE__, __LINE__, __func__);
 #endif					
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
@@ -2567,6 +2567,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			updateWarnMsgDisplay(MSG_NO_ERROR);
 #if CONFIG_DEBUG_APP == 1
 			printf("\r\r\r\n\n\n");
+			
 			printf("dcHmiApp->dcHmiLoop:Fault detect!, Stop Laser emit\n");
 			printf("dcHmiApp->dcHmiLoop:R_ESTOP=%d\n", 				LD(R_ESTOP));
 			printf("dcHmiApp->dcHmiLoop:R_INTERLOCK=%d\n", 			LD(R_INTERLOCK));

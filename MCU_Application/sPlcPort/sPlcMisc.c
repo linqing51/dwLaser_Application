@@ -307,7 +307,7 @@ void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 		Error_Handler();
 	}
 #if CONFIG_DEBUG_SPK == 1
-	printf("%s,%d,%s:Start audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
+	printf("%s,%d,%s:set audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
 #endif
 }
 void setLoudspeakerVolume(int16_t volume){//设置喇叭音量

@@ -280,6 +280,9 @@ void sPlcInit(void){//软逻辑初始化
 	printf("sPlc->sPlcInit:Start load Fdram......\n");
 #endif
 	loadFdram();//上电恢复FDRAM
+#if CONFIG_APP_USING_PRESCHEME == 1
+	lockPreScheme();//恢复预设方案
+#endif
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
 	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;

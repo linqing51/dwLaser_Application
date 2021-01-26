@@ -33,7 +33,7 @@
 #if CONFIG_USING_DCHMI_APP == 1
 #include "dcHmiApp.h"
 #endif
-#if CONFIG_SPLC_USING_DEFAULT_SCHEME == 1
+#if CONFIG_APP_USING_PRESCHEME == 1
 #include "preScheme.h"
 #endif
 /*****************************************************************************/
