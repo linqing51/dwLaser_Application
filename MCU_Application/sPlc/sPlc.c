@@ -271,14 +271,10 @@ void sPlcSpwmLoop(void){//SPWM轮询
 void sPlcInit(void){//软逻辑初始化
 	readStm32UniqueID();
 	//sPlcEpromTest();
-#if CONFIG_DEBUG_SPLC == 1
 	printf("\r\r\r\n\n\n");
-	printf("sPlc->sPlcInit:Start load Nvram......\n");
-#endif
+	printf("%s,%d,%s:start load Nvram......\n",__FILE__, __LINE__, __func__);
 	loadNvram();//上电恢复NVRAM
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start load Fdram......\n");
-#endif
+	printf("%s,%d,%s:start load Fdram......\n",__FILE__, __LINE__, __func__);
 	loadFdram();//上电恢复FDRAM
 #if CONFIG_APP_USING_PRESCHEME == 1
 	lockPreScheme();//恢复预设方案
@@ -301,23 +297,17 @@ void sPlcInit(void){//软逻辑初始化
 #endif
 
 #if CONFIG_SPLC_USING_IO_INPUT == 1
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start input init......\n");
-#endif	
+	printf("%s,%d,%s:start input init......\n",__FILE__, __LINE__, __func__);
 	inputInit();
 #endif
 
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start output init......\n");
-#endif	
+	printf("%s,%d,%s:start output init......\n",__FILE__, __LINE__, __func__);
 	outputInit();
 #endif
 
 #if CONFIG_SPLC_USING_DAC == 1	
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start Dac init......\n");
-#endif	
+	printf("%s,%d,%s:start Dac init......\n",__FILE__, __LINE__, __func__);
 	initChipDac();//初始化DAC模块
 	UPDAC0();
 	UPDAC1();
@@ -330,33 +320,25 @@ void sPlcInit(void){//软逻辑初始化
 #endif
 
 #if CONFIG_SPLC_USING_ADC == 1
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start Adc init......\n");
-#endif	
+	printf("%s,%d,%s:start adc init......\n",__FILE__, __LINE__, __func__);
 	initChipAdc();//初始化ADC模块
 #endif
 
-
 #if CONFIG_SPLC_USING_LASER == 1
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start laser timer init......\n");
-#endif
+	printf("%s,%d,%s:start laser timer init......\n",__FILE__, __LINE__, __func__);
 	sPlcLaserInit();
 #endif
 
 #if CONFIG_SPLC_USING_DK25L == 1
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start NFC init......\n");
-#endif
+	printf("%s,%d,%s:start NFC init......\n",__FILE__, __LINE__, __func__);
 	delayMs(100);
 	DL25L_Init();//打开中断后运行
 #endif
 
-#if CONFIG_DEBUG_SPLC == 1
-	printf("sPlc->sPlcInit:Start splc timer init......\n");
-#endif
+	printf("%s,%d,%s:start splc timer init......\n",__FILE__, __LINE__, __func__);
 	initSplcTimer();//初始化硬件计时器模块 启动计时器
 #if CONFIG_SPLC_USING_SPK == 1	
+	printf("%s,%d,%s:start loudspeaker dma init......\n",__FILE__, __LINE__, __func__);
 	initLoudspeaker();
 #endif
 }

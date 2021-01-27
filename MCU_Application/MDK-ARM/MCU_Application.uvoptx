@@ -205,21 +205,6 @@
           <WinNumber>1</WinNumber>
           <ItemText>audioSineTable,0x0A</ItemText>
         </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>htim7</ItemText>
-        </Ww>
-        <Ww>
-          <count>12</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>(char*)&amp;NVRAM0[EM_LASER_SCHEME_NAME]</ItemText>
-        </Ww>
-        <Ww>
-          <count>13</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[1378],0x0A</ItemText>
-        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>

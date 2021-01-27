@@ -92,6 +92,9 @@ static void dac8568_WriteDacRegister(uint8_t ch, uint16_t dat){//Ð´ÈëÊäÈë¼Ä´æÆ÷²
 
 void initChipDac(void){//DAC³õÊ¼»¯
 	dac8568_Init();
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:init dac done!\n",__FILE__, __LINE__, __func__);
+#endif
 }
 void UPDAC0(void){//Á¢¼´´ÓSPREG_DAC_0ÖÐ¸üÐÂDAC0
 	uint16_t temp;
@@ -101,8 +104,8 @@ void UPDAC0(void){//Á¢¼´´ÓSPREG_DAC_0ÖÐ¸üÐÂDAC0
 	if(temp <= CONFIG_MIN_DAC_CH0)
 		temp = CONFIG_MIN_DAC_CH0;
 	dac8568_WriteDacRegister(0x06, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC0=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac0=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void UPDAC1(void){//Á¢¼´´ÓSPREG_DAC_1¸üÐÂDAC1
@@ -113,8 +116,8 @@ void UPDAC1(void){//Á¢¼´´ÓSPREG_DAC_1¸üÐÂDAC1
 	if(temp <= CONFIG_MIN_DAC_CH1)
 		temp = CONFIG_MIN_DAC_CH1;
 	dac8568_WriteDacRegister(0x04, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC1=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac1=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void UPDAC2(void){
@@ -125,8 +128,8 @@ void UPDAC2(void){
 	if(temp <= CONFIG_MIN_DAC_CH2)
 		temp = CONFIG_MIN_DAC_CH2;
 	dac8568_WriteDacRegister(0x02, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC2=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac2=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void UPDAC3(void){
@@ -137,8 +140,8 @@ void UPDAC3(void){
 	if(temp <= CONFIG_MIN_DAC_CH3)
 		temp = CONFIG_MIN_DAC_CH3;
 	dac8568_WriteDacRegister(0x00, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC3=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac3=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void UPDAC4(void){
@@ -149,8 +152,8 @@ void UPDAC4(void){
 	if(temp <= CONFIG_MIN_DAC_CH4)
 		temp = CONFIG_MIN_DAC_CH4;
 	dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC4=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac4=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void UPDAC5(void){
@@ -161,8 +164,8 @@ void UPDAC5(void){
 	if(temp <= CONFIG_MIN_DAC_CH5)
 		temp = CONFIG_MIN_DAC_CH5;
 	//dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC5=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac5=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void UPDAC6(void){
@@ -173,8 +176,8 @@ void UPDAC6(void){
 	if(temp <= CONFIG_MIN_DAC_CH6)
 		temp = CONFIG_MIN_DAC_CH6;
 	//dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC6=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac6=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void UPDAC7(void){
@@ -185,8 +188,8 @@ void UPDAC7(void){
 	if(temp <= CONFIG_MIN_DAC_CH7)
 		temp = CONFIG_MIN_DAC_CH7;
 	//dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Update DAC7=%d\n", temp);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:update dac7=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
 void CLDAC(void){//Á¢¼´Çå¿ÕÈ«²¿DAC
@@ -198,8 +201,8 @@ void CLDAC(void){//Á¢¼´Çå¿ÕÈ«²¿DAC
 	dac8568_WriteDacRegister(0x05, 0);
 	dac8568_WriteDacRegister(0x06, 0);
 	dac8568_WriteDacRegister(0x07, 0);
-#if CONFIG_DEBUG_APP == 1
-	printf("dcHmiApp->dcHmiLoop:Clear all DAC\n");
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:clear all dac!\n",__FILE__, __LINE__, __func__);
 #endif
 }
 

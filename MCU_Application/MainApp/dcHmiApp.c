@@ -1563,7 +1563,7 @@ void dcHmiLoopInit(void){//初始化模块
 	loadDeviceLogInfo();
 	deviceLogInfo.powerUpCycle ++;
 	saveDeviceLogInfo();
-	printf("dcHmiApp->dcHmiLoopInit:Start hmi uart init......\n");
+	printf("%s,%d,%s:start hmi uart init......\n",__FILE__, __LINE__, __func__);
 	hmiUartInit();
 #endif
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
@@ -1896,7 +1896,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RESTORE_HMI){//等待HMI复位
 		T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_WAIT_HMI_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
-			printf("dcHmiApp->dcHmiLoop:Hmi delay done......\n");
+			printf("%s,%d,%s:hmi delay done......\n",__FILE__, __LINE__, __func__);
 			T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_WAIT_HMI_DELAY_TIME);
 			RRES(R_DCHMI_RESET_DOING);
 			SSET(R_DCHMI_RESET_DONE);	
@@ -1965,6 +1965,10 @@ void dcHmiLoop(void){//HMI轮训程序
 
 			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
+			//打开蜂鸣器
+			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
+			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
+			SSET(SPCOIL_BEEM_ENABLE);
 		}
 		else{
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;	
@@ -1975,10 +1979,6 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_WAIT_ENTER_PASSCODE){//等待开机密码输入
-		//打开蜂鸣器
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
-		NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
-		SSET(SPCOIL_BEEM_ENABLE);
 		T100MS(T100MS_ENTER_PASSCODE_DELAY, true, CONFIG_WAIT_PASSWORD_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_ENTER_PASSCODE_DELAY)){
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
@@ -2286,7 +2286,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			}
 			standbyKeyEnableSet(false);//禁止Standby触摸
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//设置喇叭声音模式
-			NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
+			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 			SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 		}
 		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//点击OPTION
@@ -2326,8 +2326,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(R_FOOTSWITCH_PRESS)){//检测脚踏踩下
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
-				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
-				NVRAM0[SPREG_BEEM_COUNTER] = 0;
+				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 				SSET(SPCOIL_BEEM_ENABLE);
 				updateWarnMsgDisplay(MSG_FOOT_DEPRESSED);//显示错误信息
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_ERROR;	
@@ -2402,7 +2401,7 @@ void dcHmiLoop(void){//HMI轮训程序
 #endif				
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
-				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
+				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 				SSET(SPCOIL_BEEM_ENABLE);
 #if CONFIG_DEBUG_APP == 1
 				printf("%s,%d,%s:set Beem mode:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_MODE]);
@@ -2567,26 +2566,24 @@ void dcHmiLoop(void){//HMI轮训程序
 			updateWarnMsgDisplay(MSG_NO_ERROR);
 #if CONFIG_DEBUG_APP == 1
 			printf("\r\r\r\n\n\n");
-			
-			printf("dcHmiApp->dcHmiLoop:Fault detect!, Stop Laser emit\n");
-			printf("dcHmiApp->dcHmiLoop:R_ESTOP=%d\n", 				LD(R_ESTOP));
-			printf("dcHmiApp->dcHmiLoop:R_INTERLOCK=%d\n", 			LD(R_INTERLOCK));
-			printf("dcHmiApp->dcHmiLoop:R_FOOTSWITCH_PLUG=%d\n", 	LD(R_FOOTSWITCH_PLUG));
-			printf("dcHmiApp->dcHmiLoop:R_FIBER_PROBE=%d\n", 		LD(R_FIBER_PROBE));
-			printf("dcHmiApp->dcHmiLoop:R_RFID_PASS=%d\n", 			LD(R_RFID_PASS));
-			printf("dcHmiApp->dcHmiLoop:R_LASER_TEMP_HIGH=%d\n", 	LD(R_LASER_TEMP_HIGH));
-			printf("dcHmiApp->dcHmiLoop:R_MCU_TEMP_LOW=%d\n", 		LD(R_MCU_TEMP_LOW));
-			
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_0=%d\n", NVRAM0[SPREG_ADC_0]);//ADC0采集值 LPA_ISMON0     1320
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_1=%d\n", NVRAM0[SPREG_ADC_1]);//ADC1采集值 LASER_NTC
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_2=%d\n", NVRAM0[SPREG_ADC_2]);//ADC2采集值 LASER_PD
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_3=%d\n", NVRAM0[SPREG_ADC_3]);//ADC3采集值 FIBER_PD
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_4=%d\n", NVRAM0[SPREG_ADC_4]);//ADC4采集值 LPC_ISMON0
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_5=%d\n", NVRAM0[SPREG_ADC_5]);//ADC5采集值 LPB_ISMON1
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_6=%d\n", NVRAM0[SPREG_ADC_6]);//ADC6采集值 LPB_ISMON0
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_7=%d\n", NVRAM0[SPREG_ADC_7]);//ADC7采集值 LPA_ISMON1
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_8=%d\n", NVRAM0[SPREG_ADC_8]);//ADC8采集值 片内温度传感器
-			printf("dcHmiApp->dcHmiLoop:SPREG_ADC_9=%d\n", NVRAM0[SPREG_ADC_9]);//ADC9采集值 片内基准源
+			printf("%s,%d,%s:fault detect!, stop Laser emit!\n", __FILE__, __LINE__, __func__);
+			printf("%s,%d,%s:R_ESTOP=%d\n", __FILE__, __LINE__, __func__, LD(R_ESTOP));
+			printf("%s,%d,%s:R_INTERLOCK=%d\n", __FILE__, __LINE__, __func__, LD(R_INTERLOCK));
+			printf("%s,%d,%s:R_FOOTSWITCH_PLUG=%d\n", __FILE__, __LINE__, __func__, LD(R_FOOTSWITCH_PLUG));
+			printf("%s,%d,%s:R_FIBER_PROBE=%d\n", __FILE__, __LINE__, __func__, LD(R_FIBER_PROBE));
+			printf("%s,%d,%s:R_RFID_PASS=%d\n", __FILE__, __LINE__, __func__, LD(R_RFID_PASS));
+			printf("%s,%d,%s:R_LASER_TEMP_HIGH=%d\n", __FILE__, __LINE__, __func__, LD(R_LASER_TEMP_HIGH));
+			printf("%s,%d,%s:R_MCU_TEMP_LOW=%d\n", __FILE__, __LINE__, __func__, LD(R_MCU_TEMP_LOW));		
+			printf("%s,%d,%s:SPREG_ADC_0=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_0]);
+			printf("%s,%d,%s:SPREG_ADC_1=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_1]);
+			printf("%s,%d,%s:SPREG_ADC_2=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_2]);
+			printf("%s,%d,%s:SPREG_ADC_3=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_3]);
+			printf("%s,%d,%s:SPREG_ADC_4=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_4]);
+			printf("%s,%d,%s:SPREG_ADC_5=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_5]);
+			printf("%s,%d,%s:SPREG_ADC_6=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_6]);
+			printf("%s,%d,%s:SPREG_ADC_7=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_7]);
+			printf("%s,%d,%s:SPREG_ADC_8=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_8]);
+			printf("%s,%d,%s:SPREG_ADC_9=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_9]);
 #endif
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
@@ -2596,7 +2593,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 				standbyKeyEnableSet(true);
-				printf("dcHmiApp->dcHmiLoop:Hand switch mode,Footswitch press, Stop Laser emit req!!!\n");
+				printf("%s,%d,%s:hand switch mode,footswitch press,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
 			}
 		}
 		else{
@@ -2606,7 +2603,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 				standbyKeyEnableSet(true);
-				printf("dcHmiApp->dcHmiLoop:Foot switch mode,Footswitch unpress, Stop Laser emit req!!!\n");
+				printf("%s,%d,%s:foot switch mode,footswitch unpress,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
 			}
 		}
 		return;

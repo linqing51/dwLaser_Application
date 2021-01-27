@@ -225,7 +225,7 @@ void STLAR(void){//开始发射脉冲
 }
 void EDLAR(void){//停止发射脉冲
 #if CONFIG_DEBUG_LASER == 1
-	printf("sPlc->sPlcLaser:Laser stop!\n");
+	printf("%s,%d,%s:laser stop!",__FILE__, __LINE__, __func__);
 #endif
 	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
 	HAL_TIM_Base_Stop_IT(&htim10);//停止计时器
@@ -237,7 +237,7 @@ void EDLAR(void){//停止发射脉冲
 }
 void sPlcLaserInit(void){//激光脉冲功能初始化
 #if CONFIG_DEBUG_LASER == 1
-	printf("sPlc->sPlcLaser:Laser init!\n");
+	printf("%s,%d,%s:laser init!\n",__FILE__, __LINE__, __func__);
 #endif	
 	SET_LASER_PWM(GPIO_PIN_RESET);
 	//设定计时器

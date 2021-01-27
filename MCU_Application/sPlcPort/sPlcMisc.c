@@ -1,3 +1,6 @@
+//BUG ³ÖÐø¼ä¶Ï·¢ÉùÊ±³öÏÖÉùÒô¶ÌÔÝÍ£¶ÙÎÊÌâÔ­ÒòÎ´Öª
+
+
 #include "sPlcMisc.h"
 /*****************************************************************************/
 extern UART_HandleTypeDef huart1;
@@ -108,13 +111,16 @@ const uint32_t crc32Tab[] = { /* CRC polynomial 0xedb88320 */
 static uint16_t oldcrc16;
 static uint32_t oldcrc32;
 static int16_t aimBrg = -1;
+static int8_t LoudspeakerEnable = -1;//À®°ÈÊ¹ÄÜ×´Ì¬
+static int16_t LoudspeakerFreq = -1;//À®°ÈÆµÂÊ
+static int8_t LoudspeakerVolume = -1;//À®°ÈÒôÁ¿
 uint16_t audioSineTable[256] = {0};
 // convert volume steps to natural log scale  
 // change this value to change volume scaling  
 static const float32_t dBPerStep = 0.50f;  
 // shouldn't need to touch these  
 static const float32_t dBConvert = -dBPerStep * 2.302585093f / 20.0f;  
-static const float32_t dBConvertInverse = 1.0f / dBConvert;  
+static const float32_t dBConvertInverse = 1.0f / dBConvert;
 static float32_t linearToLog(int16_t volume){//ÏßÐÔÒôÁ¿×ª»¯Îª¶ÔÊýÒôÁ¿  
     // float v = volume ? exp(float(100 - volume) * dBConvert) : 0;  
     // LOGD("linearToLog(%d)=%f", volume, v);  
@@ -159,22 +165,24 @@ static int16_t logToLinear(float32_t volume){//¶ÔÊýÒôÁ¿×ª»¯ÎªÏßÐÔÒôÁ¿
 #endif
     return lineVolume;  
 }
-void setLoudspeakerPower(uint8_t st){//´ò¿ªÀ®°È¹¦·Å
-	if(st){
-		HAL_TIM_Base_Start(&htim7);
-		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
-		//HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);//¸ßµçÆ½¹¦·ÅÐ¾Æ¬´ò¿ª
-#if CONFIG_DEBUG_SPK == 1
-		printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
-#endif
-	}
-	else{
+void setLoudspeakerDisable(void){//¹Ø±ÕÀ®°ÈÊý¾ÝÁ÷
+	if(LoudspeakerEnable != false){
 		HAL_TIM_Base_Stop(&htim7);
 		HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
-		//HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_RESET);//¸ßµçÆ½¹¦·ÅÐ¾Æ¬´ò¿ª
 #if CONFIG_DEBUG_SPK == 1
 		printf("%s,%d,%s:set loadspeaker off!\n",__FILE__, __LINE__, __func__);
 #endif
+		LoudspeakerEnable = false;
+	}
+}
+void setLoudspeakerEnable(void){//´ò¿ªÀ®°ÈÊý¾ÝÁ÷
+	if(LoudspeakerEnable != true){
+		HAL_TIM_Base_Start(&htim7);
+		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+#if CONFIG_DEBUG_SPK == 1
+		printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
+#endif
+		LoudspeakerEnable = true;
 	}
 }
 static void softDelayMs(uint16_t ms){//Èí¼þÑÓÊ±
@@ -289,59 +297,68 @@ void setLedAimFreq(int16_t freq){//ÉèÖÃLEDµÆºÍÃé×¼¹âÉÁË¸ÆµÂÊ
 }
 void initLoudspeaker(void){//À®°È³õÊ¼»¯
 	HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);
-	setLoudspeakerFreq(CONFIG_SPLC_DEFAULT_SPK_FREQ);
 	setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-	//HAL_TIM_Base_Start(&htim7);
-	//HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+	RRES(SPCOIL_BEEM_ENABLE);
+	setLoudspeakerDisable();
+	setLoudspeakerFreq(CONFIG_SPLC_DEFAULT_SPK_FREQ);
 }
 void setLoudspeakerFreq(int16_t freq){//ÉèÖÃ·äÃùÆ÷ÆµÂÊ
 	float32_t f1;
-	if(freq > 4500){
-		freq = 4500;
-	}
-	if(freq < 1000){
-		freq = 1000;
-	}
-	f1 = HAL_RCC_GetPCLK1Freq() / sizeof(audioSineTable) * 2 / freq;
-	htim7.Instance = TIM7;
-	htim7.Init.Prescaler = 8;
-	htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim7.Init.Period = (uint16_t)f1;
-	htim7.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-	HAL_TIM_Base_Stop(&htim7);
-	HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
-	if (HAL_TIM_Base_Init(&htim7) != HAL_OK){
-		printf("%s,%d,%s:tim7 init fail!\n",__FILE__, __LINE__, __func__);
-		Error_Handler();
-	}
+	if(LoudspeakerFreq != freq){
+		if(LoudspeakerEnable){//·äÃùÆ÷´ò¿ª
+			HAL_TIM_Base_Stop(&htim7);
+			HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
+		}
+		if(freq > CONFIG_SPLC_MAX_SPK_FREQ){
+			freq = CONFIG_SPLC_MAX_SPK_FREQ;
+		}
+		if(freq < CONFIG_SPLC_MIN_SPL_FREQ){
+			freq = CONFIG_SPLC_MIN_SPL_FREQ;
+		}
+		f1 = HAL_RCC_GetPCLK1Freq() / sizeof(audioSineTable) * 2 / freq;
+		htim7.Instance = TIM7;
+		htim7.Init.Prescaler = 1;
+		htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+		htim7.Init.Period = (uint16_t)f1;
+		htim7.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+		htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+		if (HAL_TIM_Base_Init(&htim7) != HAL_OK){
+			printf("%s,%d,%s:tim7 init fail!\n",__FILE__, __LINE__, __func__);
+			Error_Handler();
+		}
 #if CONFIG_DEBUG_SPK == 1
-	printf("%s,%d,%s:set audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
+		printf("%s,%d,%s:set audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
 #endif
-	HAL_TIM_Base_Start(&htim7);
-	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+		if(LoudspeakerEnable){
+			HAL_TIM_Base_Start(&htim7);
+			HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+		}
+		LoudspeakerFreq = freq;
+	}
 }
 void setLoudspeakerVolume(int16_t volume){//ÉèÖÃÀ®°ÈÒôÁ¿
 	int16_t i;
 	float64_t  ftemp,fvolume = 0;
 	float64_t piStep;
-	fvolume = linearToLog(volume);
-	fvolume = 1;
-	piStep = 2.0F * PI / 256.0F;
-	for(i = 0;i < 256;i ++){
-		ftemp = 1.0F + arm_sin_f32(i * piStep + PI + (PI /2));
-		ftemp = fvolume * ftemp * 2048.0F;
-		if(ftemp >= 4095.0F){
-			ftemp = 4095.0F;
+	if(LoudspeakerVolume != volume){
+		fvolume = linearToLog(volume);
+		piStep = 2.0F * PI / 256.0F;
+		for(i = 0;i < 256;i ++){
+			ftemp = 1.0F + arm_sin_f32(i * piStep + PI + (PI /2));
+			ftemp = fvolume * ftemp * 2048.0F;
+			if(ftemp >= 4095.0F){
+				ftemp = 4095.0F;
+			}
+			if(ftemp < 0){
+				ftemp = 0;
+			}
+			audioSineTable[i] = (uint16_t)(ftemp);            
 		}
-		if(ftemp < 0){
-			ftemp = 0;
-		}
-		audioSineTable[i] = (uint16_t)(ftemp);            
-	}
 #if CONFIG_DEBUG_SPK == 1
-	printf("%s,%d,%s:audio wave table initialization done...\n",__FILE__, __LINE__, __func__);
+		printf("%s,%d,%s:audio wave table initialization done...\n",__FILE__, __LINE__, __func__);
 #endif
+		LoudspeakerVolume = volume;
+	}
 }
 void setAimBrightness(int16_t brg){//ÉèÖÃÃé×¼¹âÁÁ¶È
 	uint16_t temp;
@@ -484,36 +501,25 @@ void crc32SetCrcOld(uint32_t old){//CRC32ÉèÖÃ¼ÆËãÖµ
 
 void sPlcLoudspeakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 	if(LD(SPCOIL_BEEM_ENABLE)){
+		setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
 		switch(NVRAM0[SPREG_BEEM_MODE]){//Ä£Ê½
 			case BEEM_MODE_0:{
-				if(LDB(SPCOIL_BEEM_BUSY)){//Èç¹ûÒôÆµÎÞÊä³ö-> ÓÐÊä³ö
-					setLoudspeakerPower(true);//Æô¶¯ÒôÆµ
+				if(LDB(SPCOIL_BEEM_BUSY)){
+					setLoudspeakerEnable();//Æô¶¯ÒôÆµ
 					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
-				}
-				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
-					setLoudspeakerPower(false);//Í£Ö¹ÒôÆµ
-					setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-					setLoudspeakerPower(true);//Æô¶¯·äÃùÆ÷
 				}
 				break;
 			}
 			case BEEM_MODE_1:{//Ä£Ê½1 Éù¹âÍ¬²½
 				if(GET_LASER_PWM() & 0X01){//LT3763 ON
 					if(LDB(SPCOIL_BEEM_BUSY)){//Èç¹ûPWMÎÞÊä³ö-> ÓÐÊä³ö
-						setLoudspeakerPower(true);//Æô¶¯ÒôÆµ
+						setLoudspeakerEnable();//Æô¶¯ÒôÆµ
 						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
-					}
-					if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
-						setLoudspeakerPower(false);//Í£Ö¹ÒôÆµ
-						setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-						NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-						setLoudspeakerPower(true);//Æô¶¯·äÃùÆ÷
 					}
 				}
 				else{
 					if(LD(SPCOIL_BEEM_BUSY)){
-						setLoudspeakerPower(false);//Æô¶¯ÒôÆµ
+						setLoudspeakerDisable();//Æô¶¯ÒôÆµ
 						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷	
 					}
 
@@ -521,18 +527,12 @@ void sPlcLoudspeakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 				break;
 			}
 			case BEEM_MODE_2:{//Ä£Ê½2 ³¤¼ä¸ô ¼¤¹â·¢ÉäÒô		
-				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
-					setLoudspeakerPower(false);//Í£Ö¹ÒôÆµ
-					setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-					setLoudspeakerPower(true);//Æô¶¯·äÃùÆ÷
-				}
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 20){//1
-					setLoudspeakerPower(true);//Æô¶¯ÒôÆµ
+					setLoudspeakerEnable();//Æô¶¯ÒôÆµ
 					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 20 && NVRAM0[SPREG_BEEM_COUNTER] < 120){//0
-					setLoudspeakerPower(false);//Í£Ö¹ÒôÆµ
+					setLoudspeakerDisable();//Í£Ö¹ÒôÆµ
 					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 120){
@@ -541,33 +541,27 @@ void sPlcLoudspeakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 				break;
 			}
 			case BEEM_MODE_3:{//Ä£Ê½3 µÎµÎÁ½ÏÂÒ»Í£ ±¨¾¯Òô
-				if(NVRAM0[SPREG_BEEM_VOLUME] != NVRAM0[DM_BEEM_VOLUME]){
-					setLoudspeakerPower(false);//Í£Ö¹ÒôÆµ
-					setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-					setLoudspeakerPower(true);//Æô¶¯·äÃùÆ÷
-				}				
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
 					if(LDB(SPCOIL_BEEM_BUSY)){
-						setLoudspeakerPower(true);//Æô¶¯ÒôÆµ
+						setLoudspeakerEnable();//Æô¶¯ÒôÆµ
 						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
 					}
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
 					if(LD(SPCOIL_BEEM_BUSY)){
-						setLoudspeakerPower(false);//Æô¶¯ÒôÆµ
+						setLoudspeakerDisable();//Æô¶¯ÒôÆµ
 						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
 					}
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100 && NVRAM0[SPREG_BEEM_COUNTER] < 150){//1
 					if(LDB(SPCOIL_BEEM_BUSY)){
-						setLoudspeakerPower(true);//Æô¶¯ÒôÆµ
+						setLoudspeakerEnable();//Æô¶¯ÒôÆµ
 						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
 					}
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 150 && NVRAM0[SPREG_BEEM_COUNTER] < 250){//0
 					if(LD(SPCOIL_BEEM_BUSY)){
-						setLoudspeakerPower(false);//Æô¶¯ÒôÆµ
+						setLoudspeakerDisable();//Æô¶¯ÒôÆµ
 						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
 					}
 				}
@@ -581,7 +575,7 @@ void sPlcLoudspeakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 	}
 	else{
 		if(LD(SPCOIL_BEEM_BUSY)){
-			setLoudspeakerPower(false);//Æô¶¯ÒôÆµ
+			setLoudspeakerDisable();//Æô¶¯ÒôÆµ
 			RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
 			NVRAM0[SPREG_BEEM_COUNTER]  = 0;
 		}

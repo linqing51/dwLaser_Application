@@ -255,7 +255,7 @@ void loadScheme(void){//FD->EM
 #endif
 #if CONFIG_DEBUG_APP == 1
 	printf("\n\n\n\n");
-	printf("%s,%d,%s:load scheme \n", __FILE__, __LINE__, __func__);
+	printf("%s,%d,%s:load scheme!\n", __FILE__, __LINE__, __func__);
 	printf("%s,%d,%s:scheme num:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
 	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SELECT]);

@@ -14,127 +14,129 @@ void outputRefresh(void){//ÉèÖÃÊä³öIO
 	//YOUT0 5V ·çÉÈ¿ª¹Ø
 	if(LDP(Y_FAN_SP)){
 		HAL_GPIO_WritePin(FAN5V_OUT_GPIO_Port, FAN5V_OUT_Pin, GPIO_PIN_SET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y0 FAN power supply\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y0\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_FAN_SP)){
 		HAL_GPIO_WritePin(FAN5V_OUT_GPIO_Port, FAN5V_OUT_Pin, GPIO_PIN_RESET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y0 FAN power supply\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y0\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	
 	//YOUT1 24V ·çÉÈ¿ª¹Ø
 	if(LDP(Y_FAN_LD)){
 		HAL_GPIO_WritePin(HEN_OUT1_GPIO_Port, HEN_OUT1_Pin, GPIO_PIN_SET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y1 FAN laser cool\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y1\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_FAN_LD)){
 		HAL_GPIO_WritePin(HEN_OUT1_GPIO_Port, HEN_OUT1_Pin, GPIO_PIN_RESET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y1 FAN laser cool\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y1\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	
 	//YOUT2 ÖÆÀä¿ª¹Ø
 	if(LDP(Y_TEC)){
 		HAL_GPIO_WritePin(HEN_OUT0_GPIO_Port, HEN_OUT0_Pin, GPIO_PIN_SET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y2 TEC\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y2\n",__FILE__, __LINE__, __func__);
 #endif	
 	}
 	if(LDN(Y_TEC)){
 		HAL_GPIO_WritePin(HEN_OUT0_GPIO_Port, HEN_OUT0_Pin, GPIO_PIN_RESET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y2 TEC\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y2\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	
 	//YOUT3 ÂÌµÆ
 	if(LDP(Y_GLED)){
 		setGreenLedBrightness(CONFIG_SPLC_GLED_ON_DC);//ÉèÖÃºìµÆÁÁ¶È
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y3 GLED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y3\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_GLED)){
 		setGreenLedBrightness(CONFIG_SPLC_GLED_OFF_DC);//ÉèÖÃºìµÆÁÁ¶È
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y3 GLED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y3\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	
 	//YOUT4 ºìµÆ
 	if(LDP(Y_RLED)){
 		setRedLedBrightness(CONFIG_SPLC_RLED_ON_DC);//ÉèÖÃºìµÆÁÁ¶È
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y4 RLED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y4\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_RLED)){
 		setRedLedBrightness(CONFIG_SPLC_RLED_OFF_DC);//ÉèÖÃºìµÆÁÁ¶È
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y4 RLED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y4\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	
 	//YOUT5 À¶µÆ
 	if(LDP(Y_BLED)){
 		setBlueLedBrightness(CONFIG_SPLC_BLED_ON_DC);//ÉèÖÃºìµÆÁÁ¶È
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y5 BLED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y5\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_BLED)){
 		setBlueLedBrightness(CONFIG_SPLC_BLED_OFF_DC);//ÉèÖÃºìµÆÁÁ¶È
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y5 BLED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y5\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	
 	//YOUT6 LCDµçÔ´
 	if(LDP(Y_LCDPWR)){
 		HAL_GPIO_WritePin(LCD_PWR_GPIO_Port, LCD_PWR_Pin, GPIO_PIN_RESET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y6 LCD PWR\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y6\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_LCDPWR)){
 		HAL_GPIO_WritePin(LCD_PWR_GPIO_Port, LCD_PWR_Pin, GPIO_PIN_SET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y6 LCD PWR\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y6\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	
 	//YOUT7 °åÔØLED RUN
 	if(LDP(Y_RUN_LED)){
 		HAL_GPIO_WritePin(SYS_LED_RUN_GPIO_Port, SYS_LED_RUN_Pin, GPIO_PIN_RESET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y7 RUN LED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y7\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_RUN_LED)){
 		HAL_GPIO_WritePin(SYS_LED_RUN_GPIO_Port, SYS_LED_RUN_Pin, GPIO_PIN_SET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y7 RUN LED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y7\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	//YOUT8 °åÔØLED ERR
 	if(LDP(Y_ERR_LED)){
 		HAL_GPIO_WritePin(SYS_LED_ERR_GPIO_Port, SYS_LED_ERR_Pin, GPIO_PIN_RESET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:SET Y8 ERR LED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:set y8\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_ERR_LED)){
 		HAL_GPIO_WritePin(SYS_LED_ERR_GPIO_Port, SYS_LED_ERR_Pin, GPIO_PIN_SET);
-#if CONFIG_DEBUG_APP == 1
-		printf("sPlcIoOut->outputRefresh:RESET Y8 ERR LED\n");
+#if CONFIG_DEBUG_IO == 1
+		printf("%s,%d,%s:reset y8\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 }
+
+
 
 
