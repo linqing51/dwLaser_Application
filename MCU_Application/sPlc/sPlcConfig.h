@@ -2,16 +2,16 @@
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
 #define CONFIG_DEBUG_CHARGE										0//调试充电
-#define CONFIG_DEBUG_DAC										1//调试DAC驱动
-#define CONFIG_DEBUB_ADC										1//调试ADC驱动
-#define CONFIG_DEBUG_EPROM										1//调试EPROM驱动
-#define CONFIG_DEBUG_IO											1//调试IO
-#define CONFIG_DEBUG_SPK										1//调试蜂鸣器驱动
-#define CONFIG_DEBUG_LED										1//调试指示灯驱动
-#define CONFIG_DEBUG_AIM										1//调试指示光驱动
-#define CONFIG_DEBUG_LASER										1//调试LASER驱动
-#define CONFIG_DEBUG_SPLC										1//调试SPLC命令
-#define CONFIG_DEBUG_APP										1//调试应用程序
+#define CONFIG_DEBUG_DAC										0//调试DAC驱动
+#define CONFIG_DEBUB_ADC										0//调试ADC驱动
+#define CONFIG_DEBUG_EPROM										0//调试EPROM驱动
+#define CONFIG_DEBUG_IO											0//调试IO
+#define CONFIG_DEBUG_SPK										0//调试蜂鸣器驱动
+#define CONFIG_DEBUG_LED										0//调试指示灯驱动
+#define CONFIG_DEBUG_AIM										0//调试指示光驱动
+#define CONFIG_DEBUG_LASER										0//调试LASER驱动
+#define CONFIG_DEBUG_SPLC										0//调试SPLC命令
+#define CONFIG_DEBUG_APP										0//调试应用程序
 /*****************************************************************************/
 #define STM32_UNIQUE_ID_SIZE 									12//MCU序列号  8*12=96Bit
 #define BOOTLOADER_VER											0x00010001//版本
@@ -77,13 +77,12 @@
 #define CONFIG_EPROM_DM_START									(CONFIG_MRRAM_SIZE * 2)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_START + (CONFIG_DMRAM_SIZE * 2))
 
-#define CONFIG_EPROM_FWINFO_START								(7808L)//128B 固件信息区
-#define CONFIG_EPROM_FWINFO_END									(7935L)
-#define CONFIG_EPROM_CONFIG_START								(7936L)//128B 配置信息区
+#define CONFIG_EPROM_FWINFO_START								(7424L)//128B 固件信息区
+#define CONFIG_EPROM_FWINFO_END									(7551L)
+#define CONFIG_EPROM_CONFIG_START								(7552L)//512B 配置信息区
 #define CONFIG_EPROM_CONFIG_END									(8063L)
 #define CONFIG_EPROM_LOGINFO_START								(8064L)//128B 记录信息区 
 #define CONFIG_EPROM_LOGINFO_END								(8191L)
-
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC									1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL									10//ADC采集通道

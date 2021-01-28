@@ -12,6 +12,13 @@ typedef struct{
 	float32_t laserNotesB1[5];//C
 	float32_t laserNotesB2[5];//B
 	float32_t laserNotesB3[5];//A
+	//LD校正表
+	uint16_t ldTableCh0[30];//通道0
+	uint16_t ldTableCh1[30];//通道1
+	uint16_t ldTableCh2[30];//通道2
+	uint16_t ldTableCh3[30];//通道3
+	//PD校正表
+	uint16_t pdTable[30];
 	uint16_t crc;
 }deviceConfig_t;
 
@@ -26,11 +33,9 @@ typedef struct{
 	uint32_t runTime;//运行累计时间 单位分钟
 	uint32_t laserOnTime[5];//激光发射累计时间 单位秒
 	int16_t laserMaxTemper;//激光器最大温度
-	int16_t laserMinTemper;//激光器最低温度
 	int16_t laserMaxCurrent[5];//激光器最大电流
 	int16_t laserMaxPhotoDiode;//激光器最大功率
 	int16_t mucMaxTemper;//处理器最高温度
-	int16_t mucMinTemper;//处理器最低温度
 }deviceLogInfo_t;
 /*****************************************************************************/
 extern deviceConfig_t deviceConfig;

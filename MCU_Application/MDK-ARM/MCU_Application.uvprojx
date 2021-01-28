@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F413xx,ARM_MATH_CM4</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;             ../FATFS/Target;             ../FATFS/App;             ../USB_HOST/App;             ../USB_HOST/Target;             ../Drivers/STM32F4xx_HAL_Driver/Inc;             ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;             ../Middlewares/Third_Party/FreeRTOS/Source/include;             ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;             ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;             ../Middlewares/Third_Party/FatFs/src;             ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;             ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;             ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;             ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;             ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;             ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;             ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;             ../Drivers/CMSIS/Include;             ..\Drivers\CMSIS\DSP\Include;             ..\sPlc;             ..\sPlcPort;             ..\dcHmi;             ..\MainApp;             ..\deviceInfo</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\FreeRTOS-Plus-CLI;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Drivers\CMSIS\DSP\Include;..\sPlc;..\sPlcPort;..\dcHmi;..\MainApp;..\deviceInfo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -967,6 +967,16 @@
               <FileName>preScheme.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\deviceInfo\preScheme.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>FreeRTOS_CLI</GroupName>
+          <Files>
+            <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FreeRTOS-Plus-CLI\FreeRTOS_CLI.c</FilePath>
             </File>
           </Files>
         </Group>

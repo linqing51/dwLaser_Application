@@ -347,7 +347,9 @@ void sPlcProcessStart(void){//sPLCÂÖÑ¯ÆðÊ¼
 	if(TD_10MS_SP >= 1){
 		FLIP(SPCOIL_PS10MS);
 		TD_10MS_SP = 0;
-		NVRAM0[SPREG_BEEM_COUNTER] ++;
+		if(NVRAM0[SPREG_BEEM_COUNTER] < INT16_MAX){
+			NVRAM0[SPREG_BEEM_COUNTER] ++;
+		}
 	}
 	if(TD_100MS_SP >= 1){
 		FLIP(SPCOIL_PS100MS);

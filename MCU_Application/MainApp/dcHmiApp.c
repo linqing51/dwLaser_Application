@@ -5,7 +5,7 @@ uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
 static uint8_t StandbyKeyEnable = 0xFF;//待机模式
 static void UpdateUI(void);
-/*****************************************************************************/
+/*****************************************************************************/ 
 void loadDeviceLogInfo(void){//从EPROM载入记录文件
 	uint16_t crc1, crc2;
 	HAL_StatusTypeDef ret1, ret2;
@@ -14,13 +14,13 @@ void loadDeviceLogInfo(void){//从EPROM载入记录文件
 	crc1 = crc16Calculate((uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//CRC16 计算数组
 	ret2 = epromRead((CONFIG_EPROM_LOGINFO_START + 512 - 2), (uint8_t*)&crc2, 2);//从EPROM载入LOG CRC
 	if(ret1 != HAL_OK || ret2 != HAL_OK || crc1 != crc2){//校验码不同使用默认配置
-		printf("dcHmiApp->loadDeviceLogInfo:Load device log fail!!!\n");
-		printf("dcHmiApp->loadDeviceLogInfo:Reset device log!\n");
+		printf("%s,%d,%s:load device log fail!!!\n",__FILE__, __LINE__, __func__);
+		printf("%s,%d,%s:reset device log!\n",__FILE__, __LINE__, __func__);
 		memset((uint8_t*)&deviceLogInfo, 0x0, sizeof(deviceLogInfo));
 		saveDeviceLogInfo();
 	}
 	else{
-		printf("dcHmiApp->loadDeviceLogInfo:Load device log ok!\n");
+		printf("%s,%d,%s:load device log ok!\n",__FILE__, __LINE__, __func__);
 	}
 }
 void loadDeviceConfig(void){//从EPROM载入配置文件
@@ -34,8 +34,8 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 	ret2 = epromRead((CONFIG_EPROM_CONFIG_START + 512 - 2), (uint8_t*)&crc2, 2);//从EPROM载入设备配置
 	if(ret1 != HAL_OK || ret2 != HAL_OK || crc1 != crc2){//校验码不同使用默认配置
 #if CONFIG_DEBUG_APP == 1
-		printf("dcHmiApp->loadDeviceConfig:Load device config fail!!!\n");
-		printf("dcHmiApp->loadDeviceConfig:Using default device config!\n");
+		printf("%s,%d,%s:load device config fail!!!\n",__FILE__, __LINE__, __func__);
+		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
 #endif		
 		//进行3次多项式拟合Y = A*X^3 + B*X^2 + C*X + D
 		sprintf(deviceConfig.serialNumber,"1234-5678-ABCDEF");
@@ -69,7 +69,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		saveDeviceConfig();
 	}
 	else{
-		printf("dcHmiApp->loadDeviceConfig:Load device config ok!\n");
+		printf("%s,%d,%s:load device config ok!\n",__FILE__, __LINE__, __func__);
 	}
 }
 void saveDeviceConfig(void){//将配置写入EPROM
@@ -77,19 +77,19 @@ void saveDeviceConfig(void){//将配置写入EPROM
 	HAL_StatusTypeDef ret;
 	ret = epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM
 	if(ret != HAL_OK){
-		printf("dcHmiApp->saveDeviceConfig:Save device config to eprom fail!!!\n");
+		printf("%s,%d,%s:save device config to eprom fail!!!\n",__FILE__, __LINE__, __func__);
 	}
 	else{
-		printf("dcHmiApp->saveDeviceConfig:Save device config to eprom ok!\n");
+		printf("%s,%d,%s:save device config to eprom ok!\n",__FILE__, __LINE__, __func__);
 	}
 	crc16Clear();
 	crc = crc16Calculate((uint8_t*)&deviceConfig, sizeof(deviceConfig));//CRC16 计算数组
 	ret = epromWrite((CONFIG_EPROM_CONFIG_START + 512 - 2), (uint8_t*)&crc, 2);//写入校验值
 	if(ret != HAL_OK){
-		printf("dcHmiApp->saveDeviceConfig:Save device config crc to eprom fail!!!\n");
+		printf("%s,%d,%s:save device config crc to eprom fail!!!\n",__FILE__, __LINE__, __func__);
 	}
 	else{
-		printf("dcHmiApp->saveDeviceConfig:Save device config crc to eprom ok!\n");
+		printf("%s,%d,%s:save device config crc to eprom ok!\n",__FILE__, __LINE__, __func__);
 	}
 }
 void saveDeviceLogInfo(void){//将记录写入EPROM
@@ -97,13 +97,13 @@ void saveDeviceLogInfo(void){//将记录写入EPROM
 	HAL_StatusTypeDef ret;
 	ret = epromWrite(CONFIG_EPROM_LOGINFO_START, (uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//写入EPROM
 	if(ret != HAL_OK){
-		printf("dcHmiApp->saveDeviceLogInfo:Save device log to eprom fail!!!\n");
+		printf("%s,%d,%s:save device log to eprom fail!!!\n",__FILE__, __LINE__, __func__);
 	}
 	crc16Clear();
 	crc = crc16Calculate((uint8_t*)&deviceLogInfo, sizeof(deviceLogInfo));//CRC16 计算数组
 	ret = epromWrite((CONFIG_EPROM_LOGINFO_START + 512 - 2), (uint8_t*)&crc, 2);//写入校验值
 	if(ret != HAL_OK){
-		printf("dcHmiApp->saveDeviceLogInfo:Save device log crc to eprom fail!!!\n");
+		printf("%s,%d,%s:save device log crc to eprom fail!!!\n",__FILE__, __LINE__, __func__);
 	}
 }
 void deviceLogInfoLoop(void){//检查记录
@@ -113,16 +113,8 @@ void deviceLogInfoLoop(void){//检查记录
 		deviceLogInfo.laserMaxTemper = NVRAM0[EM_LASER_TEMP];
 		upReq |= 1;
 	}
-	if(NVRAM0[EM_LASER_TEMP] < deviceLogInfo.laserMinTemper){//记录激光器最低温度
-		deviceLogInfo.laserMinTemper = NVRAM0[EM_LASER_TEMP];
-		upReq |= 1;
-	}
 	if(NVRAM0[EM_MCU_TEMP] > deviceLogInfo.mucMaxTemper){//记录处理器最高温度
 		deviceLogInfo.mucMaxTemper = NVRAM0[EM_MCU_TEMP];
-		upReq |= 1;
-	}
-	if(NVRAM0[EM_MCU_TEMP] < deviceLogInfo.mucMinTemper){//记录处理器最低温度
-		deviceLogInfo.mucMinTemper = NVRAM0[EM_MCU_TEMP];
 		upReq |= 1;
 	}
 	if(NVRAM0[EM_LASER_CURRENT_CH0] > deviceLogInfo.laserMaxCurrent[0]){//记录最大电流 通道0
@@ -1962,6 +1954,13 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK, false);		
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
+
+			SetButtonValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, false);
+			SetButtonValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, false);
+			SetButtonValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, false);
+			SetButtonValue(GDDC_PAGE_STANDBY_GP, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, false);
+			SetButtonValue(GDDC_PAGE_STANDBY_DERMA, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, false);
+			SetButtonValue(GDDC_PAGE_STANDBY_SIGNAL, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, false);
 
 			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 			SetScreen(NVRAM0[EM_DC_PAGE]);	

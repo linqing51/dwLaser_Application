@@ -262,12 +262,16 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserRelease_TotalEnergy1 = -1;
 }
 static void laserStart(void){//按通道选择打开激光
-	SET_LASER_PWM(GPIO_PIN_SET);
-	LaserFlag_Emiting = true;
+	if(LaserFlag_Emiting == false){
+		SET_LASER_PWM(GPIO_PIN_SET);
+		LaserFlag_Emiting = true;
+	}
 }
 static void laserStop(void){//按通道选择关闭激光
-	SET_LASER_PWM(GPIO_PIN_RESET);
-	LaserFlag_Emiting = false;
+	if(LaserFlag_Emiting == true){
+		SET_LASER_PWM(GPIO_PIN_RESET);
+		LaserFlag_Emiting = false;
+	}
 }
 void laserTimerIsr(void){//TIM 中断回调 激光发射	
 	switch(LaserTimer_Mode){
@@ -326,13 +330,8 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 		case LASER_MODE_DERMA:{//与MP模式相同
 		}
 		case LASER_MODE_MP:{//MP多脉冲模式	
-			if(LaserTimer_TCounter == 0){//翻转
+			if((LaserTimer_TCounter >= 0) && (LaserTimer_TCounter < LaserTimer_TMate)){//激光发射
 				laserStart();
-			}
-			if(LaserTimer_TCounter >= LaserTimer_TMate){//计时器匹配
-				laserStop();
-			}
-			if(LaserTimer_TCounter < LaserTimer_TMate){//激光发射中
 				if(LaserTimer_ReleaseTime < 1000){
 					LaserTimer_ReleaseTime ++;//发射时间累计
 				}
@@ -342,6 +341,9 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 						LaserRelease_TotalTime0 ++;
 					}
 				}
+			}
+			if((LaserTimer_TCounter >= LaserTimer_TMate) && (LaserTimer_TCounter < LaserTimer_TOvertime)){//计时器匹配
+				laserStop();
 			}
 			if(LaserTimer_TCounter >= LaserTimer_TOvertime){//计时器溢出
 				LaserTimer_TCounter = -1;//清零
