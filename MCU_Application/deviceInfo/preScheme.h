@@ -14,6 +14,8 @@ extern char const *PRE_SCHEME_TABLE_S7;
 extern char const *PRE_SCHEME_TABLE_S8;
 extern char const *PRE_SCHEME_TABLE_S9;
 extern char const *PRE_SCHEME_TABLE_S10;
+extern char const *PRE_SCHEME_TABLE_S11;
+extern char const *PRE_SCHEME_TABLE_S12;
 #endif
 
 

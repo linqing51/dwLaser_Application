@@ -1656,13 +1656,7 @@ static void temperatureLoop(void){//温度轮询轮询
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_ERROR) ||
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS) ||
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION)){//激光工作或异常状态风扇开
-			SSET(Y_FAN_LD);
-			if(LD(SPCOIL_SPWM_OUT_0)){
-				SSET(Y_TEC);
-			}
-			else{
-				RRES(Y_TEC);
-			}   
+			SSET(Y_FAN_LD); 
 			if(NVRAM0[EM_LASER_TEMP] > (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
 				SSET(Y_TEC);
 			}
@@ -2369,10 +2363,10 @@ void dcHmiLoop(void){//HMI轮训程序
 #endif
 				//校正输出功率
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
-				NVRAM0[SPREG_DAC_1] = fitLaserToCode(1, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig);
-				NVRAM0[SPREG_DAC_2] = fitLaserToCode(2, NVRAM0[EM_LASER_POWER_CH2], &deviceConfig);
-				NVRAM0[SPREG_DAC_3] = fitLaserToCode(3, NVRAM0[EM_LASER_POWER_CH3], &deviceConfig);
-				NVRAM0[SPREG_DAC_4] = fitLaserToCode(4, NVRAM0[EM_LASER_POWER_CH4], &deviceConfig);
+				NVRAM0[SPREG_DAC_1] = fitLaserToCode(0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
+				NVRAM0[SPREG_DAC_2] = 0x0;
+				NVRAM0[SPREG_DAC_3] = 0x0;
+				NVRAM0[SPREG_DAC_4] = 0x0;
 #if CONFIG_DEBUG_APP == 1
 				printf("%s,%d,%s:set SPEG_DAC_0=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_0]);
 				printf("%s,%d,%s:set SPEG_DAC_1=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_1]);
@@ -2385,9 +2379,9 @@ void dcHmiLoop(void){//HMI轮训程序
 #endif
 #if CONFIG_USING_SINGLE_WAVE == 1
 				UPDAC0();
+				UPDAC1();
 #endif
 #if CONFIG_USING_DUAL_WAVE == 1//双波长
-				UPDAC1();
 #endif
 #if CONFIG_USING_TRIPE_WAVE == 1//三波长
 				UPDAC2();

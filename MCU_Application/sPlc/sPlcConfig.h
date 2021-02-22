@@ -58,7 +58,9 @@
 #define CONFIG_SPLC_CLEAR_CODE									0xA58E
 #define CONFIG_SOFTPLC_TICK										200L//5mS
 /*****************************************************************************/
-#define CONFIG_APP_USING_PRESCHEME								1//是能预设模式
+#define CONFIG_APP_USING_PRESCHEME								1//使能预设模式
+#define CONFIG_APP_USING_PRESCHEME_980							1//使能980nM预设
+#define CONFIG_APP_USING_PRESCHEME_1470							0//使能1470nM预设
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
@@ -98,7 +100,7 @@
 #define CONFIG_NTC_B											3500.0F
 #define CONFIG_NTC_R25											10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF											5000L//
-#define CONFIG_FIBER_PD_THRESHOLD								300//光纤插入时ADC阈值
+#define CONFIG_FIBER_PD_THRESHOLD								400//光纤插入时ADC阈值
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DAC									1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0										0xFFFF
@@ -197,8 +199,8 @@
 #define CONFIG_MIN_BEEM_VOLUME									1//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG										100//屏幕亮度最大值
 #define CONFIG_MIN_LCD_BRG										1//屏幕亮度最小值
-#define CONFIG_COOL_SET_TEMP									300//冷却温度
-#define CONFIG_COOL_DIFF_TEMP									10//冷却温度变化范围
+#define CONFIG_COOL_SET_TEMP									280//冷却温度
+#define CONFIG_COOL_DIFF_TEMP									15//冷却温度变化范围
 //功率设定校正系数
 #define LASER_CH0_NOTES_INTERCEPT								393.7F	
 #define LASER_CH0_NOTES_B1										12.34F
@@ -748,8 +750,8 @@
 /*****************************************************************************/
 #define X_ESTOP													(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK												(X_START * 16 + 1)//XIN1 安全连锁
-#define X_FOOTSWITCH_NC											(X_START * 16 + 2)//XIN2 脚踏常闭
-#define X_FOOTSWITCH_NO											(X_START * 16 + 3)//XIN3 脚踏常开
+#define X_FOOTSWITCH_NO											(X_START * 16 + 2)//XIN2 脚踏常闭
+#define X_FOOTSWITCH_NC											(X_START * 16 + 3)//XIN3 脚踏常开
 #define X_PWR_KEY												(X_START * 16 + 4)//XIN4 电源开关
 #define X_FIBER_PROBE											(X_START * 16 + 5)//XIN5 光纤探测
 /*****************************************************************************/
