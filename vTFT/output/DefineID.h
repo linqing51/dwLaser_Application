@@ -733,6 +733,9 @@
 
 #define  _TXT_DIS__GDDC_PAGE_SCHEME_1_GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0         36
 
+//画面GDDC_PAGE_SCHEME_1中按钮GDDC_PAGE_SCHEME_KEY_LAST_PAGE按下时的图片
+#define  _IMG_GDDC_PAGE_SCHEME_1_GDDC_PAGE_SCHEME_KEY_LAST_PAGE_DOWN          26
+
 #define  _BTN_GDDC_PAGE_SCHEME_1_GDDC_PAGE_SCHEME_KEY_LAST_PAGE               39
 
 #define  _BTN_GDDC_PAGE_SCHEME_1_GDDC_PAGE_SCHEME_KEY_SAVE_UDISK              42
@@ -800,7 +803,7 @@
 #define  _BTN_GDDC_PAGE_RENAME_GDDC_PAGE_RENAME_KEY_1                         70
 
 //全局图片full_800_600_down.jpg
-#define  _IMG_FULL_800_600_DOWN_JPG                                           33
+#define  _IMG_FULL_800_600_DOWN_JPG                                           32
 
 #define  _BTN_GDDC_PAGE_RENAME_GDDC_PAGE_RENAME_KEY_2                          4
 
