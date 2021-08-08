@@ -29,7 +29,7 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_HW_RNG								0//使能硬件随机数模块
 #define CONFIG_SPLC_USING_HW_CRC								0//使能硬件CRC校验
-#define CONFIG_SPLC_USING_LINK_MASTER							1//使用主机模式
+#define CONFIG_SPLC_USING_LINK_MASTER							0//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE							0//使用从机模式
 /*****************************************************************************/				
 #define CONFIG_SPLC_USING_SPK									1//使能板载扬声器
@@ -59,8 +59,8 @@
 #define CONFIG_SOFTPLC_TICK										200L//5mS
 /*****************************************************************************/
 #define CONFIG_APP_USING_PRESCHEME								1//使能预设模式
-#define CONFIG_APP_USING_PRESCHEME_980							1//使能980nM预设
-#define CONFIG_APP_USING_PRESCHEME_1470							0//使能1470nM预设
+#define CONFIG_APP_USING_PRESCHEME_980							0//使能980nM预设
+#define CONFIG_APP_USING_PRESCHEME_1470							1//使能1470nM预设
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM									1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST							1//EPROM自检
@@ -97,7 +97,7 @@
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25											760.0F//0.76V@25D
 #define CONFIG_NTC_RS											3300L
-#define CONFIG_NTC_B											3500.0F
+#define CONFIG_NTC_B											3477.0F
 #define CONFIG_NTC_R25											10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF											5000L//
 #define CONFIG_FIBER_PD_THRESHOLD								400//光纤插入时ADC阈值
@@ -131,17 +131,16 @@
 #define CONFIG_USING_DCHMI_APP									1//广东大彩人机交互应用
 #define CONFIG_DCHMI_DISKBUF_SIZE								0x80//显示缓冲区大小
 /*****************************************************************************/
-#define CONFIG_WAIT_HMI_DELAY_TIME								20
+#define CONFIG_WAIT_HMI_DELAY_TIME								50
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME							5
 #define CONFIG_KEY_REPEAT_DELAY_TIME							100
 #define CONFIG_STANDBY_BEEM_DELAY_TIME							20
 /*****************************************************************************/
-#define CONFIG_APP_DIODE_HIGH_TEMP								400//激光器高温极限 40.0C
+#define CONFIG_APP_DIODE_BURN_TEMP								300//风扇优先启动温度 30.0C
+#define CONFIG_APP_DIODE_HIGH_TEMP								500//激光器高温极限 46.0C
 #define CONFIG_APP_DIODE_LOW_TEMP								-100//激光器低温极限 - 10.0C
 #define CONFIG_APP_ENVI_HIGH_TEMP								700//处理器高温极限 75.0C
 /*****************************************************************************/
-#define CONFIG_APP_LONGNAME_SCHEME								0//预设长名称
-#define CONFIG_APP_SHORTNAME_SCHEME								1//预设短名称
 #define CONFIG_USING_SINGLE_WAVE								1//单波长
 #define CONFIG_USING_DUAL_WAVE									0//双波长
 #define CONFIG_USING_TRIPE_WAVE									0//三波长
@@ -164,15 +163,15 @@
 #define CONFIG_MAX_LASER_DAC_CH2								0xFFF
 #define CONFIG_MAX_LASER_DAC_CH3								0xFFF
 
-#define CONFIG_MAX_LASERPOWER_CH0								300//通道0最大激光功率
+#define CONFIG_MAX_LASERPOWER_CH0								150//通道0最大激光功率
 #define CONFIG_MAX_LASERPOWER_CH1								150//通道1最大激光功率
 #define CONFIG_MAX_LASERPOWER_CH2								100//通道2最大激光功率
 #define CONFIG_MAX_LASERPOWER_CH3								100//通道3最大激光功率
 
 #define CONFIG_MIN_LASERPOWER_CH0								1//通道0最小激光功率
-#define CONFIG_MIN_LASERPOWER_CH1								0//通道1最小激光功率
-#define CONFIG_MIN_LASERPOWER_CH2								0//通道2最大激光功率
-#define CONFIG_MIN_LASERPOWER_CH3								0//通道3最大激光功率
+#define CONFIG_MIN_LASERPOWER_CH1								1//通道1最小激光功率
+#define CONFIG_MIN_LASERPOWER_CH2								1//通道2最大激光功率
+#define CONFIG_MIN_LASERPOWER_CH3								1//通道3最大激光功率
 
 #define CONFIG_LASER_THRESHOLD_CH0								0010//通道0激光阈值电流
 #define CONFIG_LASER_THRESHOLD_CH1								9999//通道1激光阈值电流
@@ -180,9 +179,9 @@
 #define CONFIG_LASER_THRESHOLD_CH3								9999//通道3激光阈值电流
 #define CONFIG_LASER_THRESHOLD_CH4								9999//通道4激光阈值电流
 
-#define CONFIG_MAX_LASER_POSWIDTH								10000
+#define CONFIG_MAX_LASER_POSWIDTH								15000
 #define CONFIG_MIN_LASER_POSWIDTH								1
-#define CONFIG_MAX_LASER_NEGWIDTH								10000
+#define CONFIG_MAX_LASER_NEGWIDTH								15000
 #define CONFIG_MIN_LASER_NEGWIDTH								1
 #define CONFIG_MAX_LASER_TIMES									10//最大可计数脉冲数
 #define CONFIG_MIN_LASER_TIMES									1//最小可计数脉冲数

@@ -30,22 +30,42 @@ RNG_HandleTypeDef hrng;
 void MX_RNG_Init(void)
 {
 
+  /* USER CODE BEGIN RNG_Init 0 */
+
+  /* USER CODE END RNG_Init 0 */
+
+  /* USER CODE BEGIN RNG_Init 1 */
+
+  /* USER CODE END RNG_Init 1 */
   hrng.Instance = RNG;
   if (HAL_RNG_Init(&hrng) != HAL_OK)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN RNG_Init 2 */
+
+  /* USER CODE END RNG_Init 2 */
 
 }
 
 void HAL_RNG_MspInit(RNG_HandleTypeDef* rngHandle)
 {
 
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
   if(rngHandle->Instance==RNG)
   {
   /* USER CODE BEGIN RNG_MspInit 0 */
 
   /* USER CODE END RNG_MspInit 0 */
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_CLK48;
+    PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48CLKSOURCE_PLLQ;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
     /* RNG clock enable */
     __HAL_RCC_RNG_CLK_ENABLE();
 

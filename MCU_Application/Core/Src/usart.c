@@ -32,6 +32,13 @@ UART_HandleTypeDef huart6;
 void MX_UART5_Init(void)
 {
 
+  /* USER CODE BEGIN UART5_Init 0 */
+
+  /* USER CODE END UART5_Init 0 */
+
+  /* USER CODE BEGIN UART5_Init 1 */
+
+  /* USER CODE END UART5_Init 1 */
   huart5.Instance = UART5;
   huart5.Init.BaudRate = 115200;
   huart5.Init.WordLength = UART_WORDLENGTH_8B;
@@ -44,6 +51,9 @@ void MX_UART5_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN UART5_Init 2 */
+
+  /* USER CODE END UART5_Init 2 */
 
 }
 /* USART1 init function */
@@ -51,6 +61,13 @@ void MX_UART5_Init(void)
 void MX_USART1_UART_Init(void)
 {
 
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -63,6 +80,9 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 /* USART6 init function */
@@ -70,6 +90,13 @@ void MX_USART1_UART_Init(void)
 void MX_USART6_UART_Init(void)
 {
 
+  /* USER CODE BEGIN USART6_Init 0 */
+
+  /* USER CODE END USART6_Init 0 */
+
+  /* USER CODE BEGIN USART6_Init 1 */
+
+  /* USER CODE END USART6_Init 1 */
   huart6.Instance = USART6;
   huart6.Init.BaudRate = 115200;
   huart6.Init.WordLength = UART_WORDLENGTH_8B;
@@ -82,6 +109,9 @@ void MX_USART6_UART_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN USART6_Init 2 */
+
+  /* USER CODE END USART6_Init 2 */
 
 }
 
@@ -104,14 +134,14 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     */
     GPIO_InitStruct.Pin = LCD_RX_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF11_UART5;
     HAL_GPIO_Init(LCD_RX_GPIO_Port, &GPIO_InitStruct);
 
     GPIO_InitStruct.Pin = LCD_TX_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     GPIO_InitStruct.Alternate = GPIO_AF11_UART5;
     HAL_GPIO_Init(LCD_TX_GPIO_Port, &GPIO_InitStruct);

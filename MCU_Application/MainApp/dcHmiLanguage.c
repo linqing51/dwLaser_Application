@@ -144,7 +144,7 @@ char WARN_MSG_FIBER_MISSMATE[8][64] 			 = {{"Fiber not mate"},
 													{""},
 													{""}};
 
-char INFO_MSG_TYPE[8][64] 						 = {{"TYPE: Ti-PLDD 30"},
+char INFO_MSG_TYPE[8][64] 						 = {{"TYPE: TIZEN-PVG-1470"},
 													{""},
 													{""},
 													{""},
@@ -153,7 +153,7 @@ char INFO_MSG_TYPE[8][64] 						 = {{"TYPE: Ti-PLDD 30"},
 													{""},
 													{""}};
 													
-char INFO_MSG_SN[8][64] 						 = {{"SN: AK21-E011"},
+char INFO_MSG_SN[8][64] 						 = {{"SN: AK21-E012"},
 													{""},
 													{""},
 													{""},
@@ -162,7 +162,7 @@ char INFO_MSG_SN[8][64] 						 = {{"SN: AK21-E011"},
 													{""},
 													{""}};
 													
-char INFO_MSG_WAVELENGTH[8][64] 				 = {{"WAVE LENGTH: 980nM"},
+char INFO_MSG_WAVELENGTH[8][64] 				 = {{"WAVE LENGTH: 1470nM"},
 													{""},
 													{""},
 													{""},
@@ -171,7 +171,7 @@ char INFO_MSG_WAVELENGTH[8][64] 				 = {{"WAVE LENGTH: 980nM"},
 													{""},
 													{""}};
 													
-char INFO_MSG_LASER_POWER[8][64] 				 = {{"LASER_POWER: 30W"},
+char INFO_MSG_LASER_POWER[8][64] 				 = {{"LASER_POWER: 15W"},
 													{""},
 													{""},
 													{""},
@@ -189,7 +189,7 @@ char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.1"},
 													{""},
 													{""}};
 													
-char INFO_MSG_MANUFACTURE_DATE[8][64] 			 = {{"MANUFACTURE DATE:2021-02-22"},
+char INFO_MSG_MANUFACTURE_DATE[8][64] 			 = {{"MANUFACTURE DATE:2021-07-21"},
 													{""},
 													{""},
 													{""},

@@ -41,7 +41,8 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		sprintf(deviceConfig.serialNumber,"1234-5678-ABCDEF");
 		sprintf(deviceConfig.dateOfManufacture, "1970-01-01");
 		
-		deviceConfig.laserNotesB1[0] = 198.5266667F;
+		//deviceConfig.laserNotesB1[0] = 198.5266667F;//980nM 30W
+		deviceConfig.laserNotesB1[0] = 410.85456;//1470nM 15W
 		deviceConfig.laserNotesB1[1] = 0;
 		deviceConfig.laserNotesB1[2] = 0;
 		deviceConfig.laserNotesB1[3] = 0;
@@ -60,7 +61,8 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.laserNotesB3[3] = 0;
 		deviceConfig.laserNotesB3[4] = 0;
 		
-		deviceConfig.laserNotesIntercept[0] = 5977.308956F;
+		//deviceConfig.laserNotesIntercept[0] = 5977.308956F;//980nM 30W
+		deviceConfig.laserNotesIntercept[0] = 3907;//1470nM 15W
 		deviceConfig.laserNotesIntercept[1] = 0;
 		deviceConfig.laserNotesIntercept[2] = 0;
 		deviceConfig.laserNotesIntercept[3] = 0;
@@ -725,7 +727,7 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 		default:break;
 	}
 #if CONFIG_USING_SINGLE_WAVE == 1
-	sprintf(dispBuf1, "980nM Power:%3.1fW", ((fp32_t)power0 / 10.0F));
+	sprintf(dispBuf1, "1470nM Power:%3.1fW", ((fp32_t)power0 / 10.0F));
 #endif
 #if CONFIG_USING_DUAL_WAVE == 1
 	sprintf(dispBuf1, "1470nM Power:%3.1fW;980nM Power:%3.1fW", ((fp32_t)power0 / 10.0F), ((fp32_t)power1 / 10.0F));
@@ -1655,7 +1657,8 @@ static void temperatureLoop(void){//温度轮询轮询
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_EMITING) ||
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_ERROR) ||
 		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS) ||
-		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION)){//激光工作或异常状态风扇开
+		   (NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION) ||
+		   (NVRAM0[EM_LASER_TEMP] > CONFIG_APP_DIODE_BURN_TEMP)){//激光工作或异常状态风扇开
 			SSET(Y_FAN_LD); 
 			if(NVRAM0[EM_LASER_TEMP] > (CONFIG_COOL_SET_TEMP + CONFIG_COOL_DIFF_TEMP)){
 				SSET(Y_TEC);
@@ -2363,7 +2366,7 @@ void dcHmiLoop(void){//HMI轮训程序
 #endif
 				//校正输出功率
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
-				NVRAM0[SPREG_DAC_1] = fitLaserToCode(0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
+				NVRAM0[SPREG_DAC_1] = 0x0;
 				NVRAM0[SPREG_DAC_2] = 0x0;
 				NVRAM0[SPREG_DAC_3] = 0x0;
 				NVRAM0[SPREG_DAC_4] = 0x0;

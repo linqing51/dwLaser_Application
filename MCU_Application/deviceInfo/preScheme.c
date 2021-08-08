@@ -10,9 +10,19 @@ char const *PRE_SCHEME_TABLE_S5	 = "Hemorrhoids Grade 4 350J";
 char const *PRE_SCHEME_TABLE_S6	 = "Fistula";
 char const *PRE_SCHEME_TABLE_S7	 = "Pilonidal Sinus";
 char const *PRE_SCHEME_TABLE_S8	 = "Fissure Abaltio";
-char const *PRE_SCHEME_TABLE_S9	 = "PLDD Total 800-1800J";
-char const *PRE_SCHEME_TABLE_S10 = "PLDD L4-L5 Total 800-1800J";
+char const *PRE_SCHEME_TABLE_S9	 = "Laser Vaginal Tightening 1st 600J";
+char const *PRE_SCHEME_TABLE_S10 = "Laser Vaginal Tightening 2st 600J";
+char const *PRE_SCHEME_TABLE_S11 = "Laser Vaginal Tightening 3st 600J";
+char const *PRE_SCHEME_TABLE_S12 = "Laser Vaginal Tightening 4st 600J";
+char const *PRE_SCHEME_TABLE_S13 = "Laser Vaginal Tightening 360J";
+char const *PRE_SCHEME_TABLE_S14 = "Laser Vaginal Rejuvenation+ 600J";
+char const *PRE_SCHEME_TABLE_S15 = "Stress Incontinence, 75 Joules";
+char const *PRE_SCHEME_TABLE_S16 = "Infection control, 50 Joules";
+char const *PRE_SCHEME_TABLE_S17 = "Treatment after Menopause 480J";
+char const *PRE_SCHEME_TABLE_S18 = "PLDD Total 800-1500J";
+char const *PRE_SCHEME_TABLE_S19 = "PLDD Total 800-1800J";
 #endif
+
 
 #if CONFIG_APP_USING_PRESCHEME_980 == 1
 char const *PRE_SCHEME_TABLE_S0  = "EVLA Thigh";
