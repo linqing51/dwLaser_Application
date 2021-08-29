@@ -10,7 +10,7 @@ int16_t pulseWidthAdd(int16_t ps){//脉宽增加
 	else if(ps >= 100 && ps < 1000){
 		ps += 50;
 	}
-	else if(ps >= 1000 && ps < 10000){
+	else if(ps >= 1000 && ps < 15000){
 		ps += 1000;
 	}
 	return ps;
@@ -25,7 +25,7 @@ int16_t pulseWidthDec(int16_t ps){//脉宽减少
 	else if(ps > 100 && ps <= 1000){
 		ps -= 50;
 	}
-	else if(ps > 1000 && ps <= 10000){
+	else if(ps > 1000 && ps <= 15000){
 		ps -= 1000;
 	}
 	return ps;
@@ -51,7 +51,7 @@ void loadDefault(void){//恢复默认值
 }
 void lockPreScheme(void){//恢复预设方案
 	uint8_t i;	
-	for(i = 0;i <= 10;i ++){
+	for(i = 0;i <= 19;i ++){
 		NVRAM0[DM_SCHEME_NUM] = i;
 		defaultScheme();
 		saveScheme();
@@ -75,7 +75,7 @@ void defaultScheme(void){//当前选择方案恢复默认值
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d", (NVRAM0[DM_SCHEME_NUM] + 1));		
 	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
-	NVRAM0[EM_LASER_POWER_CH0] = NVRAM0[DM_SCHEME_NUM] * 5 + 20;//通道0功率
+	NVRAM0[EM_LASER_POWER_CH0] = NVRAM0[DM_SCHEME_NUM] * 2 + 20;//通道0功率
 	NVRAM0[EM_LASER_POWER_CH1] = NVRAM0[DM_SCHEME_NUM] * 2 + 10;//通道1功率
 	NVRAM0[EM_LASER_SP_POSWIDTH]= 500;//单脉冲正脉宽
 	NVRAM0[EM_LASER_MP_POSWIDTH]= 400;//多脉冲正脉宽
@@ -190,35 +190,35 @@ void defaultScheme(void){//当前选择方案恢复默认值
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S13);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
 			break;
 		}
 		case 14:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S14);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
 			break;
 		}
 		case 15:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S15);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 50;//5.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
 			break;
 		}
 		case 16:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S16);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 50;//5.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 10000;//多脉冲正脉宽 10S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 10000;//单脉冲正脉宽 10S
 			break;
 			}
 		case 17:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S17);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
 			break;
 		}
 		case 18:{

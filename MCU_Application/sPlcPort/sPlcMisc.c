@@ -345,6 +345,7 @@ void setLoudspeakerVolume(int16_t volume){//设置喇叭音量
 	int16_t i;
 	float64_t  ftemp,fvolume = 0;
 	float64_t piStep;
+	volume = 50.0F + volume / 2.0F;//音量线性范围50-100%
 	if(LoudspeakerVolume != volume){
 		fvolume = linearToLog(volume);
 		piStep = 2.0F * PI / 256.0F;

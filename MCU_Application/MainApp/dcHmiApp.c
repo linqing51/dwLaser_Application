@@ -672,7 +672,12 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 				SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"Mode:Single");
 			}
 			posWidth = FDRAM[cn * 64 + FD_LASER_SP_POSWIDTH];
-			sprintf(dispBuf2, "OnTime:%dmS", posWidth);
+			if((cn == 13) || (cn == 14) || (cn == 17)){
+				sprintf(dispBuf2, "OnTime:%dmS, 4 passes", posWidth);
+			}
+			else{
+				sprintf(dispBuf2, "OnTime:%dmS", posWidth);
+			}
 			break;
 		}
 		case LASER_MODE_MP:{
@@ -721,7 +726,7 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 			else{
 				SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"Mode:SIGNAL");
 			}
-			sprintf(dispBuf2, "Energy Interval:%dJ", energyInterval);
+			sprintf(dispBuf2, "Energy Interval:%dJ/cm", energyInterval);
 			break;
 		}
 		default:break;
@@ -2009,7 +2014,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_SP_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_SP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_SP);
-							if(NVRAM0[EM_LASER_SP_POSWIDTH] >= 10000){//达到最大值后停止自加
+							if(NVRAM0[EM_LASER_SP_POSWIDTH] >= CONFIG_MAX_LASER_POSWIDTH){//达到最大值后停止自加
 								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2022,7 +2027,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_SP_POSWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_SP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_SP);
-							if(NVRAM0[EM_LASER_SP_POSWIDTH] <= 1){//达到最小值后停止自减
+							if(NVRAM0[EM_LASER_SP_POSWIDTH] <= CONFIG_MIN_LASER_POSWIDTH){//达到最小值后停止自减
 								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 								T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2038,7 +2043,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_MP_POSWIDTH]);
 							updatePosWidthDisplay(LASER_MODE_MP);
-							if(NVRAM0[EM_LASER_MP_POSWIDTH] >= 10000){//达到最大值后停止自加
+							if(NVRAM0[EM_LASER_MP_POSWIDTH] >= CONFIG_MAX_LASER_POSWIDTH){//达到最大值后停止自加
 								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2051,7 +2056,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_POSWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_MP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_MP);
-							if(NVRAM0[EM_LASER_MP_POSWIDTH] <= 1){//达到最小值后停止自减
+							if(NVRAM0[EM_LASER_MP_POSWIDTH] <= CONFIG_MIN_LASER_POSWIDTH){//达到最小值后停止自减
 								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 								T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2064,7 +2069,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_NEGWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_MP_NEGWIDTH]);
 							updateNegWidthDisplay(LASER_MODE_MP);
-							if(NVRAM0[EM_LASER_MP_NEGWIDTH] >= 10000){//达到最大值后停止自加
+							if(NVRAM0[EM_LASER_MP_NEGWIDTH] >= CONFIG_MAX_LASER_NEGWIDTH){//达到最大值后停止自加
 								RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
 								T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}							
@@ -2077,7 +2082,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_MP_NEGWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_MP_NEGWIDTH]);
 							updateNegWidthDisplay(LASER_MODE_MP);
-							if(NVRAM0[EM_LASER_MP_NEGWIDTH] <= 1){//达到最小值后停止自减
+							if(NVRAM0[EM_LASER_MP_NEGWIDTH] <= CONFIG_MIN_LASER_NEGWIDTH){//达到最小值后停止自减
 								RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
 								T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2093,7 +2098,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_GP_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_GP);
-							if(NVRAM0[EM_LASER_GP_POSWIDTH] >= 10000){//达到最大值后停止自加
+							if(NVRAM0[EM_LASER_GP_POSWIDTH] >= CONFIG_MAX_LASER_POSWIDTH){//达到最大值后停止自加
 								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}						
@@ -2106,7 +2111,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_POSWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_GP_POSWIDTH]);		
 							updatePosWidthDisplay(LASER_MODE_GP);
-							if(NVRAM0[EM_LASER_GP_POSWIDTH] <= 1){//达到最小值后停止自减
+							if(NVRAM0[EM_LASER_GP_POSWIDTH] <= CONFIG_MIN_LASER_POSWIDTH){//达到最小值后停止自减
 								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 								T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2119,7 +2124,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_NEGWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_GP_NEGWIDTH]);		
 							updateNegWidthDisplay(LASER_MODE_GP);
-							if(NVRAM0[EM_LASER_GP_NEGWIDTH] >= 10000){//达到最大值后停止自加
+							if(NVRAM0[EM_LASER_GP_NEGWIDTH] >= CONFIG_MAX_LASER_NEGWIDTH){//达到最大值后停止自加
 								RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
 								T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2132,7 +2137,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_GP_NEGWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_GP_NEGWIDTH]);	
 							updateNegWidthDisplay(LASER_MODE_GP);
-							if(NVRAM0[EM_LASER_GP_NEGWIDTH] <= 1){//达到最小值后停止自减
+							if(NVRAM0[EM_LASER_GP_NEGWIDTH] <= CONFIG_MIN_LASER_NEGWIDTH){//达到最小值后停止自减
 								RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
 								T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}						
@@ -2204,7 +2209,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_DERMA_POSWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_DERMA_POSWIDTH]);		
 							updatePosWidthDisplay(LASER_MODE_DERMA);
-							if(NVRAM0[EM_LASER_DERMA_POSWIDTH] >= 10000){//达到最大值后停止自加
+							if(NVRAM0[EM_LASER_DERMA_POSWIDTH] >= CONFIG_MAX_LASER_POSWIDTH){//达到最大值后停止自加
 								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 								T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}						
@@ -2213,10 +2218,14 @@ void dcHmiLoop(void){//HMI轮训程序
 				}				
 				if(LD(R_STANDBY_KEY_POSWIDTH_DEC_DOWN)){//正脉宽减按键
 					T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
-					if(LD(T_10MS_START * 16 + T10MS_POSWIDTH_DEC_KEYDOWN_DELAY)){	
+					if(LD(T_10MS_START * 16 + T10MS_POSWIDTH_DEC_KEYDOWN_DELAY)){						
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_DERMA_POSWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_DERMA_POSWIDTH]);	
 							updatePosWidthDisplay(LASER_MODE_DERMA);
+							if(NVRAM0[EM_LASER_DERMA_POSWIDTH] <= CONFIG_MIN_LASER_POSWIDTH){//达到最小值后停止自减
+								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
+								T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+							}
 						}
 					}
 				}
@@ -2226,7 +2235,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_DERMA_NEGWIDTH] = pulseWidthAdd(NVRAM0[EM_LASER_DERMA_NEGWIDTH]);	
 							updateNegWidthDisplay(LASER_MODE_DERMA);
-							if(NVRAM0[EM_LASER_DERMA_NEGWIDTH] >= 10000){//达到最小值后停止自减
+							if(NVRAM0[EM_LASER_DERMA_NEGWIDTH] >= CONFIG_MAX_LASER_NEGWIDTH){//达到最小值后停止自减
 								RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 								T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}
@@ -2239,7 +2248,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 							NVRAM0[EM_LASER_DERMA_NEGWIDTH] = pulseWidthDec(NVRAM0[EM_LASER_DERMA_NEGWIDTH]);
 							updateNegWidthDisplay(LASER_MODE_DERMA);
-							if(NVRAM0[EM_LASER_DERMA_NEGWIDTH] <= 1){//达到最小值后停止自减
+							if(NVRAM0[EM_LASER_DERMA_NEGWIDTH] <= CONFIG_MIN_LASER_NEGWIDTH){//达到最小值后停止自减
 								RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 								T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 							}

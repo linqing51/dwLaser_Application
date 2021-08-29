@@ -46,9 +46,9 @@
 #define CONFIG_SPLC_LEDAIM_FREQ									4000L//LED和AIM闪烁频率
 #define CONFIG_SPLC_RLED_ON_DC									15//红灯亮度
 #define CONFIG_SPLC_RLED_OFF_DC									0//红灯亮度
-#define CONFIG_SPLC_GLED_ON_DC									15//绿灯亮度
+#define CONFIG_SPLC_GLED_ON_DC									18//绿灯亮度
 #define CONFIG_SPLC_GLED_OFF_DC									0//绿灯亮度
-#define CONFIG_SPLC_BLED_ON_DC									15//蓝灯亮度
+#define CONFIG_SPLC_BLED_ON_DC									18//蓝灯亮度
 #define CONFIG_SPLC_BLED_OFF_DC									0//蓝灯亮度
 #define CONFIG_SPLC_USING_SPWM									1//使了软件PWM功能
 #define CONFIG_SPLC_FUNTEST										0//功能指令测试
@@ -179,9 +179,9 @@
 #define CONFIG_LASER_THRESHOLD_CH3								9999//通道3激光阈值电流
 #define CONFIG_LASER_THRESHOLD_CH4								9999//通道4激光阈值电流
 
-#define CONFIG_MAX_LASER_POSWIDTH								15000
+#define CONFIG_MAX_LASER_POSWIDTH								16000
 #define CONFIG_MIN_LASER_POSWIDTH								1
-#define CONFIG_MAX_LASER_NEGWIDTH								15000
+#define CONFIG_MAX_LASER_NEGWIDTH								16000
 #define CONFIG_MIN_LASER_NEGWIDTH								1
 #define CONFIG_MAX_LASER_TIMES									10//最大可计数脉冲数
 #define CONFIG_MIN_LASER_TIMES									1//最小可计数脉冲数

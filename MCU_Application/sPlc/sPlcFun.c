@@ -468,7 +468,6 @@ void FDSAV(void){//FDRAM->EPROM
 	enableSplcIsr();
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
-	uint16_t x, y;
 	disableSplcIsr();
 	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
 		cn = (CONFIG_HMI_SCHEME_NUM - 1);
@@ -478,11 +477,6 @@ void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	}
 #if CONFIG_SPLC_USING_EPROM == 1
 	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM), 128);
-#endif
-#if CONFIG_DEBUG_SPLC == 1
-	for(y = 0;y < 16;y ++)//
-	for(x = 0;x < 16;x++){
-	}
 #endif
 	enableSplcIsr();
 }
