@@ -190,7 +190,7 @@
 #define CONFIG_MAX_LASER_ENERGY_INTERVAL						200
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL						30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL						10
-#define CONFIG_BEEM_ENERGY_INTERVAL_TIME						300//变音持续时间
+#define CONFIG_BEEM_ENERGY_INTERVAL_TIME						500//变音持续时间
 
 #define CONFIG_MAX_AIM_BRG										100//红光最大调光占空比
 #define CONFIG_MIN_AIM_BRG										1//红光最小调光占空比
@@ -457,14 +457,14 @@
 #define SPREG_ADC_8												(SPREG_START + 18)//ADC8采集值 片内温度传感器
 #define SPREG_ADC_9												(SPREG_START + 19)//ADC9采集值 片内基准源
 
-#define SPREG_DAC_0												(SPREG_START + 20)//DAC0设定值 LSET0
-#define SPREG_DAC_1												(SPREG_START + 21)//DAC1设定值 LSET1
-#define SPREG_DAC_2												(SPREG_START + 22)//DAC2设定值 LSET2
-#define SPREG_DAC_3												(SPREG_START + 23)//DAC3设定值 LSET3
-#define SPREG_DAC_4												(SPREG_START + 24)//DAC3设定值 LSET4
-#define SPREG_DAC_5												(SPREG_START + 25)//DAC3设定值 LSET5
-#define SPREG_DAC_6												(SPREG_START + 26)//DAC3设定值 LSET6
-#define SPREG_DAC_7												(SPREG_START + 27)//DAC3设定值 LSET7
+#define SPREG_DAC_0												(SPREG_START + 20)//DAC0设定值 LSET0 通道0
+#define SPREG_DAC_1												(SPREG_START + 21)//DAC1设定值 LSET1 通道1
+#define SPREG_DAC_2												(SPREG_START + 22)//DAC2设定值 LSET2 通道2
+#define SPREG_DAC_3												(SPREG_START + 23)//DAC3设定值 LSET3 通道3
+#define SPREG_DAC_4												(SPREG_START + 24)//DAC4设定值 LSET4 通道4
+#define SPREG_DAC_5												(SPREG_START + 25)//DAC5设定值 LSET5
+#define SPREG_DAC_6												(SPREG_START + 26)//DAC6设定值 LSET6
+#define SPREG_DAC_7												(SPREG_START + 27)//DAC7设定值 LSET7
 /*****************************************************************************/
 #define SPREG_SPWM_POS_0										(SPREG_START + 30)//软件PWM0正脉宽设置
 #define SPREG_SPWM_POS_SHADOW_0									(SPREG_START + 31)//软件PWM0正脉宽阴影

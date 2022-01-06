@@ -2378,7 +2378,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_1] = 0x0;
 				NVRAM0[SPREG_DAC_2] = 0x0;
 				NVRAM0[SPREG_DAC_3] = 0x0;
-				NVRAM0[SPREG_DAC_4] = 0x0;
+				NVRAM0[SPREG_DAC_4] = 0xFFFF;
 #if CONFIG_DEBUG_APP == 1
 				printf("%s,%d,%s:set SPEG_DAC_0=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_0]);
 				printf("%s,%d,%s:set SPEG_DAC_1=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_1]);
@@ -2390,8 +2390,9 @@ void dcHmiLoop(void){//HMI轮训程序
 				printf("%s,%d,%s:set SPEG_DAC_7=%05d\n", __FILE__, __LINE__, __func__, (uint16_t)NVRAM0[SPREG_DAC_7]);
 #endif
 #if CONFIG_USING_SINGLE_WAVE == 1
-				UPDAC0();
-				UPDAC1();
+				UPDAC0();//更新工作激光
+				UPDAC4();//更新指示激光
+				//UPDAC1();
 #endif
 #if CONFIG_USING_DUAL_WAVE == 1//双波长
 #endif

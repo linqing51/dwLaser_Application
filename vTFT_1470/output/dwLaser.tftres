@@ -17,8 +17,8 @@
         <page name="GDDC_PAGE_RENAME" id="14" />
     </pages>
     <images>
-        <image id="0" url="c:\github\dwlaser_application\vtft_1470\Images\0_GDDC_PAGE_POWERUP_0.jpg" effect_width="800" effect_height="600" />
-        <image id="1" url="c:\github\dwlaser_application\vtft_1470\Images\2_GDDC_PAGE_PASSCODE_0.JPG" effect_width="800" effect_height="600" />
+        <image id="0" url="c:\github\dwlaser_application\vtft_1470\Images\1_GDDC_PAGE_POWERUP_0_1.jpg" effect_width="800" effect_height="600" />
+        <image id="1" url="c:\github\dwlaser_application\vtft_1470\Images\2_GDDC_PAGE_PASSCODE_0.jpg" effect_width="800" effect_height="600" />
         <image id="2" url="c:\github\dwlaser_application\vtft_1470\Images\3_GDDC_PAGE_PASSCODE_1.jpg" effect_width="800" effect_height="600" />
         <image id="3" url="c:\github\dwlaser_application\vtft_1470\Images\4_GDDC_PAGE_NEW_PASSCODE_0.jpg" effect_width="800" effect_height="600" />
         <image id="4" url="c:\github\dwlaser_application\vtft_1470\Images\5_GDDC_PAGE_NEW_PASSCODE_1.jpg" effect_width="800" effect_height="600" />
