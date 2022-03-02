@@ -180,7 +180,7 @@ char INFO_MSG_LASER_POWER[8][64] 				 = {{"LASER_POWER: 15W"},
 													{""},
 													{""}};
 													
-char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.1"},
+char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.1a"},
 													{""},
 													{""},
 													{""},
@@ -189,7 +189,7 @@ char INFO_MSG_VERSION[8][64] 					 = {{"VERSION: 2.1"},
 													{""},
 													{""}};
 													
-char INFO_MSG_MANUFACTURE_DATE[8][64] 			 = {{"MANUFACTURE DATE:2021-07-21"},
+char INFO_MSG_MANUFACTURE_DATE[8][64] 			 = {{"MANUFACTURE DATE:2022-01-07"},
 													{""},
 													{""},
 													{""},
