@@ -1,7 +1,6 @@
 #include "deviceConfig.h"
 /*****************************************************************************/
 deviceConfig_t deviceConfig;
-firmwareInfo_t firmwareInfo;//固件信息
 deviceLogInfo_t deviceLogInfo;
 uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/

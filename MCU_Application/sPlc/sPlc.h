@@ -21,21 +21,16 @@
 #include "sPlcFun.h"
 #include "sPlcTimer.h"
 #include "sPlcLaser.h"
-#if CONFIG_SPLC_USING_EPROM == 1
+
 #include "sPlcEprom.h"
-#endif
 #if CONFIG_SPLC_USING_ADC == 1
 #include "sPlcAdc.h"
 #endif
-#if CONFIG_SPLC_USING_DAC == 1
 #include "sPlcDac.h"
-#endif
 #if CONFIG_USING_DCHMI_APP == 1
 #include "dcHmiApp.h"
 #endif
-#if CONFIG_APP_USING_PRESCHEME == 1
 #include "preScheme.h"
-#endif
 /*****************************************************************************/
 #include "main.h"
 //#include "sPlcPort.h"

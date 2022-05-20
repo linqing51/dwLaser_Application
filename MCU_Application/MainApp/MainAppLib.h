@@ -2,10 +2,9 @@
 #define __MAINAPPLIB_H__
 /*****************************************************************************/
 #include "sPlc.h"
+#include "preScheme.h"
 /*****************************************************************************/
-#include "usbh_core.h"
-#include "usbh_msc.h"
-/*****************************************************************************/
+uint8_t fanSpeedToPwm(uint8_t speed);//风扇输入转换为占空比
 uint8_t getLcdDuty(int16_t LcdBrg);//屏幕亮度值转换为占空比
 int16_t pulseWidthAdd(int16_t ps);
 int16_t pulseWidthDec(int16_t ps);

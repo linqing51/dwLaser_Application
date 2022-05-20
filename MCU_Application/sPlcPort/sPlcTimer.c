@@ -5,6 +5,15 @@ extern TIM_HandleTypeDef htim14;
 uint32_t sPlcTick;
 /*****************************************************************************/
 void initSplcTimer(void){//硬件sTimer计时器初始化
+	htim14.Instance = TIM14;
+	htim14.Init.Prescaler = 96;
+	htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim14.Init.Period = 1000;
+	htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+	if (HAL_TIM_Base_Init(&htim14) != HAL_OK){
+		Error_Handler();
+	}
 	HAL_TIM_Base_Start_IT(&htim14);
 	TD_10MS_SP = 0;
 	TD_100MS_SP = 0;
@@ -19,7 +28,12 @@ void initSplcTimer(void){//硬件sTimer计时器初始化
 	TimerCounter_60000mS = 0;//1分钟
 	sPlcTick = 0;
 }
-
+void disableSplcTimer(void) {//SPLC关闭计时器
+	HAL_TIM_Base_Stop_IT(&htim14);
+}
+void enableSplcTimer(void) {//SPLC打开计时器
+	HAL_TIM_Base_Start_IT(&htim14);
+}
 void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	uint16_t i;
 	uint32_t temp;
@@ -98,5 +112,4 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	
 	sPlcTick ++;
 }
-
 

@@ -22,6 +22,8 @@ uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
 uint32_t sPlcEnterTime, sPlcExitTime, sPlcScanTime;
 /******************************************************************************/
+extern CRC_HandleTypeDef hcrc;
+/******************************************************************************/
 void errorHandler(uint16_t errCode){
 	while(1);
 }
@@ -47,17 +49,17 @@ void assertRegisterAddress(uint16_t adr){//检查寄存器地址
 }
 void loadNvram(void){//从EPROM中载入NVRAM MR和DM
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
-#if CONFIG_SPLC_USING_EPROM == 1
+	//从EPROM中恢复MR NVRAM
 	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//从EPROM中恢复MR
+	//从EPROM中恢复DM NVRAM
 	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//从EPROM中恢复DM
-#endif
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
 }
 void saveNvram(void){//强制将NVRAM存入EPROM
-#if CONFIG_SPLC_USING_EPROM == 1
+	//MR NVRAM写入EPROM
 	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//将NVRAM中MR储存入EPROM																				
+	//DM NVRAM写入EPROM
 	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//将NVRAM中DM储存入EPROM
-#endif
 }
 void updateNvram(void){//更新NVRAM->EPROM
 	uint8_t *sp0, *sp1;
@@ -67,9 +69,7 @@ void updateNvram(void){//更新NVRAM->EPROM
 	sp1 = (uint8_t*)(NVRAM1 + MR_START);
 	for(i = 0;i < (CONFIG_MRRAM_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
-#if CONFIG_SPLC_USING_EPROM == 1
-			epromWriteByte((i + CONFIG_EPROM_MR_START), *sp0);
-#endif
+			epromWriteByte((i + CONFIG_EPROM_MR_START), sp0);
 		}
 		sp0 ++;
 		sp1 ++;
@@ -79,9 +79,7 @@ void updateNvram(void){//更新NVRAM->EPROM
 	sp1 = (uint8_t*)(NVRAM1 + DM_START);
 	for(i = 0;i < (CONFIG_DMRAM_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
-#if CONFIG_SPLC_USING_EPROM == 1
-			epromWriteByte((i + CONFIG_EPROM_DM_START), *sp0);
-#endif
+			epromWriteByte((i + CONFIG_EPROM_DM_START), sp0);
 		}
 		sp0 ++;
 		sp1 ++;
@@ -91,94 +89,75 @@ void updateNvram(void){//更新NVRAM->EPROM
 void clearNvram(void){//清除NVRAM数据	
 	uint16_t i = 0;
 	enterSplcIsr();
-#if CONFIG_SPLC_USING_EPROM == 1
+	//清除EPROM MR区
+	for(i = CONFIG_EPROM_MR_START; i< (CONFIG_MRRAM_SIZE * 2);i ++){
+		epromWriteByte(i, 0x0);//
+	}
 	//清除EPROM DM区
 	for(i = CONFIG_EPROM_DM_START; i< (CONFIG_DMRAM_SIZE * 2);i ++){
 		epromWriteByte(i, 0x0);//
-	}	
-#endif
+	}
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM0
 	memset((uint8_t*)NVRAM1, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM1
 	exitSplcIsr();//恢复中断
 }
-void clearEprom(void){
-	uint16_t i;
-	//清空EPROM
-#if CONFIG_SPLC_USING_EPROM == 1
-	for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
-		epromWriteByte(i, 0x0);
-	}
-	//写入校验码
-	epromWriteByte((CONFIG_EPROM_SIZE - 4), 0x55);
-	epromWriteByte((CONFIG_EPROM_SIZE - 3), 0xAA);
-	epromWriteByte((CONFIG_EPROM_SIZE - 2), 0xBC);
-	epromWriteByte((CONFIG_EPROM_SIZE - 1), 0xD4);
-#endif
-}
-extern void loadDefault(void);
-void checkEprom(void){
-	uint16_t i;
-	uint8_t checkCode[4];
-#if CONFIG_SPLC_USING_EPROM == 1
-	checkCode[0] = 0;
-	checkCode[1] = 0;
-	checkCode[2] = 0;
-	checkCode[3] = 0;
-	epromRead((CONFIG_EPROM_SIZE - 4), checkCode, 4);//从EPROM中恢复MR
-	if((checkCode[0] != 0x55) || (checkCode[1] != 0xAA) || (checkCode[2] != 0xBC) || (checkCode[3] != 0xD1)){
-		//检测到校验码错误清空EPROM
-		for(i = 0; i< CONFIG_EPROM_SIZE;i ++){
-			epromWriteByte(i, 0x0);
-		}
-		epromWriteByte((CONFIG_EPROM_SIZE - 4), 0x55);
-		epromWriteByte((CONFIG_EPROM_SIZE - 3), 0xAA);
-		epromWriteByte((CONFIG_EPROM_SIZE - 2), 0xBC);
-		epromWriteByte((CONFIG_EPROM_SIZE - 1), 0xD1);
-		loadDefault();
-	}
-#endif
-}
 
 void loadFdram(void){//从EPROM中载入FDRAM
-#if CONFIG_SPLC_USING_EPROM == 1
-	epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
-#endif
+	HAL_StatusTypeDef ret;
+	ret = epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
+	if(ret == HAL_OK){
+		printf("%s,%d,%s:load FD NVRAM ok...\n",__FILE__, __LINE__, __func__);
+	}		
+	else{
+		printf("%s,%d,%s:load DM NVRAM fail...\n",__FILE__, __LINE__, __func__);
+	}
 }
 void saveFdram(void){//强制将FDRAM存入EPROM
-#if CONFIG_SPLC_USING_EPROM == 1
-	epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
-#endif
+	HAL_StatusTypeDef ret;
+	ret = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
+	if(ret == HAL_OK){
+		printf("%s,%d,%s:save FD NVRAM ok...\n",__FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:save FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
+	}
 }
 void clearFdram(void){//清除FDRAM数据
-	uint16_t i;
+	uint8_t temp = 0;
+	HAL_StatusTypeDef ret;
 	enterSplcIsr();
-#if CONFIG_SPLC_USING_EPROM == 1
-	for(i = CONFIG_EPROM_FD_START; i< (CONFIG_FDRAM_SIZE * 2) ; i++){
-		epromWriteByte(i, 0x0);
-	}
-#endif
+	ret = epromWrite(CONFIG_EPROM_FD_START, &temp, (CONFIG_FDRAM_SIZE * 2));
 	memset(FDRAM, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
+	if(ret == HAL_OK){
+		printf("%s,%d,%s:clear FD NVRAM ok...\n",__FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:clear FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
+	}
 	exitSplcIsr();//恢复中断
 }
 
 void clearDeviceConfig(void){//清除设备配置参数
 	uint16_t i;
+	HAL_StatusTypeDef ret;
 	enterSplcIsr();
-#if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_CONFIG_START; i< CONFIG_EPROM_LOGINFO_START; i++){
 		epromWriteByte(i, 0x0);
 	}
-#endif
+	if(ret == HAL_OK){
+		printf("%s,%d,%s:clear CONFIG NVMAM ok...\n",__FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:clear FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
+	}
 	exitSplcIsr();//恢复中断	
 }
 void clearDeviceLog(void){//清除设备记录
 	uint16_t i;
 	enterSplcIsr();
-#if CONFIG_SPLC_USING_EPROM == 1
 	for(i = CONFIG_EPROM_LOGINFO_START; i< (CONFIG_EPROM_LOGINFO_START + 512); i++){
 		epromWriteByte(i, 0x0);
 	}
-#endif
 	exitSplcIsr();//恢复中断	
 }
 
@@ -270,13 +249,20 @@ void sPlcSpwmLoop(void){//SPWM轮询
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化
 	readStm32UniqueID();
-	//sPlcEpromTest();
+#if CONFIG_SPLC_USING_EPROM_TEST == 1
+	sPlcEpromTest();
+#endif
 	printf("\r\r\r\n\n\n");
+	printf("MR EPROM:08%XH->08%XH\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END);
+	printf("DM EPROM:08%XH->08%XH\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END);
+	printf("FD EPROM:08%XH->08%XH\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END);
+	printf("CONFIG EPROM:08%X->08%X\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END);
+	printf("LOGINFO EPROM:08%XH->08%XH\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END);
 	printf("%s,%d,%s:start load Nvram......\n",__FILE__, __LINE__, __func__);
 	loadNvram();//上电恢复NVRAM
 	printf("%s,%d,%s:start load Fdram......\n",__FILE__, __LINE__, __func__);
 	loadFdram();//上电恢复FDRAM
-#if CONFIG_APP_USING_PRESCHEME == 1
+#if CONFIG_USING_DCHMI_APP == 1
 	lockPreScheme();//恢复预设方案
 #endif
 	SSET(SPCOIL_ON);
@@ -313,10 +299,6 @@ void sPlcInit(void){//软逻辑初始化
 	UPDAC1();
 	UPDAC2();
 	UPDAC3();
-	UPDAC4();
-	UPDAC5();
-	UPDAC6();
-	UPDAC7();
 #endif
 
 #if CONFIG_SPLC_USING_ADC == 1
@@ -340,6 +322,14 @@ void sPlcInit(void){//软逻辑初始化
 #if CONFIG_SPLC_USING_SPK == 1	
 	printf("%s,%d,%s:start loudspeaker dma init......\n",__FILE__, __LINE__, __func__);
 	initLoudspeaker();
+#endif
+#if CONFIG_SPLC_USING_AIM_PWM == 1
+	printf("%s,%d,%s:start aim timer pwm init......\n",__FILE__, __LINE__, __func__);
+	setAimFreq(CONFIG_SPLC_AIM_PWM_FREQ);
+#endif
+#if CONFIG_SPLC_USING_LED_PWM == 1
+	printf("%s,%d,%s:start led timer pwm init......\n",__FILE__, __LINE__, __func__);
+	setLedFreq(CONFIG_SPLC_LED_PWM_FREQ);
 #endif
 }
 void sPlcProcessStart(void){//sPLC轮询起始
@@ -381,21 +371,39 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	chipAdcProcess();//ADC 更新NVRAM
 #endif
 }
+
 void sPlcProcessEnd(void){//sPLC轮询结束
-	if(LD(SPCOIL_PS1000MS)){
-		SSET(Y_RUN_LED);
+	if(LDP(SPCOIL_PS1000MS)){
+		SSET(Y_TICK_LED);
 	}
-	else{
-		RRES(Y_RUN_LED);
+	if(LDN(SPCOIL_PS1000MS)){
+		RRES(Y_TICK_LED);
 	}
+#if CONFIG_SPLC_USING_ADC == 1 && CONFIG_DEBUB_ADC == 1
+	if(LDP(SPCOIL_PS1000MS)){
+		printf("\n\n");
+		printf("%s,%d,%s:SPREG_ADC_0=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_0]);
+		printf("%s,%d,%s:SPREG_ADC_1=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_1]);
+		printf("%s,%d,%s:SPREG_ADC_2=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_2]);
+		printf("%s,%d,%s:SPREG_ADC_3=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_3]);
+		printf("%s,%d,%s:SPREG_ADC_4=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_4]);
+		printf("%s,%d,%s:SPREG_ADC_5=%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_ADC_5]);
+	}
+#endif
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
 	outputRefresh();//更新Y口输出
 #endif
 #if CONFIG_SPLC_USING_SPK == 1
 	sPlcLoudspeakerLoop();
 #endif
-#if	CONFIG_SPLC_USING_LEDAIM == 1
+#if	CONFIG_SPLC_USING_AIM_PWM == 1
 	sPlcAimLoop();
+#endif
+#if CONFIG_SPLC_USING_AIM_PWM == 1
+	sPlcAutoFanLoop();
+#else
+	NVRAM0[SPREG_LAS_FAN_SPEED] = 9;
+	sPlcAutoFanLoop();
 #endif
 	updateNvram();//更新NVRAM
 	RRES(SPCOIL_START_UP);

@@ -1,4 +1,13 @@
 #include "sPlcFun.h"
+#include "pid_fuzzy"
+/*****************************************************************************/
+
+#define CONFIG_SPLC_MAX_FUZZY_PID									8//模拟PID运行数量
+#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KP							8.3F//模拟PID KP参数
+#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KI							1.2F//模糊PID KI参数
+#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KD							0.0F//模糊PID KD参数
+#defien CONFIG_SPLC_DEFAULT_FUZZY_PID_TD							1.0F//模糊PID TD参数
+PID fuzzyPidConfig[CONFIG_SPLC_MAX_FUZZY_PID];//
 /*****************************************************************************/
 void REBOOT(void) {//软件复位	
 	__set_FAULTMASK(1);
@@ -158,12 +167,12 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = 0xFFF;
 	LIMS16(src, TMP_REG_0, TMP_REG_1);
-	
-	if(NVRAM0[SPREG_ADC_9]  == 0){
-		NVRAM0[SPREG_ADC_9] = 1;
+	//使用内部基准校准
+	if(NVRAM0[SPREG_ADC_4]  == 0){
+		NVRAM0[SPREG_ADC_4] = 1;
 	}
 	if(NVRAM0[src] >= 10){
-		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);
+		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_4] * 4096.0F);
 		ftemp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - ftemp) / ftemp);
 	}
 	else{
@@ -179,7 +188,7 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 }
 void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
 	float32_t ftemp;
-	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_9] * 4096.0F);
+	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_4] * 4096.0F);
 	//ftemp = NVRAM0[SPREG_VREF]* NVRAM0[src] / 4096;//单位mV
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
 	if(ftemp >= 100)
@@ -475,9 +484,7 @@ void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	if(cn < 0){
 		cn = 0;
 	}
-#if CONFIG_SPLC_USING_EPROM == 1
 	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM), 128);
-#endif
 	enableSplcIsr();
 }
 void FDLAD(void){//FDRAM<-EPROM
@@ -583,7 +590,17 @@ void STPID(uint16_t adr){//位置PID指令
 		}
 	}
 }
-void FUPID(uint16_t adr){//模糊PID指令
+void FUPID0(uint16_t adr){//模糊PID指令
+	uint8_t i;
+	if(LD(SPCOIL_START_UP)){//	
+		for (i = 0;i < CONFIG_SPLC_MAX_FUZZY_PID; i++){
+			PID_Init(fuzzyPidConfig[i]);
+			PID_Set(fuzzyPidConfig[i], 
+					CONFIG_SPLC_DEFAULT_FUZZY_PID_KP,
+					CONFIG_SPLC_DEFAULT_FUZZY_PID_KI,
+					CONFIG_SPLC_DEFAULT_FUZZY_PID_KD,
+					CONFIG_SPLC_DEFAULT_FUZZY_PID_TD);
+	}
 }
 //步指令
 //void TO(uint16_t SA) {//步进开始指令

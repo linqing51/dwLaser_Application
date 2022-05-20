@@ -10,7 +10,7 @@ void inputInit(void){//IO输入滤波器初始化
 void inputRefresh(void){//获取输入IO
 	uint8_t	temp;
 	//X0
-	temp = HAL_GPIO_ReadPin(ESTOP_IN_GPIO_Port, ESTOP_IN_Pin);//急停
+	temp = HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin);//急停
 	if(temp == GPIO_PIN_RESET){//急停常闭
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
@@ -28,7 +28,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X1
-	temp = HAL_GPIO_ReadPin(INTLOCK_IN_GPIO_Port, INTLOCK_IN_Pin);//安全连锁
+	temp = HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin);//安全连锁
 	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[1] ++;
@@ -46,7 +46,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X2
-	temp = HAL_GPIO_ReadPin(FSWITCH_NO_GPIO_Port, FSWITCH_NO_Pin);//脚踏常开
+	temp = HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin);//脚踏常开
 	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;
@@ -64,7 +64,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X3
-	temp = HAL_GPIO_ReadPin(FSWITCH_NC_GPIO_Port, FSWITCH_NC_Pin);//脚踏常闭
+	temp = HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin);//脚踏常闭
 	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
@@ -81,9 +81,8 @@ void inputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
 		}
 	}
-	//X4
-	temp = HAL_GPIO_ReadPin(SOFTPOWER_IN_GPIO_Port, SOFTPOWER_IN_Pin);//电源开关
-	if(temp == GPIO_PIN_RESET){
+	//X4 光纤探测
+	if(NVRAM0[SPREG_ADC_3] < CONFIG_FIBER_PD_THRESHOLD){//光纤插入
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
 		}
@@ -97,23 +96,6 @@ void inputRefresh(void){//获取输入IO
 		}
 		else{
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
-		}
-	}
-	//X5 光纤探测
-	if(NVRAM0[SPREG_ADC_3] < CONFIG_FIBER_PD_THRESHOLD){//光纤插入
-		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[5] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 5);
-		}
-	}
-	else{
-		if(inputFilter[5] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[5] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 5);
 		}
 	}
 }

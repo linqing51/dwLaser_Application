@@ -1,98 +1,111 @@
 #include "sPlcDac.h"
 /*****************************************************************************/
-static void setSYNC(uint8_t dat){
-	if(dat){
-		HAL_GPIO_WritePin(DA_SYNC_GPIO_Port, DA_SYNC_Pin, GPIO_PIN_SET);
-	}
-	else{
-		HAL_GPIO_WritePin(DA_SYNC_GPIO_Port, DA_SYNC_Pin, GPIO_PIN_RESET);
-	}
-}
-static void setCLK(uint8_t dat){
-	if(dat){
-		HAL_GPIO_WritePin(DA_SCLK_GPIO_Port, DA_SCLK_Pin, GPIO_PIN_SET);
-	}
-	else{
-		HAL_GPIO_WritePin(DA_SCLK_GPIO_Port, DA_SCLK_Pin, GPIO_PIN_RESET);
-	}
-}
-static void setDIN(uint8_t dat){
-	if(dat){
-		HAL_GPIO_WritePin(DA_DIN_GPIO_Port, DA_DIN_Pin, GPIO_PIN_SET);
-	}
-	else{
-		HAL_GPIO_WritePin(DA_DIN_GPIO_Port, DA_DIN_Pin, GPIO_PIN_RESET);
-	}
-}
-static void spiWrite(uint32_t dat){//DAC8568 SPI写入
+#define SET_EDAC0_CS(b)								HAL_GPIO_WritePin(EDAC0_CS_GPIO_Port, EDAC0_CS_Pin, b)
+#define SET_EDAC1_CS(b)								HAL_GPIO_WritePin(EDAC1_CS_GPIO_Port, EDAC1_CS_Pin, b)
+#define SET_EDAC2_CS(b)								HAL_GPIO_WritePin(EDAC2_CS_GPIO_Port, EDAC2_CS_Pin, b)
+#define SET_EDAC3_CS(b)								HAL_GPIO_WritePin(EDAC3_CS_GPIO_Port, EDAC3_CS_Pin, b)
+#define SET_EDAC0_SCK(b)							HAL_GPIO_WritePin(EDAC0_SCK_GPIO_Port, EDAC0_SCK_Pin, b)
+#define SET_EDAC1_SCK(b)							HAL_GPIO_WritePin(EDAC1_SCK_GPIO_Port, EDAC1_SCK_Pin, b)
+#define SET_EDAC2_SCK(b)							HAL_GPIO_WritePin(EDAC2_SCK_GPIO_Port, EDAC2_SCK_Pin, b)
+#define SET_EDAC3_SCK(b)							HAL_GPIO_WritePin(EDAC3_SCK_GPIO_Port, EDAC3_SCK_Pin, b)
+#define SET_EDAC0_SDI(b)							HAL_GPIO_WritePin(EDAC0_SDI_GPIO_Port, EDAC0_SDI_Pin, b)
+#define SET_EDAC1_SDI(b)							HAL_GPIO_WritePin(EDAC1_SDI_GPIO_Port, EDAC1_SDI_Pin, b)
+#define SET_EDAC2_SDI(b)							HAL_GPIO_WritePin(EDAC2_SDI_GPIO_Port, EDAC2_SDI_Pin, b)
+#define SET_EDAC3_SDI(b)							HAL_GPIO_WritePin(EDAC3_SDI_GPIO_Port, EDAC3_SDI_Pin, b)
+#define MCP4821_NSHDN_MASK							(1 << 12)
+#define MCP4821_NGA_MASK							(1 << 13)
+/*****************************************************************************/
+static void writeMcp4821_0(uint16_t dat){//MCP4821 SPI写入
 	uint8_t tmp, i;
-	setSYNC(true);
+	SET_EDAC0_CS(GPIO_PIN_RESET);//CS = 0
+	dat &= 0x0FFF;
+	dat |= MCP4821_NSHDN_MASK;//OUTPUT ENABLE
+	dat |= MCP4821_NGA_MASK;//VREF=2.048V
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	setCLK(true);
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	setSYNC(false);
-	for(i = 0;i < 32;i ++){
-		tmp = (uint8_t)(dat >> (31 - i)) & 0x01;
-		setDIN(tmp);
+	for(i = 0;i < 16;i ++){
+		tmp = (uint8_t)(dat >> (15 - i)) & 0x01;
+		SET_EDAC0_SDI((GPIO_PinState)tmp);//dat -> SDI
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC0_SCK(GPIO_PIN_SET);//SCK -> 1
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		setCLK(false);
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		setCLK(true);
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC0_SCK(GPIO_PIN_RESET);//SCK -> 0
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	}
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	setSYNC(true);
+	SET_EDAC0_CS(GPIO_PIN_SET);
 }
 
-static void dac8568_Init(void){//DAC8568初始化
-	uint32_t tmp;
-	tmp = 0x07000000;//Software Reset
-	spiWrite(tmp);
-	tmp = 0x08000001;//Write Sequence for Enabling Internal Reference (Static Mode)
-	spiWrite(tmp);
-	//覆盖LDAC引脚
-	tmp = 0x0600000F;
-	spiWrite(tmp);
-	//覆盖CLR引脚
-	tmp = 0x05000003;
-	spiWrite(tmp);
+static void writeMcp4821_1(uint16_t dat){//MCP4821 SPI写入
+	uint8_t tmp, i;
+	SET_EDAC1_CS(GPIO_PIN_RESET);//CS = 0
+	dat &= 0x0FFF;
+	dat |= MCP4821_NSHDN_MASK;//OUTPUT ENABLE
+	dat |= MCP4821_NGA_MASK;//VREF=2.048V
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	for(i = 0;i < 16;i ++){
+		tmp = (uint8_t)(dat >> (15 - i)) & 0x01;
+		SET_EDAC1_SDI((GPIO_PinState)tmp);//dat -> SDI
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC1_SCK(GPIO_PIN_SET);//SCK -> 1
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC1_SCK(GPIO_PIN_RESET);//SCK -> 0
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	}
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_EDAC1_CS(GPIO_PIN_SET);
 }
-static void dac8568_WriteDacRegister(uint8_t ch, uint16_t dat){//写入输入寄存器并更新输出
-	uint32_t tmp;
-	ch &= 0x0F;
-	tmp = 0x03000000;
-	tmp |= (uint32_t)((uint32_t)ch << 20);
-	tmp |= (uint32_t)((uint32_t)dat << 4);
-	spiWrite(tmp);
+
+static void writeMcp4821_2(uint16_t dat){//MCP4821 SPI写入
+	uint8_t tmp, i;
+	SET_EDAC2_CS(GPIO_PIN_RESET);//CS = 0
+	dat &= 0x0FFF;
+	dat |= MCP4821_NSHDN_MASK;//OUTPUT ENABLE
+	dat |= MCP4821_NGA_MASK;//VREF=2.048V
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	for(i = 0;i < 16;i ++){
+		tmp = (uint8_t)(dat >> (15 - i)) & 0x01;
+		SET_EDAC2_SDI((GPIO_PinState)tmp);//dat -> SDI
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC2_SCK(GPIO_PIN_SET);//SCK -> 1
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC2_SCK(GPIO_PIN_RESET);//SCK -> 0
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	}
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_EDAC2_CS(GPIO_PIN_SET);
+}
+
+static void writeMcp4821_3(uint16_t dat){//MCP4821 SPI写入
+	uint8_t tmp, i;
+	SET_EDAC3_CS(GPIO_PIN_RESET);//CS = 0
+	dat &= 0x0FFF;
+	dat |= MCP4821_NSHDN_MASK;//OUTPUT ENABLE
+	dat |= MCP4821_NGA_MASK;//VREF=2.048V
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	for(i = 0;i < 16;i ++){
+		tmp = (uint8_t)(dat >> (15 - i)) & 0x01;
+		SET_EDAC3_SDI((GPIO_PinState)tmp);//dat -> SDI
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();	
+		SET_EDAC3_SCK(GPIO_PIN_SET);//SCK -> 1
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC3_SCK(GPIO_PIN_RESET);//SCK -> 0
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	}
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_EDAC3_CS(GPIO_PIN_SET);
 }
 
 void initChipDac(void){//DAC初始化
-	dac8568_Init();
+	SET_EDAC0_CS(GPIO_PIN_SET);SET_EDAC1_CS(GPIO_PIN_SET);SET_EDAC2_CS(GPIO_PIN_SET);SET_EDAC3_CS(GPIO_PIN_SET);//SPI CS=1
+	SET_EDAC0_SCK(GPIO_PIN_RESET);SET_EDAC1_SCK(GPIO_PIN_RESET);SET_EDAC2_SCK(GPIO_PIN_RESET);SET_EDAC3_SCK(GPIO_PIN_RESET); //SPI CLK = 0
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	writeMcp4821_0(0);
+	writeMcp4821_1(0);
+	writeMcp4821_2(0);
+	writeMcp4821_3(0);
 #if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:init dac vref=2048mV\n",__FILE__, __LINE__, __func__);
 	printf("%s,%d,%s:init dac done!\n",__FILE__, __LINE__, __func__);
 #endif
 }
@@ -103,7 +116,7 @@ void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 		temp = CONFIG_MAX_DAC_CH0;
 	if(temp <= CONFIG_MIN_DAC_CH0)
 		temp = CONFIG_MIN_DAC_CH0;
-	dac8568_WriteDacRegister(0x06, temp);
+	writeMcp4821_0(temp);
 #if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac0=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
@@ -115,7 +128,7 @@ void UPDAC1(void){//立即从SPREG_DAC_1更新DAC1
 		temp = CONFIG_MAX_DAC_CH1;
 	if(temp <= CONFIG_MIN_DAC_CH1)
 		temp = CONFIG_MIN_DAC_CH1;
-	dac8568_WriteDacRegister(0x04, temp);
+	writeMcp4821_1(temp);
 #if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac1=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
@@ -127,7 +140,7 @@ void UPDAC2(void){
 		temp = CONFIG_MAX_DAC_CH2;
 	if(temp <= CONFIG_MIN_DAC_CH2)
 		temp = CONFIG_MIN_DAC_CH2;
-	dac8568_WriteDacRegister(0x02, temp);
+	writeMcp4821_2(temp);
 #if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac2=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
@@ -139,68 +152,17 @@ void UPDAC3(void){
 		temp = CONFIG_MAX_DAC_CH3;
 	if(temp <= CONFIG_MIN_DAC_CH3)
 		temp = CONFIG_MIN_DAC_CH3;
-	dac8568_WriteDacRegister(0x00, temp);
+	writeMcp4821_3(temp);
 #if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac3=%d\n",__FILE__, __LINE__, __func__, temp);
 #endif
 }
-void UPDAC4(void){
-	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_4];
-	if(temp > CONFIG_MAX_DAC_CH4)
-		temp = CONFIG_MAX_DAC_CH4;
-	if(temp <= CONFIG_MIN_DAC_CH4)
-		temp = CONFIG_MIN_DAC_CH4;
-	dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_DAC == 1
-	printf("%s,%d,%s:update dac4=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
-}
-void UPDAC5(void){
-	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_5];
-	if(temp > CONFIG_MAX_DAC_CH5)
-		temp = CONFIG_MAX_DAC_CH5;
-	if(temp <= CONFIG_MIN_DAC_CH5)
-		temp = CONFIG_MIN_DAC_CH5;
-	//dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_DAC == 1
-	printf("%s,%d,%s:update dac5=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
-}
-void UPDAC6(void){
-	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_6];
-	if(temp > CONFIG_MAX_DAC_CH6)
-		temp = CONFIG_MAX_DAC_CH6;
-	if(temp <= CONFIG_MIN_DAC_CH6)
-		temp = CONFIG_MIN_DAC_CH6;
-	//dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_DAC == 1
-	printf("%s,%d,%s:update dac6=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
-}
-void UPDAC7(void){
-	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_7];
-	if(temp > CONFIG_MAX_DAC_CH7)
-		temp = CONFIG_MAX_DAC_CH7;
-	if(temp <= CONFIG_MIN_DAC_CH7)
-		temp = CONFIG_MIN_DAC_CH7;
-	//dac8568_WriteDacRegister(0x01, temp);
-#if CONFIG_DEBUG_DAC == 1
-	printf("%s,%d,%s:update dac7=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
-}
+
 void CLDAC(void){//立即清空全部DAC
-	dac8568_WriteDacRegister(0x00, 0);
-	dac8568_WriteDacRegister(0x01, 0);
-	dac8568_WriteDacRegister(0x02, 0);
-	dac8568_WriteDacRegister(0x03, 0);
-	dac8568_WriteDacRegister(0x04, 0);
-	dac8568_WriteDacRegister(0x05, 0);
-	dac8568_WriteDacRegister(0x06, 0);
-	dac8568_WriteDacRegister(0x07, 0);
+	writeMcp4821_0(0);
+	writeMcp4821_1(0);
+	writeMcp4821_2(0);
+	writeMcp4821_3(0);
 #if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:clear all dac!\n",__FILE__, __LINE__, __func__);
 #endif

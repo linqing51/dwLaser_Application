@@ -10,18 +10,18 @@ void bootLoadInit(void);
 /*****************************************************************************/
 void sPlcLoudspeakerLoop(void);//蜂鸣器轮询
 void sPlcAimLoop(void);//瞄准光轮询
+void sPlcAutoFanLoop(void);//风扇速轮询程序
 void setLoudspeakerFreq(int16_t freq);//设置喇叭频率
 void setLoudspeakerVolume(int16_t volume);//设置喇叭音量
 void setLoudspeakerEnable(void);//打开喇叭数据流
 void setLoudspeakerDisable(void);//关闭喇叭数据流
 void initLoudspeaker(void);//喇叭初始化
-void setLedAimFreq(int16_t freq);//设置LED灯和瞄准光闪烁频率
+void setAimFreq(int16_t freq);//设置AIM PWM频率
+void setLedFreq(int16_t freq);//设置LED PWM频率
 void setAimBrightness(int16_t brg);//设置瞄准光亮度
 void setRedLedBrightness(int16_t brg);//设置R LED亮度
 void setGreenLedBrightness(int16_t brg);//设置G LED亮度
 void setBlueLedBrightness(int16_t brg);//设置B LED亮度
-void disableSplcTimer(void);//SPLC关闭计时器
-void enableSplcTimer(void);//SPLC打开计时器
 /*****************************************************************************/
 uint16_t crc16Calculate(uint8_t *buf, uint32_t len);//CRC16 计算数组
 uint16_t crc16CalculateAdd(uint8_t dat);//CRC16 计算连续字节

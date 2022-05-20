@@ -1,15 +1,13 @@
 //BUG 持续间断发声时出现声音短暂停顿问题原因未知
-
-
 #include "sPlcMisc.h"
 /*****************************************************************************/
-extern UART_HandleTypeDef huart1;
-extern TIM_HandleTypeDef htim3;
-extern TIM_HandleTypeDef htim4;
-extern TIM_HandleTypeDef htim7;
+extern UART_HandleTypeDef huart1;//调试
+extern TIM_HandleTypeDef htim3;//RGB LED PWM计时器
+extern TIM_HandleTypeDef htim2;//指示光PWM计时器
+extern TIM_HandleTypeDef htim7;//DAC DMA 计时器
 extern TIM_HandleTypeDef htim5;
 extern DAC_HandleTypeDef hdac;
-extern DMA_HandleTypeDef hdma_dac2;
+//extern DMA_HandleTypeDef hdma_dac1;
 /*****************************************************************************/
 /* Name                       : "XMODEM", also known as "ZMODEM", "CRC-16/ACORN"
  * Width                      : 16 bit
@@ -172,7 +170,7 @@ static int16_t logToLinear(float32_t volume){//对数音量转化为线性音量
 void setLoudspeakerDisable(void){//关闭喇叭数据流
 	if(LoudspeakerEnable != false){
 		HAL_TIM_Base_Stop(&htim7);
-		HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
+		HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
 #if CONFIG_DEBUG_SPK == 1
 		printf("%s,%d,%s:set loadspeaker off!\n",__FILE__, __LINE__, __func__);
 #endif
@@ -182,7 +180,7 @@ void setLoudspeakerDisable(void){//关闭喇叭数据流
 void setLoudspeakerEnable(void){//打开喇叭数据流
 	if(LoudspeakerEnable != true){
 		HAL_TIM_Base_Start(&htim7);
-		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 #if CONFIG_DEBUG_SPK == 1
 		printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
 #endif
@@ -277,21 +275,21 @@ void enterSplcIsr(void){
 void exitSplcIsr(void){
 }
 
-void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
+void setAimFreq(int16_t freq){//设置指示光PWM频率
 	if(LedFreq != freq){
-		if(freq < 120){
-			freq = 120;
+		if(freq < 60){
+			freq = 60;
 		}
 		if(freq > 500){
 			freq = 500;
 		}
-		htim3.Instance = TIM3;
-		htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
+		htim3.Instance = TIM2;
+		htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 4096 / freq);
 		htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-		htim3.Init.Period = 256;
+		htim3.Init.Period = 4096;
 		htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 		htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-		if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
+		if (HAL_TIM_PWM_Init(&htim2) != HAL_OK){
 			Error_Handler();
 		}
 #if CONFIG_DEBUG_AIM == 1
@@ -300,8 +298,32 @@ void setLedAimFreq(int16_t freq){//设置LED灯和瞄准光闪烁频率
 		LedFreq = freq;
 	}
 }
+void setLedFreq(int16_t freq){//设置LED PWM频率
+	if(LedFreq != freq){
+		if(freq < 60){
+			freq = 60;
+		}
+		if(freq > 500){
+			freq = 500;
+		}
+		htim3.Instance = TIM3;
+		htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 4096 / freq);
+		htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+		htim3.Init.Period = 4096;
+		htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+		htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+		if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
+			Error_Handler();
+		}
+#if CONFIG_DEBUG_LED == 1
+		printf("%s,%d,%s:set led pwm freq:%d\n",__FILE__, __LINE__, __func__, freq);
+#endif
+		LedFreq = freq;
+	}
+}
+
 void initLoudspeaker(void){//喇叭初始化
-	HAL_GPIO_WritePin(SPK_SD_GPIO_Port, SPK_SD_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET);
 	setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 	RRES(SPCOIL_BEEM_ENABLE);
 	setLoudspeakerDisable();
@@ -312,7 +334,7 @@ void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 	if(LoudspeakerFreq != freq){
 		if(LoudspeakerEnable){//蜂鸣器打开
 			HAL_TIM_Base_Stop(&htim7);
-			HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
+			HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
 		}
 		if(freq > CONFIG_SPLC_MAX_SPK_FREQ){
 			freq = CONFIG_SPLC_MAX_SPK_FREQ;
@@ -336,7 +358,7 @@ void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 #endif
 		if(LoudspeakerEnable){
 			HAL_TIM_Base_Start(&htim7);
-			HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
+			HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 		}
 		LoudspeakerFreq = freq;
 	}
@@ -399,12 +421,12 @@ void setBlueLedBrightness(int16_t brg){//设置蓝灯亮度
 			brg = 0;
 		}
 		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, temp);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, temp);
 		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);//打开TIM
+			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);//打开TIM
 		}
 		else{
-			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);//关闭TIM
+			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_3);//关闭TIM
 		}
 		BlueLedBrg = brg;
 	}
@@ -422,12 +444,12 @@ void setRedLedBrightness(int16_t brg){//设置红灯亮度
 			brg = 0;
 		}
 		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, temp);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, temp);
 		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);//打开TIM
+			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);//打开TIM
 		}
 		else{
-			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1);//关闭TIM
+			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);//关闭TIM
 		}
 		RedLedBrg = brg;
 	}
@@ -458,18 +480,7 @@ void setGreenLedBrightness(int16_t brg){//设置绿灯亮度
 	printf("%s,%d,%s:set green led brightness:%d\n",__FILE__, __LINE__, __func__, brg);
 #endif
 }
-void disableSplcTimer(void) {//SPLC关闭计时器
-	HAL_TIM_Base_Stop_IT(&htim7);
-}
-void enableSplcTimer(void) {//SPLC打开计时器
-	HAL_TIM_Base_Start_IT(&htim7);
-}
-void disalbeModbusSerialIsr(void){
-	
-}
-void enableModbusSerialIsr(void){
-	
-}
+
 uint16_t crc16Calculate(uint8_t *buf, uint32_t len){//CRC16 计算数组
     uint32_t i;  
     for (i = 0; i < len; i++){  
@@ -517,7 +528,7 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 				break;
 			}
 			case BEEM_MODE_1:{//模式1 声光同步
-				if(GET_LASER_PWM() & 0X01){//LT3763 ON
+				if(GET_LASER_PWM0 || GET_LASER_PWM1 || GET_LASER_PWM2 || GET_LASER_PWM3){//LT3763 PWM ON
 					if(LDB(SPCOIL_BEEM_BUSY)){//如果PWM无输出-> 有输出
 						setLoudspeakerEnable();//启动音频
 						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
@@ -586,6 +597,30 @@ void sPlcAimLoop(void){//AIM轮询程序
 		setAimBrightness(0);
 		RRES(SPCOIL_AIM_BUSY);
 	}
+}
+
+void sPlcAutoFanLoop(void){//风扇速轮询程序
+	uint8_t pwmTable[10] = CONFIG_SPLC_FAN_PWM_TABLE;
+	uint8_t lasFanPwm;
+	if(NVRAM0[SPREG_LAS_FAN_SPEED] < 0){
+		lasFanPwm = pwmTable[0];
+	}
+	else if(NVRAM0[SPREG_LAS_FAN_SPEED] > 10){
+		lasFanPwm = pwmTable[9];
+	}
+	else{
+		lasFanPwm = pwmTable[NVRAM0[SPREG_LAS_FAN_SPEED]];
+	}
+	if(lasFanPwm != 0 && LD(Y_LAS_FAN)){
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, lasFanPwm);
+		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);//打开TIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_4);//关闭TIM
+	}
+#if CONFIG_DEBUG_FAN == 1
+	printf("%s,%d,%s:set laser fan pwm,:%d\n",__FILE__, __LINE__, __func__, lasFanPwm);
+#endif	
 }
 //加入以下代码,支持printf函数,而不需要选择MicroLIB
 #pragma import(__use_no_semihosting)
