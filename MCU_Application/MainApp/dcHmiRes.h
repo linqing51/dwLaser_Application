@@ -98,16 +98,6 @@
 #define GDDC_PAGE_STANDBY_DUTYCYCLE										24
 #define GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH								98//手动发射激光
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG								99//显示调试信息
-#if CONFIG_USING_DUAL_WAVE == 1
-#define GDDC_PAGE_STANDBY_PROGRESS_CH1									25//
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD								26//
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_DEC								27//
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0								28//
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH1								29//
-#define GDDC_PAGE_STANDBY_KEY_SELECT_BOTH								30//
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_POWER_CH1							31//CH1功率显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_TOTAL_POWER						32//
-#endif
 /*****************************************************************************/
 #define GDDC_PAGE_STANDBY_SP_KEY_POSWIDTH_ADD							33		
 #define GDDC_PAGE_STANDBY_SP_KEY_POSWIDTH_DEC							34

@@ -14,8 +14,7 @@
 #define LASER_SELECT_CH1						0x02
 #define LASER_SELECT_CH2						0x04
 #define LASER_SELECT_CH3						0x08
-#define LASER_SELECT_CH4						0x10
-#define LASER_SELECT_ALL						0x10
+#define LASER_SELECT_ALL						0x0F
 /*****************************************************************************/
 #define SET_LAS_PWM0(b)								HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, b)
 #define FLIP_LAS_PWM0()								HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)

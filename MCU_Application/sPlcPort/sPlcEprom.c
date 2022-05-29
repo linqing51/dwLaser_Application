@@ -2,6 +2,8 @@
 #include "sPlcEprom.h"
 /*****************************************************************************/
 extern I2C_HandleTypeDef hi2c1;
+extern CRC_HandleTypeDef hcrc;
+extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 	uint16_t i;
@@ -152,7 +154,7 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//在的指定
 	                        CONFIG_EPROM_WRITE_ADDR, 
 	                        WriteAddr, 
 	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(&wdat), 
+	                        (uint8_t*)(wdat), 
 	                        2, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
@@ -184,7 +186,7 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//在的指定
 	                        CONFIG_EPROM_WRITE_ADDR, 
 	                        WriteAddr, 
 	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(&wdat), 
+	                        (uint8_t*)(wdat), 
 	                        4, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
@@ -303,39 +305,161 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 #endif
 }
 /*****************************************************************************/
+void listEpromTable(void){//输出EPROM分布表
+	printf("MR EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
+	printf("DM EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
+	printf("FD EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
+	
+	printf("MR CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MR_CRC, (uint32_t)(CONFIG_EPROM_MR_CRC + 3));
+	printf("DM CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_DM_CRC, (uint32_t)(CONFIG_EPROM_DM_CRC + 3));
+	printf("FD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3));	
+	printf("MCU CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3));
+	printf("LCD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3));
+	
+	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
+	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
+}
+void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
+	uint8_t var = 0;
+	uint32_t i;	
+	switch(cmd){
+		case CLEAR_EPROM_ALL:{
+			for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+		case CLEAR_EPROM_NVRAM:{
+			for(i = CONFIG_EPROM_MR_START; i <= CONFIG_EPROM_MR_END;i ++){
+				epromWriteByte(i, &var);
+			}
+			for(i = CONFIG_EPROM_DM_START; i <= CONFIG_EPROM_DM_END;i ++){
+				epromWriteByte(i, &var);
+			}
+			
+			for(i = CONFIG_EPROM_MR_CRC; i <= (CONFIG_EPROM_MR_CRC + 3);i ++){
+				epromWriteByte(i, &var);
+			}
+			
+			for(i = CONFIG_EPROM_DM_CRC; i <= (CONFIG_EPROM_DM_CRC + 3);i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+		case CLEAR_EPROM_FDRAM:{
+			for(i = CONFIG_EPROM_FD_START; i <= CONFIG_EPROM_FD_END;i ++){
+				epromWriteByte(i, &var);
+			}			
+			for(i = CONFIG_EPROM_FD_CRC; i <= (CONFIG_EPROM_FD_CRC + 3);i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+		case CLEAR_EPROM_FIRMWARE_CRC:{
+			for(i = CONFIG_EPROM_MCU_FW_CRC;i <= (CONFIG_EPROM_MCU_FW_CRC + 3);i ++){
+				epromWriteByte(i, &var);
+			}
+			for(i = CONFIG_EPROM_LCD_FW_CRC;i <= (CONFIG_EPROM_LCD_FW_CRC + 3);i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+		case CLEAR_EPROM_DEVICE_CONFIG:{
+			for(i = CONFIG_EPROM_CONFIG_START;i <= CONFIG_EPROM_CONFIG_END;i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+		case CLEAR_EPROM_LOG_INFO:{
+			for(i = CONFIG_EPROM_LOGINFO_START;i <= CONFIG_EPROM_LOGINFO_END;i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+		default:break;
+	}
+}
+uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash 查空
+	uint8_t val;
+	uint32_t i;
+	for(i = 0;i < size;i ++){
+		val = *(__IO uint8_t*)(adr + i);
+		if(val != 0xFF){
+			return false;
+		}
+	}
+	return true;
+}
 uint8_t sPlcEpromTest(void){//EPROM 读写自测试
-	uint32_t i, crc16Read = 0, crc16Write = 0;	
+	uint32_t i, crcRead = 0, crcWrite = 0;	
 	uint16_t bk, remain;//写入地址
-	uint8_t rblock[32], wblock[32];
-	uint8_t temp0, temp1;
-	//块写入测试
-	memset(rblock, 0x0, 32);
-	memset(wblock, 0x0, 32);
-	sprintf((char*)wblock, "Hello Eprom!,123456789ABCDFEGH\n");
-	epromWrite(0, wblock, 32);
-	epromRead(0, rblock, 32);
+	uint8_t rblock[64], wblock[64];
+	uint32_t tempRead, tempWrite;
+	uint8_t res = 0;
 	//字节顺序写入
-	memset(rblock, 0x0, 32);
-	memset(wblock, 0x0, 32);
-	crc16Clear();
-	for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
-		temp0 = (uint8_t)(rand() % 0xFF);
-		crc16Write = crc16CalculateAdd(temp0);
-		epromWriteByte(i, &temp0);
-		wblock[(i % 32)] = temp0; 
+	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+		tempWrite = HAL_RNG_GetRandomNumber(&hrng);	
+		epromWriteByte((i + 0), ((uint8_t*)&tempWrite + 0));
+		epromWriteByte((i + 1), ((uint8_t*)&tempWrite + 1));
+		epromWriteByte((i + 2), ((uint8_t*)&tempWrite + 2));
+		epromWriteByte((i + 3), ((uint8_t*)&tempWrite + 3));
+		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
-	crc16Clear();
-	for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
-		epromReadByte(i, &temp1);
-		crc16Read = crc16CalculateAdd(temp1);
-		rblock[(i % 32)] = temp1;
+	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+		epromReadByte((i + 0), ((uint8_t*)&tempRead + 0));
+		epromReadByte((i + 1), ((uint8_t*)&tempRead + 1));
+		epromReadByte((i + 2), ((uint8_t*)&tempRead + 2));
+		epromReadByte((i + 3), ((uint8_t*)&tempRead + 3));
+		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
 	}
-	if(crc16Read == crc16Write){
-		printf("%s,%d,%s:byte sequential write pass!\r\n", __FILE__, __LINE__, __func__);
+	if(crcRead == crcWrite){
+		printf("%s,%d,%s:byte(8bit) sequential write pass!\r\n", __FILE__, __LINE__, __func__);
 	}
 	else{
-		printf("%s,%d,%s:byte sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
-		return false;
+		printf("%s,%d,%s:byte(8bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
+		res = false;
+	}
+	//字顺序写入
+	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
+		epromWriteHword((i + 0), ((uint16_t*)&tempWrite + 0)); 
+		epromWriteHword((i + 2), ((uint16_t*)&tempWrite + 1));
+		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
+	}
+	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+		epromReadHword((i + 0), ((uint16_t*)&tempRead + 0));
+		epromReadHword((i + 2), ((uint16_t*)&tempRead + 1));
+		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
+	}
+	if(crcRead == crcWrite){
+		printf("%s,%d,%s:hword(16bit) sequential write pass!\r\n", __FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:howrd(16bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
+		res = false;
+	}
+	//双字顺序写入
+	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
+	for(i = 0;i < (CONFIG_EPROM_SIZE - 4);i += 4){
+		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
+		epromWriteDword(i, &tempWrite);
+		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
+	}
+	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
+	for(i = 0;i < (CONFIG_EPROM_SIZE - 4);i += 4){
+		epromReadDword(i, &tempRead);
+		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
+	}
+	if(crcRead == crcWrite){
+		printf("%s,%d,%s:dword(32bit) sequential write pass!\r\n", __FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:dword(32bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
+		res = false;
 	}
 	//块顺序写入
 	bk = CONFIG_EPROM_SIZE / sizeof(wblock);
@@ -347,42 +471,30 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 		epromRead((bk + i * sizeof(wblock)), rblock, sizeof(wblock));
 		if(cmpByte(rblock, rblock, sizeof(rblock)) == false){
 			printf("%s,%d,%s:block sequential Write fail!\r\n", __FILE__, __LINE__, __func__);
-			return false;
+			res = false;
 		}
 	}
-	temp0 = rand() % 0xFF;//获取随机数据
-	memset(wblock, temp0, sizeof(wblock));
+	memset(wblock, (rand() % 0xFF), sizeof(wblock));
 	memset(rblock, 0x00, sizeof(rblock));
 	epromWrite((CONFIG_EPROM_SIZE - remain), wblock, remain);
 	epromRead((CONFIG_EPROM_SIZE - remain), rblock, remain);
 	if(cmpByte(rblock, rblock, sizeof(rblock)) == false){
 		printf("%s,%d,%s:block sequential Write fail!\r\n", __FILE__, __LINE__, __func__);
-		return false;
+		res = false;
 	}
 	printf("%s,%d,%s:block sequential Write pass!\r\n", __FILE__, __LINE__, __func__);
-	//后64byte校验
-	for (i = (CONFIG_EPROM_SIZE - 64 - 1);i < CONFIG_EPROM_SIZE; i++){
-		temp0 = rand() % 0xFF;//获取随机数据
-		epromWriteByte(i, &temp0);//写入
-		epromReadByte(i, &temp1);//读取
-		if(temp0 != temp1){
-			printf("%s,%d,%s:last 64byte random write fail!\r\n", __FILE__, __LINE__, __func__);
-			return false;
-		}
-	}
 	//随机写入
 	for(i=0;i<10000;i++){
-		bk = rand() % CONFIG_EPROM_SIZE;//获取随机地址
-		temp0 = rand() % 0xFF;//获取随机数据
-		epromWrite(bk, &temp0, 1);//写入
-		epromRead(bk, &temp1, 1);//读取
-		if(temp0 != temp1){
+		tempWrite = HAL_RNG_GetRandomNumber(&hrng)%(CONFIG_EPROM_SIZE- 5 -0+1 ) + 0;;//获取随机数据
+		epromWrite(bk, ((uint8_t*)&tempWrite), 4);//写入
+		epromRead(bk, ((uint8_t*)&tempRead), 4);//读取
+		if(tempWrite != tempRead){
 			printf("%s,%d,%s:random write fail!\r\n", __FILE__, __LINE__, __func__);
-			return false;
+			res = false;
 		}
 	}
 	printf("%s,%d,%s:random write pass!\r\n", __FILE__, __LINE__, __func__);
-	return true;
+	return res;
 }
 
 

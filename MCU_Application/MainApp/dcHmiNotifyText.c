@@ -187,7 +187,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.calibrationPwr2[9] = (uint16_t)(fValue * 10.0F);
 					break;
 				}
-				//通道3 功率校正表				
+				//通道3 功率校正表
 				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P1:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[0] = (uint16_t)(fValue * 10.0F);

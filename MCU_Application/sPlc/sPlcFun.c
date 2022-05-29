@@ -1,13 +1,14 @@
 #include "sPlcFun.h"
-#include "pid_fuzzy"
+#include "pid_fuzzy.h"
 /*****************************************************************************/
 
 #define CONFIG_SPLC_MAX_FUZZY_PID									8//模拟PID运行数量
 #define CONFIG_SPLC_DEFAULT_FUZZY_PID_KP							8.3F//模拟PID KP参数
 #define CONFIG_SPLC_DEFAULT_FUZZY_PID_KI							1.2F//模糊PID KI参数
 #define CONFIG_SPLC_DEFAULT_FUZZY_PID_KD							0.0F//模糊PID KD参数
-#defien CONFIG_SPLC_DEFAULT_FUZZY_PID_TD							1.0F//模糊PID TD参数
+#define CONFIG_SPLC_DEFAULT_FUZZY_PID_TD							1.0F//模糊PID TD参数
 PID fuzzyPidConfig[CONFIG_SPLC_MAX_FUZZY_PID];//
+extern CRC_HandleTypeDef hcrc;
 /*****************************************************************************/
 void REBOOT(void) {//软件复位	
 	__set_FAULTMASK(1);
@@ -460,7 +461,12 @@ void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//块复制
 		NVRAM0[dist + i] = NVRAM0[src + i];
 	}
 }
-void NVSAV(void){//强制立即更新NVRAM
+void NVFSAVE(void){//NVRAM全部写入EPROM
+	disableSplcIsr();
+	saveNvram();
+	enableSplcIsr();
+}
+void NVSAVE(void){//储存NVRAM更新数据到EPROM
 	disableSplcIsr();
 	updateNvram();
 	enableSplcIsr();
@@ -477,6 +483,7 @@ void FDSAV(void){//FDRAM->EPROM
 	enableSplcIsr();
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
+	uint32_t crc32;
 	disableSplcIsr();
 	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
 		cn = (CONFIG_HMI_SCHEME_NUM - 1);
@@ -485,6 +492,9 @@ void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 		cn = 0;
 	}
 	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM), 128);
+	crc32 = HAL_CRC_Calculate(&hcrc, (uint32_t *)(FDRAM), (CONFIG_FDRAM_SIZE / 2));
+	epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32);//在的指定地址开始写入32位数	
+	printf("%s,%d,%s:save One FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	enableSplcIsr();
 }
 void FDLAD(void){//FDRAM<-EPROM
@@ -594,12 +604,13 @@ void FUPID0(uint16_t adr){//模糊PID指令
 	uint8_t i;
 	if(LD(SPCOIL_START_UP)){//	
 		for (i = 0;i < CONFIG_SPLC_MAX_FUZZY_PID; i++){
-			PID_Init(fuzzyPidConfig[i]);
-			PID_Set(fuzzyPidConfig[i], 
+			PID_Init(&fuzzyPidConfig[i]);
+			PID_Set(&fuzzyPidConfig[i], 
 					CONFIG_SPLC_DEFAULT_FUZZY_PID_KP,
 					CONFIG_SPLC_DEFAULT_FUZZY_PID_KI,
 					CONFIG_SPLC_DEFAULT_FUZZY_PID_KD,
 					CONFIG_SPLC_DEFAULT_FUZZY_PID_TD);
+		}
 	}
 }
 //步指令

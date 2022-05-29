@@ -567,7 +567,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if((NVRAM0[EM_DC_PASSCODE_INDEX] >= 4) && (NVRAM0[EM_DC_NEW_PASSCODE0] != 0x0000) && (NVRAM0[EM_DC_NEW_PASSCODE0] != 0x0000)){
 						NVRAM0[DM_DC_OLD_PASSCODE0] = NVRAM0[EM_DC_NEW_PASSCODE0];
 						NVRAM0[DM_DC_OLD_PASSCODE1] = NVRAM0[EM_DC_NEW_PASSCODE1];
-						NVSAV();
+						NVSAVE();
 						CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引 
 						CLR(EM_DC_NEW_PASSCODE0);
 						CLR(EM_DC_NEW_PASSCODE1);
@@ -1834,6 +1834,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						optionKeyEnable(false);//锁定按键
 						loadDefault();
+						lockPreScheme();
+						NVFSAVE();//强制更新NVRAM
 						updateOptionDisplay();//更新Option显示
 						SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
 						optionKeyEnable(true);//解锁按键
@@ -2312,6 +2314,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					else{
 						RRES(R_CALIBRATION_MODE);
 					}
+					break;
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM:{//清空EPROM
 					if(state){

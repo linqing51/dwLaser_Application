@@ -31,7 +31,7 @@ int16_t pulseWidthDec(int16_t ps){//脉宽减少
 	return ps;
 }
 void loadDefault(void){//恢复默认值
-	uint8_t i;	
+	uint8_t i;
 	RRES(MR_FOOSWITCH_HAND_SWITCH);
 	RRES(MR_BEEM_TONE);			
 	RRES(R_DISABLE_RFID);
@@ -40,7 +40,6 @@ void loadDefault(void){//恢复默认值
 	NVRAM0[DM_BEEM_VOLUME] = CONFIG_MAX_BEEM_VOLUME;
 	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_AIM_BRG;
 	NVRAM0[DM_LCD_BRG] = CONFIG_MAX_LCD_BRG;
-	NVSAV();//强制储存NVRAM
 	for(i = 0;i < CONFIG_HMI_SCHEME_NUM;i ++){
 		NVRAM0[DM_SCHEME_NUM] = i;
 		defaultScheme();
@@ -48,15 +47,18 @@ void loadDefault(void){//恢复默认值
 	}
 	NVRAM0[DM_SCHEME_NUM] = 0;
 	FDSAV();
+	NVFSAVE();
 }
 void lockPreScheme(void){//恢复预设方案
-	uint8_t i;	
+	uint8_t i;
+	uint16_t oldNum;
+	oldNum = NVRAM0[DM_SCHEME_NUM];
 	for(i = 0;i <= 19;i ++){
 		NVRAM0[DM_SCHEME_NUM] = i;
 		defaultScheme();
 		saveScheme();
 	}
-	NVRAM0[DM_SCHEME_NUM] = 0;
+	NVRAM0[DM_SCHEME_NUM] = oldNum;
 	FDSAV();
 }
 uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
@@ -73,7 +75,7 @@ uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 
 void defaultScheme(void){//当前选择方案恢复默认值						
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Hello dwLaser S%d", (NVRAM0[DM_SCHEME_NUM] + 1));		
-	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_ALL;//通道选择
+	NVRAM0[EM_LASER_SELECT]	= LASER_SELECT_CH0;//通道选择
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
 	NVRAM0[EM_LASER_POWER_CH0] = NVRAM0[DM_SCHEME_NUM] * 2 + 20;//通道0功率
 	NVRAM0[EM_LASER_POWER_CH1] = NVRAM0[DM_SCHEME_NUM] * 2 + 10;//通道1功率
@@ -242,8 +244,7 @@ void defaultScheme(void){//当前选择方案恢复默认值
 	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SELECT]);
 	printf("%s,%d,%s:scheme mode:%d\n", __FILE__, __LINE__, __func__,  NVRAM0[EM_LASER_PULSE_MODE]);
-	printf("%s,%d,%s:scheme power ch0:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH0]);
-	printf("%s,%d,%s:scheme power ch1:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH1]);
+	printf("%s,%d,%s:scheme power:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH0]);
 	printf("%s,%d,%s:scheme sp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SP_POSWIDTH]);
 	printf("%s,%d,%s:scheme mp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_POSWIDTH]);
 	printf("%s,%d,%s:scheme mp negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_NEGWIDTH]);
@@ -262,15 +263,11 @@ void defaultScheme(void){//当前选择方案恢复默认值
 void loadScheme(void){//FD->EM
 	uint8_t *psrc, *pdist;
 	if(NVRAM0[DM_SCHEME_NUM] > 31){
-#if CONFIG_DEBUG_APP == 1
 		printf("App->loadScheme:NVRAM0[DM_SCHEME_NUM] > 31 !\n");
-#endif
 		NVRAM0[DM_SCHEME_NUM] = 31;
 	}
 	if(NVRAM0[DM_SCHEME_NUM] < 0){
-#if CONFIG_DEBUG_APP == 1
 		printf("App->loadScheme:NVRAM0[DM_SCHEME_NUM] < 0 !\n");
-#endif
 		NVRAM0[DM_SCHEME_NUM] = 0;
 	}
 	psrc = (uint8_t*)&FDRAM[FD_SCHEME_START_0 + (NVRAM0[DM_SCHEME_NUM] * 64)];
@@ -296,9 +293,7 @@ void loadScheme(void){//FD->EM
 			break;
 		}
 		default:{
-#if CONFIG_DEBUG_APP == 1
 			printf("App->loadScheme:load default scheme!\n");
-#endif			
 			defaultScheme();
 			break;
 		}
@@ -310,8 +305,7 @@ void loadScheme(void){//FD->EM
 	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SELECT]);
 	printf("%s,%d,%s:scheme mode:%d\n", __FILE__, __LINE__, __func__,  NVRAM0[EM_LASER_PULSE_MODE]);
-	printf("%s,%d,%s:scheme power ch0:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH0]);
-	printf("%s,%d,%s:scheme power ch1:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH1]);
+	printf("%s,%d,%s:scheme power:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_CH0]);
 	printf("%s,%d,%s:scheme sp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SP_POSWIDTH]);
 	printf("%s,%d,%s:scheme mp poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_POSWIDTH]);
 	printf("%s,%d,%s:scheme mp negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_MP_NEGWIDTH]);
@@ -354,6 +348,8 @@ int8_t checkScheme(int8_t cn){
 	temp = FDRAM[cn * 30 + FD_LASER_SELECT];//通道选择
 	if((temp != LASER_SELECT_CH0) || 
 	   (temp != LASER_SELECT_CH1) ||
+	   (temp != LASER_SELECT_CH2) ||
+	   (temp != LASER_SELECT_CH3) ||
        (temp != LASER_SELECT_ALL)){
 		return false;
 	}		
@@ -422,32 +418,32 @@ int8_t checkScheme(int8_t cn){
 	return true;
 }
 uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->DAC CODE 使用校正表
-	fp64_t fpower, fpmax, fpmin, fout, fk, fb;
+	fp64_t fpower, fout, fk, fb;
+	int16_t pmax, pmin;
 	uint16_t *pCal;
 	uint16_t out;
-	fpower = (fp32_t)power / 10.0F;
 	switch(ch){
 		case 0:{
-			fpmax = (fp32_t)CONFIG_MAX_LASERPOWER_CH0 / 10.0F;
-			fpmin = (fp32_t)CONFIG_MIN_LASERPOWER_CH0 / 10.0F;
+			pmax = CONFIG_MAX_LASERPOWER_CH0;
+			pmin = CONFIG_MIN_LASERPOWER_CH0;
 			pCal = deviceConfig.calibrationPwr0;
 			break;
 		}
 		case 1:{
-			fpmax = (fp32_t)CONFIG_MAX_LASERPOWER_CH1 / 10.0F;
-			fpmin = (fp32_t)CONFIG_MIN_LASERPOWER_CH1 / 10.0F;
+			pmax = CONFIG_MAX_LASERPOWER_CH1;
+			pmin = CONFIG_MIN_LASERPOWER_CH1;
 			pCal = deviceConfig.calibrationPwr1;
 			break;
 		}
 		case 2:{
-			fpmax = (fp32_t)CONFIG_MAX_LASERPOWER_CH2 / 10.0F;
-			fpmin = (fp32_t)CONFIG_MIN_LASERPOWER_CH2 / 10.0F;
+			pmax = CONFIG_MAX_LASERPOWER_CH2;
+			pmin = CONFIG_MIN_LASERPOWER_CH2;
 			pCal = deviceConfig.calibrationPwr2;
 			break;
 		}
 		case 3:{
-			fpmax = (fp32_t)CONFIG_MAX_LASERPOWER_CH3 / 10.0F;
-			fpmin = (fp32_t)CONFIG_MIN_LASERPOWER_CH3 / 10.0F;
+			pmax = CONFIG_MAX_LASERPOWER_CH3;
+			pmin = CONFIG_MIN_LASERPOWER_CH3;
 			pCal = deviceConfig.calibrationPwr3;
 			break;
 		}
@@ -455,86 +451,68 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率-
 			break;
 		}
 	}
-	if(fpower > fpmax){
-		fpower = fpmax;
+	if(power > pmax){
+		power = pmax;
 	}
-	if(fpower < fpmin){
-		fpower = fpmin;
+	if(power < pmin){
+		power = pmin;
 	}
-#if CONFIG_DEBUG_APP == 1
-	printf("%s,%d,%s:Calibration input power = %f\n", __FILE__, __LINE__, __func__, fpower);
-	printf("%s,%d,%s:Calibration max power = %f\n", __FILE__, __LINE__, __func__, fpmax);
-	printf("%s,%d,%s:Calibration min power = %f\n", __FILE__, __LINE__, __func__, fpmin);
-#endif
+	fpower = (fp32_t)power;
+	printf("%s,%d,%s:Calibration input power = %d\n", __FILE__, __LINE__, __func__, power);
+	printf("%s,%d,%s:Calibration max power = %d\n", __FILE__, __LINE__, __func__, pmax);
+	printf("%s,%d,%s:Calibration min power = %d\n", __FILE__, __LINE__, __func__, pmin);
 	if(LDB(R_CALIBRATION_MODE)){//正模式
 		//通过校正表计算DAC值
-#if CONFIG_DEBUG_APP == 1
+		if(power > 0 && (power <= pCal[0])){
+			fk = pCal[0] / 0.1F;
+			fb = pCal[0] - fk * 0.1;
+		}
+		else if((power > pCal[0]) && (power <= pCal[1])){
+			fk = (pCal[1] - pCal[0]) / 0.1F;
+			fb = pCal[1] - fk * 0.2;
+		}
+		else if((power > pCal[1]) && (power <= pCal[2])){
+			fk = (pCal[2] - pCal[1]) / 0.1F;
+			fb = pCal[2] - fk * 0.3;
+		}
+		else if((power > pCal[2]) && (power <= pCal[3])){
+			fk = (pCal[3] - pCal[2]) / 0.1F;
+			fb = pCal[2] - fk * 0.4;
+		}
+		else if((power > pCal[3]) && (power <= pCal[4])){
+			fk = (pCal[4] - pCal[3]) / 0.1F;
+			fb = pCal[3] - fk * 0.5;
+		}
+		else if((power > pCal[4]) && (power <= pCal[5])){
+			fk = (pCal[5] - pCal[4]) / 0.1F;
+			fb = pCal[4] - fk * 0.6;
+		}
+		else if((power > pCal[5]) && (power <= pCal[6])){
+			fk = (pCal[6] - pCal[5]) / 0.1F;
+			fb = pCal[5] - fk * 0.7;
+		}
+		else if((power > pCal[6]) && (power <= pCal[7])){
+			fk = (pCal[7] - pCal[6]) / 0.1F;
+			fb = pCal[6] - fk * 0.8;
+		}
+		else if((power > pCal[7]) && (power <= pCal[8])){
+			fk = (pCal[8] - pCal[7]) / 0.1F;
+			fb = pCal[8] - fk * 0.9;
+		}
+		else if((power > pCal[8]) && (power <= pCal[9])){
+			fk = (pCal[9] - pCal[8]) / 0.1F;
+			fb = pCal[9] - fk * 1.0;
+		}
+		fout = (power - fb) / fk;
 		printf("%s,%d,%s:Enable calibration mode\n", __FILE__, __LINE__, __func__);
-#endif
-		if((fpower >= fpmin) && (fpower < (fpower * 0.1F))){//[0,0.1)区间
-			fk = ((*(pCal + 1) - *pCal) / (0.1F * 4095.0F));//计算K值
-			fb = *(pCal + 0) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.1) && fpower < (fpmax * 0.2)){//[0.1,0.2)区间
-			fk = ((*(pCal + 2) - *(pCal + 1)) / (0.1F * 4095.0F));
-			fb = *(pCal + 1) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.2) && fpower < (fpmax * 0.3)){//[0.2,0.3)区间
-			fk = ((*(pCal + 3) - *(pCal + 2)) / (0.1F * 4095.0F));
-			fb = (*pCal + 2) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.3) && fpower < (fpmax * 0.4)){//[0.3,0.4)区间
-			fk = ((*(pCal + 4) - *(pCal + 3)) / (0.1F * 4095.0F));
-			fb = *(pCal + 3) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.4) && fpower < (fpmax * 0.5)){//[0.4,0.5)区间
-			fk = ((*(pCal + 5) - *(pCal + 4)) / (0.1F * 4095.0F));
-			fb = *(pCal + 4) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.5) && fpower < (fpmax * 0.6)){//[0.5,0.6)
-			fk = ((*(pCal + 6) - *(pCal + 5)) / (0.1F * 4095.0F));
-			fb = *(pCal + 5) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.6) && fpower < (fpmax * 0.7)){//[0.6,0.7)
-			fk = ((*(pCal + 7) - *(pCal + 6)) / (0.1F * 4095.0F));
-			fb = *(pCal + 6) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.7) && fpower < (fpmax * 0.8)){//[0.7,0.8)
-			fk = ((*(pCal + 8) - *(pCal + 7)) / (0.1F * 4095.0F));
-			fb = *(pCal + 7) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.8) && fpower < (fpmax * 0.9)){//[0.8,0.9)
-			fk = ((*(pCal + 9) - *(pCal + 8)) / (0.1F * 4095.0F));
-			fb = *(pCal + 8) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else if(fpower >= (fpmax * 0.9) && fpower < fpmax){//1.0
-			fk = ((*(pCal + 10) - *(pCal + 9)) / (0.1F * 4095.0F));
-			fb = *(pCal + 9) - (fk * 0.1);//B值
-			fout = fk * fpower + fb;//计算输出值
-		}
-		else{
-			fout = 4095.0F;
-		}
-#if CONFIG_DEBUG_APP == 1
-	printf("%s,%d,%s:Calibration fK=%f, fB=%f\n", __FILE__, __LINE__, __func__, fk, fb);
-	printf("%s,%d,%s:Calibration fOut=%f\n", __FILE__, __LINE__, __func__, fout);
-#endif		
+		printf("%s,%d,%s:Calibration fK=%f, fB=%f\n", __FILE__, __LINE__, __func__, fk, fb);
+		printf("%s,%d,%s:Calibration fOut=%f\n", __FILE__, __LINE__, __func__, fout);
 	}
 	else{//功率校正模式 ->按等比输出DAC值
-#if CONFIG_DEBUG_APP == 1
 		printf("%s,%d,%s:Disable calibration mode\n", __FILE__, __LINE__, __func__);
-#endif
-		fout = fpower / fpmax  * 4095 ;			
+		fout = fpower / pmax;			
 	}
+	fout = fout * 4095.0F;
 	if(fout > 4095.0F){
 		fout = 4095;
 	}
@@ -542,9 +520,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率-
 		fout = 0;
 	}
 	out = (uint16_t)fout;
-#if CONFIG_DEBUG_APP == 1	
-	printf("%s,%d,%s:Calibration fOut=%f\n", __FILE__, __LINE__, __func__, fout);
-#endif	
+	printf("%s,%d,%s:Calibration fOut=%d\n", __FILE__, __LINE__, __func__, out);
 	return out;
 }
 

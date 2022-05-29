@@ -1,5 +1,11 @@
+#ifndef __DCHMILANGUAGE_H__
+#define __DCHMILANGUAGE_H__
 #include "sPlc.h"
 /*****************************************************************************/
+typedef enum {
+	MSG_EN 						= 0x00
+}messageLanguage_t;
+
 extern char WARN_MSG_NO_ERROR[8][64];
 extern char WARN_MSG_INTERLOCK_UNPLUG[8][64];//安全连锁没插
 extern char WARN_MSG_FOOTSWITCH_UNPLUG[8][64];//脚踏没插
@@ -23,6 +29,8 @@ extern char INFO_MSG_LASER_POWER[8][64];
 extern char INFO_MSG_VERSION[8][64];
 extern char INFO_MSG_MANUFACTURE_DATE[8][64];
 /*****************************************************************************/
+
+#endif
 
 
 

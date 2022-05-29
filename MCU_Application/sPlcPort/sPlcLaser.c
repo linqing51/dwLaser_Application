@@ -320,7 +320,7 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				}
 				if((((fp32_t)LaserTimer_BeemSwitchCounter * (fp32_t)NVRAM0[EM_TOTAL_POWER]) / 10000.0F) >= (fp32_t)NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFORM_SPK_FREQ){
-						setLoudspeakerVolume(100);
+						//setLoudspeakerVolume(100);
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFORM_SPK_FREQ;
 						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}
@@ -328,7 +328,7 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				}
 				if(LaserTimer_BeemSwtichLength >= CONFIG_BEEM_ENERGY_INTERVAL_TIME){				
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFAULT_SPK_FREQ){
-						setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
+						//setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
 						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}			

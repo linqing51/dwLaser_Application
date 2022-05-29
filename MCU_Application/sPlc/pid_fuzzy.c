@@ -9,12 +9,12 @@
 //论域e:[-5,5]  ec:[-0.5,0.5]
 
 //误差的阀值，小于这个数值的时候，不做PID调整，避免误差较小时频繁调节引起震荡
-#define Emin 0.0
-#define Emid 0.08
-#define Emax 0.6
+#define Emin 0.00001F
+#define Emid 0.08F
+#define Emax 0.6F
 //调整值限幅，防止积分饱和
-#define Umax 5
-#define Umin -5
+#define Umax 5.0F
+#define Umin -5.0F
 
 //输出值限幅
 #define Pmax 7200

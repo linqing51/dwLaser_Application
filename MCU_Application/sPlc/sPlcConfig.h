@@ -1,7 +1,7 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define CONFIG_DEBUG_DAC											1//调试DAC驱动
+#define CONFIG_DEBUG_DAC											0//调试DAC驱动
 #define CONFIG_DEBUB_ADC											0//调试ADC驱动
 #define CONFIG_DEBUG_EPROM											0//调试EPROM驱动
 #define CONFIG_DEBUG_IO												0//调试IO
@@ -26,6 +26,11 @@
 #define SAVE_EPROM_FILENAME											"/seprom.bin"//EPROM->UDISK 储存名称
 #define LOAD_EPROM_FILENAME											"/leprom.bin"//UDISK->EPROM 恢复名称
 /*****************************************************************************/
+#define CONFIG_SPLC_USING_LASER_CH0									1//通道0使能
+#define CONFIG_SPLC_USING_LASER_CH1									1//通道1使能
+#define CONFIG_SPLC_USING_LASER_CH2									1//通道2使能
+#define CONFIG_SPLC_USING_LASER_CH3									1//通道3使能
+/*****************************************************************************/
 #define CONFIG_SPLC_MAX_FUZZY_PID									8//模拟PID运行数量
 #define CONFIG_SPLC_DEFAULT_FUZZY_PID_KP							8.3F//模拟PID KP参数
 #define CONFIG_SPLC_DEFAULT_FUZZY_PID_KI							1.2F//模糊PID KI参数
@@ -39,7 +44,7 @@
 #define CONFIG_SPLC_MAX_SPK_FREQ									4500L//喇叭最高频率
 #define CONFIG_SPLC_MIN_SPL_FREQ									1000L//喇叭最低频率
 #define CONFIG_SPLC_DEFAULT_SPK_FREQ								1500L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_SPK_FREQ									3000L//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFORM_SPK_FREQ									800L//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT									1//输入IO刷新启用
 #define CONFIG_SPLC_USING_IO_OUTPUT									1//输出IO刷新启用
@@ -47,17 +52,17 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_AIM_PWM									1//AIM PWM调光
 #define CONFIG_SPLC_USING_LED_PWM									1//LED PWM调光
-#define CONFIG_SPLC_LED_PWM_FREQ									120L//LED PWM调光频率
-#define CONFIG_SPLC_AIM_PWM_FREQ									120L//AIM PWM调光频率
-#define CONFIG_SPLC_RLED_ON_DC										15//红灯亮度
-#define CONFIG_SPLC_RLED_OFF_DC										0//红灯亮度
-#define CONFIG_SPLC_GLED_ON_DC										18//绿灯亮度
-#define CONFIG_SPLC_GLED_OFF_DC										0//绿灯亮度
-#define CONFIG_SPLC_BLED_ON_DC										18//蓝灯亮度
-#define CONFIG_SPLC_BLED_OFF_DC										0//蓝灯亮度
+#define CONFIG_SPLC_USING_FAN_PWM									1//FAN PWM调速
+#define CONFIG_SPLC_LED_PWM_FREQ									480//LED PWM调光频率
+#define CONFIG_SPLC_AIM_PWM_FREQ									480//AIM PWM调光频率
+#define CONFIG_SPLC_FAN_PWM_FREQ									25000//风扇调速频率
+#define CONFIG_SPLC_DEFAULT_AIM_DC									50//指示激光默认亮度
+#define CONFIG_SPLC_DEFAULT_RLED_DC									20//红灯默认亮度
+#define CONFIG_SPLC_DEFAULT_GLED_DC									20//绿灯默认亮度
+#define CONFIG_SPLC_DEFAULT_YLED_DC									20//黄灯默认亮度
+#define CONFIG_SPLC_FAN_MIN_PWM										30//风扇最低转速百分比
 #define CONFIG_SPLC_USING_SPWM										1//使了软件PWM功能
 #define CONFIG_SPLC_FUNTEST											0//功能指令测试
-#define CONFIG_SPLC_FAN_PWM_TABLE									{0, 10, 20, 40, 50, 60, 70, 80, 90, 100}
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT											1//检查地址范围
 #define CONFIG_SPLC_DEV												0x0A01//设备号
@@ -65,9 +70,8 @@
 #define CONFIG_SOFTPLC_TICK											200L//5mS
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_EPROM										1//EPROM
-#define CONFIG_SPLC_USING_EPROM_TEST								0
+#define CONFIG_SPLC_USING_EPROM_TEST								0//EPROM 读写测试
 //EPROM自检
-#define CONFIG_SPLC_USING_CLEAR_NVRAM								0//启用清除NVRAM功能
 #define CONFIG_EPROM_SIZE 											CONFIG_AT24C64_SIZE
 #define	CONFIG_AT24C64_SIZE											8192
 #define	CONFIG_AT24C128_SIZE 										16384
@@ -83,7 +87,16 @@
 #define CONFIG_EPROM_DM_START										(CONFIG_EPROM_MR_END + 1)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_DM_END											(CONFIG_EPROM_DM_START + DM_END - DM_START)
 #define CONFIG_EPROM_FD_START										(CONFIG_EPROM_DM_END + 1)
-#define CONFIG_EPROM_FD_END											(CONFIG_EPROM_DM_END + FD_END - FD_START)
+#define CONFIG_EPROM_FD_END											(CONFIG_EPROM_FD_START + FD_END - FD_START)
+
+#define CONFIG_EPROM_MR_CRC											(7524L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC											(7528L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC											(7532L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC										(7536L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC										(7540L)//4B LCD固件CRC32值 软件计算
+#define CONFIG_EPROM_CFG_CRC										(7544L)//4B deviceConfig CRC32值 硬件计算
+#define CONFIG_EPROM_LOG_CRC										(7548L)//4B logInfo CRC32值 硬件计算
+
 #define CONFIG_EPROM_CONFIG_START									(7552L)//512B 配置信息区
 #define CONFIG_EPROM_CONFIG_END										(8063L)
 #define CONFIG_EPROM_LOGINFO_START									(8064L)//128B 记录信息区 
@@ -101,7 +114,7 @@
 #define CONFIG_NTC_B												3477.0F
 #define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF												5000L//
-#define CONFIG_FIBER_PD_THRESHOLD									1024//光纤插入时ADC阈值
+#define CONFIG_FIBER_PD_THRESHOLD									-1//光纤插入时ADC阈值
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DAC										1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0											0x0FFF
@@ -132,7 +145,7 @@
 #define CONFIG_APP_DIODE_BURN_TEMP									300//风扇优先启动温度 30.0C
 #define CONFIG_APP_DIODE_HIGH_TEMP									500//激光器高温极限 46.0C
 #define CONFIG_APP_DIODE_LOW_TEMP									-100//激光器低温极限 - 10.0C
-#define CONFIG_APP_ENVI_HIGH_TEMP									700//处理器高温极限 75.0C
+#define CONFIG_APP_ENVI_HIGH_TEMP									750//处理器高温极限 75.0C
 /*****************************************************************************/
 #define CONFIG_HMI_SCHEME_NUM										32//方案数
 #define CONFIG_HMI_DEFAULT_PASSWORD0								0x3532//默认密码
@@ -174,12 +187,12 @@
 #define CONFIG_MAX_LASER_ENERGY_INTERVAL							200
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
-#define CONFIG_BEEM_ENERGY_INTERVAL_TIME							500//变音持续时间
+#define CONFIG_BEEM_ENERGY_INTERVAL_TIME							800//变音持续时间
 
 #define CONFIG_MAX_AIM_BRG											100//红光最大调光占空比
-#define CONFIG_MIN_AIM_BRG											1//红光最小调光占空比
+#define CONFIG_MIN_AIM_BRG											0//红光最小调光占空比
 #define CONFIG_MAX_BEEM_VOLUME										100//蜂鸣器最大音量
-#define CONFIG_MIN_BEEM_VOLUME										1//蜂鸣器最小音量
+#define CONFIG_MIN_BEEM_VOLUME										0//蜂鸣器最小音量
 #define CONFIG_MAX_LCD_BRG											100//屏幕亮度最大值
 #define CONFIG_MIN_LCD_BRG											1//屏幕亮度最小值
 #define CONFIG_COOL_SET_TEMP										280//冷却温度
@@ -438,7 +451,8 @@
 #define SPREG_DAC_2												(SPREG_START + 22)//DAC2设定值 激光通道2
 #define SPREG_DAC_3												(SPREG_START + 23)//DAC3设定值 激光通道3
 /*****************************************************************************/
-#define SPREG_LAS_FAN_SPEED										(SPREG_START + 29)//激光散热风扇速度 0-9
+#define SPREG_LAS_TEC_DC										(SPREG_START + 28)//激光制冷器扇功率 0-100%
+#define SPREG_LAS_FAN_SPEED										(SPREG_START + 29)//激光散热风扇速度 0-100%
 /*****************************************************************************/
 #define SPREG_SPWM_POS_0										(SPREG_START + 30)//软件PWM0正脉宽设置
 #define SPREG_SPWM_POS_SHADOW_0									(SPREG_START + 31)//软件PWM0正脉宽阴影
@@ -481,18 +495,17 @@
 #define EM_LASER_POWER_CH1										(EM_START + 49)//通道1功率
 #define EM_LASER_POWER_CH2										(EM_START + 50)//通道2功率
 #define EM_LASER_POWER_CH3										(EM_START + 51)//通道3功率
-#define EM_LASER_POWER_CH4										(EM_START + 52)//通道4功率
-#define EM_LASER_SP_POSWIDTH									(EM_START + 53)//单脉冲正脉宽
-#define EM_LASER_MP_POSWIDTH									(EM_START + 54)//多脉冲正脉宽
-#define EM_LASER_MP_NEGWIDTH									(EM_START + 55)//多脉冲负脉宽
-#define EM_LASER_GP_POSWIDTH									(EM_START + 56)//Group脉冲正脉宽
-#define EM_LASER_GP_NEGWIDTH									(EM_START + 57)//Group脉冲负脉宽
-#define EM_LASER_GP_TIMES										(EM_START + 58)//Group脉冲数
-#define EM_LASER_GP_GROUP_OFF									(EM_START + 59)//Group脉冲间隔
-#define EM_LASER_SIGNAL_ENERGY_INTERVAL							(EM_START + 60)//SIGNAL能量间隔
-#define EM_LASER_DERMA_POSWIDTH									(EM_START + 61)//DERMA正脉宽
-#define EM_LASER_DERMA_NEGWIDTH									(EM_START + 62)//DERMA负脉宽
-#define EM_LASER_DERMA_SPOT_SIZE								(EM_START + 63)//DERMA光斑直径
+#define EM_LASER_SP_POSWIDTH									(EM_START + 52)//单脉冲正脉宽
+#define EM_LASER_MP_POSWIDTH									(EM_START + 53)//多脉冲正脉宽
+#define EM_LASER_MP_NEGWIDTH									(EM_START + 54)//多脉冲负脉宽
+#define EM_LASER_GP_POSWIDTH									(EM_START + 55)//Group脉冲正脉宽
+#define EM_LASER_GP_NEGWIDTH									(EM_START + 56)//Group脉冲负脉宽
+#define EM_LASER_GP_TIMES										(EM_START + 57)//Group脉冲数
+#define EM_LASER_GP_GROUP_OFF									(EM_START + 58)//Group脉冲间隔
+#define EM_LASER_SIGNAL_ENERGY_INTERVAL							(EM_START + 59)//SIGNAL能量间隔
+#define EM_LASER_DERMA_POSWIDTH									(EM_START + 60)//DERMA正脉宽
+#define EM_LASER_DERMA_NEGWIDTH									(EM_START + 61)//DERMA负脉宽
+#define EM_LASER_DERMA_SPOT_SIZE								(EM_START + 62)//DERMA光斑直径
 /*****************************************************************************/
 #define EM_LASER_AVERAGE_POWER									(EM_START + 64)//当面模式平均功率
 #define EM_LASER_FREQUENCY										(EM_START + 65)//当前模式频率
@@ -535,18 +548,17 @@
 #define FD_LASER_POWER_CH1										(FD_START +  49)//通道1功率
 #define FD_LASER_POWER_CH2										(FD_START +  50)//通道2功率
 #define FD_LASER_POWER_CH3										(FD_START +  51)//通道3功率
-#define FD_LASER_POWER_CH4										(FD_START +  52)//通道4功率
-#define FD_LASER_SP_POSWIDTH									(FD_START +  53)//单脉冲正脉宽
-#define FD_LASER_MP_POSWIDTH									(FD_START +  54)//多脉冲正脉宽
-#define FD_LASER_MP_NEGWIDTH									(FD_START +  55)//多脉冲负脉宽
-#define FD_LASER_GP_POSWIDTH									(FD_START +  56)//Group脉冲正脉宽
-#define FD_LASER_GP_NEGWIDTH									(FD_START +  57)//Group脉冲负脉宽
-#define FD_LASER_GP_TIMES										(FD_START +  58)//Group脉冲数
-#define FD_LASER_GP_GROUP_OFF									(FD_START +  59)//Group脉冲间隔
-#define FD_LASER_SIGNAL_ENERGY_INTERVAL							(FD_START +  60)//SIGNAL能量间隔
-#define FD_LASER_DERMA_POSWIDTH									(FD_START +  61)//DERMA正脉宽
-#define FD_LASER_DERMA_NEGWIDTH									(FD_START +  62)//DERMA负脉宽
-#define FD_LASER_DERMA_SPOT_SIZE								(FD_START +  63)//DERMA光斑直径
+#define FD_LASER_SP_POSWIDTH									(FD_START +  52)//单脉冲正脉宽
+#define FD_LASER_MP_POSWIDTH									(FD_START +  53)//多脉冲正脉宽
+#define FD_LASER_MP_NEGWIDTH									(FD_START +  54)//多脉冲负脉宽
+#define FD_LASER_GP_POSWIDTH									(FD_START +  55)//Group脉冲正脉宽
+#define FD_LASER_GP_NEGWIDTH									(FD_START +  56)//Group脉冲负脉宽
+#define FD_LASER_GP_TIMES										(FD_START +  57)//Group脉冲数
+#define FD_LASER_GP_GROUP_OFF									(FD_START +  58)//Group脉冲间隔
+#define FD_LASER_SIGNAL_ENERGY_INTERVAL							(FD_START +  59)//SIGNAL能量间隔
+#define FD_LASER_DERMA_POSWIDTH									(FD_START +  60)//DERMA正脉宽
+#define FD_LASER_DERMA_NEGWIDTH									(FD_START +  61)//DERMA负脉宽
+#define FD_LASER_DERMA_SPOT_SIZE								(FD_START +  62)//DERMA光斑直径
 
 #define FD_SCHEME_START_0										(FD_START +   0)//方案0存储区起始
 #define FD_SCHEME_END_0											(FD_START +  63)//方案0存储区结束		
@@ -726,13 +738,11 @@
 #define X_FOOTSWITCH_NC											(X_START * 16 + 3)//XIN3 脚踏常开
 #define X_FIBER_PROBE											(X_START * 16 + 4)//XIN5 光纤探测
 /*****************************************************************************/
-#define Y_LAS_FAN												(Y_START * 16 + 0)//YOUT1 制冷风扇开关
-#define Y_LAS_TEC												(Y_START * 16 + 1)//YOUT1 制冷开关
-#define Y_GREEN_LED												(Y_START * 16 + 2)//YOUT2 绿灯开关
-#define Y_RED_LED												(Y_START * 16 + 3)//YOUT3 红灯开关
-#define Y_BLUE_LED												(Y_START * 16 + 4)//YOUT4 蓝灯开关
-#define Y_TICK_LED												(Y_START * 16 + 5)//YOUT7 板载运行LED指示灯
-#define Y_ERR_LED												(Y_START * 16 + 6)//YOUT8 板载错误LED指示灯
+#define Y_GREEN_LED												(Y_START * 16 + 0)//YOUT0 绿灯开关
+#define Y_RED_LED												(Y_START * 16 + 1)//YOUT1 红灯开关
+#define Y_YELLOW_LED											(Y_START * 16 + 2)//YOUT2 蓝灯开关
+#define Y_TICK_LED												(Y_START * 16 + 3)//YOUT3 板载运行LED指示灯
+#define Y_ERR_LED												(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
 /*****************************************************************************/
 #define R_ESTOP													(R_START * 16 + 0)//急停标志
 #define R_INTERLOCK												(R_START * 16 + 1)//连锁标志

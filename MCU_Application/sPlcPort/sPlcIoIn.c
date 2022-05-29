@@ -9,8 +9,8 @@ void inputInit(void){//IO输入滤波器初始化
 }
 void inputRefresh(void){//获取输入IO
 	uint8_t	temp;
-	//X0
-	temp = HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin);//急停
+	//X0 急停
+	temp = HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin);
 	if(temp == GPIO_PIN_RESET){//急停常闭
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
@@ -27,8 +27,8 @@ void inputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 0);
 		}
 	}
-	//X1
-	temp = HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin);//安全连锁
+	//X1 安全连锁
+	temp = HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin);
 	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[1] ++;
@@ -45,8 +45,8 @@ void inputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 1);
 		}
 	}
-	//X2
-	temp = HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin);//脚踏常开
+	//X2 脚踏常开
+	temp = HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin);
 	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;
@@ -63,8 +63,8 @@ void inputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 2);
 		}
 	}
-	//X3
-	temp = HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin);//脚踏常闭
+	//X3 脚踏常闭
+	temp = HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin);
 	if(temp == GPIO_PIN_RESET){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
@@ -82,7 +82,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X4 光纤探测
-	if(NVRAM0[SPREG_ADC_3] < CONFIG_FIBER_PD_THRESHOLD){//光纤插入
+	if(NVRAM0[SPREG_ADC_2] > CONFIG_FIBER_PD_THRESHOLD){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
 		}

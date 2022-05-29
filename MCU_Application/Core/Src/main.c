@@ -23,11 +23,12 @@
 #include "crc.h"
 #include "dac.h"
 #include "dma.h"
+#include "fatfs.h"
 #include "i2c.h"
 #include "rng.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb_otg.h"
+#include "usb_host.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -110,7 +111,7 @@ int main(void)
   MX_TIM10_Init();
   MX_TIM14_Init();
   MX_TIM11_Init();
-  MX_USB_OTG_FS_HCD_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */

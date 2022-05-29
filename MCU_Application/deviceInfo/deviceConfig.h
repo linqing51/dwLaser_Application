@@ -2,7 +2,7 @@
 #define __DEVICECONFIG_H__
 /*****************************************************************************/
 #include "stm32f4xx_hal.h"
-#include "arm_math.h"
+//#include "arm_math.h"
 /*****************************************************************************/
 typedef struct{
 	uint16_t calibrationPwr0[10];//通道0功率校正表
