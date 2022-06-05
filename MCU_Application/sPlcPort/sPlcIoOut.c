@@ -55,13 +55,13 @@ void outputRefresh(void){//设置输出IO
 	
 	//YOUT3 TICK LED
 	if(LDP(Y_TICK_LED)){
-		HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_SET);
+		setTickLed(true);
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:set Y3 TICK LED\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_TICK_LED)){
-		HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET);
+		setTickLed(false);
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:reset Y3 TICK LED\n",__FILE__, __LINE__, __func__);
 #endif
@@ -69,13 +69,13 @@ void outputRefresh(void){//设置输出IO
 	
 	//YOUT4 ERR LED
 	if(LDP(Y_ERR_LED)){
-		HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_SET);
+		setErrorLed(true);
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:set Y4 ERR LED\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_ERR_LED)){
-		HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_RESET);
+		setErrorLed(false);
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:reset Y4 ERR LED\n",__FILE__, __LINE__, __func__);
 #endif

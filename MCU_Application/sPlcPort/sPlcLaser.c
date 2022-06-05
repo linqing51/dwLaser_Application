@@ -239,10 +239,10 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 #if CONFIG_DEBUG_LASER == 1
 	printf("%s,%d,%s:laser init!\n",__FILE__, __LINE__, __func__);
 #endif	
-	SET_LAS_PWM0(GPIO_PIN_RESET);//通道0关闭
-	SET_LAS_PWM1(GPIO_PIN_RESET);//通道1关闭
-	SET_LAS_PWM2(GPIO_PIN_RESET);//通道2关闭
-	SET_LAS_PWM3(GPIO_PIN_RESET);//通道3关闭
+	setLaserEnable(LASER_CHANNEL_0, LASER_OFF);//通道0关闭
+	setLaserEnable(LASER_CHANNEL_1, LASER_OFF);//通道1关闭
+	setLaserEnable(LASER_CHANNEL_2, LASER_OFF);//通道2关闭
+	setLaserEnable(LASER_CHANNEL_3, LASER_OFF);//通道3关闭
 	//设定计时器
 	RRES(SPCOIL_LASER_DRIVER_INIT_FAIL);
 	LaserTimer_Mode = 0;
@@ -266,19 +266,19 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 }
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
-		SET_LAS_PWM0(GPIO_PIN_SET);
-		SET_LAS_PWM1(GPIO_PIN_SET);
-		SET_LAS_PWM2(GPIO_PIN_SET);
-		SET_LAS_PWM3(GPIO_PIN_SET);
+		setLaserEnable(LASER_CHANNEL_0, LASER_ON);
+		setLaserEnable(LASER_CHANNEL_1, LASER_ON);
+		setLaserEnable(LASER_CHANNEL_2, LASER_ON);
+		setLaserEnable(LASER_CHANNEL_3, LASER_ON);
 		LaserFlag_Emiting = true;
 	}
 }
 static void laserStop(void){//按通道选择关闭激光
 	if(LaserFlag_Emiting == true){
-		SET_LAS_PWM0(GPIO_PIN_RESET);
-		SET_LAS_PWM1(GPIO_PIN_RESET);
-		SET_LAS_PWM2(GPIO_PIN_RESET);
-		SET_LAS_PWM3(GPIO_PIN_RESET);
+		setLaserEnable(LASER_CHANNEL_0, LASER_OFF);
+		setLaserEnable(LASER_CHANNEL_1, LASER_OFF);
+		setLaserEnable(LASER_CHANNEL_2, LASER_OFF);
+		setLaserEnable(LASER_CHANNEL_3, LASER_OFF);
 		LaserFlag_Emiting = false;
 	}
 }

@@ -265,6 +265,126 @@ void sPlcSpwmLoop(void){//SPWMÂÖÑ¯
 		}
 	}
 }
+void sPlcLoudspeakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
+	int8_t laserStatus0, laserStatus1, laserStatus2, laserStatus3;
+	if(LD(SPCOIL_BEEM_ENABLE)){
+		setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+		switch(NVRAM0[SPREG_BEEM_MODE]){//Ä£Ê½
+			case BEEM_MODE_0:{
+				if(LDB(SPCOIL_BEEM_BUSY)){
+					setLoudspeakerEnable();//Æô¶¯ÒôÆµ
+					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+				}
+				break;
+			}
+			case BEEM_MODE_1:{//Ä£Ê½1 Éù¹âÍ¬²½
+				laserStatus0 = getLaserEnable(LASER_CHANNEL_0);
+				laserStatus1 = getLaserEnable(LASER_CHANNEL_1);
+				laserStatus2 = getLaserEnable(LASER_CHANNEL_2);
+				laserStatus3 = getLaserEnable(LASER_CHANNEL_3);
+				if(laserStatus0 || laserStatus1 || laserStatus2 || laserStatus3){//LT3763 PWM ON
+					if(LDB(SPCOIL_BEEM_BUSY)){//Èç¹ûPWMÎÞÊä³ö-> ÓÐÊä³ö
+						setLoudspeakerEnable();//Æô¶¯ÒôÆµ
+						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+					}
+				}
+				else{
+					if(LD(SPCOIL_BEEM_BUSY)){
+						setLoudspeakerDisable();//Æô¶¯ÒôÆµ
+						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷	
+					}
+				}
+				break;
+			}
+			case BEEM_MODE_2:{//Ä£Ê½2 ³¤¼ä¸ô ¼¤¹â·¢ÉäÒô		
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 20){//1
+					setLoudspeakerEnable();//Æô¶¯ÒôÆµ
+					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 20 && NVRAM0[SPREG_BEEM_COUNTER] < 120){//0
+					setLoudspeakerDisable();//Í£Ö¹ÒôÆµ
+					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 120){
+					NVRAM0[SPREG_BEEM_COUNTER] = -1;
+				}
+				break;
+			}
+			case BEEM_MODE_3:{//Ä£Ê½3 µÎµÎÁ½ÏÂÒ»Í£ ±¨¾¯Òô
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
+					setLoudspeakerEnable();//Æô¶¯ÒôÆµ
+					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+					
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
+					setLoudspeakerDisable();//¹Ø±ÕÒôÆµ
+					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100 && NVRAM0[SPREG_BEEM_COUNTER] < 150){//1
+					setLoudspeakerEnable();//Æô¶¯ÒôÆµ
+					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 150 && NVRAM0[SPREG_BEEM_COUNTER] < 250){//0
+					setLoudspeakerDisable();//¹Ø±ÕÒôÆµ
+					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 250){//Í£1Ãë
+					NVRAM0[SPREG_BEEM_COUNTER] = -1;
+				}
+				break;
+			}
+			default:break;
+		}
+	}
+	else{
+		setLoudspeakerDisable();//¹Ø±ÕÒôÆµ
+		RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
+	}
+}
+void sPlcAimLoop(void){//AIMÂÖÑ¯³ÌÐò
+	if(LDP(SPCOIL_AIM_ENABEL) && (NVRAM0[DM_AIM_BRG] > 0)){
+		setAimBrightness(NVRAM0[DM_AIM_BRG]);
+		SSET(SPCOIL_AIM_BUSY);
+	}
+	if(LDN(SPCOIL_AIM_ENABEL)){
+		setAimBrightness(0);
+		RRES(SPCOIL_AIM_BUSY);
+	}
+}
+void sPlcAutoFanLoop(void){//·çÉÈËÙÂÖÑ¯³ÌÐò
+	if(NVRAM0[SPREG_LAS_FAN_SPEED] > 0 && NVRAM0[SPREG_LAS_FAN_SPEED] < CONFIG_SPLC_FAN_MIN_PWM){
+		NVRAM0[SPREG_LAS_FAN_SPEED] = CONFIG_SPLC_FAN_MIN_PWM;
+	}
+
+	if(NVRAM0[SPREG_LAS_FAN_SPEED] <= 0){//·çÉÈËÙ¶ÈÐ¡ÓÚ0
+		HAL_GPIO_WritePin(LAS_FAN_GPIO_Port, LAS_FAN_Pin, GPIO_PIN_RESET);
+	}
+	else{
+		HAL_GPIO_WritePin(LAS_FAN_GPIO_Port, LAS_FAN_Pin, GPIO_PIN_SET);
+	}
+/*
+	uint8_t lasFanPwm;
+	if(NVRAM0[SPREG_LAS_FAN_SPEED] <= 0){
+		NVRAM0[SPREG_LAS_FAN_SPEED] = 0;
+	}
+	if(NVRAM0[SPREG_LAS_FAN_SPEED] >= 100){
+		NVRAM0[SPREG_LAS_FAN_SPEED] = 100;
+	}
+	if(NVRAM0[SPREG_LAS_FAN_SPEED] > 0){
+		lasFanPwm = NVRAM0[SPREG_LAS_FAN_SPEED] * 255 / 100;
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, lasFanPwm);
+		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);//´ò¿ªTIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_4);//¹Ø±ÕTIM
+	}
+#if CONFIG_DEBUG_FAN == 1
+	printf("%s,%d,%s:set laser fan pwm,:%d\n",__FILE__, __LINE__, __func__, lasFanPwm);
+#endif	
+*/
+}
+
 /*****************************************************************************/
 void sPlcInit(void){//ÈíÂß¼­³õÊ¼»¯
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);

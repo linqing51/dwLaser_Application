@@ -10,8 +10,8 @@ void inputInit(void){//IO输入滤波器初始化
 void inputRefresh(void){//获取输入IO
 	uint8_t	temp;
 	//X0 急停
-	temp = HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin);
-	if(temp == GPIO_PIN_RESET){//急停常闭
+	temp = getEmergencyStop();
+	if(temp == 0){//急停常闭
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
 		}
@@ -28,8 +28,8 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X1 安全连锁
-	temp = HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin);
-	if(temp == GPIO_PIN_RESET){
+	temp = getInterLock();
+	if(temp == 0){
 		if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[1] ++;
 		}
@@ -46,8 +46,8 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X2 脚踏常开
-	temp = HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin);
-	if(temp == GPIO_PIN_RESET){
+	temp = getFootSwitchNormalOpen();//获取常开脚踏开关状态
+	if(temp == 0){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;
 		}
@@ -64,8 +64,8 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X3 脚踏常闭
-	temp = HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin);
-	if(temp == GPIO_PIN_RESET){
+	temp = getFootSwitchNormalClose();
+	if(temp == 0){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
 		}

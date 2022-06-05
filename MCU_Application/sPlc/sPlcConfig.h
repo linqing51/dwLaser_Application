@@ -174,8 +174,6 @@
 #define CONFIG_MIN_LASERPOWER_CH2									1//通道2最大激光功率
 #define CONFIG_MIN_LASERPOWER_CH3									1//通道3最大激光功率
 
-
-
 #define CONFIG_MAX_LASER_POSWIDTH									16000
 #define CONFIG_MIN_LASER_POSWIDTH									1
 #define CONFIG_MAX_LASER_NEGWIDTH									16000
