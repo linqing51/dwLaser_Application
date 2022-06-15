@@ -1,24 +1,24 @@
+#include "sPlcSpeaker.h"
+/*****************************************************************************/
 uint16_t audioSineTable[256] = {0};
 static int8_t LoudspeakerEnable = -1;//喇叭使能状态
 static int16_t LoudspeakerFreq = -1;//喇叭频率
 static int8_t LoudspeakerVolume = -1;//喇叭音量
-
-
+/*****************************************************************************/
 extern TIM_HandleTypeDef htim7;//DAC DMA 计时器
 extern DAC_HandleTypeDef hdac;
-
-
+static float32_t linearToLog(int16_t volume);
+/*****************************************************************************/
 void initLoudspeaker(void){//喇叭初始化
-	HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET);
+	SET_SPEAKER_OFF;
 	RRES(SPCOIL_BEEM_ENABLE);
 	setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 	setLoudspeakerDisable();
 	setLoudspeakerFreq(CONFIG_SPLC_DEFAULT_SPK_FREQ);
 }
-
 void setLoudspeakerDisable(void){//关闭喇叭数据流
 	if(LoudspeakerEnable != false){
-		HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET);
+		SET_SPEAKER_OFF;
 		HAL_TIM_Base_Stop(&htim7);
 		HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
 #if CONFIG_DEBUG_SPK == 1
@@ -29,7 +29,7 @@ void setLoudspeakerDisable(void){//关闭喇叭数据流
 }
 void setLoudspeakerEnable(void){//打开喇叭数据流
 	if(LoudspeakerEnable != true){
-		HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET);
+		SET_SPEAKER_ON;
 		HAL_TIM_Base_Start(&htim7);
 		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 #if CONFIG_DEBUG_SPK == 1

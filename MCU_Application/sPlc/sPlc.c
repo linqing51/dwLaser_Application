@@ -278,10 +278,10 @@ void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
 				break;
 			}
 			case BEEM_MODE_1:{//模式1 声光同步
-				laserStatus0 = getLaserEnable(LASER_CHANNEL_0);
-				laserStatus1 = getLaserEnable(LASER_CHANNEL_1);
-				laserStatus2 = getLaserEnable(LASER_CHANNEL_2);
-				laserStatus3 = getLaserEnable(LASER_CHANNEL_3);
+				laserStatus0 = GET_LASER_CH0;
+				laserStatus1 = GET_LASER_CH1;
+				laserStatus2 = GET_LASER_CH2;
+				laserStatus3 = GET_LASER_CH3;
 				if(laserStatus0 || laserStatus1 || laserStatus2 || laserStatus3){//LT3763 PWM ON
 					if(LDB(SPCOIL_BEEM_BUSY)){//如果PWM无输出-> 有输出
 						setLoudspeakerEnable();//启动音频

@@ -10,7 +10,7 @@ void inputInit(void){//IO输入滤波器初始化
 void inputRefresh(void){//获取输入IO
 	uint8_t	temp;
 	//X0 急停
-	temp = getEmergencyStop();
+	temp = GET_ESTOP_NC;
 	if(temp == 0){//急停常闭
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
@@ -28,7 +28,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X1 安全连锁
-	temp = getInterLock();
+	temp = GET_INTERLOCK_NC;
 	if(temp == 0){
 		if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[1] ++;
@@ -46,7 +46,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X2 脚踏常开
-	temp = getFootSwitchNormalOpen();//获取常开脚踏开关状态
+	temp = GET_FSWITCH_NO;//获取常开脚踏开关状态
 	if(temp == 0){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;
@@ -64,7 +64,7 @@ void inputRefresh(void){//获取输入IO
 		}
 	}
 	//X3 脚踏常闭
-	temp = getFootSwitchNormalClose();
+	temp = GET_FSWITCH_NC;
 	if(temp == 0){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;

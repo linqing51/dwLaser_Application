@@ -15,9 +15,11 @@
 
 #include "main.h"
 #include "stdio.h"
-#include "core_cm4.h"
-#include "usart.h"
-#include "bootloader.h"
+#include "stm32f4xx_hal.h"
+
+
+extern UART_HandleTypeDef huart1;
+
 #pragma import(__use_no_semihosting_swi)
 
 
@@ -47,11 +49,11 @@ int fgetc(FILE *f) {
 //}
 
 
-//void _ttywrch(int c) {
-//  SER_PutChar(c);
-//}
+//定义_sys_exit()以避免使用半主机模式
+void _sys_exit(int x){
+	x = x;
+}
 
-
-//void _sys_exit(int return_code) {
-//label:  goto label;  /* endless loop */
-//}
+void _ttywrch(int ch){
+	ch = ch;
+}

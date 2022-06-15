@@ -18,6 +18,7 @@
 #include "deviceConfig.h"
 #include "sPlcConfig.h"
 #include "sPlcMisc.h"
+#include "sPlcSpeaker.h"
 #include "sPlcMcu.h"
 #include "sPlcFun.h"
 #include "sPlcTimer.h"

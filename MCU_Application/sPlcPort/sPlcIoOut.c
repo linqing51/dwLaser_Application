@@ -2,9 +2,6 @@
 /*****************************************************************************/
 void outputInit(void){//IO输出初始化
 	NVRAM0[Y_START] = 0x0;
-	HAL_GPIO_WritePin(LAS_FAN_GPIO_Port, LAS_FAN_Pin, GPIO_PIN_SET);//Laser fan off
-	HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_SET);//laser tec off
-	
 	setRedLedBrightness(0);
 	setGreenLedBrightness(0);
 	setYellowLedBrightness(0);
@@ -55,13 +52,13 @@ void outputRefresh(void){//设置输出IO
 	
 	//YOUT3 TICK LED
 	if(LDP(Y_TICK_LED)){
-		setTickLed(true);
+		SET_TICK_LED_ON;
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:set Y3 TICK LED\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_TICK_LED)){
-		setTickLed(false);
+		SET_TICK_LED_OFF;
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:reset Y3 TICK LED\n",__FILE__, __LINE__, __func__);
 #endif
@@ -69,13 +66,13 @@ void outputRefresh(void){//设置输出IO
 	
 	//YOUT4 ERR LED
 	if(LDP(Y_ERR_LED)){
-		setErrorLed(true);
+		SET_ERR_LED_ON;
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:set Y4 ERR LED\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	if(LDN(Y_ERR_LED)){
-		setErrorLed(false);
+		SET_ERR_LED_OFF;
 #if CONFIG_DEBUG_IO == 1
 		printf("%s,%d,%s:reset Y4 ERR LED\n",__FILE__, __LINE__, __func__);
 #endif

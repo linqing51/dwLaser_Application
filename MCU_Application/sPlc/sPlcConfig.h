@@ -1,6 +1,10 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
+#define CONFIG_MORSECODE_SPACE_TIME									3000
+#define CONFIG_MORSECODE_LONG_TIME									900
+#define CONFIG_MORSECODE_SHORT_TIME									300
+/*****************************************************************************/
 #define CONFIG_DEBUG_DAC											0//调试DAC驱动
 #define CONFIG_DEBUB_ADC											0//调试ADC驱动
 #define CONFIG_DEBUG_EPROM											0//调试EPROM驱动
@@ -13,7 +17,6 @@
 #define CONFIG_DEBUG_APP											1//调试应用程序
 /*****************************************************************************/
 #define STM32_UNIQUE_ID_SIZE 										12//MCU序列号  8*12=96Bit
-#define BOOTLOADER_VER												0x00020001//版本
 #define DEVID_H														'1'//设备ID
 #define DEVID_L														'A'//设备ID
 #define BUFFER_SIZE        											((uint16_t)512*64)//512的整数倍

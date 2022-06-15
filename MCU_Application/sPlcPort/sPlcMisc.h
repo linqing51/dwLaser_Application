@@ -76,39 +76,36 @@ void resetInit(void);
 void SystemClock_Reset(void);//复位系统时钟
 void UsbGpioReset(void);
 /*****************************************************************************/
-//void sPlcLoudspeakerLoop(void);//蜂鸣器轮询
-//void sPlcAimLoop(void);//瞄准光轮询
-//void sPlcAutoFanLoop(void);//风扇速轮询程序
-//void setLoudspeakerFreq(int16_t freq);//设置喇叭频率
-//void setLoudspeakerVolume(int16_t volume);//设置喇叭音量
-//void setLoudspeakerEnable(void);//打开喇叭数据流
-//void setLoudspeakerDisable(void);//关闭喇叭数据流
-//void initLoudspeaker(void);//喇叭初始化
-//void setAimFreq(int16_t freq);//设置AIM PWM频率
-//void setLedFreq(int16_t freq);//设置LED PWM频率
-//void setFanFreq(int16_t freq);//设置FAN PWM频率
-//void setAimBrightness(int16_t brg);//设置瞄准光亮度
-//int16_t getAimBrightness(void);//获取瞄准光亮度
-//void setRedLedBrightness(int16_t brg);//设置R LED亮度
-//void setGreenLedBrightness(int16_t brg);//设置G LED亮度
-//void setYellowLedBrightness(int16_t brg);//设置Y LED亮度
-//void setLaserEnable(int8_t channel, int8_t ena);//设置激光使能
-//void flipLaserEnable(int8_t channel);//翻转激光使能
-//int8_t getLaserEnable(int8_t channel);//获取激光使能
-//void setFanSpeed(int16_t speed);//设置风扇转速
-//int16_t getFanSpeed(void);//获取风扇转速
-//void setTecDutyCycle(int16_t dc);//设置TEC导通占空比
-//int16_t getTecDutyCycle(void);//获取TEC导通占空比
-//void setErrorLed(int8_t ena);//设置故障指示灯状态
-//int8_t getErrorLed(void);//获取故障指示灯状态
-//void flipErrorLed(void);//翻转故障指示灯状态
-//void setTickLed(int8_t ena);//设置心跳指示灯状态
-//int8_t getTickLed(void);//获取心跳指示光状态
-//void flipTickLed(void);//翻转心跳指示灯状态
-//int8_t getEmergencyStop(void);//获取急停开关状态
-//int8_t getInterLock(void);//获取连锁开关状态
-//int8_t getFootSwitchNormalOpen(void);//获取常开脚踏开关状态
-//int8_t getFootSwitchNormalClose(void);//获取常闭脚踏开关状态
+void sPlcLoudspeakerLoop(void);//蜂鸣器轮询
+void sPlcAimLoop(void);//瞄准光轮询
+void sPlcAutoFanLoop(void);//风扇速轮询程序
+
+void setAimFreq(int16_t freq);//设置AIM PWM频率
+void setLedFreq(int16_t freq);//设置LED PWM频率
+void setFanFreq(int16_t freq);//设置FAN PWM频率
+void setAimBrightness(int16_t brg);//设置瞄准光亮度
+int16_t getAimBrightness(void);//获取瞄准光亮度
+void setRedLedBrightness(int16_t brg);//设置R LED亮度
+void setGreenLedBrightness(int16_t brg);//设置G LED亮度
+void setYellowLedBrightness(int16_t brg);//设置Y LED亮度
+void setLaserEnable(int8_t channel, int8_t ena);//设置激光使能
+void flipLaserEnable(int8_t channel);//翻转激光使能
+int8_t getLaserEnable(int8_t channel);//获取激光使能
+void setFanSpeed(int16_t speed);//设置风扇转速
+int16_t getFanSpeed(void);//获取风扇转速
+void setTecDutyCycle(int16_t dc);//设置TEC导通占空比
+int16_t getTecDutyCycle(void);//获取TEC导通占空比
+void setErrorLed(int8_t ena);//设置故障指示灯状态
+int8_t getErrorLed(void);//获取故障指示灯状态
+void flipErrorLed(void);//翻转故障指示灯状态
+void setTickLed(int8_t ena);//设置心跳指示灯状态
+int8_t getTickLed(void);//获取心跳指示光状态
+void flipTickLed(void);//翻转心跳指示灯状态
+int8_t getEmergencyStop(void);//获取急停开关状态
+int8_t getInterLock(void);//获取连锁开关状态
+int8_t getFootSwitchNormalOpen(void);//获取常开脚踏开关状态
+int8_t getFootSwitchNormalClose(void);//获取常闭脚踏开关状态
+void morseCodeDiag(uint8_t diag);//诊断码
 /*****************************************************************************/
 #endif
 

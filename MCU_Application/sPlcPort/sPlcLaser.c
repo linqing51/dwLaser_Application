@@ -239,10 +239,10 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 #if CONFIG_DEBUG_LASER == 1
 	printf("%s,%d,%s:laser init!\n",__FILE__, __LINE__, __func__);
 #endif	
-	setLaserEnable(LASER_CHANNEL_0, LASER_OFF);//通道0关闭
-	setLaserEnable(LASER_CHANNEL_1, LASER_OFF);//通道1关闭
-	setLaserEnable(LASER_CHANNEL_2, LASER_OFF);//通道2关闭
-	setLaserEnable(LASER_CHANNEL_3, LASER_OFF);//通道3关闭
+	SET_LASER_CH0_OFF;
+	SET_LASER_CH1_OFF;
+	SET_LASER_CH2_OFF;
+	SET_LASER_CH3_OFF;
 	//设定计时器
 	RRES(SPCOIL_LASER_DRIVER_INIT_FAIL);
 	LaserTimer_Mode = 0;
@@ -266,19 +266,19 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 }
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
-		setLaserEnable(LASER_CHANNEL_0, LASER_ON);
-		setLaserEnable(LASER_CHANNEL_1, LASER_ON);
-		setLaserEnable(LASER_CHANNEL_2, LASER_ON);
-		setLaserEnable(LASER_CHANNEL_3, LASER_ON);
+		SET_LASER_CH0_ON;
+		SET_LASER_CH1_ON;
+		SET_LASER_CH2_ON;
+		SET_LASER_CH3_ON;
 		LaserFlag_Emiting = true;
 	}
 }
 static void laserStop(void){//按通道选择关闭激光
 	if(LaserFlag_Emiting == true){
-		setLaserEnable(LASER_CHANNEL_0, LASER_OFF);
-		setLaserEnable(LASER_CHANNEL_1, LASER_OFF);
-		setLaserEnable(LASER_CHANNEL_2, LASER_OFF);
-		setLaserEnable(LASER_CHANNEL_3, LASER_OFF);
+		SET_LASER_CH0_OFF;
+		SET_LASER_CH1_OFF;
+		SET_LASER_CH2_OFF;
+		SET_LASER_CH3_OFF;
 		LaserFlag_Emiting = false;
 	}
 }
@@ -320,7 +320,7 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				}
 				if((((fp32_t)LaserTimer_BeemSwitchCounter * (fp32_t)NVRAM0[EM_TOTAL_POWER]) / 10000.0F) >= (fp32_t)NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFORM_SPK_FREQ){
-						//setLoudspeakerVolume(100);
+						setLoudspeakerVolume(100);
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFORM_SPK_FREQ;
 						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}
@@ -328,7 +328,7 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				}
 				if(LaserTimer_BeemSwtichLength >= CONFIG_BEEM_ENERGY_INTERVAL_TIME){				
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFAULT_SPK_FREQ){
-						//setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
+						setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
 						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}			
