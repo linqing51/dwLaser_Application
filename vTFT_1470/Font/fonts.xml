@@ -1,11 +1,11 @@
-<fonts ttf="arial.ttf">
-	<font id="0" type="8" name="ASCII_12" width="6" height="12" ttf="arial.ttf"/>
-	<font id="1" type="8" name="ASCII_16" width="8" height="16" ttf="arial.ttf"/>
-	<font id="2" type="8" name="ASCII_24" width="12" height="24" ttf="arial.ttf"/>
-	<font id="3" type="8" name="ASCII_32" width="16" height="32" ttf="arial.ttf"/>
-	<font id="9" type="8" name="ASCII_48" width="24" height="48" ttf="arial.ttf"/>
-	<font id="5" type="8" name="ASCII_20" width="10" height="20" ttf="arial.ttf"/>
-	<font id="6" type="8" name="ASCII_40" width="19" height="38" ttf="arial.ttf"/>
-	<font id="7" type="8" name="ASCII_18" width="9" height="18" ttf="arial.ttf"/>
-	<font id="8" type="8" name="ASCII_28" width="14" height="28" ttf="arial.ttf"/>
+<fonts ttf="MyriadPro.ttf">
+	<font id="0" type="8" name="ASCII_12" width="6" height="12" ttf="MyriadPro.ttf"/>
+	<font id="1" type="8" name="ASCII_16" width="8" height="16" ttf="MyriadPro.ttf"/>
+	<font id="2" type="8" name="ASCII_24" width="12" height="24" ttf="MyriadPro.ttf"/>
+	<font id="3" type="8" name="ASCII_32" width="16" height="32" ttf="MyriadPro.ttf"/>
+	<font id="9" type="8" name="ASCII_48" width="24" height="48" ttf="MyriadPro.ttf"/>
+	<font id="5" type="8" name="ASCII_20" width="10" height="20" ttf="MyriadPro.ttf"/>
+	<font id="6" type="8" name="ASCII_40" width="19" height="38" ttf="MyriadPro.ttf"/>
+	<font id="7" type="8" name="ASCII_18" width="9" height="18" ttf="MyriadPro.ttf"/>
+	<font id="8" type="8" name="ASCII_28" width="14" height="28" ttf="MyriadPro.ttf"/>
 </fonts>
