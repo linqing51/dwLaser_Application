@@ -4,7 +4,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 	switch(screen_id){
 		case GDDC_PAGE_STANDBY_CW:{
 			switch(control_id){
-				case GDDC_PAGE_STANDBY_PROGRESS_CH0:{
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER:{
 					if(value > 100){
 						value = 100;
 					}
@@ -13,28 +13,25 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_CW);					
 					break;
 				}
-				default:break;
-			}
-			break;
-		}
-		case GDDC_PAGE_STANDBY_SP:{
-			switch(control_id){
-				case GDDC_PAGE_STANDBY_PROGRESS_CH0:{
-					if(value > 100){
-						value = 100;
+				case GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG:{
+					if(value < CONFIG_MIN_AIM_BRG){
+						value = CONFIG_MIN_AIM_BRG;
 					}
-					NVRAM0[EM_LASER_POWER_CH0] = (int16_t)(value * CONFIG_MAX_LASERPOWER_CH0 / 100);
-					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
-					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_SP);
+					if(value > CONFIG_MAX_AIM_BRG){
+						value = CONFIG_MAX_AIM_BRG;
+					}
+					NVRAM0[DM_AIM_BRG] = (int16_t)value;	
+					SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 					break;
 				}
 				default:break;
 			}
 			break;
 		}
+	
 		case GDDC_PAGE_STANDBY_MP:{
 			switch(control_id){
-				case GDDC_PAGE_STANDBY_PROGRESS_CH0:{
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER:{
 					if(value > 100){
 						value = 100;
 					}
@@ -43,59 +40,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_MP);
 					break;
 				}
-				default:break;
-			}
-			break;
-		}
-		case GDDC_PAGE_STANDBY_GP:{
-			switch(control_id){
-				case GDDC_PAGE_STANDBY_PROGRESS_CH0:{
-					if(value > 100){
-						value = 100;
-					}
-					NVRAM0[EM_LASER_POWER_CH0] = (int16_t)(value * CONFIG_MAX_LASERPOWER_CH0 / 100);
-					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
-					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_GP);
-					break;
-				}
-				default:break;
-			}
-			break;
-		}
-		case GDDC_PAGE_STANDBY_SIGNAL:{
-			switch(control_id){
-				case GDDC_PAGE_STANDBY_PROGRESS_CH0:{
-					if(value > 100){
-						value = 100;
-					}
-					NVRAM0[EM_LASER_POWER_CH0] = (int16_t)(value * CONFIG_MAX_LASERPOWER_CH0 / 100);
-					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
-					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_SIGNAL);
-					break;
-				}
-				default:break;
-			}
-			break;
-		}
-		case GDDC_PAGE_STANDBY_DERMA:{
-			switch(control_id){
-				case GDDC_PAGE_STANDBY_PROGRESS_CH0:{
-					if(value > 100){
-						value = 100;
-					}
-					NVRAM0[EM_LASER_POWER_CH0] = (int16_t)(value * CONFIG_MAX_LASERPOWER_CH0 / 100);
-					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
-					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_DERMA);
-					updateEnergyDensity();
-					break;
-				}
-				default:break;
-			}
-			break;
-		}
-		case GDDC_PAGE_OPTION:{
-			switch(control_id){
-				case GDDC_PAGE_OPTION_PROGRESS_AIM_BRG:{
+				case GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG:{
 					if(value < CONFIG_MIN_AIM_BRG){
 						value = CONFIG_MIN_AIM_BRG;
 					}
@@ -103,9 +48,15 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						value = CONFIG_MAX_AIM_BRG;
 					}
 					NVRAM0[DM_AIM_BRG] = (int16_t)value;	
-					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
+					SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 					break;
-				}
+				}				
+				default:break;
+			}
+			break;
+		}
+		case GDDC_PAGE_OPTION:{
+			switch(control_id){
 				case GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME:{
 					if(value < CONFIG_MIN_BEEM_VOLUME){
 						value = CONFIG_MIN_BEEM_VOLUME;

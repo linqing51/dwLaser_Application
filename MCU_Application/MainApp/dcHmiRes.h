@@ -20,16 +20,17 @@
 /*****************************************************************************/
 //HMI页面编号
 #define GDDC_PAGE_POWERUP												0
-#define GDDC_PAGE_PASSCODE												1
-#define GDDC_PAGE_NEW_PASSCODE											2
-#define GDDC_PAGE_STANDBY_CW											3
-#define GDDC_PAGE_STANDBY_PULSED										4
-#define GDDC_PAGE_OPTION												5//选项页面
-#define GDDC_PAGE_SCHEME_0												6//方案页面第一页
-#define GDDC_PAGE_SCHEME_1												7//方案页面第二页
-#define GDDC_PAGE_INFORMATION											8//信息页面
-#define GDDC_PAGE_DIAGNOSIS												9//诊断页面
-#define GDDC_PAGE_RENAME												10//SCHEME更名
+#define GDDC_PAGE_PASSCODE											1
+#define GDDC_PAGE_NEW_PASSCODE									2
+#define GDDC_PAGE_STANDBY_CW										3
+#define GDDC_PAGE_STANDBY_MP										4
+#define GDDC_PAGE_READY													5
+#define GDDC_PAGE_OPTION												6//选项页面
+#define GDDC_PAGE_SCHEME_0											7//方案页面第一页
+#define GDDC_PAGE_SCHEME_1											8//方案页面第二页
+#define GDDC_PAGE_INFORMATION										9//信息页面
+#define GDDC_PAGE_DIAGNOSIS											10//诊断页面
+#define GDDC_PAGE_RENAME												11//SCHEME更名
 /*****************************************************************************/
 //GDDC页面控件编号
 /*****************************************************************************/
@@ -72,7 +73,7 @@
 #define GDDC_PAGE_STANDBY_KEY_POWER_DEC									2//功率减小
 #define GDDC_PAGE_STANDBY_KEY_STANDBY									3//进入准备
 #define GDDC_PAGE_STANDBY_KEY_MODE_CW									4//连续模式
-#define	GDDC_PAGE_STANDBY_KEY_MODE_PULSED								5//连续模式
+#define	GDDC_PAGE_STANDBY_KEY_MODE_MP									5//连续模式
 #define GDDC_PAGE_STANDBY_KEY_ENTER_OPTION								6//脉冲模式
 #define GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME								7//
 #define GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE								8//
@@ -123,8 +124,7 @@
 #define GDDC_PAGE_OPTION_PROGRESS_LCD_BRG								11//屏幕亮度调节
 #define GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME						12
 #define GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG							13
-#define GDDC_PAGE_OPTION_TEXTDISPLAY_AIM_BRG							14
-#define GDDC_PAGE_OPTION_KEY_RESTORE									15//恢复默认设置
+#define GDDC_PAGE_OPTION_KEY_RESTORE									14//恢复默认设置
 /*****************************************************************************/
 //方案页面
 #define GDDC_PAGE_SCHEME_KEY_RENAME										1//更名按键
