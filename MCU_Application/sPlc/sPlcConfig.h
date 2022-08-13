@@ -756,45 +756,48 @@
 #define R_FOOTSWITCH_PLUG										(R_START * 16 + 8)//脚踏插入标志
 #define R_FOOTSWITCH_PRESS										(R_START * 16 + 9)//脚踏按下标志
 #define R_HMI_FOOTSWITCH_PRESS									(R_START * 16 + 10)//屏幕模拟脚踏按下标志
-#define R_FAULT													(R_START * 16 + 11)//故障标志
-#define R_DISABLE_ESTOP											(R_START * 16 + 12)//屏蔽急停开关检测
-#define R_DISABLE_TEMPERATURE									(R_START * 16 + 13)//屏蔽温度检测
-#define	R_DISABLE_FOOTSWITCH									(R_START * 16 + 14)//屏蔽脚踏开关检测
-#define R_DISABLE_RFID											(R_START * 16 + 15)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE									(R_START * 16 + 16)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED										(R_START * 16 + 17)//屏蔽风扇控制
-#define R_DISABLE_INTERLOCK										(R_START * 16 + 18)//屏蔽安全连锁
-#define R_CLEAR_EPROM											(R_START * 16 + 19)//完全清空EPROM
-#define R_SAVE_EPROM											(R_START * 16 + 20)//储存SAVE
-#define R_ENGINEER_MODE											(R_START * 16 + 21)//工程师模式
-#define R_CALIBRATION_MODE										(R_START * 16 + 22)//功率校正模式
+#define R_FAULT																			(R_START * 16 + 11)//故障标志
+#define R_DISABLE_ESTOP															(R_START * 16 + 12)//屏蔽急停开关检测
+#define R_DISABLE_TEMPERATURE												(R_START * 16 + 13)//屏蔽温度检测
+#define	R_DISABLE_FOOTSWITCH												(R_START * 16 + 14)//屏蔽脚踏开关检测
+#define R_DISABLE_RFID															(R_START * 16 + 15)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE												(R_START * 16 + 16)//屏蔽光纤探测
+#define R_DISABLE_FAN_SPEED													(R_START * 16 + 17)//屏蔽风扇控制
+#define R_DISABLE_INTERLOCK													(R_START * 16 + 18)//屏蔽安全连锁
+#define R_CLEAR_EPROM																(R_START * 16 + 19)//完全清空EPROM
+#define R_SAVE_EPROM																(R_START * 16 + 20)//储存SAVE
+#define R_ENGINEER_MODE															(R_START * 16 + 21)//工程师模式
+#define R_CALIBRATION_MODE													(R_START * 16 + 22)//功率校正模式
 //HMI相关状态
-#define R_DCHMI_RESET_REQ										(R_START * 16 + 30)//HMI复位请求
-#define R_DCHMI_RESET_DOING										(R_START * 16 + 31)//HMI复位中
-#define R_DCHMI_RESET_DONE										(R_START * 16 + 32)//HMI复位完成	
-#define R_DCHMI_UPDATEUI_REQ									(R_START * 16 + 33)//HMI内容更新请求
-#define R_DCHMI_UPDATEUI_DOING									(R_START * 16 + 34)//HMI内容更新中
-#define R_DCHMI_UPDATEUI_DONE									(R_START * 16 + 35)//HMI内容更新请求完成
-#define R_DCHMI_RESTORE_REQ										(R_START * 16 + 36)//HMI从FLASH中恢复设置请求
-#define R_DCHMI_RESTORE_DOING									(R_START * 16 + 37)//HMI从FLASH中恢复中
-#define R_DCHMI_RESTORE_DONE									(R_START * 16 + 38)//HMI从FLASH中恢复设置完成	
-#define R_DCHMI_DISPLAY_WARN									(R_START * 16 + 39)//HMI显示报警信息
-#define R_DCHMI_KEY_STANDBY_ENABLE								(R_START * 16 + 40)//STANDBY 使能
+#define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMI复位请求
+#define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMI复位中
+#define R_DCHMI_RESET_DONE													(R_START * 16 + 32)//HMI复位完成	
+#define R_DCHMI_UPDATEUI_REQ												(R_START * 16 + 33)//HMI内容更新请求
+#define R_DCHMI_UPDATEUI_DOING											(R_START * 16 + 34)//HMI内容更新中
+#define R_DCHMI_UPDATEUI_DONE												(R_START * 16 + 35)//HMI内容更新请求完成
+#define R_DCHMI_RESTORE_REQ													(R_START * 16 + 36)//HMI从FLASH中恢复设置请求
+#define R_DCHMI_RESTORE_DOING												(R_START * 16 + 37)//HMI从FLASH中恢复中
+#define R_DCHMI_RESTORE_DONE												(R_START * 16 + 38)//HMI从FLASH中恢复设置完成	
+#define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 39)//HMI显示报警信息
+#define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 40)//STANDBY 使能
 /*****************************************************************************/
 #define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 80)
 #define R_STANDBY_KEY_POSWIDTH_DEC_DOWN							(R_START * 16 + 81)
 #define R_STANDBY_KEY_NEGWIDTH_ADD_DOWN							(R_START * 16 + 82)
 #define R_STANDBY_KEY_NEGWIDTH_DEC_DOWN							(R_START * 16 + 83)
-#define R_STANDBY_KEY_TIMES_ADD_DOWN							(R_START * 16 + 84)
-#define R_STANDBY_KEY_TIMES_DEC_DOWN							(R_START * 16 + 85)
-#define R_STANDBY_KEY_STNADBY_DOWN								(R_START * 16 + 90)
-#define R_STANDBY_KEY_STNADBY_UP								(R_START * 16 + 91)
+#define R_STANDBY_KEY_TIMES_ADD_DOWN								(R_START * 16 + 84)
+#define R_STANDBY_KEY_TIMES_DEC_DOWN								(R_START * 16 + 85)
+#define R_STANDBY_KEY_STNADBY_DOWN									(R_START * 16 + 90)
+#define R_STANDBY_KEY_STNADBY_UP										(R_START * 16 + 91)
 #define R_STANDBY_KEY_ENTER_OPTION_DOWN							(R_START * 16 + 92)
 #define R_STANDBY_KEY_ENTER_SCHEME_DOWN							(R_START * 16 + 93)
 #define R_STANDBY_KEY_SCHEME_SAVE_DOWN							(R_START * 16 + 94)
 /*****************************************************************************/
-#define R_OPTION_KEY_ENTER_INFORMATION_DOWN						(R_START * 16 + 101)
-#define R_OPTION_KEY_ENTER_OK_DOWN								(R_START * 16 + 102)
+#define R_READY_KEY_READY_DOWN											(R_START * 16 + 95)
+#define R_READY_KEY_READY_UP												(R_START * 16 + 96)
+/*****************************************************************************/
+#define R_OPTION_KEY_ENTER_INFORMATION_DOWN					(R_START * 16 + 101)
+#define R_OPTION_KEY_ENTER_OK_DOWN									(R_START * 16 + 102)
 #define R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN						(R_START * 16 + 103)
 /*****************************************************************************/
 #define R_INFORMATION_KEY_OK_DOWN								(R_START * 16 + 110)

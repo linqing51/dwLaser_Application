@@ -119,3 +119,6 @@ static float32_t linearToLog(int16_t volume){//线性音量转化为对数音量
 	}
 	return vol;
 }
+
+
+

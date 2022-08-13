@@ -988,7 +988,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_INFORMATION:{
 			switch(control_id){
-				case GDDC_PAGE_INFORMATION_KEY_ENTER_OK:{
+				case GDDC_PAGE_INFO_KEY_ENTER_OK:{
 					if(state){
 						SSET(R_INFORMATION_KEY_OK_DOWN);
 					}
@@ -1171,36 +1171,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SAVE_UDISK:{//将FDRAM写入USB DISK
-					if(state){
-						if(saveSchemeToUdisk()){//成功
-							//显示提示信息
-							//sprintf(,"Save Done!");
-							//SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE, (uint8_t*)dispBuf);
-							//SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE, (uint8_t*)dispBuf);
-							//等待1秒
-							
-						}
-						else{//失败
-						}
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_LOAD_UDISK:{//从UDISK载入方案
-					if(state){
-						if(loadSchemeFromUdisk()){//成功
-							//显示提示信息
-							//等待1秒
-						}
-						else{//失败
-							
-						}
-					}
-					break;
-				}
 				default:break;
 			}
-			break;
 		}
 		case GDDC_PAGE_SCHEME_1:{
 			switch(control_id){

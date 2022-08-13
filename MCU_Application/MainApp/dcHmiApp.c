@@ -3,7 +3,6 @@
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
-static uint8_t StandbyKeyEnable = 0xFF;//待机模式
 static void UpdateUI(void);
 extern CRC_HandleTypeDef hcrc;
 /*****************************************************************************/
@@ -126,22 +125,6 @@ void updateDiognosisTextBox(void){//更新诊断信息文本框
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr3[i] / 10.0F);
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, (GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P1 + i), (uint8_t*)dispBuf);
 	}
-	//更新亮度表
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3d", deviceConfig.aimMaxCfg);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_AIM_MAX, (uint8_t*)dispBuf);
-	
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3d", deviceConfig.greenLedBrg);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_GLED_BRG, (uint8_t*)dispBuf);
-	
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3d", deviceConfig.redLedBrg);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_RLED_BRG, (uint8_t*)dispBuf);
-	
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3d", deviceConfig.yellowLedBrg);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_YLED_BRG, (uint8_t*)dispBuf);
 }
 void updateDiognosisInfo(void){//更新诊断信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -305,20 +288,20 @@ void updateScheme_1_Display(void){//更新选项界面方案名称
 void updateInformationDisplay(void){//更新信息界面显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE[NVRAM0[DM_LANGUAGE]]);	
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_SN, (uint8_t*)INFO_MSG_SN[NVRAM0[DM_LANGUAGE]]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH[NVRAM0[DM_LANGUAGE]]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER[NVRAM0[DM_LANGUAGE]]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_VERSION, (uint8_t*)INFO_MSG_VERSION[NVRAM0[DM_LANGUAGE]]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)INFO_MSG_MANUFACTURE_DATE[NVRAM0[DM_LANGUAGE]]);			
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE[NVRAM0[DM_LANGUAGE]]);	
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)INFO_MSG_SN[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)INFO_MSG_VERSION[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)INFO_MSG_MANUFACTURE_DATE[NVRAM0[DM_LANGUAGE]]);			
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "UUID:%08X%08X%08X", UniqueId[0], UniqueId[1], UniqueId[2]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "BuildTime:%s:%s\n", __DATE__, __TIME__);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXTDISPLAY_BUILDTIME, (uint8_t*)dispBuf);	
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_BUILDTIME, (uint8_t*)dispBuf);	
 }
 void returnStandbyDisplay(void){//返回STANDBY界面
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){	
@@ -617,8 +600,7 @@ void standbyKeyTouchEnable(int8_t enable){//Standby key触摸
 void standbyPageTouchEnable(int8_t enable){//Standby界面触摸
 	//STANDBY CW
 	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_POWER_ADD, enable);	
-	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_POWER_DEC, enable);	
-	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_POWER_DEC, enable);		
 	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);	
 	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);	
 	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);	
@@ -633,7 +615,6 @@ void standbyPageTouchEnable(int8_t enable){//Standby界面触摸
 	//STANDBY MP
 	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_POWER_ADD, enable);	
 	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_POWER_DEC, enable);	
-	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
 	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);	
 	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);	
 	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);	
@@ -651,12 +632,20 @@ void standbyPageTouchEnable(int8_t enable){//Standby界面触摸
 	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_DEC, enable);			
 }
 
-void ReadyTouchEnable(int8_t enable){//Ready界面触摸	
+void readyPageTouchEnable(int8_t enable){//Ready界面触摸	
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_ADD, enable);	
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_DEC, enable);	
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD, enable);	
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_DEC, enable);	
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_READY, enable);
+}
+void standbyKeyValue(uint8_t value){//设置Standby键值
+	SetButtonValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, value);
+	SetButtonValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, value);
+}
+void readyKeyValue(uint8_t value){//设置Ready键值
+	SetButtonValue(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_READY, value);
+	SetButtonValue(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_READY, value);
 }
 void updatePowerDisplay(int16_t ch, int16_t mode){//更新功率显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -807,19 +796,6 @@ void updateNegWidthDisplay(int16_t mode){//更新负脉宽显示
 		default:break;
 	}
 	updateExtralDisplay(mode);
-}
-void standbyKeyValue(uint8_t value){//设置Standby键值
-	switch(NVRAM0[EM_DC_PAGE]){
-		case GDDC_PAGE_STANDBY_CW:{
-			SetButtonValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, value);
-			break;
-		}
-		case GDDC_PAGE_STANDBY_MP:{
-			SetButtonValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, value);
-			break;
-		}
-		default:break;
-	}	
 }
 void dcHmiLoopInit(void){//初始化模块
 	uint8_t i;
@@ -1123,12 +1099,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			
 			SetButtonValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, false);
 			SetButtonValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, false);
-			
-			SetControlVisiable(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_KEY_SAVE_UDISK, false);
-			SetControlVisiable(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_KEY_LOAD_UDISK, false);
-			SetControlVisiable(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_KEY_SAVE_UDISK, false);
-			SetControlVisiable(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_KEY_LOAD_UDISK, false);
-			
+					
 			SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
 			SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
 		
@@ -1321,9 +1292,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_STANDBY_KEY_ENTER_SCHEME_DOWN);
 		}else
 		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
-			ReadyTouchEnable(false);//禁用READY页面触摸
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
-			SetScreen(NVRAM0[EM_DC_PAGE]);
+			standbyPageTouchEnable(false);//禁用Standby页面触摸
+			standbyKeyTouchEnable(false);
 			if(LD(R_FOOTSWITCH_PRESS)){//检测脚踏踩下
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
@@ -1367,8 +1337,9 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			}
 			else{
+				standbyPageTouchEnable(true);//恢复Standby页面触摸
+				standbyKeyTouchEnable(true);//恢复Standby页面Standby按键触摸
 				standbyKeyValue(false);
-				standbyPageTouchEnable(true);
 			}
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 		}
@@ -1399,7 +1370,11 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_DONE){//参数载入完毕并停止蜂鸣器
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-		standbyKeyTouchEnable(true);
+		//切换到READY页面
+		readyPageTouchEnable(true);//运行READY页面触摸
+		readyKeyValue(true);
+		NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
+		SetScreen(NVRAM0[EM_DC_PAGE]);		
 		RRES(R_STANDBY_KEY_STNADBY_DOWN);
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;	
 		return;
@@ -1416,6 +1391,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_0] = 0;
 			UPDAC0();
 			RRES(SPCOIL_AIM_ENABEL);
+			//切换回STANBY页面
+			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
+				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_CW;//切换待机页面 CW 
+			}
+			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
+				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_MP;//切换待机页面 MP
+			}
+			SetScreen(NVRAM0[EM_DC_PAGE]);	
 			standbyPageTouchEnable(true);
 			standbyKeyTouchEnable(false);
 			standbyKeyValue(false);

@@ -238,26 +238,6 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.calibrationPwr3[9] = (uint16_t)(fValue * 10.0F);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_AIM_MAX:{
-					sscanf((const char*)str, "%d", &sValue);
-					deviceConfig.aimMaxCfg = (uint8_t)sValue;
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_RLED_BRG:{
-					sscanf((const char*)str, "%d", &sValue);
-					deviceConfig.redLedBrg = (uint8_t)sValue;
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_GLED_BRG:{
-					sscanf((const char*)str, "%d", &sValue);
-					deviceConfig.greenLedBrg = (uint8_t)sValue;
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_YLED_BRG:{
-					sscanf((const char*)str, "%d", &sValue);
-					deviceConfig.yellowLedBrg = (uint8_t)sValue;
-					break;
-				}
 				default:break;
 			}
 			break;
