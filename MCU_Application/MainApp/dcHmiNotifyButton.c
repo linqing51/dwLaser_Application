@@ -286,13 +286,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						SSET(R_ENGINEER_MODE);
 						updateStandbyDisplay();
-						standbyTouchEnable(true);
+						standbyPageTouchEnable(true);
 						standbyDebugInfoVisiable(true);						
 					}else if((NVRAM0[EM_DC_NEW_PASSCODE0] == NVRAM0[DM_DC_OLD_PASSCODE0]) && (NVRAM0[EM_DC_NEW_PASSCODE1] == NVRAM0[DM_DC_OLD_PASSCODE1])){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						RRES(R_ENGINEER_MODE);
 						updateStandbyDisplay();
-						standbyTouchEnable(true);
+						standbyPageTouchEnable(true);
 						standbyDebugInfoVisiable(false);
 					}		
 
@@ -699,7 +699,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
 						updateStandbyDisplay();
-						standbyTouchEnable(true);
+						standbyPageTouchEnable(true);
 					}
 					break;
 				}
@@ -860,7 +860,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						clearReleaseTimeEnergy();
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
-						standbyTouchEnable(true);
+						standbyPageTouchEnable(true);
 					}
 					break;
 				}

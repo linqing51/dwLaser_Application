@@ -610,33 +610,53 @@ void unselectScheme_1_All(void){//反选第二页全部方案条
 	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_15, 0x0);
 	BatchEnd();
 }
-void standbyTouchEnable(int8_t enable){//使能STANDBY界面触摸
-	uint16_t screen_id;
-	switch(NVRAM0[EM_LASER_PULSE_MODE]){
-		case LASER_MODE_CW:{
-			screen_id = GDDC_PAGE_STANDBY_CW;
-			break;
-		}
-		case LASER_MODE_MP:{
-			screen_id = GDDC_PAGE_STANDBY_MP;
-			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POSWIDTH_ADD, enable);		
-			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POSWIDTH_DEC, enable);		
-			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD, enable);		
-			SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_DEC, enable);			
-			break;
-		}
-		default:break;
-	}
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POWER_ADD, enable);
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_POWER_DEC, enable);
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);		
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);		
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);	
-	SetControlEnable(screen_id, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, enable);	
+void standbyKeyTouchEnable(int8_t enable){//Standby key触摸
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+}
+void standbyPageTouchEnable(int8_t enable){//Standby界面触摸
+	//STANDBY CW
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_POWER_ADD, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_POWER_DEC, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);		
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_AIM_BRG_DEC, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, enable);	
+	//STANDBY MP
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_POWER_ADD, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_POWER_DEC, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_MODE_CW, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_MODE_MP, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_ENTER_OPTION, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT, enable);		
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_SCHEME_LAST, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_AIM_BRG_DEC, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, enable);	
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_POSWIDTH_ADD, enable);		
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_POSWIDTH_DEC, enable);		
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD, enable);		
+	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_DEC, enable);			
+}
+
+void ReadyTouchEnable(int8_t enable){//Ready界面触摸	
+	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_ADD, enable);	
+	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_DEC, enable);	
+	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD, enable);	
+	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_DEC, enable);	
+	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_READY, enable);
 }
 void updatePowerDisplay(int16_t ch, int16_t mode){//更新功率显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -787,18 +807,6 @@ void updateNegWidthDisplay(int16_t mode){//更新负脉宽显示
 		default:break;
 	}
 	updateExtralDisplay(mode);
-}
-void standbyKeyEnableSet(uint8_t ena){//设置Standby使能
-	if(StandbyKeyEnable != ena){
-		switch(NVRAM0[EM_DC_PAGE]){
-			case GDDC_PAGE_STANDBY_CW:{
-				SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, ena);break;}
-			case GDDC_PAGE_STANDBY_MP:{
-				SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, ena);break;}
-			default:break;
-		}
-		StandbyKeyEnable = ena;
-	}
 }
 void standbyKeyValue(uint8_t value){//设置Standby键值
 	switch(NVRAM0[EM_DC_PAGE]){
@@ -1247,7 +1255,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LDB(R_FAULT)){//无故障显示
 			RRES(SPCOIL_BEEM_ENABLE);
 			updateWarnMsgDisplay(MSG_NO_ERROR);
-			standbyKeyEnableSet(true);
+			standbyKeyTouchEnable(true);
 		}
 		if(LD(R_FAULT)){
 			if(LD(R_LASER_TEMP_HIGH)){//激光器高温保护
@@ -1274,12 +1282,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			else if(LDB(R_RFID_PASS)){//光纤ID不匹配
 				updateWarnMsgDisplay(MSG_FIBER_MISSMATE);
 			}
-			standbyKeyEnableSet(false);//禁止Standby触摸
+			standbyKeyTouchEnable(false);//禁止Standby触摸
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//设置喇叭声音模式
 			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 			SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 		}
-
 		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//点击OPTION
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			if(LD(R_ENGINEER_MODE)){
@@ -1295,7 +1302,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			updateOptionDisplay();
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_STANDBY_KEY_ENTER_OPTION_DOWN);
-		}else if(LD(R_STANDBY_KEY_ENTER_SCHEME_DOWN)){//点击SCHEME 默认显示第一页
+		}else 
+		if(LD(R_STANDBY_KEY_ENTER_SCHEME_DOWN)){//点击SCHEME 默认显示第一页
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			if(NVRAM0[DM_SCHEME_NUM] < 16){//第一页
 				updateScheme_0_Display();//更新方案第一页名称
@@ -1311,11 +1319,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			}
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_STANDBY_KEY_ENTER_SCHEME_DOWN);
-		}else if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
-			standbyTouchEnable(false);//禁用屏幕按键
-			standbyKeyEnableSet(false);//禁用待机准备按键
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;
-			
+		}else
+		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
+			ReadyTouchEnable(false);//禁用READY页面触摸
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
+			SetScreen(NVRAM0[EM_DC_PAGE]);
 			if(LD(R_FOOTSWITCH_PRESS)){//检测脚踏踩下
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
@@ -1360,18 +1368,19 @@ void dcHmiLoop(void){//HMI轮训程序
 			}
 			else{
 				standbyKeyValue(false);
-				standbyTouchEnable(true);
+				standbyPageTouchEnable(true);
 			}
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 		}
-		else if(LD(R_STANDBY_KEY_SCHEME_SAVE_DOWN)){	
+		else 
+		if(LD(R_STANDBY_KEY_SCHEME_SAVE_DOWN)){	
 			//禁止屏幕触摸
-			standbyTouchEnable(false);
-			standbyKeyEnableSet(false);
+			standbyPageTouchEnable(false);
+			standbyKeyTouchEnable(false);
 			saveScheme();//EM->FD
 			FDSAV_ONE(NVRAM0[DM_SCHEME_NUM]);//FDRAM->EPROM
-			standbyTouchEnable(true);
-			standbyKeyEnableSet(true);
+			standbyPageTouchEnable(true);
+			standbyKeyTouchEnable(true);
 			RRES(R_STANDBY_KEY_SCHEME_SAVE_DOWN);
 		}
 		return;
@@ -1390,7 +1399,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_DONE){//参数载入完毕并停止蜂鸣器
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-		standbyKeyEnableSet(true);
+		standbyKeyTouchEnable(true);
 		RRES(R_STANDBY_KEY_STNADBY_DOWN);
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;	
 		return;
@@ -1407,8 +1416,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_0] = 0;
 			UPDAC0();
 			RRES(SPCOIL_AIM_ENABEL);
-			standbyTouchEnable(true);
-			standbyKeyEnableSet(false);
+			standbyPageTouchEnable(true);
+			standbyKeyTouchEnable(false);
 			standbyKeyValue(false);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 #if CONFIG_DEBUG_APP == 1
@@ -1422,8 +1431,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			UPDAC0();
 			RRES(SPCOIL_AIM_ENABEL);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-			standbyTouchEnable(true);
-			standbyKeyEnableSet(true);
+			standbyPageTouchEnable(true);
+			standbyKeyTouchEnable(true);
 			standbyKeyValue(false);
 			RRES(R_STANDBY_KEY_STNADBY_UP);
 			updateWarnMsgDisplay(MSG_NO_ERROR);//显示警告信息
@@ -1434,7 +1443,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
 			if(LDP(R_FOOTSWITCH_PRESS)){//发射激光
 				//禁止Standby触摸
-				standbyKeyEnableSet(false);
+				standbyKeyTouchEnable(false);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
 				updateWarnMsgDisplay(MSG_LASER_EMIT);
@@ -1443,7 +1452,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 		else{//电平触发
 			if(LD(R_FOOTSWITCH_PRESS)){//发射激光	
-				standbyKeyEnableSet(false);
+				standbyKeyTouchEnable(false);
 				HAL_Delay(10);				
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
@@ -1473,8 +1482,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(SPCOIL_AIM_ENABEL);//关闭指示光
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器		
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-			standbyKeyEnableSet(false);
-			standbyTouchEnable(true);
+			standbyKeyTouchEnable(false);
+			standbyPageTouchEnable(true);
 			standbyKeyValue(false);
 			updateWarnMsgDisplay(MSG_NO_ERROR);
 		}
@@ -1484,7 +1493,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				updateWarnMsgDisplay(MSG_NO_ERROR);
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
-				standbyKeyEnableSet(true);
+				standbyKeyTouchEnable(true);
 				printf("%s,%d,%s:hand switch mode,footswitch press,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
 			}
 		}
@@ -1494,7 +1503,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				updateWarnMsgDisplay(MSG_NO_ERROR);
 				RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
-				standbyKeyEnableSet(true);
+				standbyKeyTouchEnable(true);
 				printf("%s,%d,%s:foot switch mode,footswitch unpress,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
 			}
 		}
@@ -1504,8 +1513,8 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LDB(R_FOOTSWITCH_PRESS)){//检测到脚踏状态恢复正常
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			standbyKeyValue(false);
-			standbyKeyEnableSet(true);
-			standbyTouchEnable(true);
+			standbyKeyTouchEnable(true);
+			standbyPageTouchEnable(true);
 			updateWarnMsgDisplay(MSG_NO_ERROR);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 		}
