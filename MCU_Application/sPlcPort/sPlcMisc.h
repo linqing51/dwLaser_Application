@@ -29,24 +29,26 @@ extern UART_HandleTypeDef huart1;//调试
 extern TIM_HandleTypeDef htim3;//RGB LED PWM计时器
 extern TIM_HandleTypeDef htim2;//指示光PWM计时器
 /*****************************************************************************/
-#define GET_ESTOP_NC												HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
+#define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
 #define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
 #define GET_FSWITCH_NC												HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
-#define SET_RLED_ON													HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-#define SET_RLED_OFF												HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);
-#define SET_GLED_ON													HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-#define SET_GLED_OFF												HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_3);
-#define SET_YLED_ON													HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-#define SET_YLED_OFF												HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+
+#define SET_RED_LED_ON												HAL_GPIO_WritePin(RED_LED_OUT_GPIO_Port, RED_LED_OUT_Pin, GPIO_PIN_SET)
+#define SET_RED_LED_OFF												HAL_GPIO_WritePin(RED_LED_OUT_GPIO_Port, RED_LED_OUT_Pin, GPIO_PIN_RESET)
+#define SET_GREEN_LED_ON											HAL_GPIO_WritePin(GREEN_LED_OUT_GPIO_Port, GREEN_LED_OUT_Pin, GPIO_PIN_SET)
+#define SET_GREEN_LED_OFF											HAL_GPIO_WritePin(GREEN_LED_OUT_GPIO_Port, GREEN_LED_OUT_Pin, GPIO_PIN_RESET)
+#define SET_BLUE_LED_ON												HAL_GPIO_WritePin(BLUE_LED_OUT_GPIO_Port, BLUE_LED_OUT_Pin, GPIO_PIN_SET)
+#define SET_BLUE_LED_OFF											HAL_GPIO_WritePin(BLUE_LED_OUT_GPIO_Port, BLUE_LED_OUT_Pin, GPIO_PIN_RESET)
+
 #define SET_ERR_LED_ON												HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_SET)
 #define SET_ERR_LED_OFF												HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_RESET)
-#define GET_ERR_LED													HAL_GPIO_ReadPin(ERR_LED_GPIO_Port, ERR_LED_Pin)
-#define FLIP_ERR_LED												HAL_GPIO_TogglePin(ERR_LED_GPIO_Port, ERR_LED_Pin)
+#define GET_ERR_LED														HAL_GPIO_ReadPin(ERR_LED_GPIO_Port, ERR_LED_Pin)
+#define FLIP_ERR_LED													HAL_GPIO_TogglePin(ERR_LED_GPIO_Port, ERR_LED_Pin)
 #define SET_TICK_LED_ON												HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_SET)
 #define SET_TICK_LED_OFF											HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
-#define GET_TICK_LED												HAL_GPIO_ReadPin(TICK_LED_GPIO_Port, TICK_LED_Pin)
-#define FLIP_TICK_LED												HAL_GPIO_TogglePin(TICK_LED_GPIO_Port, TICK_LED_Pin)
+#define GET_TICK_LED													HAL_GPIO_ReadPin(TICK_LED_GPIO_Port, TICK_LED_Pin)
+#define FLIP_TICK_LED													HAL_GPIO_TogglePin(TICK_LED_GPIO_Port, TICK_LED_Pin)
 #define SET_LASER_CH0_ON											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_SET)
 #define SET_LASER_CH0_OFF											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET)
 #define SET_LASER_CH1_ON											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_SET)

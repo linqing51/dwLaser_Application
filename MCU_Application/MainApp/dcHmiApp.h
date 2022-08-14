@@ -7,6 +7,7 @@
 #include "MainAppLib.h"
 #include "dcHmiLanguage.H"
 #include "deviceConfig.h"
+#include "pid_fuzzy.h"
 /*****************************************************************************/
 #define FSMSTEP_POWERUP															0//上电
 //HMI初始操作	

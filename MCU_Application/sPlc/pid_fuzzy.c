@@ -17,8 +17,8 @@
 #define Umin -5.0F
 
 //Êä³öÖµÏŞ·ù
-#define Pmax 7200
-#define Pmin 0
+#define Pmax 0
+#define Pmin -2000
 
 #define NB 0
 #define NM 1

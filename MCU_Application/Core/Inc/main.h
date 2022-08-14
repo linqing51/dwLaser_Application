@@ -85,8 +85,6 @@ void Error_Handler(void);
 #define FS_NO_GPIO_Port GPIOC
 #define INTERLOCK_NC_Pin GPIO_PIN_0
 #define INTERLOCK_NC_GPIO_Port GPIOB
-#define LAS_TEC_Pin GPIO_PIN_1
-#define LAS_TEC_GPIO_Port GPIOB
 #define NFC_RST_Pin GPIO_PIN_2
 #define NFC_RST_GPIO_Port GPIOB
 #define NFC_STA_Pin GPIO_PIN_10
@@ -101,12 +99,12 @@ void Error_Handler(void);
 #define SPK_EN_GPIO_Port GPIOB
 #define ESTOP_NC_Pin GPIO_PIN_15
 #define ESTOP_NC_GPIO_Port GPIOB
-#define YELLOW_LED_Pin GPIO_PIN_6
-#define YELLOW_LED_GPIO_Port GPIOC
-#define RED_LED_Pin GPIO_PIN_7
-#define RED_LED_GPIO_Port GPIOC
-#define GREEN_LED_Pin GPIO_PIN_8
-#define GREEN_LED_GPIO_Port GPIOC
+#define BLUE_LED_OUT_Pin GPIO_PIN_6
+#define BLUE_LED_OUT_GPIO_Port GPIOC
+#define RED_LED_OUT_Pin GPIO_PIN_7
+#define RED_LED_OUT_GPIO_Port GPIOC
+#define GREEN_LED_OUT_Pin GPIO_PIN_8
+#define GREEN_LED_OUT_GPIO_Port GPIOC
 #define OTG_FS_PSOC_Pin GPIO_PIN_9
 #define OTG_FS_PSOC_GPIO_Port GPIOC
 #define OTG_FS_PSON_Pin GPIO_PIN_8

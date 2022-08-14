@@ -172,17 +172,15 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	if(NVRAM0[SPREG_ADC_4]  == 0){
 		NVRAM0[SPREG_ADC_4] = 1;
 	}
-	if(NVRAM0[src] >= 10){
-		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_4] * 4096.0F);
-		ftemp = (uint16_t)(CONFIG_NTC_RS * (CONFIG_NTC_VREF - ftemp) / ftemp);
+	if(NVRAM0[src] >= 10){	
+		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_4] * 4096.0F);//计算电压
+		ftemp = ftemp * CONFIG_NTC_RS / (CONFIG_NTC_VREF - ftemp);//计算电压
 	}
 	else{
+ 
 		ftemp = 0.1F;
 	}
-	
 	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / CONFIG_NTC_B * log(ftemp / CONFIG_NTC_R25)) - 273.15;
-	//ftemp = ((1.0 / CONFIG_NTC_B) * log(ftemp) / 10000) + (1 / (CONFIG_AMBIENT_TEMP + 273.0));//limo R25=10740,B=3450	 uniquemode 3988
-	//ftemp = (float32_t)(( 1.0F / ftemp ) - 273.0F);
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);

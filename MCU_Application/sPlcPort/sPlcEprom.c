@@ -5,6 +5,7 @@ extern I2C_HandleTypeDef hi2c1;
 extern CRC_HandleTypeDef hcrc;
 extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
+
 static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 	uint16_t i;
 	for(i = 0;i < len;i ++){

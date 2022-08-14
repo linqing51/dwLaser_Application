@@ -1,10 +1,12 @@
 #include "dcHmiApp.h"
 /*****************************************************************************/
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
+static uint8_t standbyKeyTouchEnableStatus = 0;
 uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
 static void UpdateUI(void);
 extern CRC_HandleTypeDef hcrc;
+PID fuzzyPid;
 /*****************************************************************************/
 void loadDeviceConfig(void){//从EPROM载入配置文件
 	uint32_t crc32_eprom_cfg, crc32_cfg, temp;
@@ -594,8 +596,11 @@ void unselectScheme_1_All(void){//反选第二页全部方案条
 	BatchEnd();
 }
 void standbyKeyTouchEnable(int8_t enable){//Standby key触摸
-	SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
-	SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+	if(enable != standbyKeyTouchEnableStatus){
+		SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+		SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
+		enable = standbyKeyTouchEnableStatus;
+	}
 }
 void standbyPageTouchEnable(int8_t enable){//Standby界面触摸
 	//STANDBY CW
@@ -839,30 +844,35 @@ void dcHmiLoopInit(void){//初始化模块
 	RRES(R_FAULT);
 	//脚踏插入
 	SSET(R_FOOTSWITCH_PLUG);
+	//PID 初始化
+	PID_Init(&fuzzyPid);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0);	
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);//打开TIM
 }
 static void temperatureLoop(void){//温度轮询轮询
-	TNTC(EM_LASER_TEMP, SPREG_ADC_1);//CODE转换为NTC测量温度温度
+	uint16_t temp16;
+	TNTC(EM_LASER_TEMP, SPREG_ADC_0);//CODE转换为NTC测量温度温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_3);//CODE转换为MCU温度
 	//判断二极管0是否过热
-	if(NVRAM0[EM_LASER_TEMP] > CONFIG_APP_DIODE_HIGH_TEMP){
+	if(NVRAM0[EM_LASER_TEMP] > CONFIG_APP_DIODE_HIGH_TEMP){//激光器过热
 		SSET(R_LASER_TEMP_HIGH);
 	}
 	else{
 		RRES(R_LASER_TEMP_HIGH);
 	}
-	if(NVRAM0[EM_LASER_TEMP] < CONFIG_APP_DIODE_LOW_TEMP){
+	if(NVRAM0[EM_LASER_TEMP] < CONFIG_APP_DIODE_LOW_TEMP){//激光器温度过低
 		SSET(R_LASER_TEMP_LOW);
 	}
 	else{
 		RRES(R_LASER_TEMP_LOW);
 	}
 	//判断环境是否过热
-	if(NVRAM0[EM_MCU_TEMP] > CONFIG_APP_ENVI_HIGH_TEMP){
+	if(NVRAM0[EM_MCU_TEMP] > CONFIG_APP_ENVI_HIGH_TEMP){//环境温度过热
 		SSET(R_MCU_TEMP_HIGH);
 	}
 	else{
 		RRES(R_MCU_TEMP_HIGH);
-	}
+	}	
 	//温控执行 激光等待发射及错误状态启动温控	
 	if(LD(R_LASER_TEMP_HIGH) || LD(R_MCU_TEMP_HIGH)){//过热状态无条件打开风扇
 		NVRAM0[SPREG_LAS_FAN_SPEED] = 255;
@@ -906,6 +916,10 @@ static void temperatureLoop(void){//温度轮询轮询
 				NVRAM0[SPREG_LAS_FAN_SPEED] = 255;
 			}
 		}
+		//TEC PID 控制
+		PID_realize(&fuzzyPid, CONFIG_APP_DIODE_STT_TEMP, NVRAM0[EM_LASER_TEMP]);
+		temp16 = (uint16_t)(fuzzyPid.pwm_out * -1.0F);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, temp16);
 	}
 }
 static void faultLoop(void){//故障轮询
