@@ -885,8 +885,18 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_READY:{
 			switch(control_id){
-				
+				case GDDC_PAGE_READY_KEY_READY:{
+					if(state){
+						SSET(R_STANDBY_KEY_STNADBY_DOWN);
+					}
+					else{
+						SSET(R_STANDBY_KEY_STNADBY_UP);
+					}
+					break;
+				}
+				default:break;
 			}
+			break;
 		}
 		case GDDC_PAGE_OPTION:{//—°œÓ“≥√Ê
 			switch(control_id){

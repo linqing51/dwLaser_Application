@@ -599,7 +599,7 @@ void standbyKeyTouchEnable(int8_t enable){//Standby key触摸
 	if(enable != standbyKeyTouchEnableStatus){
 		SetControlEnable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
 		SetControlEnable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
-		enable = standbyKeyTouchEnableStatus;
+		standbyKeyTouchEnableStatus = enable;
 	}
 }
 void standbyPageTouchEnable(int8_t enable){//Standby界面触摸
@@ -1306,8 +1306,9 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_STANDBY_KEY_ENTER_SCHEME_DOWN);
 		}else
 		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
-			standbyPageTouchEnable(false);//禁用Standby页面触摸
-			standbyKeyTouchEnable(false);
+			readyPageTouchEnable(false);//运行READY页面触摸
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
+			SetScreen(NVRAM0[EM_DC_PAGE]);
 			if(LD(R_FOOTSWITCH_PRESS)){//检测脚踏踩下
 				//打开蜂鸣器
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
@@ -1384,17 +1385,12 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_DONE){//参数载入完毕并停止蜂鸣器
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-		//切换到READY页面
 		readyPageTouchEnable(true);//运行READY页面触摸
-		readyKeyValue(true);
-		NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
-		SetScreen(NVRAM0[EM_DC_PAGE]);		
 		RRES(R_STANDBY_KEY_STNADBY_DOWN);
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;	
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_WAIT_TRIGGER){//等待触发激光	
-		updateWarnMsgDisplay(MSG_WAIT_TRIGGER);//显示警告信息
 		if(LD(R_ENGINEER_MODE)){//工程模式显示调试信息	
 			if(LDP(SPCOIL_PS1000MS)){		
 				updateStandbyDebugInfo();
@@ -1427,9 +1423,16 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_0] = 0;
 			UPDAC0();
 			RRES(SPCOIL_AIM_ENABEL);
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-			standbyPageTouchEnable(true);
-			standbyKeyTouchEnable(true);
+			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
+				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_CW;//切换待机页面 CW 
+			}
+			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
+				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_MP;//切换待机页面 MP
+			}
+			SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
+			
+			//standbyPageTouchEnable(true);
+			//standbyKeyTouchEnable(true);
 			standbyKeyValue(false);
 			RRES(R_STANDBY_KEY_STNADBY_UP);
 			updateWarnMsgDisplay(MSG_NO_ERROR);//显示警告信息
@@ -1443,7 +1446,6 @@ void dcHmiLoop(void){//HMI轮训程序
 				standbyKeyTouchEnable(false);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				updateWarnMsgDisplay(MSG_LASER_EMIT);
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}
 		}
@@ -1453,7 +1455,6 @@ void dcHmiLoop(void){//HMI轮训程序
 				HAL_Delay(10);				
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				updateWarnMsgDisplay(MSG_LASER_EMIT);
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}	
 		}
@@ -1785,7 +1786,8 @@ static void NotifyTouchXY(uint8_t press,uint16_t x,uint16_t y){
 *  \brief  更新数据
 */ 
 static void UpdateUI(void){
-
+	uint8_t err;
+	err = err;
 }
 
 
