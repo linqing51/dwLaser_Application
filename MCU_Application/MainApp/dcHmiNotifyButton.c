@@ -686,9 +686,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						SSET(R_STANDBY_KEY_STNADBY_DOWN);
 					}
-					else{
-						SSET(R_STANDBY_KEY_STNADBY_UP);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
@@ -850,9 +847,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						SSET(R_STANDBY_KEY_STNADBY_DOWN);
 					}
-					else{
-						SSET(R_STANDBY_KEY_STNADBY_UP);
-					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
@@ -886,11 +880,44 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		case GDDC_PAGE_READY:{
 			switch(control_id){
 				case GDDC_PAGE_READY_KEY_READY:{
-					if(state){
-						SSET(R_STANDBY_KEY_STNADBY_DOWN);
-					}
-					else{
+					if(!state){
 						SSET(R_STANDBY_KEY_STNADBY_UP);
+					}
+					break;
+				}				
+				case GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_ADD:{
+					if(state){
+						if(NVRAM0[DM_ACOUSTIC_ENERGY] < ACOUSTIC_ENERGY_MAX){
+							NVRAM0[DM_ACOUSTIC_ENERGY] ++;
+							//update UI
+						}							
+					}
+					break;
+				}
+				case GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_DEC:{
+					if(state){
+						if(NVRAM0[DM_ACOUSTIC_ENERGY] > ACOUSTIC_ENERGY_MIN){
+							NVRAM0[DM_ACOUSTIC_ENERGY] --;
+							//update UI
+						}
+					}
+					break;
+				}
+				case GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD:{
+					if(state){
+						if(NVRAM0[DM_ACOUSTIC_TIME] <= ACOUSTIC_TIME_MAX){
+							NVRAM0[DM_ACOUSTIC_TIME] ++;
+							//update UI
+						}
+					}
+					break;
+				}
+				case GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_DEC:{
+					if(state){
+						if(NVRAM0[DM_ACOUSTIC_TIME] > ACOUSTIC_TIME_MIN){
+							NVRAM0[DM_ACOUSTIC_TIME] --;
+							//update UI
+						}
 					}
 					break;
 				}

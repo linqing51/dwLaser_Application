@@ -100,10 +100,10 @@
 #define CONFIG_EPROM_CFG_CRC										(7544L)//4B deviceConfig CRC32值 硬件计算
 #define CONFIG_EPROM_LOG_CRC										(7548L)//4B logInfo CRC32值 硬件计算
 
-#define CONFIG_EPROM_CONFIG_START									(7552L)//512B 配置信息区
-#define CONFIG_EPROM_CONFIG_END										(8063L)
-#define CONFIG_EPROM_LOGINFO_START									(8064L)//128B 记录信息区 
-#define CONFIG_EPROM_LOGINFO_END									(8191L)
+#define CONFIG_EPROM_CONFIG_START											(7552L)//512B 配置信息区
+#define CONFIG_EPROM_CONFIG_END												(8063L)
+#define CONFIG_EPROM_LOGINFO_START										(8064L)//128B 记录信息区 
+#define CONFIG_EPROM_LOGINFO_END											(8191L)
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL												6//ADC采集通道
@@ -199,39 +199,14 @@
 #define CONFIG_MIN_LCD_BRG											1//屏幕亮度最小值
 #define CONFIG_COOL_SET_TEMP										280//冷却温度
 #define CONFIG_COOL_DIFF_TEMP										15//冷却温度变化范围
-//功率设定校正系数
-#define LASER_CH0_NOTES_INTERCEPT								393.7F	
-#define LASER_CH0_NOTES_B1										12.34F
-#define LASER_CH0_NOTES_B2										0.0F
-#define LASER_CH0_NOTES_B3										0.0F
 
-#define LASER_CH1_NOTES_INTERCEPT								-10.0F	
-#define LASER_CH1_NOTES_B1										4.096F
-#define LASER_CH1_NOTES_B2										0.0
-#define LASER_CH1_NOTES_B3										0.0
-
-#define LASER_CH2_NOTES_INTERCEPT								-0.16355			
-#define LASER_CH2_NOTES_B1										1.82066E-5
-#define LASER_CH2_NOTES_B2										-2.75859E-13
-#define LASER_CH2_NOTES_B3										7.12301E-20
-
-#define LASER_CH3_NOTES_INTERCEPT								-0.16355			
-#define LASER_CH3_NOTES_B1										1.82066E-5
-#define LASER_CH3_NOTES_B2										-2.75859E-13
-#define LASER_CH3_NOTES_B3										7.12301E-20
-
-#define LASER_CH4_NOTES_INTERCEPT								-0.16355			
-#define LASER_CH4_NOTES_B1										1.82066E-5
-#define LASER_CH4_NOTES_B2										-2.75859E-13
-#define LASER_CH4_NOTES_B3										7.12301E-20
-//功率显示校正系数
-#define PD_NOTES_INTERCEPT										-0.16355			
-#define PD_NOTES_B1												1.82066E-5
-#define PD_NOTES_B2												-2.75859E-13
-#define PD_NOTES_B3												7.12301E-20
+#define ACOUSTIC_ENERGY_MAX										2000//
+#define ACOUSTIC_ENERGY_MIN										200
+#define ACOUSTIC_TIME_MAX											100.0F	
+#define ACOUSTIC_TIME_MIN											20.0F
 /*****************************************************************************/
-#define CONFIG_USING_DEFAULT_SCHEME								1//是能预设模式
-#define CONFIG_MAX_SCHEME_NAME_SIZE								40//方案名称长度
+#define CONFIG_USING_DEFAULT_SCHEME						1//是能预设模式
+#define CONFIG_MAX_SCHEME_NAME_SIZE						40//方案名称长度
 /******************************************************************************/
 #define POWER_REAL_CH0_5P											200
 #define POWER_REAL_CH0_10P										400
@@ -658,42 +633,42 @@
 #define FD_SCHEME_START_31										(FD_START + 1984)//方案31存储区起始
 #define FD_SCHEME_END_31										(FD_START + 2047)//方案31存储区结束
 /*****************************************************************************/
-#define TMP_REG_0												(TMP_START + 0)//临时名称储存区
-#define TMP_REG_1												(TMP_START + 1)//临时名称储存区
-#define TMP_REG_2												(TMP_START + 2)//临时名称储存区
-#define TMP_REG_3												(TMP_START + 3)//临时名称储存区
-#define TMP_REG_4												(TMP_START + 4)//临时名称储存区
-#define TMP_REG_5												(TMP_START + 5)//临时名称储存区
-#define TMP_REG_6												(TMP_START + 6)//临时名称储存区
-#define TMP_REG_7												(TMP_START + 7)//临时名称储存区
-#define TMP_REG_8												(TMP_START + 8)//临时名称储存区
-#define TMP_REG_9												(TMP_START + 9)//临时名称储存区
-#define TMP_REG_10												(TMP_START + 10)//临时名称储存区
-#define TMP_REG_11												(TMP_START + 11)//临时名称储存区
-#define TMP_REG_12												(TMP_START + 12)//临时名称储存区
-#define TMP_REG_13												(TMP_START + 13)//临时名称储存区
-#define TMP_REG_14												(TMP_START + 14)//临时名称储存区
-#define TMP_REG_15												(TMP_START + 15)//临时名称储存区
-#define TMP_REG_16												(TMP_START + 16)//临时名称储存区
-#define TMP_REG_17												(TMP_START + 17)//临时名称储存区
-#define TMP_REG_18												(TMP_START + 18)//临时名称储存区
-#define TMP_REG_19												(TMP_START + 19)//临时名称储存区
-#define TMP_REG_20												(TMP_START + 20)//临时名称储存区
-#define TMP_REG_21												(TMP_START + 21)//临时名称储存区
-#define TMP_REG_22												(TMP_START + 22)//临时名称储存区
-#define TMP_REG_23												(TMP_START + 23)//临时名称储存区
-#define TMP_REG_24												(TMP_START + 24)//临时名称储存区
-#define TMP_REG_25												(TMP_START + 25)//临时名称储存区
-#define TMP_REG_26												(TMP_START + 26)//临时名称储存区
-#define TMP_REG_27												(TMP_START + 27)//临时名称储存区
-#define TMP_REG_28												(TMP_START + 28)//临时名称储存区
-#define TMP_REG_29												(TMP_START + 29)//临时名称储存区
-#define TMP_REG_30												(TMP_START + 30)//临时名称储存区
-#define TMP_REG_31												(TMP_START + 31)//临时名称储存区
+#define TMP_REG_0														(TMP_START + 0)//临时名称储存区
+#define TMP_REG_1														(TMP_START + 1)//临时名称储存区
+#define TMP_REG_2														(TMP_START + 2)//临时名称储存区
+#define TMP_REG_3														(TMP_START + 3)//临时名称储存区
+#define TMP_REG_4														(TMP_START + 4)//临时名称储存区
+#define TMP_REG_5														(TMP_START + 5)//临时名称储存区
+#define TMP_REG_6														(TMP_START + 6)//临时名称储存区
+#define TMP_REG_7														(TMP_START + 7)//临时名称储存区
+#define TMP_REG_8														(TMP_START + 8)//临时名称储存区
+#define TMP_REG_9														(TMP_START + 9)//临时名称储存区
+#define TMP_REG_10													(TMP_START + 10)//临时名称储存区
+#define TMP_REG_11													(TMP_START + 11)//临时名称储存区
+#define TMP_REG_12													(TMP_START + 12)//临时名称储存区
+#define TMP_REG_13													(TMP_START + 13)//临时名称储存区
+#define TMP_REG_14													(TMP_START + 14)//临时名称储存区
+#define TMP_REG_15													(TMP_START + 15)//临时名称储存区
+#define TMP_REG_16													(TMP_START + 16)//临时名称储存区
+#define TMP_REG_17													(TMP_START + 17)//临时名称储存区
+#define TMP_REG_18													(TMP_START + 18)//临时名称储存区
+#define TMP_REG_19													(TMP_START + 19)//临时名称储存区
+#define TMP_REG_20													(TMP_START + 20)//临时名称储存区
+#define TMP_REG_21													(TMP_START + 21)//临时名称储存区
+#define TMP_REG_22													(TMP_START + 22)//临时名称储存区
+#define TMP_REG_23													(TMP_START + 23)//临时名称储存区
+#define TMP_REG_24													(TMP_START + 24)//临时名称储存区
+#define TMP_REG_25													(TMP_START + 25)//临时名称储存区
+#define TMP_REG_26													(TMP_START + 26)//临时名称储存区
+#define TMP_REG_27													(TMP_START + 27)//临时名称储存区
+#define TMP_REG_28													(TMP_START + 28)//临时名称储存区
+#define TMP_REG_29													(TMP_START + 29)//临时名称储存区
+#define TMP_REG_30													(TMP_START + 30)//临时名称储存区
+#define TMP_REG_31													(TMP_START + 31)//临时名称储存区
 
-#define TMP_REG_32												(TMP_START + 32)//临时名称储存区
-#define TMP_REG_33												(TMP_START + 33)//临时名称储存区
-#define TMP_REG_34												(TMP_START + 34)//临时名称储存区
+#define TMP_REG_32													(TMP_START + 32)//临时名称储存区
+#define TMP_REG_33													(TMP_START + 33)//临时名称储存区
+#define TMP_REG_34													(TMP_START + 34)//临时名称储存区
 #define TMP_REG_35												(TMP_START + 35)//临时名称储存区
 #define TMP_REG_36												(TMP_START + 36)//临时名称储存区
 #define TMP_REG_37												(TMP_START + 37)//临时名称储存区
@@ -722,17 +697,19 @@
 #define TMP_REG_60												(TMP_START + 60)//临时名称储存区
 #define TMP_REG_61												(TMP_START + 61)//临时名称储存区
 #define TMP_REG_62												(TMP_START + 62)//临时名称储存区
-#define TMP_REG_63												(TMP_START + 63)//临时名称储存区
+#define TMP_REG_63													(TMP_START + 63)//临时名称储存区
 /*****************************************************************************/
-#define DM_SCHEME_NUM											(DM_START + 0)//选择的方案编号 低8位方案号 高8位方案使能
-#define DM_LANGUAGE												(DM_START + 1)//语言ID
+#define DM_SCHEME_NUM												(DM_START + 0)//选择的方案编号 低8位方案号 高8位方案使能
+#define DM_LANGUAGE													(DM_START + 1)//语言ID
 #define DM_BEEM_VOLUME											(DM_START + 2)//蜂鸣器音量 0-100% 32+3=35
-#define DM_AIM_BRG												(DM_START + 3)//指示激光亮度
-#define DM_LCD_BRG												(DM_START + 4)//屏幕亮度
-#define DM_DC_OLD_PASSCODE0										(DM_START + 5)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE1										(DM_START + 6)//屏旧密码2-3
-#define DM_DC_OLD_PASSCODE2										(DM_START + 7)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE3										(DM_START + 8)//屏旧密码2-3
+#define DM_AIM_BRG													(DM_START + 3)//指示激光亮度
+#define DM_LCD_BRG													(DM_START + 4)//屏幕亮度
+#define DM_DC_OLD_PASSCODE0									(DM_START + 5)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE1									(DM_START + 6)//屏旧密码2-3
+#define DM_DC_OLD_PASSCODE2									(DM_START + 7)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE3									(DM_START + 8)//屏旧密码2-3
+#define DM_ACOUSTIC_ENERGY									(DM_START + 9)//屏旧密码2-3
+#define DM_ACOUSTIC_TIME										(DM_START + 10)//屏旧密码2-3
 /*****************************************************************************/
 #define X_ESTOP_NC												(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC											(X_START * 16 + 1)//XIN1 安全连锁
@@ -752,11 +729,11 @@
 #define R_RFID_PASS												(R_START * 16 + 3)//NFC光纤插入标志
 #define R_LASER_TEMP_HIGH										(R_START * 16 + 4)//激光二极管激光模块高温标志
 #define R_LASER_TEMP_LOW										(R_START * 16 + 5)//激光二极管激光模块低温标志
-#define R_MCU_TEMP_HIGH											(R_START * 16 + 6)//处理器高温标志
-#define R_MCU_TEMP_LOW											(R_START * 16 + 7)//处理器低温标志
-#define R_FOOTSWITCH_PLUG										(R_START * 16 + 8)//脚踏插入标志
-#define R_FOOTSWITCH_PRESS										(R_START * 16 + 9)//脚踏按下标志
-#define R_HMI_FOOTSWITCH_PRESS									(R_START * 16 + 10)//屏幕模拟脚踏按下标志
+#define R_MCU_TEMP_HIGH															(R_START * 16 + 6)//处理器高温标志
+#define R_MCU_TEMP_LOW															(R_START * 16 + 7)//处理器低温标志
+#define R_FOOTSWITCH_PLUG														(R_START * 16 + 8)//脚踏插入标志
+#define R_FOOTSWITCH_PRESS													(R_START * 16 + 9)//脚踏按下标志
+#define R_HMI_FOOTSWITCH_PRESS											(R_START * 16 + 10)//屏幕模拟脚踏按下标志
 #define R_FAULT																			(R_START * 16 + 11)//故障标志
 #define R_DISABLE_ESTOP															(R_START * 16 + 12)//屏蔽急停开关检测
 #define R_DISABLE_TEMPERATURE												(R_START * 16 + 13)//屏蔽温度检测
@@ -801,12 +778,12 @@
 #define R_OPTION_KEY_ENTER_OK_DOWN									(R_START * 16 + 102)
 #define R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN						(R_START * 16 + 103)
 /*****************************************************************************/
-#define R_INFORMATION_KEY_OK_DOWN								(R_START * 16 + 110)
-#define R_INFORMATION_KEY_OK_UP									(R_START * 16 + 111)
+#define R_INFORMATION_KEY_OK_DOWN										(R_START * 16 + 110)
+#define R_INFORMATION_KEY_OK_UP											(R_START * 16 + 111)
 /*****************************************************************************/
-#define R_SCHEME_KEY_RENAME_DOWN								(R_START * 16 + 120)
-#define R_SCHEME_KEY_OK_DOWN									(R_START * 16 + 121)
-#define R_SCHEME_KEY_CANCEL_DOWN								(R_START * 16 + 122)
+#define R_SCHEME_KEY_RENAME_DOWN										(R_START * 16 + 120)
+#define R_SCHEME_KEY_OK_DOWN												(R_START * 16 + 121)
+#define R_SCHEME_KEY_CANCEL_DOWN										(R_START * 16 + 122)
 #define R_SCHEME_KEY_SCHEME_SELECT_0_DOWN						(R_START * 16 + 123)		
 #define R_SCHEME_KEY_SCHEME_SELECT_1_DOWN						(R_START * 16 + 124)
 #define R_SCHEME_KEY_SCHEME_SELECT_2_DOWN						(R_START * 16 + 125)
@@ -837,10 +814,10 @@
 #define MR_FOOSWITCH_HAND_SWITCH								(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
 #define MR_BEEM_TONE											(MR_START * 16 + 11)//蜂鸣器模式
 /*****************************************************************************/
-#define T100MS_HMI_POWERUP_DELAY								0//HMI启动复位延时
+#define T100MS_HMI_POWERUP_DELAY									0//HMI启动复位延时
 #define T100MS_ENTER_PASSCODE_DELAY								1
-#define T100MS_READY_BEEM_DELAY									2//进入READY状态后蜂鸣器响延迟
-#define T100MS_PULSE_BEEM_DELAY									3//脉冲模式蜂鸣器延迟
+#define T100MS_READY_BEEM_DELAY										2//进入READY状态后蜂鸣器响延迟
+#define T100MS_PULSE_BEEM_DELAY										3//脉冲模式蜂鸣器延迟
 /*****************************************************************************/
 #define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						3
 #define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						4

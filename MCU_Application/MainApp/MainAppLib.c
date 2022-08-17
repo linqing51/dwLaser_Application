@@ -417,6 +417,10 @@ int8_t checkScheme(int8_t cn){
 	}
 	return true;
 }
+uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power){//功率->DAC CODE 使用默认拟合校正表
+
+	
+}
 uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->DAC CODE 使用校正表
 	fp64_t fpower, fout, fk, fb;
 	int16_t pmax, pmin;

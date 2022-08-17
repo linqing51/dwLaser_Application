@@ -16,24 +16,24 @@
 #define LASER_SELECT_CH3						0x08
 #define LASER_SELECT_ALL						0x0F
 /*****************************************************************************/
-extern volatile int8_t  LaserTimer_Mode;
-extern volatile int8_t  LaserTimer_Select;
-extern volatile int16_t  LaserTimer_TCounter;
-extern volatile int16_t  LaserTimer_TMate;
-extern volatile int16_t  LaserTimer_TOvertime;
-extern volatile int16_t  LaserTimer_PCounter;
-extern volatile int16_t  LaserTimer_PMate;
-extern volatile int16_t  LaserTimer_POvertime;
-extern volatile int16_t  LaserTimer_ReleaseTime;
-extern volatile int16_t  LaserTimer_ReleaseCounter;
-extern volatile int16_t  LaserTimer_BeemSwitchCounter;
-extern volatile int16_t  LaserTimer_BeemSwtichLength;
-extern volatile int8_t   LaserFlag_Emiting;//激光发射中标志
-extern volatile int8_t   LaserFlag_Emitover;//激光发射完毕标志
-extern volatile int32_t  LaserRelease_TotalTime0;//激光发射总时间
-extern volatile int32_t  LaserRelease_TotalEnergy0;//激光发射总能量
+extern int8_t LaserTimer_Mode;
+extern int8_t LaserTimer_Select;
+extern int16_t LaserTimer_TCounter;
+extern int16_t LaserTimer_TMate;
+extern int16_t LaserTimer_TOvertime;
+extern int16_t LaserTimer_PCounter;
+extern int16_t LaserTimer_PMate;
+extern int16_t LaserTimer_POvertime;
+extern int16_t LaserTimer_ReleaseTime;
+extern int16_t LaserTimer_ReleaseCounter;
+extern int16_t LaserTimer_BeemSwitchCounter;
+extern int16_t LaserTimer_BeemSwtichLength;
+extern int8_t  LaserFlag_Emiting;//激光发射中标志
+extern int8_t LaserFlag_Emitover;//激光发射完毕标志
+extern int32_t LaserRelease_TotalTime0;//激光发射总时间
+extern float LaserRelease_TotalEnergy0;//激光发射总能量
 extern int32_t LaserRelease_TotalTime1;//激光发射总时间
-extern int32_t LaserRelease_TotalEnergy1;//激光发射总能量
+extern float LaserRelease_TotalEnergy1;//激光发射总能量
 /*****************************************************************************/
 void sPlcLaserInit(void);
 void laserTimerIsr(void);//中断 激光发射

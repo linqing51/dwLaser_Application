@@ -3,25 +3,25 @@
 /*****************************************************************************/
 extern TIM_HandleTypeDef htim10;
 /*****************************************************************************/
-volatile int8_t LaserTimer_Mode;
-volatile int8_t LaserTimer_Select;
-volatile int16_t LaserTimer_TCounter;
-volatile int16_t LaserTimer_TMate;
-volatile int16_t LaserTimer_TOvertime;
-volatile int16_t LaserTimer_PCounter;
-volatile int16_t LaserTimer_PMate;
-volatile int16_t LaserTimer_POvertime;
-volatile int16_t LaserTimer_ReleaseTime;
-volatile int16_t LaserTimer_ReleaseCounter;
-volatile int16_t LaserTimer_BeemSwitchCounter;
-volatile int16_t LaserTimer_BeemSwtichLength;
-volatile int8_t LaserFlag_Emiting;//激光发射中标志
-volatile int8_t LaserFlag_Request;//激光发射脚踏请求
-volatile int8_t LaserFlag_Emitover;//激光发射完毕标志
-volatile int32_t LaserRelease_TotalTime0;//激光发射总时间
-volatile int32_t LaserRelease_TotalEnergy0;//激光发射总能量
+int8_t LaserTimer_Mode;
+int8_t LaserTimer_Select;
+int16_t LaserTimer_TCounter;
+int16_t LaserTimer_TMate;
+int16_t LaserTimer_TOvertime;
+int16_t LaserTimer_PCounter;
+int16_t LaserTimer_PMate;
+int16_t LaserTimer_POvertime;
+int16_t LaserTimer_ReleaseTime;
+int16_t LaserTimer_ReleaseCounter;
+int16_t LaserTimer_BeemSwitchCounter;
+int16_t LaserTimer_BeemSwtichLength;
+int8_t LaserFlag_Emiting;//激光发射中标志
+int8_t LaserFlag_Request;//激光发射脚踏请求
+int8_t LaserFlag_Emitover;//激光发射完毕标志
+int32_t LaserRelease_TotalTime0;//激光发射总时间
+float LaserRelease_TotalEnergy0;//激光发射总能量
 int32_t LaserRelease_TotalTime1;//激光发射总时间
-int32_t LaserRelease_TotalEnergy1;//激光发射总能量
+float LaserRelease_TotalEnergy1;//激光发射总能量
 /*****************************************************************************/
 static void laserStop(void);
 static void laserStart(void);

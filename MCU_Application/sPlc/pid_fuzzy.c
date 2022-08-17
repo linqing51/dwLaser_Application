@@ -13,8 +13,8 @@
 #define Emid 0.08F
 #define Emax 0.6F
 //调整值限幅，防止积分饱和
-#define Umax 5.0F
-#define Umin -5.0F
+#define Umax 2.0F
+#define Umin -2.0F
 
 //输出值限幅
 #define Pmax 0
