@@ -616,7 +616,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] < CONFIG_MAX_AIM_BRG){
+						if(NVRAM0[DM_AIM_BRG] < CONFIG_AIM_MAX_DC){
 							NVRAM0[DM_AIM_BRG] += 1;//+1
 							SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
@@ -626,7 +626,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_DEC:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] > CONFIG_MIN_AIM_BRG){
+						if(NVRAM0[DM_AIM_BRG] > CONFIG_AIM_MIN_DC){
 							NVRAM0[DM_AIM_BRG] -= 1;//-1	
 							SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
@@ -729,7 +729,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] < CONFIG_MAX_AIM_BRG){
+						if(NVRAM0[DM_AIM_BRG] < CONFIG_AIM_MAX_DC){
 							NVRAM0[DM_AIM_BRG] += 1;//+1
 							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
@@ -739,7 +739,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_DEC:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] > CONFIG_MIN_AIM_BRG){
+						if(NVRAM0[DM_AIM_BRG] > CONFIG_AIM_MIN_DC){
 							NVRAM0[DM_AIM_BRG] -= 1;//-1	
 							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条

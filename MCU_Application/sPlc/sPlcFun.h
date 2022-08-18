@@ -67,9 +67,6 @@ void FDLAD(void);
 void FDSAV_ONE(int16_t cn);
 void FDLAD_ONE(int16_t cn);
 /*****************************************************************************/
-void STPID(uint16_t adr);//位置PID指令
-void FUPID(uint16_t adr);//模糊PID指令
-/*****************************************************************************/
 void PRTM(uint16_t adr, uint8_t len);
 #endif
 

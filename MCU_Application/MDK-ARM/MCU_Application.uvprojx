@@ -555,11 +555,6 @@
               <FilePath>..\sPlc\sPlcFun.c</FilePath>
             </File>
             <File>
-              <FileName>pid_fuzzy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sPlc\pid_fuzzy.c</FilePath>
-            </File>
-            <File>
               <FileName>Retarget.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\sPlc\Retarget.c</FilePath>

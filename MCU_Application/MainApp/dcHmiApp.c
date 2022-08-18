@@ -6,7 +6,6 @@ uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
 static void UpdateUI(void);
 extern CRC_HandleTypeDef hcrc;
-PID fuzzyPid;
 /*****************************************************************************/
 void loadDeviceConfig(void){//从EPROM载入配置文件
 	uint32_t crc32_eprom_cfg, crc32_cfg, temp;
@@ -861,27 +860,27 @@ void dcHmiLoopInit(void){//初始化模块
 	//脚踏插入
 	SSET(R_FOOTSWITCH_PLUG);
 	//PID 初始化
-	PID_Init(&fuzzyPid);
 	RRES(Y_TEC);//TEC OFF
 }
 static void temperatureLoop(void){//温度轮询轮询
+	
 	TNTC(EM_LASER_TEMP, SPREG_ADC_0);//CODE转换为NTC测量温度温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_3);//CODE转换为MCU温度
 	//判断二极管0是否过热
-	if(NVRAM0[EM_LASER_TEMP] > CONFIG_APP_DIODE_HIGH_TEMP){//激光器过热
+	if(NVRAM0[EM_LASER_TEMP] > CONFIG_DIODE_HIGH_TEMP){//激光器过热
 		SSET(R_LASER_TEMP_HIGH);
 	}
 	else{
 		RRES(R_LASER_TEMP_HIGH);
 	}
-	if(NVRAM0[EM_LASER_TEMP] < CONFIG_APP_DIODE_LOW_TEMP){//激光器温度过低
+	if(NVRAM0[EM_LASER_TEMP] < CONFIG_DIODE_LOW_TEMP){//激光器温度过低
 		SSET(R_LASER_TEMP_LOW);
 	}
 	else{
 		RRES(R_LASER_TEMP_LOW);
 	}
 	//判断环境是否过热
-	if(NVRAM0[EM_MCU_TEMP] > CONFIG_APP_ENVI_HIGH_TEMP){//环境温度过热
+	if(NVRAM0[EM_MCU_TEMP] > CONFIG_ENVI_HIGH_TEMP){//环境温度过热
 		SSET(R_MCU_TEMP_HIGH);
 	}
 	else{
@@ -930,14 +929,14 @@ static void temperatureLoop(void){//温度轮询轮询
 				NVRAM0[EM_LASER_FAN_SPEED] = 1000;
 			}
 			setFanSpeed(NVRAM0[EM_LASER_TEMP]);
-			PID_realize(&fuzzyPid, CONFIG_APP_DIODE_STT_TEMP, NVRAM0[EM_LASER_TEMP]);
-			T10MS(T10MS_TEC_ONTIME_DELAY, false, 0);//计时清零
-			T10MS(T10MS_TEC_ONTIME_DELAY, true, (uint16_t)(fuzzyPid.pwm_out / -10.0F));
-			SSET(Y_TEC);
-		}	
-		if(LDB(T_10MS_START * 16 + T10MS_TEC_ONTIME_DELAY)){
-			T10MS(T10MS_TEC_ONTIME_DELAY, false, 0);
-			RRES(Y_TEC);
+		}
+		if(LDP(SPCOIL_PS10MS)){
+			if(NVRAM0[EM_LASER_TEMP] + CONFIG_DIODE_DIFF_TEMP >= CONFIG_DIODE_SET_TEMP){
+				SSET(Y_TEC);
+			}
+			if(NVRAM0[EM_LASER_TEMP] - CONFIG_DIODE_DIFF_TEMP <= CONFIG_DIODE_SET_TEMP){
+				RRES(Y_TEC);
+			}
 		}
 	}
 }
@@ -1251,6 +1250,13 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
 			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 			SSET(SPCOIL_BEEM_ENABLE);
+			
+			//测试DAC
+			NVRAM0[DM_AIM_BRG] = 50;
+			NVRAM0[SPREG_DAC_0] = 0xFFF;
+			UPDAC0();
+			SET_LASER_CH0_ON;
+			SET_AIM_ON;
 		}
 		else{
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;	

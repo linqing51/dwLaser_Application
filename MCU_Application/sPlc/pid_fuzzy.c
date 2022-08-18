@@ -13,11 +13,11 @@
 #define Emid 0.08F
 #define Emax 0.6F
 //调整值限幅，防止积分饱和
-#define Umax 2.0F
-#define Umin -2.0F
+#define Umax 6.0F
+#define Umin -6.0F
 
 //输出值限幅
-#define Pmax 0
+#define Pmax 2000
 #define Pmin -2000
 
 #define NB 0
@@ -318,7 +318,7 @@ void PID_Set(PID *structpid,float Kp,float Ki,float Kd,float T)
 
 void PID_Init(PID *structpid)
 {
-	PID_Set(structpid,8.3,1.2,0,1);
+	PID_Set(structpid,10,2,1,1);
 	structpid->flag=0;
 	structpid->pwm_out=0;
 }

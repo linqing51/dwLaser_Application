@@ -34,12 +34,6 @@
 #define CONFIG_SPLC_USING_LASER_CH2										1//通道2使能
 #define CONFIG_SPLC_USING_LASER_CH3										1//通道3使能
 /*****************************************************************************/
-#define CONFIG_SPLC_MAX_FUZZY_PID											8//模拟PID运行数量
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KP							8.3F//模拟PID KP参数
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KI							1.2F//模糊PID KI参数
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KD							0.0F//模糊PID KD参数
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_TD							1.0F//模糊PID TD参数
-/*****************************************************************************/
 #define CONFIG_SPLC_USING_LINK_MASTER									0//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE									0//使用从机模式
 /*****************************************************************************/				
@@ -134,11 +128,11 @@
 #define CONFIG_KEY_REPEAT_DELAY_TIME									100
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
-#define CONFIG_APP_DIODE_STT_TEMP											200//激光器恒温温度 
-#define CONFIG_APP_DIODE_BURN_TEMP										320//风扇优先启动温度 32.0C
-#define CONFIG_APP_DIODE_HIGH_TEMP										400//激光器高温极限 46.0C
-#define CONFIG_APP_DIODE_LOW_TEMP											-100//激光器低温极限 - 10.0C
-#define CONFIG_APP_ENVI_HIGH_TEMP											750//处理器高温极限 75.0C
+#define CONFIG_DIODE_SET_TEMP													200//激光器恒温温度 
+#define CONFIG_DIODE_DIFF_TEMP												15
+#define CONFIG_DIODE_HIGH_TEMP												400//激光器高温极限 46.0C
+#define CONFIG_DIODE_LOW_TEMP													-100//激光器低温极限 - 10.0C
+#define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
 /*****************************************************************************/
 #define CONFIG_HMI_SCHEME_NUM													32//方案数
 #define CONFIG_HMI_DEFAULT_PASSWORD0									0x3532//默认密码
@@ -153,61 +147,61 @@
 #define DERMA_SPOT_SIZE_3MM0													0x400D//光斑直径3.0
 
 #define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH1										0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH2									0xFFF
-#define CONFIG_MAX_LASER_DAC_CH3									0xFFF
+#define CONFIG_MAX_LASER_DAC_CH1											0xFFF//
+#define CONFIG_MAX_LASER_DAC_CH2											0xFFF
+#define CONFIG_MAX_LASER_DAC_CH3											0xFFF
 
-#define CONFIG_MAX_LASERPOWER_CH0									150//通道0最大激光功率
-#define CONFIG_MAX_LASERPOWER_CH1									150//通道1最大激光功率
-#define CONFIG_MAX_LASERPOWER_CH2									100//通道2最大激光功率
-#define CONFIG_MAX_LASERPOWER_CH3									100//通道3最大激光功率
+#define CONFIG_MAX_LASERPOWER_CH0											150//通道0最大激光功率
+#define CONFIG_MAX_LASERPOWER_CH1											150//通道1最大激光功率
+#define CONFIG_MAX_LASERPOWER_CH2											100//通道2最大激光功率
+#define CONFIG_MAX_LASERPOWER_CH3											100//通道3最大激光功率
 
-#define CONFIG_MIN_LASERPOWER_CH0									1//通道0最小激光功率
-#define CONFIG_MIN_LASERPOWER_CH1									1//通道1最小激光功率
-#define CONFIG_MIN_LASERPOWER_CH2									1//通道2最大激光功率
-#define CONFIG_MIN_LASERPOWER_CH3									1//通道3最大激光功率
+#define CONFIG_MIN_LASERPOWER_CH0											1//通道0最小激光功率
+#define CONFIG_MIN_LASERPOWER_CH1											1//通道1最小激光功率
+#define CONFIG_MIN_LASERPOWER_CH2											1//通道2最大激光功率
+#define CONFIG_MIN_LASERPOWER_CH3											1//通道3最大激光功率
 
-#define CONFIG_MAX_LASER_POSWIDTH									16000
-#define CONFIG_MIN_LASER_POSWIDTH									1
-#define CONFIG_MAX_LASER_NEGWIDTH									16000
-#define CONFIG_MIN_LASER_NEGWIDTH									1
-#define CONFIG_MAX_LASER_TIMES										10//最大可计数脉冲数
-#define CONFIG_MIN_LASER_TIMES										1//最小可计数脉冲数
-#define CONFIG_MAX_LASER_GROUP_OFF								1000
-#define CONFIG_MIN_LASER_GROUP_OFF								10
-#define CONFIG_MAX_LASER_ENERGY_INTERVAL						200
+#define CONFIG_MAX_LASER_POSWIDTH											16000
+#define CONFIG_MIN_LASER_POSWIDTH											1
+#define CONFIG_MAX_LASER_NEGWIDTH											16000
+#define CONFIG_MIN_LASER_NEGWIDTH											1
+#define CONFIG_MAX_LASER_TIMES												10//最大可计数脉冲数
+#define CONFIG_MIN_LASER_TIMES												1//最小可计数脉冲数
+#define CONFIG_MAX_LASER_GROUP_OFF										1000
+#define CONFIG_MIN_LASER_GROUP_OFF										10
+#define CONFIG_MAX_LASER_ENERGY_INTERVAL							200
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							800//变音持续时间
 
-#define CONFIG_AIM_MAX_DC													100//红光最大调光占空比
-#define CONFIG_AIM_MIN_DC													0//红光最小调光占空比
-#define CONFIG_BEEM_MAX_VOLUME										100//蜂鸣器最大音量
-#define CONFIG_BEEM_MIN_VOLUME										0//蜂鸣器最小音量
-#define CONFIG_LCD_MAX_DC													100//屏幕亮度最大值
-#define CONFIG_LCD_MIN_DC													1//屏幕亮度最小值
-#define CONFIG_FAN_MAX_DC													50
-#define CONFIG_FAN_MIN_DC													0
+#define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
+#define CONFIG_AIM_MIN_DC															0//红光最小调光占空比
+#define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
+#define CONFIG_BEEM_MIN_VOLUME												0//蜂鸣器最小音量
+#define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
+#define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
+#define CONFIG_FAN_MAX_DC															50
+#define CONFIG_FAN_MIN_DC															0
 
-#define ACOUSTIC_ENERGY_MAX												2000//
-#define ACOUSTIC_ENERGY_MIN												200
-#define ACOUSTIC_TIME_MAX													100.0F	
-#define ACOUSTIC_TIME_MIN													20.0F
+#define ACOUSTIC_ENERGY_MAX														2000//
+#define ACOUSTIC_ENERGY_MIN														200
+#define ACOUSTIC_TIME_MAX															100.0F	
+#define ACOUSTIC_TIME_MIN															20.0F
 /*****************************************************************************/
-#define CONFIG_USING_DEFAULT_SCHEME								1//是能预设模式
-#define CONFIG_MAX_SCHEME_NAME_SIZE								40//方案名称长度
+#define CONFIG_USING_DEFAULT_SCHEME										1//是能预设模式
+#define CONFIG_MAX_SCHEME_NAME_SIZE										40//方案名称长度
 /******************************************************************************/
-#define POWER_REAL_CH0_5P											200
-#define POWER_REAL_CH0_10P										400
-#define POWER_REAL_CH0_15P										600
-#define POWER_REAL_CH0_20P										800
-#define POWER_REAL_CH0_25P										1000
-#define POWER_REAL_CH0_30P										1200
-#define POWER_REAL_CH0_35P										1400
-#define POWER_REAL_CH0_40P										1600
-#define POWER_REAL_CH0_45P										1800
-#define POWER_REAL_CH0_50P										2000
-#define POWER_REAL_CH0_55P										2200
+#define POWER_REAL_CH0_5P															200
+#define POWER_REAL_CH0_10P														400
+#define POWER_REAL_CH0_15P														600
+#define POWER_REAL_CH0_20P														800
+#define POWER_REAL_CH0_25P														1000
+#define POWER_REAL_CH0_30P														1200
+#define POWER_REAL_CH0_35P														1400
+#define POWER_REAL_CH0_40P														1600
+#define POWER_REAL_CH0_45P														1800
+#define POWER_REAL_CH0_50P														2000
+#define POWER_REAL_CH0_55P														2200
 #define POWER_REAL_CH0_60P										2400
 #define POWER_REAL_CH0_65P										2600
 #define POWER_REAL_CH0_70P										2800
@@ -793,21 +787,21 @@
 #define R_SCHEME_KEY_NEXT_SCHEME								(R_START * 16 + 139)
 #define R_SCHEME_KEY_LAST_SCHEME								(R_START * 16 + 140)
 /*****************************************************************************/
-#define R_DIAGNOSIS_OK_DOWN										(R_START * 16 + 160)
-#define R_DIAGNOSIS_OK_UP										(R_START * 16 + 161)
+#define R_DIAGNOSIS_OK_DOWN													(R_START * 16 + 160)
+#define R_DIAGNOSIS_OK_UP														(R_START * 16 + 161)
 /*****************************************************************************/
-#define R_RENAME_KEY_ENTER_DOWN									(R_START * 16 + 170)
-#define R_RENAME_KEY_EXIT_DOWN									(R_START * 16 + 171)
+#define R_RENAME_KEY_ENTER_DOWN											(R_START * 16 + 170)
+#define R_RENAME_KEY_EXIT_DOWN											(R_START * 16 + 171)
 #define R_RENAME_TEXTDISPLAY_READ_DONE							(R_START * 16 + 172)
 /*****************************************************************************/
 /*****************************************************************************/
-#define MR_FOOSWITCH_HAND_SWITCH								(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
-#define MR_BEEM_TONE											(MR_START * 16 + 11)//蜂鸣器模式
+#define MR_FOOSWITCH_HAND_SWITCH										(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
+#define MR_BEEM_TONE																(MR_START * 16 + 11)//蜂鸣器模式
 /*****************************************************************************/
-#define T100MS_HMI_POWERUP_DELAY									0//HMI启动复位延时
-#define T100MS_ENTER_PASSCODE_DELAY								1
-#define T100MS_READY_BEEM_DELAY										2//进入READY状态后蜂鸣器响延迟
-#define T100MS_PULSE_BEEM_DELAY										3//脉冲模式蜂鸣器延迟
+#define T100MS_HMI_POWERUP_DELAY										0//HMI启动复位延时
+#define T100MS_ENTER_PASSCODE_DELAY									1
+#define T100MS_READY_BEEM_DELAY											2//进入READY状态后蜂鸣器响延迟
+#define T100MS_PULSE_BEEM_DELAY											3//脉冲模式蜂鸣器延迟
 /*****************************************************************************/
 #define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						3
 #define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						4
@@ -818,7 +812,7 @@
 #define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY						9
 #define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY						10
 
-#define T10MS_TEC_ONTIME_DELAY											20						
+			
 /*****************************************************************************/
 #endif
 

@@ -65,7 +65,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
   /* USER CODE BEGIN I2C1_MspInit 0 */
 		__HAL_RCC_I2C1_CLK_ENABLE();
 		GPIO_InitStruct.Pin = I2C1_SCL_Pin|I2C1_SDA_Pin;      //����ԭ��
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;   //GPIO����Ϊ���
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;   //GPIO����Ϊ���?
     GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;         //ǿ����
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     HAL_GPIO_WritePin(GPIOB, I2C1_SCL_Pin, GPIO_PIN_SET);       //����SCL

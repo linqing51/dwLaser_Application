@@ -37,9 +37,6 @@
 #include "main.h"
 //#include "sPlcPort.h"
 //#include "debugLed.h"
-#if CONFIG_SPLC_FUN_EPID == 1
-#include "splcFunEPID.h"
-#endif
 #if CONFIG_SPLC_FUNTEST == 1
 #include "sPlcTest.h"
 #endif
