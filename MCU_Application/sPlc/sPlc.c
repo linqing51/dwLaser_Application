@@ -265,125 +265,6 @@ void sPlcSpwmLoop(void){//SPWM轮询
 		}
 	}
 }
-void sPlcLoudspeakerLoop(void){//蜂鸣器轮询
-	int8_t laserStatus0, laserStatus1, laserStatus2, laserStatus3;
-	if(LD(SPCOIL_BEEM_ENABLE)){
-		setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
-		switch(NVRAM0[SPREG_BEEM_MODE]){//模式
-			case BEEM_MODE_0:{
-				if(LDB(SPCOIL_BEEM_BUSY)){
-					setLoudspeakerEnable();//启动音频
-					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
-				}
-				break;
-			}
-			case BEEM_MODE_1:{//模式1 声光同步
-				laserStatus0 = GET_LASER_CH0;
-				laserStatus1 = GET_LASER_CH1;
-				laserStatus2 = GET_LASER_CH2;
-				laserStatus3 = GET_LASER_CH3;
-				if(laserStatus0 || laserStatus1 || laserStatus2 || laserStatus3){//LT3763 PWM ON
-					if(LDB(SPCOIL_BEEM_BUSY)){//如果PWM无输出-> 有输出
-						setLoudspeakerEnable();//启动音频
-						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
-					}
-				}
-				else{
-					if(LD(SPCOIL_BEEM_BUSY)){
-						setLoudspeakerDisable();//启动音频
-						RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器	
-					}
-				}
-				break;
-			}
-			case BEEM_MODE_2:{//模式2 长间隔 激光发射音		
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 20){//1
-					setLoudspeakerEnable();//启动音频
-					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
-				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 20 && NVRAM0[SPREG_BEEM_COUNTER] < 120){//0
-					setLoudspeakerDisable();//停止音频
-					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
-				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 120){
-					NVRAM0[SPREG_BEEM_COUNTER] = -1;
-				}
-				break;
-			}
-			case BEEM_MODE_3:{//模式3 滴滴两下一停 报警音
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
-					setLoudspeakerEnable();//启动音频
-					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
-					
-				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
-					setLoudspeakerDisable();//关闭音频
-					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
-				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100 && NVRAM0[SPREG_BEEM_COUNTER] < 150){//1
-					setLoudspeakerEnable();//启动音频
-					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
-				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 150 && NVRAM0[SPREG_BEEM_COUNTER] < 250){//0
-					setLoudspeakerDisable();//关闭音频
-					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
-				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 250){//停1秒
-					NVRAM0[SPREG_BEEM_COUNTER] = -1;
-				}
-				break;
-			}
-			default:break;
-		}
-	}
-	else{
-		setLoudspeakerDisable();//关闭音频
-		RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
-		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
-	}
-}
-void sPlcAimLoop(void){//AIM轮询程序
-	if(LDP(SPCOIL_AIM_ENABEL) && (NVRAM0[DM_AIM_BRG] > 0)){
-		setAimBrightness(NVRAM0[DM_AIM_BRG]);
-		SSET(SPCOIL_AIM_BUSY);
-	}
-	if(LDN(SPCOIL_AIM_ENABEL)){
-		setAimBrightness(0);
-		RRES(SPCOIL_AIM_BUSY);
-	}
-}
-void sPlcAutoFanLoop(void){//风扇速轮询程序
-	if(NVRAM0[SPREG_LAS_FAN_SPEED] > 0 && NVRAM0[SPREG_LAS_FAN_SPEED] < CONFIG_SPLC_FAN_MIN_PWM){
-		NVRAM0[SPREG_LAS_FAN_SPEED] = CONFIG_SPLC_FAN_MIN_PWM;
-	}
-
-	if(NVRAM0[SPREG_LAS_FAN_SPEED] <= 0){//风扇速度小于0
-		HAL_GPIO_WritePin(LAS_FAN_GPIO_Port, LAS_FAN_Pin, GPIO_PIN_RESET);
-	}
-	else{
-		HAL_GPIO_WritePin(LAS_FAN_GPIO_Port, LAS_FAN_Pin, GPIO_PIN_SET);
-	}
-/*
-	uint8_t lasFanPwm;
-	if(NVRAM0[SPREG_LAS_FAN_SPEED] <= 0){
-		NVRAM0[SPREG_LAS_FAN_SPEED] = 0;
-	}
-	if(NVRAM0[SPREG_LAS_FAN_SPEED] >= 100){
-		NVRAM0[SPREG_LAS_FAN_SPEED] = 100;
-	}
-	if(NVRAM0[SPREG_LAS_FAN_SPEED] > 0){
-		lasFanPwm = NVRAM0[SPREG_LAS_FAN_SPEED] * 255 / 100;
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, lasFanPwm);
-		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);//打开TIM
-	}
-	else{
-		HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_4);//关闭TIM
-	}
-#if CONFIG_DEBUG_FAN == 1
-	printf("%s,%d,%s:set laser fan pwm,:%d\n",__FILE__, __LINE__, __func__, lasFanPwm);
-#endif	
-*/
-}
 
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化
@@ -430,13 +311,6 @@ void sPlcInit(void){//软逻辑初始化
 	printf("%s,%d,%s:start laser timer init......\n",__FILE__, __LINE__, __func__);
 	sPlcLaserInit();
 #endif
-
-#if CONFIG_SPLC_USING_DK25L == 1
-	printf("%s,%d,%s:start NFC init......\n",__FILE__, __LINE__, __func__);
-	delayMs(100);
-	DL25L_Init();//打开中断后运行
-#endif
-
 	printf("%s,%d,%s:start splc timer init......\n",__FILE__, __LINE__, __func__);
 	initSplcTimer();//初始化硬件计时器模块 启动计时器
 
@@ -445,20 +319,6 @@ void sPlcInit(void){//软逻辑初始化
 	initLoudspeaker();
 #endif
 
-#if CONFIG_SPLC_USING_AIM_PWM == 1
-	printf("%s,%d,%s:start aim timer pwm init......\n",__FILE__, __LINE__, __func__);
-	setAimFreq(CONFIG_SPLC_AIM_PWM_FREQ);
-#endif
-
-#if CONFIG_SPLC_USING_LED_PWM == 1
-	printf("%s,%d,%s:start led timer pwm init......\n",__FILE__, __LINE__, __func__);
-	setLedFreq(CONFIG_SPLC_LED_PWM_FREQ);
-#endif
-
-#if CONFIG_SPLC_USING_FAN_PWM == 1
-	printf("%s,%d,%s:start fan timer pwm init......\n",__FILE__, __LINE__, __func__);
-	setFanFreq(CONFIG_SPLC_FAN_PWM_FREQ);
-#endif
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	sPlcEnterTime = HAL_GetTick();
@@ -499,27 +359,14 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	chipAdcProcess();//ADC 更新NVRAM
 #endif
 	
-	
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
 	if(LDP(SPCOIL_PS1000MS)){
 		SSET(Y_TICK_LED);
 	}
-	if(LDN(SPCOIL_PS1000MS)){
-		RRES(Y_TICK_LED);
-	}
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
 	outputRefresh();//更新Y口输出
-#endif
-#if CONFIG_SPLC_USING_SPK == 1
-	sPlcLoudspeakerLoop();
-#endif
-#if	CONFIG_SPLC_USING_AIM_PWM == 1
-	sPlcAimLoop();
-#endif
-#if CONFIG_SPLC_USING_AIM_PWM == 1
-	sPlcAutoFanLoop();
 #endif
 	updateNvram();//更新NVRAM
 	RRES(SPCOIL_START_UP);

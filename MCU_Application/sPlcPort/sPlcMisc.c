@@ -1,10 +1,10 @@
-//BUG 持续间断发声时出现声音短暂停顿问题原因未知
 #include "sPlcMisc.h"
 /*****************************************************************************/
+extern TIM_HandleTypeDef htim2;//FAN PWM
+extern TIM_HandleTypeDef htim12;//FAN PWM
+
 static int16_t AimBrg = -1;
-static int8_t RedLedBrg = -1;
-static int8_t GreenLedBrg = -1;
-static int8_t YellowLedBrg = -1;
+static int16_t FanSpeed = -1;
 /*****************************************************************************/
 void softDelayMs(uint16_t ms){//软件延时
 	uint32_t i;
@@ -92,60 +92,15 @@ void enterSplcIsr(void){
 }
 void exitSplcIsr(void){
 }
-void setAimFreq(int16_t freq){//设置指示光PWM频率
-	if(freq < 60){
-		freq = 60;
-	}
-	if(freq > 500){
-		freq = 500;
-	}
-	htim2.Instance = TIM2;
-	htim2.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
-	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 256;
-	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-	if (HAL_TIM_PWM_Init(&htim2) != HAL_OK){
-		Error_Handler();
-	}
-#if CONFIG_DEBUG_AIM == 1
-		printf("%s,%d,%s:set aim pwm freq:%d\n",__FILE__, __LINE__, __func__, freq);
-#endif
-	HAL_TIM_Base_Start(&htim2);
-}
-void setLedFreq(int16_t freq){//设置LED PWM频率	
-	if(freq < 60){
-		freq = 60;
-	}
-	if(freq > 500){
-		freq = 500;
-	}
-	htim3.Instance = TIM3;
-	htim3.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() * 2 / 256 / freq);
-	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim3.Init.Period = 256;
-	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-	if (HAL_TIM_PWM_Init(&htim3) != HAL_OK){
-		Error_Handler();
-	}
-#if CONFIG_DEBUG_LED == 1
-	printf("%s,%d,%s:set led pwm freq:%d\n",__FILE__, __LINE__, __func__, freq);
-#endif
-	HAL_TIM_Base_Start(&htim3);
-}
-void setFanFreq(int16_t freq){//设置FAN PWM频率
-	
-	
-}
+
 void setAimBrightness(int16_t brg){//设置瞄准光亮度
 	uint16_t temp;
 	if(AimBrg != brg){
-		if(brg > 100){
-			brg = 100;
+		if(brg > CONFIG_AIM_MAX_DC){
+			brg = CONFIG_AIM_MAX_DC;
 		}
-		if(brg < 0){
-			brg = 0;
+		if(brg < CONFIG_AIM_MIN_DC){
+			brg = CONFIG_AIM_MIN_DC;
 		}
 		temp = 255 * brg / 100;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, temp);
@@ -156,105 +111,29 @@ void setAimBrightness(int16_t brg){//设置瞄准光亮度
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
 		}
 		AimBrg = brg;
+		printf("%s,%d,%s:set aim:%d\n",__FILE__, __LINE__, __func__, brg);
 	}
-#if CONFIG_DEBUG_AIM == 1
-	printf("%s,%d,%s:set aim brightness:%d\n",__FILE__, __LINE__, __func__, brg);
-#endif	
 }
-int16_t getAimBrightness(void){//获取瞄准光亮度
-	return 0;
-}
-void setYellowLedBrightness(int16_t brg){//设置蓝灯亮度
-	uint16_t temp;
-	if(YellowLedBrg != brg){
-		if(brg > 100){
-			brg = 100;
-		}
-		if(brg < 0){
-			brg = 0;
-		}
-		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, temp);
-		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);//关闭TIM
-		}
-		YellowLedBrg = brg;
-	}
-#if CONFIG_DEBUG_LED == 1
-	printf("%s,%d,%s:1:%d\n",__FILE__, __LINE__, __func__, brg);
-#endif
-}
-void setRedLedBrightness(int16_t brg){//设置红灯亮度
-	uint16_t temp;
-	if(RedLedBrg != brg){
-		if(brg > 100){
-			brg = 100;
-		}
-		if(brg < 0){
-			brg = 0;
-		}
-		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, temp);
-		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);//关闭TIM
-		}
-		RedLedBrg = brg;
-	}
-#if CONFIG_DEBUG_LED == 1
-	printf("%s,%d,%s:set red led brightness:%d\n",__FILE__, __LINE__, __func__, brg);
-#endif	
-}
-void setGreenLedBrightness(int16_t brg){//设置绿灯亮度
-	uint16_t temp;
-	if(GreenLedBrg != brg){
-		if(brg > 100){
-			brg = 100;
-		}
-		if(brg < 0){
-			brg = 0;
-		}
-		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, temp);
-		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_3);//关闭TIM
-		}
-		GreenLedBrg = brg;
-	}
-#if CONFIG_DEBUG_LED == 1
-	printf("%s,%d,%s:set green led brightness:%d\n",__FILE__, __LINE__, __func__, brg);
-#endif
-}
+
 void setFanSpeed(int16_t speed){//设置风扇转速
-}
-
-
-
-
-
-void setTecDutyCycle(int16_t dc){//设置TEC导通占空比
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, dc);
-		if(dc != 0){
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);//打开TIM
+	uint16_t temp;
+	if(FanSpeed != speed){
+		if(speed > CONFIG_FAN_MAX_DC){
+			speed = CONFIG_FAN_MAX_DC;
+		}
+		if(speed < CONFIG_FAN_MIN_DC){
+			speed = CONFIG_FAN_MIN_DC;
+		}
+		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, speed);
+		if(speed != 0){
+			HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);//打开TIM
 		}
 		else{
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_4);//关闭TIM
+			HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2);//关闭TIM
 		}
-
-}
-int16_t getTecDutyCycle(void){//获取TEC导通占空比
-	return 0;
-}
-int16_t getFanSpeed(void){//获取风扇转速
-	return 0;
+		FanSpeed = speed;
+	}
+	printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
 }
 
 void morseCodeDiag(uint8_t diag){//蜂鸣器诊断声音 摩尔斯电码

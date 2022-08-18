@@ -85,6 +85,8 @@ void Error_Handler(void);
 #define FS_NO_GPIO_Port GPIOC
 #define INTERLOCK_NC_Pin GPIO_PIN_0
 #define INTERLOCK_NC_GPIO_Port GPIOB
+#define LAS_TEC_Pin GPIO_PIN_1
+#define LAS_TEC_GPIO_Port GPIOB
 #define NFC_RST_Pin GPIO_PIN_2
 #define NFC_RST_GPIO_Port GPIOB
 #define NFC_STA_Pin GPIO_PIN_10

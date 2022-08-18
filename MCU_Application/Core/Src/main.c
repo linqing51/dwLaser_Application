@@ -73,7 +73,7 @@ void MX_FREERTOS_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	resetInit();//¸´Î»Ê±ÖÓ IO USB
+	resetInit();//ï¿½ï¿½Î»Ê±ï¿½ï¿½ IO USB
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -108,7 +108,7 @@ int main(void)
   MX_TIM10_Init();
   MX_TIM14_Init();
   MX_TIM11_Init();
-  MX_TIM3_Init();
+  MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -178,7 +178,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-extern void sPlcTimerIsr(void);//Ó²¼þsTimer¼ÆÊ±Æ÷ÖÐ¶Ï 1mS
+extern void sPlcTimerIsr(void);//Ó²ï¿½ï¿½sTimerï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ð¶ï¿½ 1mS
 extern void laserTimerIsr(void);
 /* USER CODE END 4 */
 

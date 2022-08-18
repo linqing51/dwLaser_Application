@@ -1,15 +1,19 @@
 #include "MainApp.h"
 /*****************************************************************************/
+//UART1 µ÷ÊÔ
+//UART2 NFC
+//UART4 DCLCD
 //SYSTICK->HAL_Delay
-//TIM2->CH3 BEEM ·äÃùÆ÷
-//TIM3->CH1 AIM_PWM Ö¸Ê¾¼¤¹â
-//TIM3->CH2 LED GREEN ÂÌµÆ
-//TIM4->CH1 LED RED ºìµÆ
-//TIM4->CH2 LED BLUE À¶µÆ
 //TIM6->RTOS
 //TIM7->DAC DMA
 //TIM14 SPLC TIMER
 //TIM10 LASER TIMER
+//TIM2 CH1 AIM
+//TIM12 CH2 FAN
+extern UART_HandleTypeDef huart1;//µ÷ÊÔ
+extern TIM_HandleTypeDef htim12;//FAN PWM
+
+
 void mainAppTask(void *argument){
 	sPlcInit();
 	while(1){

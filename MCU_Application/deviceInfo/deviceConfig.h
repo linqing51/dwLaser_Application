@@ -9,10 +9,6 @@ typedef struct{
 	uint16_t calibrationPwr1[10];//通道1功率校正表
 	uint16_t calibrationPwr2[10];//通道2功率校正表
 	uint16_t calibrationPwr3[10];//通道3功率校正表
-	uint8_t aimMaxCfg;//指示光最高亮度
-	uint8_t redLedBrg;//红色指示灯亮度
-	uint8_t greenLedBrg;//绿色指示灯亮度
-	uint8_t yellowLedBrg;//黄色指示灯亮度
 }deviceConfig_t;
 
 typedef struct{

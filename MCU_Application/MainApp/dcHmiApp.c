@@ -17,11 +17,6 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配置
 		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
-		//默认值50%占空比
-		deviceConfig.aimMaxCfg = CONFIG_SPLC_DEFAULT_AIM_DC;
-		deviceConfig.redLedBrg = CONFIG_SPLC_DEFAULT_RLED_DC;
-		deviceConfig.greenLedBrg = CONFIG_SPLC_DEFAULT_GLED_DC;
-		deviceConfig.yellowLedBrg =CONFIG_SPLC_DEFAULT_YLED_DC;
 		for (i = 0;i < 10; i++){
 			temp = i * 455;
 			deviceConfig.calibrationPwr0[i] = (uint16_t)temp;
@@ -137,7 +132,7 @@ void updateDiognosisInfo(void){//更新诊断信息
 	sprintf(dispBuf, "FS NC:%1d, FS NO:%1d, ES:%d, IL:%1d, FP:%1d", LD(X_FOOTSWITCH_NC),  LD(X_FOOTSWITCH_NO), LD(X_ESTOP_NC), LD(X_INTERLOCK_NC), LD(X_FIBER_PROBE));
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO1, (uint8_t*)dispBuf);
 	
-	sprintf(dispBuf, "TLAS:%05d,TMCU:%05d,TEC:%3d,FAN:%3d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_LAS_TEC_DC], NVRAM0[SPREG_LAS_FAN_SPEED]);
+	sprintf(dispBuf, "TLAS:%05d,TMCU:%05d,TEC:%3d,FAN:%3d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_LASER_TEC_DC], NVRAM0[EM_LASER_FAN_SPEED]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
 }
 
@@ -838,24 +833,24 @@ void dcHmiLoopInit(void){//初始化模块
 		}
 	}
 	NVRAM0[EM_LASER_SELECT] = LASER_SELECT_CH0;
-	NVRAM0[TMP_REG_0] = CONFIG_MIN_BEEM_VOLUME;
-	NVRAM0[TMP_REG_1] = CONFIG_MAX_BEEM_VOLUME;
+	NVRAM0[TMP_REG_0] = CONFIG_BEEM_MIN_VOLUME;
+	NVRAM0[TMP_REG_1] = CONFIG_BEEM_MAX_VOLUME;
 	LIMS16(DM_BEEM_VOLUME, TMP_REG_0, TMP_REG_1);
 	
-	NVRAM0[TMP_REG_0] = CONFIG_MIN_AIM_BRG;
-	NVRAM0[TMP_REG_1] = CONFIG_MAX_AIM_BRG;
+	NVRAM0[TMP_REG_0] = CONFIG_AIM_MIN_DC;
+	NVRAM0[TMP_REG_1] = CONFIG_AIM_MAX_DC;
 	LIMS16(DM_AIM_BRG, TMP_REG_0, TMP_REG_1);
 	
-	NVRAM0[TMP_REG_0] = CONFIG_MIN_LCD_BRG;
-	NVRAM0[TMP_REG_1] = CONFIG_MAX_LCD_BRG;
+	NVRAM0[TMP_REG_0] = CONFIG_LCD_MIN_DC;
+	NVRAM0[TMP_REG_1] = CONFIG_LCD_MAX_DC;
 	LIMS16(DM_LCD_BRG, TMP_REG_0, TMP_REG_1);
 	
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = 7;
 	LIMS16(DM_LANGUAGE, TMP_REG_0, TMP_REG_1);
 	
-	NVRAM0[SPREG_LAS_TEC_DC] = 0;
-	NVRAM0[SPREG_LAS_FAN_SPEED] = 0;
+	NVRAM0[EM_LASER_TEC_DC] = 0;
+	NVRAM0[EM_LASER_FAN_SPEED] = 0;
 	SSET(R_RFID_PASS);
 	//屏蔽报警
 	RRES(R_LASER_TEMP_HIGH);							
@@ -867,11 +862,9 @@ void dcHmiLoopInit(void){//初始化模块
 	SSET(R_FOOTSWITCH_PLUG);
 	//PID 初始化
 	PID_Init(&fuzzyPid);
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0);	
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);//打开TIM
+	RRES(Y_TEC);//TEC OFF
 }
 static void temperatureLoop(void){//温度轮询轮询
-	uint16_t temp16;
 	TNTC(EM_LASER_TEMP, SPREG_ADC_0);//CODE转换为NTC测量温度温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_3);//CODE转换为MCU温度
 	//判断二极管0是否过热
@@ -896,51 +889,56 @@ static void temperatureLoop(void){//温度轮询轮询
 	}	
 	//温控执行 激光等待发射及错误状态启动温控	
 	if(LD(R_LASER_TEMP_HIGH) || LD(R_MCU_TEMP_HIGH)){//过热状态无条件打开风扇
-		NVRAM0[SPREG_LAS_FAN_SPEED] = 255;
+		NVRAM0[EM_LASER_FAN_SPEED] = 255;
 	}
 	else{//温度正常
 		if(LDP(SPCOIL_PS1000MS)){//每秒更新风扇速度
-			if(NVRAM0[EM_LASER_TEMP] < 200){//<15.0C
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 0;
+			if(NVRAM0[EM_LASER_TEMP] < 200){//<20.0C
+				NVRAM0[EM_LASER_FAN_SPEED] = 0;
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 200) && (NVRAM0[EM_LASER_TEMP] < 220)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 80;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 300;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 220) && (NVRAM0[EM_LASER_TEMP] < 240)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 95;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 400;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 240) && (NVRAM0[EM_LASER_TEMP] < 260)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 110;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 500;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 260) && (NVRAM0[EM_LASER_TEMP] < 280)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 125;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 600;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 280) && (NVRAM0[EM_LASER_TEMP] < 300)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 140;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 700;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 300) && (NVRAM0[EM_LASER_TEMP] < 320)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 155;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 750;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 320) && (NVRAM0[EM_LASER_TEMP] < 340)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 170;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 800;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 340) && (NVRAM0[EM_LASER_TEMP] < 360)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 185;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 850;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 360) && (NVRAM0[EM_LASER_TEMP] < 380)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 210;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 900;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 380) && (NVRAM0[EM_LASER_TEMP] < 400)){
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 240;		
+				NVRAM0[EM_LASER_FAN_SPEED] = 950;		
 			}
-			else{
-				NVRAM0[SPREG_LAS_FAN_SPEED] = 255;
+			else if((NVRAM0[EM_LASER_TEMP] >= 400)){
+				NVRAM0[EM_LASER_FAN_SPEED] = 1000;
 			}
+			setFanSpeed(NVRAM0[EM_LASER_TEMP]);
+			PID_realize(&fuzzyPid, CONFIG_APP_DIODE_STT_TEMP, NVRAM0[EM_LASER_TEMP]);
+			T10MS(T10MS_TEC_ONTIME_DELAY, false, 0);//计时清零
+			T10MS(T10MS_TEC_ONTIME_DELAY, true, (uint16_t)(fuzzyPid.pwm_out / -10.0F));
+			SSET(Y_TEC);
+		}	
+		if(LDB(T_10MS_START * 16 + T10MS_TEC_ONTIME_DELAY)){
+			T10MS(T10MS_TEC_ONTIME_DELAY, false, 0);
+			RRES(Y_TEC);
 		}
-		//TEC PID 控制
-		PID_realize(&fuzzyPid, CONFIG_APP_DIODE_STT_TEMP, NVRAM0[EM_LASER_TEMP]);
-		temp16 = (uint16_t)(fuzzyPid.pwm_out * -1.0F);
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, temp16);
 	}
 }
 static void faultLoop(void){//故障轮询
@@ -1053,6 +1051,95 @@ static void laserStateLoop(void){//激光状态轮询
 	}
 	NVRAM0[EM_LASER_PHOTODIODE] = volt * 1000;
 }
+static void speakerLoop(void){//蜂鸣器轮询
+	int8_t laserStatus0, laserStatus1, laserStatus2, laserStatus3;
+	if(LD(SPCOIL_BEEM_ENABLE)){
+		setLoudspeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
+		switch(NVRAM0[SPREG_BEEM_MODE]){//模式
+			case BEEM_MODE_0:{
+				if(LDB(SPCOIL_BEEM_BUSY)){
+					setLoudspeakerEnable();//启动音频
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				break;
+			}
+			case BEEM_MODE_1:{//模式1 声光同步
+				laserStatus0 = GET_LASER_CH0;
+				laserStatus1 = GET_LASER_CH1;
+				laserStatus2 = GET_LASER_CH2;
+				laserStatus3 = GET_LASER_CH3;
+				if(laserStatus0 || laserStatus1 || laserStatus2 || laserStatus3){//LT3763 PWM ON
+					if(LDB(SPCOIL_BEEM_BUSY)){//如果PWM无输出-> 有输出
+						setLoudspeakerEnable();//启动音频
+						SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					}
+				}
+				else{
+					if(LD(SPCOIL_BEEM_BUSY)){
+						setLoudspeakerDisable();//启动音频
+						RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器	
+					}
+				}
+				break;
+			}
+			case BEEM_MODE_2:{//模式2 长间隔 激光发射音		
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 20){//1
+					setLoudspeakerEnable();//启动音频
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 20 && NVRAM0[SPREG_BEEM_COUNTER] < 120){//0
+					setLoudspeakerDisable();//停止音频
+					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 120){
+					NVRAM0[SPREG_BEEM_COUNTER] = -1;
+				}
+				break;
+			}
+			case BEEM_MODE_3:{//模式3 滴滴两下一停 报警音
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
+					setLoudspeakerEnable();//启动音频
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+					
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
+					setLoudspeakerDisable();//关闭音频
+					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100 && NVRAM0[SPREG_BEEM_COUNTER] < 150){//1
+					setLoudspeakerEnable();//启动音频
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 150 && NVRAM0[SPREG_BEEM_COUNTER] < 250){//0
+					setLoudspeakerDisable();//关闭音频
+					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+				}
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 250){//停1秒
+					NVRAM0[SPREG_BEEM_COUNTER] = -1;
+				}
+				break;
+			}
+			default:break;
+		}
+	}
+	else{
+		setLoudspeakerDisable();//关闭音频
+		RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
+		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
+	}
+}
+
+static void aimLoop(void){//AIM轮询程序
+	if(LDP(SPCOIL_AIM_ENABEL) && (NVRAM0[DM_AIM_BRG] > 0)){
+		setAimBrightness(NVRAM0[DM_AIM_BRG]);
+		SSET(SPCOIL_AIM_BUSY);
+	}
+	if(LDN(SPCOIL_AIM_ENABEL)){
+		setAimBrightness(0);
+		RRES(SPCOIL_AIM_BUSY);
+	}
+}
+
 void dcHmiLoop(void){//HMI轮训程序	
 	if(LDP(R_FOOTSWITCH_PLUG)){
 		printf("%s,%d,%s:Footswitch Plug!\n",__FILE__, __LINE__, __func__);
@@ -1066,11 +1153,11 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(LDN(R_FOOTSWITCH_PRESS)){
 		printf("%s,%d,%s:Footswitch UnPressed!\n",__FILE__, __LINE__, __func__);
 	}
+	aimLoop();
+	speakerLoop();
 	temperatureLoop();//温控程序
 	faultLoop();
-/*****************************************************************************/
 	laserStateLoop();
-/*****************************************************************************/
 	if(LD(R_DCHMI_RESET_DONE) && LD(R_DCHMI_RESTORE_DONE)){//HMI复位完成后处理串口指令
 		hmiCmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE);//从缓冲区中获取一条指令         
         if(hmiCmdSize > 0){//接收到指令及判断是否为开机提示                                                            

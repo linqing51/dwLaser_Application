@@ -1,13 +1,6 @@
 #include "sPlcFun.h"
 #include "pid_fuzzy.h"
-/*****************************************************************************/
-
-#define CONFIG_SPLC_MAX_FUZZY_PID									8//模拟PID运行数量
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KP							8.3F//模拟PID KP参数
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KI							1.2F//模糊PID KI参数
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_KD							0.0F//模糊PID KD参数
-#define CONFIG_SPLC_DEFAULT_FUZZY_PID_TD							1.0F//模糊PID TD参数
-PID fuzzyPidConfig[CONFIG_SPLC_MAX_FUZZY_PID];//
+//
 extern CRC_HandleTypeDef hcrc;
 /*****************************************************************************/
 void REBOOT(void) {//软件复位	
@@ -507,109 +500,6 @@ void FDLAD(void){//FDRAM<-EPROM
 //IO指令
 void IMDIO(void) {//立即更新IO点状态含输入输出
 
-}
-/*****************************************************************************/
-/*****************************************************************************/
-void STPID(uint16_t adr){//位置PID指令
-	int16_t temp;
-	//adr + 0:Input 输入值
-	//adr + 1:ref 设定值
-	//adr + 2:Output 输出值
-	//adr + 3:Ts 采样周期 10-300000mS           [1-30000] 
-	//adr + 4:Kp 比例操作的常数 0.01-60.000   	[1-30000]
-	//adr + 5:Ki 积分操作的常数 0.00-600.00	  	[1-30000]
-	//adr + 6:Td 微分操作的常数 0.00-600.00   	[1-30000]
-	//adr + 7:Mvll 操作量的下限值		      	[-32768-32766]
-	//adr + 8:Mvhl 操作量的上限制			  	[-32767-32767]
-	//adr + 9:Oper 正操作/反操作 1正操作 0反操作
-	//adr + 10:dead 误差死区 0-30000	        [0-30000]
-	//adr + 11:umax 积分饱和误差上限			[0-30000]
-	//adr + 12:umin 积分饱和误差下限			[0-30000]
-	//adr + 13:工作区 计时
-	//adr + 14:工作区 
-	//adr + 15:工作区 
-	//adr + 16:工作区
-	//adr + 17:工作区
-	//adr + 18:工作区 上次偏差pek1 FP32 
-	//adr + 19:工作区 上次偏差pek1 FP32
-	//adr + 20:工作区 累计偏差plocSum FP32 
-	//adr + 21:工作区 累计偏差plocSum FP32
-	float32_t kp, ki, kd, pidOut, dead, umax, umin;
-	float32_t pek0, pek1, plocSum;
-	if(LDP(SPCOIL_PS10MS)){//发现10mS
-		temp = (uint16_t)NVRAM0[adr + 13];
-		if(temp >= (uint16_t)NVRAM0[adr + 3] || temp > 30000){//计时器周期达到
-			kp = (float32_t)NVRAM0[adr + 4] / 100.0F;
-			ki = (float32_t)NVRAM0[adr + 5] / 100.0F;
-			kd = (float32_t)NVRAM0[adr + 6] / 100.0F;
-			dead = (float32_t)NVRAM0[adr + 10];
-			umax = (float32_t)NVRAM0[adr + 11];
-			umin = (float32_t)NVRAM0[adr + 12];
-			pek0 = (float32_t)NVRAM0[adr + 0] - (float32_t)NVRAM0[adr + 1];//计算误差
-			plocSum = *((float32_t*)&NVRAM0[adr + 20]);
-			//抗积分饱和
-			if(fabs(pek0) < dead){//计算误差死区
-				pek0 = 0;
-			}
-//			if(pek1 >= umax){//只减少累加量
-//				if(pek0 <= 0){	
-//					plocSum = plocSum + pek0;//计算累计误差
-//				}
-//				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
-//			}
-//			else if(pek1 <= umin){//只增加累加量
-//				if(pek0 >= 0){
-//					plocSum = plocSum + pek0;//计算累计误差
-//				}
-//				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
-//			}
-//			else{//正常计算积分
-//				plocSum = plocSum + pek0;
-//				pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
-//			}
-			plocSum = plocSum + pek0;
-			pidOut = kp * pek0 + ki * plocSum + kd * (pek1 - pek0);
-			if(plocSum >= 1000){
-				plocSum = 1000;
-			}
-			if(plocSum <= -1000){
-				plocSum = -1000;
-			}
-			pek1 = pek0;
-			if(NVRAM0[adr + 9] == 0){
-				pidOut = pidOut * -1;
-			}
-			//回写NVRAM0
-			*((float32_t*)&NVRAM0[adr + 18]) = pek1;
-			*((float32_t*)&NVRAM0[adr + 20]) = plocSum;
-			if(pidOut > (float32_t)NVRAM0[adr + 8]){
-				pidOut = (float32_t)NVRAM0[adr + 8];
-			}
-			if(pidOut < (float32_t)NVRAM0[adr + 7]){
-				pidOut = (float32_t)NVRAM0[adr + 7];
-			}
-			NVRAM0[adr + 2] = (int16_t)pidOut;
-			NVRAM0[adr + 3] = 0;
-			printf("STPID:In=%d,Ref=%d,Out=%d\n",NVRAM0[adr + 0],NVRAM0[adr + 1],NVRAM0[adr + 2]);
-		}
-		else{
-			temp ++;
-			NVRAM0[adr + 13] = temp;
-		}
-	}
-}
-void FUPID0(uint16_t adr){//模糊PID指令
-	uint8_t i;
-	if(LD(SPCOIL_START_UP)){//	
-		for (i = 0;i < CONFIG_SPLC_MAX_FUZZY_PID; i++){
-			PID_Init(&fuzzyPidConfig[i]);
-			PID_Set(&fuzzyPidConfig[i], 
-					CONFIG_SPLC_DEFAULT_FUZZY_PID_KP,
-					CONFIG_SPLC_DEFAULT_FUZZY_PID_KI,
-					CONFIG_SPLC_DEFAULT_FUZZY_PID_KD,
-					CONFIG_SPLC_DEFAULT_FUZZY_PID_TD);
-		}
-	}
 }
 //步指令
 //void TO(uint16_t SA) {//步进开始指令

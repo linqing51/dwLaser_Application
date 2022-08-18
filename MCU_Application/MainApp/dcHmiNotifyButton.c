@@ -938,7 +938,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD:{
 					if(state){
-						if(NVRAM0[DM_BEEM_VOLUME] < CONFIG_MAX_BEEM_VOLUME){
+						if(NVRAM0[DM_BEEM_VOLUME] < CONFIG_BEEM_MAX_VOLUME){
 							NVRAM0[DM_BEEM_VOLUME] += 1;
 							NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 							SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
@@ -949,7 +949,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_DEC:{
 					if(state){
-						if(NVRAM0[DM_BEEM_VOLUME] > CONFIG_MIN_BEEM_VOLUME){
+						if(NVRAM0[DM_BEEM_VOLUME] > CONFIG_BEEM_MIN_VOLUME){
 							NVRAM0[DM_BEEM_VOLUME] -= 1;
 							NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 							SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
@@ -960,7 +960,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD:{
 					if(state){
-						if(NVRAM0[DM_LCD_BRG] < CONFIG_MAX_LCD_BRG){
+						if(NVRAM0[DM_LCD_BRG] < CONFIG_LCD_MAX_DC){
 							NVRAM0[DM_LCD_BRG] += 1;
 							SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);
@@ -971,7 +971,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_OPTION_KEY_LCD_BRG_DEC:{
 					if(state){
-						if(NVRAM0[DM_LCD_BRG] > CONFIG_MIN_LCD_BRG){
+						if(NVRAM0[DM_LCD_BRG] > CONFIG_LCD_MIN_DC){
 							NVRAM0[DM_LCD_BRG] -= 1;
 							SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);

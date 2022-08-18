@@ -64,17 +64,17 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
   {
   /* USER CODE BEGIN I2C1_MspInit 0 */
 		__HAL_RCC_I2C1_CLK_ENABLE();
-		GPIO_InitStruct.Pin = I2C1_SCL_Pin|I2C1_SDA_Pin;      //´ËÐÐÔ­ÓÐ
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;   //GPIOÅäÖÃÎªÊä³ö
-    GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;         //Ç¿ÉÏÀ­
+		GPIO_InitStruct.Pin = I2C1_SCL_Pin|I2C1_SDA_Pin;      //ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;   //GPIOï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½
+    GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;         //Ç¿ï¿½ï¿½ï¿½ï¿½
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    HAL_GPIO_WritePin(GPIOB, I2C1_SCL_Pin, GPIO_PIN_SET);       //À­¸ßSCL
-    HAL_GPIO_WritePin(GPIOB, I2C1_SDA_Pin, GPIO_PIN_SET);       //À­¸ßSDA
+    HAL_GPIO_WritePin(GPIOB, I2C1_SCL_Pin, GPIO_PIN_SET);       //ï¿½ï¿½ï¿½ï¿½SCL
+    HAL_GPIO_WritePin(GPIOB, I2C1_SDA_Pin, GPIO_PIN_SET);       //ï¿½ï¿½ï¿½ï¿½SDA
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();  
-		i2cHandle->Instance->CR1= I2C_CR1_SWRST;          //¸´Î»I2C¿ØÖÆÆ÷
+		i2cHandle->Instance->CR1= I2C_CR1_SWRST;          //ï¿½ï¿½Î»I2Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		__nop();__nop();__nop();__nop();__nop();
-	  i2cHandle->Instance->CR1= 0;              //½â³ý¸´Î»£¨²»»á×Ô¶¯Çå³ý£©	  
+	  i2cHandle->Instance->CR1= 0;              //ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	  
   /* USER CODE END I2C1_MspInit 0 */
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
