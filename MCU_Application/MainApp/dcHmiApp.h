@@ -37,35 +37,36 @@
 #define FLASH_DATA_VERSION  										0XAABB0000
 #define FLASH_DATA_ADDR     										0X00000000
 /*****************************************************************************/
-#define MSG_NO_ERROR												0
-#define MSG_INTERLOCK_UNPLUG										1
-#define	MSG_FOOTSWITCH_UNPLUG										2
-#define	MSG_ESTOP_PRESS												3
-#define	MSG_FIBER_UNPLUG											4
-#define	MSG_OUT_ENERGY												5
-#define	MSG_DIODE_HTEMP												6
-#define	MSG_DIODE_LTEMP												7
-#define	MSG_DIODE0_OVERCURRENT										8
-#define	MSG_DIODE1_OVERCURRENT										9
-#define	MSG_NTC_ERROR												10
-#define	MSG_ENVI_HTEMP												11
-#define	MSG_FOOT_DEPRESSED											12
-#define	MSG_LASER_EMIT												13
-#define	MSG_WAIT_TRIGGER											14
-#define	MSG_FIBER_MISSMATE											15
-/*****************************************************************************/
+#define MSG_NO_ERROR																0
+#define MSG_INTERLOCK_UNPLUG												1
+#define	MSG_FOOTSWITCH_UNPLUG												2
+#define	MSG_ESTOP_PRESS															3
+#define	MSG_FIBER_UNPLUG														4
+#define	MSG_OUT_ENERGY															5
+#define	MSG_DIODE_HTEMP															6
+#define	MSG_DIODE_LTEMP															7
+#define	MSG_DIODE0_OVERCURRENT											8
+#define	MSG_DIODE1_OVERCURRENT											9
+#define	MSG_NTC_ERROR																10
+#define	MSG_ENVI_HTEMP															11
+#define	MSG_FOOT_DEPRESSED													12
+#define	MSG_LASER_EMIT															13
+#define	MSG_WAIT_TRIGGER														14
+#define	MSG_FIBER_MISSMATE													15
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);
 void updateStandbyDisplay(void);
 void standbyTouchEnable(int8_t enable);
-void updatePowerDisplay(int16_t ch, int16_t mode);
-void updatePosWidthDisplay(int16_t mode);
-void updateNegWidthDisplay(int16_t mode);
+void updatePowerDisplay(void);
+void updatePosWidthDisplay(void);
+void updateNegWidthDisplay(void );
 void updateTimesDisplay(void);
 void updateGroupOffDisplay(void);
 void updateOptionDisplay(void);
 void updateInformationDisplay(void);
+void updateAcousticEnergy(void);
+void updateAcousticTime(void);
 /*****************************************************************************/
 void updateScheme_0_Display(void);
 void updateScheme_1_Display(void);
@@ -83,8 +84,7 @@ void standbyKeyValue(uint8_t value);//设置Standby键值
 void standbyPageTouchEnable(int8_t enable);//Standby界面触摸
 void standbyKeyTouchEnable(int8_t enable);//Standby key触摸
 /*****************************************************************************/
-void updateEnergyDensity(void);
-void updateExtralDisplay(int16_t mode);//更新额外显示
+static void updateExtralDisplay(void);//更新额外显示
 void standbyDebugInfoVisiable(int8_t enable);
 void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/

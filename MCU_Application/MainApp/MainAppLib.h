@@ -6,8 +6,8 @@
 /*****************************************************************************/
 uint8_t fanSpeedToPwm(uint8_t speed);//风扇输入转换为占空比
 uint8_t getLcdDuty(int16_t LcdBrg);//屏幕亮度值转换为占空比
-int16_t pulseWidthAdd(int16_t ps);
-int16_t pulseWidthDec(int16_t ps);
+int16_t keyRuleAdd(int16_t ps, int16_t max);
+int16_t keyRuleDec(int16_t ps, int16_t min);
 void loadScheme(void);//DM->EM
 void updateSchemeName(void);//TMP->FD
 void saveScheme(void);//EM->DM

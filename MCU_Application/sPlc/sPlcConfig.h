@@ -173,6 +173,11 @@
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							800//变音持续时间
+#define CONFIG_MAX_ACOUSTIC_ENERGY										999
+#define CONFIG_MIN_ACOUSTIC_ENERGY										10
+#define CONFIG_MAX_ACOUSTIC_TIME											999
+#define CONFIG_MIN_ACOUSTIC_TIME											10
+
 
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
 #define CONFIG_AIM_MIN_DC															0//红光最小调光占空比
@@ -445,21 +450,21 @@
 #define SPREG_SCAN_TIME											(SPREG_END - 1)//扫描时间
 #define SPREG_IDENTITY											(SPREG_END - 0)//平台ID号
 /*****************************************************************************/
-#define EM_LASER_SCHEME_NAME									(EM_START + 0)//方案名称
-#define EM_LASER_SELECT											(EM_START + 46)//通道选择
-#define EM_LASER_PULSE_MODE										(EM_START + 47)//脉冲模式
-#define EM_LASER_POWER_CH0										(EM_START + 48)//通道0功率
-#define EM_LASER_POWER_CH1										(EM_START + 49)//通道1功率
-#define EM_LASER_POWER_CH2										(EM_START + 50)//通道2功率
-#define EM_LASER_POWER_CH3										(EM_START + 51)//通道3功率
-#define EM_LASER_SP_POSWIDTH									(EM_START + 52)//单脉冲正脉宽
-#define EM_LASER_MP_POSWIDTH									(EM_START + 53)//多脉冲正脉宽
-#define EM_LASER_MP_NEGWIDTH									(EM_START + 54)//多脉冲负脉宽
-#define EM_LASER_GP_POSWIDTH									(EM_START + 55)//Group脉冲正脉宽
-#define EM_LASER_GP_NEGWIDTH									(EM_START + 56)//Group脉冲负脉宽
+#define EM_LASER_SCHEME_NAME										(EM_START + 0)//方案名称
+#define EM_LASER_SELECT													(EM_START + 46)//通道选择
+#define EM_LASER_PULSE_MODE											(EM_START + 47)//脉冲模式
+#define EM_LASER_POWER_CH0											(EM_START + 48)//通道0功率
+#define EM_LASER_POWER_CH1											(EM_START + 49)//通道1功率
+#define EM_LASER_POWER_CH2											(EM_START + 50)//通道2功率
+#define EM_LASER_POWER_CH3											(EM_START + 51)//通道3功率
+#define EM_LASER_SP_POSWIDTH										(EM_START + 52)//单脉冲正脉宽
+#define EM_LASER_MP_POSWIDTH										(EM_START + 53)//多脉冲正脉宽
+#define EM_LASER_MP_NEGWIDTH										(EM_START + 54)//多脉冲负脉宽
+#define EM_LASER_GP_POSWIDTH										(EM_START + 55)//Group脉冲正脉宽
+#define EM_LASER_GP_NEGWIDTH										(EM_START + 56)//Group脉冲负脉宽
 #define EM_LASER_GP_TIMES												(EM_START + 57)//Group脉冲数
 #define EM_LASER_GP_GROUP_OFF										(EM_START + 58)//Group脉冲间隔
-#define EM_LASER_SIGNAL_ENERGY_INTERVAL							(EM_START + 59)//SIGNAL能量间隔
+#define EM_LASER_SIGNAL_ENERGY_INTERVAL					(EM_START + 59)//SIGNAL能量间隔
 #define EM_LASER_DERMA_POSWIDTH									(EM_START + 60)//DERMA正脉宽
 #define EM_LASER_DERMA_NEGWIDTH									(EM_START + 61)//DERMA负脉宽
 #define EM_LASER_DERMA_SPOT_SIZE								(EM_START + 62)//DERMA光斑直径
@@ -468,74 +473,73 @@
 #define EM_LASER_FREQUENCY											(EM_START + 65)//当前模式频率
 #define EM_LASER_DUTY_CYCLE											(EM_START + 66)//当前模式占空比 
 /*****************************************************************************/
-#define EM_LASER_TEMP													(EM_START + 67)//激光二极管模块温度
-#define EM_MCU_TEMP														(EM_START + 68)//处理器温度
-#define EM_LASER_CURRENT_CH0									(EM_START + 69)//激光二极管模块电流
-#define EM_LASER_CURRENT_CH1									(EM_START + 70)//激光二极管模块电流
-#define EM_LASER_CURRENT_CH2									(EM_START + 71)//激光二极管模块电流
-#define EM_LASER_CURRENT_CH3									(EM_START + 72)//激光二极管模块电流
-#define EM_LASER_PHOTODIODE										(EM_START + 73)//激光二极管模块功率
-#define EM_LASER_TEC_DC												(EM_START + 74)//激光制冷器扇功率 0-100%
-#define EM_LASER_FAN_SPEED										(EM_START + 75)//激光散热风扇速度 0-100%
+#define EM_LASER_TEMP														(EM_START + 67)//激光二极管模块温度
+#define EM_MCU_TEMP															(EM_START + 68)//处理器温度
+#define EM_LASER_CURRENT_CH0										(EM_START + 69)//激光二极管模块电流
+#define EM_LASER_CURRENT_CH1										(EM_START + 70)//激光二极管模块电流
+#define EM_LASER_CURRENT_CH2										(EM_START + 71)//激光二极管模块电流
+#define EM_LASER_CURRENT_CH3										(EM_START + 72)//激光二极管模块电流
+#define EM_LASER_PHOTODIODE											(EM_START + 73)//激光二极管模块功率
+#define EM_LASER_TEC_DC													(EM_START + 74)//激光制冷器扇功率 0-100%
+#define EM_LASER_FAN_SPEED											(EM_START + 75)//激光散热风扇速度 0-100%
+#define EM_ACOUSTIC_ENERGY											(EM_START + 76)
+#define EM_ACOUSTIC_TIME												(EM_START + 77)
 /*****************************************************************************/				
-#define EM_TOTAL_POWER											(EM_START + 80)//发射总功率
-#define EM_HMI_OPERA_STEP										(EM_START +	81)//操作步骤								
-#define EM_ERROR_CODE											(EM_START + 82)//错误码					
-#define EM_SCHEME_NUM_TMP										(EM_START + 83)//待确认方案编号			
-#define EM_DK25L_VER											(EM_START + 84)//DK25L模块版本
+#define EM_TOTAL_POWER													(EM_START + 80)//发射总功率
+#define EM_HMI_OPERA_STEP												(EM_START +	81)//操作步骤								
+#define EM_ERROR_CODE														(EM_START + 82)//错误码					
+#define EM_SCHEME_NUM_TMP												(EM_START + 83)//待确认方案编号			
+#define EM_DK25L_VER														(EM_START + 84)//DK25L模块版本
 /*****************************************************************************/
-#define EM_DC_PAGE												(EM_START + 90)//HMI页面编号 			
-#define EM_DC_PASSCODE_INDEX									(EM_START + 91)//密码输入位索引		
-#define EM_DC_NEW_PASSCODE0										(EM_START + 92)//输入新密码0			
-#define EM_DC_NEW_PASSCODE1										(EM_START + 93)//输入新密码1			
-#define EM_DC_NEW_PASSCODE2										(EM_START + 94)//输入新密码2			
-#define EM_DC_NEW_PASSCODE3										(EM_START + 95)//输入新密码3			
+#define EM_DC_PAGE															(EM_START + 90)//HMI页面编号 			
+#define EM_DC_PASSCODE_INDEX										(EM_START + 91)//密码输入位索引		
+#define EM_DC_NEW_PASSCODE0											(EM_START + 92)//输入新密码0			
+#define EM_DC_NEW_PASSCODE1											(EM_START + 93)//输入新密码1			
+#define EM_DC_NEW_PASSCODE2											(EM_START + 94)//输入新密码2			
+#define EM_DC_NEW_PASSCODE3											(EM_START + 95)//输入新密码3			
 #define EM_DC_DEFAULT_PASSCODE0									(EM_START + 96)//默认密码0				
 #define EM_DC_DEFAULT_PASSCODE1									(EM_START + 97)//默认密码1				
 #define EM_DC_DEFAULT_PASSCODE2									(EM_START + 98)//默认密码2	
 #define EM_DC_DEFAULT_PASSCODE3									(EM_START + 99)//默认密码3				
-#define EM_DC_DISPLAY_RELEASE_TIME								(EM_START + 100)//显示发射时间			
-#define EM_DC_DISPLAY_RELEASE_ENERGY							(EM_START + 101)//显示发射能量
-
-#define EM_TPID_START											(EM_START + 128)//
-#define EM_TPID_END												(EM_START + 128 + 32)//
+#define EM_DC_DISPLAY_RELEASE_TIME							(EM_START + 100)//显示发射时间			
+#define EM_DC_DISPLAY_RELEASE_ENERGY						(EM_START + 101)//显示发射能量
 /*****************************************************************************/
-#define FD_LASER_SCHEME_NAME									(FD_START +  0)//方案名称
-#define FD_LASER_SELECT											(FD_START +  46)//通道选择
-#define FD_LASER_PULSE_MODE										(FD_START +  47)//脉冲模式
-#define FD_LASER_POWER_CH0										(FD_START +  48)//通道0功率
-#define FD_LASER_POWER_CH1										(FD_START +  49)//通道1功率
-#define FD_LASER_POWER_CH2										(FD_START +  50)//通道2功率
-#define FD_LASER_POWER_CH3										(FD_START +  51)//通道3功率
-#define FD_LASER_SP_POSWIDTH									(FD_START +  52)//单脉冲正脉宽
-#define FD_LASER_MP_POSWIDTH									(FD_START +  53)//多脉冲正脉宽
-#define FD_LASER_MP_NEGWIDTH									(FD_START +  54)//多脉冲负脉宽
-#define FD_LASER_GP_POSWIDTH									(FD_START +  55)//Group脉冲正脉宽
-#define FD_LASER_GP_NEGWIDTH									(FD_START +  56)//Group脉冲负脉宽
-#define FD_LASER_GP_TIMES										(FD_START +  57)//Group脉冲数
-#define FD_LASER_GP_GROUP_OFF									(FD_START +  58)//Group脉冲间隔
-#define FD_LASER_SIGNAL_ENERGY_INTERVAL							(FD_START +  59)//SIGNAL能量间隔
+#define FD_LASER_SCHEME_NAME										(FD_START +  0)//方案名称
+#define FD_LASER_SELECT													(FD_START +  46)//通道选择
+#define FD_LASER_PULSE_MODE											(FD_START +  47)//脉冲模式
+#define FD_LASER_POWER_CH0											(FD_START +  48)//通道0功率
+#define FD_LASER_POWER_CH1											(FD_START +  49)//通道1功率
+#define FD_LASER_POWER_CH2											(FD_START +  50)//通道2功率
+#define FD_LASER_POWER_CH3											(FD_START +  51)//通道3功率
+#define FD_LASER_SP_POSWIDTH										(FD_START +  52)//单脉冲正脉宽
+#define FD_LASER_MP_POSWIDTH										(FD_START +  53)//多脉冲正脉宽
+#define FD_LASER_MP_NEGWIDTH										(FD_START +  54)//多脉冲负脉宽
+#define FD_LASER_GP_POSWIDTH										(FD_START +  55)//Group脉冲正脉宽
+#define FD_LASER_GP_NEGWIDTH										(FD_START +  56)//Group脉冲负脉宽
+#define FD_LASER_GP_TIMES												(FD_START +  57)//Group脉冲数
+#define FD_LASER_GP_GROUP_OFF										(FD_START +  58)//Group脉冲间隔
+#define FD_LASER_SIGNAL_ENERGY_INTERVAL					(FD_START +  59)//SIGNAL能量间隔
 #define FD_LASER_DERMA_POSWIDTH									(FD_START +  60)//DERMA正脉宽
 #define FD_LASER_DERMA_NEGWIDTH									(FD_START +  61)//DERMA负脉宽
 #define FD_LASER_DERMA_SPOT_SIZE								(FD_START +  62)//DERMA光斑直径
 
-#define FD_SCHEME_START_0										(FD_START +   0)//方案0存储区起始
-#define FD_SCHEME_END_0											(FD_START +  63)//方案0存储区结束		
+#define FD_SCHEME_START_0												(FD_START +   0)//方案0存储区起始
+#define FD_SCHEME_END_0													(FD_START +  63)//方案0存储区结束		
 
-#define FD_SCHEME_START_1										(FD_START +  64)//方案1存储区起始		
-#define FD_SCHEME_END_1											(FD_START +  127)//方案1存储区结束
+#define FD_SCHEME_START_1												(FD_START +  64)//方案1存储区起始		
+#define FD_SCHEME_END_1													(FD_START +  127)//方案1存储区结束
 
-#define FD_SCHEME_START_2										(FD_START +  128)//方案2存储区起始
-#define FD_SCHEME_END_2											(FD_START +  191)//方案2存储区结束
+#define FD_SCHEME_START_2												(FD_START +  128)//方案2存储区起始
+#define FD_SCHEME_END_2													(FD_START +  191)//方案2存储区结束
 
-#define FD_SCHEME_START_3										(FD_START +  192)//方案3存储区起始
-#define FD_SCHEME_END_3											(FD_START +  255)//方案3存储区结束
+#define FD_SCHEME_START_3												(FD_START +  192)//方案3存储区起始
+#define FD_SCHEME_END_3													(FD_START +  255)//方案3存储区结束
 
-#define FD_SCHEME_START_4										(FD_START +  256)//方案4存储区起始
-#define FD_SCHEME_END_4											(FD_START +  319)//方案4存储区结束
+#define FD_SCHEME_START_4												(FD_START +  256)//方案4存储区起始
+#define FD_SCHEME_END_4													(FD_START +  319)//方案4存储区结束
 
-#define FD_SCHEME_START_5										(FD_START +  320)//方案5存储区起始
-#define FD_SCHEME_END_5											(FD_START +  383)//方案5存储区结束
+#define FD_SCHEME_START_5												(FD_START +  320)//方案5存储区起始
+#define FD_SCHEME_END_5													(FD_START +  383)//方案5存储区结束
 
 #define FD_SCHEME_START_6										(FD_START +  384)//方案6存储区起始
 #define FD_SCHEME_END_6											(FD_START +  447)//方案6存储区结束
@@ -707,29 +711,29 @@
 #define Y_TEC																(Y_START * 16 + 5)//YOUT5 TEC输出
 #define Y_AIM																(Y_START * 16 + 6)//YOUT6 AIM输出
 /*****************************************************************************/
-#define R_ESTOP															(R_START * 16 + 0)//急停标志
-#define R_INTERLOCK													(R_START * 16 + 1)//连锁标志
-#define R_FIBER_PROBE												(R_START * 16 + 2)//光纤插入标志
-#define R_RFID_PASS													(R_START * 16 + 3)//NFC光纤插入标志
-#define R_LASER_TEMP_HIGH										(R_START * 16 + 4)//激光二极管激光模块高温标志
-#define R_LASER_TEMP_LOW										(R_START * 16 + 5)//激光二极管激光模块低温标志
-#define R_MCU_TEMP_HIGH											(R_START * 16 + 6)//处理器高温标志
-#define R_MCU_TEMP_LOW											(R_START * 16 + 7)//处理器低温标志
-#define R_FOOTSWITCH_PLUG										(R_START * 16 + 8)//脚踏插入标志
-#define R_FOOTSWITCH_PRESS									(R_START * 16 + 9)//脚踏按下标志
-#define R_HMI_FOOTSWITCH_PRESS							(R_START * 16 + 10)//屏幕模拟脚踏按下标志
-#define R_FAULT															(R_START * 16 + 11)//故障标志
-#define R_DISABLE_ESTOP											(R_START * 16 + 12)//屏蔽急停开关检测
-#define R_DISABLE_TEMPERATURE								(R_START * 16 + 13)//屏蔽温度检测
-#define	R_DISABLE_FOOTSWITCH								(R_START * 16 + 14)//屏蔽脚踏开关检测
-#define R_DISABLE_RFID											(R_START * 16 + 15)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE								(R_START * 16 + 16)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED									(R_START * 16 + 17)//屏蔽风扇控制
-#define R_DISABLE_INTERLOCK									(R_START * 16 + 18)//屏蔽安全连锁
-#define R_CLEAR_EPROM												(R_START * 16 + 19)//完全清空EPROM
-#define R_SAVE_EPROM												(R_START * 16 + 20)//储存SAVE
-#define R_ENGINEER_MODE											(R_START * 16 + 21)//工程师模式
-#define R_CALIBRATION_MODE									(R_START * 16 + 22)//功率校正模式
+#define R_ESTOP																			(R_START * 16 + 0)//急停标志
+#define R_INTERLOCK																	(R_START * 16 + 1)//连锁标志
+#define R_FIBER_PROBE																(R_START * 16 + 2)//光纤插入标志
+#define R_RFID_PASS																	(R_START * 16 + 3)//NFC光纤插入标志
+#define R_LASER_TEMP_HIGH														(R_START * 16 + 4)//激光二极管激光模块高温标志
+#define R_LASER_TEMP_LOW														(R_START * 16 + 5)//激光二极管激光模块低温标志
+#define R_MCU_TEMP_HIGH															(R_START * 16 + 6)//处理器高温标志
+#define R_MCU_TEMP_LOW															(R_START * 16 + 7)//处理器低温标志
+#define R_FOOTSWITCH_PLUG														(R_START * 16 + 8)//脚踏插入标志
+#define R_FOOTSWITCH_PRESS													(R_START * 16 + 9)//脚踏按下标志
+#define R_HMI_FOOTSWITCH_PRESS											(R_START * 16 + 10)//屏幕模拟脚踏按下标志
+#define R_FAULT																			(R_START * 16 + 11)//故障标志
+#define R_DISABLE_ESTOP															(R_START * 16 + 12)//屏蔽急停开关检测
+#define R_DISABLE_TEMPERATURE												(R_START * 16 + 13)//屏蔽温度检测
+#define	R_DISABLE_FOOTSWITCH												(R_START * 16 + 14)//屏蔽脚踏开关检测
+#define R_DISABLE_RFID															(R_START * 16 + 15)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE												(R_START * 16 + 16)//屏蔽光纤探测
+#define R_DISABLE_FAN_SPEED													(R_START * 16 + 17)//屏蔽风扇控制
+#define R_DISABLE_INTERLOCK													(R_START * 16 + 18)//屏蔽安全连锁
+#define R_CLEAR_EPROM																(R_START * 16 + 19)//完全清空EPROM
+#define R_SAVE_EPROM																(R_START * 16 + 20)//储存SAVE
+#define R_ENGINEER_MODE															(R_START * 16 + 21)//工程师模式
+#define R_CALIBRATION_MODE													(R_START * 16 + 22)//功率校正模式
 //HMI相关状态
 #define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMI复位请求
 #define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMI复位中
@@ -757,6 +761,10 @@
 /*****************************************************************************/
 #define R_READY_KEY_READY_DOWN											(R_START * 16 + 95)
 #define R_READY_KEY_READY_UP												(R_START * 16 + 96)
+#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN				(R_START * 16 + 97)
+#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN				(R_START * 16 + 98)
+#define R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN					(R_START * 16 + 99)
+#define R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN					(R_START * 16 + 100)
 /*****************************************************************************/
 #define R_OPTION_KEY_ENTER_INFORMATION_DOWN					(R_START * 16 + 101)
 #define R_OPTION_KEY_ENTER_OK_DOWN									(R_START * 16 + 102)
@@ -812,6 +820,10 @@
 #define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY						9
 #define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY						10
 
+#define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			11
+#define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			12
+#define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				13
+#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				14
 			
 /*****************************************************************************/
 #endif

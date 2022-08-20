@@ -1,6 +1,7 @@
 #include "dcHmiNotifyProgress.h"
 /*****************************************************************************/
 void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){ 
+	int16_t tmp16;
 	switch(screen_id){
 		case GDDC_PAGE_STANDBY_CW:{
 			switch(control_id){
@@ -9,18 +10,19 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						value = 100;
 					}
 					NVRAM0[EM_LASER_POWER_CH0] = (int16_t)(value * CONFIG_MAX_LASERPOWER_CH0 / 100);
-					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
-					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_CW);					
+					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
+					updatePowerDisplay();					
 					break;
 				}
 				case GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG:{
-					if(value < CONFIG_AIM_MIN_DC){
-						value = CONFIG_AIM_MIN_DC;
+					tmp16 = (int16_t)value;
+					if(tmp16 < CONFIG_AIM_MIN_DC){
+						tmp16 = CONFIG_AIM_MIN_DC;
 					}
-					if(value > CONFIG_AIM_MAX_DC){
-						value = CONFIG_AIM_MAX_DC;
+					if(tmp16 > CONFIG_AIM_MAX_DC){
+						tmp16 = CONFIG_AIM_MAX_DC;
 					}
-					NVRAM0[DM_AIM_BRG] = (int16_t)value;	
+					NVRAM0[DM_AIM_BRG] = (int16_t)tmp16;	
 					SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 					break;
 				}
@@ -36,8 +38,8 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						value = 100;
 					}
 					NVRAM0[EM_LASER_POWER_CH0] = (int16_t)(value * CONFIG_MAX_LASERPOWER_CH0 / 100);
-					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1];
-					updatePowerDisplay(LASER_SELECT_CH0, LASER_MODE_MP);
+					NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
+					updatePowerDisplay();
 					break;
 				}
 				case GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG:{

@@ -1,6 +1,6 @@
 #include "MainAppLib.h"
 /*****************************************************************************/
-int16_t pulseWidthAdd(int16_t ps){//脉宽增加
+int16_t keyRuleAdd(int16_t ps, int16_t max){//增加
 	if(ps >= 1 && ps < 10){
 		ps += 1;
 	}
@@ -10,12 +10,15 @@ int16_t pulseWidthAdd(int16_t ps){//脉宽增加
 	else if(ps >= 100 && ps < 1000){
 		ps += 50;
 	}
-	else if(ps >= 1000 && ps < 15000){
+	else if(ps >= 1000 && ps < 32000){
 		ps += 1000;
+	}
+	if(ps >= max){
+		ps = max;
 	}
 	return ps;
 }
-int16_t pulseWidthDec(int16_t ps){//脉宽减少
+int16_t keyRuleDec(int16_t ps, int16_t min){//减少
 	if(ps > 1 && ps <= 10){
 		ps -= 1;
 	}
@@ -25,8 +28,11 @@ int16_t pulseWidthDec(int16_t ps){//脉宽减少
 	else if(ps > 100 && ps <= 1000){
 		ps -= 50;
 	}
-	else if(ps > 1000 && ps <= 15000){
+	else if(ps > 1000 && ps <= 32000){
 		ps -= 1000;
+	}
+	if(ps <= min){
+		ps = min;
 	}
 	return ps;
 }
