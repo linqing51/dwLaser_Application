@@ -71,9 +71,11 @@ void optionKeyEnable(uint8_t enable){//选项界面按键锁定
 }
 void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 	SetControlVisiable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
+	SetControlVisiable(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	
 	SetControlVisiable(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, enable);
+	SetControlVisiable(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, enable);
 	SetControlVisiable(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH, enable);	
 }
 void updateStandbyDebugInfo(void){//更新Standby调试信息
@@ -85,15 +87,16 @@ void updateStandbyDebugInfo(void){//更新Standby调试信息
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
+		case LASER_MODE_SP:{
+			SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			break;
+		}
 		case LASER_MODE_MP:{
 			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
-		default:{
-			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-			break;
-		}
+		default:break;
+		
 	}
 }
 void updateDiognosisTextBox(void){//更新诊断信息文本框
@@ -685,7 +688,7 @@ void standbyKeyValue(uint8_t value){//设置Standby键值
 void updatePowerDisplay(void){//更新功率显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3.1f W", ((fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
+	sprintf(dispBuf, "%3.1f W\n", ((fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){
 		case LASER_MODE_CW:{
 			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER, (uint8_t*)dispBuf);
@@ -699,6 +702,12 @@ void updatePowerDisplay(void){//更新功率显示
 		default:break;
 	}
 	updateExtralDisplay();
+}
+void updateReadyPowerDisplay(void){//更新READY功率显示
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%3.1f W\n", ((fp32_t)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_POWER, (uint8_t*)dispBuf);
 }
 static void updateExtralDisplay(void){//更新额外显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -740,46 +749,58 @@ void updateStandbyDisplay(void){//更新方案显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
+	if(NVRAM0[EM_LASER_PULSE_MODE] != LASER_MODE_CW && 
+		 NVRAM0[EM_LASER_PULSE_MODE] != LASER_MODE_SP &&
+	   NVRAM0[EM_LASER_PULSE_MODE] != LASER_MODE_MP){
+		 NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
+		 }
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){
 		case LASER_MODE_CW:{
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_CW;//切换待机页面						
+			SetScreen(NVRAM0[EM_DC_PAGE]);
 			updatePowerDisplay();
-			SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));
+			SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));
 			SetButtonValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_MODE_CW, 0x01);
 			SetButtonValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_MODE_SP, 0x00);
 			SetButtonValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_KEY_MODE_MP, 0x00);
-			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)(&NVRAM0[EM_LASER_SCHEME_NAME]));				
+			SetTextValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);							
+			SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
+			SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
 			break;			
 		}
 		case LASER_MODE_SP:{
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_SP;//切换待机页面		
+			SetScreen(NVRAM0[EM_DC_PAGE]);
 			updatePowerDisplay();
 			updatePosWidthDisplay();
-			SetProgressValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));		
+			SetProgressValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));		
 			SetButtonValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_KEY_MODE_CW, 0x00);
 			SetButtonValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_KEY_MODE_SP, 0x01);
 			SetButtonValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_KEY_MODE_MP, 0x00);
-			SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)(&NVRAM0[EM_LASER_SCHEME_NAME]));		
+			SetTextValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);		
+			SetTextInt32(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
+			SetProgressValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
 			updatePosWidthDisplay();
 			break;		
 		}
 		case LASER_MODE_MP:{
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_MP;//切换待机页面
+			SetScreen(NVRAM0[EM_DC_PAGE]);
 			updatePowerDisplay();
-			updatePosWidthDisplay();
-			updateNegWidthDisplay();
 			SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));
 			SetButtonValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_MODE_CW, 0x00);
 			SetButtonValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_MODE_SP, 0x00);
 			SetButtonValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_KEY_MODE_MP, 0x01);
-			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)(&NVRAM0[EM_LASER_SCHEME_NAME]));				
+			SetTextValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
+			SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
+			SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
 			updatePosWidthDisplay();
 			updateNegWidthDisplay();
 			break;
 		}
-		default:break;
+		default:{
+		}break;
 	}
-	SetScreen(NVRAM0[EM_DC_PAGE]);
 }
 
 void updateOptionDisplay(void){//更新选项显示	
@@ -850,16 +871,23 @@ void updateNegWidthDisplay(void){//更新负脉宽显示
 void updateAcousticTime(void){
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3.1f", ((fp32_t)(NVRAM0[DM_ACOUSTIC_TIME]) / 10));
+	sprintf(dispBuf, "%3.1fS", ((fp32_t)(NVRAM0[DM_ACOUSTIC_TIME]) / 10));
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
 }
 void updateAcousticEnergy(void){
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3.1f", ((fp32_t)(NVRAM0[DM_ACOUSTIC_ENERGY]) / 10));
+	sprintf(dispBuf, "%3.1fJ", ((fp32_t)(NVRAM0[DM_ACOUSTIC_ENERGY]) / 10));
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY, (uint8_t*)dispBuf);
 }
-
+void updateReadyDisplay(void){//更新READY显示
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
+	updateReadyPowerDisplay();
+	clearReleaseTimeEnergy();
+	updateReleaseTimeEnergy(true);
+	updateAcousticTime();
+	updateAcousticEnergy();
+}
 void dcHmiLoopInit(void){//初始化模块
 	uint8_t i;
 #if CONFIG_USING_DCHMI_APP == 1
@@ -971,7 +999,7 @@ static void temperatureLoop(void){//温度轮询轮询
 			else if((NVRAM0[EM_LASER_TEMP] >= 400)){
 				NVRAM0[EM_LASER_FAN_SPEED] = 100;
 			}
-			setFanSpeed(NVRAM0[EM_LASER_TEMP]);
+			setFanSpeed(NVRAM0[EM_LASER_FAN_SPEED]);
 		}
 	}
 }
@@ -1481,6 +1509,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			readyKeyValue(true);
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
 			SetScreen(NVRAM0[EM_DC_PAGE]);
+			updateReadyDisplay();
 			standbyKeyValue(false);
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_SAVE_DOWN)){//save down	
@@ -1498,7 +1527,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_PARA){//等待蜂鸣器
 		//清空计时器
 		T100MS(T100MS_READY_BEEM_DELAY, true, CONFIG_STANDBY_BEEM_DELAY_TIME);//启动计时器延时2000mS 打开计时器		
-		if(LD(T_100MS_START * 16 + T100MS_READY_BEEM_DELAY) && LD(R_FOOTSWITCH_PRESS)){
+		if(LD(T_100MS_START * 16 + T100MS_READY_BEEM_DELAY) && LDB(R_FOOTSWITCH_PRESS)){
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_DONE;
@@ -1532,9 +1561,10 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN)){
 			T10MS(T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY)){	
-				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
-					NVRAM0[EM_ACOUSTIC_ENERGY] = keyRuleAdd(NVRAM0[EM_ACOUSTIC_ENERGY], CONFIG_MAX_ACOUSTIC_ENERGY);
-					if(NVRAM0[EM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){//达到最大值后停止自加
+				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){			
+					NVRAM0[DM_ACOUSTIC_ENERGY] += 10;
+					if(NVRAM0[DM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){//达到最大值后停止自加
+						NVRAM0[DM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
 						T10MS(T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -1546,8 +1576,9 @@ void dcHmiLoop(void){//HMI轮训程序
 			T10MS(T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
-					NVRAM0[EM_ACOUSTIC_ENERGY] = keyRuleDec(NVRAM0[EM_ACOUSTIC_ENERGY], CONFIG_MIN_ACOUSTIC_ENERGY);
-					if(NVRAM0[EM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){//达到最大值后停止自加
+					NVRAM0[DM_ACOUSTIC_ENERGY] -= 10;
+					if(NVRAM0[DM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){//达到最大值后停止自加
+						NVRAM0[DM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
 						T10MS(T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -1559,8 +1590,9 @@ void dcHmiLoop(void){//HMI轮训程序
 			T10MS(T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY)){
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
-					NVRAM0[EM_ACOUSTIC_TIME] = keyRuleAdd(NVRAM0[EM_ACOUSTIC_TIME], CONFIG_MAX_ACOUSTIC_TIME);
-					if(NVRAM0[EM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){//达到最大值后停止自加
+					NVRAM0[DM_ACOUSTIC_TIME] += 10;
+					if(NVRAM0[DM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){//达到最大值后停止自加
+						NVRAM0[DM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
 						RRES(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
 						T10MS(T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -1572,8 +1604,9 @@ void dcHmiLoop(void){//HMI轮训程序
 			T10MS(T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
-					NVRAM0[EM_ACOUSTIC_TIME] = keyRuleDec(NVRAM0[EM_ACOUSTIC_TIME], CONFIG_MIN_ACOUSTIC_TIME);
-					if(NVRAM0[EM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){//达到最大值后停止自加
+					NVRAM0[DM_ACOUSTIC_TIME] -= 10;
+					if(NVRAM0[DM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){//达到最大值后停止自加
+						NVRAM0[DM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
 						RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
 						T10MS(T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -1606,22 +1639,34 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
 			UPDAC0();UPDAC1();UPDAC2();UPDAC3();
 			RRES(SPCOIL_AIM_ENABEL);
-			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_CW;//切换待机页面 CW 
-			}
-			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_MP;//切换待机页面 MP
+			switch(NVRAM0[EM_LASER_PULSE_MODE]){
+				case LASER_MODE_CW:{
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_CW;//切换待机页面 CW
+					break;
+				}
+				case LASER_MODE_SP:{
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_SP;//切换待机页面 CW
+					break;
+				}
+				case LASER_MODE_MP:{
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_MP;//切换待机页面 CW
+					break;
+				}
+				default:break;
 			}
 			SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
+			updateStandbyDisplay();
 			standbyKeyValue(false);
 			RRES(R_STANDBY_KEY_STNADBY_UP);
 			updateWarnMsgDisplay(MSG_NO_ERROR);//显示警告信息
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			printf("%s,%d,%s:set DAC0 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_0]);
 			printf("%s,%d,%s:set DAC1 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_1]);
 			printf("%s,%d,%s:set DAC2 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_2]);
 			printf("%s,%d,%s:set DAC3 = %d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_3]);
 			printf("%s,%d,%s:HMI_OPERA_STEP=%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_HMI_OPERA_STEP]);
 			printf("%s,%d,%s:Return Standby!\n", __FILE__, __LINE__, __func__);
+			return;
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
 			if(LDP(R_FOOTSWITCH_PRESS)){//发射激光

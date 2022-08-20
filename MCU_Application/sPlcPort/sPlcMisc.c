@@ -132,8 +132,8 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 			HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2);//关闭TIM
 		}
 		FanSpeed = speed;
+		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
 	}
-	printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
 }
 
 void morseCodeDiag(uint8_t diag){//蜂鸣器诊断声音 摩尔斯电码

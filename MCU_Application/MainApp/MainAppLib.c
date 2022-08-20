@@ -99,21 +99,21 @@ void defaultScheme(void){//当前选择方案恢复默认值
 	switch(NVRAM0[DM_SCHEME_NUM]){
 		case 0:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S0);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 80;//EVLA_SIGNAL能量间隔 80J
 			break;
 		}
 		case 1:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S1);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 60;//8.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 60;//EVLA_SIGNAL能量间隔
 			break;
 		}
 		case 2:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S2);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 30;//8.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 30;//EVLA_SIGNAL能量间隔
 			break;
@@ -141,21 +141,21 @@ void defaultScheme(void){//当前选择方案恢复默认值
 		}
 		case 6:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S6);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 7:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S7);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 8:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S8);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SIGNAL;
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
@@ -245,7 +245,6 @@ void defaultScheme(void){//当前选择方案恢复默认值
 		}
 		default:break;
 	}
-#if CONFIG_DEBUG_APP == 1
 	printf("%s,%d,%s:scheme num:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
 	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_SELECT]);
@@ -263,7 +262,6 @@ void defaultScheme(void){//当前选择方案恢复默认值
 	printf("%s,%d,%s:scheme derma negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
 	printf("%s,%d,%s:scheme derma spot size:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
 	printf("\n\n\n\n");
-#endif
 }
 
 void loadScheme(void){//FD->EM
@@ -276,6 +274,7 @@ void loadScheme(void){//FD->EM
 		printf("App->loadScheme:NVRAM0[DM_SCHEME_NUM] < 0 !\n");
 		NVRAM0[DM_SCHEME_NUM] = 0;
 	}
+	printf("%s,%d,%s:loadScheme:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
 	psrc = (uint8_t*)&FDRAM[FD_SCHEME_START_0 + (NVRAM0[DM_SCHEME_NUM] * 64)];
 	pdist = (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME];
 	memcpy(pdist, psrc, ((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2));
@@ -304,7 +303,6 @@ void loadScheme(void){//FD->EM
 			break;
 		}
 	}
-#if CONFIG_DEBUG_APP == 1
 	printf("\n\n\n\n");
 	printf("%s,%d,%s:load scheme!\n", __FILE__, __LINE__, __func__);
 	printf("%s,%d,%s:scheme num:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
@@ -324,7 +322,6 @@ void loadScheme(void){//FD->EM
 	printf("%s,%d,%s:scheme derma negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
 	printf("%s,%d,%s:scheme derma spot size:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_DERMA_SPOT_SIZE]);
 	printf("\n\n\n\n");
-#endif
 }
 void saveScheme(void){//EM->FD
 	uint8_t *psrc, *pdist;

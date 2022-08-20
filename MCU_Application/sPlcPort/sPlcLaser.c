@@ -287,22 +287,6 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 		case LASER_MODE_CW:{//CW连续模式
 			if(LaserTimer_TCounter == 0){
 				laserStart();
-				LaserTimer_TCounter ++;				
-			}
-			if(LaserTimer_ReleaseTime < 1000){
-				LaserTimer_ReleaseTime ++;//发射时间累计
-			}
-			else{
-				LaserTimer_ReleaseTime = 0;
-				if(LaserRelease_TotalTime0 < 99999){
-					LaserRelease_TotalTime0 ++;
-				}
-			}
-			break;
-		}
-		case LASER_MODE_SIGNAL:{//连续模式 音频改变
-			if(LaserTimer_TCounter == 0){
-				laserStart();
 				LaserTimer_TCounter ++;
 				LaserTimer_BeemSwitchCounter = 0;
 				LaserTimer_BeemSwtichLength = 0;
@@ -318,7 +302,7 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 						LaserRelease_TotalTime0 ++;
 					}
 				}
-				if((((fp32_t)LaserTimer_BeemSwitchCounter * (fp32_t)NVRAM0[EM_TOTAL_POWER]) / 10000.0F) >= (fp32_t)NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL]){
+				if((((fp32_t)LaserTimer_BeemSwitchCounter * (fp32_t)NVRAM0[EM_TOTAL_POWER]) / 10000.0F) >= (fp32_t)NVRAM0[DM_ACOUSTIC_ENERGY]){
 					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFORM_SPK_FREQ){
 						setLoudspeakerVolume(100);
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFORM_SPK_FREQ;
@@ -337,8 +321,6 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				}
 			}
 			break;
-		}
-		case LASER_MODE_DERMA:{//与MP模式相同
 		}
 		case LASER_MODE_MP:{//MP多脉冲模式	
 			if((LaserTimer_TCounter >= 0) && (LaserTimer_TCounter < LaserTimer_TMate)){//激光发射
@@ -360,40 +342,6 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 				LaserTimer_TCounter = -1;//清零
 			}
 			LaserTimer_TCounter ++;
-			break;
-		}
-		case LASER_MODE_GP:{//GP可编程脉冲模式
-			if(LaserTimer_PCounter < LaserTimer_PMate){//脉冲串输出
-				if(LaserTimer_TCounter == 0){//翻转	
-					laserStart();
-				}
-				if(LaserTimer_TCounter < LaserTimer_PMate){//激光发射中
-					if(LaserTimer_ReleaseTime < 1000){
-						LaserTimer_ReleaseTime ++;//发射时间累计
-					}
-					else{
-						LaserTimer_ReleaseTime = 0;
-						if(LaserRelease_TotalTime0 < 99999){
-							LaserRelease_TotalTime0 ++;
-						}
-					}
-				}
-				if(LaserTimer_TCounter == LaserTimer_TMate){//计时器匹配
-					laserStop();					
-				}
-				if(LaserTimer_TCounter >= LaserTimer_TOvertime){//计时器溢出
-					LaserTimer_TCounter = -1;//清零
-					LaserTimer_PCounter ++;
-				}
-				LaserTimer_TCounter ++;
-			}
-			if(LaserTimer_PCounter >= LaserTimer_PMate){//多脉冲间隔		
-				if(LaserTimer_PCounter >= (LaserTimer_POvertime + LaserTimer_PMate)){//脉冲个数发现匹配
-					LaserTimer_PCounter = -1;
-					LaserTimer_TCounter = 0;
-				}
-				LaserTimer_PCounter ++;
-			}
 			break;
 		}
 		case LASER_MODE_SP:{//单脉冲模式

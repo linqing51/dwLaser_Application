@@ -41,7 +41,7 @@
 #define CONFIG_SPLC_MAX_SPK_FREQ											4500L//喇叭最高频率
 #define CONFIG_SPLC_MIN_SPL_FREQ											1000L//喇叭最低频率
 #define CONFIG_SPLC_DEFAULT_SPK_FREQ									1500L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_SPK_FREQ										800L//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFORM_SPK_FREQ						800L//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT										1//输入IO刷新启用
 #define CONFIG_SPLC_USING_IO_OUTPUT										1//输出IO刷新启用
@@ -125,7 +125,7 @@
 /*****************************************************************************/
 #define CONFIG_WAIT_HMI_DELAY_TIME										50
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								5
-#define CONFIG_KEY_REPEAT_DELAY_TIME									100
+#define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
 #define CONFIG_DIODE_SET_TEMP													200//激光器恒温温度 
@@ -173,7 +173,7 @@
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							800//变音持续时间
-#define CONFIG_MAX_ACOUSTIC_ENERGY										999
+#define CONFIG_MAX_ACOUSTIC_ENERGY										2000
 #define CONFIG_MIN_ACOUSTIC_ENERGY										10
 #define CONFIG_MAX_ACOUSTIC_TIME											999
 #define CONFIG_MIN_ACOUSTIC_TIME											10
@@ -185,7 +185,7 @@
 #define CONFIG_BEEM_MIN_VOLUME												0//蜂鸣器最小音量
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
-#define CONFIG_FAN_MAX_DC															50
+#define CONFIG_FAN_MAX_DC															100
 #define CONFIG_FAN_MIN_DC															0
 
 #define ACOUSTIC_ENERGY_MAX														2000//
@@ -482,8 +482,6 @@
 #define EM_LASER_PHOTODIODE											(EM_START + 73)//激光二极管模块功率
 #define EM_LASER_TEC_DC													(EM_START + 74)//激光制冷器扇功率 0-100%
 #define EM_LASER_FAN_SPEED											(EM_START + 75)//激光散热风扇速度 0-100%
-#define EM_ACOUSTIC_ENERGY											(EM_START + 76)
-#define EM_ACOUSTIC_TIME												(EM_START + 77)
 /*****************************************************************************/				
 #define EM_TOTAL_POWER													(EM_START + 80)//发射总功率
 #define EM_HMI_OPERA_STEP												(EM_START +	81)//操作步骤								
@@ -694,8 +692,8 @@
 #define DM_DC_OLD_PASSCODE1									(DM_START + 6)//屏旧密码2-3
 #define DM_DC_OLD_PASSCODE2									(DM_START + 7)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3									(DM_START + 8)//屏旧密码2-3
-#define DM_ACOUSTIC_ENERGY									(DM_START + 9)//屏旧密码2-3
-#define DM_ACOUSTIC_TIME										(DM_START + 10)//屏旧密码2-3
+#define DM_ACOUSTIC_ENERGY									(DM_START + 9)//提示音能量间隔
+#define DM_ACOUSTIC_TIME										(DM_START + 10)//提示音时间间隔
 /*****************************************************************************/
 #define X_ESTOP_NC													(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC											(X_START * 16 + 1)//XIN1 安全连锁
