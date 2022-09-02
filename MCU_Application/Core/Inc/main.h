@@ -89,10 +89,10 @@ void Error_Handler(void);
 #define LASER_PWM_GPIO_Port GPIOA
 #define POWER_KEY_Pin GPIO_PIN_4
 #define POWER_KEY_GPIO_Port GPIOC
-#define DEBUG_LED0_Pin GPIO_PIN_5
-#define DEBUG_LED0_GPIO_Port GPIOC
-#define DEBUG_LED1_Pin GPIO_PIN_0
-#define DEBUG_LED1_GPIO_Port GPIOB
+#define TICK_LED_Pin GPIO_PIN_5
+#define TICK_LED_GPIO_Port GPIOC
+#define ERR_LED_Pin GPIO_PIN_0
+#define ERR_LED_GPIO_Port GPIOB
 #define SYSID0_IN_Pin GPIO_PIN_1
 #define SYSID0_IN_GPIO_Port GPIOB
 #define SYSID1_IN_Pin GPIO_PIN_2
@@ -109,16 +109,16 @@ void Error_Handler(void);
 #define OTG_FS_PSOC_GPIO_Port GPIOC
 #define OTG_FS_PSON_Pin GPIO_PIN_8
 #define OTG_FS_PSON_GPIO_Port GPIOA
-#define LASER1_ON_IN_Pin GPIO_PIN_15
-#define LASER1_ON_IN_GPIO_Port GPIOA
-#define LASER2_ON_IN_Pin GPIO_PIN_10
-#define LASER2_ON_IN_GPIO_Port GPIOC
+#define LASER1_TRIG_IN_Pin GPIO_PIN_15
+#define LASER1_TRIG_IN_GPIO_Port GPIOA
+#define LASER2_TRIG_IN_Pin GPIO_PIN_10
+#define LASER2_TRIG_IN_GPIO_Port GPIOC
 #define ESTOP_IN_Pin GPIO_PIN_11
 #define ESTOP_IN_GPIO_Port GPIOC
 #define INTERLOCK_IN_Pin GPIO_PIN_12
 #define INTERLOCK_IN_GPIO_Port GPIOC
-#define FAN5V_OUT_Pin GPIO_PIN_2
-#define FAN5V_OUT_GPIO_Port GPIOD
+#define LOCK_LED_Pin GPIO_PIN_2
+#define LOCK_LED_GPIO_Port GPIOD
 #define TEC_OUT_Pin GPIO_PIN_4
 #define TEC_OUT_GPIO_Port GPIOB
 #define ALARM_LED_OUT_Pin GPIO_PIN_5
@@ -127,6 +127,10 @@ void Error_Handler(void);
 #define LASER1_LED_OUT_GPIO_Port GPIOB
 #define LASER2_LED_OUT_Pin GPIO_PIN_7
 #define LASER2_LED_OUT_GPIO_Port GPIOB
+#define I2C1_SCL_Pin GPIO_PIN_8
+#define I2C1_SCL_GPIO_Port GPIOB
+#define I2C1_SDA_Pin GPIO_PIN_9
+#define I2C1_SDA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
