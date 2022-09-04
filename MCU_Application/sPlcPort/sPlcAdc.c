@@ -36,12 +36,12 @@ void chipAdcProcess(void){//循环采集ADC
 			
 			}
 		}			
-		NVRAM0[SPREG_ADC_0] = (uint16_t)((fp32_t)sum[0] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_1] = (uint16_t)((fp32_t)sum[1] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_2] = (uint16_t)((fp32_t)sum[2] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_3] = (uint16_t)((fp32_t)sum[3] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_4] = (uint16_t)((fp32_t)sum[4] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_5] = (uint16_t)((fp32_t)sum[5] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_0] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_1] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_2] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_3] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_4] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_5] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 	}
 	else{//adcBufferSelect = 1
 		HAL_ADC_Stop_DMA(&hadc1);
@@ -54,12 +54,12 @@ void chipAdcProcess(void){//循环采集ADC
 			
 			}
 		}			
-		NVRAM0[SPREG_ADC_0] = (uint16_t)((fp32_t)sum[0] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_1] = (uint16_t)((fp32_t)sum[1] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_2] = (uint16_t)((fp32_t)sum[2] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_3] = (uint16_t)((fp32_t)sum[3] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_4] = (uint16_t)((fp32_t)sum[4] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
-		NVRAM0[SPREG_ADC_5] = (uint16_t)((fp32_t)sum[5] / (fp32_t)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_0] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_1] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_2] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_3] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_4] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_5] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 	}
 }
 

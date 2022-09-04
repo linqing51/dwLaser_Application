@@ -3,7 +3,6 @@
 extern TIM_HandleTypeDef htim2;//FAN PWM
 extern TIM_HandleTypeDef htim12;//FAN PWM
 
-static int16_t AimBrg = -1;
 static int16_t FanSpeed = -1;
 /*****************************************************************************/
 void softDelayMs(uint16_t ms){//软件延时
@@ -93,30 +92,24 @@ void enterSplcIsr(void){
 void exitSplcIsr(void){
 }
 
-void setAimBrightness(int16_t brg){//设置瞄准光亮度
-	uint16_t temp;
-	if(AimBrg != brg){
-		if(brg > CONFIG_AIM_MAX_DC){
-			brg = CONFIG_AIM_MAX_DC;
-		}
-		if(brg < CONFIG_AIM_MIN_DC){
-			brg = CONFIG_AIM_MIN_DC;
-		}
-		temp = 255 * brg / 100;
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, temp);
-		if(brg != 0){
-			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
-		}
-		AimBrg = brg;
-		printf("%s,%d,%s:set aim:%d\n",__FILE__, __LINE__, __func__, brg);
+void setAimBrightness(int8_t brg){//设置瞄准光亮度
+	if(brg > CONFIG_AIM_MAX_DC){
+		brg = CONFIG_AIM_MAX_DC;
 	}
+	if(brg < CONFIG_AIM_MIN_DC){
+		brg = CONFIG_AIM_MIN_DC;
+	}
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, brg);
+	if(brg != 0){
+		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//打开TIM
+	}
+	else{
+		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
+	}
+	printf("%s,%d,%s:set aim:%d\n",__FILE__, __LINE__, __func__, brg);
 }
 
 void setFanSpeed(int16_t speed){//设置风扇转速
-	uint16_t temp;
 	if(FanSpeed != speed){
 		if(speed > CONFIG_FAN_MAX_DC){
 			speed = CONFIG_FAN_MAX_DC;

@@ -10,7 +10,7 @@
 */
 void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
    //TODO: ÃÌº””√ªß
-	uint16_t tmp;int32_t sValue;fp32_t fValue;
+	uint16_t tmp;int32_t sValue;float fValue;
 	switch(screen_id){
 		case GDDC_PAGE_RENAME:{
 			switch(control_id){

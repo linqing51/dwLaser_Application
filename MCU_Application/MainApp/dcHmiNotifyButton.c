@@ -285,21 +285,24 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if((NVRAM0[EM_DC_NEW_PASSCODE0] == NVRAM0[EM_DC_DEFAULT_PASSCODE0]) && (NVRAM0[EM_DC_NEW_PASSCODE1] == NVRAM0[EM_DC_DEFAULT_PASSCODE1])){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						SSET(R_ENGINEER_MODE);
+						standbyDebugInfoVisiable(true);	
 					}else if((NVRAM0[EM_DC_NEW_PASSCODE0] == NVRAM0[DM_DC_OLD_PASSCODE0]) && (NVRAM0[EM_DC_NEW_PASSCODE1] == NVRAM0[DM_DC_OLD_PASSCODE1])){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						RRES(R_ENGINEER_MODE);
-					}		
+						standbyDebugInfoVisiable(false);	
+					}
+					else{
+						break;
+					}
 					CLR(EM_DC_NEW_PASSCODE0);//清空已输入密码
 					CLR(EM_DC_NEW_PASSCODE1);
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引 
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
 					dispBuf[4] = 0x0;
-					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
-					
+					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(dispBuf));
 					updateStandbyDisplay();
 					standbyPageTouchEnable(true);
-					standbyDebugInfoVisiable(true);	
 					break;
 				}
 				default:break;
@@ -602,23 +605,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_STANDBY_CW:{//主界面STANDBY CW
 			switch(control_id){
-				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
-					if(state){
-						SSET(R_HMI_FOOTSWITCH_PRESS);
-					}
-					else{
-						RRES(R_HMI_FOOTSWITCH_PRESS);
-					}
-					break;
-				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD:{
 					if(state){
 						if(NVRAM0[DM_AIM_BRG] < CONFIG_AIM_MAX_DC){
 							NVRAM0[DM_AIM_BRG] += 1;//+1
 							SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-							SetTextInt32(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
 							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
 						}
@@ -631,8 +623,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							NVRAM0[DM_AIM_BRG] -= 1;//-1	
 							SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-							SetTextInt32(GDDC_PAGE_STANDBY_SP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_SP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
 							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
 							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
 						}
@@ -728,15 +718,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}	
 		case GDDC_PAGE_STANDBY_SP:{
 			switch(control_id){
-				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
-					if(state){
-						SSET(R_HMI_FOOTSWITCH_PRESS);
-					}
-					else{
-						RRES(R_HMI_FOOTSWITCH_PRESS);
-					}
-					break;
-				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
@@ -821,12 +802,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
-						//standbyPageTouchEnable(false);//LOCK PAGE
-						//standbyKeyTouchEnable(false);
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
-						//standbyPageTouchEnable(true);//UNLOCK PAGE
-						//standbyKeyTouchEnable(true);
 					}
 					break;
 				}
@@ -835,12 +812,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}	
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
 					if(state){	
-						//standbyPageTouchEnable(false);//LOCK PAGE
-						//standbyKeyTouchEnable(false);
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
 						updateStandbyDisplay();
-						//standbyPageTouchEnable(true);//UNLOCK PAGE
-						//standbyKeyTouchEnable(true);
 					}
 					break;
 				}
@@ -863,15 +836,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_STANDBY_MP:{//主界面STANDBY MP
 			switch(control_id){				
-				case GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH:{
-					if(state){
-						SSET(R_HMI_FOOTSWITCH_PRESS);
-					}
-					else{
-						RRES(R_HMI_FOOTSWITCH_PRESS);
-					}
-					break;
-				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD:{
 					if(state){
 						if(NVRAM0[DM_AIM_BRG] < CONFIG_AIM_MAX_DC){
@@ -1046,11 +1010,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD:{
 					if(state){//DOWN
 						SSET(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
-						NVRAM0[DM_ACOUSTIC_ENERGY] += 1;
-						if(NVRAM0[DM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){
-							NVRAM0[DM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
-						}
-						updateAcousticEnergy();
+						addAcousticEnergy();
+						updateAcousticDisplay();
 					}
 					else{//UP
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
@@ -1061,11 +1022,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_DEC:{
 					if(state){//DOWN
 						SSET(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
-						NVRAM0[DM_ACOUSTIC_ENERGY] -= 1;
-						if(NVRAM0[DM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){
-							NVRAM0[DM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
-						}
-						updateAcousticEnergy();
+						decAcousticEnergy();
+						updateAcousticDisplay();
 					}
 					else{//UP
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
@@ -1076,11 +1034,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD:{
 					if(state){//DOWN
 						SSET(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
-						NVRAM0[DM_ACOUSTIC_TIME] += 1;
-						if(NVRAM0[DM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){
-							NVRAM0[DM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
-						}
-						updateAcousticTime();
+						addAcousticTime();
+						updateAcousticDisplay();
 					}
 					else{//UP
 						RRES(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
@@ -1091,11 +1046,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_DEC:{
 					if(state){//DOWN
 						SSET(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
-						NVRAM0[DM_ACOUSTIC_TIME] -= 1;
-						if(NVRAM0[DM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){
-							NVRAM0[DM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
-						}
-						updateAcousticTime();
+						decAcousticTime();
+						updateAcousticDisplay();
 					}
 					else{//UP
 						RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
@@ -1111,10 +1063,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			switch(control_id){
 				case GDDC_PAGE_OPTION_KEY_TONE:{
 					if(state){
-						SSET(MR_BEEM_TONE);
+						SSET(MR_BEEP_TONE);
 					}
 					else{
-						RRES(MR_BEEM_TONE);
+						RRES(MR_BEEP_TONE);
 					}
 					break;
 				}

@@ -13,15 +13,14 @@ int16_t LaserTimer_PMate;
 int16_t LaserTimer_POvertime;
 int16_t LaserTimer_ReleaseTime;
 int16_t LaserTimer_ReleaseCounter;
-int16_t LaserTimer_BeemSwitchCounter;
-int16_t LaserTimer_BeemSwtichLength;
 int8_t LaserFlag_Emiting;//激光发射中标志
 int8_t LaserFlag_Request;//激光发射脚踏请求
 int8_t LaserFlag_Emitover;//激光发射完毕标志
 int32_t LaserRelease_TotalTime0;//激光发射总时间
-float LaserRelease_TotalEnergy0;//激光发射总能量
+double LaserRelease_TotalEnergy0;//激光发射总能量
 int32_t LaserRelease_TotalTime1;//激光发射总时间
-float LaserRelease_TotalEnergy1;//激光发射总能量
+double LaserRelease_TotalEnergy1;//激光发射总能量
+uint32_t LaserAcousticBeepNum;//提示音发射次数
 /*****************************************************************************/
 static void laserStop(void);
 static void laserStart(void);
@@ -152,9 +151,8 @@ void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
 
 #endif
 void STLAR(void){//开始发射脉冲
-#if CONFIG_DEBUG_LASER == 1
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
-#endif	
+	/*
 	if(LD(MR_BEEM_TONE) || (LaserTimer_Mode == LASER_MODE_SIGNAL)){
 		//判断是否有脉冲 如果正脉宽或脉冲间隔长度小于100mS则选择MODE2
 		switch(NVRAM0[EM_LASER_PULSE_MODE]){
@@ -211,22 +209,31 @@ void STLAR(void){//开始发射脉冲
 	else{
 		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
 	}
+	
+	*/
+	LaserAcousticBeepNum = LaserRelease_TotalEnergy0 / NVRAM0[EM_ACOUSTIC_ENERGY] + 1;
+	printf("%s,%d,%s:beep number:%d\n",__FILE__, __LINE__, __func__, LaserAcousticBeepNum);
+	if(LD(MR_BEEP_TONE)){//BEEP
+		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+	}
+	else{
+		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
+		
+	}
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
 	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 	NVRAM0[SPREG_BEEM_COUNTER]= 0;
+	
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
 	LaserTimer_ReleaseCounter = 0x0;
-	LaserTimer_BeemSwitchCounter = 0x0;
 	LaserFlag_Emiting = false;
 	LaserFlag_Emitover = false;
 	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
 	HAL_TIM_Base_Start_IT(&htim10);//打开计时器
 }
 void EDLAR(void){//停止发射脉冲
-#if CONFIG_DEBUG_LASER == 1
-	printf("%s,%d,%s:laser stop!",__FILE__, __LINE__, __func__);
-#endif
+	printf("%s,%d,%s:laser stop!\n",__FILE__, __LINE__, __func__);
 	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
 	HAL_TIM_Base_Stop_IT(&htim10);//停止计时器
 	laserStop();//关闭DAC输出
@@ -236,9 +243,7 @@ void EDLAR(void){//停止发射脉冲
 	LaserFlag_Emitover = true;
 }
 void sPlcLaserInit(void){//激光脉冲功能初始化
-#if CONFIG_DEBUG_LASER == 1
 	printf("%s,%d,%s:laser init!\n",__FILE__, __LINE__, __func__);
-#endif	
 	SET_LASER_CH0_OFF;
 	SET_LASER_CH1_OFF;
 	SET_LASER_CH2_OFF;
@@ -255,14 +260,13 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserTimer_POvertime = 0;
 	LaserTimer_ReleaseTime = 0;
 	LaserTimer_ReleaseCounter = 0;
-	LaserTimer_BeemSwitchCounter = 0;
-	LaserTimer_BeemSwtichLength = 0;
 	LaserFlag_Emiting = false;//激光发射中标志
 	LaserFlag_Emitover = false;
 	LaserRelease_TotalTime0 = 0;
 	LaserRelease_TotalEnergy0 = 0;
 	LaserRelease_TotalTime1 = -1;
 	LaserRelease_TotalEnergy1 = -1;
+	LaserAcousticBeepNum = 0;
 }
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
@@ -286,13 +290,10 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 	switch(LaserTimer_Mode){
 		case LASER_MODE_CW:{//CW连续模式
 			if(LaserTimer_TCounter == 0){
-				laserStart();
-				LaserTimer_TCounter ++;
-				LaserTimer_BeemSwitchCounter = 0;
-				LaserTimer_BeemSwtichLength = 0;
+					laserStart();
+					LaserTimer_TCounter ++;
 			}
 			else{
-				LaserTimer_BeemSwitchCounter += 1;
 				if(LaserTimer_ReleaseTime < 1000){
 					LaserTimer_ReleaseTime ++;//发射时间累计
 				}
@@ -301,23 +302,6 @@ void laserTimerIsr(void){//TIM 中断回调 激光发射
 					if(LaserRelease_TotalTime0 < 99999){
 						LaserRelease_TotalTime0 ++;
 					}
-				}
-				if((((fp32_t)LaserTimer_BeemSwitchCounter * (fp32_t)NVRAM0[EM_TOTAL_POWER]) / 10000.0F) >= (fp32_t)NVRAM0[DM_ACOUSTIC_ENERGY]){
-					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFORM_SPK_FREQ){
-						setLoudspeakerVolume(100);
-						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFORM_SPK_FREQ;
-						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
-					}
-					LaserTimer_BeemSwtichLength ++;			
-				}
-				if(LaserTimer_BeemSwtichLength >= CONFIG_BEEM_ENERGY_INTERVAL_TIME){				
-					if(NVRAM0[SPREG_BEEM_FREQ] != CONFIG_SPLC_DEFAULT_SPK_FREQ){
-						setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
-						setLoudspeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
-					}			
-					LaserTimer_BeemSwitchCounter = 0;
-					LaserTimer_BeemSwtichLength = 0;
 				}
 			}
 			break;

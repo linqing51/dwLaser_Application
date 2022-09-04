@@ -362,8 +362,8 @@ void sPlcProcessStart(void){//sPLC轮询起始
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
-	if(LDP(SPCOIL_PS1000MS)){
-		SSET(Y_TICK_LED);
+	if(LDP(SPCOIL_PS500MS)){
+		FLIP(Y_TICK_LED);
 	}
 #if CONFIG_SPLC_USING_IO_OUTPUT == 1
 	outputRefresh();//更新Y口输出

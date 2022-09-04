@@ -65,8 +65,7 @@ void updateTimesDisplay(void);
 void updateGroupOffDisplay(void);
 void updateOptionDisplay(void);
 void updateInformationDisplay(void);
-void updateAcousticEnergy(void);
-void updateAcousticTime(void);
+void updateAcousticDisplay(void);
 /*****************************************************************************/
 void updateScheme_0_Display(void);
 void updateScheme_1_Display(void);

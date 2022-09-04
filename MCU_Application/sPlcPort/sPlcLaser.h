@@ -26,14 +26,13 @@ extern int16_t LaserTimer_PMate;
 extern int16_t LaserTimer_POvertime;
 extern int16_t LaserTimer_ReleaseTime;
 extern int16_t LaserTimer_ReleaseCounter;
-extern int16_t LaserTimer_BeemSwitchCounter;
-extern int16_t LaserTimer_BeemSwtichLength;
 extern int8_t  LaserFlag_Emiting;//激光发射中标志
 extern int8_t LaserFlag_Emitover;//激光发射完毕标志
 extern int32_t LaserRelease_TotalTime0;//激光发射总时间
-extern float LaserRelease_TotalEnergy0;//激光发射总能量
+extern double LaserRelease_TotalEnergy0;//激光发射总能量
 extern int32_t LaserRelease_TotalTime1;//激光发射总时间
-extern float LaserRelease_TotalEnergy1;//激光发射总能量
+extern double LaserRelease_TotalEnergy1;//激光发射总能量
+extern uint32_t LaserAcousticBeepNum;//提示音发射次数
 /*****************************************************************************/
 void sPlcLaserInit(void);
 void laserTimerIsr(void);//中断 激光发射

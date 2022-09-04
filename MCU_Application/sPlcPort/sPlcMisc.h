@@ -22,6 +22,7 @@ extern TIM_HandleTypeDef htim2;//FAN PWM
 #define BEEM_MODE_1														0x11//声光同步
 #define BEEM_MODE_2														0x12//激光发射固定间隔
 #define BEEM_MODE_3														0x13//异常报警
+#define BEEM_MODE_4														0x14//激光发射固定间隔+提示音
 /*****************************************************************************/
 #define LASER_CHANNEL_0												0x00//通道0
 #define LASER_CHANNEL_1												0x01//通道1
@@ -81,14 +82,8 @@ void sPlcLoudspeakerLoop(void);//蜂鸣器轮询
 void sPlcAimLoop(void);//瞄准光轮询
 void sPlcAutoFanLoop(void);//风扇速轮询程序
 
-void setAimFreq(int16_t freq);//设置AIM PWM频率
-void setLedFreq(int16_t freq);//设置LED PWM频率
-void setFanFreq(int16_t freq);//设置FAN PWM频率
-void setAimBrightness(int16_t brg);//设置瞄准光亮度
+void setAimBrightness(int8_t brg);//设置瞄准光亮度
 int16_t getAimBrightness(void);//获取瞄准光亮度
-void setRedLedBrightness(int16_t brg);//设置R LED亮度
-void setGreenLedBrightness(int16_t brg);//设置G LED亮度
-void setYellowLedBrightness(int16_t brg);//设置Y LED亮度
 void setLaserEnable(int8_t channel, int8_t ena);//设置激光使能
 void flipLaserEnable(int8_t channel);//翻转激光使能
 int8_t getLaserEnable(int8_t channel);//获取激光使能

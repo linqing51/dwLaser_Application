@@ -274,7 +274,7 @@ void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位非饱加法 D = Sa + Sb
 }
 void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位饱和加法 D = Sa + Sb
 	int32_t tmpSa = 0, tmpSb = 0, tmpD = 0;
-	fp64_t fD;
+	double fD;
 	tmpSa = NVRAM0[(Sa + 1)];
 	tmpSa = (tmpSa << 16) & 0xFFFF0000;
 	tmpSa |= NVRAM0[Sa];
@@ -283,7 +283,7 @@ void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位饱和加法 D = Sa + Sb
 	tmpSb = (tmpSb << 16) & 0xFFFF0000;
 	tmpSb |= NVRAM0[Sb];
 
-	fD = (fp64_t)tmpSa + (fp64_t)tmpSb;
+	fD = (double)tmpSa + (double)tmpSb;
 	if(fD >= LONG_MAX){
 		fD = LONG_MAX;
 	}
@@ -297,12 +297,12 @@ void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位饱和加法 D = Sa + Sb
 }
 void ADDS32D(uint16_t Sa, uint16_t Sb, uint16_t D){//32位饱和加法 D(32) = Sa(32) + Sb(16)
 	int32_t tmpSa = 0, tmpD = 0;
-	fp64_t fD;
+	double fD;
 	tmpSa = NVRAM0[(Sa + 1)];
 	tmpSa = (tmpSa << 16) & 0xFFFF0000;
 	tmpSa |= NVRAM0[Sa];
 	
-	fD = (fp64_t)tmpSa + (fp64_t)NVRAM0[Sb];
+	fD = (double)tmpSa + (double)NVRAM0[Sb];
 	if(fD >= LONG_MAX){
 		fD = LONG_MAX;
 	}

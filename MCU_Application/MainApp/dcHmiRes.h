@@ -93,7 +93,6 @@
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH					26//负脉宽显示
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER						27//功率设定拖动条
 #define GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG							28
-#define GDDC_PAGE_STANDBY_KEY_HAND_LAUNCH								98
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示

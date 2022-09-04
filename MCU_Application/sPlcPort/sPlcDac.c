@@ -12,7 +12,7 @@
 #define SET_EDAC1_SDI(b)							HAL_GPIO_WritePin(EDAC1_SDI_GPIO_Port, EDAC1_SDI_Pin, b)
 #define SET_EDAC2_SDI(b)							HAL_GPIO_WritePin(EDAC2_SDI_GPIO_Port, EDAC2_SDI_Pin, b)
 #define SET_EDAC3_SDI(b)							HAL_GPIO_WritePin(EDAC3_SDI_GPIO_Port, EDAC3_SDI_Pin, b)
-#define MCP4821_NSHDN_MASK							(1 << 12)
+#define MCP4821_NSHDN_MASK						(1 << 12)
 #define MCP4821_NGA_MASK							(1 << 13)
 /*****************************************************************************/
 static void writeMcp4821_0(uint16_t dat){//MCP4821 SPI写入
@@ -104,10 +104,8 @@ void initChipDac(void){//DAC初始化
 	writeMcp4821_1(0);
 	writeMcp4821_2(0);
 	writeMcp4821_3(0);
-#if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:init dac vref=2048mV\n",__FILE__, __LINE__, __func__);
 	printf("%s,%d,%s:init dac done!\n",__FILE__, __LINE__, __func__);
-#endif
 }
 void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
@@ -117,9 +115,7 @@ void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	if(temp <= CONFIG_MIN_DAC_CH0)
 		temp = CONFIG_MIN_DAC_CH0;
 	writeMcp4821_0(temp);
-#if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac0=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
 }
 void UPDAC1(void){//立即从SPREG_DAC_1更新DAC1
 	uint16_t temp;
@@ -129,9 +125,7 @@ void UPDAC1(void){//立即从SPREG_DAC_1更新DAC1
 	if(temp <= CONFIG_MIN_DAC_CH1)
 		temp = CONFIG_MIN_DAC_CH1;
 	writeMcp4821_1(temp);
-#if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac1=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
 }
 void UPDAC2(void){
 	uint16_t temp;
@@ -141,9 +135,7 @@ void UPDAC2(void){
 	if(temp <= CONFIG_MIN_DAC_CH2)
 		temp = CONFIG_MIN_DAC_CH2;
 	writeMcp4821_2(temp);
-#if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac2=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
 }
 void UPDAC3(void){
 	uint16_t temp;
@@ -153,9 +145,7 @@ void UPDAC3(void){
 	if(temp <= CONFIG_MIN_DAC_CH3)
 		temp = CONFIG_MIN_DAC_CH3;
 	writeMcp4821_3(temp);
-#if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:update dac3=%d\n",__FILE__, __LINE__, __func__, temp);
-#endif
 }
 
 void CLDAC(void){//立即清空全部DAC
@@ -163,9 +153,7 @@ void CLDAC(void){//立即清空全部DAC
 	writeMcp4821_1(0);
 	writeMcp4821_2(0);
 	writeMcp4821_3(0);
-#if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:clear all dac!\n",__FILE__, __LINE__, __func__);
-#endif
 }
 
 

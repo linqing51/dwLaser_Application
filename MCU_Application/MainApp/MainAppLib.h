@@ -4,6 +4,10 @@
 #include "sPlc.h"
 #include "preScheme.h"
 /*****************************************************************************/
+void addAcousticTime(void);//增加提示时间 +1
+void decAcousticTime(void);//减小提示时间 -1
+void addAcousticEnergy(void);//增加提示能量 +1
+void decAcousticEnergy(void);//减小提示能量 -1		
 uint8_t fanSpeedToPwm(uint8_t speed);//风扇输入转换为占空比
 uint8_t getLcdDuty(int16_t LcdBrg);//屏幕亮度值转换为占空比
 int16_t keyRuleAdd(int16_t ps, int16_t max);
@@ -16,6 +20,7 @@ void defaultScheme(void);//恢复默认设置
 void loadDefault(void);
 void lockPreScheme(void);//恢复预设方案
 uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg);
+uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power);
 uint8_t saveSchemeToUdisk(void);//将FDRAM写入USB DISK
 uint8_t loadSchemeFromUdisk(void);//从USB DISK载入FDRAM
 /*****************************************************************************/

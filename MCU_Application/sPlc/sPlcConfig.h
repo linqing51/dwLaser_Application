@@ -14,7 +14,6 @@
 #define CONFIG_DEBUG_AIM															0//调试指示光驱动
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
-#define CONFIG_DEBUG_APP															1//调试应用程序
 /*****************************************************************************/
 #define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
 #define DEVID_H																				'1'//设备ID
@@ -39,9 +38,9 @@
 /*****************************************************************************/				
 #define CONFIG_SPLC_USING_SPK													1//使能板载扬声器
 #define CONFIG_SPLC_MAX_SPK_FREQ											4500L//喇叭最高频率
-#define CONFIG_SPLC_MIN_SPL_FREQ											1000L//喇叭最低频率
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1500L//蜂鸣器默认频率
-#define CONFIG_SPLC_DEFORM_SPK_FREQ						800L//蜂鸣器变声频率
+#define CONFIG_SPLC_MIN_SPL_FREQ											500//喇叭最低频率
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1200//蜂鸣器默认频率
+#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1550//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT										1//输入IO刷新启用
 #define CONFIG_SPLC_USING_IO_OUTPUT										1//输出IO刷新启用
@@ -100,7 +99,7 @@
 #define CONFIG_NTC_B																	3477.0F
 #define CONFIG_NTC_R25																10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF																3300L//
-#define CONFIG_FIBER_PD_THRESHOLD											-1//光纤插入时ADC阈值
+#define CONFIG_FIBER_PD_THRESHOLD											500//光纤插入时ADC阈值
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_DAC													1//是能DAC模块
 #define CONFIG_MAX_DAC_CH0														0x0FFF
@@ -123,15 +122,12 @@
 #define CONFIG_USING_DCHMI_APP												1//广东大彩人机交互应用
 #define CONFIG_DCHMI_DISKBUF_SIZE											0x80//显示缓冲区大小
 /*****************************************************************************/
-#define CONFIG_WAIT_HMI_DELAY_TIME										50
+#define CONFIG_WAIT_HMI_DELAY_TIME										25
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								5
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													200//激光器恒温温度 
-#define CONFIG_DIODE_DIFF_TEMP												15
-#define CONFIG_DIODE_HIGH_TEMP												400//激光器高温极限 46.0C
-#define CONFIG_DIODE_LOW_TEMP													-100//激光器低温极限 - 10.0C
+#define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
 /*****************************************************************************/
 #define CONFIG_HMI_SCHEME_NUM													32//方案数
@@ -172,26 +168,22 @@
 #define CONFIG_MAX_LASER_ENERGY_INTERVAL							200
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
-#define CONFIG_BEEM_ENERGY_INTERVAL_TIME							800//变音持续时间
-#define CONFIG_MAX_ACOUSTIC_ENERGY										2000
-#define CONFIG_MIN_ACOUSTIC_ENERGY										10
-#define CONFIG_MAX_ACOUSTIC_TIME											999
-#define CONFIG_MIN_ACOUSTIC_TIME											10
+#define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//变音持续时间
+#define CONFIG_MAX_ACOUSTIC_ENERGY										200//200J
+#define CONFIG_MIN_ACOUSTIC_ENERGY										20//20J
+#define CONFIG_MAX_ACOUSTIC_TIME											200
+#define CONFIG_MIN_ACOUSTIC_TIME											1
 
 
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
 #define CONFIG_AIM_MIN_DC															0//红光最小调光占空比
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
 #define CONFIG_BEEM_MIN_VOLUME												0//蜂鸣器最小音量
+#define CONFIG_BEEM_MAX_LIMIT													0.8F//
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #define CONFIG_FAN_MAX_DC															100
 #define CONFIG_FAN_MIN_DC															0
-
-#define ACOUSTIC_ENERGY_MAX														2000//
-#define ACOUSTIC_ENERGY_MIN														200
-#define ACOUSTIC_TIME_MAX															100.0F	
-#define ACOUSTIC_TIME_MIN															20.0F
 /*****************************************************************************/
 #define CONFIG_USING_DEFAULT_SCHEME										1//是能预设模式
 #define CONFIG_MAX_SCHEME_NAME_SIZE										40//方案名称长度
@@ -369,17 +361,15 @@
 #define SPCOIL_LINK_RECE_ERR									(SPCOIL_START * 16 + 21)//发送错误
 /*****************************************************************************/
 #define SPCOIL_BEEM_ENABLE										(SPCOIL_START * 16 + 32)//蜂鸣器使能
-#define SPCOIL_BEEM_BUSY										(SPCOIL_START * 16 + 33)//蜂鸣器工作状态
-#define SPCOIL_AIM_ENABEL										(SPCOIL_START * 16 + 34)//瞄准光使能
-#define SPCOIL_AIM_BUSY											(SPCOIL_START * 16 + 35)//瞄准光工作状态
+#define SPCOIL_BEEM_BUSY											(SPCOIL_START * 16 + 33)//蜂鸣器工作状态
 /*****************************************************************************/
-#define SPCOIL_SPWM_OUT_0										(SPCOIL_START * 16 + 48)//SPWM0输出状态
+#define SPCOIL_SPWM_OUT_0											(SPCOIL_START * 16 + 48)//SPWM0输出状态
 #define SPCOIL_SPWM_RESET_0										(SPCOIL_START * 16 + 49)//SPWM0复位
-#define SPCOIL_SPWM_OUT_1										(SPCOIL_START * 16 + 50)//SPWM1输出状态
+#define SPCOIL_SPWM_OUT_1											(SPCOIL_START * 16 + 50)//SPWM1输出状态
 #define SPCOIL_SPWM_RESET_1										(SPCOIL_START * 16 + 51)//SPWM1复位
-#define SPCOIL_SPWM_OUT_2										(SPCOIL_START * 16 + 52)//SPWM2输出状态
+#define SPCOIL_SPWM_OUT_2											(SPCOIL_START * 16 + 52)//SPWM2输出状态
 #define SPCOIL_SPWM_RESET_2										(SPCOIL_START * 16 + 53)//SPWM2复位
-#define SPCOIL_SPWM_OUT_3										(SPCOIL_START * 16 + 54)//SPWM3输出状态
+#define SPCOIL_SPWM_OUT_3											(SPCOIL_START * 16 + 54)//SPWM3输出状态
 #define SPCOIL_SPWM_RESET_3										(SPCOIL_START * 16 + 55)//SPWM3复位
 /*****************************************************************************/
 #define SPCOIL_DK25L_INIT_FAIL									(SPCOIL_START * 16 + 64)//NFC模块初始化失败
@@ -469,7 +459,7 @@
 #define EM_LASER_DERMA_NEGWIDTH									(EM_START + 61)//DERMA负脉宽
 #define EM_LASER_DERMA_SPOT_SIZE								(EM_START + 62)//DERMA光斑直径
 /*****************************************************************************/
-#define EM_LASER_AVERAGE_POWER									(EM_START + 64)//当面模式平均功率
+#define EM_LASER_AVERAGE_POWER									(EM_START + 64)//当前模式平均功率
 #define EM_LASER_FREQUENCY											(EM_START + 65)//当前模式频率
 #define EM_LASER_DUTY_CYCLE											(EM_START + 66)//当前模式占空比 
 /*****************************************************************************/
@@ -479,9 +469,9 @@
 #define EM_LASER_CURRENT_CH1										(EM_START + 70)//激光二极管模块电流
 #define EM_LASER_CURRENT_CH2										(EM_START + 71)//激光二极管模块电流
 #define EM_LASER_CURRENT_CH3										(EM_START + 72)//激光二极管模块电流
-#define EM_LASER_PHOTODIODE											(EM_START + 73)//激光二极管模块功率
-#define EM_LASER_TEC_DC													(EM_START + 74)//激光制冷器扇功率 0-100%
-#define EM_LASER_FAN_SPEED											(EM_START + 75)//激光散热风扇速度 0-100%
+#define EM_FAN_SPEED														(EM_START + 73)//激光散热风扇速度 0-100%
+#define EM_ACOUSTIC_ENERGY											(EM_START + 74)//提示音能量间隔 16BIT
+#define EM_ACOUSTIC_TIME												(EM_START + 75)//提示音时间间隔 16BIT
 /*****************************************************************************/				
 #define EM_TOTAL_POWER													(EM_START + 80)//发射总功率
 #define EM_HMI_OPERA_STEP												(EM_START +	81)//操作步骤								
@@ -499,8 +489,6 @@
 #define EM_DC_DEFAULT_PASSCODE1									(EM_START + 97)//默认密码1				
 #define EM_DC_DEFAULT_PASSCODE2									(EM_START + 98)//默认密码2	
 #define EM_DC_DEFAULT_PASSCODE3									(EM_START + 99)//默认密码3				
-#define EM_DC_DISPLAY_RELEASE_TIME							(EM_START + 100)//显示发射时间			
-#define EM_DC_DISPLAY_RELEASE_ENERGY						(EM_START + 101)//显示发射能量
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME										(FD_START +  0)//方案名称
 #define FD_LASER_SELECT													(FD_START +  46)//通道选择
@@ -692,8 +680,6 @@
 #define DM_DC_OLD_PASSCODE1									(DM_START + 6)//屏旧密码2-3
 #define DM_DC_OLD_PASSCODE2									(DM_START + 7)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3									(DM_START + 8)//屏旧密码2-3
-#define DM_ACOUSTIC_ENERGY									(DM_START + 9)//提示音能量间隔
-#define DM_ACOUSTIC_TIME										(DM_START + 10)//提示音时间间隔
 /*****************************************************************************/
 #define X_ESTOP_NC													(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC											(X_START * 16 + 1)//XIN1 安全连锁
@@ -802,7 +788,7 @@
 /*****************************************************************************/
 /*****************************************************************************/
 #define MR_FOOSWITCH_HAND_SWITCH										(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
-#define MR_BEEM_TONE																(MR_START * 16 + 11)//蜂鸣器模式
+#define MR_BEEP_TONE																(MR_START * 16 + 11)//蜂鸣器模式 0:SYNC 1:BEEP
 /*****************************************************************************/
 #define T100MS_HMI_POWERUP_DELAY										0//HMI启动复位延时
 #define T100MS_ENTER_PASSCODE_DELAY									1
@@ -821,8 +807,7 @@
 #define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			11
 #define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			12
 #define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				13
-#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				14
-			
+#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				14		
 /*****************************************************************************/
 #endif
 

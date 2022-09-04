@@ -1,5 +1,70 @@
 #include "MainAppLib.h"
 /*****************************************************************************/
+void addAcousticTime(void){//增加提示时间 +1
+	NVRAM0[EM_ACOUSTIC_TIME] += 1;
+	if(NVRAM0[EM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
+	}
+	if(NVRAM0[EM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
+	}
+	NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_TIME] * NVRAM0[EM_LASER_POWER_CH0] / 10;
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
+	}
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
+	}
+}
+void decAcousticTime(void){//减小提示时间 -1
+	NVRAM0[EM_ACOUSTIC_TIME] -= 1;
+	if(NVRAM0[EM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
+	}
+	if(NVRAM0[EM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
+	}
+	NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_TIME] * NVRAM0[EM_LASER_POWER_CH0] / 10;
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
+	}
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
+	}
+}
+void addAcousticEnergy(void){//增加提示能量 +1
+	NVRAM0[EM_ACOUSTIC_ENERGY] += 1;
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
+	}
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
+	}
+	NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_ENERGY] * 10 / NVRAM0[EM_LASER_POWER_CH0];
+	if(NVRAM0[EM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
+	}
+	if(NVRAM0[EM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
+	}
+}
+void decAcousticEnergy(void){//减小提示能量 -1
+	NVRAM0[EM_ACOUSTIC_ENERGY] -= 1;
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
+	}
+	if(NVRAM0[EM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){
+		NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
+	}
+	NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_ENERGY] * 10 / NVRAM0[EM_LASER_POWER_CH0];
+	if(NVRAM0[EM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
+	}
+	if(NVRAM0[EM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){
+		NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
+	}
+}
+
 int16_t keyRuleAdd(int16_t ps, int16_t max){//增加
 	if(ps >= 1 && ps < 10){
 		ps += 1;
@@ -39,7 +104,7 @@ int16_t keyRuleDec(int16_t ps, int16_t min){//减少
 void loadDefault(void){//恢复默认值
 	uint8_t i;
 	RRES(MR_FOOSWITCH_HAND_SWITCH);
-	RRES(MR_BEEM_TONE);			
+	RRES(MR_BEEP_TONE);			
 	RRES(R_DISABLE_RFID);
 	RRES(R_DISABLE_FIBER_PROBE);
 	RRES(R_DISABLE_FAN_SPEED);
@@ -120,50 +185,53 @@ void defaultScheme(void){//当前选择方案恢复默认值
 		}
 		case 3:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S3);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 3000;//Ton 3S
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 4:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S4);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 3000;//Ton 3S
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 5:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S5);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 3000;//Ton 3S
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 6:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S6);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
-			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
-			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
 			break;
 		}
 		case 7:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S7);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
-			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
-			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
 			break;
 		}
 		case 8:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S8);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
-			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
-			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
 			break;
 		}
 		case 9:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S9);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
 			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
 			break;
@@ -172,71 +240,12 @@ void defaultScheme(void){//当前选择方案恢复默认值
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S10);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
-			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
-			break;
-		}
-		case 11:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S11);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
-			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
-			break;
-		}
-		case 12:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S12);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
-			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
-			break;
-		}
-		case 13:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S13);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
-			break;
-		}
-		case 14:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S14);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
-			break;
-		}
-		case 15:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S15);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 50;//5.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
-			break;
-		}
-		case 16:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S16);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 50;//5.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 10000;//单脉冲正脉宽 10S
-			break;
-			}
-		case 17:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S17);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_SP;
-			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
-			NVRAM0[EM_LASER_SP_POSWIDTH]= 15000;//单脉冲正脉宽 15S
-			break;
-		}
-		case 18:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S18);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
 			NVRAM0[EM_LASER_MP_NEGWIDTH]= 5000;//多脉冲负脉宽 5S
 			break;
 		}
-		case 19:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S19);
+		case 11:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S11);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
@@ -421,11 +430,10 @@ int8_t checkScheme(int8_t cn){
 	return true;
 }
 uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power){//功率->DAC CODE 使用默认拟合校正表
-
-	
+	return  (uint16_t)((int32_t)power * 4095 / CONFIG_MAX_LASERPOWER_CH0);
 }
 uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->DAC CODE 使用校正表
-	fp64_t fpower, fout, fk, fb;
+	double fpower, fout, fk, fb;
 	int16_t pmax, pmin;
 	uint16_t *pCal;
 	uint16_t out;
@@ -464,51 +472,52 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率-
 	if(power < pmin){
 		power = pmin;
 	}
-	fpower = (fp32_t)power;
+	fpower = (float)power;
 	printf("%s,%d,%s:Calibration input power = %d\n", __FILE__, __LINE__, __func__, power);
 	printf("%s,%d,%s:Calibration max power = %d\n", __FILE__, __LINE__, __func__, pmax);
 	printf("%s,%d,%s:Calibration min power = %d\n", __FILE__, __LINE__, __func__, pmin);
 	if(LDB(R_CALIBRATION_MODE)){//正模式
 		//通过校正表计算DAC值
-		if(power > 0 && (power <= pCal[0])){
+		if(power > 0 && (power <= pCal[0])){//0-10%
 			fk = pCal[0] / 0.1F;
+			fb = 0.0F;
+			//fb = pCal[0] - fk * 0.1;
+		}
+		else if((power > pCal[0]) && (power <= pCal[1])){//10-20%
+			fk = (pCal[1] - pCal[0]) / 0.1F;
 			fb = pCal[0] - fk * 0.1;
 		}
-		else if((power > pCal[0]) && (power <= pCal[1])){
-			fk = (pCal[1] - pCal[0]) / 0.1F;
-			fb = pCal[1] - fk * 0.2;
-		}
-		else if((power > pCal[1]) && (power <= pCal[2])){
+		else if((power > pCal[1]) && (power <= pCal[2])){//20-30%
 			fk = (pCal[2] - pCal[1]) / 0.1F;
-			fb = pCal[2] - fk * 0.3;
+			fb = pCal[1] - fk * 0.2;
 		}
 		else if((power > pCal[2]) && (power <= pCal[3])){
 			fk = (pCal[3] - pCal[2]) / 0.1F;
-			fb = pCal[2] - fk * 0.4;
+			fb = pCal[2] - fk * 0.3;
 		}
 		else if((power > pCal[3]) && (power <= pCal[4])){
 			fk = (pCal[4] - pCal[3]) / 0.1F;
-			fb = pCal[3] - fk * 0.5;
+			fb = pCal[3] - fk * 0.4;
 		}
 		else if((power > pCal[4]) && (power <= pCal[5])){
 			fk = (pCal[5] - pCal[4]) / 0.1F;
-			fb = pCal[4] - fk * 0.6;
+			fb = pCal[4] - fk * 0.5;
 		}
 		else if((power > pCal[5]) && (power <= pCal[6])){
 			fk = (pCal[6] - pCal[5]) / 0.1F;
-			fb = pCal[5] - fk * 0.7;
+			fb = pCal[5] - fk * 0.6;
 		}
 		else if((power > pCal[6]) && (power <= pCal[7])){
 			fk = (pCal[7] - pCal[6]) / 0.1F;
-			fb = pCal[6] - fk * 0.8;
+			fb = pCal[6] - fk * 0.7;
 		}
 		else if((power > pCal[7]) && (power <= pCal[8])){
 			fk = (pCal[8] - pCal[7]) / 0.1F;
-			fb = pCal[8] - fk * 0.9;
+			fb = pCal[7] - fk * 0.8;
 		}
 		else if((power > pCal[8]) && (power <= pCal[9])){
 			fk = (pCal[9] - pCal[8]) / 0.1F;
-			fb = pCal[9] - fk * 1.0;
+			fb = pCal[8] - fk * 0.9;
 		}
 		fout = (power - fb) / fk;
 		printf("%s,%d,%s:Enable calibration mode\n", __FILE__, __LINE__, __func__);
