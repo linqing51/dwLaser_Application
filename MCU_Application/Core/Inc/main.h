@@ -59,10 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define DA_SYNC_Pin GPIO_PIN_13
 #define DA_SYNC_GPIO_Port GPIOC
-#define DA_SCLK_Pin GPIO_PIN_14
-#define DA_SCLK_GPIO_Port GPIOC
-#define DA_DIN_Pin GPIO_PIN_15
+#define DA_DIN_Pin GPIO_PIN_14
 #define DA_DIN_GPIO_Port GPIOC
+#define DA_SCLK_Pin GPIO_PIN_15
+#define DA_SCLK_GPIO_Port GPIOC
 #define LPC_ISMON0_Pin GPIO_PIN_0
 #define LPC_ISMON0_GPIO_Port GPIOC
 #define LPB_ISMON1_Pin GPIO_PIN_1
@@ -109,10 +109,10 @@ void Error_Handler(void);
 #define OTG_FS_PSOC_GPIO_Port GPIOC
 #define OTG_FS_PSON_Pin GPIO_PIN_8
 #define OTG_FS_PSON_GPIO_Port GPIOA
-#define LASER1_TRIG_IN_Pin GPIO_PIN_15
-#define LASER1_TRIG_IN_GPIO_Port GPIOA
-#define LASER2_TRIG_IN_Pin GPIO_PIN_10
-#define LASER2_TRIG_IN_GPIO_Port GPIOC
+#define LASER_TRIG_IN_Pin GPIO_PIN_15
+#define LASER_TRIG_IN_GPIO_Port GPIOA
+#define LASER_EXT_ENA_Pin GPIO_PIN_10
+#define LASER_EXT_ENA_GPIO_Port GPIOC
 #define ESTOP_IN_Pin GPIO_PIN_11
 #define ESTOP_IN_GPIO_Port GPIOC
 #define INTERLOCK_IN_Pin GPIO_PIN_12

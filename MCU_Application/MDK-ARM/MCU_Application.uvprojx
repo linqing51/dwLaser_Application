@@ -1148,6 +1148,26 @@
               <FileType>1</FileType>
               <FilePath>..\sPlcPort\sPlcSpeaker.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcModbusPort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcModbusPort.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcModbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcModbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcUart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcUart.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcFreeProtocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sPlcPort\sPlcFreeProtocol.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1157,6 +1177,11 @@
               <FileName>mainApp.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\MainApp\mainApp.C</FilePath>
+            </File>
+            <File>
+              <FileName>libcrc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\libcrc.c</FilePath>
             </File>
           </Files>
         </Group>
