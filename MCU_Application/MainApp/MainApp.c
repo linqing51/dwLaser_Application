@@ -5,8 +5,16 @@ fuzzyPid_t laserPid;
 /*****************************************************************************/
 
 void temperatureMeasureLoop(void){//温度采集
+	double ftmp;
 	TNTC(EM_LASER_TEMP, SPREG_ADC_1);//CODE转换为NTC测量温度温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_8);//CODE转换为MCU温度
+	if(LDP(SPCOIL_PS100MS)){
+		ftmp = fuzzyPidRealize(&laserPid, ((double)NVRAM0[EM_LASER_TEMP_SET] / 250.0F), ((double)NVRAM0[EM_LASER_TEMP] / 250.0F));
+		NVRAM0[SPREG_DAC_2] = (uint16_t)ftmp;
+		NVRAM0[SPREG_DAC_3] = (uint16_t)ftmp;
+		UPDAC2();UPDAC3();
+		NVRAM0[EM_COOL_RATE] = (int16_t)(ftmp / 65535 * 100);
+	}
 	//判断二极管0是否过热
 	if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_HIGH_TEMP){//激光器过热
 		SSET(R_LASER_TEMP_HIGH);
@@ -21,20 +29,14 @@ void temperatureMeasureLoop(void){//温度采集
 	else{
 		RRES(R_MCU_TEMP_HIGH);
 	}
-	if(NVRAM0[EM_LASER_TEMP] > NVRAM0[EM_LASER_TEMP_SET] + 10){
-		SSET(Y_TEC_ENA);
-	}
-	if(NVRAM0[EM_LASER_TEMP] < NVRAM0[EM_LASER_TEMP_SET] - 10){
-		RRES(Y_TEC_ENA);
-	}
 }
 void currentMeasureLoop(void){//电流采集
 	float fA0, fA1, fB0, fB1, fC0;
-	fA0 = (3300.0F * CONFIG_VREF_CAL * (NVRAM0[SPREG_ADC_0] - NVRAM0[SPREG_ADC_0])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
-	fA1 = (3300.0F * CONFIG_VREF_CAL * (NVRAM0[SPREG_ADC_7] - NVRAM0[SPREG_ADC_7])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
-	fB0 = (3300.0F * CONFIG_VREF_CAL * (NVRAM0[SPREG_ADC_6] - NVRAM0[SPREG_ADC_6])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
-	fB1 = (3300.0F * CONFIG_VREF_CAL * (NVRAM0[SPREG_ADC_5] - NVRAM0[SPREG_ADC_5])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
-	fC0 = (3300.0F * CONFIG_VREF_CAL * (NVRAM0[SPREG_ADC_4] - NVRAM0[SPREG_ADC_4])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	fA0 = (3300.0F * CONFIG_VREF_CAL * (float)(NVRAM0[SPREG_ADC_0] - NVRAM0[DM_ADC_OFFSET_0])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	fA1 = (3300.0F * CONFIG_VREF_CAL * (float)(NVRAM0[SPREG_ADC_7] - NVRAM0[DM_ADC_OFFSET_7])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	fB0 = (3300.0F * CONFIG_VREF_CAL * (float)(NVRAM0[SPREG_ADC_6] - NVRAM0[DM_ADC_OFFSET_6])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	fB1 = (3300.0F * CONFIG_VREF_CAL * (float)(NVRAM0[SPREG_ADC_5] - NVRAM0[DM_ADC_OFFSET_5])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	fC0 = (3300.0F * CONFIG_VREF_CAL * (float)(NVRAM0[SPREG_ADC_4] - NVRAM0[DM_ADC_OFFSET_4])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
 	fA0 = fA0 / CONFIG_ISAB_RS / 20.0F;
 	fA1 = fA1 / CONFIG_ISAB_RS / 20.0F;
 	fB0 = fB0 / CONFIG_ISAB_RS / 20.0F;
@@ -105,10 +107,7 @@ void mainAppTask(void *argument){
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_PWM_CH1, TMP_REG_0, TMP_REG_1);
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_POSWIDTH, TMP_REG_0, TMP_REG_1);
 		NVRAM0[TMP_REG_0] = 200;NVRAM0[TMP_REG_1] = 350;LIMS16(EM_LASER_TEMP_SET, TMP_REG_0, TMP_REG_1);
-		//温控PID
-		if(LDP(SPCOIL_PS200MS)){
-			pidTmp = fuzzyPidRealize(&laserPid, ((double)NVRAM0[EM_LASER_TEMP_SET] / 100.0F), ((double)NVRAM0[EM_LASER_TEMP] / 100.0F));
-		}
+		//
 		if(LDP(R_LASER_START) && LD(X_INTERLOCK_NC)){//打开激光通道1
 			NVRAM0[SPREG_DAC_0] = NVRAM0[EM_LASER_POWER_CH0] * 65535 / 1000;
 			NVRAM0[SPREG_DAC_1] = NVRAM0[EM_LASER_POWER_CH1] * 65535 / 1000;
@@ -118,15 +117,25 @@ void mainAppTask(void *argument){
 			}
 			else{//SP模式
 				LaserTimer_Mode = LASER_MODE_SP;
-				LaserTimer_TMate = NVRAM0[EM_LASER_POSWIDTH] * 100;
+				LaserTimer_TMate = NVRAM0[EM_LASER_POSWIDTH] * 10;
 			}
+			UPDAC0();//设置通道1 DAC
+			UPDAC1();//设置通道2 DAC
 			STLAR();
+			RRES(R_LASER_START);
+		}
+		else{
 			RRES(R_LASER_START);
 		}
 		if(LDP(R_LASER_STOP) || LDB(X_INTERLOCK_NC)){//关闭激光通道1
 			NVRAM0[SPREG_DAC_0] = 0;
 			NVRAM0[SPREG_DAC_1] = 0;
+			UPDAC0();//设置通道1 DAC
+			UPDAC1();//设置通道2 DAC
 			EDLAR();
+			RRES(R_LASER_STOP);
+		}
+		else{
 			RRES(R_LASER_STOP);
 		}
 		//指示光控制
