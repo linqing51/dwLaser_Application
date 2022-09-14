@@ -99,8 +99,6 @@ void Error_Handler(void);
 #define SYSID1_IN_GPIO_Port GPIOB
 #define SYSID2_IN_Pin GPIO_PIN_10
 #define SYSID2_IN_GPIO_Port GPIOB
-#define POWER_LED_OUT_Pin GPIO_PIN_14
-#define POWER_LED_OUT_GPIO_Port GPIOB
 #define LASER1_AIM_Pin GPIO_PIN_15
 #define LASER1_AIM_GPIO_Port GPIOB
 #define LASER2_AIM_Pin GPIO_PIN_8

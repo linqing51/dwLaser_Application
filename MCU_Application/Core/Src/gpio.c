@@ -59,8 +59,8 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, SPK_EN_Pin|LASER_PWM_Pin|OTG_FS_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, ERR_LED_Pin|POWER_LED_OUT_Pin|LASER1_AIM_Pin|TEC_OUT_Pin
-                          |ALARM_LED_OUT_Pin|LASER1_LED_OUT_Pin|LASER2_LED_OUT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, ERR_LED_Pin|LASER1_AIM_Pin|TEC_OUT_Pin|ALARM_LED_OUT_Pin
+                          |LASER1_LED_OUT_Pin|LASER2_LED_OUT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LOCK_LED_GPIO_Port, LOCK_LED_Pin, GPIO_PIN_RESET);
@@ -96,9 +96,9 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
-                           PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = ERR_LED_Pin|POWER_LED_OUT_Pin|LASER1_AIM_Pin|TEC_OUT_Pin
-                          |ALARM_LED_OUT_Pin|LASER1_LED_OUT_Pin|LASER2_LED_OUT_Pin;
+                           PBPin PBPin */
+  GPIO_InitStruct.Pin = ERR_LED_Pin|LASER1_AIM_Pin|TEC_OUT_Pin|ALARM_LED_OUT_Pin
+                          |LASER1_LED_OUT_Pin|LASER2_LED_OUT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
