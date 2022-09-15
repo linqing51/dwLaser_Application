@@ -1,18 +1,16 @@
 #include "sPlcAdc.h"
 /*****************************************************************************/
-extern ADC_HandleTypeDef hadc1;
-extern DMA_HandleTypeDef hdma_adc1;
-/*****************************************************************************/
 __IO uint16_t adcDmaBuffer0[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池
 __IO uint16_t adcDmaBuffer1[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池
 __IO uint8_t adcBufferSelect;//ADC BUFFER选择指示
 __IO uint8_t adcBufferDone;//ADC 采集完毕
 /*****************************************************************************/
-void initChipAdc(void){//ADC模块初始化
+void sPlcAdcInit(void){//ADC模块初始化
 	adcBufferSelect = 0;
 	memset((uint8_t*)adcDmaBuffer0, 0x0, (CONFIG_ADC_DMA_BUFFER_SIZE * 2));
 	memset((uint8_t*)adcDmaBuffer1, 0x0, (CONFIG_ADC_DMA_BUFFER_SIZE * 2));
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adcDmaBuffer0, CONFIG_ADC_DMA_BUFFER_SIZE); //启用DMA的ADC转换，AD_DMA 0~3 对应ADC 0~3，这里注意最后一个参数的大小
+	printf("%s,%d,%s:start adc init......\n",__FILE__, __LINE__, __func__);
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){    //ADC转换完成回调
@@ -20,7 +18,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){    //ADC转换完成回调
 		adcBufferDone = 1;
 	}
 }
-void chipAdcProcess(void){//循环采集ADC
+void sPlcAdcProcess(void){//循环采集ADC
 	uint8_t i, j;
 	uint32_t sum[CONFIG_SPLC_ADC_CHANNEL];
 	while(adcBufferDone == 0);

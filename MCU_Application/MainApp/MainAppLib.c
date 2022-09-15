@@ -252,6 +252,42 @@ void defaultScheme(void){//当前选择方案恢复默认值
 			NVRAM0[EM_LASER_MP_NEGWIDTH]= 5000;//多脉冲负脉宽 5S
 			break;
 		}
+		case 12:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S12);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 30;//3.0W
+			break;
+		}
+		case 13:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S13);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
+			break;
+		}
+		case 14:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S14);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			break;
+		}
+		case 15:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S15);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 120;//12.0W
+			break;
+		}
+		case 16:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S16);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			break;
+		}
+		case 17:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S17);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			break;
+		}	
 		default:break;
 	}
 	printf("%s,%d,%s:scheme num:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);

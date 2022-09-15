@@ -4,18 +4,17 @@ uint16_t audioSineTable[256] = {0};
 static int8_t LoudspeakerEnable = -1;//喇叭使能状态
 static int8_t LoudspeakerVolume = -1;//喇叭音量
 /*****************************************************************************/
-extern TIM_HandleTypeDef htim7;//DAC DMA 计时器
-extern DAC_HandleTypeDef hdac;
 static float32_t linearToLog(int16_t volume);
 /*****************************************************************************/
-void initLoudspeaker(void){//喇叭初始化
+void sPlcSpeakerInit(void){//喇叭初始化
 	SET_SPEAKER_OFF;
 	RRES(SPCOIL_BEEM_ENABLE);
-	setLoudspeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
-	setLoudspeakerDisable();
-	setLoudspeakerFreq(CONFIG_SPLC_DEFAULT_SPK_FREQ);
+	sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
+	sPlcSpeakerDisable();
+	sPlcSpeakerFreq(CONFIG_SPLC_DEFAULT_SPK_FREQ);
+	printf("%s,%d,%s:speaker dma init......\n",__FILE__, __LINE__, __func__);
 }
-void setLoudspeakerDisable(void){//关闭喇叭数据流
+void sPlcSpeakerDisable(void){//关闭喇叭数据流
 	if(LoudspeakerEnable != false){
 		SET_SPEAKER_OFF;
 		HAL_TIM_Base_Stop(&htim7);
@@ -26,7 +25,7 @@ void setLoudspeakerDisable(void){//关闭喇叭数据流
 		LoudspeakerEnable = false;
 	}
 }
-void setLoudspeakerEnable(void){//打开喇叭数据流
+void sPlcSpeakerEnable(void){//打开喇叭数据流
 	if(LoudspeakerEnable != true){
 		SET_SPEAKER_ON;
 		HAL_TIM_Base_Start(&htim7);
@@ -37,7 +36,7 @@ void setLoudspeakerEnable(void){//打开喇叭数据流
 		LoudspeakerEnable = true;
 	}
 }
-void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
+void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
 	float32_t f1;
 	HAL_TIM_Base_Stop(&htim7);
 	HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
@@ -63,7 +62,7 @@ void setLoudspeakerFreq(int16_t freq){//设置蜂鸣器频率
 	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 
 }
-void setLoudspeakerVolume(int16_t volume){//设置喇叭音量
+void sPlcSpeakerVolume(int16_t volume){//设置喇叭音量
 	int16_t i;
 	float64_t fvolume = 0;
 	//float64_t piStep;

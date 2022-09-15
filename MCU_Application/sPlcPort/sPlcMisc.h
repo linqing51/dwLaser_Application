@@ -1,23 +1,8 @@
 #ifndef __SPLCMISC_H__
 #define __SPLCMISC_H__
 /*****************************************************************************/
-#include "stm32f4xx_hal.h"
-//*****************************************************************************/
-#include <stdio.h>
-#include <stdlib.h> 
-#include <string.h>
-#include <ctype.h>
-#include <LIMITS.H>
-#include "stdbool.h"
-#include "stdint.h"
-///*****************************************************************************/
-#include "main.h"
+#include "sPlc.h"
 /*****************************************************************************/
-#include "sPlcConfig.h"
-/*****************************************************************************/
-extern TIM_HandleTypeDef htim12;//FAN PWM
-extern TIM_HandleTypeDef htim2;//FAN PWM
-//
 #define BEEM_MODE_0														0x10//连续模式
 #define BEEM_MODE_1														0x11//声光同步
 #define BEEM_MODE_2														0x12//激光发射固定间隔
@@ -34,12 +19,16 @@ extern TIM_HandleTypeDef htim2;//FAN PWM
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
 #define GET_FSWITCH_NC												HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
 
-#define SET_RED_LED_ON												HAL_GPIO_WritePin(RED_LED_OUT_GPIO_Port, RED_LED_OUT_Pin, GPIO_PIN_SET)
-#define SET_RED_LED_OFF												HAL_GPIO_WritePin(RED_LED_OUT_GPIO_Port, RED_LED_OUT_Pin, GPIO_PIN_RESET)
-#define SET_GREEN_LED_ON											HAL_GPIO_WritePin(GREEN_LED_OUT_GPIO_Port, GREEN_LED_OUT_Pin, GPIO_PIN_SET)
-#define SET_GREEN_LED_OFF											HAL_GPIO_WritePin(GREEN_LED_OUT_GPIO_Port, GREEN_LED_OUT_Pin, GPIO_PIN_RESET)
-#define SET_BLUE_LED_ON												HAL_GPIO_WritePin(BLUE_LED_OUT_GPIO_Port, BLUE_LED_OUT_Pin, GPIO_PIN_SET)
-#define SET_BLUE_LED_OFF											HAL_GPIO_WritePin(BLUE_LED_OUT_GPIO_Port, BLUE_LED_OUT_Pin, GPIO_PIN_RESET)
+#define SET_RED_LED_ON												HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2)
+#define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2)
+#define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1)
+#define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1)
+#define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3)
+#define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_3)
+
+#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, b);
+#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, b);
+#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, b);
 
 #define SET_ERR_LED_ON												HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_SET)
 #define SET_ERR_LED_OFF												HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_RESET)
@@ -81,7 +70,6 @@ void UsbGpioReset(void);
 void sPlcLoudspeakerLoop(void);//蜂鸣器轮询
 void sPlcAimLoop(void);//瞄准光轮询
 void sPlcAutoFanLoop(void);//风扇速轮询程序
-
 void setAimBrightness(int8_t brg);//设置瞄准光亮度
 int16_t getAimBrightness(void);//获取瞄准光亮度
 void setLaserEnable(int8_t channel, int8_t ena);//设置激光使能

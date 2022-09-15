@@ -2,13 +2,6 @@
 #define __SPLCTIMER_H__
 /*****************************************************************************/
 #include "sPlc.h"
-/*****************************************************************************/
-extern uint32_t sPlcTick;
-/*****************************************************************************/
-void initSplcTimer(void);//硬件sTimer计时器初始化
-extern void sPlcTimerIsr(void);//硬件sTimer计时器中断 1mS
-void disableSplcTimer(void);//SPLC关闭计时器
-void enableSplcTimer(void);//SPLC打开计时器
 
 #endif
 

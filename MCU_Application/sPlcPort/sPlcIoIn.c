@@ -2,12 +2,11 @@
 /*****************************************************************************/
 int8_t inputFilter[(X_END - X_START + 1) * 16];//IO输入滤波器缓冲区
 /*****************************************************************************/
-void inputInit(void){//IO输入滤波器初始化
-#if CONFIG_SPLC_USING_IO_INPUT == 1
+void sPlcInputInit(void){//IO输入滤波器初始化
 	memset((uint8_t*)inputFilter, 0x0, ((X_END - X_START + 1) * 16));
-#endif
+	printf("%s,%d,%s:input init......\n",__FILE__, __LINE__, __func__);
 }
-void inputRefresh(void){//获取输入IO
+void sPlcInputRefresh(void){//获取输入IO
 	uint8_t	temp;
 	//X0 急停
 	temp = GET_ESTOP_NC;

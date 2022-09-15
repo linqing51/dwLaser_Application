@@ -49,10 +49,11 @@
 #define	MSG_DIODE1_OVERCURRENT											9
 #define	MSG_NTC_ERROR																10
 #define	MSG_ENVI_HTEMP															11
-#define	MSG_FOOT_DEPRESSED													12
-#define	MSG_LASER_EMIT															13
-#define	MSG_WAIT_TRIGGER														14
-#define	MSG_FIBER_MISSMATE													15
+#define MSG_ENVI_LTEMP															12
+#define	MSG_FOOT_DEPRESSED													13
+#define	MSG_LASER_EMIT															14
+#define	MSG_WAIT_TRIGGER														15
+#define	MSG_FIBER_MISSMATE													16
 /*****************************************************************************/
 void dcHmiLoop(void);//HMIÂÖÑµ³ÌÐò
 void dcHmiLoopInit(void);

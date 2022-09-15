@@ -16,8 +16,8 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 				}
 				case GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG:{
 					tmp16 = (int16_t)value;
-					if(tmp16 < CONFIG_AIM_MIN_DC){
-						tmp16 = CONFIG_AIM_MIN_DC;
+					if(tmp16 < 0){
+						tmp16 = 0;
 					}
 					if(tmp16 > CONFIG_AIM_MAX_DC){
 						tmp16 = CONFIG_AIM_MAX_DC;
@@ -43,9 +43,6 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					break;
 				}
 				case GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG:{
-					if(value < CONFIG_AIM_MIN_DC){
-						value = CONFIG_AIM_MIN_DC;
-					}
 					if(value > CONFIG_AIM_MAX_DC){
 						value = CONFIG_AIM_MAX_DC;
 					}
@@ -60,9 +57,6 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 		case GDDC_PAGE_OPTION:{
 			switch(control_id){
 				case GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME:{
-					if(value < CONFIG_BEEM_MIN_VOLUME){
-						value = CONFIG_BEEM_MIN_VOLUME;
-					}
 					if(value > CONFIG_BEEM_MAX_VOLUME){
 						value = CONFIG_BEEM_MAX_VOLUME;
 					}

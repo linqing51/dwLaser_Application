@@ -1,8 +1,6 @@
 //TIM11->计时
 #include "sPlcLaser.h"
 /*****************************************************************************/
-extern TIM_HandleTypeDef htim10;
-/*****************************************************************************/
 int8_t LaserTimer_Mode;
 int8_t LaserTimer_Select;
 int16_t LaserTimer_TCounter;
@@ -26,7 +24,7 @@ static void laserStop(void);
 static void laserStart(void);
 /*****************************************************************************/
 #if CONFIG_SPLC_USING_LASER_TEST == 1
-void testBenchLaserTimer(uint8_t st){//LASER激光发射测试
+void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 	EDLAR();
 	if(st == 0){//CH0 CW模式测试
 		LaserTimer_Mode = LASER_MODE_CW;
@@ -243,7 +241,6 @@ void EDLAR(void){//停止发射脉冲
 	LaserFlag_Emitover = true;
 }
 void sPlcLaserInit(void){//激光脉冲功能初始化
-	printf("%s,%d,%s:laser init!\n",__FILE__, __LINE__, __func__);
 	SET_LASER_CH0_OFF;
 	SET_LASER_CH1_OFF;
 	SET_LASER_CH2_OFF;
@@ -267,6 +264,7 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserRelease_TotalTime1 = -1;
 	LaserRelease_TotalEnergy1 = -1;
 	LaserAcousticBeepNum = 0;
+	printf("%s,%d,%s:laser timer init......\n",__FILE__, __LINE__, __func__);
 }
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
@@ -286,7 +284,7 @@ static void laserStop(void){//按通道选择关闭激光
 		LaserFlag_Emiting = false;
 	}
 }
-void laserTimerIsr(void){//TIM 中断回调 激光发射	
+void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射	
 	switch(LaserTimer_Mode){
 		case LASER_MODE_CW:{//CW连续模式
 			if(LaserTimer_TCounter == 0){

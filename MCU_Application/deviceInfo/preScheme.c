@@ -35,6 +35,13 @@ char const *PRE_SCHEME_TABLE_S8 = "Laser Vaginal Tightening 3rd 600J";
 char const *PRE_SCHEME_TABLE_S9 = "Laser Vaginal Tightening 4th 600J";
 char const *PRE_SCHEME_TABLE_S10 = "PLDD Total 800-1500J";
 char const *PRE_SCHEME_TABLE_S11 = "PLDD Total 800-1800J";
+char const *PRE_SCHEME_TABLE_S12 = "Liposuction Under Eye";
+char const *PRE_SCHEME_TABLE_S13 = "Liposuction Chin";
+char const *PRE_SCHEME_TABLE_S14 = "Liposuction Arm";
+char const *PRE_SCHEME_TABLE_S15 = "Liposuction Abdomen";
+char const *PRE_SCHEME_TABLE_S16 = "Liposuction Buttock";
+char const *PRE_SCHEME_TABLE_S17 = "Liposuction Thigh";
+
 
 
 

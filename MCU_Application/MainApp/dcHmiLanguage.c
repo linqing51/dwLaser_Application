@@ -63,7 +63,7 @@ char WARN_MSG_DIODE_HTEMP[8][64] 				 = {{"Laser overheating"},
 													{""},
 													{""}};//温度过高
 													
-char WARN_MSG_DIODE_LTEMP[8][64] 				 = {{"Laser NTC Open"},
+char WARN_MSG_DIODE_LTEMP[8][64] 				 = {{"Laser NTC open or lowheating"},
 													{""},
 													{""},
 													{""},
@@ -108,6 +108,15 @@ char WARN_MSG_ENVI_HTEMP[8][64] 				 = {{"Envi High Temperature"},
 													{""},
 													{""}};//环境温度过高
 													
+char WARN_MSG_ENVI_LTEMP[8][64] 				 = {{"Envi Low Temperature"},
+													{""},
+													{""},
+													{""},
+													{""},
+													{""},
+													{""},
+													{""}};//环境温度过高													
+																										
 char WARN_MSG_FOOT_DEPRESSED[8][64] 			 = {{"Foot/finger switch is depressed"},
 													{""},
 													{""},

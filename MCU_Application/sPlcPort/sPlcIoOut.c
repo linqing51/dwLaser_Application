@@ -2,7 +2,7 @@
 extern TIM_HandleTypeDef htim12;//FAN PWM
 extern TIM_HandleTypeDef htim2;//FAN PWM
 /*****************************************************************************/
-void outputInit(void){//IO输出初始化
+void sPlcOutputInit(void){//IO输出初始化
 	NVRAM0[Y_START] = 0x0;
 	SET_TEC_OFF;
 	SET_RED_LED_OFF;
@@ -11,9 +11,10 @@ void outputInit(void){//IO输出初始化
 	SET_TICK_LED_OFF;
 	SET_ERR_LED_OFF;
 	SET_AIM_OFF;
+	printf("%s,%d,%s:output init......\n",__FILE__, __LINE__, __func__);
 }
 
-void outputRefresh(void){//设置输出IO	
+void sPlcOutputRefresh(void){//设置输出IO	
 	//YOUT0 绿灯
 	if(LDP(Y_GREEN_LED)){
 		SET_GREEN_LED_ON;

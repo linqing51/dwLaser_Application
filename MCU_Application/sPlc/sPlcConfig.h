@@ -36,7 +36,6 @@
 #define CONFIG_SPLC_USING_LINK_MASTER									0//使用主机模式
 #define CONFIG_SPLC_USING_LINK_SLAVE									0//使用从机模式
 /*****************************************************************************/				
-#define CONFIG_SPLC_USING_SPK													1//使能板载扬声器
 #define CONFIG_SPLC_MAX_SPK_FREQ											4500L//喇叭最高频率
 #define CONFIG_SPLC_MIN_SPL_FREQ											500//喇叭最低频率
 #define CONFIG_SPLC_DEFAULT_SPK_FREQ									1200//蜂鸣器默认频率
@@ -116,10 +115,8 @@
 #define CONFIG_DK25L_RXBUF_SIZE												16
 #define CONFIG_DK25L_TXBUF_SIZE												16
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_LASER												1
 #define CONFIG_SPLC_USING_LASER_TEST									0
 /*****************************************************************************/
-#define CONFIG_USING_DCHMI_APP												1//广东大彩人机交互应用
 #define CONFIG_DCHMI_DISKBUF_SIZE											0x80//显示缓冲区大小
 /*****************************************************************************/
 #define CONFIG_WAIT_HMI_DELAY_TIME										25
@@ -127,8 +124,11 @@
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
+#define CONFIG_DIODE_SET_TEMP													220//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
+#define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
+#define CONFIG_ENVI_LOW_TEMP													-200//处理器低温极限 -20.0C
 /*****************************************************************************/
 #define CONFIG_HMI_SCHEME_NUM													32//方案数
 #define CONFIG_HMI_DEFAULT_PASSWORD0									0x3532//默认密码
@@ -174,11 +174,11 @@
 #define CONFIG_MAX_ACOUSTIC_TIME											200
 #define CONFIG_MIN_ACOUSTIC_TIME											1
 
-
+#define CONFIG_BLUE_LED_MAX_DC												100
+#define CONFIG_RED_LED_MAX_DC													100	
+#define CONFIG_GREEN_LED_MAX_DC												100
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
-#define CONFIG_AIM_MIN_DC															0//红光最小调光占空比
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
-#define CONFIG_BEEM_MIN_VOLUME												0//蜂鸣器最小音量
 #define CONFIG_BEEM_MAX_LIMIT													0.8F//
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
@@ -199,15 +199,15 @@
 #define POWER_REAL_CH0_45P														1800
 #define POWER_REAL_CH0_50P														2000
 #define POWER_REAL_CH0_55P														2200
-#define POWER_REAL_CH0_60P										2400
-#define POWER_REAL_CH0_65P										2600
-#define POWER_REAL_CH0_70P										2800
-#define POWER_REAL_CH0_75P										3000
-#define POWER_REAL_CH0_80P										3200
-#define POWER_REAL_CH0_85P										3400
-#define POWER_REAL_CH0_90P										3600
-#define POWER_REAL_CH0_95P										3800
-#define POWER_REAL_CH0_100P										4000
+#define POWER_REAL_CH0_60P														2400
+#define POWER_REAL_CH0_65P														2600
+#define POWER_REAL_CH0_70P														2800
+#define POWER_REAL_CH0_75P														3000
+#define POWER_REAL_CH0_80P														3200
+#define POWER_REAL_CH0_85P														3400
+#define POWER_REAL_CH0_90P														3600
+#define POWER_REAL_CH0_95P														3800
+#define POWER_REAL_CH0_100P														4000
 /*****************************************************************************/
 #define POWER_REAL_CH1_5P											150
 #define POWER_REAL_CH1_10P										300
@@ -680,6 +680,9 @@
 #define DM_DC_OLD_PASSCODE1									(DM_START + 6)//屏旧密码2-3
 #define DM_DC_OLD_PASSCODE2									(DM_START + 7)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3									(DM_START + 8)//屏旧密码2-3
+#define DM_RED_LED_DC												(DM_START + 9)//红光亮度
+#define DM_BLUE_LED_DC											(DM_START + 10)//蓝光亮度
+#define DM_GREEN_LED_DC											(DM_START + 11)//绿光亮度
 /*****************************************************************************/
 #define X_ESTOP_NC													(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC											(X_START * 16 + 1)//XIN1 安全连锁
@@ -687,13 +690,13 @@
 #define X_FOOTSWITCH_NC											(X_START * 16 + 3)//XIN3 脚踏常开
 #define X_FIBER_PROBE												(X_START * 16 + 4)//XIN5 光纤探测
 /*****************************************************************************/
-#define Y_GREEN_LED													(Y_START * 16 + 0)//YOUT0 绿灯开关
-#define Y_RED_LED														(Y_START * 16 + 1)//YOUT1 红灯开关
-#define Y_YELLOW_LED												(Y_START * 16 + 2)//YOUT2 蓝灯开关
-#define Y_TICK_LED													(Y_START * 16 + 3)//YOUT3 板载运行LED指示灯
-#define Y_ERR_LED														(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
-#define Y_TEC																(Y_START * 16 + 5)//YOUT5 TEC输出
-#define Y_AIM																(Y_START * 16 + 6)//YOUT6 AIM输出
+#define Y_GREEN_LED																	(Y_START * 16 + 0)//YOUT0 绿灯开关
+#define Y_RED_LED																		(Y_START * 16 + 1)//YOUT1 红灯开关
+#define Y_YELLOW_LED																(Y_START * 16 + 2)//YOUT2 蓝灯开关
+#define Y_TICK_LED																	(Y_START * 16 + 3)//YOUT3 板载运行LED指示灯
+#define Y_ERR_LED																		(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
+#define Y_TEC																				(Y_START * 16 + 5)//YOUT5 TEC输出
+#define Y_AIM																				(Y_START * 16 + 6)//YOUT6 AIM输出
 /*****************************************************************************/
 #define R_ESTOP																			(R_START * 16 + 0)//急停标志
 #define R_INTERLOCK																	(R_START * 16 + 1)//连锁标志

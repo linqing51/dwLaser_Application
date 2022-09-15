@@ -95,7 +95,7 @@ static void writeMcp4821_3(uint16_t dat){//MCP4821 SPI写入
 	SET_EDAC3_CS(GPIO_PIN_SET);
 }
 
-void initChipDac(void){//DAC初始化
+void sPlcDacInit(void){//DAC初始化
 	SET_EDAC0_CS(GPIO_PIN_SET);SET_EDAC1_CS(GPIO_PIN_SET);SET_EDAC2_CS(GPIO_PIN_SET);SET_EDAC3_CS(GPIO_PIN_SET);//SPI CS=1
 	SET_EDAC0_SCK(GPIO_PIN_RESET);SET_EDAC1_SCK(GPIO_PIN_RESET);SET_EDAC2_SCK(GPIO_PIN_RESET);SET_EDAC3_SCK(GPIO_PIN_RESET); //SPI CLK = 0
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();

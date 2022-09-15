@@ -1,5 +1,4 @@
 #include "sPlcFun.h"
-#include "pid_fuzzy.h"
 //
 extern CRC_HandleTypeDef hcrc;
 /*****************************************************************************/
@@ -14,20 +13,20 @@ void OUT(uint16_t A) {
 }
 void SSET(uint16_t A){//线圈置位
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	sPlcAssertCoilAddress(A);//检查地址范围
 #endif
 	NVRAM0[(A / 16)] |= 1 << (A % 16);
 }
 void RRES(uint16_t A){//线圈置零
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	sPlcAssertCoilAddress(A);//检查地址范围
 #endif
 	NVRAM0[(A / 16)] &= ~(1 << (A % 16));
 }
 void FLIP(uint16_t A){//翻转
 	uint16_t temp;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	sPlcAssertCoilAddress(A);//检查地址范围
 #endif
 	temp= (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;;
 	if(temp)
@@ -38,7 +37,7 @@ void FLIP(uint16_t A){//翻转
 uint8_t LD(uint16_t A){//载入
 	uint8_t res = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	sPlcAssertCoilAddress(A);//检查地址范围
 #endif
 	res = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	if(res)
@@ -49,7 +48,7 @@ uint8_t LD(uint16_t A){//载入
 uint8_t LDB(uint16_t A){//反向载入
 	uint8_t res = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	sPlcAssertCoilAddress(A);//检查地址范围
 #endif
 	res = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	if(res)
@@ -60,7 +59,7 @@ uint8_t LDB(uint16_t A){//反向载入
 uint8_t LDP(uint16_t A){//脉冲上升沿
 	uint8_t temp0 = 0, temp1 = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);//检查地址范围
+	sPlcAssertCoilAddress(A);//检查地址范围
 #endif
 	temp0 = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	temp1 = (uint8_t)(NVRAM1[(A / 16)] >> (A % 16)) & 0x01;
@@ -72,7 +71,7 @@ uint8_t LDP(uint16_t A){//脉冲上升沿
 uint8_t LDN(uint16_t A){//脉冲下降沿
 	uint8_t temp0 = 0, temp1 = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	assertCoilAddress(A);
+	sPlcAssertCoilAddress(A);
 #endif
 	temp0 = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	temp1 = (uint8_t)(NVRAM1[(A / 16)] >> (A % 16)) & 0x01;
@@ -119,30 +118,30 @@ void T100MS(uint8_t A, uint8_t start, uint16_t value){//100MS延时器
 //计算指令
 void CLR(uint16_t A){//16位寄存器清零
 #if CONFIG_SPLC_ASSERT == 1
-	assertRegisterAddress(A);//检查寄存器地址
+	sPlcAssertRegisterAddress(A);//检查寄存器地址
 #endif
 	NVRAM0[A] = 0x0;
 }
 void CLRD(uint16_t A){//32位寄存器清零
 #if CONFIG_SPLC_ASSERT == 1
-	assertRegisterAddress(A);//检查寄存器地址
-	assertRegisterAddress(A + 1);//检查寄存器地址
+	sPlcAssertRegisterAddress(A);//检查寄存器地址
+	sPlcAssertRegisterAddress(A + 1);//检查寄存器地址
 #endif
 	NVRAM0[A] = 0x0;NVRAM0[A + 1] = 0x0;
 }
 void MOV(uint16_t dist, uint16_t src){//16位寄存器传输
 #if CONFIG_SPLC_ASSERT == 1
-	assertRegisterAddress(dist);//检查寄存器地址
-	assertRegisterAddress(src);//检查寄存器地址
+	sPlcAssertRegisterAddress(dist);//检查寄存器地址
+	sPlcAssertRegisterAddress(src);//检查寄存器地址
 #endif
 	NVRAM0[dist] = NVRAM0[src];
 }
 void MOVD(uint16_t dist, uint16_t src){//32位寄存器传输
 #if CONFIG_SPLC_ASSERT == 1
-	assertRegisterAddress(dist);//检查寄存器地址
-	assertRegisterAddress(dist+1);//检查寄存器地址
-	assertRegisterAddress(src);//检查寄存器地址
-	assertRegisterAddress(src+1);//检查寄存器地址
+	sPlcAssertRegisterAddress(dist);//检查寄存器地址
+	sPlcAssertRegisterAddress(dist+1);//检查寄存器地址
+	sPlcAssertRegisterAddress(src);//检查寄存器地址
+	sPlcAssertRegisterAddress(src+1);//检查寄存器地址
 #endif
 	NVRAM0[dist] = NVRAM0[src];
 	NVRAM0[dist + 1] = NVRAM0[src + 1];
@@ -155,8 +154,8 @@ void MOVD(uint16_t dist, uint16_t src){//32位寄存器传输
 void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	float32_t ftemp;
 #if CONFIG_SPLC_ASSERT == 1
-	assertRegisterAddress(dist);//检查寄存器地址
-	assertRegisterAddress(src);//检查寄存器地址
+	sPlcAssertRegisterAddress(dist);//检查寄存器地址
+	sPlcAssertRegisterAddress(src);//检查寄存器地址
 #endif
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = 0xFFF;
@@ -167,7 +166,7 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 	}
 	if(NVRAM0[src] >= 10){	
 		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_4] * 4096.0F);//计算电压
-		ftemp = ftemp * CONFIG_NTC_RS / (CONFIG_NTC_VREF - ftemp);//计算电压
+		ftemp = ftemp * CONFIG_NTC_RS / (CONFIG_NTC_VREF - ftemp);//计算电阻
 	}
 	else{
  
@@ -453,29 +452,29 @@ void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//块复制
 	}
 }
 void NVFSAVE(void){//NVRAM全部写入EPROM
-	disableSplcIsr();
-	saveNvram();
-	enableSplcIsr();
+	sPlcIsrDisable();
+	sPlcNvramSave();
+	sPlcIsrEnable();
 }
 void NVSAVE(void){//储存NVRAM更新数据到EPROM
-	disableSplcIsr();
-	updateNvram();
-	enableSplcIsr();
+	sPlcIsrDisable();
+	sPlcNvramUpdate();
+	sPlcIsrEnable();
 }
 void NVLOAD(void){
-	disableSplcIsr();
-	loadNvram();
-	enableSplcIsr();	
+	sPlcIsrDisable();
+	sPlcNvramLoad();
+	sPlcIsrEnable();	
 }
 
 void FDSAV(void){//FDRAM->EPROM
-	disableSplcIsr();
-	saveFdram();
-	enableSplcIsr();
+	sPlcIsrDisable();
+	sPlcFdramSave();
+	sPlcIsrEnable();
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	uint32_t crc32;
-	disableSplcIsr();
+	sPlcIsrDisable();
 	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
 		cn = (CONFIG_HMI_SCHEME_NUM - 1);
 	}
@@ -486,12 +485,12 @@ void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	crc32 = HAL_CRC_Calculate(&hcrc, (uint32_t *)(FDRAM), (CONFIG_FDRAM_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32);//在的指定地址开始写入32位数	
 	printf("%s,%d,%s:save One FD NVRAM done...\n",__FILE__, __LINE__, __func__);
-	enableSplcIsr();
+	sPlcIsrEnable();
 }
 void FDLAD(void){//FDRAM<-EPROM
-	disableSplcIsr();
-	loadFdram();
-	enableSplcIsr();
+	sPlcIsrDisable();
+	sPlcFdramLoad();
+	sPlcIsrEnable();
 }
 
 

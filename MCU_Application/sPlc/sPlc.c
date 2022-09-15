@@ -24,13 +24,15 @@ uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
 uint32_t sPlcEnterTime, sPlcExitTime, sPlcScanTime;
 /******************************************************************************/
-extern CRC_HandleTypeDef hcrc;
-/******************************************************************************/
-void errorHandler(uint16_t errCode){
+void sPlcIsrEnable(void){
+}
+void sPlcIsrDisable(void){
+}
+void sPlcErrorHandler(uint16_t errCode){
 	while(1);
 }
 
-void assertCoilAddress(uint16_t adr){//检查线圈地址
+void sPlcAssertCoilAddress(uint16_t adr){//检查线圈地址
 #if CONFIG_SPLC_ASSERT == 1
 	uint32_t maxCoilAdr = CONFIG_NVRAM_SIZE * 16 - 1;
 	if(adr > (maxCoilAdr)){
@@ -40,7 +42,7 @@ void assertCoilAddress(uint16_t adr){//检查线圈地址
 	adr = ~adr;
 #endif
 }
-void assertRegisterAddress(uint16_t adr){//检查寄存器地址
+void sPlcAssertRegisterAddress(uint16_t adr){//检查寄存器地址
 #if CONFIG_SPLC_ASSERT == 1
 	if(adr > (CONFIG_NVRAM_SIZE - 1)){
 		while(1);
@@ -49,7 +51,7 @@ void assertRegisterAddress(uint16_t adr){//检查寄存器地址
 	adr = ~adr;
 #endif
 }
-void loadNvram(void){//从EPROM中载入NVRAM MR和DM
+void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	uint32_t crc32_mr, crc32_dm;
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
@@ -72,7 +74,7 @@ void loadNvram(void){//从EPROM中载入NVRAM MR和DM
 		printf("%s,%d,%s:load NVRAM done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void saveNvram(void){//强制将NVRAM存入EPROM
+void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	uint32_t crc32_mr, crc32_dm;
 	//MR NVRAM写入EPROM
 	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//将NVRAM中MR储存入EPROM																				
@@ -84,7 +86,7 @@ void saveNvram(void){//强制将NVRAM存入EPROM
 	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
-void updateNvram(void){//更新NVRAM->EPROM
+void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 	uint8_t *sp0, *sp1;
 	uint8_t updateFlagMr, updateFlagDm;
 	uint16_t i;
@@ -129,21 +131,21 @@ void updateNvram(void){//更新NVRAM->EPROM
 		printf("%s,%d,%s:update DM NVRAM done...(DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_dm);
 	}
 }
-void clearNvram(void){//清除NVRAM数据	
-	enterSplcIsr();
+void sPlcNvramClear(void){//清除NVRAM数据	
+	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_NVRAM);//clear mr dm
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM0
 	memset((uint8_t*)NVRAM1, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM1
-	exitSplcIsr();//恢复中断
+	sPlcIsrEnable();//恢复中断
 	printf("%s,%d,%s:clear NVRAM done...\n",__FILE__, __LINE__, __func__);
 }
-void loadFdram(void){//从EPROM中载入FDRAM
+void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 	uint32_t crc32_eprom_fd, crc32_fd;
-	enterSplcIsr();
+	sPlcIsrDisable();
 	epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
 	epromReadDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);
 	crc32_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)FDRAM, (CONFIG_FDRAM_SIZE / 2));
-	exitSplcIsr();//恢复中断
+	sPlcIsrEnable();//恢复中断
 	if(crc32_eprom_fd != crc32_fd){
 		printf("%s,%d,%s:load FD NVRAM crc fail!!!\n",__FILE__, __LINE__, __func__);
 	}
@@ -151,33 +153,33 @@ void loadFdram(void){//从EPROM中载入FDRAM
 		printf("%s,%d,%s:load FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void saveFdram(void){//强制将FDRAM存入EPROM
+void sPlcFdramSave(void){//强制将FDRAM存入EPROM
 	uint32_t crc32;
-	enterSplcIsr();
+	sPlcIsrDisable();
 	epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
 	crc32 = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM), (CONFIG_FDRAM_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32);//在的指定地址开始写入32位数	
 	printf("%s,%d,%s:save FD NVRAM done...(FD CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32);
-	exitSplcIsr();//恢复中断
+	sPlcIsrEnable();//恢复中断
 }
-void clearFdram(void){//清除FDRAM数据
-	enterSplcIsr();
+void sPlcFdramClear(void){//清除FDRAM数据
+	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_FDRAM);//clear mr dm
 	memset(FDRAM, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
-	exitSplcIsr();//恢复中断
+	sPlcIsrEnable();//恢复中断
 }
-void clearDeviceConfig(void){//清除设备配置参数
-	enterSplcIsr();
+void sPlcDeviceConfigClear(void){//清除设备配置参数
+	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_DEVICE_CONFIG);
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
-	exitSplcIsr();//恢复中断	
+	sPlcIsrEnable();//恢复中断	
 }
-void clearDeviceLog(void){//清除设备记录
-	enterSplcIsr();
+void sPlcDeviceLogClear(void){//清除设备记录
+	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_LOG_INFO);
 	printf("%s,%d,%s:clear device log done...\n",__FILE__, __LINE__, __func__);
-	exitSplcIsr();//恢复中断	
+	sPlcIsrEnable();//恢复中断	
 }
 
 void sPlcSpwmLoop(void){//SPWM轮询	
@@ -274,51 +276,24 @@ void sPlcInit(void){//软逻辑初始化
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
 	sPlcEpromTest();
 #endif
-	printf("%s,%d,%s:start load Config......\n",__FILE__, __LINE__, __func__);
-	loadDeviceConfig();
-	printf("%s,%d,%s:start load Nvram......\n",__FILE__, __LINE__, __func__);
-	loadNvram();//上电恢复NVRAM
-	printf("%s,%d,%s:start load Fdram......\n",__FILE__, __LINE__, __func__);
-	loadFdram();//上电恢复FDRAM
-#if CONFIG_USING_DCHMI_APP == 1
+	loadDeviceConfig();//载入硬件配置
+	sPlcNvramLoad();//上电恢复NVRAM
+	sPlcFdramLoad();//上电恢复FDRAM
 	lockPreScheme();//恢复预设方案
-#endif
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
 	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
-#if CONFIG_SPLC_USING_IO_INPUT == 1
-	printf("%s,%d,%s:start input init......\n",__FILE__, __LINE__, __func__);
-	inputInit();
-#endif
-
-#if CONFIG_SPLC_USING_IO_OUTPUT == 1
-	printf("%s,%d,%s:start output init......\n",__FILE__, __LINE__, __func__);
-	outputInit();
-#endif
-
-#if CONFIG_SPLC_USING_DAC == 1	
-	printf("%s,%d,%s:start Dac init......\n",__FILE__, __LINE__, __func__);
-	initChipDac();//初始化DAC模块
-	UPDAC0();
-#endif
-
-#if CONFIG_SPLC_USING_ADC == 1
-	printf("%s,%d,%s:start adc init......\n",__FILE__, __LINE__, __func__);
-	initChipAdc();//初始化ADC模块
-#endif
-
-#if CONFIG_SPLC_USING_LASER == 1
-	printf("%s,%d,%s:start laser timer init......\n",__FILE__, __LINE__, __func__);
+	sPlcInputInit();
+	sPlcOutputInit();	
+	sPlcDacInit();//初始化DAC模块
+	sPlcAdcInit();//初始化ADC模块
 	sPlcLaserInit();
-#endif
 	printf("%s,%d,%s:start splc timer init......\n",__FILE__, __LINE__, __func__);
-	initSplcTimer();//初始化硬件计时器模块 启动计时器
-
-#if CONFIG_SPLC_USING_SPK == 1	
-	printf("%s,%d,%s:start loudspeaker dma init......\n",__FILE__, __LINE__, __func__);
-	initLoudspeaker();
-#endif
-
+	sPlcTimerInit();//初始化硬件计时器模块 启动计时器
+	sPlcSpeakerInit();
+	SET_BLUE_LED_DC(10);
+	SET_RED_LED_DC(10);
+	SET_GREEN_LED_DC(10);
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	sPlcEnterTime = HAL_GetTick();
@@ -349,26 +324,19 @@ void sPlcProcessStart(void){//sPLC轮询起始
 		FLIP(SPCOIL_PS1MINS);
 		TD_60000MS_SP = 0;
 	}
-#if CONFIG_SPLC_USING_IO_INPUT == 1
-	inputRefresh();//读取X口输入
-#endif
+	sPlcInputRefresh();//读取X口输入
 #if CONFIG_SPLC_USING_SPWM == 1
 	sPlcSpwmLoop();
 #endif
-#if CONFIG_SPLC_USING_ADC == 1
-	chipAdcProcess();//ADC 更新NVRAM
-#endif
-	
+	sPlcAdcProcess();//ADC 更新NVRAM
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
 	if(LDP(SPCOIL_PS500MS)){
 		FLIP(Y_TICK_LED);
 	}
-#if CONFIG_SPLC_USING_IO_OUTPUT == 1
-	outputRefresh();//更新Y口输出
-#endif
-	updateNvram();//更新NVRAM
+	sPlcOutputRefresh();//更新Y口输出
+	sPlcNvramUpdate();//更新NVRAM
 	RRES(SPCOIL_START_UP);
 	sPlcExitTime = HAL_GetTick();
 	sPlcScanTime = sPlcExitTime - sPlcEnterTime;

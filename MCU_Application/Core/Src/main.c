@@ -33,7 +33,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "sPlcMisc.h"
+#include "sPlc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -112,6 +112,7 @@ int main(void)
   MX_TIM11_Init();
   MX_TIM12_Init();
   MX_FATFS_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -206,7 +207,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		sPlcTimerIsr();
 	}
 	if(htim->Instance == TIM10){
-		laserTimerIsr();
+		sPlcLaserTimerIsr();
 	}
   /* USER CODE BEGIN Callback 1 */
 

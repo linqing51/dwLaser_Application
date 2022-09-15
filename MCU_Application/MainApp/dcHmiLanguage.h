@@ -18,6 +18,7 @@ extern char WARN_MSG_DIODE0_OVERCURRENT[8][64];//电流超过限定值，保护激光器
 extern char WARN_MSG_DIODE1_OVERCURRENT[8][64];//电流超过限定值，保护激光器
 extern char WARN_MSG_NTC_ERROR[8][64];//热敏电阻故障
 extern char WARN_MSG_ENVI_HTEMP[8][64];//环境温度过高
+extern char WARN_MSG_ENVI_LTEMP[8][64];//环境温度过低
 extern char WARN_MSG_FOOT_DEPRESSED[8][64];//脚踏按下去没弹起来
 extern char WARN_MSG_LASER_EMIT[8][64];//激光正在发射
 extern char WARN_MSG_WAIT_TRIGGER[8][64];//等待激光触发
