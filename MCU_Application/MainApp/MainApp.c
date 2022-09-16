@@ -3,7 +3,6 @@
 /*****************************************************************************/
 fuzzyPid_t laserPid;
 /*****************************************************************************/
-
 void temperatureMeasureLoop(void){//温度采集
 	double ftmp;
 	TNTC(EM_LASER_TEMP, SPREG_ADC_1);//CODE转换为NTC测量温度温度
@@ -89,16 +88,14 @@ void mainAppTask(void *argument){
 	while(1){
 		sPlcProcessStart();
 		if(LD(SPCOIL_START_UP)){//
+			RRES(Y_ULINK_LED);
+			RRES(Y_ALARM_LED);
+			RRES(Y_LASER1_LED);
+			RRES(Y_LASER2_LED);
+			RRES(Y_AIM1_ENA);
+			RRES(Y_AIM2_ENA);
 			SSET(Y_ERR_LED);
 			SSET(Y_TEC_ENA);
-			NVRAM0[EM_LASER_TEMP_SET] = 250;//默认激光器冷却温度25.0度
-			NVRAM0[SPREG_DAC_2] = 0xFFFF;
-			NVRAM0[SPREG_DAC_3] = 0xFFFF;
-			UPDAC2();
-			UPDAC3();
-			NVRAM0[EM_LASER_POWER_CH0] = 500;
-			NVRAM0[EM_LASER_POWER_CH1] = 700;
-			NVRAM0[EM_LASER_POSWIDTH] = 50;
 		}
 		//寄存器范围限制		
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_POWER_CH0, TMP_REG_0, TMP_REG_1);
@@ -107,8 +104,17 @@ void mainAppTask(void *argument){
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_PWM_CH1, TMP_REG_0, TMP_REG_1);
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_POSWIDTH, TMP_REG_0, TMP_REG_1);
 		NVRAM0[TMP_REG_0] = 200;NVRAM0[TMP_REG_1] = 350;LIMS16(EM_LASER_TEMP_SET, TMP_REG_0, TMP_REG_1);
+		//外控操作
+		if(LD(X_EXT_ENABLE)){//外控使能
+			if(LD(X_LASER_TRIG)){//外控触发
+				SSET(R_LASER_START);
+			}
+			else{
+				RRES(R_LASER_START);
+			}
+		}
 		//
-		if(LDP(R_LASER_START) && LD(X_INTERLOCK_NC)){//打开激光通道1
+		if(LDP(R_LASER_START) && LD(X_INTERLOCK_NC)){//打开激光
 			NVRAM0[SPREG_DAC_0] = NVRAM0[EM_LASER_POWER_CH0] * 65535 / 1000;
 			NVRAM0[SPREG_DAC_1] = NVRAM0[EM_LASER_POWER_CH1] * 65535 / 1000;
 			//判断激光发射模式CW还是SP
@@ -127,7 +133,7 @@ void mainAppTask(void *argument){
 		else{
 			RRES(R_LASER_START);
 		}
-		if(LDP(R_LASER_STOP) || LDB(X_INTERLOCK_NC)){//关闭激光通道1
+		if(LDP(R_LASER_STOP) || LDN(X_INTERLOCK_NC)){//关闭激光
 			NVRAM0[SPREG_DAC_0] = 0;
 			NVRAM0[SPREG_DAC_1] = 0;
 			UPDAC0();//设置通道1 DAC
@@ -151,6 +157,26 @@ void mainAppTask(void *argument){
 		if(LDB(R_AIM_ENABLE_CH1)){
 			RRES(Y_AIM2_ENA);
 		}
+		//指示灯
+		if(NVRAM0[EM_LASER_CURRENT_CH0] >= CONFIG_DIODE_THRESHOLD){
+			SSET(Y_LASER1_LED);
+		}
+		if(NVRAM0[EM_LASER_CURRENT_CH0] <= CONFIG_DIODE_THRESHOLD - 100){
+			RRES(Y_LASER1_LED);
+		}
+		if(NVRAM0[EM_LASER_CURRENT_CH1] >= CONFIG_DIODE_THRESHOLD){
+			SSET(Y_LASER2_LED);
+		}
+		if(NVRAM0[EM_LASER_CURRENT_CH1] <= CONFIG_DIODE_THRESHOLD - 100){
+			RRES(Y_LASER2_LED);
+		}
+		if(LD(R_ALRAM)){
+			SSET(Y_ALARM_LED);
+		}
+		else{
+			RRES(Y_ALARM_LED);
+		}
+		
 		temperatureMeasureLoop();
 		currentMeasureLoop();
 		powerMeasureLoop();
