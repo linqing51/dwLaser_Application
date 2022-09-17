@@ -150,78 +150,17 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 #endif
 void STLAR(void){//开始发射脉冲
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
-	/*
-	if(LD(MR_BEEM_TONE) || (LaserTimer_Mode == LASER_MODE_SIGNAL)){
-		//判断是否有脉冲 如果正脉宽或脉冲间隔长度小于100mS则选择MODE2
-		switch(NVRAM0[EM_LASER_PULSE_MODE]){
-			case LASER_MODE_CW:{
-				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
-				break;
-			}
-			case LASER_MODE_SP:{
-				if(NVRAM0[EM_LASER_SP_POSWIDTH] > 30){//正脉宽大于100mS
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
-				}
-				else{
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
-				}
-				break;
-			}
-			case LASER_MODE_MP:{
-				if((NVRAM0[EM_LASER_MP_POSWIDTH] > 30) || (NVRAM0[EM_LASER_MP_NEGWIDTH] > 30)){//正脉宽大于30mS
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
-				}
-				else{
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
-				}
-				break;
-			}
-			case LASER_MODE_GP:{
-				if((NVRAM0[EM_LASER_GP_POSWIDTH] > 30) || (NVRAM0[EM_LASER_GP_NEGWIDTH] > 30)){//正脉宽大于30mS
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
-				}
-				else{
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
-				}
-				break;
-			}
-			case LASER_MODE_DERMA:{
-				if((NVRAM0[EM_LASER_DERMA_POSWIDTH] > 30) || (NVRAM0[EM_LASER_DERMA_NEGWIDTH] > 30)){//正脉宽大于30mS
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
-				}
-				else{
-					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
-				}
-				break;
-			}
-			case LASER_MODE_SIGNAL:{
-				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
-				break;
-			}
-			default:{
-				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
-				break;
-			}
-		}
-	}
-	else{
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//固定间隔
-	}
-	
-	*/
 	LaserAcousticBeepNum = LaserRelease_TotalEnergy0 / NVRAM0[EM_ACOUSTIC_ENERGY] + 1;
 	printf("%s,%d,%s:beep number:%d\n",__FILE__, __LINE__, __func__, LaserAcousticBeepNum);
-	if(LD(MR_BEEP_TONE)){//BEEP
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_1;//声光同步
+	if(LD(R_ACOUSTIC_ENABLE)){
+		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
 	}
 	else{
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
-		
+		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//激光发射固定间隔
 	}
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
 	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 	NVRAM0[SPREG_BEEM_COUNTER]= 0;
-	
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
 	LaserTimer_ReleaseCounter = 0x0;

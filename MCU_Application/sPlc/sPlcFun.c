@@ -437,10 +437,10 @@ void SWAP(uint16_t dist, uint16_t src){//交换A的高低字节
 	NVRAM0[dist] = tmpH;
 }
 void LIMS16(uint16_t src, uint16_t min, uint16_t max){//有符号16位数限制幅度指令
-	if(NVRAM0[src] > NVRAM0[max]){
+	if(NVRAM0[src] >= NVRAM0[max]){
 		NVRAM0[src] = NVRAM0[max];
 	}
-	if(NVRAM0[src] < NVRAM0[min]){
+	if(NVRAM0[src] <= NVRAM0[min]){
 		NVRAM0[src] = NVRAM0[min];
 	}
 }

@@ -101,11 +101,12 @@
 #define GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME			4//发射时间显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY		5//提示音能量
 #define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME				6//提示音时间
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD					7//提示音能量增加
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_DEC					8//提示音能量减小
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD						9//提示音时间增加
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_DEC						10//提示音时间减小
-#define GDDC_PAGE_READY_KEY_READY												11//切换待机按键
+#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE			7//提示音周期
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD					8//提示音能量增加
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_DEC					9//提示音能量减小
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD						10//提示音时间增加
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_DEC						11//提示音时间减小
+#define GDDC_PAGE_READY_KEY_READY												12//切换待机按键
 #define GDDC_PAGE_READY_TEXTDISPLAY_DEBUG								99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_OPTION_KEY_TONE									 			1//蜂鸣器声光同步												

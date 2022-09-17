@@ -884,19 +884,50 @@ void updateReadyDisplay(void){//更新READY显示
 void updateAcousticDisplay(void){//更新提示音设置
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	float ftmp;
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	int16_t cycle = 0;
 	if(NVRAM0[EM_LASER_PULSE_MODE] ==LASER_MODE_CW){//CW
-		sprintf(dispBuf, "%5.1fS", (float)NVRAM0[EM_ACOUSTIC_TIME]);
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "N/A");
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+		
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%d S", NVRAM0[EM_ACOUSTIC_TIME]);
 		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
 	}
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){//MP
-		sprintf(dispBuf, "%5dCycle", NVRAM0[EM_ACOUSTIC_TIME]);
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
+		if(LD(R_ACOUSTIC_ENABLE)){
+			cycle = NVRAM0[EM_ACOUSTIC_TIME] / NVRAM0[EM_ACOUSTIC_TIME_STEP];
+			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+			sprintf(dispBuf, "%d Cycle", cycle);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+			
+			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+			sprintf(dispBuf, "%d S", NVRAM0[EM_ACOUSTIC_TIME]);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
+		}
+		else{
+			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+			sprintf(dispBuf, "");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+			
+			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+			sprintf(dispBuf, "N/A");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
+		}
 	}
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	ftmp = ((float)(NVRAM0[EM_ACOUSTIC_ENERGY]));
-	sprintf(dispBuf, "%4.1fJ", ftmp);
+	if(LD(R_ACOUSTIC_ENABLE)){
+		sprintf(dispBuf, "%4.1fJ", ftmp);
+	}
+	else{
+		sprintf(dispBuf, "N/A");
+	}
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY, (uint8_t*)dispBuf);
+	//调试信息
+	printf("%s,%d,%s:acoustic time = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME]);
+	printf("%s,%d,%s:acoustic energy = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY]);
+	printf("%s,%d,%s:acoustic cycle = %d\n", __FILE__, __LINE__, __func__, cycle);	
 }
 void dcHmiLoopInit(void){//初始化模块
 	uint8_t i;
@@ -1155,15 +1186,15 @@ static void speakerLoop(void){//蜂鸣器轮询
 				break;
 			}
 			case BEEM_MODE_2:{//模式2 长间隔 激光发射音		
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 20){//1
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
 					sPlcSpeakerEnable();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 20 && NVRAM0[SPREG_BEEM_COUNTER] < 120){//0
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
 					sPlcSpeakerDisable();//停止音频
 					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 120){
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
 					NVRAM0[SPREG_BEEM_COUNTER] = -1;
 				}
 				break;
@@ -1171,8 +1202,7 @@ static void speakerLoop(void){//蜂鸣器轮询
 			case BEEM_MODE_3:{//模式3 滴滴两下一停 报警音
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 25){//1
 					sPlcSpeakerEnable();//启动音频
-					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
-					
+					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器			
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 25 && NVRAM0[SPREG_BEEM_COUNTER] < 35){//0
 					sPlcSpeakerDisable();//关闭音频
@@ -1192,15 +1222,15 @@ static void speakerLoop(void){//蜂鸣器轮询
 				break;
 			}
 			case BEEM_MODE_4:{//模式4 长间隔+提示音 激光发射音				
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 30){//1
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
 					sPlcSpeakerEnable();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 30 && NVRAM0[SPREG_BEEM_COUNTER] < 60){//0
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
 					sPlcSpeakerDisable();//停止音频
 					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 60){
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
 					//判断是否启动提示音
 					ftmp = LaserAcousticBeepNum * (float)NVRAM0[EM_ACOUSTIC_ENERGY];
 					if(LaserRelease_TotalEnergy0 > ftmp){
@@ -1514,28 +1544,59 @@ void dcHmiLoop(void){//HMI轮训程序
 			printf("%s,%d,%s:set LaserTimer_TOvertime=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TOvertime);
 			//ACOUSTIC 初始化
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
-				NVRAM0[EM_ACOUSTIC_TIME] = 1;//初始为1秒
+				//能量大于设置功率的两倍
+				SSET(R_ACOUSTIC_ENABLE);
+				NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CW模式每次加减量1秒
+				NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_CH0] / 10;//CW模式每次加减量
+				NVRAM0[EM_ACOUSTIC_TIME] = 2;//初始为1秒
 				NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_TIME] * NVRAM0[EM_LASER_POWER_CH0] / 10;
+				NVRAM0[EM_ACOUSTIC_TIME_MIN] = 2;//最小2秒
+				NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_STEP] * 100;//最大100秒
+				NVRAM0[EM_ACOUSTIC_ENERGY_MIN] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * NVRAM0[EM_LASER_POWER_CH0] / 10;
+				NVRAM0[EM_ACOUSTIC_ENERGY_MAX] = NVRAM0[EM_LASER_POWER_CH0] / 10 * NVRAM0[EM_ACOUSTIC_TIME_MAX];
 			}
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
-				NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_LASER_MP_POSWIDTH] / 1000;
-				if(NVRAM0[EM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){
-					NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
+				//脉冲大于1秒启用提示音
+				if((NVRAM0[EM_LASER_MP_POSWIDTH] >= 1000) && (NVRAM0[EM_LASER_MP_NEGWIDTH] >= 1000)){//周期大于2000mS
+					SSET(R_ACOUSTIC_ENABLE);
+					NVRAM0[EM_ACOUSTIC_TIME_STEP] = (NVRAM0[EM_LASER_MP_POSWIDTH] / 1000) + (NVRAM0[EM_LASER_MP_NEGWIDTH] / 1000);
+					NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_TIME_STEP];
+					
+					NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = (NVRAM0[EM_LASER_MP_POSWIDTH] / 1000) * NVRAM0[EM_LASER_POWER_CH0] / 10;
+					NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
+					
+					NVRAM0[EM_ACOUSTIC_TIME_MIN] = NVRAM0[EM_ACOUSTIC_TIME_STEP];					
+					NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * 100;//最大100周期
+					NVRAM0[EM_ACOUSTIC_ENERGY_MIN] = NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
+					NVRAM0[EM_ACOUSTIC_ENERGY_MAX] = NVRAM0[EM_LASER_POWER_CH0] / 10 * NVRAM0[EM_ACOUSTIC_TIME_MAX];
+				
 				}
-				if(NVRAM0[EM_ACOUSTIC_TIME]<= CONFIG_MIN_ACOUSTIC_TIME){
-					NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
+				else{
+					RRES(R_ACOUSTIC_ENABLE);
 				}
-				NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_TIME] * NVRAM0[EM_LASER_POWER_CH0] / 10;
 			}
-			if(NVRAM0[EM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){
-				NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
+			//调试信息
+			if(LD(R_ACOUSTIC_ENABLE)){
+				printf("%s,%d,%s:acoustic enable!\n", __FILE__, __LINE__, __func__);
 			}
-			if(NVRAM0[EM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){
-				NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
+			else{
+				printf("%s,%d,%s:acoustic disable!\n", __FILE__, __LINE__, __func__);
 			}
+			//printf("%s,%d,%s:acoustic time = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME]);
+			//printf("%s,%d,%s:acoustic energy = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY]);
+			//printf("%s,%d,%s:acoustic cycle = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_CYCLE]);
+			
+			
+			printf("%s,%d,%s:acoustic time step = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_STEP]);
+			printf("%s,%d,%s:acoustic time min = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_MIN]);
+			printf("%s,%d,%s:acoustic time max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_MAX]);
+			
+			printf("%s,%d,%s:acoustic energy step = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_STEP]);
+			printf("%s,%d,%s:acoustic energy min = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MIN]);
+			printf("%s,%d,%s:acoustic energy max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MAX]);
+			
 			//校正输出功率
 			NVRAM0[SPREG_DAC_0] = fitLaserToCode(0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
-			//NVRAM0[SPREG_DAC_0] = fitLaserToCodeLine(0, NVRAM0[EM_LASER_POWER_CH0]);
 			NVRAM0[SPREG_DAC_1] = 0x0;
 			NVRAM0[SPREG_DAC_2] = 0x0;
 			NVRAM0[SPREG_DAC_3] = 0x0;
@@ -1608,8 +1669,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){			
 					addAcousticEnergy();
-					if(NVRAM0[EM_ACOUSTIC_ENERGY] >= CONFIG_MAX_ACOUSTIC_ENERGY){//达到最大值后停止自加
-						NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MAX_ACOUSTIC_ENERGY;
+					if(NVRAM0[EM_ACOUSTIC_ENERGY] >= NVRAM0[EM_ACOUSTIC_ENERGY_MAX]){//达到最大值后停止自加
+						NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_ENERGY_MAX];
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
 						T10MS(T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -1622,8 +1683,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					decAcousticEnergy();
-					if(NVRAM0[EM_ACOUSTIC_ENERGY] <= CONFIG_MIN_ACOUSTIC_ENERGY){//达到最大值后停止自加
-						NVRAM0[EM_ACOUSTIC_ENERGY] = CONFIG_MIN_ACOUSTIC_ENERGY;
+					if(NVRAM0[EM_ACOUSTIC_ENERGY] <= NVRAM0[EM_ACOUSTIC_ENERGY_MIN]){//达到最大值后停止自加
+						NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_ENERGY_MIN];
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
 						T10MS(T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -1636,8 +1697,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY)){
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					addAcousticTime();
-					if(NVRAM0[EM_ACOUSTIC_TIME] >= CONFIG_MAX_ACOUSTIC_TIME){//达到最大值后停止自加
-						NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MAX_ACOUSTIC_TIME;
+					if(NVRAM0[EM_ACOUSTIC_TIME] >= NVRAM0[EM_ACOUSTIC_TIME_MAX]){//达到最大值后停止自加
+						NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_TIME_MAX];
 						RRES(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
 						T10MS(T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -1650,8 +1711,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					decAcousticTime();
-					if(NVRAM0[EM_ACOUSTIC_TIME] <= CONFIG_MIN_ACOUSTIC_TIME){//达到最大值后停止自加
-						NVRAM0[EM_ACOUSTIC_TIME] = CONFIG_MIN_ACOUSTIC_TIME;
+					if(NVRAM0[EM_ACOUSTIC_TIME] <= NVRAM0[EM_ACOUSTIC_TIME_MIN]){//达到最大值后停止自加
+						NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_TIME_MIN];
 						RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
 						T10MS(T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}

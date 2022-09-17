@@ -169,10 +169,6 @@
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//变音持续时间
-#define CONFIG_MAX_ACOUSTIC_ENERGY										200//200J
-#define CONFIG_MIN_ACOUSTIC_ENERGY										20//20J
-#define CONFIG_MAX_ACOUSTIC_TIME											200
-#define CONFIG_MIN_ACOUSTIC_TIME											1
 
 #define CONFIG_BLUE_LED_MAX_DC												100
 #define CONFIG_RED_LED_MAX_DC													100	
@@ -472,12 +468,18 @@
 #define EM_FAN_SPEED														(EM_START + 73)//激光散热风扇速度 0-100%
 #define EM_ACOUSTIC_ENERGY											(EM_START + 74)//提示音能量间隔 16BIT
 #define EM_ACOUSTIC_TIME												(EM_START + 75)//提示音时间间隔 16BIT
+#define EM_ACOUSTIC_ENERGY_STEP									(EM_START + 76)//提示音步进能量
+#define EM_ACOUSTIC_TIME_STEP										(EM_START + 77)//提示音步进时间
+#define EM_ACOUSTIC_ENERGY_MAX									(EM_START + 78)//提示音能量最大值
+#define EM_ACOUSTIC_ENERGY_MIN									(EM_START + 79)//提示音能量最小值
+#define EM_ACOUSTIC_TIME_MAX										(EM_START + 80)//提示音时间最大值
+#define EM_ACOUSTIC_TIME_MIN										(EM_START + 81)//提示音时间最小值
 /*****************************************************************************/				
-#define EM_TOTAL_POWER													(EM_START + 80)//发射总功率
-#define EM_HMI_OPERA_STEP												(EM_START +	81)//操作步骤								
-#define EM_ERROR_CODE														(EM_START + 82)//错误码					
-#define EM_SCHEME_NUM_TMP												(EM_START + 83)//待确认方案编号			
-#define EM_DK25L_VER														(EM_START + 84)//DK25L模块版本
+#define EM_TOTAL_POWER													(EM_START + 85)//发射总功率
+#define EM_HMI_OPERA_STEP												(EM_START +	86)//操作步骤								
+#define EM_ERROR_CODE														(EM_START + 87)//错误码					
+#define EM_SCHEME_NUM_TMP												(EM_START + 88)//待确认方案编号			
+#define EM_DK25L_VER														(EM_START + 89)//DK25L模块版本
 /*****************************************************************************/
 #define EM_DC_PAGE															(EM_START + 90)//HMI页面编号 			
 #define EM_DC_PASSCODE_INDEX										(EM_START + 91)//密码输入位索引		
@@ -721,6 +723,7 @@
 #define R_SAVE_EPROM																(R_START * 16 + 20)//储存SAVE
 #define R_ENGINEER_MODE															(R_START * 16 + 21)//工程师模式
 #define R_CALIBRATION_MODE													(R_START * 16 + 22)//功率校正模式
+#define R_ACOUSTIC_ENABLE														(R_START * 16 + 23)//使能提示音
 //HMI相关状态
 #define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMI复位请求
 #define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMI复位中
