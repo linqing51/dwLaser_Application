@@ -342,7 +342,7 @@ void updateReleaseTimeEnergy(uint8_t refresh){//刷新发射时间能量
 		LaserRelease_TotalTime1 =LaserRelease_TotalTime0;
 	}
 	if((LaserRelease_TotalEnergy0 != LaserRelease_TotalEnergy1) || refresh){//能量
-		sprintf(dispBuf1, "%8.1f J", LaserRelease_TotalEnergy0);//00:00
+		sprintf(dispBuf1, "%11.1f J", LaserRelease_TotalEnergy0);//00:00
 		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
 		LaserRelease_TotalEnergy1 = LaserRelease_TotalEnergy0;
 	}
@@ -1040,13 +1040,7 @@ static void temperatureLoop(void){//温度轮询轮询
 			else if((NVRAM0[EM_LASER_TEMP] >= 340) && (NVRAM0[EM_LASER_TEMP] < 360)){
 				NVRAM0[EM_FAN_SPEED] = 85;		
 			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 360) && (NVRAM0[EM_LASER_TEMP] < 380)){
-				NVRAM0[EM_FAN_SPEED] = 90;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 380) && (NVRAM0[EM_LASER_TEMP] < 400)){
-				NVRAM0[EM_FAN_SPEED] = 95;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 400)){
+			else if((NVRAM0[EM_LASER_TEMP] >= 360)){
 				NVRAM0[EM_FAN_SPEED] = 100;
 			}
 		}
@@ -1772,6 +1766,9 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_EMITING){//发激光中READY页面
 		if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){//每隔1S刷新累计时间和能量
 			LaserRelease_TotalEnergy0 = (float)(LaserRelease_TotalTime0 * (float)(NVRAM0[EM_TOTAL_POWER]) / 10.0F);//计算发射能量
+			if(LaserRelease_TotalEnergy0 >= 99999999){
+				LaserRelease_TotalEnergy0 = 99999999;
+			}
 			updateReleaseTimeEnergy(false);//更新累计发射时间和能量
 		}
 		if(LD(R_ENGINEER_MODE)){//工程模式显示调试信息	
