@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "mainApp.h"
+extern void watchDogTask(void *argument);//看门狗任务
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,11 +64,18 @@ const osThreadAttr_t mainAppTask_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
   .stack_size = 128 * 16
 }; 
+
+osThreadId_t watchDogTaskHandle;
+const osThreadAttr_t watchDogTask_attributes = {
+  .name = "watchDogAppTask",
+  .priority = (osPriority_t) osPriorityHigh,
+  .stack_size = 128 * 16
+};
+
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
 
-extern void MX_USB_HOST_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
@@ -101,6 +109,7 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
+	watchDogTaskHandle = osThreadNew(watchDogTask, NULL, &watchDogTask_attributes);
 	mainAppTaskHandle = osThreadNew(mainAppTask, NULL, &mainAppTask_attributes);
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -120,8 +129,6 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-  /* init code for USB_HOST */
-  MX_USB_HOST_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for(;;)

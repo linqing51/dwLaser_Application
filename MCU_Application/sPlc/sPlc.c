@@ -552,7 +552,7 @@ void sPlcInit(void){//软逻辑初始化
 	sPlcSpeakerInit();//初始化蜂鸣器
 	sPlcModbusInit(1, CONFIG_MODBUS_RTU_BAUDRATE);//初始化modbus
 	sPlcFreeProtocolInit();//自由协议初始化
-	HAL_IWDG_Refresh(&hiwdg); //喂狗：重装看门狗数据为4095.
+	
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	uint16_t tmp;
@@ -592,6 +592,7 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	sPlcChipAdcProcess();//ADC 更新NVRAM
 	sPlcModbusPorcess();//Mdosbus协议处理程序
 	sPlcFreeProtocolProcess();//自由协议处理程序
+	HAL_IWDG_Refresh(&hiwdg);
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
@@ -604,33 +605,7 @@ void sPlcProcessEnd(void){//sPLC轮询结束
 	sPlcExitTime = HAL_GetTick();
 	sPlcScanTime = sPlcExitTime - sPlcEnterTime;
 	NVRAM0[SPREG_SCAN_TIME] = (uint16_t)sPlcScanTime;
-	HAL_IWDG_Refresh(&hiwdg); //喂狗：重装看门狗数据为4095.
-}
-
-void sPlcRingBuffInit(ringBuff_t *p){//循环缓冲初始化
-	p->head = 0;
-	p->tail = 0;
-	p->lenght = 0;
-}
-
-uint8_t sPlcRingBuffPush(ringBuff_t *p, uint8_t data){//循环缓冲压入
-	if(p->lenght >= CONFIG_RING_BUFFER_SIZE){//缓冲区溢出
-		return false;
-	}
-	p->buff[p->tail] = data;
-	p->tail=(p->tail + 1) % CONFIG_RING_BUFFER_SIZE;
-	p->lenght++;
-	return true;
-}
-
-uint8_t sPlcRingBuffPop(ringBuff_t *p ,uint8_t *rData){//循环缓冲弹出
-	if(p->lenght == 0){//缓冲区内无数据
-		return false;
-	}
-	*rData = p->buff[p->head];
-	p->head = (p->head + 1) % CONFIG_RING_BUFFER_SIZE;
-	p->lenght--;
-	return true;
+	HAL_IWDG_Refresh(&hiwdg);
 }
 
 

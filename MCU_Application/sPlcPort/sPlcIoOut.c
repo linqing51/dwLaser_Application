@@ -1,4 +1,4 @@
-#include "sPlcIoOut.h"
+#include "sPlc.h"
 extern TIM_HandleTypeDef htim12;//FAN PWM
 extern TIM_HandleTypeDef htim2;//FAN PWM
 /*****************************************************************************/
@@ -48,13 +48,13 @@ void sPlcOutputRefresh(void){//设置输出IO
 		printf("%s,%d,%s:reset Y2(alarm led)\n",__FILE__, __LINE__, __func__);
 	}
 	
-	//Y3 锁定灯
-	if(LDP(Y_ULINK_LED)){
-		SET_ULINK_LED(GPIO_PIN_SET);
+	//Y3 通行指示灯
+	if(LDP(Y_LINK_LED)){
+		SET_LINK_LED(GPIO_PIN_SET);
 		printf("%s,%d,%s:set Y3(lock led)\n",__FILE__, __LINE__, __func__);
 	}
-	if(LDN(Y_ULINK_LED)){
-		SET_ULINK_LED(GPIO_PIN_RESET);
+	if(LDN(Y_LINK_LED)){
+		SET_LINK_LED(GPIO_PIN_RESET);
 		printf("%s,%d,%s:reset Y3(lock led)\n",__FILE__, __LINE__, __func__);
 	}
 	

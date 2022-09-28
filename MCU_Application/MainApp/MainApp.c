@@ -2,6 +2,7 @@
 #include "pid_fuzzy.h"
 /*****************************************************************************/
 fuzzyPid_t laserPid;
+extern IWDG_HandleTypeDef hiwdg;
 /*****************************************************************************/
 void temperatureMeasureLoop(void){//温度采集
 	double ftmp;
@@ -56,14 +57,22 @@ void currentMeasureLoop(void){//电流采集
 }
 void powerMeasureLoop(void){//功率采集
 	float pd1, pd2;
-	pd1 = (3300.0F * CONFIG_VREF_CAL * (NVRAM0[SPREG_ADC_2] - NVRAM0[SPREG_ADC_2])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
-	pd2 = (3300.0F * CONFIG_VREF_CAL * (NVRAM0[SPREG_ADC_3] - NVRAM0[SPREG_ADC_3])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	pd1 = (3300.0F * CONFIG_VREF_CAL * (float)(NVRAM0[SPREG_ADC_2] - NVRAM0[DM_ADC_OFFSET_2])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	pd2 = (3300.0F * CONFIG_VREF_CAL * (float)(NVRAM0[SPREG_ADC_3] - NVRAM0[DM_ADC_OFFSET_3])) / (NVRAM0[SPREG_ADC_9] * 4096.0F);//计算电压
+	if(pd1 > 9999){
+		pd1 = 9999;
+	}
+	if(pd1 < 0){
+		pd1 = 0;
+	}
+	if(pd2 > 9999){
+		pd2 = 9999;
+	}
+	if(pd2 < 0){
+		pd2 = 0;
+	}
 	NVRAM0[EM_LASER_PD_CH0] = (int16_t)pd1;
 	NVRAM0[EM_LASER_PD_CH1] = (int16_t)pd2;
-	NVRAM0[TMP_REG_0] = 0;
-	NVRAM0[TMP_REG_1] = 9999;
-	LIMS16(EM_LASER_PD_CH0, TMP_REG_0, TMP_REG_1);
-	LIMS16(EM_LASER_PD_CH1, TMP_REG_0, TMP_REG_1);
 }
 void returnToZero(void){//测量值归零
 	if(LD(R_RETURN_ZERO)){	
@@ -81,14 +90,32 @@ void returnToZero(void){//测量值归零
 	}
 }
 
+void watchDogTask(void *argument){//看门狗任务
+	while(1){
+#if CONFIG_USING_IWDG == 1
+		HAL_IWDG_Refresh(&hiwdg); //喂狗：重装看门狗数据为4095.
+#endif
+		vTaskDelay(500);
+	}
+}
+
 void mainAppTask(void *argument){
 	int pidTmp;
 	sPlcInit();
 	fuzzyPidInit(&laserPid);
+	SET_LINK_LED(GPIO_PIN_SET);
+	SET_ALARM_LED(GPIO_PIN_SET);
+	SET_LASER1_LED(GPIO_PIN_SET);
+	SET_LASER2_LED(GPIO_PIN_SET);
+	vTaskDelay(1000);
+	SET_LINK_LED(GPIO_PIN_RESET);
+	SET_ALARM_LED(GPIO_PIN_RESET);
+	SET_LASER1_LED(GPIO_PIN_RESET);
+	SET_LASER2_LED(GPIO_PIN_RESET);
 	while(1){
 		sPlcProcessStart();
 		if(LD(SPCOIL_START_UP)){//
-			RRES(Y_ULINK_LED);
+			RRES(Y_LINK_LED);
 			RRES(Y_ALARM_LED);
 			RRES(Y_LASER1_LED);
 			RRES(Y_LASER2_LED);
@@ -96,7 +123,8 @@ void mainAppTask(void *argument){
 			RRES(Y_AIM2_ENA);
 			SSET(Y_ERR_LED);
 			SSET(Y_TEC_ENA);
-		}
+			NVRAM0[EM_LASER_TEMP_SET] = CONFIG_DIODE_SET_TEMP;			
+		}	
 		//寄存器范围限制		
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_POWER_CH0, TMP_REG_0, TMP_REG_1);
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_POWER_CH1, TMP_REG_0, TMP_REG_1);
@@ -105,13 +133,16 @@ void mainAppTask(void *argument){
 		NVRAM0[TMP_REG_0] = 0;NVRAM0[TMP_REG_1] = 999;LIMS16(EM_LASER_POSWIDTH, TMP_REG_0, TMP_REG_1);
 		NVRAM0[TMP_REG_0] = 200;NVRAM0[TMP_REG_1] = 350;LIMS16(EM_LASER_TEMP_SET, TMP_REG_0, TMP_REG_1);
 		//外控操作
-		if(LD(X_EXT_ENABLE)){//外控使能
-			if(LD(X_LASER_TRIG)){//外控触发
-				SSET(R_LASER_START);
-			}
-			else{
-				RRES(R_LASER_START);
-			}
+		if(LD(X_EXT_ENABLE) && LD(X_LASER_TRIG)){//外控触发
+			SSET(R_LASER_START);
+		}
+		if(LD(X_EXT_ENABLE) && LDB(X_LASER_TRIG)){
+			RRES(R_LASER_START);
+			SSET(R_LASER_STOP);
+		}
+		if(LDN(X_EXT_ENABLE)){//切换内控模式停止发射激光
+			RRES(R_LASER_START);
+			SSET(R_LASER_STOP);
 		}
 		//
 		if(LDP(R_LASER_START) && LD(X_INTERLOCK_NC)){//打开激光
@@ -128,6 +159,7 @@ void mainAppTask(void *argument){
 			UPDAC0();//设置通道1 DAC
 			UPDAC1();//设置通道2 DAC
 			STLAR();
+			SSET(R_LASER_BEEM);
 			RRES(R_LASER_START);
 		}
 		else{
@@ -139,6 +171,7 @@ void mainAppTask(void *argument){
 			UPDAC0();//设置通道1 DAC
 			UPDAC1();//设置通道2 DAC
 			EDLAR();
+			RRES(R_LASER_BEEM);
 			RRES(R_LASER_STOP);
 		}
 		else{
@@ -181,7 +214,6 @@ void mainAppTask(void *argument){
 		currentMeasureLoop();
 		powerMeasureLoop();
 		returnToZero();
-		
 		sPlcProcessEnd();
 	}
 }

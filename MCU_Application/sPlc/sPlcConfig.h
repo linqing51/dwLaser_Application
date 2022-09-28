@@ -46,9 +46,9 @@
 //外控触发
 #define GET_LASER_TRG()																HAL_GPIO_ReadPin(LASER_TRIG_IN_GPIO_Port, LASER_TRIG_IN_Pin)
 //ULINK LED
-#define SET_ULINK_LED(b)															HAL_GPIO_WritePin(LOCK_LED_GPIO_Port, LOCK_LED_Pin, b)
-#define FLIP_ULINK_LED()															HAL_GPIO_TogglePin(LOCK_LED_GPIO_Port, LOCK_LED_Pin)
-#define GET_ULINK_LED()																HAL_GPIO_ReadPin(LOCK_LED_GPIO_Port, LOCK_LED_Pin)
+#define SET_LINK_LED(b)																HAL_GPIO_WritePin(LINK_LED_GPIO_Port, LINK_LED_Pin, b)
+#define FLIP_LINK_LED()																HAL_GPIO_TogglePin(LINK_LED_GPIO_Port, LINK_LED_Pin)
+#define GET_LINK_LED()																HAL_GPIO_ReadPin(LINK_LED_GPIO_Port, LINK_LED_Pin)
 //DC-DC变换器使能
 #define SET_LASER_PWM(b)															HAL_GPIO_WritePin(LASER_PWM_GPIO_Port, LASER_PWM_Pin, b)
 #define FLIP_LASER_PWM()															HAL_GPIO_TogglePin(LASER_PWM_GPIO_Port, LASER_PWM_Pin)
@@ -57,6 +57,8 @@
 #define SET_SPEAK_ENA(b)															HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, b)
 #define FLIP_SPEAK_ENA()															HAL_GPIO_TogglePin(SPK_EN_GPIO_Port, SPK_EN_Pin)
 #define GET_SPEAK_ENA()																HAL_GPIO_ReadPin(SPK_EN_GPIO_Port, SPK_EN_Pin)
+/*****************************************************************************/
+#define CONFIG_USING_IWDG															0
 /*****************************************************************************/
 #define BEEM_MODE_0																		0x10//连续模式
 #define BEEM_MODE_1																		0x11//声光同步
@@ -77,7 +79,7 @@
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'A'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*64)//512的整数倍
-#define CONFIG_JUMP_DELAY															5000//检测U盘时间
+#define CONFIG_JUMP_DELAY															2000//检测U盘时间
 #define FATFS_ROOT																		"0:"
 #define LOG_FIRMWARE_FILENAME													"/log.txt"//操作记录文件
 #define CFG_FIRMWARE_FILENAME													"/las.cfg"//操作配置文件
@@ -132,7 +134,7 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
 #define CONFIG_SPLC_ADC_CHANNEL												10//ADC采集通道
-#define CONFIG_SPLC_ADC_AVERAGE_NUM										16//ADC平均值次数
+#define CONFIG_SPLC_ADC_AVERAGE_NUM										32//ADC平均值次数
 #define CONFIG_ADC_DMA_BUFFER_SIZE										(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_AMBIENT_TEMP             							25// Ambient temp in deg C
 #define CONFIG_VREF_CAL                         			*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
@@ -164,7 +166,7 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LASER												1
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													200//激光器恒温温度 
+#define CONFIG_DIODE_SET_TEMP													250//激光器恒温温度 
 #define CONFIG_DIODE_DIFF_TEMP												15
 #define CONFIG_DIODE_HIGH_TEMP												380//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-100//激光器低温极限 - 10.0C
@@ -389,6 +391,7 @@
 #define R_MCU_TEMP_HIGH																(R_START * 16 + 17)//环境保温报警
 #define R_CALIBRATION_MODE														(R_START * 16 + 18)//启用功率校准
 #define R_RETURN_ZERO																	(R_START * 16 + 19)//手动归零
+#define R_LASER_BEEM																	(R_START * 16 + 20)//激光启动标志
 /*****************************************************************************/
 #define TMP_REG_0																			(TMP_START + 0)//临时名称储存区
 #define TMP_REG_1																			(TMP_START + 1)//临时名称储存区
@@ -464,7 +467,7 @@
 #define Y_TICK_LED																		(Y_START * 16 + 0)//YOUT0 心跳灯
 #define Y_ERR_LED																			(Y_START * 16 + 1)//YOUT1 错误灯
 #define Y_ALARM_LED																		(Y_START * 16 + 2)//YOUT2 报警灯
-#define Y_ULINK_LED																		(Y_START * 16 + 3)//YOUT3 通行指令执行指示灯
+#define Y_LINK_LED																		(Y_START * 16 + 3)//YOUT3 通行指令执行指示灯
 #define Y_LASER1_LED																	(Y_START * 16 + 4)//YOUT4 通道1 激光指示灯
 #define Y_LASER2_LED																	(Y_START * 16 + 5)//YOUT5 通道2 激光指示灯
 #define Y_AIM1_ENA																		(Y_START * 16 + 6)//YOUT6 通道1 指示光使能

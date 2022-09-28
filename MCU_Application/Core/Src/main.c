@@ -23,13 +23,12 @@
 #include "crc.h"
 #include "dac.h"
 #include "dma.h"
-#include "fatfs.h"
 #include "i2c.h"
 #include "iwdg.h"
 #include "rng.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb_host.h"
+#include "usb_otg.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -109,10 +108,12 @@ int main(void)
   MX_TIM14_Init();
   MX_TIM7_Init();
   MX_TIM10_Init();
-  MX_FATFS_Init();
-  MX_IWDG_Init();
+  //MX_IWDG_Init();
+  MX_USB_OTG_FS_HCD_Init();
   /* USER CODE BEGIN 2 */
-
+#if CONFIG_USING_IWDG == 1
+	MX_IWDG_Init();
+#endif
   /* USER CODE END 2 */
 
   /* Init scheduler */

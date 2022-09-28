@@ -59,11 +59,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, SPK_EN_Pin|LASER_PWM_Pin|OTG_FS_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, ERR_LED_Pin|LASER1_AIM_Pin|TEC_OUT_Pin|ALARM_LED_OUT_Pin
-                          |LASER1_LED_OUT_Pin|LASER2_LED_OUT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, ERR_LED_Pin|LASER1_AIM_Pin|TEC_OUT_Pin|LASER2_LED_OUT_Pin
+                          |LASER1_LED_OUT_Pin|ALARM_LED_OUT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LOCK_LED_GPIO_Port, LOCK_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LINK_LED_GPIO_Port, LINK_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PCPin PCPin PCPin PCPin
                            PCPin */
@@ -75,7 +75,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PAPin PAPin */
-  GPIO_InitStruct.Pin = PM_ALARM_Pin|LASER_TRIG_IN_Pin;
+  GPIO_InitStruct.Pin = PM_ALARM_Pin|LASER_EXT_ENA_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -89,7 +89,7 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PCPin PCPin PCPin PCPin
                            PCPin */
-  GPIO_InitStruct.Pin = POWER_KEY_Pin|OTG_FS_PSOC_Pin|LASER_EXT_ENA_Pin|ESTOP_IN_Pin
+  GPIO_InitStruct.Pin = POWER_KEY_Pin|OTG_FS_PSOC_Pin|LASER_TRIG_IN_Pin|ESTOP_IN_Pin
                           |INTERLOCK_IN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
@@ -97,8 +97,8 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
                            PBPin PBPin */
-  GPIO_InitStruct.Pin = ERR_LED_Pin|LASER1_AIM_Pin|TEC_OUT_Pin|ALARM_LED_OUT_Pin
-                          |LASER1_LED_OUT_Pin|LASER2_LED_OUT_Pin;
+  GPIO_InitStruct.Pin = ERR_LED_Pin|LASER1_AIM_Pin|TEC_OUT_Pin|LASER2_LED_OUT_Pin
+                          |LASER1_LED_OUT_Pin|ALARM_LED_OUT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -118,11 +118,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(OTG_FS_PSON_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = LOCK_LED_Pin;
+  GPIO_InitStruct.Pin = LINK_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LOCK_LED_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(LINK_LED_GPIO_Port, &GPIO_InitStruct);
 
 }
 

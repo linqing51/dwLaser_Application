@@ -1,7 +1,8 @@
 #ifndef __SPLC_H__
 #define __SPLC_H__
 /*****************************************************************************/
-//#include "cmsis_os.h"
+#include "cmsis_os.h"
+#include "FreeRTOS.h"
 #include "stm32f4xx_hal.h"
 #include "arm_math.h"
 #include <stdio.h>
@@ -46,13 +47,6 @@ typedef struct{
 	int16_t laserMaxPhotoDiode;//激光器最大功率
 	int16_t mucMaxTemper;//处理器最高温度
 }deviceLogInfo_t;
-
-typedef struct{//循环缓冲
- uint16_t head;//头指针
- uint16_t tail;//尾指针
- uint16_t lenght;//长度
- uint8_t buff[CONFIG_RING_BUFFER_SIZE];//缓冲大小
-}ringBuff_t;
 
 typedef struct{//自由协议
 	uint8_t cmdBufRx[FP_RX_SIZE];
@@ -151,10 +145,6 @@ extern void sPlcInit(void);
 extern uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg);//功率分段线性校准
 extern void sPlcFreeProtocolInit(void);//自由协议初始化
 extern void sPlcFreeProtocolProcess(void);//自由协议命令处理 
-/*****************************************************************************/
-extern void sPlcRingBuffInit(ringBuff_t *p);//循环缓冲初始化
-extern uint8_t sPlcRingBuffPush(ringBuff_t *p, uint8_t data);//循环缓冲压入
-extern uint8_t sPlcRingBuffPop(ringBuff_t *p ,uint8_t *rData);//循环缓冲弹出
 /*****************************************************************************/
 extern void LINKS(void);//从机接收
 extern void LINKM(void);//主机发送

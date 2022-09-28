@@ -9,12 +9,12 @@
 //论域e:[-5,5]  ec:[-0.5,0.5]
 
 //误差的阀值，小于这个数值的时候，不做PID调整，避免误差较小时频繁调节引起震荡
-#define Emin 0.00001F
+#define Emin 0.0001F
 #define Emid 0.08F
 #define Emax 0.6F
 //调整值限幅，防止积分饱和
-#define Umax 6.0F
-#define Umin -6.0F
+#define Umax 5.0F
+#define Umin -5.0F
 
 //输出值限幅
 #define Pmax 65535
@@ -316,7 +316,7 @@ void fuzzyPidSet(fuzzyPid_t *structpid,float Kp,float Ki,float Kd,float T, uint8
 }
 
 void fuzzyPidInit(fuzzyPid_t *structpid){
-	fuzzyPidSet(structpid,4,2,1,1, 1);
+	fuzzyPidSet(structpid, 6, 2, 1, 1, 1);
 	structpid->flag=0;
 	structpid->pwm_out=0;
 }
