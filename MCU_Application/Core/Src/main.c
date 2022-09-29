@@ -25,7 +25,6 @@
 #include "dma.h"
 #include "fatfs.h"
 #include "i2c.h"
-#include "iwdg.h"
 #include "rng.h"
 #include "tim.h"
 #include "usart.h"
@@ -110,11 +109,9 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM10_Init();
   MX_TIM14_Init();
-  MX_TIM11_Init();
   MX_TIM12_Init();
-  MX_FATFS_Init();
   MX_TIM3_Init();
-  //MX_IWDG_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -155,9 +152,8 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 25;
@@ -182,16 +178,20 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+
+  /** Enables the Clock Security System
+  */
+  HAL_RCC_EnableCSS();
 }
 
 /* USER CODE BEGIN 4 */
-extern void sPlcTimerIsr(void);//Ӳ��sTimer��ʱ���ж� 1mS
-extern void laserTimerIsr(void);
+extern void sPlcTimerIsr(void);
+extern void sPlcLaserTimerIsr(void);
 /* USER CODE END 4 */
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
+  * @note   This function is called  when TIM13 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -202,7 +202,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6) {
+  if (htim->Instance == TIM13) {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
@@ -212,8 +212,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance == TIM10){
 		sPlcLaserTimerIsr();
 	}
-  /* USER CODE BEGIN Callback 1 */
-
   /* USER CODE END Callback 1 */
 }
 

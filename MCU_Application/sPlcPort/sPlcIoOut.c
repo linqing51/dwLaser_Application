@@ -1,4 +1,4 @@
-#include "sPlcIoOut.h"
+#include "sPlc.h"
 extern TIM_HandleTypeDef htim12;//FAN PWM
 extern TIM_HandleTypeDef htim2;//FAN PWM
 /*****************************************************************************/
@@ -18,31 +18,34 @@ void sPlcOutputRefresh(void){//ÉèÖÃÊä³öIO
 	//YOUT0 ÂÌµÆ
 	if(LDP(Y_GREEN_LED)){
 		SET_GREEN_LED_ON;
-		printf("%s,%d,%s:set Y0 GLED\n",__FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:set Y0 GLED\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDN(Y_GREEN_LED)){
 		SET_GREEN_LED_OFF;
-		printf("%s,%d,%s:reset Y0 GLED\n",__FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:reset Y0 GLED\n",__FILE__, __LINE__, __func__);
 	}
 	
 	//YOUT1 ºìµÆ
 	if(LDP(Y_RED_LED)){
 		SET_RED_LED_ON;
-		printf("%s,%d,%s:set Y1 RLED\n",__FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:set Y1 RLED\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDN(Y_RED_LED)){
 		SET_RED_LED_OFF;
-		printf("%s,%d,%s:reset Y1 RLED\n",__FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:reset Y1 RLED\n",__FILE__, __LINE__, __func__);
 	}
 	
-	//YOUT2 À¶µÆ
+	//YOUT2 »ÆµÆ
 	if(LDP(Y_YELLOW_LED)){
+		//ÂÌÉ«+À¶É«Ä£Äâ»ÆÉ«
 		SET_BLUE_LED_ON;
-		printf("%s,%d,%s:set Y2 BLED\n",__FILE__, __LINE__, __func__);
+		SET_GREEN_LED_ON;
+		//printf("%s,%d,%s:set Y2 BLED\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDN(Y_YELLOW_LED)){
 		SET_BLUE_LED_OFF;
-		printf("%s,%d,%s:reset Y2 BLED\n",__FILE__, __LINE__, __func__);
+		SET_GREEN_LED_OFF;
+		//printf("%s,%d,%s:reset Y2 BLED\n",__FILE__, __LINE__, __func__);
 	}
 	
 	//YOUT3 TICK LED
@@ -72,11 +75,11 @@ void sPlcOutputRefresh(void){//ÉèÖÃÊä³öIO
 	//YOUT7 AIM
 	if(LDP(Y_AIM)){
 		SET_AIM_ON;
-		printf("%s,%d,%s:set Y6 FAN\n",__FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:set Y6 FAN\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDN(Y_AIM)){
 		SET_AIM_OFF;
-		printf("%s,%d,%s:reset Y6 FAN\n",__FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:reset Y6 FAN\n",__FILE__, __LINE__, __func__);
 	}
 	
 }

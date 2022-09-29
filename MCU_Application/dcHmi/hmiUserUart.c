@@ -1,5 +1,6 @@
 /*****************************************************************************/
 #include "hmiUserUart.h"
+#include "stdio.h"
 /*****************************************************************************/
 extern UART_HandleTypeDef huart4;
 /*****************************************************************************/
@@ -7,6 +8,7 @@ uint8_t uart4_rxDat;
 /*****************************************************************************/
 void hmiUartInit(void){
 	HAL_UART_Receive_IT(&huart4, &uart4_rxDat, 1);
+	printf("%s,%d,%s:start hmi uart init......\n",__FILE__, __LINE__, __func__);
 }
 void hmiUartSendChar(uint8_t sdat){
 	HAL_StatusTypeDef ret;

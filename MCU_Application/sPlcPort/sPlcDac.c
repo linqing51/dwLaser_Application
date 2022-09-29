@@ -1,19 +1,4 @@
-#include "sPlcDac.h"
-/*****************************************************************************/
-#define SET_EDAC0_CS(b)								HAL_GPIO_WritePin(EDAC0_CS_GPIO_Port, EDAC0_CS_Pin, b)
-#define SET_EDAC1_CS(b)								HAL_GPIO_WritePin(EDAC1_CS_GPIO_Port, EDAC1_CS_Pin, b)
-#define SET_EDAC2_CS(b)								HAL_GPIO_WritePin(EDAC2_CS_GPIO_Port, EDAC2_CS_Pin, b)
-#define SET_EDAC3_CS(b)								HAL_GPIO_WritePin(EDAC3_CS_GPIO_Port, EDAC3_CS_Pin, b)
-#define SET_EDAC0_SCK(b)							HAL_GPIO_WritePin(EDAC0_SCK_GPIO_Port, EDAC0_SCK_Pin, b)
-#define SET_EDAC1_SCK(b)							HAL_GPIO_WritePin(EDAC1_SCK_GPIO_Port, EDAC1_SCK_Pin, b)
-#define SET_EDAC2_SCK(b)							HAL_GPIO_WritePin(EDAC2_SCK_GPIO_Port, EDAC2_SCK_Pin, b)
-#define SET_EDAC3_SCK(b)							HAL_GPIO_WritePin(EDAC3_SCK_GPIO_Port, EDAC3_SCK_Pin, b)
-#define SET_EDAC0_SDI(b)							HAL_GPIO_WritePin(EDAC0_SDI_GPIO_Port, EDAC0_SDI_Pin, b)
-#define SET_EDAC1_SDI(b)							HAL_GPIO_WritePin(EDAC1_SDI_GPIO_Port, EDAC1_SDI_Pin, b)
-#define SET_EDAC2_SDI(b)							HAL_GPIO_WritePin(EDAC2_SDI_GPIO_Port, EDAC2_SDI_Pin, b)
-#define SET_EDAC3_SDI(b)							HAL_GPIO_WritePin(EDAC3_SDI_GPIO_Port, EDAC3_SDI_Pin, b)
-#define MCP4821_NSHDN_MASK						(1 << 12)
-#define MCP4821_NGA_MASK							(1 << 13)
+#include "sPlc.h"
 /*****************************************************************************/
 static void writeMcp4821_0(uint16_t dat){//MCP4821 SPIÐ´Èë
 	uint8_t tmp, i;

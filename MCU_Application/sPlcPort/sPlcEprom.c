@@ -1,5 +1,5 @@
 //适用于FRAM不适用于EEPROM
-#include "sPlcEprom.h"
+#include "sPlc.h"
 /*****************************************************************************/
 extern I2C_HandleTypeDef hi2c1;
 extern CRC_HandleTypeDef hcrc;
@@ -18,7 +18,6 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地址读
 //ReadAddr:开始读数的地址  
 //返回值  :数据				  
 	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1
 	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		ret = HAL_ERROR;
 		return ret;
@@ -41,16 +40,12 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地址读
 	printf("%s,%d,%s:eprom read byte done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
 #endif
 	return ret;
-#else
-	return HAL_OK;
-#endif
 }
 HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//在指定地址开始读出16位数
 //该函数用于读出16bit或者32bit的数据.
 //ReadAddr   :开始读出的地址 
 //返回值     :数据  	
 	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1
 	if((ReadAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		ret = HAL_ERROR;
 		return ret;
@@ -73,16 +68,12 @@ HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//在指定地址
 	printf("%s,%d,%s:Eprom read hword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
 #endif
 	return ret;
-#else
-	return HAL_OK;
-#endif	
 }
 HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////在指定地址开始读出32位数
 //该函数用于读出32bit的数据.
 //ReadAddr   :开始读出的地址 
 //返回值     :数据  	
-	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1	
+	HAL_StatusTypeDef ret;	
 	if((ReadAddr + 3) > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		ret = HAL_ERROR;
 		return ret;
@@ -105,15 +96,11 @@ HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////在指定地
 	printf("%s,%d,%s:eprom read dword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
 #endif
 	return ret;
-#else
-	return HAL_OK;
-#endif
 }
 HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//在指定地址写入8位数据
 //WriteAddr  :写入数据的目的地址    
 //DataToWrite:要写入的数据
 	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1	
 	if(WriteAddr > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		ret = HAL_ERROR;
 		return ret;
@@ -136,16 +123,12 @@ HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//在指定地址
 	printf("%s,%d,%s:eprom write byte done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
 #endif
 	return ret;
-#else
-	return HAL_OK;
-#endif
 }
 HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//在的指定地址开始写入16位数
 //该函数用于写入16bit的数据.
 //WriteAddr  :开始写入的地址  
 //DataToWrite:数据数组首地址
 	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1	
 	if((WriteAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		ret = HAL_ERROR;
 		return ret;
@@ -168,16 +151,12 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//在的指定
 	printf("%s,%d,%s:eprom write hword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
 #endif
 	return ret;
-#else
-	return HAL_OK;
-#endif
 }
 HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//在的指定地址开始写入32位数
 //该函数用于写入32bit的数据.
 //WriteAddr  :开始写入的地址  
 //DataToWrite:数据数组首地址
 	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1
 	if((WriteAddr + 3) >= (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		ret = HAL_ERROR;
 		return ret;
@@ -200,17 +179,13 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//在的指定
 	printf("%s,%d,%s:eprom write hword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
 #endif
 	return ret;
-#else
-	return HAL_OK;
-#endif
 }   
 HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//在的指定地址开始读出指定个数的数据
 //ReadAddr :开始读出的地址 对24c02为0~255
 //pBuffer  :数据数组首地址
 //NumToRead:要读出数据的个数
 	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1
-	uint16_t rAddr, rBlock, rByte, doBlock;
+	__IO uint16_t rAddr, rBlock, rByte, doBlock;
 	uint8_t* rBuffer;
 	if((ReadAddr + NumToRead) > CONFIG_EPROM_SIZE){//读地址超过限制
 		ret = HAL_ERROR;
@@ -248,16 +223,12 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 		}
 	}
 	return ret;	
-#else
-	return HAL_OK;
-#endif
 }  
 HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite){//在的指定地址开始写入指定个数的数据
 //WriteAddr :开始写入的地址 对24c02为0~255
 //pBuffer   :数据数组首地址
 //NumToWrite:要写入数据的个数
 	HAL_StatusTypeDef ret;
-#if CONFIG_SPLC_USING_EPROM == 1
 	uint16_t wAddr, wBlock, wByte, doBlock;
 	uint8_t* wBuffer;
 	if((WriteAddr + NumToWrite) > CONFIG_EPROM_SIZE){//读地址超过限制
@@ -300,9 +271,6 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 	printf("%s,%d,%s:eprom write multibyte done,adr:%d,num:%d\n", __FILE__, __LINE__, __func__, WriteAddr, NumToWrite);
 #endif
 	return ret;
-#else
-	return HAL_OK;
-#endif
 }
 /*****************************************************************************/
 void listEpromTable(void){//输出EPROM分布表

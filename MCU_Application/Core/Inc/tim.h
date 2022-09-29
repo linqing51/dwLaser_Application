@@ -40,8 +40,6 @@ extern TIM_HandleTypeDef htim7;
 
 extern TIM_HandleTypeDef htim10;
 
-extern TIM_HandleTypeDef htim11;
-
 extern TIM_HandleTypeDef htim12;
 
 extern TIM_HandleTypeDef htim14;
@@ -54,7 +52,6 @@ void MX_TIM2_Init(void);
 void MX_TIM3_Init(void);
 void MX_TIM7_Init(void);
 void MX_TIM10_Init(void);
-void MX_TIM11_Init(void);
 void MX_TIM12_Init(void);
 void MX_TIM14_Init(void);
 

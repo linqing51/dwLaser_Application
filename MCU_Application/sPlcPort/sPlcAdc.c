@@ -1,4 +1,4 @@
-#include "sPlcAdc.h"
+#include "sPlc.h"
 /*****************************************************************************/
 __IO uint16_t adcDmaBuffer0[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池
 __IO uint16_t adcDmaBuffer1[CONFIG_ADC_DMA_BUFFER_SIZE];//ADC DMA采集储存池

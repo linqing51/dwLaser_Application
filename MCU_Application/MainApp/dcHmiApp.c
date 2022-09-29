@@ -1,11 +1,10 @@
 #include "dcHmiApp.h"
 /*****************************************************************************/
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
-static uint8_t standbyKeyTouchEnableStatus = 0;
+static int8_t standbyKeyTouchEnableStatus = -1;
 uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
 static void UpdateUI(void);
-extern CRC_HandleTypeDef hcrc;
 /*****************************************************************************/
 void loadDeviceConfig(void){//从EPROM载入配置文件
 	uint32_t crc32_eprom_cfg, crc32_cfg, temp;
@@ -16,10 +15,26 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配置
 		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
-		for (i = 0;i < 10; i++){
-			temp = i * 455;
-			deviceConfig.calibrationPwr0[i] = (uint16_t)temp;
-		}
+		//大族模块默认功率表
+		deviceConfig.calibrationPwr0[0] = 9;
+		deviceConfig.calibrationPwr0[1] = 28;
+		deviceConfig.calibrationPwr0[2] = 48;
+		deviceConfig.calibrationPwr0[3] = 68;
+		deviceConfig.calibrationPwr0[4] = 87;
+		deviceConfig.calibrationPwr0[5] = 105;
+		deviceConfig.calibrationPwr0[6] = 120;
+		deviceConfig.calibrationPwr0[7] = 133;
+		deviceConfig.calibrationPwr0[8] = 144;
+		deviceConfig.calibrationPwr0[9] = 153;
+		
+		deviceConfig.mfg_year = 2022;
+		deviceConfig.mfg_month = 9;
+		deviceConfig.mfg_day = 25;
+		
+		sprintf(deviceConfig.serialNumber, "AK22-E20");
+		deviceConfig.greenLedDc = CONFIG_GREEN_LED_DEFAULT_DC;
+		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
+		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
 		for (i = 0;i < 10; i++){
 			temp = i * 455;
 			deviceConfig.calibrationPwr1[i] = (uint16_t)temp;
@@ -46,27 +61,16 @@ void saveDeviceConfig(void){//将配置写入EPROM
 	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
 }
 void optionKeyEnable(uint8_t enable){//选项界面按键锁定
-	BatchBegin(GDDC_PAGE_OPTION);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_TONE, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_DEC, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_LCD_BRG_DEC, enable);
-	BatchEnd();
-	//等待5mS HMI处理器
-	delayMs(5);
-	BatchBegin(GDDC_PAGE_OPTION);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_ENTER_OK, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, enable);
-	BatchEnd();
-	delayMs(5);
-	BatchBegin(GDDC_PAGE_OPTION);
-	BatchSetEnable(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, enable);
-	BatchSetEnable(GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, enable);
-	BatchEnd();
-	delayMs(5);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD, enable);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_DEC, enable);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD, enable);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_LCD_BRG_DEC, enable);		
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_OK, enable);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION, enable);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON, enable);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, enable);	
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, enable);
+	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, enable);
 	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_RESTORE, enable);
 }
 void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
@@ -123,6 +127,15 @@ void updateDiognosisTextBox(void){//更新诊断信息文本框
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr3[i] / 10.0F);
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, (GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P1 + i), (uint8_t*)dispBuf);
 	}
+	//
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_YEAR , deviceConfig.mfg_year, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_MONTH , deviceConfig.mfg_month, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DAY , deviceConfig.mfg_day, 1, 0);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SN, (uint8_t*)deviceConfig.serialNumber);
+	
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RED_LED_DC , deviceConfig.redLedDc, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_GREEN_LED_DC , deviceConfig.greenLedDc, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_BLUE_LED_DC , deviceConfig.blueLedDc, 1, 0);
 }
 void updateDiognosisInfo(void){//更新诊断信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -287,19 +300,22 @@ void updateInformationDisplay(void){//更新信息界面显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE[NVRAM0[DM_LANGUAGE]]);	
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)INFO_MSG_SN[NVRAM0[DM_LANGUAGE]]);
+	//SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)INFO_MSG_SN[NVRAM0[DM_LANGUAGE]]);
+	memset(dispBuf, 0x0,sizeof(dispBuf));
+	sprintf(dispBuf, "SN:%s", (uint8_t*)deviceConfig.serialNumber);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH[NVRAM0[DM_LANGUAGE]]);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER[NVRAM0[DM_LANGUAGE]]);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)INFO_MSG_VERSION[NVRAM0[DM_LANGUAGE]]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)INFO_MSG_MANUFACTURE_DATE[NVRAM0[DM_LANGUAGE]]);			
+	
+	memset(dispBuf, 0x0,sizeof(dispBuf));
+	sprintf(dispBuf, "MANUFACTURE DATE:%4d-%2d-%2d", deviceConfig.mfg_year, deviceConfig.mfg_month, deviceConfig.mfg_day);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)dispBuf);			
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "UUID:%08X%08X%08X", UniqueId[0], UniqueId[1], UniqueId[2]);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);
 	
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "BuildTime:%s:%s\n", __DATE__, __TIME__);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_BUILDTIME, (uint8_t*)dispBuf);	
 }
 void returnStandbyDisplay(void){//返回STANDBY界面
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){	
@@ -320,32 +336,55 @@ void returnStandbyDisplay(void){//返回STANDBY界面
 	SetScreen(NVRAM0[EM_DC_PAGE]);
 }
 void clearReleaseTimeEnergy(void){//清除发射时间与能量显示
-	LaserRelease_TotalTime0 = 0;
-	LaserRelease_TotalTime1 = -1;
-	LaserRelease_TotalEnergy0 = 0;
-	LaserRelease_TotalEnergy1 = -1;
-	LaserAcousticBeepNum = 0;
-	updateReleaseTimeEnergy(true);
+	CLRD(EM_LASER_RELEASE_TIME);
+	CLRD(EM_LASER_TRIG_TIME);
+	CLRD(EM_LASER_RELEASE_ENERGY);
+	updateReleaseTimeEnergy();
 }
-void updateReleaseTimeEnergy(uint8_t refresh){//刷新发射时间能量
+void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	uint8_t minute;
 	uint8_t seconds;
+	int32_t temp0, temp1, temp2, temp3, temp4, temp5;
 	char dispBuf1[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	//refresh = 1强制更新
-	//refresh = 0变化更新
-	minute = LaserRelease_TotalTime0 / 60;
-	seconds = LaserRelease_TotalTime0 % 60;
-	if((LaserRelease_TotalTime0 != LaserRelease_TotalTime1) || refresh){//时间
-		sprintf(dispBuf1, "%3d:%02d", minute, seconds);//00:00
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME, (uint8_t*)dispBuf1);		
-		LaserRelease_TotalTime1 =LaserRelease_TotalTime0;
+	temp0 = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光打开时间秒
+	temp0 = temp0 / 50;
+	minute = temp0 / 60;
+	seconds = temp0 % 60;
+	sprintf(dispBuf1, "%3d:%02d", minute, seconds);//00:00
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME, (uint8_t*)dispBuf1);		
+	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){//连续模式能量计算
+		temp2 = temp0 * NVRAM0[EM_TOTAL_POWER];//计算发射能量
 	}
-	if((LaserRelease_TotalEnergy0 != LaserRelease_TotalEnergy1) || refresh){//能量
-		sprintf(dispBuf1, "%11.1f J", LaserRelease_TotalEnergy0);//00:00
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
-		LaserRelease_TotalEnergy1 = LaserRelease_TotalEnergy0;
+	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){//脉冲模式能量计算
+		if(NVRAM0[EM_LASER_MP_POSWIDTH] < 1000 || NVRAM0[EM_LASER_MP_NEGWIDTH] < 1000){//采用计算法
+			temp3 = NVRAM0[EM_LASER_MP_POSWIDTH];
+			temp4 = NVRAM0[EM_LASER_MP_NEGWIDTH];
+			temp2 = temp0 * NVRAM0[EM_TOTAL_POWER] * temp3 / (temp3 + temp4);
+		}
+		else{//只计算正脉宽能量
+			temp3 = NVRAM0[EM_LASER_MP_POSWIDTH];temp3 = temp3 / 1000;
+			temp4 = NVRAM0[EM_LASER_MP_NEGWIDTH];temp4 = temp4 / 1000;
+			
+			temp1 = temp0 / (temp3 + temp4);
+			temp5 = temp0 % (temp3 + temp4);
+			temp2 = temp1 * NVRAM0[EM_TOTAL_POWER] * temp3;
+			if(temp5 <= temp3){
+				temp2 += temp5 * NVRAM0[EM_TOTAL_POWER];
+			}
+			else{
+				temp2 += temp3 * NVRAM0[EM_TOTAL_POWER];
+			}	
+		}
 	}
+	if(temp2 < 0){
+		temp2 = 0;
+	}
+	if(temp2 >= INT32_MAX){
+		temp2 = INT32_MAX;
+	}
+	sprintf(dispBuf1, "%11.1f J", ((float)temp2 / 10));//00:00
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
 }
 void updateWarnMsgDisplay(uint8_t id){//更新警号显示框
 	const char *pstr;
@@ -877,7 +916,7 @@ void updateReadyDisplay(void){//更新READY显示
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	updateReadyPowerDisplay();
 	clearReleaseTimeEnergy();
-	updateReleaseTimeEnergy(true);
+	updateReleaseTimeEnergy();
 	updateAcousticDisplay();
 }
 
@@ -887,7 +926,7 @@ void updateAcousticDisplay(void){//更新提示音设置
 	int16_t cycle = 0;
 	if(NVRAM0[EM_LASER_PULSE_MODE] ==LASER_MODE_CW){//CW
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-		sprintf(dispBuf, "N/A");
+		sprintf(dispBuf, "");
 		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
 		
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -931,12 +970,12 @@ void updateAcousticDisplay(void){//更新提示音设置
 }
 void dcHmiLoopInit(void){//初始化模块
 	uint8_t i;
+	standbyKeyTouchEnableStatus = -1;
 	setAimBrightness(0);
-	printf("%s,%d,%s:start hmi uart init......\n",__FILE__, __LINE__, __func__);
 	hmiUartInit();
 	NVRAM0[DM_LANGUAGE] = MSG_EN;//默认语言英语
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
-	//检查MUSIC VOLUME储存值是否合规
+	//检查VOLUME储存值是否合规
 	for(i = 0;i < CONFIG_HMI_SCHEME_NUM; i++){
 		if(FDRAM[FD_LASER_SELECT + (i * 64)] != LASER_SELECT_CH0){//默认设置为单波长
 			FDRAM[FD_LASER_SELECT + (i * 64)] = LASER_SELECT_CH0;
@@ -1132,23 +1171,23 @@ static void faultLoop(void){//故障轮询
 	//
 	if(LD(R_FAULT)){
 		RRES(Y_GREEN_LED);//关闭绿灯
-		RRES(Y_YELLOW_LED);//关闭蓝灯
+		RRES(Y_YELLOW_LED);//关闭黄灯
 		SSET(Y_RED_LED);//打开红灯
 	}
 	else if(LaserFlag_Emiting){
 		RRES(Y_GREEN_LED);//关闭绿灯
-		SSET(Y_YELLOW_LED);//打开蓝灯
+		SSET(Y_YELLOW_LED);//打开黄灯
 		RRES(Y_RED_LED);//关闭红灯
 	}
 	else{
 		SSET(Y_GREEN_LED);//打开绿灯
-		RRES(Y_YELLOW_LED);//关闭蓝灯
+		RRES(Y_YELLOW_LED);//关闭黄灯
 		RRES(Y_RED_LED);//关闭红灯
 	}
 }
 static void speakerLoop(void){//蜂鸣器轮询
 	int8_t laserStatus0, laserStatus1, laserStatus2, laserStatus3;
-	double ftmp;
+	int32_t temp0, temp1;
 	if(LD(SPCOIL_BEEM_ENABLE)){
 		sPlcSpeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
 		switch(NVRAM0[SPREG_BEEM_MODE]){//模式
@@ -1194,19 +1233,19 @@ static void speakerLoop(void){//蜂鸣器轮询
 				break;
 			}
 			case BEEM_MODE_3:{//模式3 滴滴两下一停 报警音
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 25){//1
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 15){//1
 					sPlcSpeakerEnable();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器			
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 25 && NVRAM0[SPREG_BEEM_COUNTER] < 35){//0
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 15 && NVRAM0[SPREG_BEEM_COUNTER] < 30){//0
 					sPlcSpeakerDisable();//关闭音频
 					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 35 && NVRAM0[SPREG_BEEM_COUNTER] < 60){//1
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 30 && NVRAM0[SPREG_BEEM_COUNTER] < 45){//1
 					sPlcSpeakerEnable();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 60 && NVRAM0[SPREG_BEEM_COUNTER] < 70){//0
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 45 && NVRAM0[SPREG_BEEM_COUNTER] < 60){//0
 					sPlcSpeakerDisable();//关闭音频
 					RRES(SPCOIL_BEEM_BUSY);//关闭蜂鸣器
 				}
@@ -1215,7 +1254,7 @@ static void speakerLoop(void){//蜂鸣器轮询
 				}
 				break;
 			}
-			case BEEM_MODE_4:{//模式4 长间隔+提示音 激光发射音				
+			case BEEM_MODE_4:{//模式4 长间隔+提示音 激光发射音		
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
 					sPlcSpeakerEnable();//启动音频
 					SSET(SPCOIL_BEEM_BUSY);//启动蜂鸣器
@@ -1226,16 +1265,15 @@ static void speakerLoop(void){//蜂鸣器轮询
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
 					//判断是否启动提示音
-					ftmp = LaserAcousticBeepNum * (float)NVRAM0[EM_ACOUSTIC_ENERGY];
-					if(LaserRelease_TotalEnergy0 > ftmp){
-						//sPlcSpeakerVolume(100);
-						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_ACOUSITC_SPK_FREQ;
+					temp0 = (*((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]) + 25) / 50;
+					//temp0 = temp0 / 60;
+					if((temp0 % NVRAM0[EM_ACOUSTIC_TIME]) == 0){
+						sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME] + 25);		
+						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_ACOUSITC_SPK_FREQ;			
 						sPlcSpeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
-						LaserAcousticBeepNum ++;
-						printf("%s,%d,%s:beep num:%d, energy:%f\n",__FILE__, __LINE__, __func__, LaserAcousticBeepNum, LaserRelease_TotalEnergy0);
 					}
 					else{
-						//sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
+						sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
 						sPlcSpeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}
@@ -1254,18 +1292,6 @@ static void speakerLoop(void){//蜂鸣器轮询
 }
 
 void dcHmiLoop(void){//HMI轮训程序	
-	if(LDP(R_FOOTSWITCH_PLUG)){
-		printf("%s,%d,%s:Footswitch Plug!\n",__FILE__, __LINE__, __func__);
-	}
-	if(LDN(R_FOOTSWITCH_PLUG)){
-		printf("%s,%d,%s:Footswitch UnPlug!\n",__FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_FOOTSWITCH_PRESS)){
-		printf("%s,%d,%s:Footswitch Pressed!\n",__FILE__, __LINE__, __func__);
-	}
-	if(LDN(R_FOOTSWITCH_PRESS)){
-		printf("%s,%d,%s:Footswitch UnPressed!\n",__FILE__, __LINE__, __func__);
-	}
 	speakerLoop();
 	temperatureLoop();//温控程序
 	faultLoop();
@@ -1528,6 +1554,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_STANDBY_KEY_ENTER_SCHEME_DOWN);
 		}else
 		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
+			CLRD(EM_LASER_RELEASE_TIME);
+			CLRD(EM_LASER_TRIG_TIME);
 			LaserTimer_Select = (int8_t)NVRAM0[EM_LASER_SELECT];
 			LaserTimer_Mode = (int8_t)NVRAM0[EM_LASER_PULSE_MODE];
 			printf("%s,%d,%s:set laser channel=%d\n",__FILE__, __LINE__, __func__, LaserTimer_Select);
@@ -1542,9 +1570,9 @@ void dcHmiLoop(void){//HMI轮训程序
 				SSET(R_ACOUSTIC_ENABLE);
 				NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CW模式每次加减量1秒
 				NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_CH0] / 10;//CW模式每次加减量
-				NVRAM0[EM_ACOUSTIC_TIME] = 2;//初始为1秒
+				NVRAM0[EM_ACOUSTIC_TIME] = 1;//初始为1秒
 				NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_TIME] * NVRAM0[EM_LASER_POWER_CH0] / 10;
-				NVRAM0[EM_ACOUSTIC_TIME_MIN] = 2;//最小2秒
+				NVRAM0[EM_ACOUSTIC_TIME_MIN] = 1;//最小2秒
 				NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_STEP] * 100;//最大100秒
 				NVRAM0[EM_ACOUSTIC_ENERGY_MIN] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * NVRAM0[EM_LASER_POWER_CH0] / 10;
 				NVRAM0[EM_ACOUSTIC_ENERGY_MAX] = NVRAM0[EM_LASER_POWER_CH0] / 10 * NVRAM0[EM_ACOUSTIC_TIME_MAX];
@@ -1563,7 +1591,6 @@ void dcHmiLoop(void){//HMI轮训程序
 					NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * 100;//最大100周期
 					NVRAM0[EM_ACOUSTIC_ENERGY_MIN] = NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
 					NVRAM0[EM_ACOUSTIC_ENERGY_MAX] = NVRAM0[EM_LASER_POWER_CH0] / 10 * NVRAM0[EM_ACOUSTIC_TIME_MAX];
-				
 				}
 				else{
 					RRES(R_ACOUSTIC_ENABLE);
@@ -1576,11 +1603,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			else{
 				printf("%s,%d,%s:acoustic disable!\n", __FILE__, __LINE__, __func__);
 			}
-			//printf("%s,%d,%s:acoustic time = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME]);
-			//printf("%s,%d,%s:acoustic energy = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY]);
-			//printf("%s,%d,%s:acoustic cycle = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_CYCLE]);
-			
-			
 			printf("%s,%d,%s:acoustic time step = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_STEP]);
 			printf("%s,%d,%s:acoustic time min = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_MIN]);
 			printf("%s,%d,%s:acoustic time max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_MAX]);
@@ -1747,6 +1769,9 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
 			if(LDP(R_FOOTSWITCH_PRESS)){//发射激光
+				sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
+				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
+				sPlcSpeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 				readyPageTouchEnable(false);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
@@ -1755,6 +1780,9 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 		else{//电平触发
 			if(LD(R_FOOTSWITCH_PRESS)){//发射激光	
+				sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
+				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
+				sPlcSpeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 				readyPageTouchEnable(false);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
@@ -1764,12 +1792,14 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_EMITING){//发激光中READY页面
-		if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){//每隔1S刷新累计时间和能量
-			LaserRelease_TotalEnergy0 = (float)(LaserRelease_TotalTime0 * (float)(NVRAM0[EM_TOTAL_POWER]) / 10.0F);//计算发射能量
-			if(LaserRelease_TotalEnergy0 >= 99999999){
-				LaserRelease_TotalEnergy0 = 99999999;
-			}
-			updateReleaseTimeEnergy(false);//更新累计发射时间和能量
+		if(LDP(SPCOIL_PS10MS)){
+			ADDS1(EM_LASER_TRIG_TIME);
+		}
+		if(LDP(SPCOIL_PS10MS) && LaserFlag_Emiting){
+			ADDS1(EM_LASER_RELEASE_TIME);
+		}
+		if(LDP(SPCOIL_PS100MS)){//每隔1S刷新累计时间和能量
+			updateReleaseTimeEnergy();//更新累计发射时间和能量
 		}
 		if(LD(R_ENGINEER_MODE)){//工程模式显示调试信息	
 			if(LDP(SPCOIL_PS1000MS)){		
@@ -1967,6 +1997,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			__set_PRIMASK(0);//关闭中断
 			sPlcNvramClear();//清空NVRAM
 			sPlcFdramClear();//清空FDRAM
+			sPlcDeviceConfigClear();//清空config
 			resetGddcHmi();
 			delayMs(4000);//等待4秒
 			REBOOT();	

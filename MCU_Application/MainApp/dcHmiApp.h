@@ -76,7 +76,7 @@ void seletcSchemeNum(int16_t sel);
 void unselectSchemeNum(int16_t sel);
 /*****************************************************************************/
 void clearReleaseTimeEnergy(void);
-void updateReleaseTimeEnergy(uint8_t refresh);
+void updateReleaseTimeEnergy(void);
 void updateSchemeInfo(int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);

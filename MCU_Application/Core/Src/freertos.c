@@ -51,7 +51,7 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
@@ -61,7 +61,7 @@ osThreadId_t mainAppTaskHandle;
 const osThreadAttr_t mainAppTask_attributes = {
   .name = "mainAppTask",
   .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 128 * 16
+  .stack_size = 800 * 16
 };  
 /* USER CODE END FunctionPrototypes */
 

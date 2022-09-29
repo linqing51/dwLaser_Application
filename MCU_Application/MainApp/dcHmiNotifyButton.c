@@ -960,23 +960,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
-						//standbyPageTouchEnable(false);//LOCK PAGE
-						//standbyKeyTouchEnable(false);
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						updateStandbyDisplay();
-						//standbyPageTouchEnable(true);//UNLOCK PAGE
-						//standbyKeyTouchEnable(true);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_MODE_SP:{
 					if(state){
-						//standbyPageTouchEnable(false);//LOCK PAGE
-						//standbyKeyTouchEnable(false);
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_SP;
 						updateStandbyDisplay();
-						//standbyPageTouchEnable(true);//UNLOCK PAGE
-						//standbyKeyTouchEnable(true);
 					}
 					break;
 				}

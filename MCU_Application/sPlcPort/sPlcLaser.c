@@ -1,5 +1,5 @@
 //TIM11->计时
-#include "sPlcLaser.h"
+#include "sPlc.h"
 /*****************************************************************************/
 int8_t LaserTimer_Mode;
 int8_t LaserTimer_Select;
@@ -14,11 +14,6 @@ int16_t LaserTimer_ReleaseCounter;
 int8_t LaserFlag_Emiting;//激光发射中标志
 int8_t LaserFlag_Request;//激光发射脚踏请求
 int8_t LaserFlag_Emitover;//激光发射完毕标志
-int32_t LaserRelease_TotalTime0;//激光发射总时间
-double LaserRelease_TotalEnergy0;//激光发射总能量
-int32_t LaserRelease_TotalTime1;//激光发射总时间
-double LaserRelease_TotalEnergy1;//激光发射总能量
-uint32_t LaserAcousticBeepNum;//提示音发射次数
 /*****************************************************************************/
 static void laserStop(void);
 static void laserStart(void);
@@ -150,8 +145,6 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 #endif
 void STLAR(void){//开始发射脉冲
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
-	LaserAcousticBeepNum = LaserRelease_TotalEnergy0 / NVRAM0[EM_ACOUSTIC_ENERGY] + 1;
-	printf("%s,%d,%s:beep number:%d\n",__FILE__, __LINE__, __func__, LaserAcousticBeepNum);
 	if(LD(R_ACOUSTIC_ENABLE)){
 		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
 	}
@@ -198,11 +191,6 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserTimer_ReleaseCounter = 0;
 	LaserFlag_Emiting = false;//激光发射中标志
 	LaserFlag_Emitover = false;
-	LaserRelease_TotalTime0 = 0;
-	LaserRelease_TotalEnergy0 = 0;
-	LaserRelease_TotalTime1 = -1;
-	LaserRelease_TotalEnergy1 = -1;
-	LaserAcousticBeepNum = 0;
 	printf("%s,%d,%s:laser timer init......\n",__FILE__, __LINE__, __func__);
 }
 static void laserStart(void){//按通道选择打开激光
@@ -230,38 +218,18 @@ void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
 					laserStart();
 					LaserTimer_TCounter ++;
 			}
-			else{
-				if(LaserTimer_ReleaseTime < 1000){
-					LaserTimer_ReleaseTime ++;//发射时间累计
-				}
-				else{
-					LaserTimer_ReleaseTime = 0;
-					if(LaserRelease_TotalTime0 < 99999){
-						LaserRelease_TotalTime0 ++;
-					}
-				}
-			}
 			break;
 		}
 		case LASER_MODE_MP:{//MP多脉冲模式	
 			if((LaserTimer_TCounter >= 0) && (LaserTimer_TCounter < LaserTimer_TMate)){//激光发射
 				laserStart();
-				if(LaserTimer_ReleaseTime < 1000){
-					LaserTimer_ReleaseTime ++;//发射时间累计
-				}
-				else{
-					LaserTimer_ReleaseTime = 0;
-					if(LaserRelease_TotalTime0 < 99999){
-						LaserRelease_TotalTime0 ++;
-					}
-				}
 			}
 			if((LaserTimer_TCounter >= LaserTimer_TMate) && (LaserTimer_TCounter < LaserTimer_TOvertime)){//计时器匹配
 				laserStop();
 			}
 			if(LaserTimer_TCounter >= LaserTimer_TOvertime){//计时器溢出
 				LaserTimer_TCounter = -1;//清零
-			}
+			}	
 			LaserTimer_TCounter ++;
 			break;
 		}
@@ -273,15 +241,6 @@ void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
 				laserStop();//关闭DAC输出
 				HAL_TIM_Base_Stop(&htim10);
 				LaserFlag_Emitover = true;
-			}
-			if(LaserTimer_ReleaseTime < 1000){
-				LaserTimer_ReleaseTime ++;//发射时间累计
-			}
-			else{
-				LaserTimer_ReleaseTime = 0;
-				if(LaserRelease_TotalTime0 < 99999){
-					LaserRelease_TotalTime0 ++;
-				}
 			}
 			LaserTimer_TCounter ++;
 			break;

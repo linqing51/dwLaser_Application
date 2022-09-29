@@ -1,4 +1,4 @@
-#include "sPlcSpeaker.h"
+#include "sPlc.h"
 /*****************************************************************************/
 uint16_t audioSineTable[256] = {0};
 static int8_t LoudspeakerEnable = -1;//喇叭使能状态
@@ -19,9 +19,7 @@ void sPlcSpeakerDisable(void){//关闭喇叭数据流
 		SET_SPEAKER_OFF;
 		HAL_TIM_Base_Stop(&htim7);
 		HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
-#if CONFIG_DEBUG_SPK == 1
-		printf("%s,%d,%s:set loadspeaker off!\n",__FILE__, __LINE__, __func__);
-#endif
+		//printf("%s,%d,%s:set loadspeaker off!\n",__FILE__, __LINE__, __func__);
 		LoudspeakerEnable = false;
 	}
 }
@@ -30,9 +28,7 @@ void sPlcSpeakerEnable(void){//打开喇叭数据流
 		SET_SPEAKER_ON;
 		HAL_TIM_Base_Start(&htim7);
 		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
-#if CONFIG_DEBUG_SPK == 1
-		printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
-#endif
+		//printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
 		LoudspeakerEnable = true;
 	}
 }
@@ -57,7 +53,7 @@ void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
 		printf("%s,%d,%s:tim7 init fail!\n",__FILE__, __LINE__, __func__);
 		Error_Handler();
 	}
-	printf("%s,%d,%s:set audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
+	//printf("%s,%d,%s:set audio freq:%d\n",__FILE__, __LINE__, __func__, freq);
 	HAL_TIM_Base_Start(&htim7);
 	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);
 

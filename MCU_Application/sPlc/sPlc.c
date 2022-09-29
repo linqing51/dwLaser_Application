@@ -288,12 +288,29 @@ void sPlcInit(void){//软逻辑初始化
 	sPlcDacInit();//初始化DAC模块
 	sPlcAdcInit();//初始化ADC模块
 	sPlcLaserInit();
-	printf("%s,%d,%s:start splc timer init......\n",__FILE__, __LINE__, __func__);
 	sPlcTimerInit();//初始化硬件计时器模块 启动计时器
 	sPlcSpeakerInit();
-	SET_BLUE_LED_DC(10);
-	SET_RED_LED_DC(10);
-	SET_GREEN_LED_DC(10);
+	SET_RED_LED_OFF;
+	SET_GREEN_LED_OFF;	
+	SET_BLUE_LED_OFF;
+	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
+		SET_GREEN_LED_DC(10);
+	}
+	else{
+		SET_GREEN_LED_DC(deviceConfig.greenLedDc);
+	}
+	if(deviceConfig.redLedDc <= 0 || (deviceConfig.redLedDc > CONFIG_RED_LED_MAX_DC)){
+		SET_RED_LED_DC(10);
+	}
+	else{
+		SET_RED_LED_DC(deviceConfig.greenLedDc);
+	}
+	if(deviceConfig.blueLedDc <= 0 || (deviceConfig.blueLedDc > CONFIG_BLUE_LED_MAX_DC)){
+		SET_BLUE_LED_DC(10);
+	}
+	else{
+		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
+	}
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	sPlcEnterTime = HAL_GetTick();

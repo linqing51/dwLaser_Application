@@ -238,6 +238,76 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.calibrationPwr3[9] = (uint16_t)(fValue * 10.0F);
 					break;
 				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SN:{
+					strncpy(deviceConfig.serialNumber, (const char*)str, sizeof(deviceConfig.serialNumber));
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_YEAR:{				
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue < 2022){
+						sValue = 2022;
+					}
+					if(sValue > 2099){
+						sValue = 2099;
+					}
+					deviceConfig.mfg_year = sValue;
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_MONTH:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 12){
+						sValue = 12;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.mfg_month = sValue;
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DAY:{
+				sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 31){
+						sValue = 31;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.mfg_day = sValue;
+					break;	
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RED_LED_DC:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 100){
+						sValue = 100;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.redLedDc = sValue;
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_GREEN_LED_DC:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 100){
+						sValue = 100;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.greenLedDc = sValue;
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_BLUE_LED_DC:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 100){
+						sValue = 100;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.blueLedDc = sValue;	
+					break;
+				}
 				default:break;
 			}
 			break;

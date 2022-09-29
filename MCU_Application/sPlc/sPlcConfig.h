@@ -38,8 +38,8 @@
 /*****************************************************************************/				
 #define CONFIG_SPLC_MAX_SPK_FREQ											4500L//喇叭最高频率
 #define CONFIG_SPLC_MIN_SPL_FREQ											500//喇叭最低频率
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1200//蜂鸣器默认频率
-#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1550//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1000//蜂鸣器默认频率
+#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1350//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT										1//输入IO刷新启用
 #define CONFIG_SPLC_USING_IO_OUTPUT										1//输出IO刷新启用
@@ -53,7 +53,6 @@
 #define CONFIG_SPLC_CLEAR_CODE												0xA58E
 #define CONFIG_SOFTPLC_TICK														200L//5mS
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_EPROM												1//EPROM
 #define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM 读写测试
 //EPROM自检
 #define CONFIG_EPROM_SIZE 														CONFIG_AT24C64_SIZE
@@ -124,7 +123,7 @@
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													220//
+#define CONFIG_DIODE_SET_TEMP													300//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
@@ -171,11 +170,17 @@
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//变音持续时间
 
 #define CONFIG_BLUE_LED_MAX_DC												100
+#define CONFIG_BLUE_LED_DEFAULT_DC										10
+
 #define CONFIG_RED_LED_MAX_DC													100	
+#define CONFIG_RED_LED_DEFAULT_DC											10
+
 #define CONFIG_GREEN_LED_MAX_DC												100
+#define CONFIG_GREEN_LED_DEFAULT_DC										10
+
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
-#define CONFIG_BEEM_MAX_LIMIT													0.8F//
+#define CONFIG_BEEM_MAX_LIMIT													0.6F//
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #define CONFIG_FAN_MAX_DC															100
@@ -491,6 +496,10 @@
 #define EM_DC_DEFAULT_PASSCODE1									(EM_START + 97)//默认密码1				
 #define EM_DC_DEFAULT_PASSCODE2									(EM_START + 98)//默认密码2	
 #define EM_DC_DEFAULT_PASSCODE3									(EM_START + 99)//默认密码3				
+/*****************************************************************************/
+#define EM_LASER_RELEASE_TIME										(EM_START + 100)//实际激光发射累计时间	
+#define EM_LASER_RELEASE_ENERGY									(EM_START + 102)//实际激光发射累计能量
+#define EM_LASER_TRIG_TIME											(EM_START + 104)//激光触发时间
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME										(FD_START +  0)//方案名称
 #define FD_LASER_SELECT													(FD_START +  46)//通道选择
