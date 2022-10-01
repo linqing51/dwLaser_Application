@@ -38,7 +38,7 @@
 /*****************************************************************************/				
 #define CONFIG_SPLC_MAX_SPK_FREQ											4500L//喇叭最高频率
 #define CONFIG_SPLC_MIN_SPL_FREQ											500//喇叭最低频率
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1000//蜂鸣器默认频率
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ									900//蜂鸣器默认频率
 #define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1350//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT										1//输入IO刷新启用
@@ -173,14 +173,14 @@
 #define CONFIG_BLUE_LED_DEFAULT_DC										10
 
 #define CONFIG_RED_LED_MAX_DC													100	
-#define CONFIG_RED_LED_DEFAULT_DC											10
+#define CONFIG_RED_LED_DEFAULT_DC											25
 
 #define CONFIG_GREEN_LED_MAX_DC												100
 #define CONFIG_GREEN_LED_DEFAULT_DC										10
 
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
-#define CONFIG_BEEM_MAX_LIMIT													0.6F//
+#define CONFIG_BEEM_MAX_LIMIT													0.8F//
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #define CONFIG_FAN_MAX_DC															100

@@ -153,7 +153,7 @@ char WARN_MSG_FIBER_MISSMATE[8][64] 			 = {{"Fiber not mate"},
 													{""},
 													{""}};
 
-char INFO_MSG_TYPE[8][64] 						 = {{"TYPE: PHOTONICCS PVG-1470"},
+char INFO_MSG_TYPE[8][64] 						 = {{"TYPE:PVGLS 1470/15"},
 													{""},
 													{""},
 													{""},

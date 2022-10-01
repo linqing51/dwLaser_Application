@@ -293,6 +293,7 @@ void sPlcInit(void){//软逻辑初始化
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;	
 	SET_BLUE_LED_OFF;
+	RRES(Y_TICK_LED);
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);
 	}
@@ -303,7 +304,7 @@ void sPlcInit(void){//软逻辑初始化
 		SET_RED_LED_DC(10);
 	}
 	else{
-		SET_RED_LED_DC(deviceConfig.greenLedDc);
+		SET_RED_LED_DC(deviceConfig.redLedDc);
 	}
 	if(deviceConfig.blueLedDc <= 0 || (deviceConfig.blueLedDc > CONFIG_BLUE_LED_MAX_DC)){
 		SET_BLUE_LED_DC(10);
@@ -349,9 +350,9 @@ void sPlcProcessStart(void){//sPLC轮询起始
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
-	if(LDP(SPCOIL_PS500MS)){
-		FLIP(Y_TICK_LED);
-	}
+//	if(LDP(SPCOIL_PS500MS)){
+//		FLIP(Y_TICK_LED);
+//	}
 	sPlcOutputRefresh();//更新Y口输出
 	sPlcNvramUpdate();//更新NVRAM
 	RRES(SPCOIL_START_UP);

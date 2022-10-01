@@ -24,7 +24,6 @@ void sPlcOutputRefresh(void){//设置输出IO
 		SET_GREEN_LED_OFF;
 		//printf("%s,%d,%s:reset Y0 GLED\n",__FILE__, __LINE__, __func__);
 	}
-	
 	//YOUT1 红灯
 	if(LDP(Y_RED_LED)){
 		SET_RED_LED_ON;
@@ -39,12 +38,10 @@ void sPlcOutputRefresh(void){//设置输出IO
 	if(LDP(Y_YELLOW_LED)){
 		//绿色+蓝色模拟黄色
 		SET_BLUE_LED_ON;
-		SET_GREEN_LED_ON;
 		//printf("%s,%d,%s:set Y2 BLED\n",__FILE__, __LINE__, __func__);
 	}
 	if(LDN(Y_YELLOW_LED)){
 		SET_BLUE_LED_OFF;
-		SET_GREEN_LED_OFF;
 		//printf("%s,%d,%s:reset Y2 BLED\n",__FILE__, __LINE__, __func__);
 	}
 	
