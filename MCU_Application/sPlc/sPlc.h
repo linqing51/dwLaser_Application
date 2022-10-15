@@ -20,6 +20,18 @@
 #include "sPlcFun.h"
 #include "dcHmiApp.h"
 #include "preScheme.h"
+#include "hmiLib.h"
+#include "dcHmiRes.h"
+#include "MainAppLib.h"
+#include "dcHmiLanguage.H"
+#include "deviceConfig.h"
+/*****************************************************************************/
+#include "usbh_platform.h"
+#include "usbh_core.h"
+#include "usbh_msc.h"
+#include "ff.h"
+#include "ff_gen_drv.h"
+#include "flash_if.h"
 /*****************************************************************************/
 #if CONFIG_SPLC_FUNTEST == 1
 #include "sPlcTest.h"
@@ -156,6 +168,7 @@ extern uint8_t TD_500MS_SP;
 extern uint8_t TD_1000MS_SP;
 extern uint8_t TD_60000MS_SP;
 extern uint32_t sPlcTick;
+extern uint32_t BootloadCrc, ApplicationCrc;
 /*****************************************************************************/
 extern int8_t LaserTimer_Mode;
 extern int8_t LaserTimer_Select;
@@ -209,7 +222,7 @@ extern void sPlcFdramSave(void);
 extern void sPlcFdramClear(void);
 extern void sPlcDeviceConfigClear(void);
 extern void sPlcDeviceLogClear(void);
-extern void delayMs(uint32_t delayMs);//SPLC 阻塞延时
+extern void softDelayMs(uint16_t ms);//软件延时
 extern void mucReboot(void);//软件复位
 extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
@@ -229,6 +242,11 @@ extern uint8_t sPlcEpromTest(void);
 extern uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
 void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
 void listEpromTable(void);
+extern uint32_t getOriginBootloadCrc(void);//计算MCU Bootload CRC32
+extern uint32_t getOriginAppCrc(void);//计算MCU App CRC32
+extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
+extern void confirmBootloadUpdate(void);//执行Bootload更新
+extern void exitBootloadUpdate(void);//退出Bootload更新
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

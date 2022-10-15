@@ -184,8 +184,8 @@ void TENV(uint16_t dist, uint16_t src){//CODE×ª»»ÎªMCUÎÂ¶È
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
 	if(ftemp >= 100)
 		ftemp =100;
-	if(ftemp <= -40){
-		ftemp = -40;
+	if(ftemp <= -25){
+		ftemp = -25;
 	}
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }

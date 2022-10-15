@@ -2,11 +2,6 @@
 #define __DCHMIAPP_H__
 /*****************************************************************************/
 #include "sPlc.h"
-#include "hmiLib.h"
-#include "dcHmiRes.h"
-#include "MainAppLib.h"
-#include "dcHmiLanguage.H"
-#include "deviceConfig.h"
 /*****************************************************************************/
 #define FSMSTEP_POWERUP															0//上电
 //HMI初始操作	

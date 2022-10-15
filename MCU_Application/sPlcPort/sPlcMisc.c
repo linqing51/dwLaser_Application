@@ -385,3 +385,30 @@ void morseCodeDiag(uint8_t diag){//蜂鸣器诊断声音 摩尔斯电码
 	}
 	vTaskDelay(3000);
 }
+
+uint32_t getOriginBootloadCrc(void){//计算MCU Bootload CRC32
+	uint8_t val;
+	uint32_t i;
+	uint32_t crc32;
+	crc32Clear();
+	for(i = BOOTLOADER_FLASH_START_ADDRESS;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){
+		val = *(__IO uint8_t*)(i);
+		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
+	}
+	return crc32;	
+}
+uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
+	uint8_t val;
+	uint32_t i;
+	uint32_t crc32;
+	crc32Clear();
+	for(i = APPLICATION_FLASH_START_ADDRESS;i < APPLICATION_FLASH_END_ADDRESS;i ++){
+		val = *(__IO uint8_t*)(i);
+		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
+	}
+	return crc32;	
+}
+
+
+
+

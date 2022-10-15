@@ -5,7 +5,169 @@ static int8_t standbyKeyTouchEnableStatus = -1;
 uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
 static void UpdateUI(void);
+uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
+uint32_t newBootloadCrc32;
 /*****************************************************************************/
+FRESULT retUsbH;
+FATFS	USBH_fatfs;
+FIL BootLoadFile;//FATFS File Object 记录信息
+/*****************************************************************************/
+void saveConfigToDisk(void){//将配置储存到U盘
+
+}
+void loadConfigFromDisk(void){//从U盘载入配置
+
+}
+void saveSchemeToDisk(void){//将方案储存到U盘
+	
+}
+void loadSchemeFromDisk(void){//从U盘载入方案
+
+}
+uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不能更新
+	uint32_t TmpReadSize = 0x00;
+	uint32_t LastPGAddress;
+	uint8_t readflag = TRUE;
+	uint32_t bytesread;//实际文件读取字节数
+	uint32_t i;
+	//警告信息
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Please Standby,Do Not Power Off!!"));
+	vTaskDelay(800);
+	//挂载USB DISK FAT文件系统
+	retUsbH = f_mount(&USBH_fatfs, (const TCHAR*)FATFS_ROOT, 0);
+	if(retUsbH != FR_OK){//挂载U盘失败
+		printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Mount usb disk errror,exit update!"));
+		return false;
+	}
+	vTaskDelay(6000);
+	//打开文件
+	retUsbH = f_open(&BootLoadFile, (const TCHAR*)(BOOTLOAD_FILENAME), FA_OPEN_EXISTING | FA_READ);//
+	if(retUsbH != FR_OK){//读取失败跳过固件更新直接运行程序
+		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+		printf("BootLoader:Open %s fail,unmount usb disk,ECODE=0x%02XH\n", BOOTLOAD_FILENAME, retUsbH);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Open file errror,exit update!"));
+		return false;
+	}
+	//检查文件大小
+	f_lseek(&BootLoadFile, 0);//读取指针移动到开头
+	if(f_size(&BootLoadFile) > BOOTLOADER_FLASH_SIZE){//MCU固件大于FLSAH容量
+		f_close(&BootLoadFile);
+		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+		printf("BootLoader:File %s is over length, close file and unmount disk!\n", BOOTLOAD_FILENAME);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("File is over length,exit update!"));
+		return false;
+	}
+	vTaskDelay(800);
+	//计算新固件CRC值
+	newBootloadCrc32 = 0;
+	crc32Clear();
+	LastPGAddress = BOOTLOADER_FLASH_START_ADDRESS;
+	memset(CcmRamBuf, 0xFF, sizeof(CcmRamBuf));
+	while(readflag){
+		/* Read maximum 512 Kbyte from the selected file */
+		f_read(&BootLoadFile, CcmRamBuf, sizeof(CcmRamBuf), (void*)&bytesread);
+		newBootloadCrc32 = crc32Calculate(CcmRamBuf, bytesread);//CRC32 计算数组
+		/* Temp variable */
+		TmpReadSize = bytesread;
+		/* The read data < "BUFFER_SIZE" Kbyte */
+		if(TmpReadSize < BUFFER_SIZE){
+			readflag = FALSE;
+		}
+		LastPGAddress += TmpReadSize;
+	}
+	f_close(&BootLoadFile);
+	f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+	for(i = LastPGAddress;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){//补完剩余CRC
+		newBootloadCrc32 = crc32CalculateAdd(0xFF);
+	}
+	//与已有的固件进行对比并给出提示
+	if(BootloadCrc == newBootloadCrc32){
+		printf("BootLoader:old crc%08X: and new crc:%08X is same,skip update!\n", BootloadCrc , newBootloadCrc32);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"File is same,skip update...");
+		vTaskDelay(800);
+		return false;
+	}
+	else{
+		printf("BootLoader:old crc%08X: and new crc:%08X is not same,need confirm update!\n", BootloadCrc , newBootloadCrc32);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"Confirm update...YES OR NO!!!");
+		
+		SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, true);
+		SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, true);
+		
+		SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, true);	
+		SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, true);	
+		
+		vTaskDelay(800);
+		return true;
+	}
+}
+void confirmBootloadUpdate(void){//执行Bootload更新
+	uint32_t i;
+	vTaskSuspendAll();//禁用任务切换
+	__disable_irq();//关闭中断
+	SysTick->CTRL = 0;//关键代码
+	HAL_FLASH_Unlock();//解说FLASH锁定
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR);
+	if (FLASH_If_EraseBootloader() != 0x00){//擦除BOOTLOAD 失败
+		printf("BootLoader:Erase bootload fail, GameOver!!!!!\n");
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
+		return;
+	}
+	softDelayMs(800);
+	if(checkBlank(BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_SIZE)){//FLASH 查空
+		printf("Bootloader:Erase mcu booload sucess.\n");
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload sucessful..."));
+	}
+	else{
+		printf("Bootloader:Erase mcu booload fail.\n");
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
+		return;
+	}
+	softDelayMs(800);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start update new bootload..."));
+	for(i = 0; i < BOOTLOADER_FLASH_SIZE; i += 4){
+		if(FLASH_bt_Write((BOOTLOADER_FLASH_START_ADDRESS + i), *(uint32_t *) (CcmRamBuf + i)) != 0x00){
+			printf("BootLoader:write mcu bootload fail,GameOver!!!!!\n");//写入FLASH错误
+		}
+	}
+	HAL_FLASH_Lock();
+	printf("BootLoader:Update new bootload done...\n");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"Update new bootload done...");
+	softDelayMs(800);
+	//检查已写入的Bootload是否正确
+	printf("BootLoader:Start checksum new bootload...\n");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start checksum new bootload..."));
+	BootloadCrc = getOriginBootloadCrc();
+	softDelayMs(800);
+	if(BootloadCrc == newBootloadCrc32){
+		printf("BootLoader:Checksum bootload pass,flash crc:%08X, file crc:%08X\n", BootloadCrc , newBootloadCrc32);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Checksum bootload pass,power cycle the system"));
+	}
+	else{
+		printf("BootLoader:Checksum bootload fail,flash crc:%08X, file crc:%08X\n,Game Over!!!\n", BootloadCrc , newBootloadCrc32);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Checksum bootload fail,Game Over!!!"));
+		f_close(&BootLoadFile);
+		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+	}
+	while(1);
+}
+
+void exitBootloadUpdate(void){//退出Bootload更新
+	f_close(&BootLoadFile);
+	f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+	vTaskDelay(300);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
+	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+		
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);	
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);
+	
+}
+	
 void loadDeviceConfig(void){//从EPROM载入配置文件
 	uint32_t crc32_eprom_cfg, crc32_cfg, temp;
 	uint8_t i;
@@ -137,6 +299,18 @@ void updateDiognosisTextBox(void){//更新诊断信息文本框
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RED_LED_DC , deviceConfig.redLedDc, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_GREEN_LED_DC , deviceConfig.greenLedDc, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_BLUE_LED_DC , deviceConfig.blueLedDc, 1, 0);
+	
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);	
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
+	
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);	
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);	
+	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+	
+	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"");
+	
 }
 void updateDiognosisInfo(void){//更新诊断信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -297,15 +471,18 @@ void updateScheme_1_Display(void){//更新选项界面方案名称
 }
 void updateInformationDisplay(void){//更新信息界面显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE[NVRAM0[DM_LANGUAGE]]);	
-	//SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)INFO_MSG_SN[NVRAM0[DM_LANGUAGE]]);
+	char *pMain, *pMonir;
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE);	
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	sprintf(dispBuf, "SN:%s", (uint8_t*)deviceConfig.serialNumber);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)dispBuf);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH[NVRAM0[DM_LANGUAGE]]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER[NVRAM0[DM_LANGUAGE]]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)INFO_MSG_VERSION[NVRAM0[DM_LANGUAGE]]);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER);
+	memset(dispBuf, 0x0,sizeof(dispBuf));
+	pMain = (char*)(BOOTLOAD_MAIN_ADDRESS);
+	pMonir = (char*)(BOOTLAOD_MINOR_ADDRESS);
+	sprintf(dispBuf, "%s;Bootload Ver: %c.%c", (char*)INFO_MSG_VERSION, *pMain, *pMonir);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	sprintf(dispBuf, "MANUFACTURE DATE:%4d-%2d-%2d", deviceConfig.mfg_year, deviceConfig.mfg_month, deviceConfig.mfg_day);
@@ -390,75 +567,75 @@ void updateWarnMsgDisplay(uint8_t id){//更新警号显示框
 	if((MsgId != id) || (NVRAM0[EM_DC_PAGE] != NVRAM1[EM_DC_PAGE])){
 		switch(id){
 			case MSG_NO_ERROR:{
-				pstr = WARN_MSG_NO_ERROR[NVRAM0[DM_LANGUAGE]];
+				pstr = WARN_MSG_NO_ERROR;
 				break;
 			}
 			case MSG_INTERLOCK_UNPLUG:{
-				pstr = WARN_MSG_INTERLOCK_UNPLUG[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_INTERLOCK_UNPLUG;
 				break;
 			}
 			case MSG_FOOTSWITCH_UNPLUG:{
-				pstr = WARN_MSG_FOOTSWITCH_UNPLUG[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_FOOTSWITCH_UNPLUG;
 				break;
 			}
 			case MSG_ESTOP_PRESS:{
-				pstr = WARN_MSG_ESTOP_PRESS[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_ESTOP_PRESS;
 				break;
 			}
 			case MSG_FIBER_UNPLUG:{
-				pstr = WARN_MSG_FIBER_UNPLUG[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_FIBER_UNPLUG;
 				break;
 			}
 			case MSG_OUT_ENERGY:{
-				pstr = WARN_MSG_OUT_ENERGY[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_OUT_ENERGY;
 				break;
 			}
 			case MSG_DIODE_HTEMP:{
-				pstr = WARN_MSG_DIODE_HTEMP[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_DIODE_HTEMP;
 				break;
 			}
 			case MSG_DIODE_LTEMP:{
-				pstr = WARN_MSG_DIODE_LTEMP[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_DIODE_LTEMP;
 				break;
 			}
 			case MSG_DIODE0_OVERCURRENT:{
-				pstr = WARN_MSG_DIODE0_OVERCURRENT[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_DIODE0_OVERCURRENT;
 				break;
 			}
 			case MSG_DIODE1_OVERCURRENT:{
-				pstr = WARN_MSG_DIODE1_OVERCURRENT[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_DIODE1_OVERCURRENT;
 				break;
 			}
 			case MSG_NTC_ERROR:{
-				pstr = WARN_MSG_NTC_ERROR[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_NTC_ERROR;
 				break;
 			}
 			case MSG_ENVI_HTEMP:{
-				pstr = WARN_MSG_ENVI_HTEMP[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_ENVI_HTEMP;
 				break;
 			}
 			case MSG_ENVI_LTEMP:{
-				pstr = WARN_MSG_ENVI_LTEMP[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_ENVI_LTEMP;
 				break;
 			}
 			case MSG_FOOT_DEPRESSED:{
-				pstr = WARN_MSG_FOOT_DEPRESSED[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_FOOT_DEPRESSED;
 				break;
 			}
 			case MSG_LASER_EMIT:{
-				pstr = WARN_MSG_LASER_EMIT[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_LASER_EMIT;
 				break;
 			}
 			case MSG_WAIT_TRIGGER:{
-				pstr = WARN_MSG_WAIT_TRIGGER[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_WAIT_TRIGGER;
 				break;
 			}
 			case MSG_FIBER_MISSMATE:{
-				pstr = WARN_MSG_FIBER_MISSMATE[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_FIBER_MISSMATE;
 				break;
 			}
 			default:{
-				pstr = WARN_MSG_NO_ERROR[(NVRAM0[DM_LANGUAGE])];
+				pstr = WARN_MSG_NO_ERROR;
 				break;
 			}
 		}
@@ -911,7 +1088,6 @@ void dcHmiLoopInit(void){//初始化模块
 	standbyKeyTouchEnableStatus = -1;
 	setAimBrightness(0);
 	hmiUartInit();
-	NVRAM0[DM_LANGUAGE] = MSG_EN;//默认语言英语
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
 	//检查VOLUME储存值是否合规
 	for(i = 0;i < CONFIG_HMI_SCHEME_NUM; i++){
@@ -1229,7 +1405,8 @@ static void speakerLoop(void){//蜂鸣器轮询
 	}
 }
 
-void dcHmiLoop(void){//HMI轮训程序	
+void dcHmiLoop(void){//HMI轮训程序
+	uint8_t tmp8;
 	speakerLoop();
 	temperatureLoop();//温控程序
 	faultLoop();
@@ -1315,7 +1492,21 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK, false);		
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION_MODE, false);
+			
+			
+			SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
+			
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
+			
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+			
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 			
 			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
@@ -1420,12 +1611,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				}
 			}
 		}
-		if(LDB(R_FAULT)){//无故障显示
-			RRES(SPCOIL_BEEM_ENABLE);
-			updateWarnMsgDisplay(MSG_NO_ERROR);
-			standbyKeyTouchEnable(true);
-		}
-		if(LD(R_FAULT)){
+		if(LD(R_FAULT) && LDP(SPCOIL_PS100MS)){
 			if(LD(R_LASER_TEMP_HIGH)){//激光器高温保护
 				updateWarnMsgDisplay(MSG_DIODE_HTEMP);
 			}
@@ -1457,6 +1643,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//设置喇叭声音模式
 			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 			SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
+		}
+		if(LDB(R_FAULT) && LDP(SPCOIL_PS100MS)){//无故障显示
+			RRES(SPCOIL_BEEM_ENABLE);
+			updateWarnMsgDisplay(MSG_NO_ERROR);
+			standbyKeyTouchEnable(true);
 		}
 		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//点击OPTION
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
@@ -1815,7 +2006,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN)){//进入诊断状态
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
-			SetScreen(NVRAM0[EM_DC_PAGE]);
+			SetScreen(NVRAM0[EM_DC_PAGE]);	
 			updateDiognosisTextBox();//更新文本输入值
 			RRES(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN);
 		}
@@ -1937,7 +2128,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcFdramClear();//清空FDRAM
 			sPlcDeviceConfigClear();//清空config
 			resetGddcHmi();
-			delayMs(4000);//等待4秒
+			softDelayMs(4000);//等待4秒
 			REBOOT();	
 		}
 		else if(LD(R_SAVE_EPROM)){//储存配制到EPROM
@@ -1946,8 +2137,59 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcFdramSave();//更新FDRAM
 			saveDeviceConfig();//更新配制
 			resetGddcHmi();
-			delayMs(4000);//等待4秒
+			softDelayMs(4000);//等待4秒
 			REBOOT();	
+		}
+		else if(LD(R_CLEAR_CRC)){//清除固件CRC
+			tmp8 = 0;
+			__set_PRIMASK(0);//关闭中断
+			epromWriteByte((CONFIG_EPROM_LCD_FW_CRC + 0), &tmp8);
+			epromWriteByte((CONFIG_EPROM_LCD_FW_CRC + 1), &tmp8);
+			epromWriteByte((CONFIG_EPROM_LCD_FW_CRC + 2), &tmp8);
+			epromWriteByte((CONFIG_EPROM_LCD_FW_CRC + 3), &tmp8);
+			
+			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 0), &tmp8);
+			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 1), &tmp8);
+			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 2), &tmp8);
+			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 3), &tmp8);
+			resetGddcHmi();
+			softDelayMs(4000);//等待4秒
+			REBOOT();	
+		}
+		else if(LD(R_UPDATE_BOOTLOAD_REQ)){//更新Boot load请求
+			SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, true);
+			if(updateBootloadReq()){
+				SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, true);
+				SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, true);
+				SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, true);	
+				SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, true);	
+			}
+			else{
+				SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+				SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+				SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);	
+				SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);	
+				
+				SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
+				
+				SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
+				SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);
+			}
+			RRES(R_UPDATE_BOOTLOAD_REQ);
+		}
+		else if(LD(R_UPDATE_BOOTLOAD_YES)){//执行Bootload更新	
+			confirmBootloadUpdate();
+		}
+		else if(LD(R_UPDATE_BOOTLOAD_NO)){//错误Bootload更新序列
+			exitBootloadUpdate();
+			
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);
+			
+			SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+			SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
+			RRES(R_UPDATE_BOOTLOAD_NO);
 		}
 		else if(LDP(SPCOIL_PS1000MS)){
 			updateDiognosisInfo();

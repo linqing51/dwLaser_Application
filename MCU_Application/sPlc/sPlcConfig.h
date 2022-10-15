@@ -15,12 +15,17 @@
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
 /*****************************************************************************/
+#define CONFIG_GDDC_UART_BAUDRATE											230400//LCD通信波特率
+/*****************************************************************************/
+#define BOOTLOAD_MAIN_ADDRESS													0x0800FE00//主版本标识地址															
+#define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//次版本标识地址
 #define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'A'//设备ID
-#define BUFFER_SIZE        														((uint16_t)512*64)//512的整数倍
+#define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
 #define CONFIG_JUMP_DELAY															5000//检测U盘时间
 #define FATFS_ROOT																		"0:"
+#define BOOTLOAD_FILENAME															"/bootload.bin"//引导固件
 #define LOG_FIRMWARE_FILENAME													"/log.txt"//操作记录文件
 #define CFG_FIRMWARE_FILENAME													"/las.cfg"//操作配置文件
 #define LMCU_FIRMWARE_FILENAME												"/ld_mcu.bin"//更新MCU固件地址
@@ -41,8 +46,6 @@
 #define CONFIG_SPLC_DEFAULT_SPK_FREQ									900//蜂鸣器默认频率
 #define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1350//蜂鸣器变声频率
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_IO_INPUT										1//输入IO刷新启用
-#define CONFIG_SPLC_USING_IO_OUTPUT										1//输出IO刷新启用
 #define CONFIG_INPUT_FILTER_TIME											8//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_SPWM												1//使了软件PWM功能
@@ -436,8 +439,8 @@
 #define SPREG_DK25L_VER											(SPREG_START + 59)//DK25L NFC模块版本
 /*****************************************************************************/
 #define SPREG_CLEAR_NVRAM										(SPREG_END - 4)//清除NVRAM后重新启动
-#define SPREG_TICK_L											(SPREG_END - 3)//累计运行时间 秒低位
-#define SPREG_TICK_H											(SPREG_END - 2)//累计运行时间 秒高位
+#define SPREG_TICK_L												(SPREG_END - 3)//累计运行时间 秒低位
+#define SPREG_TICK_H												(SPREG_END - 2)//累计运行时间 秒高位
 #define SPREG_SCAN_TIME											(SPREG_END - 1)//扫描时间
 #define SPREG_IDENTITY											(SPREG_END - 0)//平台ID号
 /*****************************************************************************/
@@ -733,6 +736,10 @@
 #define R_ENGINEER_MODE															(R_START * 16 + 21)//工程师模式
 #define R_CALIBRATION_MODE													(R_START * 16 + 22)//功率校正模式
 #define R_ACOUSTIC_ENABLE														(R_START * 16 + 23)//使能提示音
+#define R_CLEAR_CRC																	(R_START * 16 + 24)//清除固件CRC
+#define R_UPDATE_BOOTLOAD_REQ												(R_START * 16 + 25)//请求更新引导固件
+#define R_UPDATE_BOOTLOAD_YES												(R_START * 16 + 26)//同意更新固件
+#define R_UPDATE_BOOTLOAD_NO												(R_START * 16 + 27)//否定更新固件
 //HMI相关状态
 #define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMI复位请求
 #define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMI复位中
