@@ -607,47 +607,25 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			switch(control_id){
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] < CONFIG_AIM_MAX_DC){
-							NVRAM0[DM_AIM_BRG] += 1;//+1
-							SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-						}
+						SSET(R_STANDBY_KEY_AIM_BRG_ADD_DOWN);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_DEC:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] > 0){
-							NVRAM0[DM_AIM_BRG] -= 1;//-1	
-							SetTextInt32(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-						}
+						SSET(R_STANDBY_KEY_AIM_BRG_DEC_DOWN);
 					}
 					break;					
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
-							NVRAM0[EM_LASER_POWER_CH0]++;
-							NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
-							updatePowerDisplay();
-							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));						
-						}
+						SSET(R_STANDBY_KEY_POWER_ADD_DOWN);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_DEC:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_MIN_LASERPOWER_CH0){
-							DECS1(EM_LASER_POWER_CH0);
-							NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
-							updatePowerDisplay();						
-							SetProgressValue(GDDC_PAGE_STANDBY_CW, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));
-						}
+						SSET(R_STANDBY_KEY_POWER_DEC_DOWN);
 					}
 					break;
 				}
@@ -659,21 +637,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_LAST:{//选择上一个方案
 					if(state){
-						if(NVRAM0[DM_SCHEME_NUM] > 0){
-							DECS1(DM_SCHEME_NUM);//+1
-							loadScheme();//DM->EM
-							updateStandbyDisplay();
-						}
+						SSET(R_STANDBY_KEY_SCHEME_LAST_DOWN);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT:{//选择下一个方案
 					if(state){
-						if(NVRAM0[DM_SCHEME_NUM] < (CONFIG_HMI_SCHEME_NUM - 1)){
-							ADDS1(DM_SCHEME_NUM);//+1
-							loadScheme();//DM->EM
-							updateStandbyDisplay();
-						}
+						SSET(R_STANDBY_KEY_SCHEME_NEXT_DOWN);
 					}
 					break;
 				}
@@ -838,43 +808,25 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			switch(control_id){				
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] < CONFIG_AIM_MAX_DC){
-							NVRAM0[DM_AIM_BRG] += 1;//+1
-							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-						}
+						SSET(R_STANDBY_KEY_AIM_BRG_ADD_DOWN);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_AIM_BRG_DEC:{
 					if(state){
-						if(NVRAM0[DM_AIM_BRG] > 0){
-							NVRAM0[DM_AIM_BRG] -= 1;//-1	
-							SetTextInt32(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG , NVRAM0[DM_AIM_BRG], 1, 0);
-							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG, NVRAM0[DM_AIM_BRG]);//更新进度条
-						}
+						SSET(R_STANDBY_KEY_AIM_BRG_DEC_DOWN);
 					}
 					break;					
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASERPOWER_CH0){
-							ADDS1(EM_LASER_POWER_CH0);
-							NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
-							updatePowerDisplay();
-							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));						
-						}
+						SSET(R_STANDBY_KEY_POWER_ADD_DOWN);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_DEC:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_MIN_LASERPOWER_CH0){
-							DECS1(EM_LASER_POWER_CH0);
-							NVRAM0[EM_TOTAL_POWER] = NVRAM0[EM_LASER_POWER_CH0];
-							updatePowerDisplay();
-							SetProgressValue(GDDC_PAGE_STANDBY_MP, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER, ((uint32_t)NVRAM0[EM_LASER_POWER_CH0] * 100 / CONFIG_MAX_LASERPOWER_CH0));
-						}
+						SSET(R_STANDBY_KEY_POWER_DEC_DOWN);
 					}
 					break;
 				}
@@ -885,8 +837,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay();
 					}
 					else{
-						RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
-						T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_STANDBY_KEY_POSWIDTH_ADD_UP);
 					}
 					break;
 				}
@@ -897,8 +848,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay();
 					}
 					else{
-						RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);	
-						T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_STANDBY_KEY_POSWIDTH_DEC_UP);
 					}
 					break;
 				}
@@ -909,8 +859,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay();
 					}
 					else{
-						RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
-						T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_STANDBY_KEY_NEGWIDTH_ADD_UP);
 					}
 					break;
 				}
@@ -921,34 +870,25 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateNegWidthDisplay();
 					}
 					else{
-						RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
-						T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_STANDBY_KEY_NEGWIDTH_DEC_UP);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE:{
-					if(state){
+					if(state){					
 						SSET(R_STANDBY_KEY_SCHEME_SAVE_DOWN);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_LAST:{//选择上一个方案
 					if(state){
-						if(NVRAM0[DM_SCHEME_NUM] > 0){
-							DECS1(DM_SCHEME_NUM);//+1
-							loadScheme();//DM->EM
-							updateStandbyDisplay();
-						}
+						SSET(R_STANDBY_KEY_SCHEME_LAST_DOWN);
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT:{//选择下一个方案
 					if(state){
-						if(NVRAM0[DM_SCHEME_NUM] < (CONFIG_HMI_SCHEME_NUM - 1)){
-							ADDS1(DM_SCHEME_NUM);//+1
-							loadScheme();//DM->EM
-							updateStandbyDisplay();
-						}
+						SSET(R_STANDBY_KEY_SCHEME_NEXT_DOWN);
 					}
 					break;
 				}
@@ -1135,13 +1075,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_OPTION_KEY_RESTORE:{//恢复默认值
 					if(state){
-						optionKeyEnable(false);//锁定按键
-						loadDefault();
-						lockPreScheme();
-						NVFSAVE();//强制更新NVRAM
-						updateOptionDisplay();//更新Option显示
-						SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
-						optionKeyEnable(true);//解锁按键
+						SSET(R_OPTION_KEY_RESTORE_DOWN);
 					}
 					break;
 				}

@@ -140,9 +140,8 @@ extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-extern int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
-extern uint8_t LKSRAM[CONFIG_LKSRAM_SIZE];//通信发送缓冲区
-extern uint8_t LKRRAM[CONFIG_LKRRAM_SIZE];//通信接收缓冲区
+extern int16_t FDRAM0[CONFIG_FDRAM_SIZE];//存档寄存器
+extern int16_t FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
 extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒

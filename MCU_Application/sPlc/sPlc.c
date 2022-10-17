@@ -4,9 +4,8 @@
 #pragma pack(push, 4)
 int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
-uint8_t LKSRAM[CONFIG_LKSRAM_SIZE];//通信发送缓冲区
-uint8_t LKRRAM[CONFIG_LKRRAM_SIZE];//通信接收缓冲区
+int16_t FDRAM0[CONFIG_FDRAM_SIZE];//存档寄存器
+int16_t FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器 
 #pragma pack(pop)
 /*****************************************************************************/
 uint16_t TimerCounter_10mS = 0;//10毫秒
@@ -66,7 +65,8 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
 	
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
-
+	printf("%s,%d,%s:MR EPROM CRC:0x%08X,MR CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_mr, crc32_mr);
+	printf("%s,%d,%s:DM EPROM CRC:0x%08X,DM CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_dm, crc32_dm);
 	if((crc32_eprom_mr != crc32_mr) && (crc32_eprom_dm != crc32_dm)){
 		printf("%s,%d,%s:load NVRAM crc fail...\n",__FILE__, __LINE__, __func__);
 	}
@@ -140,13 +140,11 @@ void sPlcNvramClear(void){//清除NVRAM数据
 	printf("%s,%d,%s:clear NVRAM done...\n",__FILE__, __LINE__, __func__);
 }
 void sPlcFdramLoad(void){//从EPROM中载入FDRAM
-	uint32_t crc32_eprom_fd, crc32_fd;
+	HAL_StatusTypeDef ref;
 	sPlcIsrDisable();
-	epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
-	epromReadDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);
-	crc32_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)FDRAM, (CONFIG_FDRAM_SIZE / 2));
+	ref = epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
 	sPlcIsrEnable();//恢复中断
-	if(crc32_eprom_fd != crc32_fd){
+	if(ref != HAL_OK){
 		printf("%s,%d,%s:load FD NVRAM crc fail!!!\n",__FILE__, __LINE__, __func__);
 	}
 	else{
@@ -154,18 +152,21 @@ void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 	}
 }
 void sPlcFdramSave(void){//强制将FDRAM存入EPROM
-	uint32_t crc32;
+	HAL_StatusTypeDef ref;
 	sPlcIsrDisable();
-	epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM, (CONFIG_FDRAM_SIZE * 2));
-	crc32 = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM), (CONFIG_FDRAM_SIZE / 2));
-	epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32);//在的指定地址开始写入32位数	
-	printf("%s,%d,%s:save FD NVRAM done...(FD CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32);
+	ref = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
+	if(ref != HAL_OK){
+		printf("%s,%d,%s:save FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:save FD NVRAM done...\n",__FILE__, __LINE__, __func__);
+	}
 	sPlcIsrEnable();//恢复中断
 }
 void sPlcFdramClear(void){//清除FDRAM数据
 	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_FDRAM);//clear mr dm
-	memset(FDRAM, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
+	memset(FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	sPlcIsrEnable();//恢复中断
 }

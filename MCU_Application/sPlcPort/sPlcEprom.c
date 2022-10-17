@@ -32,13 +32,7 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地址读
 	if(ret != HAL_OK){
 		ret = HAL_I2C_DeInit(&hi2c1);//释放IO口为GPIO，复位句柄状态标志
 		ret = HAL_I2C_Init(&hi2c1);//这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-		printf("%s,%d,%s:eprom read byte fail,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
-#endif
 	}
-#if CONFIG_DEBUG_EPROM == 1
-	printf("%s,%d,%s:eprom read byte done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
-#endif
 	return ret;
 }
 HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//在指定地址开始读出16位数
@@ -60,13 +54,7 @@ HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//在指定地址
 	if(ret != HAL_OK){
 		ret = HAL_I2C_DeInit(&hi2c1);        //释放IO口为GPIO，复位句柄状态标志
 		ret = HAL_I2C_Init(&hi2c1);          //这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-		printf("%s,%d,%s:eprom read hword fail,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
-#endif
 	}
-#if CONFIG_DEBUG_EPROM == 1
-	printf("%s,%d,%s:Eprom read hword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
-#endif
 	return ret;
 }
 HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////在指定地址开始读出32位数
@@ -88,13 +76,7 @@ HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////在指定地
 	if(ret != HAL_OK){
 		ret = HAL_I2C_DeInit(&hi2c1);        //释放IO口为GPIO，复位句柄状态标志
 		ret = HAL_I2C_Init(&hi2c1);          //这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-		printf("%s,%d,%s:eprom read dword fail,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
-#endif
 	}
-#if CONFIG_DEBUG_EPROM == 1
-	printf("%s,%d,%s:eprom read dword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, ReadAddr, *rdat);
-#endif
 	return ret;
 }
 HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//在指定地址写入8位数据
@@ -115,13 +97,7 @@ HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//在指定地址
 	if(ret != HAL_OK){
 		ret = HAL_I2C_DeInit(&hi2c1);//释放IO口为GPIO，复位句柄状态标志
 		ret = HAL_I2C_Init(&hi2c1);//这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-		printf("%s,%d,%s:Eprom write byte fail,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
-#endif
 	}
-#if CONFIG_DEBUG_EPROM == 1
-	printf("%s,%d,%s:eprom write byte done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
-#endif
 	return ret;
 }
 HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//在的指定地址开始写入16位数
@@ -143,13 +119,7 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//在的指定
 	if(ret != HAL_OK){
 		ret = HAL_I2C_DeInit(&hi2c1);//释放IO口为GPIO，复位句柄状态标志
 		ret = HAL_I2C_Init(&hi2c1);//这句重新初始化I2C控制器	
-#if CONFIG_DEBUG_EPROM == 1
-		printf("%s,%d,%s:Eprom write hword fail,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
-#endif
 	}
-#if CONFIG_DEBUG_EPROM == 1
-	printf("%s,%d,%s:eprom write hword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
-#endif
 	return ret;
 }
 HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//在的指定地址开始写入32位数
@@ -171,13 +141,7 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//在的指定
 	if(ret != HAL_OK){
 		ret = HAL_I2C_DeInit(&hi2c1);        //释放IO口为GPIO，复位句柄状态标志
 		ret = HAL_I2C_Init(&hi2c1);          //这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-		printf("%s,%d,%s:Eprom write dword fail,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
-#endif
 	}
-#if CONFIG_DEBUG_EPROM == 1
-	printf("%s,%d,%s:eprom write hword done,adr:%d,dat:%d\n", __FILE__, __LINE__, __func__, WriteAddr, wdat);
-#endif
 	return ret;
 }   
 HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//在的指定地址开始读出指定个数的数据
@@ -200,9 +164,6 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 		if(ret != HAL_OK){
 			ret = HAL_I2C_DeInit(&hi2c1);//释放IO口为GPIO，复位句柄状态标志
 			ret = HAL_I2C_Init(&hi2c1);//这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-			printf("%s,%d,%s:eprom read block fail,adr:%d,num:%d\n", __FILE__, __LINE__, __func__, ReadAddr, NumToRead);
-#endif
 		}
 		rAddr += CONFIG_EPROM_PAGE_SIZE;
 		rBuffer += CONFIG_EPROM_PAGE_SIZE;
@@ -212,14 +173,6 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 		if(ret != HAL_OK){
 			ret = HAL_I2C_DeInit(&hi2c1);        //释放IO口为GPIO，复位句柄状态标志
 			ret = HAL_I2C_Init(&hi2c1);          //这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-			printf("%s,%d,%s:eprom read rbyte fail,adr:%d,num:%d\n", __FILE__, __LINE__, __func__, ReadAddr, NumToRead);
-#endif
-		}
-		else{
-#if CONFIG_DEBUG_EPROM == 1
-			printf("%s,%d,%s:eprom read multibyte done,adr:%d,num:%d\n", __FILE__, __LINE__, __func__, ReadAddr, NumToRead);
-#endif
 		}
 	}
 	return ret;	
@@ -244,9 +197,6 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 		if(ret != HAL_OK){
 			ret = HAL_I2C_DeInit(&hi2c1);        //释放IO口为GPIO，复位句柄状态标志
 			ret = HAL_I2C_Init(&hi2c1);          //这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-			printf("%s,%d,%s:eprom write block fail,adr:%d,num:%d\n", __FILE__, __LINE__, __func__, WriteAddr, NumToWrite);
-#endif		
 		}
 		wAddr += CONFIG_EPROM_PAGE_SIZE;
 		wBuffer += CONFIG_EPROM_PAGE_SIZE;
@@ -259,16 +209,10 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 		if(ret != HAL_OK){
 			ret = HAL_I2C_DeInit(&hi2c1);        //释放IO口为GPIO，复位句柄状态标志
 			ret = HAL_I2C_Init(&hi2c1);          //这句重新初始化I2C控制器
-#if CONFIG_DEBUG_EPROM == 1
-			printf("%s,%d,%s:eprom write remain byte fail,adr:%d,num:%d\n", __FILE__, __LINE__, __func__, WriteAddr, NumToWrite);
-#endif	
 		}
 	}
 #if CONFIG_EPROM_WRITE_DELAY > 0
 	HAL_Delay(CONFIG_EPROM_WRITE_DELAY);
-#endif
-#if CONFIG_DEBUG_EPROM == 1
-	printf("%s,%d,%s:eprom write multibyte done,adr:%d,num:%d\n", __FILE__, __LINE__, __func__, WriteAddr, NumToWrite);
 #endif
 	return ret;
 }
@@ -280,7 +224,7 @@ void listEpromTable(void){//输出EPROM分布表
 	
 	printf("MR CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MR_CRC, (uint32_t)(CONFIG_EPROM_MR_CRC + 3));
 	printf("DM CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_DM_CRC, (uint32_t)(CONFIG_EPROM_DM_CRC + 3));
-	printf("FD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3));	
+	printf("FD CRC EPROM:0x%04X---0x%04X,(unuse)\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3));	
 	printf("MCU CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3));
 	printf("LCD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3));
 	

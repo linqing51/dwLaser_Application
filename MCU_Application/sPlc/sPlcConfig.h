@@ -38,8 +38,8 @@
 /*****************************************************************************/				
 #define CONFIG_SPLC_MAX_SPK_FREQ											4500L//喇叭最高频率
 #define CONFIG_SPLC_MIN_SPL_FREQ											500//喇叭最低频率
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ									900//蜂鸣器默认频率
-#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1350//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1100//蜂鸣器默认频率
+#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1400//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_IO_INPUT										1//输入IO刷新启用
 #define CONFIG_SPLC_USING_IO_OUTPUT										1//输出IO刷新启用
@@ -69,6 +69,8 @@
 #define CONFIG_EPROM_MR_END														(CONFIG_EPROM_MR_START + MR_END - MR_START)
 #define CONFIG_EPROM_DM_START													(CONFIG_EPROM_MR_END + 1)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_DM_END														(CONFIG_EPROM_DM_START + DM_END - DM_START)
+
+#define CONFIG_EPROM_FD_SCHEME_SIZE										((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//单个方案占用的EPROM空间
 #define CONFIG_EPROM_FD_START													(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END														(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
@@ -180,7 +182,7 @@
 
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
-#define CONFIG_BEEM_MAX_LIMIT													0.8F//
+#define CONFIG_BEEM_MAX_LIMIT													0.7F//
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #define CONFIG_FAN_MAX_DC															100
@@ -746,17 +748,27 @@
 #define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 39)//HMI显示报警信息
 #define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 40)//STANDBY 使能
 /*****************************************************************************/
-#define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 80)
-#define R_STANDBY_KEY_POSWIDTH_DEC_DOWN							(R_START * 16 + 81)
-#define R_STANDBY_KEY_NEGWIDTH_ADD_DOWN							(R_START * 16 + 82)
-#define R_STANDBY_KEY_NEGWIDTH_DEC_DOWN							(R_START * 16 + 83)
-#define R_STANDBY_KEY_TIMES_ADD_DOWN								(R_START * 16 + 84)
-#define R_STANDBY_KEY_TIMES_DEC_DOWN								(R_START * 16 + 85)
-#define R_STANDBY_KEY_STNADBY_DOWN									(R_START * 16 + 90)
-#define R_STANDBY_KEY_STNADBY_UP										(R_START * 16 + 91)
-#define R_STANDBY_KEY_ENTER_OPTION_DOWN							(R_START * 16 + 92)
-#define R_STANDBY_KEY_ENTER_SCHEME_DOWN							(R_START * 16 + 93)
-#define R_STANDBY_KEY_SCHEME_SAVE_DOWN							(R_START * 16 + 94)
+#define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 50)
+#define R_STANDBY_KEY_POSWIDTH_ADD_UP								(R_START * 16 + 51)
+#define R_STANDBY_KEY_POSWIDTH_DEC_DOWN							(R_START * 16 + 52)
+#define R_STANDBY_KEY_POSWIDTH_DEC_UP								(R_START * 16 + 53)
+#define R_STANDBY_KEY_NEGWIDTH_ADD_DOWN							(R_START * 16 + 54)
+#define R_STANDBY_KEY_NEGWIDTH_ADD_UP								(R_START * 16 + 55)
+#define R_STANDBY_KEY_NEGWIDTH_DEC_DOWN							(R_START * 16 + 56)
+#define R_STANDBY_KEY_NEGWIDTH_DEC_UP								(R_START * 16 + 57)
+#define R_STANDBY_KEY_TIMES_ADD_DOWN								(R_START * 16 + 58)
+#define R_STANDBY_KEY_TIMES_DEC_DOWN								(R_START * 16 + 59)
+#define R_STANDBY_KEY_STNADBY_DOWN									(R_START * 16 + 60)
+#define R_STANDBY_KEY_STNADBY_UP										(R_START * 16 + 61)
+#define R_STANDBY_KEY_ENTER_OPTION_DOWN							(R_START * 16 + 62)
+#define R_STANDBY_KEY_ENTER_SCHEME_DOWN							(R_START * 16 + 63)
+#define R_STANDBY_KEY_SCHEME_SAVE_DOWN							(R_START * 16 + 64)
+#define R_STANDBY_KEY_SCHEME_LAST_DOWN							(R_START * 16 + 65)
+#define R_STANDBY_KEY_SCHEME_NEXT_DOWN							(R_START * 16 + 66)
+#define R_STANDBY_KEY_AIM_BRG_ADD_DOWN							(R_START * 16 + 67)
+#define R_STANDBY_KEY_AIM_BRG_DEC_DOWN							(R_START * 16 + 68)
+#define R_STANDBY_KEY_POWER_ADD_DOWN								(R_START * 16 + 69)
+#define R_STANDBY_KEY_POWER_DEC_DOWN								(R_START * 16 + 70)
 /*****************************************************************************/
 #define R_READY_KEY_READY_DOWN											(R_START * 16 + 95)
 #define R_READY_KEY_READY_UP												(R_START * 16 + 96)
@@ -768,6 +780,7 @@
 #define R_OPTION_KEY_ENTER_INFORMATION_DOWN					(R_START * 16 + 101)
 #define R_OPTION_KEY_ENTER_OK_DOWN									(R_START * 16 + 102)
 #define R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN						(R_START * 16 + 103)
+#define R_OPTION_KEY_RESTORE_DOWN										(R_START * 16 + 104)
 /*****************************************************************************/
 #define R_INFORMATION_KEY_OK_DOWN										(R_START * 16 + 110)
 #define R_INFORMATION_KEY_OK_UP											(R_START * 16 + 111)
