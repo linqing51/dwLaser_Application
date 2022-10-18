@@ -37,6 +37,9 @@
 //创建画面GDDC_PAGE_RENAME的命令索引ID
 #define  _SCREEN_GDDC_PAGE_RENAME                                             12
 
+//创建画面GDDC_PAGE_RESTORE的命令索引ID
+#define  _SCREEN_GDDC_PAGE_RESTORE                                            13
+
 #define  _BTN_GDDC_PAGE_PASSCODE_GDDC_PAGE_PASSCODE_KEY_NUM1                   1
 
 //全局图片3_gddc_page_passcode_1.jpg

@@ -164,8 +164,6 @@
 #define GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1						37
 #define GDDC_PAGE_SCHEME_KEY_LAST_PAGE									39
 #define GDDC_PAGE_SCHEME_KEY_NEXT_PAGE									40
-#define GDDC_PAGE_SCHEME_TEXT_SHOWPAGE									41
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE						42
 /*****************************************************************************/
 #define GDDC_PAGE_INFO_KEY_ENTER_OK											1
 #define GDDC_PAGE_INFO_TEXTDISPLAY_TPYE									2

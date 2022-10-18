@@ -228,6 +228,7 @@ extern uint8_t sPlcEpromTest(void);
 extern uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
 void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
 void listEpromTable(void);
+void softDelayMs(uint16_t ms);//软件延时
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

@@ -212,10 +212,10 @@
 #define POWER_REAL_CH0_95P														3800
 #define POWER_REAL_CH0_100P														4000
 /*****************************************************************************/
-#define POWER_REAL_CH1_5P											150
-#define POWER_REAL_CH1_10P										300
-#define POWER_REAL_CH1_15P										450
-#define POWER_REAL_CH1_20P										800
+#define POWER_REAL_CH1_5P															150
+#define POWER_REAL_CH1_10P														300
+#define POWER_REAL_CH1_15P														450
+#define POWER_REAL_CH1_20P														800
 #define POWER_REAL_CH1_25P										1000
 #define POWER_REAL_CH1_30P										1200
 #define POWER_REAL_CH1_35P										1400
@@ -540,11 +540,11 @@
 #define FD_SCHEME_START_5												(FD_START +  320)//方案5存储区起始
 #define FD_SCHEME_END_5													(FD_START +  383)//方案5存储区结束
 
-#define FD_SCHEME_START_6										(FD_START +  384)//方案6存储区起始
-#define FD_SCHEME_END_6											(FD_START +  447)//方案6存储区结束
+#define FD_SCHEME_START_6												(FD_START +  384)//方案6存储区起始
+#define FD_SCHEME_END_6													(FD_START +  447)//方案6存储区结束
 
-#define FD_SCHEME_START_7										(FD_START +  448)//方案7存储区起始
-#define FD_SCHEME_END_7											(FD_START +  511)//方案7存储区结束
+#define FD_SCHEME_START_7												(FD_START +  448)//方案7存储区起始
+#define FD_SCHEME_END_7													(FD_START +  511)//方案7存储区结束
 
 #define FD_SCHEME_START_8										(FD_START +  512)//方案8存储区起始
 #define FD_SCHEME_END_8											(FD_START +  575)//方案8存储区结束
@@ -769,6 +769,10 @@
 #define R_STANDBY_KEY_AIM_BRG_DEC_DOWN							(R_START * 16 + 68)
 #define R_STANDBY_KEY_POWER_ADD_DOWN								(R_START * 16 + 69)
 #define R_STANDBY_KEY_POWER_DEC_DOWN								(R_START * 16 + 70)
+#define R_STANDBY_KEY_MODE_CW_DOWN									(R_START * 16 + 71)
+#define R_STANDBY_KEY_MODE_SP_DOWN									(R_START * 16 + 72)
+#define R_STANDBY_KEY_MODE_MP_DOWN									(R_START * 16 + 73)
+#define R_STANDBY_KEY_MODE_GP_DOWN									(R_START * 16 + 74)
 /*****************************************************************************/
 #define R_READY_KEY_READY_DOWN											(R_START * 16 + 95)
 #define R_READY_KEY_READY_UP												(R_START * 16 + 96)
@@ -780,7 +784,11 @@
 #define R_OPTION_KEY_ENTER_INFORMATION_DOWN					(R_START * 16 + 101)
 #define R_OPTION_KEY_ENTER_OK_DOWN									(R_START * 16 + 102)
 #define R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN						(R_START * 16 + 103)
-#define R_OPTION_KEY_RESTORE_DOWN										(R_START * 16 + 104)
+#define R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN						(R_START * 16 + 104)
+#define R_OPTION_KEY_BEEM_VOLUME_DEC_DOWN						(R_START * 16 + 105)
+#define R_OPTION_KEY_LCD_BRG_ADD_DOWN								(R_START * 16 + 106)
+#define R_OPTION_KEY_LCD_BRG_DEC_DOWN								(R_START * 16 + 107)
+#define R_OPTION_KEY_RESTORE_DOWN										(R_START * 16 + 108)
 /*****************************************************************************/
 #define R_INFORMATION_KEY_OK_DOWN										(R_START * 16 + 110)
 #define R_INFORMATION_KEY_OK_UP											(R_START * 16 + 111)
@@ -798,14 +806,31 @@
 #define R_SCHEME_KEY_SCHEME_SELECT_7_DOWN						(R_START * 16 + 130)
 #define R_SCHEME_KEY_SCHEME_SELECT_8_DOWN						(R_START * 16 + 131)
 #define R_SCHEME_KEY_SCHEME_SELECT_9_DOWN						(R_START * 16 + 132)
-#define R_SCHEME_KEY_SCHEME_SELECT_10_DOWN						(R_START * 16 + 133)
-#define R_SCHEME_KEY_SCHEME_SELECT_11_DOWN						(R_START * 16 + 134)
-#define R_SCHEME_KEY_SCHEME_SELECT_12_DOWN						(R_START * 16 + 135)
-#define R_SCHEME_KEY_SCHEME_SELECT_13_DOWN						(R_START * 16 + 136)
-#define R_SCHEME_KEY_SCHEME_SELECT_14_DOWN						(R_START * 16 + 137)
-#define R_SCHEME_KEY_SCHEME_SELECT_15_DOWN						(R_START * 16 + 138)
-#define R_SCHEME_KEY_NEXT_SCHEME								(R_START * 16 + 139)
-#define R_SCHEME_KEY_LAST_SCHEME								(R_START * 16 + 140)
+#define R_SCHEME_KEY_SCHEME_SELECT_10_DOWN					(R_START * 16 + 133)
+#define R_SCHEME_KEY_SCHEME_SELECT_11_DOWN					(R_START * 16 + 134)
+#define R_SCHEME_KEY_SCHEME_SELECT_12_DOWN					(R_START * 16 + 135)
+#define R_SCHEME_KEY_SCHEME_SELECT_13_DOWN					(R_START * 16 + 136)
+#define R_SCHEME_KEY_SCHEME_SELECT_14_DOWN					(R_START * 16 + 137)
+#define R_SCHEME_KEY_SCHEME_SELECT_15_DOWN					(R_START * 16 + 138)
+#define R_SCHEME_KEY_SCHEME_SELECT_16_DOWN					(R_START * 16 + 139)
+#define R_SCHEME_KEY_SCHEME_SELECT_17_DOWN					(R_START * 16 + 140)
+#define R_SCHEME_KEY_SCHEME_SELECT_18_DOWN					(R_START * 16 + 141)
+#define R_SCHEME_KEY_SCHEME_SELECT_19_DOWN					(R_START * 16 + 142)
+#define R_SCHEME_KEY_SCHEME_SELECT_20_DOWN					(R_START * 16 + 143)
+#define R_SCHEME_KEY_SCHEME_SELECT_21_DOWN					(R_START * 16 + 144)
+#define R_SCHEME_KEY_SCHEME_SELECT_22_DOWN					(R_START * 16 + 145)
+#define R_SCHEME_KEY_SCHEME_SELECT_23_DOWN					(R_START * 16 + 146)
+#define R_SCHEME_KEY_SCHEME_SELECT_24_DOWN					(R_START * 16 + 147)
+#define R_SCHEME_KEY_SCHEME_SELECT_25_DOWN					(R_START * 16 + 148)
+#define R_SCHEME_KEY_SCHEME_SELECT_26_DOWN					(R_START * 16 + 149)
+#define R_SCHEME_KEY_SCHEME_SELECT_27_DOWN					(R_START * 16 + 150)
+#define R_SCHEME_KEY_SCHEME_SELECT_28_DOWN					(R_START * 16 + 151)
+#define R_SCHEME_KEY_SCHEME_SELECT_29_DOWN					(R_START * 16 + 152)
+#define R_SCHEME_KEY_SCHEME_SELECT_30_DOWN					(R_START * 16 + 153)
+#define R_SCHEME_KEY_SCHEME_SELECT_31_DOWN					(R_START * 16 + 154)
+
+#define R_SCHEME_KEY_NEXT_SCHEME										(R_START * 16 + 155)
+#define R_SCHEME_KEY_LAST_SCHEME										(R_START * 16 + 156)
 /*****************************************************************************/
 #define R_DIAGNOSIS_OK_DOWN													(R_START * 16 + 160)
 #define R_DIAGNOSIS_OK_UP														(R_START * 16 + 161)
