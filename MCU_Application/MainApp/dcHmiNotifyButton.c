@@ -703,8 +703,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 					}
 					else{
-						RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
-						T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_STANDBY_KEY_POSWIDTH_ADD_UP);
 					}
 					break;
 				}
@@ -713,8 +712,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);	
 					}
 					else{
-						RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
-						T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_STANDBY_KEY_POSWIDTH_DEC_UP);
 					}
 					break;
 				}
@@ -908,8 +906,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
 					}
 					else{//UP
-						RRES(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
-						T10MS(T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_READY_KEY_ACOUSTIC_ENERGY_ADD_UP);
 					}
 					break;
 				}
@@ -918,8 +915,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
 					}
 					else{//UP
-						RRES(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
-						T10MS(T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_READY_KEY_ACOUSTIC_ENERGY_DEC_UP);
 					}
 					break;
 				}
@@ -928,8 +924,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
 					}
 					else{//UP
-						RRES(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
-						T10MS(T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_READY_KEY_ACOUSTIC_TIME_ADD_UP);
 					}
 					break;
 				}
@@ -938,8 +933,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SSET(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
 					}
 					else{//UP
-						RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
-						T10MS(T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+						SSET(R_READY_KEY_ACOUSTIC_TIME_DEC_UP);
 					}
 					break;
 				}
@@ -1368,14 +1362,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM:{//Çå¿ÕEPROM
 					if(state){
-						SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 						SSET(R_CLEAR_EPROM);
 					}
 					break;
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM:{//´¢´æEPROM
 					if(state){
-						SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 						SSET(R_SAVE_EPROM);
 					}
 				}

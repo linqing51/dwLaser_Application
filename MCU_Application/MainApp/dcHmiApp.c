@@ -1594,7 +1594,6 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_1;
 			}
 			SetScreen(NVRAM0[EM_DC_PAGE]);
-			vTaskDelay(100);
 			RRES(R_STANDBY_KEY_ENTER_SCHEME_DOWN);
 		}else
 		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
@@ -1703,13 +1702,13 @@ void dcHmiLoop(void){//HMI轮训程序
 			setAimBrightness(NVRAM0[DM_AIM_BRG]);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
+			standbyKeyValue(0);
 			//页面切换
-			readyPageTouchEnable(0);
-			readyKeyValue(1);
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
 			SetScreen(NVRAM0[EM_DC_PAGE]);
+			readyPageTouchEnable(0);
+			readyKeyValue(1);
 			updateReadyDisplay();
-			standbyKeyValue(0);
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_NEXT_DOWN)){
 			if(NVRAM0[DM_SCHEME_NUM] < (CONFIG_HMI_SCHEME_NUM - 1)){
@@ -1738,7 +1737,6 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_PARA){//等待蜂鸣器
-		readyPageTouchEnable(1);
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_DONE;	
 		return;
 	}
@@ -1747,6 +1745,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(T_100MS_START * 16 + T100MS_READY_BEEM_DELAY) && LDB(R_FOOTSWITCH_PRESS)){
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);
+			readyPageTouchEnable(1);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 		}
 		else{
@@ -1794,6 +1793,11 @@ void dcHmiLoop(void){//HMI轮训程序
 				}
 			}
 		}
+		if(LD(R_READY_KEY_ACOUSTIC_ENERGY_ADD_UP)){
+			RRES(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
+			T10MS(T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+			RRES(R_READY_KEY_ACOUSTIC_ENERGY_ADD_UP);
+		}
 		if(LDP(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN)){
 			decAcousticEnergy();
 			updateAcousticDisplay();		
@@ -1811,7 +1815,12 @@ void dcHmiLoop(void){//HMI轮训程序
 					updateAcousticDisplay();
 				}
 			}
-		}		
+		}
+		if(LD(R_READY_KEY_ACOUSTIC_ENERGY_DEC_UP)){
+			RRES(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
+			T10MS(T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+			RRES(R_READY_KEY_ACOUSTIC_ENERGY_DEC_UP);
+		}
 		if(LDP(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN)){
 			addAcousticTime();
 			updateAcousticDisplay();
@@ -1830,6 +1839,11 @@ void dcHmiLoop(void){//HMI轮训程序
 				}
 			}
 		}
+		if(LD(R_READY_KEY_ACOUSTIC_TIME_ADD_UP)){
+			RRES(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
+			T10MS(T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+			RRES(R_READY_KEY_ACOUSTIC_TIME_ADD_UP);
+		}
 		if(LDP(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN)){
 			decAcousticTime();
 			updateAcousticDisplay();
@@ -1847,7 +1861,12 @@ void dcHmiLoop(void){//HMI轮训程序
 					updateAcousticDisplay();
 				}
 			}
-		}		
+		}
+		if(LD(R_READY_KEY_ACOUSTIC_TIME_DEC_UP)){
+			RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
+			T10MS(T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
+			RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_UP);
+		}
 		if(LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//回到等待状态
 			EDLAR();//停止发射
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
@@ -1879,7 +1898,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			return;
 		}
-		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
+		if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
 			if(LDP(R_FOOTSWITCH_PRESS)){//发射激光
 				sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
@@ -2177,8 +2196,44 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[EM_SCHEME_NUM_TMP] = 15;
 				updateSchemeInfo(15);
 			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_16_DOWN);
+			RRES(R_SCHEME_KEY_SCHEME_SELECT_15_DOWN);
 		}
+		
+		if(LD(R_SCHEME_KEY_OK_DOWN)){//确定
+			NVRAM0[DM_SCHEME_NUM] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
+			loadScheme();
+			updateStandbyDisplay();
+			returnStandbyDisplay();
+			RRES(R_SCHEME_KEY_OK_DOWN);
+		}
+		if(LD(R_SCHEME_KEY_CANCEL_DOWN)){//取消
+			//从FDRAM1中恢复FDRAM0
+			memcpy((uint8_t*)FDRAM0, (uint8_t*)FDRAM1, (CONFIG_FDRAM_SIZE*2));
+			loadScheme();//FD->EM
+			updateStandbyDisplay();
+			returnStandbyDisplay();
+			RRES(R_SCHEME_KEY_CANCEL_DOWN);
+		}
+		if(LD(R_SCHEME_KEY_RENAME_DOWN)){//改名
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
+			//将EM_SCHEME_NUM_TMP指向的名称更新RENAME输入框
+			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM0 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
+			SetScreen(NVRAM0[EM_DC_PAGE]);
+			RRES(R_SCHEME_KEY_RENAME_DOWN);
+		}
+		if(LD(R_SCHEME_KEY_NEXT_SCHEME)){//第一页->第二页
+			updateScheme_1_Display();//更新第二页
+			seletcSchemeNum(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中条
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中详细信息
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_1;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_1;
+			SetScreen(NVRAM0[EM_DC_PAGE]);
+			RRES(R_SCHEME_KEY_NEXT_SCHEME);
+		}
+		return;
+	}
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME_1){//方案界面第二页
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_16_DOWN)){
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 16){
@@ -2307,42 +2362,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			}
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_31_DOWN);
 		}
-		
-		if(LD(R_SCHEME_KEY_OK_DOWN)){//确定
-			NVRAM0[DM_SCHEME_NUM] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
-			loadScheme();
-			updateStandbyDisplay();
-			returnStandbyDisplay();
-			RRES(R_SCHEME_KEY_OK_DOWN);
-		}
-		if(LD(R_SCHEME_KEY_CANCEL_DOWN)){//取消
-			//从FDRAM1中恢复FDRAM0
-			memcpy((uint8_t*)FDRAM0, (uint8_t*)FDRAM1, (CONFIG_FDRAM_SIZE*2));
-			loadScheme();//FD->EM
-			updateStandbyDisplay();
-			returnStandbyDisplay();
-			RRES(R_SCHEME_KEY_CANCEL_DOWN);
-		}
-		if(LD(R_SCHEME_KEY_RENAME_DOWN)){//改名
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
-			//将EM_SCHEME_NUM_TMP指向的名称更新RENAME输入框
-			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM0 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			RRES(R_SCHEME_KEY_RENAME_DOWN);
-		}
-		if(LD(R_SCHEME_KEY_NEXT_SCHEME)){//第一页->第二页
-			updateScheme_1_Display();//更新第二页
-			seletcSchemeNum(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中条
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中详细信息
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_1;
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_1;
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			RRES(R_SCHEME_KEY_NEXT_SCHEME);
-		}
-		return;
-	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME_1){//方案界面第二页
+			
 		if(LD(R_SCHEME_KEY_OK_DOWN)){//确定
 			NVRAM0[DM_SCHEME_NUM] = NVRAM0[EM_SCHEME_NUM_TMP];
 			loadScheme();
@@ -2412,6 +2432,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_DIAGNOSIS_OK_DOWN);
 		}
 		else if(LD(R_CLEAR_EPROM)){//
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 			__set_PRIMASK(0);//关闭中断
 			sPlcNvramClear();//清空NVRAM
 			sPlcFdramClear();//清空FDRAM
@@ -2421,6 +2442,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			REBOOT();	
 		}
 		else if(LD(R_SAVE_EPROM)){//储存配制到EPROM
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 			__set_PRIMASK(0);//关闭中断
 			sPlcNvramSave();//更新NVRAM
 			sPlcFdramSave();//更新FDRAM
