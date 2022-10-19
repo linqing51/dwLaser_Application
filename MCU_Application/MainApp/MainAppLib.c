@@ -85,7 +85,7 @@ void lockPreScheme(void){//ª÷∏¥‘§…Ë∑Ω∞∏
 	uint8_t i;
 	uint16_t oldNum;
 	oldNum = NVRAM0[DM_SCHEME_NUM];
-	for(i = 0;i <= 19;i ++){
+	for(i = 0;i <= 25;i ++){
 		NVRAM0[DM_SCHEME_NUM] = i;
 		defaultScheme();
 		saveScheme();

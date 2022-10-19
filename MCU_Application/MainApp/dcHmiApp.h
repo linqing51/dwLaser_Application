@@ -34,8 +34,8 @@
 #define FSMSTEP_RENAME															900
 #define FSMSTEP_CORRECTION													1000//功率校正
 /*****************************************************************************/
-#define FLASH_DATA_VERSION  										0XAABB0000
-#define FLASH_DATA_ADDR     										0X00000000
+#define FLASH_DATA_VERSION  												0XAABB0000
+#define FLASH_DATA_ADDR     												0X00000000
 /*****************************************************************************/
 #define MSG_NO_ERROR																0
 #define MSG_INTERLOCK_UNPLUG												1

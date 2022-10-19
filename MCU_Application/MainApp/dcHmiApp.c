@@ -1215,7 +1215,7 @@ static void speakerLoop(void){//蜂鸣器轮询
 					temp0 = (*((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]) + 25) / 50;
 					//temp0 = temp0 / 60;
 					if((temp0 % NVRAM0[EM_ACOUSTIC_TIME]) == 0){
-						sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME] + 25);		
+						sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME] + 30);		
 						NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_ACOUSITC_SPK_FREQ;			
 						sPlcSpeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 					}
@@ -1611,6 +1611,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
 				//能量大于设置功率的两倍
 				SSET(R_ACOUSTIC_ENABLE);
+				/*
 				switch(NVRAM0[DM_SCHEME_NUM]){
 					case 0:{//EVLA Thigh	CW 8w 80J/cm
 						NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CW模式每次加减量1秒
@@ -1658,6 +1659,16 @@ void dcHmiLoop(void){//HMI轮训程序
 					}
 				}	
 			}
+			*/
+				NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CW模式每次加减量1秒
+				NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_CH0] / 10;//CW模式每次加减量
+				NVRAM0[EM_ACOUSTIC_TIME] = 1;//初始为1秒
+				NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_TIME] * NVRAM0[EM_LASER_POWER_CH0] / 10;
+				NVRAM0[EM_ACOUSTIC_TIME_MIN] = 1;//最小1秒
+				NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_STEP] * 100;//最大100秒
+				NVRAM0[EM_ACOUSTIC_ENERGY_MIN] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * NVRAM0[EM_LASER_POWER_CH0] / 10;
+				NVRAM0[EM_ACOUSTIC_ENERGY_MAX] = NVRAM0[EM_LASER_POWER_CH0] / 10 * NVRAM0[EM_ACOUSTIC_TIME_MAX];
+			}	
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
 				//脉冲大于1秒启用提示音
 				if((NVRAM0[EM_LASER_MP_POSWIDTH] >= 1000) && (NVRAM0[EM_LASER_MP_NEGWIDTH] >= 1000)){//周期大于2000mS
@@ -1746,6 +1757,10 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);
 			readyPageTouchEnable(1);
+			if(NVRAM0[EM_DC_PAGE] != GDDC_PAGE_READY){
+				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
+				SetScreen(NVRAM0[EM_DC_PAGE]);
+			}
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 		}
 		else{
@@ -1755,14 +1770,23 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 			}
 			else{ 
-				if(LDP(R_FOOTSWITCH_PRESS)){
+				if(LD(R_FOOTSWITCH_PRESS)){
 					NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;
 					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 					SSET(SPCOIL_BEEM_ENABLE);
 					printf("%s,%d,%s:set Beem mode:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_MODE]);
 					printf("%s,%d,%s:set Beem freq:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_FREQ]);
 					printf("%s,%d,%s:set Beem on\n", __FILE__, __LINE__, __func__);
-					NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;
+					if(NVRAM0[EM_DC_PAGE] != GDDC_PAGE_WEAR_SAFETY){
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_WEAR_SAFETY;//切换待机页面
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+					}
+				}
+				else{
+					if(NVRAM0[EM_DC_PAGE] != GDDC_PAGE_READY){
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+					}
 				}
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_DONE;
 			}
@@ -2049,7 +2073,9 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVFSAVE();//强制更新NVRAM
 				updateOptionDisplay();//更新Option显示
 				SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
-				//optionKeyEnable(true);//解锁按键		
+				//optionKeyEnable(true);//解锁按键
+				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
+				SetScreen(NVRAM0[EM_DC_PAGE]);
 				RRES(R_OPTION_KEY_RESTORE_DOWN);
 		}
 		if(LD(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN)){//进入诊断状态

@@ -14,6 +14,7 @@
         <page name="GDDC_PAGE_DIAGNOSIS" id="11" />
         <page name="GDDC_PAGE_RENAME" id="12" />
         <page name="GDDC_PAGE_RESTORE" id="13" />
+        <page name="GDDC_PAGE_WEAR_SAFETY" id="14" />
     </pages>
     <images>
         <image id="0" url="d:\github\dwlaser_application\vtft_1470\Images\1_GDDC_PAGE_POWERUP.jpg" effect_width="1024" effect_height="600" />
@@ -47,7 +48,10 @@
         <image id="28" url="d:\github\dwlaser_application\vtft_1470\Images\Diagnosis_button_1.jpg" effect_width="120" effect_height="40" />
         <image id="29" url="d:\github\dwlaser_application\vtft_1470\Images\full_800_600_up.jpg" effect_width="1024" effect_height="600" />
         <image id="30" url="d:\github\dwlaser_application\vtft_1470\Images\full_800_600_down.jpg" effect_width="1024" effect_height="600" />
-        <image id="31" url="d:\github\dwlaser_application\vtft_1470\Images\26_GDDC_PAGE_RESTORE_0.png" effect_width="1024" effect_height="600" />
+        <image id="31" url="d:\github\dwlaser_application\vtft_1470\Images\26_GDDC_PAGE_RESTORE_0.jpg" effect_width="431" effect_height="200" />
+        <image id="32" url="d:\github\dwlaser_application\vtft_1470\Images\Cancel.png" effect_width="205" effect_height="62" />
+        <image id="33" url="d:\github\dwlaser_application\vtft_1470\Images\Yes.png" effect_width="212" effect_height="62" />
+        <image id="34" url="d:\github\dwlaser_application\vtft_1470\Images\Please wear the safety goggles_.png" effect_width="330" effect_height="168" />
     </images>
     <waves />
 </Resource>

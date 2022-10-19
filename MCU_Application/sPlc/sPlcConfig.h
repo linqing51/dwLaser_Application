@@ -182,7 +182,7 @@
 
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
-#define CONFIG_BEEM_MAX_LIMIT													0.7F//
+#define CONFIG_BEEM_MAX_LIMIT													0.8F//
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #define CONFIG_FAN_MAX_DC															100
@@ -852,19 +852,18 @@
 #define T100MS_READY_BEEM_DELAY											2//进入READY状态后蜂鸣器响延迟
 #define T100MS_PULSE_BEEM_DELAY											3//脉冲模式蜂鸣器延迟
 /*****************************************************************************/
-#define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						3
-#define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						4
-#define T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY						5
-#define T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY						6
-#define T10MS_TIMES_ADD_KEYDOWN_DELAY								7
-#define T10MS_TIMES_DEC_KEYDOWN_DELAY								8
-#define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY						9
-#define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY						10
-
-#define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			11
-#define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			12
-#define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				13
-#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				14		
+#define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						0
+#define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						1
+#define T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY						2
+#define T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY						3
+#define T10MS_TIMES_ADD_KEYDOWN_DELAY								4
+#define T10MS_TIMES_DEC_KEYDOWN_DELAY								5
+#define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY						6
+#define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY						7
+#define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			8
+#define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			9
+#define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				10
+#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				11		
 /*****************************************************************************/
 #endif
 

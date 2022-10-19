@@ -40,6 +40,9 @@
 //创建画面GDDC_PAGE_RESTORE的命令索引ID
 #define  _SCREEN_GDDC_PAGE_RESTORE                                            13
 
+//创建画面GDDC_PAGE_WEAR_SAFETY的命令索引ID
+#define  _SCREEN_GDDC_PAGE_WEAR_SAFETY                                        14
+
 #define  _BTN_GDDC_PAGE_PASSCODE_GDDC_PAGE_PASSCODE_KEY_NUM1                   1
 
 //全局图片3_gddc_page_passcode_1.jpg
@@ -771,4 +774,8 @@
 #define  _BTN_GDDC_PAGE_RENAME_GDDC_PAGE_RENAME_KEY_DOT                       44
 
 #define  _BTN_GDDC_PAGE_RENAME_GDDC_PAGE_RENAME_KEY_EXIT                       3
+
+#define  _BTN_GDDC_PAGE_RESTORE_GDDC_PAGE_RESTORE_KEY_CANCEL                   1
+
+#define  _BTN_GDDC_PAGE_RESTORE_GDDC_PAGE_RESTORE_KEY_YES                      2
 

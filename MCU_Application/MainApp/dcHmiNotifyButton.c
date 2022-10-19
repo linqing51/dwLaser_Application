@@ -1003,7 +1003,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_OPTION_KEY_RESTORE:{//»Ö¸´Ä¬ÈÏÖµ
+				default:break;
+			}
+			break;
+		}
+		case GDDC_PAGE_RESTORE:{
+			switch(control_id){
+				case GDDC_PAGE_RESTORE_KEY_YES:{
 					if(state){
 						SSET(R_OPTION_KEY_RESTORE_DOWN);
 					}
@@ -1011,7 +1017,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				default:break;
 			}
-			break;
 		}
 		case GDDC_PAGE_INFORMATION:{
 			switch(control_id){
