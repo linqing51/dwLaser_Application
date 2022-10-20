@@ -109,7 +109,7 @@ void confirmBootloadUpdate(void){//执行Bootload更新
 	SysTick->CTRL = 0;//关键代码
 	HAL_FLASH_Unlock();//解说FLASH锁定
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR);
-	if (FLASH_If_EraseBootloader() != 0x00){//擦除BOOTLOAD 失败
+	if (FLASH_If_EraseBootload() != 0x00){//擦除BOOTLOAD 失败
 		printf("BootLoader:Erase bootload fail, GameOver!!!!!\n");
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
 		return;
@@ -127,7 +127,7 @@ void confirmBootloadUpdate(void){//执行Bootload更新
 	softDelayMs(800);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start update new bootload..."));
 	for(i = 0; i < BOOTLOADER_FLASH_SIZE; i += 4){
-		if(FLASH_bt_Write((BOOTLOADER_FLASH_START_ADDRESS + i), *(uint32_t *) (CcmRamBuf + i)) != 0x00){
+		if(FLASH_lf_WriteBootload((BOOTLOADER_FLASH_START_ADDRESS + i), *(uint32_t *) (CcmRamBuf + i)) != 0x00){
 			printf("BootLoader:write mcu bootload fail,GameOver!!!!!\n");//写入FLASH错误
 		}
 	}
@@ -495,9 +495,14 @@ void updateInformationDisplay(void){//更新信息界面显示
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	pMain = (char*)(BOOTLOAD_MAIN_ADDRESS);
 	pMonir = (char*)(BOOTLAOD_MINOR_ADDRESS);
-	sprintf(dispBuf, "%s;Bootload Ver: %c.%c", (char*)INFO_MSG_VERSION, *pMain, *pMonir);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)dispBuf);
-	
+	if((*pMain >='0' && *pMain <= '9') && (*pMonir >= '0' && *pMonir <= '9')){
+		sprintf(dispBuf, "%s;Bootload Ver: %c.%c", (char*)INFO_MSG_VERSION, *pMain, *pMonir);
+		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)dispBuf);
+	}
+	else{
+		sprintf(dispBuf, "%s;Bootload Ver: 1.0", (char*)INFO_MSG_VERSION);
+		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)dispBuf);
+	}
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	sprintf(dispBuf, "MANUFACTURE DATE:%4d-%2d-%2d", deviceConfig.mfg_year, deviceConfig.mfg_month, deviceConfig.mfg_day);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)dispBuf);			
@@ -2695,6 +2700,8 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 		else if(LD(R_UPDATE_BOOTLOAD_REQ)){//更新Boot load请求
 			SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, true);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
 			if(updateBootloadReq()){
 				SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, true);
 				SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, true);
@@ -2715,9 +2722,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_UPDATE_BOOTLOAD_REQ);
 		}
 		else if(LD(R_UPDATE_BOOTLOAD_YES)){//执行Bootload更新	
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 			confirmBootloadUpdate();
 		}
 		else if(LD(R_UPDATE_BOOTLOAD_NO)){//错误Bootload更新序列
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+			
 			exitBootloadUpdate();
 			
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);

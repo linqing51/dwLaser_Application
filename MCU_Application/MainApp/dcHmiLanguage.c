@@ -1,7 +1,7 @@
 #include "dcHmiLanguage.h"
 /*****************************************************************************/
-const char WARN_MSG_NO_ERROR[]	        		 		= {""};			
-const char WARN_MSG_INTERLOCK_UNPLUG[]		 	 		= {"Door interlock disconnected"};//安全连锁没插													
+const char WARN_MSG_NO_ERROR[]	        		 	= {""};			
+const char WARN_MSG_INTERLOCK_UNPLUG[]		 	 	= {"Door interlock disconnected"};//安全连锁没插													
 const char WARN_MSG_FOOTSWITCH_UNPLUG[]				= {"Footswitch not connected"};//脚踏没插
 const char WARN_MSG_ESTOP_PRESS[]            	= {"ESTOP Press"};//急停按下
 const char WARN_MSG_FIBER_UNPLUG[] 						= {"No fiber connected"};//光纤没插或者RFID不识别													
@@ -21,7 +21,7 @@ const char INFO_MSG_TYPE[] 						 				= {"TYPE:PVGLS 1470/15"};
 const char INFO_MSG_SN[] 						 					= {"SN:"};
 const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nM"};
 const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15W"};
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.0b1"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.0b2"};
 const char INFO_MSG_MANUFACTURE_DATE[] 			 	= {"MANUFACTURE DATE:"};
 /*****************************************************************************/
 
