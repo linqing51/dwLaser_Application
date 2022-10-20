@@ -32,6 +32,8 @@
 #define GDDC_PAGE_INFORMATION														10//信息页面
 #define GDDC_PAGE_DIAGNOSIS															11//诊断页面
 #define GDDC_PAGE_RENAME																12//SCHEME更名
+#define GDDC_PAGE_RESTORE																13//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														14//脚踏安全警告
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -124,6 +126,9 @@
 #define GDDC_PAGE_OPTION_PROGRESS_LCD_BRG								13//屏幕亮度调节
 #define GDDC_PAGE_OPTION_KEY_RESTORE										14//恢复默认设置
 /*****************************************************************************/
+#define GDDC_PAGE_RESTORE_KEY_CANCEL										1//取消恢复默认值
+#define GDDC_PAGE_RESTORE_KEY_YES												2//确认恢复默认值
+/*****************************************************************************/
 //方案页面
 #define GDDC_PAGE_SCHEME_KEY_RENAME											1//更名按键
 #define GDDC_PAGE_SCHEME_KEY_OK													2//确定
@@ -164,8 +169,6 @@
 #define GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1						37
 #define GDDC_PAGE_SCHEME_KEY_LAST_PAGE									39
 #define GDDC_PAGE_SCHEME_KEY_NEXT_PAGE									40
-#define GDDC_PAGE_SCHEME_TEXT_SHOWPAGE									41
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_MESSAGE						42
 /*****************************************************************************/
 #define GDDC_PAGE_INFO_KEY_ENTER_OK											1
 #define GDDC_PAGE_INFO_TEXTDISPLAY_TPYE									2

@@ -43,8 +43,8 @@
 /*****************************************************************************/				
 #define CONFIG_SPLC_MAX_SPK_FREQ											4500L//喇叭最高频率
 #define CONFIG_SPLC_MIN_SPL_FREQ											500//喇叭最低频率
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ									900//蜂鸣器默认频率
-#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1350//蜂鸣器变声频率
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1100//蜂鸣器默认频率
+#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1400//蜂鸣器变声频率
 /*****************************************************************************/
 #define CONFIG_INPUT_FILTER_TIME											8//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
@@ -72,6 +72,8 @@
 #define CONFIG_EPROM_MR_END														(CONFIG_EPROM_MR_START + MR_END - MR_START)
 #define CONFIG_EPROM_DM_START													(CONFIG_EPROM_MR_END + 1)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_DM_END														(CONFIG_EPROM_DM_START + DM_END - DM_START)
+
+#define CONFIG_EPROM_FD_SCHEME_SIZE										((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//单个方案占用的EPROM空间
 #define CONFIG_EPROM_FD_START													(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END														(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
@@ -213,10 +215,10 @@
 #define POWER_REAL_CH0_95P														3800
 #define POWER_REAL_CH0_100P														4000
 /*****************************************************************************/
-#define POWER_REAL_CH1_5P											150
-#define POWER_REAL_CH1_10P										300
-#define POWER_REAL_CH1_15P										450
-#define POWER_REAL_CH1_20P										800
+#define POWER_REAL_CH1_5P															150
+#define POWER_REAL_CH1_10P														300
+#define POWER_REAL_CH1_15P														450
+#define POWER_REAL_CH1_20P														800
 #define POWER_REAL_CH1_25P										1000
 #define POWER_REAL_CH1_30P										1200
 #define POWER_REAL_CH1_35P										1400
@@ -541,11 +543,11 @@
 #define FD_SCHEME_START_5												(FD_START +  320)//方案5存储区起始
 #define FD_SCHEME_END_5													(FD_START +  383)//方案5存储区结束
 
-#define FD_SCHEME_START_6										(FD_START +  384)//方案6存储区起始
-#define FD_SCHEME_END_6											(FD_START +  447)//方案6存储区结束
+#define FD_SCHEME_START_6												(FD_START +  384)//方案6存储区起始
+#define FD_SCHEME_END_6													(FD_START +  447)//方案6存储区结束
 
-#define FD_SCHEME_START_7										(FD_START +  448)//方案7存储区起始
-#define FD_SCHEME_END_7											(FD_START +  511)//方案7存储区结束
+#define FD_SCHEME_START_7												(FD_START +  448)//方案7存储区起始
+#define FD_SCHEME_END_7													(FD_START +  511)//方案7存储区结束
 
 #define FD_SCHEME_START_8										(FD_START +  512)//方案8存储区起始
 #define FD_SCHEME_END_8											(FD_START +  575)//方案8存储区结束
@@ -753,28 +755,51 @@
 #define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 39)//HMI显示报警信息
 #define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 40)//STANDBY 使能
 /*****************************************************************************/
-#define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 80)
-#define R_STANDBY_KEY_POSWIDTH_DEC_DOWN							(R_START * 16 + 81)
-#define R_STANDBY_KEY_NEGWIDTH_ADD_DOWN							(R_START * 16 + 82)
-#define R_STANDBY_KEY_NEGWIDTH_DEC_DOWN							(R_START * 16 + 83)
-#define R_STANDBY_KEY_TIMES_ADD_DOWN								(R_START * 16 + 84)
-#define R_STANDBY_KEY_TIMES_DEC_DOWN								(R_START * 16 + 85)
-#define R_STANDBY_KEY_STNADBY_DOWN									(R_START * 16 + 90)
-#define R_STANDBY_KEY_STNADBY_UP										(R_START * 16 + 91)
-#define R_STANDBY_KEY_ENTER_OPTION_DOWN							(R_START * 16 + 92)
-#define R_STANDBY_KEY_ENTER_SCHEME_DOWN							(R_START * 16 + 93)
-#define R_STANDBY_KEY_SCHEME_SAVE_DOWN							(R_START * 16 + 94)
+#define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 50)
+#define R_STANDBY_KEY_POSWIDTH_ADD_UP								(R_START * 16 + 51)
+#define R_STANDBY_KEY_POSWIDTH_DEC_DOWN							(R_START * 16 + 52)
+#define R_STANDBY_KEY_POSWIDTH_DEC_UP								(R_START * 16 + 53)
+#define R_STANDBY_KEY_NEGWIDTH_ADD_DOWN							(R_START * 16 + 54)
+#define R_STANDBY_KEY_NEGWIDTH_ADD_UP								(R_START * 16 + 55)
+#define R_STANDBY_KEY_NEGWIDTH_DEC_DOWN							(R_START * 16 + 56)
+#define R_STANDBY_KEY_NEGWIDTH_DEC_UP								(R_START * 16 + 57)
+#define R_STANDBY_KEY_TIMES_ADD_DOWN								(R_START * 16 + 58)
+#define R_STANDBY_KEY_TIMES_DEC_DOWN								(R_START * 16 + 59)
+#define R_STANDBY_KEY_STNADBY_DOWN									(R_START * 16 + 60)
+#define R_STANDBY_KEY_STNADBY_UP										(R_START * 16 + 61)
+#define R_STANDBY_KEY_ENTER_OPTION_DOWN							(R_START * 16 + 62)
+#define R_STANDBY_KEY_ENTER_SCHEME_DOWN							(R_START * 16 + 63)
+#define R_STANDBY_KEY_SCHEME_SAVE_DOWN							(R_START * 16 + 64)
+#define R_STANDBY_KEY_SCHEME_LAST_DOWN							(R_START * 16 + 65)
+#define R_STANDBY_KEY_SCHEME_NEXT_DOWN							(R_START * 16 + 66)
+#define R_STANDBY_KEY_AIM_BRG_ADD_DOWN							(R_START * 16 + 67)
+#define R_STANDBY_KEY_AIM_BRG_DEC_DOWN							(R_START * 16 + 68)
+#define R_STANDBY_KEY_POWER_ADD_DOWN								(R_START * 16 + 69)
+#define R_STANDBY_KEY_POWER_DEC_DOWN								(R_START * 16 + 70)
+#define R_STANDBY_KEY_MODE_CW_DOWN									(R_START * 16 + 71)
+#define R_STANDBY_KEY_MODE_SP_DOWN									(R_START * 16 + 72)
+#define R_STANDBY_KEY_MODE_MP_DOWN									(R_START * 16 + 73)
+#define R_STANDBY_KEY_MODE_GP_DOWN									(R_START * 16 + 74)
 /*****************************************************************************/
-#define R_READY_KEY_READY_DOWN											(R_START * 16 + 95)
-#define R_READY_KEY_READY_UP												(R_START * 16 + 96)
-#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN				(R_START * 16 + 97)
-#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN				(R_START * 16 + 98)
-#define R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN					(R_START * 16 + 99)
-#define R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN					(R_START * 16 + 100)
+#define R_READY_KEY_READY_DOWN											(R_START * 16 + 80)
+#define R_READY_KEY_READY_UP												(R_START * 16 + 81)
+#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN				(R_START * 16 + 82)
+#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_UP					(R_START * 16 + 83)
+#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN				(R_START * 16 + 84)
+#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_UP					(R_START * 16 + 85)
+#define R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN					(R_START * 16 + 86)
+#define R_READY_KEY_ACOUSTIC_TIME_ADD_UP						(R_START * 16 + 87)
+#define R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN					(R_START * 16 + 88)
+#define R_READY_KEY_ACOUSTIC_TIME_DEC_UP						(R_START * 16 + 89)
 /*****************************************************************************/
 #define R_OPTION_KEY_ENTER_INFORMATION_DOWN					(R_START * 16 + 101)
 #define R_OPTION_KEY_ENTER_OK_DOWN									(R_START * 16 + 102)
 #define R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN						(R_START * 16 + 103)
+#define R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN						(R_START * 16 + 104)
+#define R_OPTION_KEY_BEEM_VOLUME_DEC_DOWN						(R_START * 16 + 105)
+#define R_OPTION_KEY_LCD_BRG_ADD_DOWN								(R_START * 16 + 106)
+#define R_OPTION_KEY_LCD_BRG_DEC_DOWN								(R_START * 16 + 107)
+#define R_OPTION_KEY_RESTORE_DOWN										(R_START * 16 + 108)
 /*****************************************************************************/
 #define R_INFORMATION_KEY_OK_DOWN										(R_START * 16 + 110)
 #define R_INFORMATION_KEY_OK_UP											(R_START * 16 + 111)
@@ -792,14 +817,31 @@
 #define R_SCHEME_KEY_SCHEME_SELECT_7_DOWN						(R_START * 16 + 130)
 #define R_SCHEME_KEY_SCHEME_SELECT_8_DOWN						(R_START * 16 + 131)
 #define R_SCHEME_KEY_SCHEME_SELECT_9_DOWN						(R_START * 16 + 132)
-#define R_SCHEME_KEY_SCHEME_SELECT_10_DOWN						(R_START * 16 + 133)
-#define R_SCHEME_KEY_SCHEME_SELECT_11_DOWN						(R_START * 16 + 134)
-#define R_SCHEME_KEY_SCHEME_SELECT_12_DOWN						(R_START * 16 + 135)
-#define R_SCHEME_KEY_SCHEME_SELECT_13_DOWN						(R_START * 16 + 136)
-#define R_SCHEME_KEY_SCHEME_SELECT_14_DOWN						(R_START * 16 + 137)
-#define R_SCHEME_KEY_SCHEME_SELECT_15_DOWN						(R_START * 16 + 138)
-#define R_SCHEME_KEY_NEXT_SCHEME								(R_START * 16 + 139)
-#define R_SCHEME_KEY_LAST_SCHEME								(R_START * 16 + 140)
+#define R_SCHEME_KEY_SCHEME_SELECT_10_DOWN					(R_START * 16 + 133)
+#define R_SCHEME_KEY_SCHEME_SELECT_11_DOWN					(R_START * 16 + 134)
+#define R_SCHEME_KEY_SCHEME_SELECT_12_DOWN					(R_START * 16 + 135)
+#define R_SCHEME_KEY_SCHEME_SELECT_13_DOWN					(R_START * 16 + 136)
+#define R_SCHEME_KEY_SCHEME_SELECT_14_DOWN					(R_START * 16 + 137)
+#define R_SCHEME_KEY_SCHEME_SELECT_15_DOWN					(R_START * 16 + 138)
+#define R_SCHEME_KEY_SCHEME_SELECT_16_DOWN					(R_START * 16 + 139)
+#define R_SCHEME_KEY_SCHEME_SELECT_17_DOWN					(R_START * 16 + 140)
+#define R_SCHEME_KEY_SCHEME_SELECT_18_DOWN					(R_START * 16 + 141)
+#define R_SCHEME_KEY_SCHEME_SELECT_19_DOWN					(R_START * 16 + 142)
+#define R_SCHEME_KEY_SCHEME_SELECT_20_DOWN					(R_START * 16 + 143)
+#define R_SCHEME_KEY_SCHEME_SELECT_21_DOWN					(R_START * 16 + 144)
+#define R_SCHEME_KEY_SCHEME_SELECT_22_DOWN					(R_START * 16 + 145)
+#define R_SCHEME_KEY_SCHEME_SELECT_23_DOWN					(R_START * 16 + 146)
+#define R_SCHEME_KEY_SCHEME_SELECT_24_DOWN					(R_START * 16 + 147)
+#define R_SCHEME_KEY_SCHEME_SELECT_25_DOWN					(R_START * 16 + 148)
+#define R_SCHEME_KEY_SCHEME_SELECT_26_DOWN					(R_START * 16 + 149)
+#define R_SCHEME_KEY_SCHEME_SELECT_27_DOWN					(R_START * 16 + 150)
+#define R_SCHEME_KEY_SCHEME_SELECT_28_DOWN					(R_START * 16 + 151)
+#define R_SCHEME_KEY_SCHEME_SELECT_29_DOWN					(R_START * 16 + 152)
+#define R_SCHEME_KEY_SCHEME_SELECT_30_DOWN					(R_START * 16 + 153)
+#define R_SCHEME_KEY_SCHEME_SELECT_31_DOWN					(R_START * 16 + 154)
+
+#define R_SCHEME_KEY_NEXT_SCHEME										(R_START * 16 + 155)
+#define R_SCHEME_KEY_LAST_SCHEME										(R_START * 16 + 156)
 /*****************************************************************************/
 #define R_DIAGNOSIS_OK_DOWN													(R_START * 16 + 160)
 #define R_DIAGNOSIS_OK_UP														(R_START * 16 + 161)
@@ -817,19 +859,18 @@
 #define T100MS_READY_BEEM_DELAY											2//进入READY状态后蜂鸣器响延迟
 #define T100MS_PULSE_BEEM_DELAY											3//脉冲模式蜂鸣器延迟
 /*****************************************************************************/
-#define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						3
-#define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						4
-#define T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY						5
-#define T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY						6
-#define T10MS_TIMES_ADD_KEYDOWN_DELAY								7
-#define T10MS_TIMES_DEC_KEYDOWN_DELAY								8
-#define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY						9
-#define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY						10
-
-#define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			11
-#define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			12
-#define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				13
-#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				14		
+#define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						0
+#define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						1
+#define T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY						2
+#define T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY						3
+#define T10MS_TIMES_ADD_KEYDOWN_DELAY								4
+#define T10MS_TIMES_DEC_KEYDOWN_DELAY								5
+#define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY						6
+#define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY						7
+#define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			8
+#define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			9
+#define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				10
+#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				11		
 /*****************************************************************************/
 #endif
 

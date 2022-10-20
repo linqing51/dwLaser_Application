@@ -152,9 +152,8 @@ extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-extern int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
-extern uint8_t LKSRAM[CONFIG_LKSRAM_SIZE];//通信发送缓冲区
-extern uint8_t LKRRAM[CONFIG_LKRRAM_SIZE];//通信接收缓冲区
+extern int16_t FDRAM0[CONFIG_FDRAM_SIZE];//存档寄存器
+extern int16_t FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
 extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒
@@ -242,11 +241,14 @@ extern uint8_t sPlcEpromTest(void);
 extern uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
 void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
 void listEpromTable(void);
+
 extern uint32_t getOriginBootloadCrc(void);//计算MCU Bootload CRC32
 extern uint32_t getOriginAppCrc(void);//计算MCU App CRC32
 extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
 extern void confirmBootloadUpdate(void);//执行Bootload更新
 extern void exitBootloadUpdate(void);//退出Bootload更新
+void softDelayMs(uint16_t ms);//软件延时
+
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

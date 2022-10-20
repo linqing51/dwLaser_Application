@@ -77,6 +77,7 @@ void loadDefault(void){//恢复默认值
 		saveScheme();
 	}
 	NVRAM0[DM_SCHEME_NUM] = 0;
+	NVRAM0[EM_LASER_SCHEME_NAME] = NVRAM0[DM_SCHEME_NUM];
 	FDSAV();
 	NVFSAVE();
 }
@@ -84,13 +85,12 @@ void lockPreScheme(void){//恢复预设方案
 	uint8_t i;
 	uint16_t oldNum;
 	oldNum = NVRAM0[DM_SCHEME_NUM];
-	for(i = 0;i <= 19;i ++){
+	for(i = 0;i <= 25;i ++){
 		NVRAM0[DM_SCHEME_NUM] = i;
 		defaultScheme();
 		saveScheme();
 	}
 	NVRAM0[DM_SCHEME_NUM] = oldNum;
-	FDSAV();
 }
 uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 	uint16_t temp;
@@ -132,7 +132,7 @@ void defaultScheme(void){//当前选择方案恢复默认值
 		case 1:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S1);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
-			NVRAM0[EM_LASER_POWER_CH0] = 60;//8.0W
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 60;//EVLA_SIGNAL能量间隔
 			break;
 		}
@@ -146,52 +146,46 @@ void defaultScheme(void){//当前选择方案恢复默认值
 		case 3:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S3);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
-			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 4:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S4);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
-			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 5:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S5);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
-			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			NVRAM0[EM_LASER_SIGNAL_ENERGY_INTERVAL] = 100;//EVLA_SIGNAL能量间隔 100J
 			break;
 		}
 		case 6:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S6);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
-			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 120;//12.0W
 			break;
 		}
 		case 7:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S7);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
-			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 120;//12.0W
 			break;
 		}
 		case 8:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S8);
-			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
-			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			break;
 		}
 		case 9:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S9);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
-			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
 			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
 			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
 			break;
@@ -200,54 +194,118 @@ void defaultScheme(void){//当前选择方案恢复默认值
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S10);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
-			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
-			NVRAM0[EM_LASER_MP_NEGWIDTH]= 5000;//多脉冲负脉宽 5S
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
 			break;
 		}
 		case 11:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S11);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
+			break;
+		}
+		case 12:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S12);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 500;//多脉冲正脉宽 500mS
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 500;//多脉冲负脉宽 500mS
+			break;
+		}
+		case 13:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S13);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 1000;//多脉冲负脉宽 1S
+			break;
+		}
+		case 14:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S14);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 1000;//多脉冲负脉宽 1S
+			break;
+		}
+		case 15:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S15);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 50;//5.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 1000;//多脉冲负脉宽 1S
+			break;
+		}
+		case 16:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S16);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 50;//5.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 1000;//多脉冲负脉宽 1S
+			break;
+		}
+		case 17:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S17);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 15000;//多脉冲正脉宽 15S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 1000;//多脉冲负脉宽 1S
+			break;
+		}
+		case 18:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S18);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
+			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
+			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
+			NVRAM0[EM_LASER_MP_NEGWIDTH]= 5000;//多脉冲负脉宽 5S
+			break;			
+		}
+		case 19:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S19);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_MP;
 			NVRAM0[EM_LASER_POWER_CH0] = 70;//7.0W
 			NVRAM0[EM_LASER_MP_POSWIDTH]= 1000;//多脉冲正脉宽 1S
 			NVRAM0[EM_LASER_MP_NEGWIDTH]= 5000;//多脉冲负脉宽 5S
 			break;
 		}
-		case 12:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S12);
+		case 20:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S20);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 30;//3.0W
 			break;
 		}
-		case 13:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S13);
+		case 21:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S21);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 60;//6.0W
 			break;
 		}
-		case 14:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S14);
+		case 22:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S22);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			break;
 		}
-		case 15:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S15);
+		case 23:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S23);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 120;//12.0W
 			break;
 		}
-		case 16:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S16);
+		case 24:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S24);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 100;//10.0W
 			break;
 		}
-		case 17:{
-			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S17);
+		case 25:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S25);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			break;
-		}	
+		}
 		default:break;
 	}
 //	printf("%s,%d,%s:scheme num:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
@@ -280,7 +338,7 @@ void loadScheme(void){//FD->EM
 		NVRAM0[DM_SCHEME_NUM] = 0;
 	}
 	printf("%s,%d,%s:loadScheme:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_NUM]);
-	psrc = (uint8_t*)&FDRAM[FD_SCHEME_START_0 + (NVRAM0[DM_SCHEME_NUM] * 64)];
+	psrc = (uint8_t*)&FDRAM0[FD_SCHEME_START_0 + (NVRAM0[DM_SCHEME_NUM] * 64)];
 	pdist = (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME];
 	memcpy(pdist, psrc, ((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2));
 	switch(NVRAM0[EM_LASER_PULSE_MODE]){
@@ -334,9 +392,9 @@ void saveScheme(void){//EM->FD
 		NVRAM0[DM_SCHEME_NUM] = (CONFIG_HMI_SCHEME_NUM - 1);
 	if(NVRAM0[DM_SCHEME_NUM] < 0)
 		NVRAM0[DM_SCHEME_NUM] = 0;
-	pdist = (uint8_t*)&FDRAM[NVRAM0[DM_SCHEME_NUM] * 64];
+	pdist = (uint8_t*)&FDRAM0[NVRAM0[DM_SCHEME_NUM] * (FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1)];
 	psrc = (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME];
-	memcpy(pdist, psrc, 128);
+	memcpy(pdist, psrc, ((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2));
 }
 int8_t checkScheme(int8_t cn){
 	uint16_t strSize;
@@ -348,12 +406,12 @@ int8_t checkScheme(int8_t cn){
 	if(cn > CONFIG_HMI_SCHEME_NUM){
 		cn = CONFIG_HMI_SCHEME_NUM;
 	}
-	pstr = (char*)&FDRAM[cn * 30 + FD_LASER_SCHEME_NAME];//方案名称
+	pstr = (char*)&FDRAM0[cn * 30 + FD_LASER_SCHEME_NAME];//方案名称
 	strSize = strlen(pstr);
 	if(strSize > 30){//名称长度错误
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_SELECT];//通道选择
+	temp = FDRAM0[cn * 30 + FD_LASER_SELECT];//通道选择
 	if((temp != LASER_SELECT_CH0) || 
 	   (temp != LASER_SELECT_CH1) ||
 	   (temp != LASER_SELECT_CH2) ||
@@ -361,62 +419,62 @@ int8_t checkScheme(int8_t cn){
        (temp != LASER_SELECT_ALL)){
 		return false;
 	}		
-	temp = FDRAM[cn * 30 + FD_LASER_PULSE_MODE];//脉冲模式
+	temp = FDRAM0[cn * 30 + FD_LASER_PULSE_MODE];//脉冲模式
 	if((temp != LASER_MODE_CW) || (temp != LASER_MODE_SP) || (temp != LASER_MODE_MP) || (temp != LASER_MODE_GP) ||
  	   (temp != LASER_MODE_SIGNAL) || (temp != LASER_MODE_DERMA)){
 		return false;
 	}
 	
-	temp = FDRAM[cn * 30 + FD_LASER_POWER_CH0];//通道0功率
+	temp = FDRAM0[cn * 30 + FD_LASER_POWER_CH0];//通道0功率
 	if(temp < CONFIG_MIN_LASERPOWER_CH0 || temp > CONFIG_MAX_LASERPOWER_CH0){
 		return false;
 	}
 	
-	temp = FDRAM[cn + 30 + FD_LASER_POWER_CH1];//通道1功率
+	temp = FDRAM0[cn + 30 + FD_LASER_POWER_CH1];//通道1功率
 	if(temp < CONFIG_MIN_LASERPOWER_CH1 || temp > CONFIG_MAX_LASERPOWER_CH1){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_SP_POSWIDTH];//单脉冲正脉宽
+	temp = FDRAM0[cn * 30 + FD_LASER_SP_POSWIDTH];//单脉冲正脉宽
 	if(temp < CONFIG_MIN_LASER_POSWIDTH || temp > CONFIG_MAX_LASER_POSWIDTH){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_MP_POSWIDTH];//多脉冲正脉宽
+	temp = FDRAM0[cn * 30 + FD_LASER_MP_POSWIDTH];//多脉冲正脉宽
 	if(temp < CONFIG_MIN_LASER_POSWIDTH || temp > CONFIG_MAX_LASER_POSWIDTH){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_MP_NEGWIDTH];////多脉冲负脉宽
+	temp = FDRAM0[cn * 30 + FD_LASER_MP_NEGWIDTH];////多脉冲负脉宽
 	if(temp < CONFIG_MIN_LASER_NEGWIDTH || temp > CONFIG_MAX_LASER_NEGWIDTH){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_GP_POSWIDTH];//Group脉冲正脉宽
+	temp = FDRAM0[cn * 30 + FD_LASER_GP_POSWIDTH];//Group脉冲正脉宽
 	if(temp < CONFIG_MIN_LASER_POSWIDTH || temp > CONFIG_MAX_LASER_POSWIDTH){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_GP_NEGWIDTH];//Group脉冲负脉宽
+	temp = FDRAM0[cn * 30 + FD_LASER_GP_NEGWIDTH];//Group脉冲负脉宽
 	if(temp < CONFIG_MIN_LASER_POSWIDTH || temp > CONFIG_MAX_LASER_POSWIDTH){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_GP_TIMES];//Group脉冲数
+	temp = FDRAM0[cn * 30 + FD_LASER_GP_TIMES];//Group脉冲数
 	if(temp < CONFIG_MIN_LASER_TIMES || temp > CONFIG_MAX_LASER_TIMES){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_GP_GROUP_OFF];//Group脉冲间隔
+	temp = FDRAM0[cn * 30 + FD_LASER_GP_GROUP_OFF];//Group脉冲间隔
 	if(temp < CONFIG_MIN_LASER_GROUP_OFF || temp > CONFIG_MAX_LASER_GROUP_OFF){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_SIGNAL_ENERGY_INTERVAL];////SIGNAL能量间隔
+	temp = FDRAM0[cn * 30 + FD_LASER_SIGNAL_ENERGY_INTERVAL];////SIGNAL能量间隔
 	if(temp < CONFIG_MIN_LASER_ENERGY_INTERVAL || temp > CONFIG_MAX_LASER_ENERGY_INTERVAL){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_DERMA_POSWIDTH];//DERMA正脉宽
+	temp = FDRAM0[cn * 30 + FD_LASER_DERMA_POSWIDTH];//DERMA正脉宽
 	if(temp < CONFIG_MIN_LASER_POSWIDTH || temp > CONFIG_MAX_LASER_POSWIDTH){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_DERMA_NEGWIDTH];//DERMA负脉宽
+	temp = FDRAM0[cn * 30 + FD_LASER_DERMA_NEGWIDTH];//DERMA负脉宽
 	if(temp < CONFIG_MIN_LASER_NEGWIDTH || temp > CONFIG_MAX_LASER_NEGWIDTH){
 		return false;
 	}
-	temp = FDRAM[cn * 30 + FD_LASER_DERMA_SPOT_SIZE];//DERMA光斑直径
+	temp = FDRAM0[cn * 30 + FD_LASER_DERMA_SPOT_SIZE];//DERMA光斑直径
 	if((temp != DERMA_SPOT_SIZE_0MM5) ||
 	   (temp != DERMA_SPOT_SIZE_1MM0) ||
 	   (temp != DERMA_SPOT_SIZE_2MM0) ||

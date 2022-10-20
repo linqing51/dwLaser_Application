@@ -24,7 +24,7 @@ void hmiUartSendChar(uint8_t sdat){
 	HAL_StatusTypeDef ret;
 	ret = HAL_UART_Transmit(&huart4, &sdat, 1, 1000);//发送一个字节
 	if(ret != HAL_OK){
-		__nop();
+		printf("%s,%d,%s:hmi uart tx timeout!!!!\n",__FILE__, __LINE__, __func__);
 	}
 }
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
