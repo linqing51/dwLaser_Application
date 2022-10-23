@@ -135,8 +135,12 @@
 #define CONFIG_ENVI_LOW_TEMP													-200//处理器低温极限 -20.0C
 /*****************************************************************************/
 #define CONFIG_HMI_SCHEME_NUM													32//方案数
-#define CONFIG_HMI_DEFAULT_PASSWORD0									0x3532//默认密码
-#define CONFIG_HMI_DEFAULT_PASSWORD1									0x3038//默认密码
+#define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码
+#define CONFIG_HMI_ADMIN_PASSWORD1										0x3038//管理员密码
+#define CONFIG_HMI_ADMIN_PASSWORD2										0x3030//管理员密码
+#define CONFIG_HMI_ADMIN_PASSWORD3										0x3030//管理员密码
+#define CONFIG_HMI_DEFAULT_PASSWORD0									0x3030//默认密码
+#define CONFIG_HMI_DEFAULT_PASSWORD1									0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD2									0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
 #define CONFIG_SCHEME_NAME_SIZE												((FD_LASER_SELECT - FD_LASER_SCHEME_NAME -1) * 2)//10*2
@@ -219,43 +223,43 @@
 #define POWER_REAL_CH1_10P														300
 #define POWER_REAL_CH1_15P														450
 #define POWER_REAL_CH1_20P														800
-#define POWER_REAL_CH1_25P										1000
-#define POWER_REAL_CH1_30P										1200
-#define POWER_REAL_CH1_35P										1400
-#define POWER_REAL_CH1_40P										1600
-#define POWER_REAL_CH1_45P										1800
-#define POWER_REAL_CH1_50P										2000
-#define POWER_REAL_CH1_55P										2200
-#define POWER_REAL_CH1_60P										2400
-#define POWER_REAL_CH1_65P										2600
-#define POWER_REAL_CH1_70P										2800
-#define POWER_REAL_CH1_75P										3000
-#define POWER_REAL_CH1_80P										3200
-#define POWER_REAL_CH1_85P										3400
-#define POWER_REAL_CH1_90P										3600
-#define POWER_REAL_CH1_95P										3800
-#define POWER_REAL_CH1_100P										4000
+#define POWER_REAL_CH1_25P														1000
+#define POWER_REAL_CH1_30P														1200
+#define POWER_REAL_CH1_35P														1400
+#define POWER_REAL_CH1_40P														1600
+#define POWER_REAL_CH1_45P														1800
+#define POWER_REAL_CH1_50P														2000
+#define POWER_REAL_CH1_55P														2200
+#define POWER_REAL_CH1_60P														2400
+#define POWER_REAL_CH1_65P														2600
+#define POWER_REAL_CH1_70P														2800
+#define POWER_REAL_CH1_75P														3000
+#define POWER_REAL_CH1_80P														3200
+#define POWER_REAL_CH1_85P														3400
+#define POWER_REAL_CH1_90P														3600
+#define POWER_REAL_CH1_95P														3800
+#define POWER_REAL_CH1_100P														4000
 /*****************************************************************************/
-#define POWER_REAL_CH2_5P										150
-#define POWER_REAL_CH2_10P										300
-#define POWER_REAL_CH2_15P										450
-#define POWER_REAL_CH2_20P										800
-#define POWER_REAL_CH2_25P										1000
-#define POWER_REAL_CH2_30P										1200
-#define POWER_REAL_CH2_35P										1400
-#define POWER_REAL_CH2_40P										1600
-#define POWER_REAL_CH2_45P										1800
-#define POWER_REAL_CH2_50P										2000
-#define POWER_REAL_CH2_55P										2200
-#define POWER_REAL_CH2_60P										2400
-#define POWER_REAL_CH2_65P										2600
-#define POWER_REAL_CH2_70P										2800
-#define POWER_REAL_CH2_75P										3000
-#define POWER_REAL_CH2_80P										3200
-#define POWER_REAL_CH2_85P										3400
-#define POWER_REAL_CH2_90P										3600
-#define POWER_REAL_CH2_95P										3800
-#define POWER_REAL_CH2_100P										4000
+#define POWER_REAL_CH2_5P															150
+#define POWER_REAL_CH2_10P														300
+#define POWER_REAL_CH2_15P														450
+#define POWER_REAL_CH2_20P														800
+#define POWER_REAL_CH2_25P														1000
+#define POWER_REAL_CH2_30P														1200
+#define POWER_REAL_CH2_35P														1400
+#define POWER_REAL_CH2_40P														1600
+#define POWER_REAL_CH2_45P														1800
+#define POWER_REAL_CH2_50P														2000
+#define POWER_REAL_CH2_55P														2200
+#define POWER_REAL_CH2_60P														2400
+#define POWER_REAL_CH2_65P														2600
+#define POWER_REAL_CH2_70P														2800
+#define POWER_REAL_CH2_75P														3000
+#define POWER_REAL_CH2_80P														3200
+#define POWER_REAL_CH2_85P														3400
+#define POWER_REAL_CH2_90P														3600
+#define POWER_REAL_CH2_95P														3800
+#define POWER_REAL_CH2_100P														4000
 /*****************************************************************************/
 #define POWER_REAL_CH3_5P										150
 #define POWER_REAL_CH3_10P										300
@@ -279,85 +283,85 @@
 #define POWER_REAL_CH3_100P										4000
 /*****************************************************************************/
 //线圈 保持 16 * 32 = 512 
-#define MR_START												0
-#define MR_END   												31
+#define MR_START															0
+#define MR_END   															31
 //数据寄存器 保持 512
-#define DM_START												32
-#define DM_END													543
+#define DM_START															32
+#define DM_END																543
 //线圈寄存器 非保持 16 * 32 = 512
-#define R_START													544
-#define R_END													575						
+#define R_START																544
+#define R_END																	575						
 //数据寄存器 非保持 512
-#define EM_START												576
-#define EM_END													1087
+#define EM_START															576
+#define EM_END																1087
 //延时线圈
 //1MS  16 * 4 = 64
-#define T_1MS_START												1088
-#define T_1MS_END												1091
+#define T_1MS_START														1088
+#define T_1MS_END															1091
 //10MS 16 * 4 = 64
-#define T_10MS_START											1092
-#define T_10MS_END												1095
+#define T_10MS_START													1092
+#define T_10MS_END														1095
 //100MS 16 * 4 = 64
-#define T_100MS_START											1096
-#define T_100MS_END												1099
+#define T_100MS_START													1096
+#define T_100MS_END														1099
 //延时器使能
 //1MS  16 * 4 = 64
-#define T_1MS_ENA_START											1100
-#define T_1MS_ENA_END											1103
+#define T_1MS_ENA_START												1100
+#define T_1MS_ENA_END													1103
 //10MS 16 * 4 = 64
-#define T_10MS_ENA_START										1104
-#define T_10MS_ENA_END											1107
+#define T_10MS_ENA_START											1104
+#define T_10MS_ENA_END												1107
 //100MS 16 * 4 = 64
-#define T_100MS_ENA_START										1108
-#define T_100MS_ENA_END											1111
+#define T_100MS_ENA_START											1108
+#define T_100MS_ENA_END												1111
 //延时计时器
 //1MS   64
-#define TD_1MS_START											1112
-#define TD_1MS_END												1175
+#define TD_1MS_START													1112
+#define TD_1MS_END														1175
 //10MS  64
-#define TD_10MS_START											1176											
-#define TD_10MS_END												1239
+#define TD_10MS_START													1176											
+#define TD_10MS_END														1239
 //100MS 64
-#define TD_100MS_START											1240
-#define TD_100MS_END											1303
+#define TD_100MS_START												1240
+#define TD_100MS_END													1303
 //输入位寄存器 16 * 8 = 128
-#define X_START													1304
-#define X_END													1311
+#define X_START																1304
+#define X_END																	1311
 //输出位寄存器 16 * 8 = 128
-#define Y_START													1312
-#define Y_END													1319
+#define Y_START																1312
+#define Y_END																	1319
 //特殊寄存器 64
-#define SPREG_START												1320
-#define SPREG_END												1383
+#define SPREG_START														1320
+#define SPREG_END															1383
 //特殊线圈 16 * 16 = 256
-#define SPCOIL_START											1384
-#define SPCOIL_END												1399
+#define SPCOIL_START													1384
+#define SPCOIL_END														1399
 //临时寄存器 64
-#define TMP_START												1400
-#define TMP_END													1463
+#define TMP_START															1400
+#define TMP_END																1463
 /*****************************************************************************/
 #define CONFIG_NVRAM_SIZE 										(TMP_END + 1)
 /*****************************************************************************/
 //存档寄存器
-#define FD_START												0
-#define FD_END													2047
+#define FD_START															0
+#define FD_END																2047
 /*****************************************************************************/
-#define CONFIG_MRRAM_SIZE										(MR_END - MR_START + 1)									
-#define CONFIG_DMRAM_SIZE										(DM_END - DM_START + 1)
-#define CONFIG_FDRAM_SIZE										(FD_END - FD_START + 1)
+#define CONFIG_MRRAM_SIZE											(MR_END - MR_START + 1)									
+#define CONFIG_DMRAM_SIZE											(DM_END - DM_START + 1)
+#define CONFIG_FDRAM_SIZE											(FD_END - FD_START + 1)
 /*****************************************************************************/
 #define CONFIG_LKSRAM_SIZE										128//
 #define CONFIG_LKRRAM_SIZE										128//
 /*****************************************************************************/
-#define SPCOIL_ON												(SPCOIL_START * 16 + 0)//长通线圈
-#define SPCOIL_START_UP											(SPCOIL_START * 16 + 1)//初次上电
-#define SPCOIL_PS10MS											(SPCOIL_START * 16 + 2)//10mS
-#define SPCOIL_PS50MS											(SPCOIL_START * 16 + 3)//50mS
-#define SPCOIL_PS100MS											(SPCOIL_START * 16 + 4)//100mS
-#define SPCOIL_PS200MS											(SPCOIL_START * 16 + 5)//200mS
-#define SPCOIL_PS500MS											(SPCOIL_START * 16 + 6)//500mS
-#define SPCOIL_PS1000MS											(SPCOIL_START * 16 + 7)//1000mS
-#define SPCOIL_PS1MINS											(SPCOIL_START * 16 + 8)//1mins
+#define SPCOIL_ON															(SPCOIL_START * 16 + 0)//长通线圈
+#define SPCOIL_START_UP												(SPCOIL_START * 16 + 1)//初次上电
+#define SPCOIL_PS10MS													(SPCOIL_START * 16 + 2)//10mS
+#define SPCOIL_PS50MS													(SPCOIL_START * 16 + 3)//50mS
+#define SPCOIL_PS100MS												(SPCOIL_START * 16 + 4)//100mS
+#define SPCOIL_PS200MS												(SPCOIL_START * 16 + 5)//200mS
+#define SPCOIL_PS500MS												(SPCOIL_START * 16 + 6)//500mS
+#define SPCOIL_PS1000MS												(SPCOIL_START * 16 + 7)//1000mS
+#define SPCOIL_PS1MINS												(SPCOIL_START * 16 + 8)//1mins
 /*****************************************************************************/
 #define SPCOIL_LINK_SEND_BUSY									(SPCOIL_START * 16 + 16)//发送进行中
 #define SPCOIL_LINK_SEND_DONE									(SPCOIL_START * 16 + 17)//发送完成
@@ -378,78 +382,78 @@
 #define SPCOIL_SPWM_OUT_3											(SPCOIL_START * 16 + 54)//SPWM3输出状态
 #define SPCOIL_SPWM_RESET_3										(SPCOIL_START * 16 + 55)//SPWM3复位
 /*****************************************************************************/
-#define SPCOIL_DK25L_INIT_FAIL									(SPCOIL_START * 16 + 64)//NFC模块初始化失败
-#define SPCOIL_LASER_DRIVER_INIT_FAIL							(SPCOIL_START * 16 + 65)//激光驱动器初始化失败
-#define SPCOIL_WIRELESS_FOOTCONTROL_INIT_FAIL					(SPCOIL_START * 16 + 66)//无线脚踏初始化失败
-#define SPCOIL_PROBATION_INIT_FAIL								(SPCOIL_START * 16 + 67)//试用期初始化失败
+#define SPCOIL_DK25L_INIT_FAIL								(SPCOIL_START * 16 + 64)//NFC模块初始化失败
+#define SPCOIL_LASER_DRIVER_INIT_FAIL					(SPCOIL_START * 16 + 65)//激光驱动器初始化失败
+#define SPCOIL_WIRELESS_FOOTCONTROL_INIT_FAIL	(SPCOIL_START * 16 + 66)//无线脚踏初始化失败
+#define SPCOIL_PROBATION_INIT_FAIL						(SPCOIL_START * 16 + 67)//试用期初始化失败
 /*****************************************************************************/
-#define SPCOIL_DK25L_RXCMD_DONE									(SPCOIL_START * 16 + 80)//接收指令完成
-#define SPCOIL_DK25L_RXCMD_DOING								(SPCOIL_START * 16 + 81)//接收指令进行中
-#define SPCOIL_DK25L_RXCMD_OVERFLOW								(SPCOIL_START * 16 + 82)//接收指令溢出
-#define SPCOIL_DK25L_RXCMD_ERROR								(SPCOIL_START * 16 + 83)//接收指错误
-#define SPCOIL_DK25L_TXCMD_DONE									(SPCOIL_START * 16 + 84)//写指令完成
-#define SPCOIL_DK25L_TXCMD_DOING								(SPCOIL_START * 16 + 85)//写指令进行中
-#define SPCOIL_DK25L_TXCMD_OVERFLOW								(SPCOIL_START * 16 + 86)//写指令溢出
-#define SPCOIL_DK25L_TXCMD_ERROR								(SPCOIL_START * 16 + 87)//写指令错误
+#define SPCOIL_DK25L_RXCMD_DONE								(SPCOIL_START * 16 + 80)//接收指令完成
+#define SPCOIL_DK25L_RXCMD_DOING							(SPCOIL_START * 16 + 81)//接收指令进行中
+#define SPCOIL_DK25L_RXCMD_OVERFLOW						(SPCOIL_START * 16 + 82)//接收指令溢出
+#define SPCOIL_DK25L_RXCMD_ERROR							(SPCOIL_START * 16 + 83)//接收指错误
+#define SPCOIL_DK25L_TXCMD_DONE								(SPCOIL_START * 16 + 84)//写指令完成
+#define SPCOIL_DK25L_TXCMD_DOING							(SPCOIL_START * 16 + 85)//写指令进行中
+#define SPCOIL_DK25L_TXCMD_OVERFLOW						(SPCOIL_START * 16 + 86)//写指令溢出
+#define SPCOIL_DK25L_TXCMD_ERROR							(SPCOIL_START * 16 + 87)//写指令错误
 /*****************************************************************************/
 #define SPREG_LINK_DEVICE_ID									(SPREG_START + 0)//自身设备ID
 #define SPREG_LINK_SEND_SIZE									(SPREG_START + 1)//发送字节数
 #define SPREG_LINK_RECE_SIZE									(SPREG_START + 2)//接收字节数
-#define SPREG_LINK_SEND_OVERTIME								(SPREG_START + 3)//发送超时设置
-#define SPREG_LINK_RECE_OVERTIME								(SPREG_START + 4)//接收超时设置
-#define SPREG_LINK_SEND_TCOUNTER								(SPREG_START + 5)//发送时间计时器
-#define SPREG_LINK_RECE_TCOUNTER								(SPREG_START + 6)//接收时间计时器
-#define SPREG_LINK_STATE										(SPREG_START + 7)//状态
+#define SPREG_LINK_SEND_OVERTIME							(SPREG_START + 3)//发送超时设置
+#define SPREG_LINK_RECE_OVERTIME							(SPREG_START + 4)//接收超时设置
+#define SPREG_LINK_SEND_TCOUNTER							(SPREG_START + 5)//发送时间计时器
+#define SPREG_LINK_RECE_TCOUNTER							(SPREG_START + 6)//接收时间计时器
+#define SPREG_LINK_STATE											(SPREG_START + 7)//状态
 /*****************************************************************************/
-#define SPREG_ADC_0												(SPREG_START + 11)//ADC1-IN5采集值 LASER_NTC
-#define SPREG_ADC_1												(SPREG_START + 12)//ADC1-IN6采集值 LASER_PD
-#define SPREG_ADC_2												(SPREG_START + 13)//ADC1-IN7采集值 LASER_FBPD
-#define SPREG_ADC_3												(SPREG_START + 14)//ADC1 CHIP TEMP片内温度传感器
-#define SPREG_ADC_4												(SPREG_START + 15)//ADC1 CHIP VREFINT片内基准源
-#define SPREG_ADC_5												(SPREG_START + 16)//ADC1 VBAT 掉电存储电池 
-#define SPREG_DAC_0												(SPREG_START + 20)//DAC0设定值 激光通道0
-#define SPREG_DAC_1												(SPREG_START + 21)//DAC1设定值 激光通道1
-#define SPREG_DAC_2												(SPREG_START + 22)//DAC2设定值 激光通道2
-#define SPREG_DAC_3												(SPREG_START + 23)//DAC3设定值 激光通道3
+#define SPREG_ADC_0														(SPREG_START + 11)//ADC1-IN5采集值 LASER_NTC
+#define SPREG_ADC_1														(SPREG_START + 12)//ADC1-IN6采集值 LASER_PD
+#define SPREG_ADC_2														(SPREG_START + 13)//ADC1-IN7采集值 LASER_FBPD
+#define SPREG_ADC_3														(SPREG_START + 14)//ADC1 CHIP TEMP片内温度传感器
+#define SPREG_ADC_4														(SPREG_START + 15)//ADC1 CHIP VREFINT片内基准源
+#define SPREG_ADC_5														(SPREG_START + 16)//ADC1 VBAT 掉电存储电池 
+#define SPREG_DAC_0														(SPREG_START + 20)//DAC0设定值 激光通道0
+#define SPREG_DAC_1														(SPREG_START + 21)//DAC1设定值 激光通道1
+#define SPREG_DAC_2														(SPREG_START + 22)//DAC2设定值 激光通道2
+#define SPREG_DAC_3														(SPREG_START + 23)//DAC3设定值 激光通道3
 /*****************************************************************************/
-#define SPREG_SPWM_POS_0										(SPREG_START + 30)//软件PWM0正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_0									(SPREG_START + 31)//软件PWM0正脉宽阴影
+#define SPREG_SPWM_POS_0											(SPREG_START + 30)//软件PWM0正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_0								(SPREG_START + 31)//软件PWM0正脉宽阴影
 #define SPREG_SPWM_CYCLE_0										(SPREG_START + 32)//软件PWM0周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_0								(SPREG_START + 33)//软件PWM0周期阴影
+#define SPREG_SPWM_CYCLE_SHADOW_0							(SPREG_START + 33)//软件PWM0周期阴影
 #define SPREG_SPWM_COUNTER_0									(SPREG_START + 34)//软件PWM0计数器
-#define SPREG_SPWM_POS_1										(SPREG_START + 35)//软件PWM1正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_1									(SPREG_START + 36)//软件PWM1正脉宽阴影
+#define SPREG_SPWM_POS_1											(SPREG_START + 35)//软件PWM1正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_1								(SPREG_START + 36)//软件PWM1正脉宽阴影
 #define SPREG_SPWM_CYCLE_1										(SPREG_START + 37)//软件PWM1周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_1								(SPREG_START + 38)//软件PWM1周期阴影
+#define SPREG_SPWM_CYCLE_SHADOW_1							(SPREG_START + 38)//软件PWM1周期阴影
 #define SPREG_SPWM_COUNTER_1									(SPREG_START + 39)//软件PWM1计数器
-#define SPREG_SPWM_POS_2										(SPREG_START + 40)//软件PWM2正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_2									(SPREG_START + 41)//软件PWM2正脉宽阴影
+#define SPREG_SPWM_POS_2											(SPREG_START + 40)//软件PWM2正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_2								(SPREG_START + 41)//软件PWM2正脉宽阴影
 #define SPREG_SPWM_CYCLE_2										(SPREG_START + 42)//软件PWM2周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_2								(SPREG_START + 43)//软件PWM2周期阴影
+#define SPREG_SPWM_CYCLE_SHADOW_2							(SPREG_START + 43)//软件PWM2周期阴影
 #define SPREG_SPWM_COUNTER_2									(SPREG_START + 44)//软件PWM2计数器
-#define SPREG_SPWM_POS_3										(SPREG_START + 45)//软件PWM3正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_3									(SPREG_START + 46)//软件PWM3正脉宽阴影
+#define SPREG_SPWM_POS_3											(SPREG_START + 45)//软件PWM3正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_3								(SPREG_START + 46)//软件PWM3正脉宽阴影
 #define SPREG_SPWM_CYCLE_3										(SPREG_START + 47)//软件PWM3周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_3								(SPREG_START + 48)//软件PWM3周期阴影
+#define SPREG_SPWM_CYCLE_SHADOW_3							(SPREG_START + 48)//软件PWM3周期阴影
 #define SPREG_SPWM_COUNTER_3									(SPREG_START + 49)//软件PWM3计数器
 /*****************************************************************************/
-#define SPREG_BEEM_VOLUME										(SPREG_START + 55)//蜂鸣器音量 0-100% 1320+55=1375
-#define SPREG_BEEM_FREQ											(SPREG_START + 56)//蜂鸣器频率        1320+56=1376
-#define SPREG_BEEM_MODE											(SPREG_START + 57)//蜂鸣器模式        1320+57=1377
+#define SPREG_BEEM_VOLUME											(SPREG_START + 55)//蜂鸣器音量 0-100% 1320+55=1375
+#define SPREG_BEEM_FREQ												(SPREG_START + 56)//蜂鸣器频率        1320+56=1376
+#define SPREG_BEEM_MODE												(SPREG_START + 57)//蜂鸣器模式        1320+57=1377
 #define SPREG_BEEM_COUNTER										(SPREG_START + 58)//蜂鸣器计时器      1320+58=1378
 /*****************************************************************************/
-#define SPREG_DK25L_VER											(SPREG_START + 59)//DK25L NFC模块版本
+#define SPREG_DK25L_VER												(SPREG_START + 59)//DK25L NFC模块版本
 /*****************************************************************************/
-#define SPREG_CLEAR_NVRAM										(SPREG_END - 4)//清除NVRAM后重新启动
-#define SPREG_TICK_L												(SPREG_END - 3)//累计运行时间 秒低位
-#define SPREG_TICK_H												(SPREG_END - 2)//累计运行时间 秒高位
-#define SPREG_SCAN_TIME											(SPREG_END - 1)//扫描时间
-#define SPREG_IDENTITY											(SPREG_END - 0)//平台ID号
+#define SPREG_CLEAR_NVRAM											(SPREG_END - 4)//清除NVRAM后重新启动
+#define SPREG_TICK_L													(SPREG_END - 3)//累计运行时间 秒低位
+#define SPREG_TICK_H													(SPREG_END - 2)//累计运行时间 秒高位
+#define SPREG_SCAN_TIME												(SPREG_END - 1)//扫描时间
+#define SPREG_IDENTITY												(SPREG_END - 0)//平台ID号
 /*****************************************************************************/
-#define EM_LASER_SCHEME_NAME										(EM_START + 0)//方案名称
-#define EM_LASER_SELECT													(EM_START + 46)//通道选择
-#define EM_LASER_PULSE_MODE											(EM_START + 47)//脉冲模式
-#define EM_LASER_POWER_CH0											(EM_START + 48)//通道0功率
+#define EM_LASER_SCHEME_NAME									(EM_START + 0)//方案名称
+#define EM_LASER_SELECT												(EM_START + 46)//通道选择
+#define EM_LASER_PULSE_MODE										(EM_START + 47)//脉冲模式
+#define EM_LASER_POWER_CH0										(EM_START + 48)//通道0功率
 #define EM_LASER_POWER_CH1											(EM_START + 49)//通道1功率
 #define EM_LASER_POWER_CH2											(EM_START + 50)//通道2功率
 #define EM_LASER_POWER_CH3											(EM_START + 51)//通道3功率
@@ -496,11 +500,7 @@
 #define EM_DC_NEW_PASSCODE0											(EM_START + 92)//输入新密码0			
 #define EM_DC_NEW_PASSCODE1											(EM_START + 93)//输入新密码1			
 #define EM_DC_NEW_PASSCODE2											(EM_START + 94)//输入新密码2			
-#define EM_DC_NEW_PASSCODE3											(EM_START + 95)//输入新密码3			
-#define EM_DC_DEFAULT_PASSCODE0									(EM_START + 96)//默认密码0				
-#define EM_DC_DEFAULT_PASSCODE1									(EM_START + 97)//默认密码1				
-#define EM_DC_DEFAULT_PASSCODE2									(EM_START + 98)//默认密码2	
-#define EM_DC_DEFAULT_PASSCODE3									(EM_START + 99)//默认密码3				
+#define EM_DC_NEW_PASSCODE3											(EM_START + 95)//输入新密码3						
 /*****************************************************************************/
 #define EM_LASER_RELEASE_TIME										(EM_START + 100)//实际激光发射累计时间	
 #define EM_LASER_RELEASE_ENERGY									(EM_START + 102)//实际激光发射累计能量

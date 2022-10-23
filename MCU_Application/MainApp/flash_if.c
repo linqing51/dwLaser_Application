@@ -133,7 +133,7 @@ uint32_t FLASH_If_EraseBootload(void){//²Á³ýBOOTLOAD
 		return (1);
 	}
 	else{
-		return (1);
+		return (0);
 	}
 }
 /**
