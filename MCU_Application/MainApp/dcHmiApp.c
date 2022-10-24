@@ -540,6 +540,7 @@ void updateReleaseTimeEnergy(void){//À¢–¬∑¢…‰ ±º‰ƒ‹¡ø
 	uint8_t seconds;
 	int32_t temp0, temp1, temp2, temp3, temp4, temp5;
 	char dispBuf1[CONFIG_DCHMI_DISKBUF_SIZE];
+	int32_t *p;
 	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	temp0 = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//º§π‚¥Úø™ ±º‰√Î
 	temp0 = temp0 / 50;
@@ -577,6 +578,8 @@ void updateReleaseTimeEnergy(void){//À¢–¬∑¢…‰ ±º‰ƒ‹¡ø
 	if(temp2 >= INT32_MAX){
 		temp2 = INT32_MAX;
 	}
+	p = (int32_t*)(&NVRAM0[EM_LASER_RELEASE_ENERGY]);
+	*p = temp2;
 	sprintf(dispBuf1, "%11.1f J", ((float)temp2 / 10));//00:00
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
 }
@@ -1388,15 +1391,15 @@ static void speakerLoop(void){//∑‰√˘∆˜¬÷—Ø
 				break;
 			}
 			case BEEM_MODE_4:{//ƒ£ Ω4 ≥§º‰∏Ù+Ã· æ“Ù º§π‚∑¢…‰“Ù		
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 80){//1
 					sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
 					SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 80 && NVRAM0[SPREG_BEEM_COUNTER] < 160){//0
 					sPlcSpeakerDisable();//Õ£÷π“Ù∆µ
 					RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 160){
 					//≈–∂œ «∑Ò∆Ù∂ØÃ· æ“Ù
 					temp0 = (*((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]) + 25) / 50;
 					//temp0 = temp0 / 60;
@@ -1412,6 +1415,72 @@ static void speakerLoop(void){//∑‰√˘∆˜¬÷—Ø
 					}
 					NVRAM0[SPREG_BEEM_COUNTER] = -1;
 				}						
+				break;
+			}
+			case BEEM_MODE_5:{
+				if(NVRAM0[EM_LASER_RELEASE_ENERGY] < 2500){//<250J
+					if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
+						sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
+						SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
+						sPlcSpeakerDisable();//Õ£÷π“Ù∆µ
+						RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
+						NVRAM0[SPREG_BEEM_COUNTER] = -1;
+					}	
+				}
+				else if(NVRAM0[EM_LASER_RELEASE_ENERGY] >= 2500 && NVRAM0[EM_LASER_RELEASE_ENERGY] < 5000){//250-500J	
+					if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 15){//1
+						sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
+						SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜			
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 15 && NVRAM0[SPREG_BEEM_COUNTER] < 25){//0
+						sPlcSpeakerDisable();//πÿ±’“Ù∆µ
+						RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 25 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
+						sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
+						SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
+						sPlcSpeakerDisable();//πÿ±’“Ù∆µ
+						RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
+						NVRAM0[SPREG_BEEM_COUNTER] = -1;
+					}					
+				}
+				else if(NVRAM0[EM_LASER_RELEASE_ENERGY] > 5000){
+					if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 14){//1
+						sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
+						SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜			
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 14 && NVRAM0[SPREG_BEEM_COUNTER] < 26){//0
+						sPlcSpeakerDisable();//πÿ±’“Ù∆µ
+						RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 26 && NVRAM0[SPREG_BEEM_COUNTER] < 40){//1
+						sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
+						SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 40 && NVRAM0[SPREG_BEEM_COUNTER] < 52){//0
+						sPlcSpeakerDisable();//πÿ±’“Ù∆µ
+						RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 52 && NVRAM0[SPREG_BEEM_COUNTER] < 66){//1
+						sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
+						SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 66 && NVRAM0[SPREG_BEEM_COUNTER] < 160){//0
+						sPlcSpeakerDisable();//πÿ±’“Ù∆µ
+						RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
+					}
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 160){//Õ£1√Î
+						NVRAM0[SPREG_BEEM_COUNTER] = -1;
+					}	
+				}
 				break;
 			}
 			default:break;

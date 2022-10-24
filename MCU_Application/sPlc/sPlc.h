@@ -42,6 +42,7 @@
 #define BEEM_MODE_2														0x12//激光发射固定间隔
 #define BEEM_MODE_3														0x13//异常报警
 #define BEEM_MODE_4														0x14//激光发射固定间隔+提示音
+#define BEEM_MODE_5														0x15
 /*****************************************************************************/
 #define LASER_CHANNEL_0												0x00//通道0
 #define LASER_CHANNEL_1												0x01//通道1
