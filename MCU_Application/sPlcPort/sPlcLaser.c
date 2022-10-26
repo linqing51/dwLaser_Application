@@ -145,7 +145,7 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 #endif
 void STLAR(void){//开始发射脉冲
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
-	if(LD(R_ACOUSTIC_ENABLE) && (NVRAM0[DM_SCHEME_NUM] < 3) && (NVRAM0[DM_SCHEME_NUM] > 5)){
+	if(LD(R_ACOUSTIC_ENABLE) && ((NVRAM0[DM_SCHEME_NUM] < 3) || (NVRAM0[DM_SCHEME_NUM] > 5))){
 		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
 	}
 	else if((NVRAM0[DM_SCHEME_NUM] >= 3) && (NVRAM0[DM_SCHEME_NUM] <= 5)){
