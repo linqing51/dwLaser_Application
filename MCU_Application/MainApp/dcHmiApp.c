@@ -1391,15 +1391,15 @@ static void speakerLoop(void){//∑‰√˘∆˜¬÷—Ø
 				break;
 			}
 			case BEEM_MODE_4:{//ƒ£ Ω4 ≥§º‰∏Ù+Ã· æ“Ù º§π‚∑¢…‰“Ù		
-				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 80){//1
+				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
 					sPlcSpeakerEnable();//∆Ù∂Ø“Ù∆µ
 					SSET(SPCOIL_BEEM_BUSY);//∆Ù∂Ø∑‰√˘∆˜
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 80 && NVRAM0[SPREG_BEEM_COUNTER] < 160){//0
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
 					sPlcSpeakerDisable();//Õ£÷π“Ù∆µ
 					RRES(SPCOIL_BEEM_BUSY);//πÿ±’∑‰√˘∆˜
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 160){
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
 					//≈–∂œ «∑Ò∆Ù∂ØÃ· æ“Ù
 					temp0 = (*((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]) + 25) / 50;
 					//temp0 = temp0 / 60;
