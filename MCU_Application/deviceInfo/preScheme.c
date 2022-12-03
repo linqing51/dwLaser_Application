@@ -26,10 +26,7 @@ char const PRE_SCHEME_TABLE_S22[] = "Liposuction Arm";
 char const PRE_SCHEME_TABLE_S23[] = "Liposuction Abdomen";
 char const PRE_SCHEME_TABLE_S24[] = "Liposuction Buttock";
 char const PRE_SCHEME_TABLE_S25[] = "Liposuction Thigh";
-
-										
-										
-										
+char const PRE_SCHEME_TABLE_S26[] = "Gynecomastia";					
 										
 										
 										

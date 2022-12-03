@@ -85,7 +85,7 @@ void lockPreScheme(void){//恢复预设方案
 	uint8_t i;
 	uint16_t oldNum;
 	oldNum = NVRAM0[DM_SCHEME_NUM];
-	for(i = 0;i <= 25;i ++){
+	for(i = 0;i <= 26;i ++){
 		NVRAM0[DM_SCHEME_NUM] = i;
 		defaultScheme();
 		saveScheme();
@@ -302,6 +302,12 @@ void defaultScheme(void){//当前选择方案恢复默认值
 		}
 		case 25:{
 			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S25);
+			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
+			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
+			break;
+		}
+		case 26:{
+			strcpy((char*)&NVRAM0[EM_LASER_SCHEME_NAME], PRE_SCHEME_TABLE_S26);
 			NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;
 			NVRAM0[EM_LASER_POWER_CH0] = 80;//8.0W
 			break;

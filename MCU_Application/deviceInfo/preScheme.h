@@ -29,6 +29,7 @@ extern char const PRE_SCHEME_TABLE_S22[];
 extern char const PRE_SCHEME_TABLE_S23[];
 extern char const PRE_SCHEME_TABLE_S24[];
 extern char const PRE_SCHEME_TABLE_S25[];
+extern char const PRE_SCHEME_TABLE_S26[];
 #endif
 
 
