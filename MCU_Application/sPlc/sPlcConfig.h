@@ -128,7 +128,7 @@
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													300//
+#define CONFIG_DIODE_SET_TEMP													290//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
@@ -189,7 +189,7 @@
 
 #define CONFIG_AIM_MAX_DC															100//红光最大调光占空比
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
-#define CONFIG_BEEM_MAX_LIMIT													0.8F//
+#define CONFIG_BEEM_MAX_LIMIT													0.5F//
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #define CONFIG_FAN_MAX_DC															100

@@ -1188,34 +1188,13 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 			NVRAM0[EM_FAN_SPEED] = 100;
 		}
 		else{
-			if(NVRAM0[EM_LASER_TEMP] < 200){//<20.0C
+			if(NVRAM0[EM_LASER_TEMP] < 250){//<20.0C
 				NVRAM0[EM_FAN_SPEED] = 0;
 			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 200) && (NVRAM0[EM_LASER_TEMP] < 220)){
-				NVRAM0[EM_FAN_SPEED] = 20;		
+			else if((NVRAM0[EM_LASER_TEMP] >= 250) && (NVRAM0[EM_LASER_TEMP] < 350)){
+				NVRAM0[EM_FAN_SPEED] = 75;		
 			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 220) && (NVRAM0[EM_LASER_TEMP] < 240)){
-				NVRAM0[EM_FAN_SPEED] = 25;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 240) && (NVRAM0[EM_LASER_TEMP] < 260)){
-				NVRAM0[EM_FAN_SPEED] = 30;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 260) && (NVRAM0[EM_LASER_TEMP] < 280)){
-				NVRAM0[EM_FAN_SPEED] = 35;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 280) && (NVRAM0[EM_LASER_TEMP] < 300)){
-				NVRAM0[EM_FAN_SPEED] = 40;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 300) && (NVRAM0[EM_LASER_TEMP] < 320)){
-				NVRAM0[EM_FAN_SPEED] = 45;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 320) && (NVRAM0[EM_LASER_TEMP] < 340)){
-				NVRAM0[EM_FAN_SPEED] = 60;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 340) && (NVRAM0[EM_LASER_TEMP] < 360)){
-				NVRAM0[EM_FAN_SPEED] = 85;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 360)){
+			else if((NVRAM0[EM_LASER_TEMP] >= 320)){
 				NVRAM0[EM_FAN_SPEED] = 100;
 			}
 		}
