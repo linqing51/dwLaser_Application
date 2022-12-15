@@ -1174,7 +1174,7 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_LOW_TEMP + 50){
 		RRES(R_MCU_TEMP_LOW);
 	}
-	if(LDP(SPCOIL_PS10MS)){
+	if(LDP(SPCOIL_PS50MS)){
 		if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_SET_TEMP + 10){
 			SSET(Y_TEC);
 		}
@@ -1188,11 +1188,11 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 			NVRAM0[EM_FAN_SPEED] = 100;
 		}
 		else{
-			if(NVRAM0[EM_LASER_TEMP] < 250){//<20.0C
+			if(NVRAM0[EM_LASER_TEMP] < 220){//<20.0C
 				NVRAM0[EM_FAN_SPEED] = 0;
 			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 250) && (NVRAM0[EM_LASER_TEMP] < 350)){
-				NVRAM0[EM_FAN_SPEED] = 75;		
+			else if((NVRAM0[EM_LASER_TEMP] >= 220) && (NVRAM0[EM_LASER_TEMP] < 320)){
+				NVRAM0[EM_FAN_SPEED] = 85;		
 			}
 			else if((NVRAM0[EM_LASER_TEMP] >= 320)){
 				NVRAM0[EM_FAN_SPEED] = 100;
