@@ -1174,31 +1174,28 @@ static void temperatureLoop(void){//温度轮询轮询
 	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_LOW_TEMP + 50){
 		RRES(R_MCU_TEMP_LOW);
 	}
-	if(LDP(SPCOIL_PS50MS)){
-		if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_SET_TEMP + 10){
+	if(LDP(SPCOIL_PS10MS)){
+		if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_SET_TEMP + 15){
 			SSET(Y_TEC);
 		}
-		if(NVRAM0[EM_LASER_TEMP] <= CONFIG_DIODE_SET_TEMP - 10){
+		if(NVRAM0[EM_LASER_TEMP] <= CONFIG_DIODE_SET_TEMP - 15){
 			RRES(Y_TEC);
 		}
 	}
-	//温控执行 激光等待发射及错误状态启动温控	
-	if(LDP(SPCOIL_PS1000MS)){//每秒更新风扇速度
+	//温控执行 激光等待发射及错误状态启动温控
+	if(LDP(SPCOIL_PS1000MS)){	
 		if(LD(R_LASER_TEMP_HIGH) || LD(R_LASER_TEMP_LOW) || LD(R_MCU_TEMP_HIGH) || LD(R_MCU_TEMP_LOW)){//过热状态无条件打开风扇
 			NVRAM0[EM_FAN_SPEED] = 100;
 		}
-		else{
-			if(NVRAM0[EM_LASER_TEMP] < 220){//<20.0C
-				NVRAM0[EM_FAN_SPEED] = 0;
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 220) && (NVRAM0[EM_LASER_TEMP] < 320)){
-				NVRAM0[EM_FAN_SPEED] = 85;		
-			}
-			else if((NVRAM0[EM_LASER_TEMP] >= 320)){
-				NVRAM0[EM_FAN_SPEED] = 100;
-			}
+		else{	
+		if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
+			NVRAM0[EM_FAN_SPEED] = 90;
 		}
-		setFanSpeed(NVRAM0[EM_FAN_SPEED]);
+		else{
+			NVRAM0[EM_FAN_SPEED] = 40;
+		}
+	}
+	setFanSpeed(NVRAM0[EM_FAN_SPEED]);
 	}
 }
 static void faultLoop(void){//故障轮询
