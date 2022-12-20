@@ -1189,10 +1189,21 @@ static void temperatureLoop(void){//温度轮询轮询
 		}
 		else{	
 		if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
-			NVRAM0[EM_FAN_SPEED] = 90;
+			if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//功率小于5W
+				NVRAM0[EM_FAN_SPEED] = 45;
+			}
+			else if((NVRAM0[EM_LASER_POWER_CH0] > 50) && (NVRAM0[EM_LASER_POWER_CH0] < 100)){//5-10W
+				NVRAM0[EM_FAN_SPEED] = 65;
+			}
+			else if((NVRAM0[EM_LASER_POWER_CH0] >= 100) && (NVRAM0[EM_LASER_POWER_CH0] < 130)){//10-13W
+				NVRAM0[EM_FAN_SPEED] = 75;
+			}
+			else if(NVRAM0[EM_LASER_POWER_CH0] >= 130){//13-15W
+				NVRAM0[EM_FAN_SPEED] = 100;
+			}
 		}
 		else{
-			NVRAM0[EM_FAN_SPEED] = 40;
+			NVRAM0[EM_FAN_SPEED] = 35;
 		}
 	}
 	setFanSpeed(NVRAM0[EM_FAN_SPEED]);

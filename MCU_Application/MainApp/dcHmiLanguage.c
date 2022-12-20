@@ -21,7 +21,7 @@ const char INFO_MSG_TYPE[] 						 				= {"TYPE:PVGLS 1470/15"};
 const char INFO_MSG_SN[] 						 					= {"SN:"};
 const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nM"};
 const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15W"};
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.0c4a"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.0c5"};
 const char INFO_MSG_MANUFACTURE_DATE[] 			 	= {"MANUFACTURE DATE:"};
 /*****************************************************************************/
 
