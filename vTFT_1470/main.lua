@@ -15,8 +15,9 @@
 --end
 
 --当画面切换时，执行此回调函数，screen为目标画面。
---function on_screen_change(screen)
---end
+function on_screen_change(screen)
+
+end
 
 function on_control_notify(screen,control,value)
 	--***************************************************************************
@@ -27,6 +28,34 @@ function on_control_notify(screen,control,value)
 	--			      control 控件ID
 	--			      value   控件值(0 or 1)
 	--***************************************************************************
+	if screen == 3 then
+		if control == 10 and value == 1 then
+		--CW 按键按下
+			set_visiable(3,17,0)
+			set_visiable(3,18,0)
+	 		set_visiable(3,19,0)
+			set_visiable(3,20,0)
+			set_visiable(3,30,0)
+			set_visiable(3,31,0)
+			set_visiable(3,37,0)	
+		end
+		if control == 11 and value== 1 then
+		--MP 按键按下
+			set_visiable(3,17,1)
+			set_visiable(3,18,1)
+	 		set_visiable(3,19,1)
+			set_visiable(3,20,1)
+			set_visiable(3,30,1)
+			set_visiable(3,31,1)
+			set_visiable(3,37,1)
+			set_enable(3,17,1)
+ 			set_enable(3,18,1)
+			set_enable(3,19,1)
+			set_enable(3,20,1)
+			set_enable(3,30,1)
+			set_enable(3,31,1)	
+		end
+	end
 	if screen == 8 then
 	    if control == 4 and value == 1 then                   
 		    --set_value(8,4,0)

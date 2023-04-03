@@ -79,7 +79,7 @@ void standbyKeyValue(uint8_t value);//设置Standby键值
 void standbyPageTouchEnable(int8_t enable);//Standby界面触摸
 void standbyKeyTouchEnable(int8_t enable);//Standby key触摸
 /*****************************************************************************/
-static void updateExtralDisplay(void);//更新额外显示
+void updateExtralDisplay(void);//更新额外显示
 void standbyDebugInfoVisiable(int8_t enable);
 void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/

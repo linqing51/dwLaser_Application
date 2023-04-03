@@ -44,22 +44,8 @@
 #define BEEM_MODE_4														0x14//激光发射固定间隔+提示音
 #define BEEM_MODE_5														0x15
 /*****************************************************************************/
-#define LASER_CHANNEL_0												0x00//通道0
-#define LASER_CHANNEL_1												0x01//通道1
-#define LASER_CHANNEL_2												0x02//通道2
-#define LASER_CHANNEL_3												0x03//通道3
-/*****************************************************************************/
 #define LASER_MODE_CW													0x01//连续模式
-#define LASER_MODE_SP													0x02//单脉冲模式
-#define LASER_MODE_MP													0x04//多脉冲模式
-#define LASER_MODE_GP													0x08//群脉冲模式
-#define LASER_MODE_DERMA											0x10//
-#define LASER_MODE_SIGNAL											0x20//
-#define LASER_SELECT_CH0											0x01
-#define LASER_SELECT_CH1											0x02
-#define LASER_SELECT_CH2											0x04
-#define LASER_SELECT_CH3											0x08
-#define LASER_SELECT_ALL											0x0F
+#define LASER_MODE_MP													0x02//多脉冲模式
 /*****************************************************************************/
 #define MCP4821_NSHDN_MASK										(1 << 12)
 #define MCP4821_NGA_MASK											(1 << 13)
@@ -100,28 +86,23 @@
 #define SET_TICK_LED_OFF											HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
 #define GET_TICK_LED													HAL_GPIO_ReadPin(TICK_LED_GPIO_Port, TICK_LED_Pin)
 #define FLIP_TICK_LED													HAL_GPIO_TogglePin(TICK_LED_GPIO_Port, TICK_LED_Pin)
-#define SET_LASER_CH0_ON											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH0_OFF											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH1_ON											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH1_OFF											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH2_ON											HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH2_OFF											HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH3_ON											HAL_GPIO_WritePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH3_OFF											HAL_GPIO_WritePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin, GPIO_PIN_RESET)
-#define FLIP_LASER_CH0												HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
-#define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
-#define FLIP_LASER_CH2												HAL_GPIO_TogglePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
-#define FLIP_LASER_CH3												HAL_GPIO_TogglePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin)
-#define GET_LASER_CH0													HAL_GPIO_ReadPin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
-#define GET_LASER_CH1													HAL_GPIO_ReadPin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
-#define GET_LASER_CH2													HAL_GPIO_ReadPin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
-#define GET_LASER_CH3													HAL_GPIO_ReadPin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin)
+#define SET_LASER_1470_ON											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_SET)
+#define SET_LASER_1470_OFF										HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET)
+
+#define SET_LASER_980_ON											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_SET)
+#define SET_LASER_980_OFF											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_RESET)
+#define FLIP_LASER_1470												HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
+#define FLIP_LASER_980												HAL_GPIO_TogglePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin);HAL_GPIO_TogglePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
+
+#define GET_LASER_1470												HAL_GPIO_ReadPin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
+#define GET_LASER_980													HAL_GPIO_ReadPin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
+
 #define SET_SPEAKER_ON												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
 #define SET_SPEAKER_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
-#define SET_AIM_ON										   			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1)
-#define SET_AIM_OFF														HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1)
+
 #define SET_FAN_ON														HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2)
 #define SET_FAN_OFF														HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2)
+
 #define SET_TEC_ON														HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_SET)
 #define SET_TEC_OFF														HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_RESET)
 /*****************************************************************************/
@@ -171,7 +152,6 @@ extern uint32_t sPlcTick;
 extern uint32_t BootloadCrc, ApplicationCrc;
 /*****************************************************************************/
 extern int8_t LaserTimer_Mode;
-extern int8_t LaserTimer_Select;
 extern int16_t LaserTimer_TCounter;
 extern int16_t LaserTimer_TMate;
 extern int16_t LaserTimer_TOvertime;
@@ -227,9 +207,12 @@ extern void mucReboot(void);//软件复位
 extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
 extern void UsbGpioReset(void);
-extern void setAimBrightness(int8_t brg);//设置瞄准光亮度
+extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
+extern void setAimLaserPwm(int16_t pwm);//设置指示激光占空比
+extern void setPower_635(int16_t pwr);//设置红激光功率
 extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
+
 extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//在AT24CXX指定地址读出一个数据
 extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//在AT24CXX里面的指定地址开始读出16位数
 extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////在AT24CXX里面的指定地址开始读出32位数

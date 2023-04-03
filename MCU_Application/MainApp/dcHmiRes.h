@@ -22,18 +22,16 @@
 #define GDDC_PAGE_POWERUP																0
 #define GDDC_PAGE_PASSCODE															1
 #define GDDC_PAGE_NEW_PASSCODE													2
-#define GDDC_PAGE_STANDBY_CW														3
-#define GDDC_PAGE_STANDBY_SP														4
-#define GDDC_PAGE_STANDBY_MP														5
-#define GDDC_PAGE_READY																	6
-#define GDDC_PAGE_OPTION																7//选项页面
-#define GDDC_PAGE_SCHEME_0															8//方案页面第一页
-#define GDDC_PAGE_SCHEME_1															9//方案页面第二页
-#define GDDC_PAGE_INFORMATION														10//信息页面
-#define GDDC_PAGE_DIAGNOSIS															11//诊断页面
-#define GDDC_PAGE_RENAME																12//SCHEME更名
-#define GDDC_PAGE_RESTORE																13//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														14//脚踏安全警告
+#define GDDC_PAGE_STANDBY														    3
+#define GDDC_PAGE_READY																	4
+#define GDDC_PAGE_OPTION																5//选项页面
+#define GDDC_PAGE_SCHEME_0															6//方案页面第一页
+#define GDDC_PAGE_SCHEME_1															7//方案页面第二页
+#define GDDC_PAGE_INFORMATION														8//信息页面
+#define GDDC_PAGE_DIAGNOSIS															9//诊断页面
+#define GDDC_PAGE_RENAME																10//SCHEME更名
+#define GDDC_PAGE_RESTORE																11//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														12//脚踏安全警告
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -67,55 +65,69 @@
 #define GDDC_PAGE_NEWPASSCODE_KEY_BACK									14
 #define GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY								15
 /*****************************************************************************/
-#define GDDC_PAGE_STANDBY_KEY_POWER_ADD									1//功率增加
-#define GDDC_PAGE_STANDBY_KEY_POWER_DEC									2//功率减小
-#define GDDC_PAGE_STANDBY_KEY_STANDBY										3//进入准备
-#define GDDC_PAGE_STANDBY_KEY_MODE_CW										4//连续模式
-#define GDDC_PAGE_STANDBY_KEY_MODE_SP										5
-#define	GDDC_PAGE_STANDBY_KEY_MODE_MP										6//连续模式
-#define GDDC_PAGE_STANDBY_KEY_ENTER_OPTION							7//脉冲模式
-#define GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME							8//
-#define GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE								9//
-#define GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT								10//
-#define GDDC_PAGE_STANDBY_KEY_SCHEME_LAST								11//
-#define GDDC_PAGE_STANDBY_KEY_AIM_BRG_ADD								12//指示光亮度加
-#define GDDC_PAGE_STANDBY_KEY_AIM_BRG_DEC								13//指示光亮度减
-#define GDDC_PAGE_STANDBY_KEY_POSWIDTH_ADD							14//	
-#define GDDC_PAGE_STANDBY_KEY_POSWIDTH_DEC							15//
-#define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD							16//
-#define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_DEC							17//
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME							18//方案名称显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER					19//设定功率显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN							20//报警显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_AIM_BRG						21//指示光亮度显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER			22//平均功率显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY					23//频率显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE					24//占空比显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH					25//正脉宽显示
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH					26//负脉宽显示
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER						27//功率设定拖动条
-#define GDDC_PAGC_STANDBY_PROGRESS_AIM_BRG							28
+#define GDDC_PAGE_STANDBY_KEY_POWER_1470_ADD						1//功率增加
+#define GDDC_PAGE_STANDBY_KEY_POWER_1470_INC						2//功率减小
+#define GDDC_PAGE_STANDBY_KEY_POWER_980_ADD             3
+#define GDDC_PAGE_STANDBY_KEY_POWER_980_INC             4
+#define GDDC_PAGE_STANDBY_KEY_POWER_635_ADD             5
+#define GDDC_PAGE_STANDBY_KEY_POWER_635_INC             6
+#define GDDC_PAGE_STANDBY_KEY_POWER_650_ADD							7//指示光亮度加
+#define GDDC_PAGE_STANDBY_KEY_POWER_650_INC							8//指示光亮度减
+#define GDDC_PAGE_STANDBY_KEY_STANDBY										9//进入准备
+#define GDDC_PAGE_STANDBY_KEY_MODE_CW										10//连续模式
+#define	GDDC_PAGE_STANDBY_KEY_MODE_MP										11//连续模式
+#define GDDC_PAGE_STANDBY_KEY_ENTER_OPTION							12//脉冲模式
+#define GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME							13//
+#define GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE								14//
+#define GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT								15//
+#define GDDC_PAGE_STANDBY_KEY_SCHEME_LAST								16//
+#define GDDC_PAGE_STANDBY_KEY_POSWIDTH_ADD							17//	
+#define GDDC_PAGE_STANDBY_KEY_POSWIDTH_INC							18//
+#define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD							19//
+#define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_INC							20//
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME							21//方案名称显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_1470		22//设定功率 1470
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_980     23//设定功率 980
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_635     24//设定功率 635
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_650     25//设定功率 635
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN							26//报警显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER			27//平均功率显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY					28//频率显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE					29//占空比显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH					30//正脉宽显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH					31//负脉宽显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_TOTAL_POWER				32//总功率显示
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_1470			  33//功率设定拖动条 1470
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_980        34//功率设定拖动条 980
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_635        35//功率设定拖动条 635
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_650				36
+#define GDDC_PAGE_STANDBY_ICON_MPKEY										37//脉冲模式背景图
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER								2//发射功率显示
-#define GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY							3//发射能量显示
-#define GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME			4//发射时间显示
-#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY		5//提示音能量
-#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME				6//提示音时间
-#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE			7//提示音周期
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD					8//提示音能量增加
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_DEC					9//提示音能量减小
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD						10//提示音时间增加
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_DEC						11//提示音时间减小
-#define GDDC_PAGE_READY_KEY_READY												12//切换待机按键
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_1470					2//发射功率显示 1470
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_980           3//发射功率显示 980
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_635           4//发射功率显示 635
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_650						5//发射功率显示 650
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL					6//总发射功率显示
+#define GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY							7//发射能量显示
+#define GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME			8//发射时间显示
+#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY		9//提示音能量
+#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME				10//提示音时间
+#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE			11//提示音周期
+#define GDDC_PAGE_READY_TEXTDISPLAY_635_POWER           12//红激光功率
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD					13//提示音能量增加
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_INC					14//提示音能量减小
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD						15//提示音时间增加
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC						16//提示音时间减小
+#define GDDC_PAGE_READY_KEY_READY												17//切换待机按键
 #define GDDC_PAGE_READY_TEXTDISPLAY_DEBUG								99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_OPTION_KEY_TONE									 			1//蜂鸣器声光同步												
 #define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD						2//蜂鸣器音量加
-#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_DEC						3//蜂鸣器音量减
+#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_INC						3//蜂鸣器音量减
 #define GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD								4//液晶屏亮度增加
-#define GDDC_PAGE_OPTION_KEY_LCD_BRG_DEC								5//液晶屏亮度减少
+#define GDDC_PAGE_OPTION_KEY_LCD_BRG_INC								5//液晶屏亮度减少
 #define GDDC_PAGE_OPTION_KEY_ENTER_OK										6//返回待机页面
 #define GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION					7//进入信息菜单
 #define GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON							8//
