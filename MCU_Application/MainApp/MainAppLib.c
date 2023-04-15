@@ -61,6 +61,7 @@ int16_t keyRuleDec(int16_t ps, int16_t min){//减少
 	}
 	return ps;
 }
+
 void loadDefault(void){//恢复默认值
 	uint8_t i;
 	RRES(MR_FOOSWITCH_HAND_SWITCH);
@@ -107,6 +108,7 @@ uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比
 void defaultScheme(void){//当前选择方案恢复默认值						
 	sprintf((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]),"Customize %d", (NVRAM0[DM_SCHEME_NUM] - 25));		
 	NVRAM0[EM_LASER_PULSE_MODE]	= LASER_MODE_CW;//脉冲模式
+	NVRAM0[EM_LASER_SELECT] = LASER_CHANNEL_1470;//默认选择1470波长
 	NVRAM0[EM_LASER_POWER_1470] = NVRAM0[DM_SCHEME_NUM] + 1;//通道0功率
 	NVRAM0[EM_LASER_POWER_980] = 0;
 	NVRAM0[EM_LASER_POWER_635] = 0;
@@ -604,6 +606,22 @@ uint8_t loadSchemeFromUdisk(void){//从USB DISK载入FDRAM
 	//返回 1:写入成功 0:写入失败
 	return 0;
 }
+
+int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb){//增量PID
+	float tmp0, tmp1, tmp2, fout;
+	t->ek0 = (ref - fb) * -1.0F;
+	if((t->ek0 >= -1) && (t->ek0 <= 1) ){//死区消抖
+		t->ek0 = 0;
+	}
+	tmp0 = t->kp * t->ek0;
+	tmp1 = t->ki * t->ek1;
+	tmp2 = t->kd * t->ek2;
+	fout = tmp0 - tmp1 + tmp2;
+	t->ek2 = t->ek1;
+	t->ek1 = t->ek0;
+	return (int16_t)(fout);
+}	
+
 
 
 

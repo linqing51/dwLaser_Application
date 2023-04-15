@@ -206,6 +206,17 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.blueLedDc = sValue;	
 					break;
 				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SET_AIM_GAIN:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 100){
+						sValue = 100;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.aimGain = sValue;	
+					break;
+				}
 				default:break;
 			}
 			break;

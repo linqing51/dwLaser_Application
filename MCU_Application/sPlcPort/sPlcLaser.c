@@ -1,6 +1,7 @@
 //TIM11->计时
 #include "sPlc.h"
 /*****************************************************************************/
+int8_t LaserOn_635;
 int8_t LaserTimer_Mode;
 int16_t LaserTimer_TCounter;
 int16_t LaserTimer_TMate;
@@ -178,19 +179,23 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 }
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
-		SET_LASER_1470_ON;
-#if CONFIG_USING_LASER_980 == 1
-		SET_LASER_980_ON;
-#endif
+		if(NVRAM0[EM_LASER_SELECT] & LASER_CHANNEL_1470){
+			SET_LASER_1470_ON;
+		}
+		if(NVRAM0[EM_LASER_SELECT] & LASER_CHANNEL_980){
+			SET_LASER_980_ON;
+		}
+		if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_635){//打开红激光
+			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
+		}
 		LaserFlag_Emiting = true;
 	}
 }
 static void laserStop(void){//按通道选择关闭激光
 	if(LaserFlag_Emiting == true){
-		SET_LASER_1470_OFF;
-#if CONFIG_USING_LASER_980 == 1		
+		SET_LASER_1470_OFF;		
 		SET_LASER_980_OFF;
-#endif
+		setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
 		LaserFlag_Emiting = false;
 	}
 }
@@ -221,8 +226,8 @@ void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
 }
 	
 void setRedLaserPwm(int16_t pwm){//设置红激光占空比
-	if(pwm >= 5000){
-		pwm = 5000;
+	if(pwm >= 1000){
+		pwm = 1000;
 	}
 	if(pwm < 0){
 		pwm = 0;
@@ -230,28 +235,15 @@ void setRedLaserPwm(int16_t pwm){//设置红激光占空比
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm);
 	if(pwm != 0){
 		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//打开TIM
+		LaserOn_635 = true;
 	}
 	else{
 		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
+		LaserOn_635 = false;
 	}
 	printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
 
 }
 
-void setAimLaserPwm(int16_t pwm){//设置指示激光占空比
-	if(pwm >= 50){
-		pwm = 50;
-	}
-	if(pwm < 0){
-		pwm = 0;
-	}
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm);
-	if(pwm != 0){
-		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//打开TIM
-	}
-	else{
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
-	}
-	printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
 
-}
+

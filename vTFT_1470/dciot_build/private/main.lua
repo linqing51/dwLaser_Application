@@ -29,31 +29,41 @@ function on_control_notify(screen,control,value)
 	--			      value   控件值(0 or 1)
 	--***************************************************************************
 	if screen == 3 then
-		if control == 10 and value == 1 then
+		if control == 12 and value == 1 then
 		--CW 按键按下
-			set_visiable(3,17,0)
-			set_visiable(3,18,0)
-	 		set_visiable(3,19,0)
-			set_visiable(3,20,0)
-			set_visiable(3,30,0)
-			set_visiable(3,31,0)
-			set_visiable(3,37,0)	
+			set_visiable(3,44,0)
+			set_visiable(3,19,0)
+	 		set_visiable(3,20,0)
+			set_visiable(3,21,0)
+			set_visiable(3,22,0)
+			set_visiable(3,36,0)
+			set_visiable(3,37,0)
+			set_value(3,13,0)
 		end
-		if control == 11 and value== 1 then
+		if control == 13 and value== 1 then
 		--MP 按键按下
-			set_visiable(3,17,1)
-			set_visiable(3,18,1)
-	 		set_visiable(3,19,1)
-			set_visiable(3,20,1)
-			set_visiable(3,30,1)
-			set_visiable(3,31,1)
+			set_visiable(3,44,1)
+			set_visiable(3,19,1)
+	 		set_visiable(3,20,1)
+			set_visiable(3,21,1)
+			set_visiable(3,22,1)
+			set_visiable(3,36,1)
 			set_visiable(3,37,1)
-			set_enable(3,17,1)
- 			set_enable(3,18,1)
 			set_enable(3,19,1)
-			set_enable(3,20,1)
-			set_enable(3,30,1)
-			set_enable(3,31,1)	
+ 			set_enable(3,20,1)
+			set_enable(3,21,1)
+			set_enable(3,22,1)
+			set_enable(3,36,1)
+			set_enable(3,37,1)
+			set_value(3,12,0)
+		end
+		if control == 25 and value == 1 then
+			--选择 635nm
+			set_value(3,23,0)
+		end
+		if control == 23 and value == 1 then
+			--选择 1470nm
+			set_value(3,25,0)
 		end
 	end
 	if screen == 8 then

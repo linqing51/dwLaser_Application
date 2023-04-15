@@ -23,9 +23,9 @@
         <image id="5" url="d:\github\dwlaser_application\vtft_1470\Images\6_GDDC_PAGE_STANDBY_0.jpg" effect_width="1024" effect_height="600" />
         <image id="6" url="d:\github\dwlaser_application\vtft_1470\Images\STANDBY_MP_KEY_1.jpg" effect_width="253" effect_height="149" />
         <image id="7" url="d:\github\dwlaser_application\vtft_1470\Images\11_GDDC_PAGE_STANDBY_MP_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="8" url="d:\github\dwlaser_application\vtft_1470\Images\PROGRESS_SET_POWER_BAR.jpg" effect_width="694" effect_height="24" />
+        <image id="8" url="d:\github\dwlaser_application\vtft_1470\Images\PROGRESS_SET_POWER_BAR.jpg" effect_width="694" effect_height="30" />
         <image id="9" url="d:\github\dwlaser_application\vtft_1470\Images\7_GDDC_PAGE_STANDBY_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="10" url="d:\github\dwlaser_application\vtft_1470\Images\PROGRESS_AIM_BAR.jpg" effect_width="329" effect_height="20" />
+        <image id="10" url="d:\github\dwlaser_application\vtft_1470\Images\PROGRESS_AIM_BAR.jpg" effect_width="331" effect_height="20" />
         <image id="11" url="d:\github\dwlaser_application\vtft_1470\Images\12_GDDC_PAGE_READY_0.jpg" effect_width="1024" effect_height="600" />
         <image id="12" url="d:\github\dwlaser_application\vtft_1470\Images\13_GDDC_PAGE_READY_1.jpg" effect_width="1024" effect_height="600" />
         <image id="13" url="d:\github\dwlaser_application\vtft_1470\Images\18_GDDC_PAGE_OPTION_0.jpg" effect_width="1024" effect_height="600" />

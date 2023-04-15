@@ -25,6 +25,7 @@
 #include "MainAppLib.h"
 #include "dcHmiLanguage.H"
 #include "deviceConfig.h"
+#include "arm_math.h"
 /*****************************************************************************/
 #include "usbh_platform.h"
 #include "usbh_core.h"
@@ -208,7 +209,6 @@ extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
 extern void UsbGpioReset(void);
 extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
-extern void setAimLaserPwm(int16_t pwm);//设置指示激光占空比
 extern void setPower_635(int16_t pwr);//设置红激光功率
 extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
@@ -232,7 +232,9 @@ extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
 extern void confirmBootloadUpdate(void);//执行Bootload更新
 extern void exitBootloadUpdate(void);//退出Bootload更新
 void softDelayMs(uint16_t ms);//软件延时
-
+/*****************************************************************************/
+extern arm_pid_instance_f32 laserTecPids;
+extern arm_pid_instance_f32 laserFanPids;
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

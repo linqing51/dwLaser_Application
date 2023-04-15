@@ -1,47 +1,58 @@
 #include "dcHmiNotifyProgress.h"
 /*****************************************************************************/
 void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	float fpwr;
 	switch(screen_id){
 		case GDDC_PAGE_STANDBY:{
 			switch(control_id){
-				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_1470:{
-					if(value > CONFIG_MAX_LASER_POWER_1470){
-						value = CONFIG_MAX_LASER_POWER_1470;
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL:{
+					if(value > 100){
+						value = 100;
 					}
-					NVRAM0[EM_LASER_POWER_1470] = (int16_t)(value);
+					if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_1470){//1470
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1470;
+						NVRAM0[EM_LASER_POWER_1470] = (int16_t)fpwr;
+					}
+					if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_980){//980
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_980;
+						NVRAM0[EM_LASER_POWER_980] = (int16_t)fpwr;
+					}
+					if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_635){//635
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_635;
+						NVRAM0[EM_LASER_POWER_635] = (int16_t)fpwr;
+					}
 					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
-					
-					sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_1470]) / 10));
-					SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_1470, (uint8_t*)dispBuf);							
-					
-					updateExtralDisplay();
+					updateStandbyDisplay();
+					break;
+				}
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_1470:{
+					if(value > 100){
+						value = 100;
+					}
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1470 * 10.0F;
+					NVRAM0[EM_LASER_AVERAGE_POWER_1470] = (int16_t)fpwr;
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+					updateStandbyDisplay();					
 					break;
 				}
 				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_980:{
-					if(value > CONFIG_MAX_LASER_POWER_980){
-						value = CONFIG_MAX_LASER_POWER_980;
+					if(value > 100){
+						value = 100;
 					}
-					NVRAM0[EM_LASER_POWER_980] = (int16_t)(value);
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_980 * 10.0F;
+					NVRAM0[EM_LASER_AVERAGE_POWER_980] = (int16_t)fpwr;
 					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
-					
-					sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_980]) / 10));
-					SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_980, (uint8_t*)dispBuf);
-					
-					updateExtralDisplay();
+					updateStandbyDisplay();
 					break;
 				}
 				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_635:{
-					if(value > CONFIG_MAX_LASER_POWER_635){
-						value = CONFIG_MAX_LASER_POWER_635;
+					if(value > 100){
+						value = 100;
 					}
-					NVRAM0[EM_LASER_POWER_635] = (int16_t)(value);
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_635 * 10.0F;
+					NVRAM0[EM_LASER_AVERAGE_POWER_635] = (int16_t)fpwr;
 					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
-
-					sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_635]) / 10));					
-					SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_635, (uint8_t*)dispBuf);
-					
-					updateExtralDisplay();
+					updateStandbyDisplay();
 					break;
 				}
 				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_650:{
@@ -49,7 +60,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						value = CONFIG_MAX_LASER_POWER_650;
 					}
 					NVRAM0[DM_AIM_BRG] = (int16_t)value;
-					SetTextInt32(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_650 , NVRAM0[DM_AIM_BRG], 1, 0);
+					updateStandbyDisplay();
 					break;
 				}				
 				default:break;

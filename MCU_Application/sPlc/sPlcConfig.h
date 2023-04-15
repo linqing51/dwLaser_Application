@@ -1,11 +1,15 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define CONFIG_USING_LASER_980											1
-#define CONFIG_USING_LASER_635											1
+#define CONFIG_STAND_ALONE_MODE												1//独立发光模式
 /*****************************************************************************/
-#define LASER_CHANNEL_1470														0x01//通道0
-#define LASER_CHANNEL_980															0x02//通道1
+#define LASER_CHANNEL_1470														0x01
+#define LASER_CHANNEL_980															0x02
+#define LASER_CHANNEL_635															0x04
+#define LASER_CHANNEL_1470_980												0x03
+#define LASER_CHANNEL_1470_635												0x05
+#define LASER_CHANNEL_980_635													0x06
+#define LASER_CHANNEL_1470_980_635										0x07
 /*****************************************************************************/
 #define CONFIG_MORSECODE_SPACE_TIME										3000
 #define CONFIG_MORSECODE_LONG_TIME										900
@@ -110,7 +114,7 @@
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													260//
+#define CONFIG_DIODE_SET_TEMP													250//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
@@ -136,9 +140,9 @@
 #define CONFIG_MAX_LASER_POWER_635                    5//红激光最大功率 5档
 #define CONFIG_MAX_LASER_POWER_650                    10//指示激光最大功率 10档
 
-#define CONFIG_MIN_LASER_POWER_1470										0//通道1470最小激光功率
-#define CONFIG_MIN_LASER_POWER_980										0//通道980最小激光功率
-#define CONFIG_MIN_LASER_POWER_635                    0//红激光最小功率
+#define CONFIG_MIN_LASER_POWER_1470										1//通道1470最小激光功率
+#define CONFIG_MIN_LASER_POWER_980										1//通道980最小激光功率
+#define CONFIG_MIN_LASER_POWER_635                    1//红激光最小功率
 #define CONFIG_MIN_LASER_POWER_650                    0//指示激光最小功率
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
@@ -160,6 +164,7 @@
 #define CONFIG_RED_LED_DEFAULT_DC											25
 #define CONFIG_GREEN_LED_MAX_DC												100
 #define CONFIG_GREEN_LED_DEFAULT_DC										10
+#define CONFIG_AIM_DEFAULT_GAIN												30
 //定义蜂鸣器音量
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
 #define CONFIG_BEEM_MAX_LIMIT													0.7F//
@@ -232,50 +237,50 @@
 #define POWER_REAL_CH2_75P														3000
 #define POWER_REAL_CH2_80P														3200
 #define POWER_REAL_CH2_85P														3400
-#define POWER_REAL_CH2_90P										3600
-#define POWER_REAL_CH2_95P										3800
-#define POWER_REAL_CH2_100P										4000
+#define POWER_REAL_CH2_90P														3600
+#define POWER_REAL_CH2_95P														3800
+#define POWER_REAL_CH2_100P														4000
 /*****************************************************************************/
-#define POWER_REAL_CH3_5P											150
-#define POWER_REAL_CH3_10P										300
-#define POWER_REAL_CH3_15P										450
-#define POWER_REAL_CH3_20P										800
-#define POWER_REAL_CH3_25P										1000
-#define POWER_REAL_CH3_30P										1200
-#define POWER_REAL_CH3_35P										1400
-#define POWER_REAL_CH3_40P										1600
-#define POWER_REAL_CH3_45P										1800
-#define POWER_REAL_CH3_50P										2000
-#define POWER_REAL_CH3_55P										2200
-#define POWER_REAL_CH3_60P										2400
-#define POWER_REAL_CH3_65P										2600
-#define POWER_REAL_CH3_70P										2800
-#define POWER_REAL_CH3_75P										3000
-#define POWER_REAL_CH3_80P										3200
-#define POWER_REAL_CH3_85P										3400
-#define POWER_REAL_CH3_90P										3600
-#define POWER_REAL_CH3_95P										3800
-#define POWER_REAL_CH3_100P										4000
+#define POWER_REAL_CH3_5P															150
+#define POWER_REAL_CH3_10P														300
+#define POWER_REAL_CH3_15P														450
+#define POWER_REAL_CH3_20P														800
+#define POWER_REAL_CH3_25P														1000
+#define POWER_REAL_CH3_30P														1200
+#define POWER_REAL_CH3_35P														1400
+#define POWER_REAL_CH3_40P														1600
+#define POWER_REAL_CH3_45P														1800
+#define POWER_REAL_CH3_50P														2000
+#define POWER_REAL_CH3_55P														2200
+#define POWER_REAL_CH3_60P														2400
+#define POWER_REAL_CH3_65P														2600
+#define POWER_REAL_CH3_70P														2800
+#define POWER_REAL_CH3_75P														3000
+#define POWER_REAL_CH3_80P														3200
+#define POWER_REAL_CH3_85P														3400
+#define POWER_REAL_CH3_90P														3600
+#define POWER_REAL_CH3_95P														3800
+#define POWER_REAL_CH3_100P														4000
 /*****************************************************************************/
 //线圈 保持 16 * 32 = 512 
-#define MR_START															0
-#define MR_END   															31
+#define MR_START																			0
+#define MR_END   																			31
 //数据寄存器 保持 512
-#define DM_START															32
-#define DM_END																543
+#define DM_START																			32
+#define DM_END																				543
 //线圈寄存器 非保持 16 * 32 = 512
-#define R_START																544
-#define R_END																	575						
+#define R_START																				544
+#define R_END																					575						
 //数据寄存器 非保持 512
-#define EM_START															576
-#define EM_END																1087
+#define EM_START																			576
+#define EM_END																				1087
 //延时线圈
 //1MS  16 * 4 = 64
-#define T_1MS_START														1088
-#define T_1MS_END															1091
+#define T_1MS_START																		1088
+#define T_1MS_END																			1091
 //10MS 16 * 4 = 64
-#define T_10MS_START													1092
-#define T_10MS_END														1095
+#define T_10MS_START																	1092
+#define T_10MS_END																		1095
 //100MS 16 * 4 = 64
 #define T_100MS_START													1096
 #define T_100MS_END														1099
@@ -401,6 +406,7 @@
 #define EM_LASER_POWER_635                      (EM_START + 49)//红激635光功率
 #define EM_LASER_POSWIDTH												(EM_START + 50)//正脉宽
 #define EM_LASER_NEGWIDTH												(EM_START + 51)//负脉宽
+#define EM_LASER_SELECT													(EM_START + 63)//激光波长选择   1:1470 2:980 4:635
 /*****************************************************************************/
 #define EM_LASER_AVERAGE_POWER_1470							(EM_START + 64)//当前模式平均功率 1470
 #define EM_LASER_AVERAGE_POWER_980              (EM_START + 65)//当前模式平均功率 980
@@ -619,9 +625,6 @@
 #define DM_DC_OLD_PASSCODE1									(DM_START + 6)//屏旧密码2-3
 #define DM_DC_OLD_PASSCODE2									(DM_START + 7)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3									(DM_START + 8)//屏旧密码2-3
-#define DM_RED_LED_DC												(DM_START + 9)//红光亮度
-#define DM_BLUE_LED_DC											(DM_START + 10)//蓝光亮度
-#define DM_GREEN_LED_DC											(DM_START + 11)//绿光亮度
 /*****************************************************************************/
 #define X_ESTOP_NC													(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC											(X_START * 16 + 1)//XIN1 安全连锁
