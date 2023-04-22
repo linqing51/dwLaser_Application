@@ -499,20 +499,6 @@ void updateInformationDisplay(void){//更新信息界面显示
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);	
 }
 void returnStandbyDisplay(void){//返回STANDBY界面
-	switch(NVRAM0[EM_LASER_PULSE_MODE]){	
-		case LASER_MODE_CW:{
-			//NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_CW;
-			break;
-		}
-		case LASER_MODE_MP:{
-			//NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_MP;
-			break;
-		}
-		default:{
-			//NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_CW;
-			break;
-		}
-	}
 	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;	
 	SetScreen(NVRAM0[EM_DC_PAGE]);
 }
@@ -999,7 +985,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_635, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%d%%\n", NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
+	sprintf(dispBuf, "%d%%\n", NVRAM0[DM_AIM_BRG] * 10);
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_650, (uint8_t*)dispBuf);
 
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
@@ -1034,37 +1020,54 @@ void updateReadyDisplay(void){//更新READY显示
 	switch(NVRAM0[EM_LASER_SELECT]){
 		case LASER_CHANNEL_1470:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_1470] / 10.0F;
+			sprintf(dispBuf, "1470nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
 		case LASER_CHANNEL_980:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_980] / 10.0F;
+			sprintf(dispBuf, "980nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
 		case LASER_CHANNEL_635:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_635] / 10.0F;
+			sprintf(dispBuf, "635nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
 		case LASER_CHANNEL_1470_980:{
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_1470] + (float)NVRAM0[EM_LASER_POWER_980])/ 10.0F;
+			sprintf(dispBuf, "1470+980nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}			
 		case LASER_CHANNEL_1470_635:{
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_1470] + (float)NVRAM0[EM_LASER_POWER_635])/ 10.0F;
+			sprintf(dispBuf, "1470+635nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}			
 		case LASER_CHANNEL_980_635:{
+			sprintf(dispBuf, "980+635nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_980] + (float)NVRAM0[EM_LASER_POWER_635])/ 10.0F;
 			break;
 		}			
 		case LASER_CHANNEL_1470_980_635:{
+			sprintf(dispBuf, "980+635nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_1470] + (float)NVRAM0[EM_LASER_POWER_980] + (float)NVRAM0[EM_LASER_POWER_635])/ 10.0F;
 			break;
 		}			
 		default:{
+			sprintf(dispBuf, "1470+980nm");
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_1470] + (float)NVRAM0[EM_LASER_POWER_980] + (float)NVRAM0[EM_LASER_POWER_635])/ 10.0F;
 			break;
 		}
 	}
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%3.1f W\n", displayPower);
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
