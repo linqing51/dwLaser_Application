@@ -304,7 +304,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//ÇÐ»»´ý»úÒ³Ãæ						
 					SetScreen(NVRAM0[EM_DC_PAGE]);					
 					updateStandbyDisplay();
-					//standbyPageTouchEnable(true);
 					break;
 				}
 				default:break;

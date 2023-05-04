@@ -13,6 +13,7 @@
 #include <LIMITS.H>
 #include "stdbool.h"
 #include "stdint.h"
+#include "string.h"
 /*****************************************************************************/
 #include "libcrc.h"
 #include "deviceConfig.h"

@@ -1,0 +1,21 @@
+1:按下急停、拔掉安全连锁、踩下脚踏、插入升级U盘后打开电源
+2:等待5秒后松开脚踏
+3:U盘格式化为FAT32，升级文件解压后复制到根目录
+4:升级过程中红色指示灯会闪烁、如果升级屏幕图片会出现蓝色背景与进度条。升级完毕后会自动重启。
+5:升级过程中不要断电、不要一直踩着脚踏。升级完毕后把下U盘。
+
+
+
+
+Bootloader IROM1:0x8000000 SIZE 0xffff
+APP:IROM1:0x8100000 SIZE 0x150000
+
+U01  @UDISK->FLASH
+U02  @UDISK->HMI
+U03  @UDISK->FLASH & HMI
+U04   @UDISK->EPROM
+U05 @ 强制升级 MCU
+U06 @强制升级 LCD
+U07 @强制升级 MCU&LCD
+D01   @EPROM->UDISK
+C01   @Clear FLASH & EPROM

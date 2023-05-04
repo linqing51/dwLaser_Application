@@ -124,7 +124,6 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 
 #endif
 void STLAR(void){//开始发射脉冲
-	int16_t tmp;
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
 	if(LD(R_ACOUSTIC_ENABLE) && ((NVRAM0[DM_SCHEME_NUM] < 3) || (NVRAM0[DM_SCHEME_NUM] > 5))){
 		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
@@ -145,10 +144,6 @@ void STLAR(void){//开始发射脉冲
 	LaserFlag_Emitover = false;
 	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
 	HAL_TIM_Base_Start_IT(&htim10);//打开计时器
-	if(NVRAM0[EM_LASER_POWER_635] != 0){//红激光功率不为零
-		tmp = NVRAM0[EM_LASER_POWER_635] * 1000;
-		setRedLaserPwm(tmp);
-	}
 }
 void EDLAR(void){//停止发射脉冲
 	printf("%s,%d,%s:laser stop!\n",__FILE__, __LINE__, __func__);
@@ -163,6 +158,7 @@ void EDLAR(void){//停止发射脉冲
 void sPlcLaserInit(void){//激光脉冲功能初始化
 	SET_LASER_1470_OFF;
 	SET_LASER_980_OFF;
+	setRedLaserPwm(0);
 	//设定计时器
 	LaserTimer_Mode = 0;
 	LaserTimer_TCounter = 0;
@@ -185,7 +181,7 @@ static void laserStart(void){//按通道选择打开激光
 		if(NVRAM0[EM_LASER_SELECT] & LASER_CHANNEL_980){
 			SET_LASER_980_ON;
 		}
-		if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_635){//打开红激光
+		if(NVRAM0[EM_LASER_SELECT] & LASER_CHANNEL_635){//打开红激光
 			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
 		}
 		LaserFlag_Emiting = true;
@@ -226,8 +222,8 @@ void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
 }
 	
 void setRedLaserPwm(int16_t pwm){//设置红激光占空比
-	if(pwm >= 1000){
-		pwm = 1000;
+	if(pwm >= htim2.Init.Period){
+		pwm = htim2.Init.Period;
 	}
 	if(pwm < 0){
 		pwm = 0;
@@ -241,7 +237,7 @@ void setRedLaserPwm(int16_t pwm){//设置红激光占空比
 		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
 		LaserOn_635 = false;
 	}
-	printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
+	//printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
 
 }
 

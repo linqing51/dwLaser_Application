@@ -80,7 +80,7 @@ void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 }
 void UPDAC1(void){//立即从SPREG_DAC_1更新DAC1
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0] & 0x0FFF;
+	temp = NVRAM0[SPREG_DAC_1] & 0x0FFF;
 	writeMcp4821_1(temp);
 	writeMcp4821_2(temp);
 	printf("%s,%d,%s:update dac1=%d\n",__FILE__, __LINE__, __func__, temp);

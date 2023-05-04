@@ -177,8 +177,8 @@
 
 #define  _BTN_GDDC_PAGE_READY_GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_DEC         14
 
-//全局图片13_gddc_page_ready_1.jpg
-#define  _IMG_13_GDDC_PAGE_READY_1_JPG                                        13
+//全局图片13_gddc_page_ready_1.png
+#define  _IMG_13_GDDC_PAGE_READY_1_PNG                                        13
 
 #define  _BTN_GDDC_PAGE_READY_GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGEY_ADD         13
 

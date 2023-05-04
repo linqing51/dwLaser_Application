@@ -1,7 +1,8 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define CONFIG_STAND_ALONE_MODE												1//独立发光模式
+#define CONFIG_ENABLE_LASER_980												1//使能980波长
+#define CONFIG_COMBINE_MODE														0//多波长联合发射功能
 /*****************************************************************************/
 #define LASER_CHANNEL_1470														0x01
 #define LASER_CHANNEL_980															0x02
@@ -33,7 +34,7 @@
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'A'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
-#define CONFIG_JUMP_DELAY															5000//检测U盘时间
+#define CONFIG_JUMP_DELAY															7000//检测U盘时间
 #define FATFS_ROOT																		"0:"
 #define BOOTLOAD_FILENAME															"/bootload.bin"//引导固件
 #define LOG_FIRMWARE_FILENAME													"/log.txt"//操作记录文件
@@ -136,7 +137,7 @@
 #define CONFIG_MAX_LASER_DAC_CH1											0xFFF//
 
 #define CONFIG_MAX_LASER_POWER_1470										150//通道1470最大激光功率
-#define CONFIG_MAX_LASER_POWER_980										300//通道980最大激光功率
+#define CONFIG_MAX_LASER_POWER_980										150//通道980最大激光功率
 #define CONFIG_MAX_LASER_POWER_635                    5//红激光最大功率 5档
 #define CONFIG_MAX_LASER_POWER_650                    10//指示激光最大功率 10档
 

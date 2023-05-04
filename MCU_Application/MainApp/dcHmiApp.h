@@ -76,7 +76,6 @@ void updateSchemeInfo(int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);
 void standbyKeyValue(uint8_t value);//设置Standby键值
-void standbyPageTouchEnable(int8_t enable);//Standby界面触摸
 void standbyKeyTouchEnable(int8_t enable);//Standby key触摸
 /*****************************************************************************/
 void updateExtralDisplay(void);//更新额外显示
