@@ -25,8 +25,8 @@
 #define GDDC_PAGE_STANDBY														    3
 #define GDDC_PAGE_READY																	4
 #define GDDC_PAGE_OPTION																5//选项页面
-#define GDDC_PAGE_SCHEME_0															6//方案页面第一页
-#define GDDC_PAGE_SCHEME_1															7//方案页面第二页
+#define GDDC_PAGE_SCHMEM_CLASSIFY													6//方案分类页
+#define GDDC_PAGE_SCHEME_DETAIL															7//
 #define GDDC_PAGE_INFORMATION														8//信息页面
 #define GDDC_PAGE_DIAGNOSIS															9//诊断页面
 #define GDDC_PAGE_RENAME																10//SCHEME更名
@@ -147,6 +147,18 @@
 /*****************************************************************************/
 #define GDDC_PAGE_RESTORE_KEY_CANCEL										1//取消恢复默认值
 #define GDDC_PAGE_RESTORE_KEY_YES												2//确认恢复默认值
+/*****************************************************************************/
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY							1		
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY							2
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_GTNECOLOGY							3	
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENT									4
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_NEUROSURGERY							5
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DERAMATOLOGY							6
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_LIPOSUCTION							7
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DENTISTRY								8
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_THERAPY								9
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM								10
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN								11
 /*****************************************************************************/
 //方案页面
 #define GDDC_PAGE_SCHEME_KEY_RENAME											1//更名按键

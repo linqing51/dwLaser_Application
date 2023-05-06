@@ -988,7 +988,63 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}
-		case GDDC_PAGE_SCHEME_0:{
+
+		case GDDC_PAGE_SCHMEM_CLASSIFY:{
+			switch(control_id){
+				case  GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY:{
+					if(state){
+						NVRAM0[DM_SCHEME_NUM] = (SCHEME_PHLEBOLOGY | 0x01);
+					}
+					break;
+				}					
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_PROCTOLOGY | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_GTNECOLOGY:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_GYNECOLOGY | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENT:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_ENT | 0x01);
+					break;
+				}			
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_NEUROSURGERY:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_NEUROSURGERY | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DERAMATOLOGY:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_DERMATOLOGY | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_LIPOSUCTION:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_LIPOSUCTION | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DENTISTRY:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_DENTISRTY | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_THERAPY:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHMEM_THERAPY | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_CUSTIOM | 0x01);
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN:{						
+					break;
+				}
+				default:{
+					NVRAM0[DM_SCHEME_NUM] = (SCHEME_CUSTIOM | 0x01);
+					break;
+				}
+			}
+			updateSchemeDetail();
+		}
+		
+		case GDDC_PAGE_SCHEME_DETAIL:{
 			switch(control_id){
 				case GDDC_PAGE_SCHEME_KEY_RENAME:{
 					if(state){
@@ -1114,132 +1170,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}
-		case GDDC_PAGE_SCHEME_1:{
-			switch(control_id){
-				case GDDC_PAGE_SCHEME_KEY_RENAME:{
-					if(state){
-						SSET(R_SCHEME_KEY_RENAME_DOWN);
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_OK:{
-					if(state){
-						SSET(R_SCHEME_KEY_OK_DOWN);
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_CANCEL:{
-					if(state){
-						SSET(R_SCHEME_KEY_CANCEL_DOWN);
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_0:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_16_DOWN);
-					}
-					break;
-				}	
-				case GDDC_PAGE_SCHEME_KEY_SELECT_1:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_17_DOWN);
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_2:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_18_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_3:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_19_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_4:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_20_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_5:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_21_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_6:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_22_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_7:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_23_DOWN);
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_8:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_24_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_9:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_25_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_10:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_26_DOWN);
-					}						
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_11:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_27_DOWN);
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_12:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_28_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_13:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_29_DOWN);
-					}					
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_14:{	
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_30_DOWN);
-					}				
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_15:{
-					if(state){
-						SSET(R_SCHEME_KEY_SCHEME_SELECT_31_DOWN);
-					}
-					break;
-				}
-				case GDDC_PAGE_SCHEME_KEY_LAST_PAGE:{
-					if(state){
-						SSET(R_SCHEME_KEY_LAST_SCHEME);
-					}
-					break;
-				}
-				default:break;
-			}
-			break;
-		}				
+		
 		case GDDC_PAGE_DIAGNOSIS:{
 			switch(control_id){
 				case GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK:{

@@ -105,7 +105,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000; 
 	
 	//1470nm, Pulse 6w 500ms Ton, 500ms Toff
-	p = &schemeCosmoGynecology[0]
+	p = &schemeCosmoGynecology[0];
 	p->name = CosmoGynecology_0;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -116,7 +116,7 @@ void mySchemeInit(void){
 	p->negwidth = 500; 	
 	
 	//1470nm, Pulse 7w 500ms Ton, 500ms Toff
-	p = &schemeCosmoGynecology[1]
+	p = &schemeCosmoGynecology[1];
 	p->name = CosmoGynecology_1;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -127,7 +127,7 @@ void mySchemeInit(void){
 	p->negwidth = 500; 
 	
 	//1470nm, Pulse 8w 500ms Ton, 500ms Toff
-	p = &schemeCosmoGynecology[2]
+	p = &schemeCosmoGynecology[2];
 	p->name = CosmoGynecology_2;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -138,7 +138,7 @@ void mySchemeInit(void){
 	p->negwidth = 500; 
 	
 	//1470nm, Pulse 8w 500ms Ton, 500ms Toff
-	p = &schemeCosmoGynecology[3]
+	p = &schemeCosmoGynecology[3];
 	p->name = CosmoGynecology_3;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -149,7 +149,7 @@ void mySchemeInit(void){
 	p->negwidth = 500; 
 	
 	//1470nm, CW 6w 15s Ton
-	p = &schemeCosmoGynecology[4]
+	p = &schemeCosmoGynecology[4];
 	p->name = CosmoGynecology_4;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -160,7 +160,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000; 	
 	
 	//1470nm, CW 10w 15s Ton
-	p = &schemeCosmoGynecology[5]
+	p = &schemeCosmoGynecology[5];
 	p->name = CosmoGynecology_5;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -171,7 +171,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000; 	
 	
 	//1470nm, CW 5w
-	p = &schemeCosmoGynecology[6]
+	p = &schemeCosmoGynecology[6];
 	p->name = CosmoGynecology_6;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -182,7 +182,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000; 
 	
 	//1470nm, CW 5w
-	p = &schemeCosmoGynecology[7]
+	p = &schemeCosmoGynecology[7];
 	p->name = CosmoGynecology_7;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -193,7 +193,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000; 	
 	
 	//1470nm, CW 8w
-	p = &schemeCosmoGynecology[8]
+	p = &schemeCosmoGynecology[8];
 	p->name = CosmoGynecology_8;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -204,7 +204,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000; 	
 	
 	//1470nm 12w CW
-	p = &schemeGynecologyHysteroscopy[0]
+	p = &schemeGynecologyHysteroscopy[0];
 	p->name = GynecologyHysteroscopy_0;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -215,7 +215,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 8w CW
-	p = &schemeGynecologyHysteroscopy[1]
+	p = &schemeGynecologyHysteroscopy[1];
 	p->name = GynecologyHysteroscopy_1;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -226,7 +226,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;	
 	
 	//1470nm 10w CW
-	p = &schemeGynecologyHysteroscopy[2]
+	p = &schemeGynecologyHysteroscopy[2];
 	p->name = GynecologyHysteroscopy_2;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -237,7 +237,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;		
 	
 	//1470nm 10w CW
-	p = &schemeGynecologyHysteroscopy[3]
+	p = &schemeGynecologyHysteroscopy[3];
 	p->name = GynecologyHysteroscopy_3;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -248,7 +248,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &schemeGynecologyHysteroscopy[4]
+	p = &schemeGynecologyHysteroscopy[4];
 	p->name = GynecologyHysteroscopy_4;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -259,7 +259,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &schemeGynecologyHysteroscopy[5]
+	p = &schemeGynecologyHysteroscopy[5];
 	p->name = GynecologyHysteroscopy_5;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -270,7 +270,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &schemeGynecologyHysteroscopy[6]
+	p = &schemeGynecologyHysteroscopy[6];
 	p->name = GynecologyHysteroscopy_6;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -281,7 +281,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &schemeGynecologyLaparoscopy[0]
+	p = &schemeGynecologyLaparoscopy[0];
 	p->name = GynecologyLaparoscopy_0;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -292,7 +292,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 
 	//1470nm 10w CW
-	p = &schemeGynecologyLaparoscopy[1]
+	p = &schemeGynecologyLaparoscopy[1];
 	p->name = GynecologyLaparoscopy_1;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -303,7 +303,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &schemeGynecologyLaparoscopy[2]
+	p = &schemeGynecologyLaparoscopy[2];
 	p->name = GynecologyLaparoscopy_2;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -314,7 +314,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &schemeGynecologyLaparoscopy[3]
+	p = &schemeGynecologyLaparoscopy[3];
 	p->name = GynecologyLaparoscopy_3;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -590,7 +590,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;	
 	
 	//980nm, CW 8w
-	p = &schemeDermatology[2]
+	p = &schemeDermatology[2];
 	p->name = Dermatology_2;
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -601,7 +601,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//980nm, CW 10w
-	p = &schemeDermatology[3]
+	p = &schemeDermatology[3];
 	p->name = Dermatology_3;
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -612,7 +612,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 
 //980nm, Pulse, 6w, 1s Ton, 1s Toff
-	p = &schemeDermatology[4]
+	p = &schemeDermatology[4];
 	p->name = Dermatology_4;
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -623,7 +623,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 
 	//980nm, Pulse, 8w, 1s Ton, 5s Toff
-	p = &schemeDermatology[5]
+	p = &schemeDermatology[5];
 	p->name = Dermatology_5;
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -634,7 +634,7 @@ void mySchemeInit(void){
 	p->negwidth = 5000;
 	
 	//980nm, Pulse, 8w, 1s Ton, 5s Toff
-	p = &schemeDermatology[6]
+	p = &schemeDermatology[6];
 	p->name = Dermatology_6;
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -656,7 +656,7 @@ void mySchemeInit(void){
 	p->negwidth = 5000;
 
 	//1470nm, 3w CW
-	p = &schemeLiposuction[0]
+	p = &schemeLiposuction[0];
 	p->name = Liposuction_0;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -667,7 +667,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 
 	//1470nm 6w CW
-	p = &schemeLiposuction[1]
+	p = &schemeLiposuction[1];
 	p->name = Liposuction_1;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -678,7 +678,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 8w CW
-	p = &schemeLiposuction[2]
+	p = &schemeLiposuction[2];
 	p->name = Liposuction_2;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -689,7 +689,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 12 CW
-	p = &schemeLiposuction[3]
+	p = &schemeLiposuction[3];
 	p->name = Liposuction_3;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -700,7 +700,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &schemeLiposuction[4]
+	p = &schemeLiposuction[4];
 	p->name = Liposuction_4;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -711,7 +711,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 8w CW
-	p = &schemeLiposuction[5]
+	p = &schemeLiposuction[5];
 	p->name = Liposuction_5;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -722,7 +722,7 @@ void mySchemeInit(void){
 	p->negwidth = 1000;
 	
 	//1470nm 8w CW
-	p = &schemeLiposuction[6]
+	p = &schemeLiposuction[6];
 	p->name = Liposuction_6;
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 

@@ -12,6 +12,18 @@
 #define LASER_CHANNEL_980_635													0x06
 #define LASER_CHANNEL_1470_980_635										0x07
 /*****************************************************************************/
+#define SCHEME_PHLEBOLOGY															0x0100
+#define SCHEME_PROCTOLOGY															0x0200
+#define SCHEME_GYNECOLOGY															0x0300
+#define SCHEME_ENT																		0x0400
+#define SCHEME_NEUROSURGERY														0x0500
+#define SCHEME_DERMATOLOGY														0x0600
+#define SCHEME_LIPOSUCTION														0x0700
+#define SCHEME_DENTISRTY															0x0800
+#define SCHMEM_THERAPY																0x0900
+#define SCHEME_CUSTIOM																0x1000
+
+/*****************************************************************************/
 #define CONFIG_MORSECODE_SPACE_TIME										3000
 #define CONFIG_MORSECODE_LONG_TIME										900
 #define CONFIG_MORSECODE_SHORT_TIME										300
@@ -617,7 +629,7 @@
 #define TMP_REG_62												(TMP_START + 62)//临时名称储存区
 #define TMP_REG_63													(TMP_START + 63)//临时名称储存区
 /*****************************************************************************/
-#define DM_SCHEME_NUM												(DM_START + 0)//选择的方案编号 低8位方案号 高8位方案使能
+#define DM_SCHEME_NUM												(DM_START + 0)//选择的方案编号  0xABCD  0xAB 分类 0xC方案使能 0xD方案号
 #define DM_LANGUAGE													(DM_START + 1)//语言ID
 #define DM_BEEM_VOLUME											(DM_START + 2)//蜂鸣器音量 0-100% 32+3=35
 #define DM_AIM_BRG													(DM_START + 3)//指示激光亮度
