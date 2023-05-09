@@ -188,12 +188,17 @@
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>NVRAM0[623],0x0A</ItemText>
+          <ItemText>NVRAM0[664],0x0A</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
           <ItemText>LaserTecOut,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>sPhlebology</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -288,7 +293,7 @@
 
   <Group>
     <GroupName>Application/User/Core</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -516,7 +521,7 @@
 
   <Group>
     <GroupName>sPlc</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -524,7 +529,7 @@
       <GroupNumber>5</GroupNumber>
       <FileNumber>19</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\sPlc\sPlc.c</PathWithFileName>
@@ -791,8 +796,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\MainApp\MainApp.c</PathWithFileName>
-      <FilenameWithoutPath>MainApp.c</FilenameWithoutPath>
+      <PathWithFileName>..\MainApp\MainAppLib.c</PathWithFileName>
+      <FilenameWithoutPath>MainAppLib.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -803,8 +808,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\MainApp\MainAppLib.c</PathWithFileName>
-      <FilenameWithoutPath>MainAppLib.c</FilenameWithoutPath>
+      <PathWithFileName>..\MainApp\MainApp.c</PathWithFileName>
+      <FilenameWithoutPath>MainApp.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

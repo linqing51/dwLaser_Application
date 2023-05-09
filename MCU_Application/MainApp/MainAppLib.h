@@ -23,11 +23,10 @@ int16_t keyRuleAdd(int16_t ps, int16_t max);
 int16_t keyRuleDec(int16_t ps, int16_t min);
 void loadScheme(void);//DM->EM
 void updateSchemeName(void);//TMP->FD
-void saveScheme(void);//EM->DM
+void updateCustomScheme(uint8_t index);//FD->EM
 int8_t checkScheme(int8_t cn);//方案检测
 void defaultScheme(void);//恢复默认设置
-void loadDefault(void);
-void lockPreScheme(void);//恢复预设方案
+void restoreDefault(void);
 uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg);
 uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power);
 uint8_t saveSchemeToUdisk(void);//将FDRAM写入USB DISK

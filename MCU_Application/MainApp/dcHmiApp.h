@@ -22,8 +22,7 @@
 //选项状态
 #define FSMSTEP_OPTION															500//选项菜单
 #define FSMSTEP_INFORMATION													600
-#define FSMSTEP_SCHEME_0														700//方案菜单第一页
-#define FSMSTEP_SCHEME_1														710//方案菜单第二页
+#define FSMSTEP_SCHEME															700//方案菜单第页
 
 #define FSMSTEP_DIAGNOSIS  													800//诊断菜单
 #define FSMSTEP_RENAME															900
@@ -63,10 +62,9 @@ void updateOptionDisplay(void);
 void updateInformationDisplay(void);
 void updateAcousticDisplay(void);
 /*****************************************************************************/
-void updateScheme_0_Display(void);
-void updateScheme_1_Display(void);
-void unselectScheme_0_All(void);
-void unselectScheme_1_All(void);
+void loadSelectScheme(void);
+void updateSchemeDetail(void);
+void unselectSchemeAll(void);
 void seletcSchemeNum(int16_t sel);
 void unselectSchemeNum(int16_t sel);
 /*****************************************************************************/

@@ -4,7 +4,6 @@ uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
 uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
-static void UpdateUI(void);
 uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
 uint32_t newBootloadCrc32;
 IncPid_t LaserTecIncPids;
@@ -324,79 +323,1120 @@ void updateDiognosisInfo(void){//更新诊断信息
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
 }
 
-
-
 void updateSchemeDetail(void){//更新选项界面方案名称
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_0]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+	uint8_t index;
+	index = NVRAM0[EM_SCHEME_NUM_TMP];
+	switch(NVRAM0[DM_SCHEME_CLASSIFY]){
+		case SCHEME_PHLEBOLOGY:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-PHLEBOLOGY");
+			if(strlen((char*)sPhlebology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[0].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sPhlebology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[1].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sPhlebology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[2].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			//方案3-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+			
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);//禁止修改名称
+			break;
+			
+		}
+		case SCHEME_PROCTOLOGY:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-PROCTOLOGY");
+			if(strlen((char*)sProctology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sProctology[0].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sProctology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sProctology[1].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sProctology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sProctology[2].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sProctology[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sProctology[3].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sProctology[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sProctology[4].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sProctology[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sProctology[5].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+			}	
+			//方案6-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+			
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);	
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;
+		}
+		case SCHEME_GYNECOLOGY:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-GYNECOLOGY");
+			if(index < 15){//方案0-15
+				if(strlen((char*)sGynecology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[5].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[6].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[7].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[7].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[8].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[8].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[9].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[9].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[10].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[10].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[11].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[11].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[12].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[12].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[13].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[13].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[14].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[14].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[15].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[15].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+				}			
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, true);
+				BatchEnd();
+				
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+				BatchEnd();
+				
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+				
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, true);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,true);					
+			}
+			else{
+				if(strlen((char*)sGynecology[16].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[16].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[17].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[17].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				}				
+				if(strlen((char*)sGynecology[18].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[18].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[19].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[19].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sGynecology[20].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[20].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+				}						
+				//方案5-15禁止选择
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+				BatchEnd();
+				
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+				BatchEnd();
+
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, true);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,true);
+					
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);
+			}
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;				
+		}
+		case SCHEME_ENT:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-ENT");
+			if(strlen((char*)sENT[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[5].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[6].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[7].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[7].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[8].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[8].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[9].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[9].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[10].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[10].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[11].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[11].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[12].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[12].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[13].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[13].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[14].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[15].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sENT[15].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sENT[15].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+			}	
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, true);
+			BatchEnd();
+					
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+			BatchEnd();
+				
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+					
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);		
+			
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;
+		}
+		case SCHEME_NEUROSURGERY:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-NEUROSURGERY");
+			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sNeurosurgery[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sNeurosurgery[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sNeurosurgery[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}
+			//方案4-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+				
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);	
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;
+		}
+		case SCHEME_DERMATOLOGY:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-DERMATOLOGY");
+			if(strlen((char*)sDermatology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sDermatology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sDermatology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sDermatology[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sDermatology[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sDermatology[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[5].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sDermatology[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[6].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sDermatology[7].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[7].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+			}			
+			//方案8-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+				
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);		
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;
+		}
+		case SCHEME_LIPOSUCTION:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-LIPOSUCTION");
+			if(strlen((char*)sLiposuction[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sLiposuction[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}				
+			if(strlen((char*)sLiposuction[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sLiposuction[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sLiposuction[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sLiposuction[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sLiposuction[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sLiposuction[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sLiposuction[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sLiposuction[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sLiposuction[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sLiposuction[5].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sLiposuction[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sLiposuction[6].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+			}		
+			//方案7-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);	
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+				
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);	
+			
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;
+		}
+		case SCHEME_DENTISRTY:{	
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-DENTISRTY");
+			if(index < 15){//方案0-15
+				if(strlen((char*)sDentistry[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[5].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[6].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[7].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[7].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[8].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[8].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[9].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[9].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[10].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[10].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[11].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[11].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[12].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[12].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[13].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[13].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[14].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[14].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[15].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[15].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+				}	
+				//方案0-15禁止选择
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);				
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, true);
+				BatchEnd();
+			
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+				BatchEnd();
+
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+					
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, true);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,true);	
+
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);				
+			}
+			else{
+				if(strlen((char*)sDentistry[16].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[16].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				}	
+				if(strlen((char*)sDentistry[17].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[17].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[18].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[18].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[19].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[19].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[20].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[20].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[21].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[21].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)sDentistry[22].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDentistry[22].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+				}
+				//方案0-15禁止选择
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);				
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+				BatchEnd();
+				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+				BatchEnd();			
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, true);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,true);
+					
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);	
+
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			}
+			break;
+		}
+		case SCHMEM_THERAPY:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-THERAPY");
+			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sTherapy[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sTherapy[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sTherapy[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sTherapy[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sTherapy[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[5].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sTherapy[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[6].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sTherapy[7].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[7].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+			}		
+			//方案8-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+				
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);	
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;
+		}
+		case SCHEME_CUSTIOM:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-CUSTIOM");
+			if(index < 16){
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_0], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_1])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_1], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_2])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_2], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_3])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_3], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_4])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_4], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_5])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_5], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_6])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_6], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_7])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_7], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_8])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_8], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_9])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_9], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_10])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_10], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_11])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_11], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_12])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_12], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_13])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_13], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_14])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_14], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_15])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_15], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+				}
+			}
+			else{
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_16])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_16], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_17])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_17], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_18])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_18], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_19])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_19], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_20])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_20], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_21])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_21], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_22])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_22], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_23])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_23], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_24])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_24], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_25])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_25], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_26])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_26], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_27])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_27], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_28])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_28], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_29])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_29], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_30])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_30], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+				}
+				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_31])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_31], 112);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+				}
+			}
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, true);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+			BatchEnd();
+			
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, true);
+			break;
+		}
+		default:{break;}
 	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_1])) <= CONFIG_SCHEME_NAME_SIZE){
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_1]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_2])) <= CONFIG_SCHEME_NAME_SIZE){
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_2]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_3])) <= CONFIG_SCHEME_NAME_SIZE){
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_3]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_4])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_4]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_5])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_5]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_6])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_6]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_7])) <= CONFIG_SCHEME_NAME_SIZE){
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_7]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_8])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_8]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_9])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_9]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_10])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_10]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_11])) <= CONFIG_SCHEME_NAME_SIZE){
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_11]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_12])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_12]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_13])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_13]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_14])) <= CONFIG_SCHEME_NAME_SIZE){	
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_14]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
-	}
-	if(strlen((char*)(&FDRAM0[FD_SCHEME_START_15])) <= CONFIG_SCHEME_NAME_SIZE){
-		strcpy(dispBuf, (char*)(&FDRAM0[FD_SCHEME_START_15]));
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);	
-	}
-	unselectScheme_0_All();
-	SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"");
-	SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)"");
+	unselectSchemeAll();
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"");
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)"");
 }
 
 void updateInformationDisplay(void){//更新信息界面显示
@@ -571,93 +1611,220 @@ void updateWarnMsgDisplay(uint8_t id){//更新警号显示框
 }
 void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 	char dispBuf1[CONFIG_DCHMI_DISKBUF_SIZE], dispBuf2[CONFIG_DCHMI_DISKBUF_SIZE];
-	int16_t mode;
-	int16_t	power_1470;
-	int16_t posWidth;
-	int16_t negWidth;
-	power_1470 =0;
-	if(cn < 0)
-		cn = 0;
-	if(cn > CONFIG_HMI_SCHEME_NUM)
-		cn = CONFIG_HMI_SCHEME_NUM;
-	mode = FDRAM0[cn * 64 + FD_LASER_PULSE_MODE]; 
-	power_1470 = FDRAM0[cn * 64 + FD_LASER_POWER_1470];
+	int16_t mode, select;
+	int16_t	power_1470, power_980, power_635, posWidth, negWidth;
 	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);	
 	memset(dispBuf2, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf1, "1470nM Power: %3.1fW", ((float)power_1470 / 10.0F));
-	if(cn < 16){
-		SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)dispBuf1);
-	}
-	else{
-		SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)dispBuf1);
-	}	
-	switch(mode){
-		case LASER_MODE_CW:{
-			if(cn < 16){
-				SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)"Mode: CW");
+	switch(NVRAM0[DM_SCHEME_CLASSIFY]){
+		case SCHEME_PHLEBOLOGY:{
+			if(cn > (CONFIG_PHLEBOLOGY_SIZE - 1)){
+				cn = (CONFIG_PHLEBOLOGY_SIZE - 1);
 			}
-			else{
-				SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)"Mode: CW");
+			select = sPhlebology[cn].channel;
+			power_1470 = sPhlebology[cn].power_1470;
+			power_980 = sPhlebology[cn].power_980;
+			power_635 = sPhlebology[cn].power_635;
+			posWidth = sPhlebology[cn].poswidth;
+			negWidth = sPhlebology[cn].negwidth;
+			mode = sPhlebology[cn].pulse_mode;				
+			break;
+		}
+		case SCHEME_PROCTOLOGY:{
+			if(cn > (CONFIG_PROCTOLOGY_SIZE - 1)){
+				cn = (CONFIG_PROCTOLOGY_SIZE - 1);
+			}
+			select = sProctology[cn].channel;
+			power_1470 = sProctology[cn].power_1470;
+			power_980 = sProctology[cn].power_980;
+			power_635 = sProctology[cn].power_635;
+			posWidth = sGynecology[cn].poswidth;
+			negWidth = sGynecology[cn].negwidth;
+			mode = sGynecology[cn].pulse_mode;	
+			break;
+		}
+		case SCHEME_GYNECOLOGY:{
+			if(cn > (CONFIG_GYNECOLOGY_SIZE - 1)){
+				cn = (CONFIG_GYNECOLOGY_SIZE - 1);
+			}
+			select = sGynecology[cn].channel;
+			power_1470 = sGynecology[cn].power_1470;
+			power_980 = sGynecology[cn].power_980;
+			power_635 = sGynecology[cn].power_635;
+			posWidth = sGynecology[cn].poswidth;
+			negWidth = sGynecology[cn].negwidth;
+			mode = sGynecology[cn].pulse_mode;		
+			break;
+		}
+		case SCHEME_ENT:{
+			if(cn > (CONFIG_ENT_SIZE - 1)){
+				cn = (CONFIG_ENT_SIZE - 1);
+			}
+			select = sENT[cn].channel;
+			power_1470 = sENT[cn].power_1470;
+			power_980 = sENT[cn].power_980;
+			power_635 = sENT[cn].power_635;
+			posWidth = sENT[cn].poswidth;
+			negWidth = sENT[cn].negwidth;
+			mode = sENT[cn].pulse_mode;	
+			break;
+		}
+		case SCHEME_NEUROSURGERY:{
+			if(cn > (CONFIG_NEUROSURGERY_SIZE - 1)){
+				cn = (CONFIG_NEUROSURGERY_SIZE - 1);
+			}
+			select = sNeurosurgery[cn].channel;
+			power_1470 = sNeurosurgery[cn].power_1470;
+			power_980 = sNeurosurgery[cn].power_980;
+			power_635 = sNeurosurgery[cn].power_635;
+			posWidth = sNeurosurgery[cn].poswidth;
+			negWidth = sNeurosurgery[cn].negwidth;
+			mode = sNeurosurgery[cn].pulse_mode;
+			break;
+		}
+		case SCHEME_DERMATOLOGY:{
+			if(cn > (CONFIG_DERMATOLOGY_SIZE - 1)){
+				cn = (CONFIG_DERMATOLOGY_SIZE - 1);
+			}
+			select = sDermatology[cn].channel;
+			power_1470 = sDermatology[cn].power_1470;
+			power_980 = sDermatology[cn].power_980;
+			power_635 = sDermatology[cn].power_635;
+			posWidth = sDermatology[cn].poswidth;
+			negWidth = sDermatology[cn].negwidth;
+			mode = sDermatology[cn].pulse_mode;
+			break;
+		}
+		case SCHEME_LIPOSUCTION:{
+			if(cn > (CONFIG_LIPOSUCTION_SIZE - 1)){
+				cn = (CONFIG_LIPOSUCTION_SIZE - 1);
+			}
+			select = sLiposuction[cn].channel;
+			power_1470 = sLiposuction[cn].power_1470;
+			power_980 = sLiposuction[cn].power_980;
+			power_635 = sLiposuction[cn].power_635;
+			posWidth = sLiposuction[cn].poswidth;
+			negWidth = sLiposuction[cn].negwidth;
+			mode = sLiposuction[cn].pulse_mode;
+			break;		
+		}
+		case SCHEME_DENTISRTY:{
+			if(cn > (CONFIG_DENTISRTY_SIZE - 1)){
+				cn = (CONFIG_DENTISRTY_SIZE - 1);
+			}
+			select = sDentistry[cn].channel;
+			power_1470 = sDentistry[cn].power_1470;
+			power_980 = sDentistry[cn].power_980;
+			power_635 = sDentistry[cn].power_635;
+			posWidth = sDentistry[cn].poswidth;
+			negWidth = sDentistry[cn].negwidth;
+			mode = sDentistry[cn].pulse_mode;
+			break;			
+		}
+		case SCHMEM_THERAPY:{
+			if(cn > (CONFIG_THERAPY_SIZE - 1)){
+				cn = (CONFIG_THERAPY_SIZE - 1);
+			}
+			select = sTherapy[cn].channel;
+			power_1470 = sTherapy[cn].power_1470;
+			power_980 = sTherapy[cn].power_980;
+			power_635 = sTherapy[cn].power_635;
+			posWidth = sTherapy[cn].poswidth;
+			negWidth = sTherapy[cn].negwidth;
+			mode = sTherapy[cn].pulse_mode;
+			break;				
+		}
+		case SCHEME_CUSTIOM:{
+			if(cn < 0)
+				cn = 0;
+			if(cn > CONFIG_HMI_SCHEME_NUM)
+				cn = CONFIG_HMI_SCHEME_NUM;		
+			select = FDRAM0[cn * 64 + FD_LASER_CHANNEL_SELECT];	
+			power_1470 = FDRAM0[cn * 64 + FD_LASER_POWER_1470];
+			power_980 = FDRAM0[cn * 64 + FD_LASER_POWER_980];
+			power_635 = FDRAM0[cn * 64 + FD_LASER_POWER_635];
+			posWidth = FDRAM0[cn * 64 + FD_LASER_POSWIDTH];
+			negWidth = FDRAM0[cn * 64 + FD_LASER_NEGWIDTH];
+			mode = FDRAM0[cn * 64 + FD_LASER_PULSE_MODE];
+			break;
+		}
+		default:break;
+	}
+	switch(select){
+		case LASER_CHANNEL_1470:{
+			sprintf(dispBuf1, "1470nm: %3.1fW", ((float)power_1470 / 10.0F));
+			if(mode == LASER_MODE_CW){
+				sprintf(dispBuf2, "CW:1470nm");
+			}
+			if(mode == LASER_MODE_MP){
+				sprintf(dispBuf2, "PULSE:1470nm;On:%dmS;Off:%dmS", posWidth, negWidth);
 			}
 			break;
 		}
-		case LASER_MODE_MP:{
-			posWidth = FDRAM0[cn * 64 + FD_LASER_MP_POSWIDTH];
-			negWidth = FDRAM0[cn * 64 + FD_LASER_MP_NEGWIDTH];
-			sprintf(dispBuf2, "Mode: Pulsed,OnTime:%dmS, OffTime:%dmS", posWidth, negWidth );
-			if(cn < 16){
-				SetTextValue(GDDC_PAGE_SCHEME_0, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)dispBuf2);
+		case LASER_CHANNEL_980:{
+			sprintf(dispBuf1, "980nm: %3.1fW", ((float)power_980 / 10.0F));
+			if(mode == LASER_MODE_CW){
+				sprintf(dispBuf2, "CW:980nm");
 			}
-			else{
-				SetTextValue(GDDC_PAGE_SCHEME_1, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)dispBuf2);
+			if(mode == LASER_MODE_MP){
+				sprintf(dispBuf2, "PULSE:980nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+			}						
+			break;
+		}
+		case LASER_CHANNEL_635:{
+			sprintf(dispBuf1, "635nm: %3.1fW", ((float)power_635 / 10.0F));
+			if(mode == LASER_MODE_CW){
+				sprintf(dispBuf2, "CW:635nm");
+			}
+			if(mode == LASER_MODE_MP){
+				sprintf(dispBuf2, "PULSE:635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+			}						
+			break;
+		}
+		case LASER_CHANNEL_1470_980:{
+			sprintf(dispBuf1, "1470nm:%3.1fW,980nm:%3.1fW", ((float)power_1470 / 10.0F), ((float)power_980 / 10.0F));
+			if(mode == LASER_MODE_CW){
+				sprintf(dispBuf2, "CW:1470nm-980nm");
+			}
+			if(mode == LASER_MODE_MP){	
+				sprintf(dispBuf2, "PULSE:1470nm-980nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+			}
+			break;
+		}
+		case LASER_CHANNEL_980_635:{
+			sprintf(dispBuf1, "980nm:%3.1fW,635nm:%3.1fW", ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
+			if(mode == LASER_MODE_CW){
+				sprintf(dispBuf2, "CW:980nm-635nm");
+			}
+			if(mode == LASER_MODE_MP){	
+				sprintf(dispBuf2, "PULSE:980nm-635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+			}		
+			break;
+		}
+		case LASER_CHANNEL_1470_980_635:{
+			sprintf(dispBuf1, "1470nm:%3.1fW,980nm:%3.1fW,635nm:%3.1fW", ((float)power_1470 / 10.0F) , ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
+			if(mode == LASER_MODE_CW){
+				sprintf(dispBuf2, "CW:1470nm-980nm-635nm");
+			}
+			if(mode == LASER_MODE_MP){	
+				sprintf(dispBuf2, "PULSE:1470-980-635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
 			}
 			break;
 		}
 		default:break;
 	}
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)dispBuf1);
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)dispBuf2);
 }
 void unselectSchemeNum(int16_t sel){//反选方案条
-	if(sel < 16){
-		SetButtonValue(GDDC_PAGE_SCHEME_0, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x0);
-	}
-	else{
-		sel -= 16;
-		SetButtonValue(GDDC_PAGE_SCHEME_1, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x0);
-	}	
+	SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x0);
 }
 void seletcSchemeNum(int16_t sel){//选中方案条
 	NVRAM0[EM_SCHEME_NUM_TMP] = sel;
-	if(sel < 16){
-		SetButtonValue(GDDC_PAGE_SCHEME_0, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x1);
-	}
-	else{
-		sel -= 16;
-		SetButtonValue(GDDC_PAGE_SCHEME_1, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x1);
-	}
+	SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x1);
 	updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 }
-void unselectScheme_0_All(void){//反选第一页全部方案条
-	BatchBegin(GDDC_PAGE_SCHEME_0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_0, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_1, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_2, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_3, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_4, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_5, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_6, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_7, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_8, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_9, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_10, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_11, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_12, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_13, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_14, 0x0);
-	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_15, 0x0);
-	BatchEnd();
-}
-void unselectScheme_1_All(void){//反选第二页全部方案条
-	BatchBegin(GDDC_PAGE_SCHEME_1);
+void unselectSchemeAll(void){//反选第一页全部方案条
+	BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_0, 0x0);
 	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_1, 0x0);
 	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_2, 0x0);
@@ -721,7 +1888,7 @@ void updateExtralDisplay(void){//更新额外显示
 	}
 	//平均功率显示
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	switch(NVRAM0[EM_LASER_SELECT]){
+	switch(NVRAM0[EM_LASER_CHANNEL_SELECT]){
 		case LASER_CHANNEL_1470:{
 			averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_1470]) / 10.0F;
 			break;
@@ -787,7 +1954,7 @@ void updateNegWidthDisplay(void){//更新负脉宽显示
 
 void updateStandbyDisplay(void){//更新方案显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	float freq, dutyCycle, barValue;
+	float barValue;
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] +NVRAM0[EM_LASER_POWER_635];
 #if CONFIG_ENABLE_LASER_980 == 1
@@ -863,7 +2030,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_650, NVRAM0[DM_AIM_BRG]);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_1470){//1470
+	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){//1470
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_1470]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
 		barValue = NVRAM0[EM_LASER_POWER_1470] * 100.0F / CONFIG_MAX_LASER_POWER_1470;
@@ -872,7 +2039,7 @@ void updateStandbyDisplay(void){//更新方案显示
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_980, 0);
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_635, 0);
 	}
-	if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_980){//980
+	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){//980
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_980]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
 		barValue = NVRAM0[EM_LASER_POWER_980] * 100.0F / CONFIG_MAX_LASER_POWER_980;
@@ -881,7 +2048,7 @@ void updateStandbyDisplay(void){//更新方案显示
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_980, 1);
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_635, 0);
 	}
-	if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_635){//635
+	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){//635
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_635]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
 		barValue = NVRAM0[EM_LASER_POWER_635] * 100.0F / CONFIG_MAX_LASER_POWER_635;
@@ -936,7 +2103,7 @@ void updateReadyDisplay(void){//更新READY显示
 	float displayPower;
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	switch(NVRAM0[EM_LASER_SELECT]){
+	switch(NVRAM0[EM_LASER_CHANNEL_SELECT]){
 		case LASER_CHANNEL_1470:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_1470] / 10.0F;
 			sprintf(dispBuf, "1470nm");
@@ -1052,6 +2219,8 @@ void dcHmiLoopInit(void){//初始化模块
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
 	hmiUartInit();
+	schemeInit(0);//不回复自定义方案
+	loadSelectScheme();
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
 	//检查VOLUME储存值是否合规
 	NVRAM0[TMP_REG_0] = 0;
@@ -1066,10 +2235,6 @@ void dcHmiLoopInit(void){//初始化模块
 	NVRAM0[TMP_REG_1] = CONFIG_LCD_MAX_DC;
 	LIMS16(DM_LCD_BRG, TMP_REG_0, TMP_REG_1);
 	
-	NVRAM0[TMP_REG_0] = 0;
-	NVRAM0[TMP_REG_1] = 7;
-	LIMS16(DM_LANGUAGE, TMP_REG_0, TMP_REG_1);
-	
 	NVRAM0[EM_FAN_SET_SPEED] = 0;
 	NVRAM0[EM_FAN_GET_SPEED] = 0;
 	SSET(R_RFID_PASS);
@@ -1081,7 +2246,6 @@ void dcHmiLoopInit(void){//初始化模块
 	RRES(R_FAULT);
 	//脚踏插入
 	SSET(R_FOOTSWITCH_PLUG);
-	mySchemeInit();
 }
 static void temperatureLoop(void){//温度轮询轮询
 	TNTC(EM_LASER_TEMP, SPREG_ADC_0);//CODE转换为NTC测量温度温度
@@ -1465,8 +2629,7 @@ void dcHmiLoop(void){//HMI轮训程序
         }                                                                             
 	}
 	//状态机
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
-		loadScheme();//从掉电存储寄存器中恢复方案参数	
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤		
 		NVRAM0[DM_DC_OLD_PASSCODE2] = 0;
 		NVRAM0[DM_DC_OLD_PASSCODE3] = 0;
 	
@@ -1740,25 +2903,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_STANDBY_KEY_ENTER_OPTION_DOWN);
-		}else 
-		if(LD(R_STANDBY_KEY_ENTER_SCHEME_DOWN)){//点击SCHEME 默认显示第一页
-			//备份FDRAM0->FDRAM1
-			memcpy((uint8_t*)FDRAM1, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
-			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-			if(NVRAM0[DM_SCHEME_NUM] < 16){//第一页
-				updateScheme_0_Display();//更新方案第一页名称
-				seletcSchemeNum(NVRAM0[DM_SCHEME_NUM]);
-				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_0;
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_0;
-			}
-			else{
-				updateScheme_1_Display();//更新方案第二页名称
-				seletcSchemeNum(NVRAM0[DM_SCHEME_NUM]);
-				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_1;
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_1;
-			}
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			RRES(R_STANDBY_KEY_ENTER_SCHEME_DOWN);
 		}else
 		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
 			CLRD(EM_LASER_RELEASE_TIME);
@@ -1833,19 +2977,19 @@ void dcHmiLoop(void){//HMI轮训程序
 			printf("%s,%d,%s:acoustic energy max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MAX]);
 			
 			//校正输出功率
-			if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_1470){
+			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, NVRAM0[EM_LASER_POWER_1470], &deviceConfig);
 				UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;
 				UPDAC1();
 			}
-			if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_980){
+			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){
 				NVRAM0[SPREG_DAC_0] = 0;
 				UPDAC0();
 				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_CHANNEL_980, NVRAM0[EM_LASER_POWER_980], &deviceConfig);
 				UPDAC1();
 			}
-			if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_635){
+			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 			}
@@ -1862,28 +3006,18 @@ void dcHmiLoop(void){//HMI轮训程序
 			updateReadyDisplay();
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_NEXT_DOWN)){
-			if(NVRAM0[DM_SCHEME_NUM] < (CONFIG_HMI_SCHEME_NUM - 1)){
-				ADDS1(DM_SCHEME_NUM);//+1
-				loadScheme();//DM->EM
-				updateStandbyDisplay();
-			}
+			goNextScheme();
+			loadSelectScheme();//切换方案				
+			updateStandbyDisplay();
 			vTaskDelay(100);
 			RRES(R_STANDBY_KEY_SCHEME_NEXT_DOWN);
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_LAST_DOWN)){
-			if(NVRAM0[DM_SCHEME_NUM] > 0){
-				DECS1(DM_SCHEME_NUM);//-1
-				loadScheme();//DM->EM
-				updateStandbyDisplay();	
-			}
+			goLastScheme();
+			loadSelectScheme();
+			updateStandbyDisplay();	
 			vTaskDelay(100);
 			RRES(R_STANDBY_KEY_SCHEME_LAST_DOWN);
-		}
-		if(LD(R_STANDBY_KEY_SCHEME_SAVE_DOWN)){//save down	
-			saveScheme();//EM->FD
-			FDSAV_ONE(NVRAM0[DM_SCHEME_NUM]);//FDRAM->EPROM
-			vTaskDelay(10);
-			RRES(R_STANDBY_KEY_SCHEME_SAVE_DOWN);			
 		}
 		return;
 	}
@@ -2179,18 +3313,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_OPTION_KEY_ENTER_INFORMATION_DOWN);
 		}
-		if(LD(R_OPTION_KEY_RESTORE_DOWN)){//恢复默认值
-				//optionKeyEnable(false);//锁定按键
-				loadDefault();
-				lockPreScheme();
-				NVFSAVE();//强制更新NVRAM
-				updateOptionDisplay();//更新Option显示
-				SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
-				//optionKeyEnable(true);//解锁按键
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
-				SetScreen(NVRAM0[EM_DC_PAGE]);
-				RRES(R_OPTION_KEY_RESTORE_DOWN);
-		}
 		if(LD(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN)){//进入诊断状态
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
@@ -2209,154 +3331,183 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME_0){//方案界面第一页
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME){//方案界面第一页
+		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_0_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 0){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 0 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 0;
-				updateSchemeInfo(0);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 16 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 16;				
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_0_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_1_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 1){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 1;
-				updateSchemeInfo(1);
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 1 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 1;			
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 17 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 17;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_1_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_2_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 2){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 2;
-				updateSchemeInfo(2);
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 2 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 2;		
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 18 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 18;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_2_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_3_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 3){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 3 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 3;
-				updateSchemeInfo(3);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 19 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 18;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_3_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_4_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 4){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 4 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 4;
-				updateSchemeInfo(4);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 20 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 20;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_4_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_5_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 5){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 5 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 5;
-				updateSchemeInfo(5);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 21 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 21;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_5_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_6_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 6){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 6;
-				updateSchemeInfo(6);
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 6 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 6;			
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 22 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 22;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_6_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_7_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 7){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 7 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 7;
-				updateSchemeInfo(7);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 23 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 23;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_7_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_8_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 8){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 8;
-				updateSchemeInfo(8);
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 8 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 8;	
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 24 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 24;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_8_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_9_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 9){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 9;
-				updateSchemeInfo(9);
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 9 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 9;	
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 25 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 25;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_9_DOWN);
 		}
-		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_10_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 10){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 10 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 10;
-				updateSchemeInfo(10);
+				
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 26 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 26;
+			}	
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_10_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_11_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 11){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 11  && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 11;
-				updateSchemeInfo(11);
-			}
+			}		
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 27 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 27;
+			}	
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_11_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_12_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 12){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 12 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 12;
-				updateSchemeInfo(12);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 28 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 28;
+			}	
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_12_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_13_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 13){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 13 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 13;
-				updateSchemeInfo(13);
-			}			
+			}	
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 29 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 29;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_13_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_14_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 14){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 14 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 14;
-				updateSchemeInfo(14);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 30 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 30;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_14_DOWN);
 		}
 		
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_15_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 15){
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 15 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 15;
-				updateSchemeInfo(15);
 			}
+			if(NVRAM0[EM_SCHEME_NUM_TMP] != 31 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
+				NVRAM0[EM_SCHEME_NUM_TMP] = 31;
+			}
+			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);			
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_15_DOWN);
 		}
-		
-		if(LD(R_SCHEME_KEY_OK_DOWN)){//确定
-			NVRAM0[DM_SCHEME_NUM] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
-			loadScheme();
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面						
-			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateStandbyDisplay();
-			returnStandbyDisplay();
-			RRES(R_SCHEME_KEY_OK_DOWN);
-		}
-		if(LD(R_SCHEME_KEY_CANCEL_DOWN)){//取消
-			//从FDRAM1中恢复FDRAM0
-			memcpy((uint8_t*)FDRAM0, (uint8_t*)FDRAM1, (CONFIG_FDRAM_SIZE*2));
-			loadScheme();//FD->EM
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面						
-			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateStandbyDisplay();
-			returnStandbyDisplay();
-			RRES(R_SCHEME_KEY_CANCEL_DOWN);
-		}
 		if(LD(R_SCHEME_KEY_RENAME_DOWN)){//改名
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
@@ -2365,207 +3516,19 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_SCHEME_KEY_RENAME_DOWN);
 		}
-		if(LD(R_SCHEME_KEY_NEXT_SCHEME)){//第一页->第二页
-			updateScheme_1_Display();//更新第二页
-			seletcSchemeNum(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中条
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中详细信息
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_1;
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_1;
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			RRES(R_SCHEME_KEY_NEXT_SCHEME);
-		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME_1){//方案界面第二页
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_16_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 16){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 16;
-				updateSchemeInfo(16);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_16_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_17_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 17){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 17;
-				updateSchemeInfo(17);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_17_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_18_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 18){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 18;
-				updateSchemeInfo(18);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_18_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_19_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 19){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 19;
-				updateSchemeInfo(19);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_19_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_20_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 20){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 20;
-				updateSchemeInfo(20);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_20_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_21_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 21){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 21;
-				updateSchemeInfo(21);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_21_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_22_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 22){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 22;
-				updateSchemeInfo(22);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_22_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_23_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 23){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 23;
-				updateSchemeInfo(23);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_23_DOWN);
-		}
-
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_24_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 24){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 24;
-				updateSchemeInfo(24);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_24_DOWN);
-		}		
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_25_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 25){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 25;
-				updateSchemeInfo(25);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_25_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_26_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 26){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 26;
-				updateSchemeInfo(26);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_26_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_27_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 27){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 27;
-				updateSchemeInfo(27);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_27_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_28_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 28){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 28;
-				updateSchemeInfo(28);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_28_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_29_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 29){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 29;
-				updateSchemeInfo(29);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_29_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_30_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 30){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 30;
-				updateSchemeInfo(30);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_30_DOWN);
-		}
-		
-		if(LD(R_SCHEME_KEY_SCHEME_SELECT_31_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] != 31){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 31;
-				updateSchemeInfo(31);
-			}
-			RRES(R_SCHEME_KEY_SCHEME_SELECT_31_DOWN);
-		}
-			
-		if(LD(R_SCHEME_KEY_OK_DOWN)){//确定
-			NVRAM0[DM_SCHEME_NUM] = NVRAM0[EM_SCHEME_NUM_TMP];
-			loadScheme();
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面						
-			SetScreen(NVRAM0[EM_DC_PAGE]);				
-			updateStandbyDisplay();
-			returnStandbyDisplay();
-			RRES(R_SCHEME_KEY_OK_DOWN);
-		}
-		if(LD(R_SCHEME_KEY_CANCEL_DOWN)){//取消
-			//从FDRAM1中恢复FDRAM0
-			memcpy((uint8_t*)FDRAM0, (uint8_t*)FDRAM1, (CONFIG_FDRAM_SIZE*2));
-			loadScheme();//FD->EM
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面						
-			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateStandbyDisplay();
-			returnStandbyDisplay();
-			RRES(R_SCHEME_KEY_CANCEL_DOWN);
-		}
-		if(LD(R_SCHEME_KEY_RENAME_DOWN)){//改名
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
-			//将EM_SCHEME_NUM_TMP指向的名称更新RENAME输入框
-			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM0 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			RRES(R_SCHEME_KEY_RENAME_DOWN);
-		}
-		if(LD(R_SCHEME_KEY_LAST_SCHEME)){//第二页->第一页
-			updateScheme_0_Display();//更新第一页
-			seletcSchemeNum(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中条
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);//更新选中详细信息
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_0;
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_0;
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			RRES(R_SCHEME_KEY_LAST_SCHEME);
-		}		
-		return;
-	}
+	
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RENAME){//方案改名
-		if(LD(R_RENAME_TEXTDISPLAY_READ_DONE)){//更名完毕				
-			if(NVRAM0[EM_SCHEME_NUM_TMP] < 16){
-				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_0;
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_0;
-			}
-			else{
-				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_1;
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_1;
-			}
+		if(LD(R_RENAME_TEXTDISPLAY_READ_DONE)){//更名完毕					
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_RENAME_TEXTDISPLAY_READ_DONE);	
 		}
-		else if(LD(R_RENAME_KEY_EXIT_DOWN)){
-			if(NVRAM0[EM_SCHEME_NUM_TMP] < 16){
-				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_0;
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_0;
-			}
-			else{
-				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME_1;
-				NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_1;
-			}
+		else if(LD(R_RENAME_KEY_EXIT_DOWN)){	
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_RENAME_KEY_EXIT_DOWN);
 		}
@@ -2768,13 +3731,7 @@ static void NotifyTouchXY(uint8_t press,uint16_t x,uint16_t y){
 }
 
 
-/*! 
-*  \brief  更新数据
-*/ 
-static void UpdateUI(void){
-	uint8_t err;
-	err = err;
-}
+
 
 
                                                                           

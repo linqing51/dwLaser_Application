@@ -17,15 +17,10 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 				case GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME:{
 					tmp = NVRAM0[EM_SCHEME_NUM_TMP];
 					if(strlen((const char*)str) <= CONFIG_SCHEME_NAME_SIZE){
-						strcpy((char*)(FDRAM0 + (tmp * 64)), (const char*)str);
-						if(tmp < 16){
-							SetTextValue(GDDC_PAGE_SCHEME_0, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
-						}
-						else{
-							SetTextValue(GDDC_PAGE_SCHEME_1, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp - 16), str);
-						}
+						strcpy((char*)&FDRAM0[tmp * 64 + EM_LASER_SCHEME_NAME], (char*)str);
+						SetTextValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
+						SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					}
-					SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					break;
 				}
 				default:break;

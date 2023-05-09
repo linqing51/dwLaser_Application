@@ -125,15 +125,15 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 #endif
 void STLAR(void){//开始发射脉冲
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
-	if(LD(R_ACOUSTIC_ENABLE) && ((NVRAM0[DM_SCHEME_NUM] < 3) || (NVRAM0[DM_SCHEME_NUM] > 5))){
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
-	}
-	else if((NVRAM0[DM_SCHEME_NUM] >= 3) && (NVRAM0[DM_SCHEME_NUM] <= 5)){
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_5;//
-	}
-	else{
-		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//激光发射固定间隔
-	}
+//	if(LD(R_ACOUSTIC_ENABLE) && ((NVRAM0[DM_SCHEME_NUM] < 3) || (NVRAM0[DM_SCHEME_NUM] > 5))){
+//		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音 CW模式
+//	}
+//	else if((NVRAM0[DM_SCHEME_NUM] >= 3) && (NVRAM0[DM_SCHEME_NUM] <= 5)){
+//		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_5;//
+//	}
+//	else{
+//		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//激光发射固定间隔
+//	}
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
 	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 	NVRAM0[SPREG_BEEM_COUNTER]= 0;
@@ -175,13 +175,13 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 }
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
-		if(NVRAM0[EM_LASER_SELECT] & LASER_CHANNEL_1470){
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_1470){
 			SET_LASER_1470_ON;
 		}
-		if(NVRAM0[EM_LASER_SELECT] & LASER_CHANNEL_980){
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_980){
 			SET_LASER_980_ON;
 		}
-		if(NVRAM0[EM_LASER_SELECT] & LASER_CHANNEL_635){//打开红激光
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_635){//打开红激光
 			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
 		}
 		LaserFlag_Emiting = true;

@@ -9,15 +9,15 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value > 100){
 						value = 100;
 					}
-					if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_1470){//1470
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){//1470
 						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1470;
 						NVRAM0[EM_LASER_POWER_1470] = (int16_t)fpwr;
 					}
-					if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_980){//980
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){//980
 						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_980;
 						NVRAM0[EM_LASER_POWER_980] = (int16_t)fpwr;
 					}
-					if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_635){//635
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){//635
 						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_635;
 						NVRAM0[EM_LASER_POWER_635] = (int16_t)fpwr;
 					}

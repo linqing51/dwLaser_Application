@@ -4,11 +4,7 @@
 #pragma pack(push, 4)
 int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-int16_t FDRAM[CONFIG_FDRAM_SIZE];//存档寄存器
-uint8_t LKSRAM[CONFIG_LKSRAM_SIZE];//通信发送缓冲区
-uint8_t LKRRAM[CONFIG_LKRRAM_SIZE];//通信接收缓冲区
-int16_t FDRAM0[CONFIG_FDRAM_SIZE];//存档寄存器
-int16_t FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器 
+int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
 uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
 #pragma pack(pop)
 /*****************************************************************************/
@@ -25,7 +21,6 @@ uint8_t TD_200MS_SP = 0;
 uint8_t TD_500MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
-/******************************************************************************/
 /******************************************************************************/
 void sPlcIsrEnable(void){
 }
@@ -284,7 +279,6 @@ void sPlcInit(void){//软逻辑初始化
 	loadDeviceConfig();//载入硬件配置
 	sPlcNvramLoad();//上电恢复NVRAM
 	sPlcFdramLoad();//上电恢复FDRAM
-	lockPreScheme();//恢复预设方案
 	BootloadCrc = getOriginBootloadCrc();
 	ApplicationCrc = getOriginAppCrc();
 	printf("%s,%d,%s:bootload crc:0x%08X\n",__FILE__, __LINE__, __func__, BootloadCrc);

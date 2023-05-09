@@ -136,8 +136,7 @@ extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-extern int16_t FDRAM0[CONFIG_FDRAM_SIZE];//存档寄存器
-extern int16_t FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
 extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒
@@ -176,7 +175,6 @@ extern void sPlcInputInit(void);
 extern void sPlcInputRefresh(void);
 extern void sPlcOutputInit(void);
 extern void sPlcOutputRefresh(void);
-extern void sPlcloadDefault(void);
 extern void sPlcIsrDisable(void);
 extern void sPlcIsrEnable(void);
 extern void sPlcTimerInit(void);//硬件sTimer计时器初始化
