@@ -11,61 +11,80 @@ myScheme_t sLiposuction[32];//6
 myScheme_t sDentistry[32];//7
 myScheme_t sTherapy[32];//8
 /*****************************************************************************/
+//void printScheme(int16_t fdram){//打印FDRAM中SCHMEM内容
+//	int16_t i;
+//	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+//	printf("%s,%d,%s:Display Scheme at FDRAM%d\n", __FILE__, __LINE__, __func__, fdram);
+//	for(i = 0;i <CONFIG_HMI_SCHEME_NUM; i++){
+//		printf("%s,%d,%s:name:%s\n", __FILE__, __LINE__, __func__, (char*)(&NVRAM0[FD_LASER_SCHEME_NAME]));
+//		printf("%s,%d,%s:select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[FD_LASER_CHANNEL_SELECT]);
+//		printf("%s,%d,%s:mode:%d\n", __FILE__, __LINE__, __func__, NVRAM0[FD_LASER_PULSE_MODE]);
+//		printf("%s,%d,%s:power 1470:%d\n", __FILE__, __LINE__, __func__, NVRAM0[FD_LASER_POWER_1470]);
+//		printf("%s,%d,%s:power 980:%d\n", __FILE__, __LINE__, __func__, NVRAM0[FD_LASER_POWER_980]);
+//		printf("%s,%d,%s:power 635:%d\n", __FILE__, __LINE__, __func__, NVRAM0[FD_LASER_POWER_635]);
+//		printf("%s,%d,%s:poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[FD_LASER_POSWIDTH]);
+//		printf("%s,%d,%s:negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[FD_LASER_NEGWIDTH]);
+//	}
+//}
+
 void goNextScheme(void){//切换下一个方案
 	switch(NVRAM0[DM_SCHEME_CLASSIFY]){
 		case SCHEME_PHLEBOLOGY:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 2){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_PHLEBOLOGY_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
 		}
 		case SCHEME_PROCTOLOGY:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 5){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_PROCTOLOGY_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
 		}
 		case SCHEME_GYNECOLOGY:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 21){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_GYNECOLOGY_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
 		}
 		case SCHEME_ENT:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 15){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_ENT_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
 		}
 		case SCHEME_NEUROSURGERY:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 3){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_NEUROSURGERY_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}				
 			break;
 		}
 		case SCHEME_DERMATOLOGY:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 7){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_DERMATOLOGY_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
 		}
 		case SCHEME_LIPOSUCTION:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 6){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_LIPOSUCTION_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
 		}
 		case SCHEME_DENTISRTY:{
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_DENTISRTY_SIZE - 1)){
+					ADDS1(DM_SCHEME_INDEX);
+			}
 			break;
 		}
 		case SCHMEM_THERAPY:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 7){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_THERAPY_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
 		}	
 		case SCHEME_CUSTIOM:{
-			if(NVRAM0[DM_SCHEME_INDEX] < 31){
+			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_CUSTIOM_SIZE - 1)){
 				ADDS1(DM_SCHEME_INDEX);
 			}
 			break;
@@ -79,11 +98,8 @@ void goLastScheme(void){//切换上一个方案
 			DECS1(DM_SCHEME_INDEX);
 	}
 }
-
-void loadSelectScheme(void){//将方案写入EM	
-	uint8_t index;
-	index = NVRAM0[DM_SCHEME_INDEX];//获取当前方案编号
-	switch(NVRAM0[DM_SCHEME_CLASSIFY]){
+void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM	
+	switch(classify){
 		case SCHEME_PHLEBOLOGY:{
 			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_PHLEBOLOGY_SIZE-1)){
 				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_PHLEBOLOGY_SIZE-1);
@@ -99,8 +115,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}
 		case SCHEME_PROCTOLOGY:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_PROCTOLOGY_SIZE - 1)){
-				 NVRAM0[DM_SCHEME_INDEX] = (CONFIG_PROCTOLOGY_SIZE - 1);
+			if(index > (CONFIG_PROCTOLOGY_SIZE - 1)){
+				 index = (CONFIG_PROCTOLOGY_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sProctology[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sProctology[index].channel;
@@ -113,8 +129,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;			
 		}
 		case SCHEME_GYNECOLOGY:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_GYNECOLOGY_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_GYNECOLOGY_SIZE - 1);
+			if(index > (CONFIG_GYNECOLOGY_SIZE - 1)){
+				index = (CONFIG_GYNECOLOGY_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sGynecology[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sGynecology[index].channel;
@@ -127,8 +143,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}			
 		case SCHEME_ENT:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_ENT_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_ENT_SIZE - 1);
+			if(index > (CONFIG_ENT_SIZE - 1)){
+				index = (CONFIG_ENT_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sENT[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sENT[index].channel;
@@ -141,8 +157,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}			
 		case SCHEME_NEUROSURGERY:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_NEUROSURGERY_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_NEUROSURGERY_SIZE - 1);
+			if(index > (CONFIG_NEUROSURGERY_SIZE - 1)){
+				index = (CONFIG_NEUROSURGERY_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sNeurosurgery[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sNeurosurgery[index].channel;
@@ -155,8 +171,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}
 		case SCHEME_DERMATOLOGY:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_DERMATOLOGY_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_DERMATOLOGY_SIZE - 1);
+			if(index > (CONFIG_DERMATOLOGY_SIZE - 1)){
+				index = (CONFIG_DERMATOLOGY_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sDermatology[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sDermatology[index].channel;
@@ -169,8 +185,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}
 		case SCHEME_LIPOSUCTION:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_LIPOSUCTION_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_LIPOSUCTION_SIZE - 1);
+			if(index > (CONFIG_LIPOSUCTION_SIZE - 1)){
+				index = (CONFIG_LIPOSUCTION_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sLiposuction[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sLiposuction[index].channel;
@@ -183,8 +199,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}
 		case SCHEME_DENTISRTY:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_DENTISRTY_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_DENTISRTY_SIZE - 1);
+			if(index > (CONFIG_DENTISRTY_SIZE - 1)){
+				index = (CONFIG_DENTISRTY_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sDentistry[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sDentistry[index].channel;
@@ -197,8 +213,8 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}
 		case SCHMEM_THERAPY:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_THERAPY_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_THERAPY_SIZE - 1);
+			if(index > (CONFIG_THERAPY_SIZE - 1)){
+				index = (CONFIG_THERAPY_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sTherapy[index].name));
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = sTherapy[index].channel;
@@ -211,31 +227,31 @@ void loadSelectScheme(void){//将方案写入EM
 			break;
 		}
 		case SCHEME_CUSTIOM:{
-			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_CUSTIOM_SIZE - 1)){
-				NVRAM0[DM_SCHEME_INDEX] = (CONFIG_CUSTIOM_SIZE - 1);
+			if(index > (CONFIG_CUSTIOM_SIZE - 1)){
+				index = (CONFIG_CUSTIOM_SIZE - 1);
 			}
-			memcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(&FDRAM0[index * 64 + EM_LASER_SCHEME_NAME]) , 112);
-			NVRAM0[EM_LASER_CHANNEL_SELECT] = FDRAM0[index * 64 + EM_LASER_CHANNEL_SELECT];
-			NVRAM0[EM_LASER_PULSE_MODE] = FDRAM0[index * 64 + EM_LASER_PULSE_MODE];
-			NVRAM0[EM_LASER_POWER_1470] = FDRAM0[index * 64 + EM_LASER_POWER_1470];
-			NVRAM0[EM_LASER_POWER_980] = FDRAM0[index * 64 + EM_LASER_POWER_980];
-			NVRAM0[EM_LASER_POWER_635] = FDRAM0[index * 64 + EM_LASER_POWER_635];
-			NVRAM0[EM_LASER_POSWIDTH] = FDRAM0[index * 64 + EM_LASER_POSWIDTH];
-			NVRAM0[EM_LASER_NEGWIDTH] = FDRAM0[index * 64 + EM_LASER_NEGWIDTH];				
+			memcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(&FDRAM1[index * 64 + FD_LASER_SCHEME_NAME]) , 112);
+			NVRAM0[EM_LASER_CHANNEL_SELECT] = FDRAM1[index * 64 + FD_LASER_CHANNEL_SELECT];
+			NVRAM0[EM_LASER_PULSE_MODE] = FDRAM1[index * 64 + FD_LASER_PULSE_MODE];
+			NVRAM0[EM_LASER_POWER_1470] = FDRAM1[index * 64 + FD_LASER_POWER_1470];
+			NVRAM0[EM_LASER_POWER_980] = FDRAM1[index * 64 + FD_LASER_POWER_980];
+			NVRAM0[EM_LASER_POWER_635] = FDRAM1[index * 64 + FD_LASER_POWER_635];
+			NVRAM0[EM_LASER_POSWIDTH] = FDRAM1[index * 64 + FD_LASER_POSWIDTH];
+			NVRAM0[EM_LASER_NEGWIDTH] = FDRAM1[index * 64 + FD_LASER_NEGWIDTH];				
 			break;
 		}
 		default:break;		
 	}
-	printf("%s,%d,%s:scheme classify:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_CLASSIFY]);
-	printf("%s,%d,%s:scheme index:%d\n", __FILE__, __LINE__, __func__, NVRAM0[DM_SCHEME_INDEX]);
+	printf("%s,%d,%s:scheme classify:%d\n", __FILE__, __LINE__, __func__, classify);
+	printf("%s,%d,%s:scheme index:%d\n", __FILE__, __LINE__, __func__, index);
 	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)(&NVRAM0[EM_LASER_SCHEME_NAME]));
 	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_CHANNEL_SELECT]);
 	printf("%s,%d,%s:scheme mode:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_PULSE_MODE]);
-	printf("%s,%d,%s:scheme power 1470:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_1470]);
-	printf("%s,%d,%s:scheme power 980:%d\n", __FILE__, __LINE__, __func__, 	NVRAM0[EM_LASER_POWER_980]);
-	printf("%s,%d,%s:scheme power 635:%d\n", __FILE__, __LINE__, __func__, 	NVRAM0[EM_LASER_POWER_635]);
-	printf("%s,%d,%s:scheme poswidth:%d\n", __FILE__, __LINE__, __func__, 	NVRAM0[EM_LASER_POSWIDTH]);
-	printf("%s,%d,%s:scheme negwidth:%d\n", __FILE__, __LINE__, __func__, 	NVRAM0[EM_LASER_NEGWIDTH]);
+	printf("%s,%d,%s:scheme power 1470:%d\n", __FILE__, __LINE__, __func__,NVRAM0[EM_LASER_POWER_1470]);
+	printf("%s,%d,%s:scheme power 980:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_980]);
+	printf("%s,%d,%s:scheme power 635:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_635]);
+	printf("%s,%d,%s:scheme poswidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POSWIDTH]);
+	printf("%s,%d,%s:scheme negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_NEGWIDTH]);
 }
 
 void schemeInit(uint8_t reDef){//治疗方案初始化
@@ -243,14 +259,14 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	int16_t i;
 	for (i = 0;i < 32; i ++){
 		if(reDef == 1){//自定义方案恢复默认值
-			sprintf(((char*)&FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)]), "custom %d", (i+1)); 
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i+1)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
-			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 1;
-			FDRAM0[FD_LASER_POWER_980 + (i + 64)] = 1;
-			FDRAM0[FD_LASER_POWER_635 + (i + 64)] = 1;
-			FDRAM0[FD_LASER_POSWIDTH + (i + 64)] = 1000;
-			FDRAM0[FD_LASER_NEGWIDTH + (i + 64)] = 1000;	
+			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = i;
+			FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
+			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
+			FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
+			FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;	
 		}
 		else{
 			if(	(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470) 			&&
@@ -260,18 +276,17 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470_635)		&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_980_635)		&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470_980_635)){//自定义方案不正确恢复默认值
-				sprintf(((char*)&FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)]), "custom %d", (i+1)); 
+				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i+1)); 
 				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 				FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 1;
-				FDRAM0[FD_LASER_POWER_980 + (i + 64)] = 1;
-				FDRAM0[FD_LASER_POWER_635 + (i + 64)] = 1;
-				FDRAM0[FD_LASER_POSWIDTH + (i + 64)] = 1000;
-				FDRAM0[FD_LASER_NEGWIDTH + (i + 64)] = 1000;		
+				FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
+				FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
+				FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
+				FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;		
 			}
 		}		
 	}
-	
 /***************************************************************************/
 	//Phlebology
 	//1470nm, CW 8w 80J/cm
@@ -1035,8 +1050,8 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_1470 = 1;
 	p->power_980 = 20;
 	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
+	p->poswidth = 50;
+	p->negwidth = 50;	
 	
 	p = &sDentistry[3];
 	p->name = "Pulpotomy as an adjunct root canal theraphy";
@@ -1045,8 +1060,8 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_1470 = 1;
 	p->power_980 = 15;
 	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
+	p->poswidth = 50;
+	p->negwidth = 50;	
 	
 	p = &sDentistry[4];
 	p->name = "Expose of unerupted teeth";
@@ -1115,8 +1130,8 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_1470 = 1;
 	p->power_980 = 18;
 	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
+	p->poswidth = 50;
+	p->negwidth = 50;	
 	
 	p = &sDentistry[11];
 	p->name = "Reduction of Gingival Hypertrophy";
@@ -1235,8 +1250,8 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_1470 = 1;
 	p->power_980 = 50;
 	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	p->poswidth = 50;
+	p->negwidth = 50;
 
 
 

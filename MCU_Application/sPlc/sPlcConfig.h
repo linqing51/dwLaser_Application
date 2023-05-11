@@ -12,15 +12,15 @@
 #define LASER_CHANNEL_980_635													0x06
 #define LASER_CHANNEL_1470_980_635										0x07
 /*****************************************************************************/
-#define SCHEME_PHLEBOLOGY															0x0100
-#define SCHEME_PROCTOLOGY															0x0200
-#define SCHEME_GYNECOLOGY															0x0300
-#define SCHEME_ENT																		0x0400
-#define SCHEME_NEUROSURGERY														0x0500
-#define SCHEME_DERMATOLOGY														0x0600
-#define SCHEME_LIPOSUCTION														0x0700
-#define SCHEME_DENTISRTY															0x0800
-#define SCHMEM_THERAPY																0x0900
+#define SCHEME_PHLEBOLOGY															0x0001
+#define SCHEME_PROCTOLOGY															0x0002
+#define SCHEME_GYNECOLOGY															0x0003
+#define SCHEME_ENT																		0x0004
+#define SCHEME_NEUROSURGERY														0x0005
+#define SCHEME_DERMATOLOGY														0x0006
+#define SCHEME_LIPOSUCTION														0x0007
+#define SCHEME_DENTISRTY															0x0008
+#define SCHMEM_THERAPY																0x0009
 #define SCHEME_CUSTIOM																0x0000
 /*****************************************************************************/
 //定义分类方案个数
@@ -153,7 +153,7 @@
 #define CONFIG_HMI_DEFAULT_PASSWORD1									0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD2									0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
-#define CONFIG_SCHEME_NAME_SIZE												((FD_LASER_PULSE_MODE - FD_LASER_SCHEME_NAME -1) * 2)//10*2
+#define CONFIG_SCHEME_NAME_SIZE												((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
 //光斑直径定义
 
 #define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
@@ -452,7 +452,8 @@
 #define EM_LASER_POWER_TOTAL										(EM_START + 85)//发射总功率
 #define EM_HMI_OPERA_STEP												(EM_START +	86)//操作步骤								
 #define EM_ERROR_CODE														(EM_START + 87)//错误码					
-#define EM_SCHEME_NUM_TMP												(EM_START + 88)//待确认方案编号		
+#define EM_SCHEME_NUM_TMP												(EM_START + 88)//临时方案编号	
+#define EM_SCHEME_CLASSIFY_TMP									(EM_START + 89)//临时分类编号
 /*****************************************************************************/
 #define EM_DC_PAGE															(EM_START + 90)//HMI页面编号 			
 #define EM_DC_PASSCODE_INDEX										(EM_START + 91)//密码输入位索引		

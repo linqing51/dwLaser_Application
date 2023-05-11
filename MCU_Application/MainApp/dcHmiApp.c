@@ -207,7 +207,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		
 		deviceConfig.mfg_year = 2023;
 		deviceConfig.mfg_month = 5;
-		deviceConfig.mfg_day = 05;
+		deviceConfig.mfg_day = 15;
 		
 		sprintf(deviceConfig.serialNumber, "PH23-E001");
 		deviceConfig.greenLedDc = CONFIG_GREEN_LED_DEFAULT_DC;
@@ -323,12 +323,12 @@ void updateDiognosisInfo(void){//更新诊断信息
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
 }
 
-void updateSchemeDetail(void){//更新选项界面方案名称
+void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	uint8_t index;
-	index = NVRAM0[EM_SCHEME_NUM_TMP];
-	switch(NVRAM0[DM_SCHEME_CLASSIFY]){
+	//uint8_t index;
+	//index = NVRAM0[EM_SCHEME_NUM_TMP];
+	switch(classify){
 		case SCHEME_PHLEBOLOGY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-PHLEBOLOGY");
 			if(strlen((char*)sPhlebology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
@@ -468,7 +468,7 @@ void updateSchemeDetail(void){//更新选项界面方案名称
 		}
 		case SCHEME_GYNECOLOGY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-GYNECOLOGY");
-			if(index < 15){//方案0-15
+			if(index < 16){//方案0-15
 				if(strlen((char*)sGynecology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -987,7 +987,7 @@ void updateSchemeDetail(void){//更新选项界面方案名称
 		}
 		case SCHEME_DENTISRTY:{	
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-DENTISRTY");
-			if(index < 15){//方案0-15
+			if(index < 16){//方案0-15
 				if(strlen((char*)sDentistry[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1260,137 +1260,147 @@ void updateSchemeDetail(void){//更新选项界面方案名称
 		case SCHEME_CUSTIOM:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-CUSTIOM");
 			if(index < 16){
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_0], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_0], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_1])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_1], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_1])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_1], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_2])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_2], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_2])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_2], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_3])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_3], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_3])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_3], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_4])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_4], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_4])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_4], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_5])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_5], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_5])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_5], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_6])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_6], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_6])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_6], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_7])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_7], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_7])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_7], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_8])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_8], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_8])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_8], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_9])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_9], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_9])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_9], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_10])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_10], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_10])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_10], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_11])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_11], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_11])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_11], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_12])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_12], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_12])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_12], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_13])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_13], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_13])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_13], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_14])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_14], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_14])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_14], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_15])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_15], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_15])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_15], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
 				}
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+				
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, true);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,true);	
 			}
 			else{
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_16])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_16], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_16])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_16], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_17])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_17], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_17])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_17], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_18])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_18], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_18])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_18], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_19])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_19], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_19])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_19], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_20])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_20], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_20])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_20], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_21])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_21], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_21])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_21], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_22])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_22], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_22])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_22], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_23])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_23], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_23])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_23], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_24])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_24], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_24])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_24], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_25])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_25], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_25])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_25], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_26])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_26], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_26])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_26], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_27])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_27], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_27])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_27], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_28])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_28], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_28])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_28], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_29])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_29], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_29])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_29], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_30])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_30], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_30])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_30], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
 				}
-				if(strlen((char*)(&FDRAM0[FD_SCHEME_START_31])) <= CONFIG_SCHEME_NAME_SIZE){
-					memcpy(dispBuf, (char*)&FDRAM0[FD_SCHEME_START_31], 112);
+				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_31])) <= CONFIG_SCHEME_NAME_SIZE){
+					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_31], CONFIG_SCHEME_NAME_SIZE);
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
 				}
-			}
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, true);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,true);
+				
+				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);	
+			}		
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -1609,142 +1619,142 @@ void updateWarnMsgDisplay(uint8_t id){//更新警号显示框
 		MsgId = id;
 	}
 }
-void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
+void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参数
 	char dispBuf1[CONFIG_DCHMI_DISKBUF_SIZE], dispBuf2[CONFIG_DCHMI_DISKBUF_SIZE];
 	int16_t mode, select;
 	int16_t	power_1470, power_980, power_635, posWidth, negWidth;
 	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);	
 	memset(dispBuf2, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	switch(NVRAM0[DM_SCHEME_CLASSIFY]){
+	switch(classify){
 		case SCHEME_PHLEBOLOGY:{
-			if(cn > (CONFIG_PHLEBOLOGY_SIZE - 1)){
-				cn = (CONFIG_PHLEBOLOGY_SIZE - 1);
+			if(index > (CONFIG_PHLEBOLOGY_SIZE - 1)){
+				index = (CONFIG_PHLEBOLOGY_SIZE - 1);
 			}
-			select = sPhlebology[cn].channel;
-			power_1470 = sPhlebology[cn].power_1470;
-			power_980 = sPhlebology[cn].power_980;
-			power_635 = sPhlebology[cn].power_635;
-			posWidth = sPhlebology[cn].poswidth;
-			negWidth = sPhlebology[cn].negwidth;
-			mode = sPhlebology[cn].pulse_mode;				
+			select = sPhlebology[index].channel;
+			power_1470 = sPhlebology[index].power_1470;
+			power_980 = sPhlebology[index].power_980;
+			power_635 = sPhlebology[index].power_635;
+			posWidth = sPhlebology[index].poswidth;
+			negWidth = sPhlebology[index].negwidth;
+			mode = sPhlebology[index].pulse_mode;				
 			break;
 		}
 		case SCHEME_PROCTOLOGY:{
-			if(cn > (CONFIG_PROCTOLOGY_SIZE - 1)){
-				cn = (CONFIG_PROCTOLOGY_SIZE - 1);
+			if(index > (CONFIG_PROCTOLOGY_SIZE - 1)){
+				index = (CONFIG_PROCTOLOGY_SIZE - 1);
 			}
-			select = sProctology[cn].channel;
-			power_1470 = sProctology[cn].power_1470;
-			power_980 = sProctology[cn].power_980;
-			power_635 = sProctology[cn].power_635;
-			posWidth = sGynecology[cn].poswidth;
-			negWidth = sGynecology[cn].negwidth;
-			mode = sGynecology[cn].pulse_mode;	
+			select = sProctology[index].channel;
+			power_1470 = sProctology[index].power_1470;
+			power_980 = sProctology[index].power_980;
+			power_635 = sProctology[index].power_635;
+			posWidth = sGynecology[index].poswidth;
+			negWidth = sGynecology[index].negwidth;
+			mode = sGynecology[index].pulse_mode;	
 			break;
 		}
 		case SCHEME_GYNECOLOGY:{
-			if(cn > (CONFIG_GYNECOLOGY_SIZE - 1)){
-				cn = (CONFIG_GYNECOLOGY_SIZE - 1);
+			if(index > (CONFIG_GYNECOLOGY_SIZE - 1)){
+				index = (CONFIG_GYNECOLOGY_SIZE - 1);
 			}
-			select = sGynecology[cn].channel;
-			power_1470 = sGynecology[cn].power_1470;
-			power_980 = sGynecology[cn].power_980;
-			power_635 = sGynecology[cn].power_635;
-			posWidth = sGynecology[cn].poswidth;
-			negWidth = sGynecology[cn].negwidth;
-			mode = sGynecology[cn].pulse_mode;		
+			select = sGynecology[index].channel;
+			power_1470 = sGynecology[index].power_1470;
+			power_980 = sGynecology[index].power_980;
+			power_635 = sGynecology[index].power_635;
+			posWidth = sGynecology[index].poswidth;
+			negWidth = sGynecology[index].negwidth;
+			mode = sGynecology[index].pulse_mode;		
 			break;
 		}
 		case SCHEME_ENT:{
-			if(cn > (CONFIG_ENT_SIZE - 1)){
-				cn = (CONFIG_ENT_SIZE - 1);
+			if(index > (CONFIG_ENT_SIZE - 1)){
+				index = (CONFIG_ENT_SIZE - 1);
 			}
-			select = sENT[cn].channel;
-			power_1470 = sENT[cn].power_1470;
-			power_980 = sENT[cn].power_980;
-			power_635 = sENT[cn].power_635;
-			posWidth = sENT[cn].poswidth;
-			negWidth = sENT[cn].negwidth;
-			mode = sENT[cn].pulse_mode;	
+			select = sENT[index].channel;
+			power_1470 = sENT[index].power_1470;
+			power_980 = sENT[index].power_980;
+			power_635 = sENT[index].power_635;
+			posWidth = sENT[index].poswidth;
+			negWidth = sENT[index].negwidth;
+			mode = sENT[index].pulse_mode;	
 			break;
 		}
 		case SCHEME_NEUROSURGERY:{
-			if(cn > (CONFIG_NEUROSURGERY_SIZE - 1)){
-				cn = (CONFIG_NEUROSURGERY_SIZE - 1);
+			if(index > (CONFIG_NEUROSURGERY_SIZE - 1)){
+				index = (CONFIG_NEUROSURGERY_SIZE - 1);
 			}
-			select = sNeurosurgery[cn].channel;
-			power_1470 = sNeurosurgery[cn].power_1470;
-			power_980 = sNeurosurgery[cn].power_980;
-			power_635 = sNeurosurgery[cn].power_635;
-			posWidth = sNeurosurgery[cn].poswidth;
-			negWidth = sNeurosurgery[cn].negwidth;
-			mode = sNeurosurgery[cn].pulse_mode;
+			select = sNeurosurgery[index].channel;
+			power_1470 = sNeurosurgery[index].power_1470;
+			power_980 = sNeurosurgery[index].power_980;
+			power_635 = sNeurosurgery[index].power_635;
+			posWidth = sNeurosurgery[index].poswidth;
+			negWidth = sNeurosurgery[index].negwidth;
+			mode = sNeurosurgery[index].pulse_mode;
 			break;
 		}
 		case SCHEME_DERMATOLOGY:{
-			if(cn > (CONFIG_DERMATOLOGY_SIZE - 1)){
-				cn = (CONFIG_DERMATOLOGY_SIZE - 1);
+			if(index > (CONFIG_DERMATOLOGY_SIZE - 1)){
+				index = (CONFIG_DERMATOLOGY_SIZE - 1);
 			}
-			select = sDermatology[cn].channel;
-			power_1470 = sDermatology[cn].power_1470;
-			power_980 = sDermatology[cn].power_980;
-			power_635 = sDermatology[cn].power_635;
-			posWidth = sDermatology[cn].poswidth;
-			negWidth = sDermatology[cn].negwidth;
-			mode = sDermatology[cn].pulse_mode;
+			select = sDermatology[index].channel;
+			power_1470 = sDermatology[index].power_1470;
+			power_980 = sDermatology[index].power_980;
+			power_635 = sDermatology[index].power_635;
+			posWidth = sDermatology[index].poswidth;
+			negWidth = sDermatology[index].negwidth;
+			mode = sDermatology[index].pulse_mode;
 			break;
 		}
 		case SCHEME_LIPOSUCTION:{
-			if(cn > (CONFIG_LIPOSUCTION_SIZE - 1)){
-				cn = (CONFIG_LIPOSUCTION_SIZE - 1);
+			if(index > (CONFIG_LIPOSUCTION_SIZE - 1)){
+				index = (CONFIG_LIPOSUCTION_SIZE - 1);
 			}
-			select = sLiposuction[cn].channel;
-			power_1470 = sLiposuction[cn].power_1470;
-			power_980 = sLiposuction[cn].power_980;
-			power_635 = sLiposuction[cn].power_635;
-			posWidth = sLiposuction[cn].poswidth;
-			negWidth = sLiposuction[cn].negwidth;
-			mode = sLiposuction[cn].pulse_mode;
+			select = sLiposuction[index].channel;
+			power_1470 = sLiposuction[index].power_1470;
+			power_980 = sLiposuction[index].power_980;
+			power_635 = sLiposuction[index].power_635;
+			posWidth = sLiposuction[index].poswidth;
+			negWidth = sLiposuction[index].negwidth;
+			mode = sLiposuction[index].pulse_mode;
 			break;		
 		}
 		case SCHEME_DENTISRTY:{
-			if(cn > (CONFIG_DENTISRTY_SIZE - 1)){
-				cn = (CONFIG_DENTISRTY_SIZE - 1);
+			if(index > (CONFIG_DENTISRTY_SIZE - 1)){
+				index = (CONFIG_DENTISRTY_SIZE - 1);
 			}
-			select = sDentistry[cn].channel;
-			power_1470 = sDentistry[cn].power_1470;
-			power_980 = sDentistry[cn].power_980;
-			power_635 = sDentistry[cn].power_635;
-			posWidth = sDentistry[cn].poswidth;
-			negWidth = sDentistry[cn].negwidth;
-			mode = sDentistry[cn].pulse_mode;
+			select = sDentistry[index].channel;
+			power_1470 = sDentistry[index].power_1470;
+			power_980 = sDentistry[index].power_980;
+			power_635 = sDentistry[index].power_635;
+			posWidth = sDentistry[index].poswidth;
+			negWidth = sDentistry[index].negwidth;
+			mode = sDentistry[index].pulse_mode;
 			break;			
 		}
 		case SCHMEM_THERAPY:{
-			if(cn > (CONFIG_THERAPY_SIZE - 1)){
-				cn = (CONFIG_THERAPY_SIZE - 1);
+			if(index > (CONFIG_THERAPY_SIZE - 1)){
+				index = (CONFIG_THERAPY_SIZE - 1);
 			}
-			select = sTherapy[cn].channel;
-			power_1470 = sTherapy[cn].power_1470;
-			power_980 = sTherapy[cn].power_980;
-			power_635 = sTherapy[cn].power_635;
-			posWidth = sTherapy[cn].poswidth;
-			negWidth = sTherapy[cn].negwidth;
-			mode = sTherapy[cn].pulse_mode;
+			select = sTherapy[index].channel;
+			power_1470 = sTherapy[index].power_1470;
+			power_980 = sTherapy[index].power_980;
+			power_635 = sTherapy[index].power_635;
+			posWidth = sTherapy[index].poswidth;
+			negWidth = sTherapy[index].negwidth;
+			mode = sTherapy[index].pulse_mode;
 			break;				
 		}
 		case SCHEME_CUSTIOM:{
-			if(cn < 0)
-				cn = 0;
-			if(cn > CONFIG_HMI_SCHEME_NUM)
-				cn = CONFIG_HMI_SCHEME_NUM;		
-			select = FDRAM0[cn * 64 + FD_LASER_CHANNEL_SELECT];	
-			power_1470 = FDRAM0[cn * 64 + FD_LASER_POWER_1470];
-			power_980 = FDRAM0[cn * 64 + FD_LASER_POWER_980];
-			power_635 = FDRAM0[cn * 64 + FD_LASER_POWER_635];
-			posWidth = FDRAM0[cn * 64 + FD_LASER_POSWIDTH];
-			negWidth = FDRAM0[cn * 64 + FD_LASER_NEGWIDTH];
-			mode = FDRAM0[cn * 64 + FD_LASER_PULSE_MODE];
+			if(index < 0)
+				index = 0;
+			if(index > CONFIG_HMI_SCHEME_NUM)
+				index = CONFIG_HMI_SCHEME_NUM;		
+			select = FDRAM1[index * 64 + FD_LASER_CHANNEL_SELECT];	
+			power_1470 = FDRAM1[index * 64 + FD_LASER_POWER_1470];
+			power_980 = FDRAM1[index * 64 + FD_LASER_POWER_980];
+			power_635 = FDRAM1[index * 64 + FD_LASER_POWER_635];
+			posWidth = FDRAM1[index * 64 + FD_LASER_POSWIDTH];
+			negWidth = FDRAM1[index * 64 + FD_LASER_NEGWIDTH];
+			mode = FDRAM1[index * 64 + FD_LASER_PULSE_MODE];
 			break;
 		}
 		default:break;
@@ -1815,13 +1825,12 @@ void updateSchemeInfo(int16_t cn){//更新SCHEME 详细参数
 	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)dispBuf1);
 	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)dispBuf2);
 }
-void unselectSchemeNum(int16_t sel){//反选方案条
-	SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x0);
+void unselectSchemeNum(int16_t index){//反选方案条
+	SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + index), 0x0);
 }
-void seletcSchemeNum(int16_t sel){//选中方案条
-	NVRAM0[EM_SCHEME_NUM_TMP] = sel;
-	SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + sel), 0x1);
-	updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+void seletcSchemeNum(int16_t classify, int16_t index){//选中方案条
+	SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + index), 0x1);
+	updateSchemeInfo(classify, index);
 }
 void unselectSchemeAll(void){//反选第一页全部方案条
 	BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -2175,26 +2184,23 @@ void updateAcousticDisplay(void){//更新提示音设置
 		sprintf(dispBuf, "%d S", NVRAM0[EM_ACOUSTIC_TIME]);
 		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
 	}
-	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){//MP
-		if(LD(R_ACOUSTIC_ENABLE)){
-			cycle = NVRAM0[EM_ACOUSTIC_TIME] / NVRAM0[EM_ACOUSTIC_TIME_STEP];
-			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-			sprintf(dispBuf, "%d Cycle", cycle);
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
-			
-			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-			sprintf(dispBuf, "%d S", NVRAM0[EM_ACOUSTIC_TIME]);
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
-		}
-		else{
-			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-			sprintf(dispBuf, "");
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
-			
-			memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-			sprintf(dispBuf, "N/A");
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
-		}
+	if(LD(R_ACOUSTIC_ENABLE)){
+		cycle = NVRAM0[EM_ACOUSTIC_TIME] / NVRAM0[EM_ACOUSTIC_TIME_STEP];
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%d Cycle", cycle);
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+		
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%d S", NVRAM0[EM_ACOUSTIC_TIME]);
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
+	}
+	else{
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "");
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "N/A");
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);		
 	}
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	ftmp = ((float)(NVRAM0[EM_ACOUSTIC_ENERGY]));
@@ -2220,7 +2226,7 @@ void dcHmiLoopInit(void){//初始化模块
 	setRedLaserPwm(0);
 	hmiUartInit();
 	schemeInit(0);//不回复自定义方案
-	loadSelectScheme();
+	loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
 	//检查VOLUME储存值是否合规
 	NVRAM0[TMP_REG_0] = 0;
@@ -2909,30 +2915,19 @@ void dcHmiLoop(void){//HMI轮训程序
 			CLRD(EM_LASER_TRIG_TIME);
 			LaserTimer_Mode = (int8_t)NVRAM0[EM_LASER_PULSE_MODE];
 			printf("%s,%d,%s:set laser mode=%d\n",__FILE__, __LINE__, __func__, LaserTimer_Mode);
-//			if(NVRAM0[EM_LASER_SELECT] == LASER_CHANNEL_635){
-//				if(NVRAM0[EM_LASER_POSWIDTH] <= 100){
-//					LaserTimer_TMate				= 100;
-//				}
-//				else{
-//					LaserTimer_TMate 				= NVRAM0[EM_LASER_POSWIDTH];
-//				}
-//				if(NVRAM0[EM_LASER_NEGWIDTH] <= 100){
-//					LaserTimer_TOvertime 		= LaserTimer_TMate + 100;
-//				}
-//				else{
-//					LaserTimer_TOvertime 		= NVRAM0[EM_LASER_POSWIDTH] + NVRAM0[EM_LASER_NEGWIDTH];
-//				}
-//			}
-//			else{
-				LaserTimer_TMate 				= NVRAM0[EM_LASER_POSWIDTH];
-				LaserTimer_TOvertime 		= NVRAM0[EM_LASER_POSWIDTH] + NVRAM0[EM_LASER_NEGWIDTH];	
-//			}
+			LaserTimer_TMate 				= NVRAM0[EM_LASER_POSWIDTH];
+			LaserTimer_TOvertime 		= NVRAM0[EM_LASER_POSWIDTH] + NVRAM0[EM_LASER_NEGWIDTH];	
 			printf("%s,%d,%s:set LaserTimer_TMate=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TMate);
 			printf("%s,%d,%s:set LaserTimer_TOvertime=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TOvertime);
 			//ACOUSTIC 初始化
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
 				//能量大于设置功率的两倍
-				SSET(R_ACOUSTIC_ENABLE);
+				if((NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_PROCTOLOGY) && (NVRAM0[DM_SCHEME_INDEX] <= 2)){
+					RRES(R_ACOUSTIC_ENABLE);
+				}
+				else{
+					SSET(R_ACOUSTIC_ENABLE);
+				}
 				NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CW模式每次加减量1秒
 				NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_TOTAL] / 10;//CW模式每次加减量
 				NVRAM0[EM_ACOUSTIC_TIME] = 1;//初始为1秒
@@ -3007,14 +3002,14 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_NEXT_DOWN)){
 			goNextScheme();
-			loadSelectScheme();//切换方案				
+			loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);//切换方案				
 			updateStandbyDisplay();
 			vTaskDelay(100);
 			RRES(R_STANDBY_KEY_SCHEME_NEXT_DOWN);
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_LAST_DOWN)){
 			goLastScheme();
-			loadSelectScheme();
+			loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
 			updateStandbyDisplay();	
 			vTaskDelay(100);
 			RRES(R_STANDBY_KEY_SCHEME_LAST_DOWN);
@@ -3032,6 +3027,18 @@ void dcHmiLoop(void){//HMI轮训程序
 			readyPageTouchEnable(1);
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
 			SetScreen(NVRAM0[EM_DC_PAGE]);
+			if(LD(R_ACOUSTIC_ENABLE)){
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD, true);
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_INC, true);
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD, true);
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC, true);
+			}
+			else{
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD, false);
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_INC, false);
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD, false);
+				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC, false);
+			}
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 		}
 		else{
@@ -3340,7 +3347,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 16 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 16;				
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_0_DOWN);
 		}
 		
@@ -3351,7 +3358,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 17 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 17;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_1_DOWN);
 		}
 		
@@ -3362,7 +3369,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 18 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 18;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_2_DOWN);
 		}
 		
@@ -3373,7 +3380,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 19 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 18;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_3_DOWN);
 		}
 		
@@ -3384,7 +3391,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 20 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 20;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_4_DOWN);
 		}
 		
@@ -3395,7 +3402,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 21 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 21;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_5_DOWN);
 		}
 		
@@ -3406,7 +3413,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 22 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 22;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_6_DOWN);
 		}
 		
@@ -3417,7 +3424,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 23 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 23;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_7_DOWN);
 		}
 		
@@ -3428,7 +3435,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 24 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 24;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_8_DOWN);
 		}
 		
@@ -3439,7 +3446,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 25 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 25;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_9_DOWN);
 		}
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_10_DOWN)){
@@ -3450,7 +3457,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 26 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 26;
 			}	
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_10_DOWN);
 		}
 		
@@ -3461,7 +3468,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 27 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 27;
 			}	
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_11_DOWN);
 		}
 		
@@ -3472,7 +3479,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 28 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 28;
 			}	
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_12_DOWN);
 		}
 		
@@ -3483,7 +3490,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 29 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 29;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_13_DOWN);
 		}
 		
@@ -3494,7 +3501,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 30 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 30;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_14_DOWN);
 		}
 		
@@ -3505,14 +3512,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 31 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
 				NVRAM0[EM_SCHEME_NUM_TMP] = 31;
 			}
-			updateSchemeInfo(NVRAM0[EM_SCHEME_NUM_TMP]);			
+			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);	
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_15_DOWN);
 		}
 		if(LD(R_SCHEME_KEY_RENAME_DOWN)){//改名
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
 			//将EM_SCHEME_NUM_TMP指向的名称更新RENAME输入框
-			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM0 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
+			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM1 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_SCHEME_KEY_RENAME_DOWN);
 		}

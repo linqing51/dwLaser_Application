@@ -17,7 +17,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 				case GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME:{
 					tmp = NVRAM0[EM_SCHEME_NUM_TMP];
 					if(strlen((const char*)str) <= CONFIG_SCHEME_NAME_SIZE){
-						strcpy((char*)&FDRAM0[tmp * 64 + EM_LASER_SCHEME_NAME], (char*)str);
+						strcpy((char*)&FDRAM1[tmp * 64 + FD_LASER_SCHEME_NAME], (char*)str);
 						SetTextValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
 						SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					}

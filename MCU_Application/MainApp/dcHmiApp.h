@@ -62,15 +62,15 @@ void updateOptionDisplay(void);
 void updateInformationDisplay(void);
 void updateAcousticDisplay(void);
 /*****************************************************************************/
-void loadSelectScheme(void);
-void updateSchemeDetail(void);
+void loadSelectScheme(int16_t classify, int16_t index);
+void updateSchemeDetail(int16_t classify, int16_t index);
 void unselectSchemeAll(void);
-void seletcSchemeNum(int16_t sel);
-void unselectSchemeNum(int16_t sel);
+void seletcSchemeNum(int16_t classify, int16_t index);
+void unselectSchemeNum(int16_t index);
 /*****************************************************************************/
 void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
-void updateSchemeInfo(int16_t cn);
+void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);
 void standbyKeyValue(uint8_t value);//…Ë÷√Standbyº¸÷µ
