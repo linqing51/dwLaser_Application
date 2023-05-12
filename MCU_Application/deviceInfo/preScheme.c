@@ -1044,7 +1044,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 	
 	p = &sDentistry[2];
-	p->name = "Aphthous Ulcer,Canker Sores & herpetic";
+	p->name = "Aphthous Ulcer & herpetic";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_1470 = 1;
@@ -1054,7 +1054,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 50;	
 	
 	p = &sDentistry[3];
-	p->name = "Pulpotomy as an adjunct root canal theraphy";
+	p->name = "Pulpotomy";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_1470 = 1;
@@ -1184,7 +1184,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 	
 	p = &sDentistry[16];
-	p->name = "Removal of highly inflamed edemotous tissue-infected pockets";
+	p->name = "Infected Pockets Removal";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_1470 = 1;
