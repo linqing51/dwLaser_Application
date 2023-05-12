@@ -16,7 +16,6 @@ typedef struct{
 	int8_t aimGain;//指示光增益
 	char normalOpenInterLock;
 }deviceConfig_t;
-
 typedef struct{
 	uint32_t powerUpCycle;//开机次数
 	uint32_t runTime;//运行累计时间 单位分钟

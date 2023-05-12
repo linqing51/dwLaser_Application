@@ -19,6 +19,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					if(strlen((const char*)str) <= CONFIG_SCHEME_NAME_SIZE){
 						strcpy((char*)&FDRAM1[tmp * 64 + FD_LASER_SCHEME_NAME], (char*)str);
 						SetTextValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
+						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 						SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					}
 					break;

@@ -27,15 +27,6 @@ void hmiUartSendChar(uint8_t sdat){
 		printf("%s,%d,%s:hmi uart tx timeout!!!!\n",__FILE__, __LINE__, __func__);
 	}
 }
-
-/*
-        (+) HAL_UART_TxHalfCpltCallback()
-        (+) HAL_UART_TxCpltCallback()
-        (+) HAL_UART_RxHalfCpltCallback()
-        (+) HAL_UART_RxCpltCallback()
-        (+) HAL_UART_ErrorCallback()
-*/
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart == &huart4){//´¥ÃþÆÁ´®¿Ú
 		queue_push(uart4_rxDat);

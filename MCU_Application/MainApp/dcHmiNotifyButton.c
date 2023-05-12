@@ -787,10 +787,18 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE:{
 					if(state){
-						if (NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_CUSTIOM){	
-								updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
-								FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
+						if (NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_CUSTIOM){
+#ifdef MODEL_PVGLS_15W_1470						
+							if(NVRAM0[DM_SCHEME_INDEX] >= 27){
+									updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
+									FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
 							}
+#endif								
+#ifdef MODEL_PVGLS_TRI
+							updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
+							FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
+#endif 								
+						}
 					}
 					break;
 				}
@@ -839,8 +847,19 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME:{//按键SCHEME
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;//切换待机页面						
-						SetScreen(NVRAM0[EM_DC_PAGE]);	
+#ifdef MODEL_PVGLS_15W_1470						
+						memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));		
+						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;
+						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;	
+						SetScreen(NVRAM0[EM_DC_PAGE]);				
+						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
+						seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);							
+#endif
+#ifdef MODEL_PVGLS_TRI				
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+#endif	
 					}
 					break;
 				}
@@ -977,6 +996,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
+						REBOOT();
 					}
 					break;
 				}
@@ -1101,13 +1121,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM:{
 					if(state){		
-						memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
-						if(memcmp((char*)FDRAM0, (char*)FDRAM1, (CONFIG_FDRAM_SIZE * 2))){
-							printf("%s,%d,%s:FDRAM0!=FDRAM1\n", __FILE__, __LINE__, __func__);	
-						}
-						else{
-							printf("%s,%d,%s:FDRAM0==FDRAM1\n", __FILE__, __LINE__, __func__);	
-						}
+						memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));						
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;											
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;	
@@ -1140,25 +1154,34 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if(NVRAM0[EM_SCHEME_CLASSIFY_TMP] == SCHEME_CUSTIOM){
 							memcpy((char*)FDRAM0, (char*)FDRAM1, (CONFIG_FDRAM_SIZE * 2));
-							if(memcmp((char*)FDRAM0, (char*)FDRAM1, (CONFIG_FDRAM_SIZE * 2))){
-								printf("%s,%d,%s:FDRAM0!=FDRAM1\n", __FILE__, __LINE__, __func__);	
-							}
-							else{
-								printf("%s,%d,%s:FDRAM0==FDRAM1\n", __FILE__, __LINE__, __func__);	
-							}
 						}							
 						NVRAM0[DM_SCHEME_INDEX] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
 						NVRAM0[DM_SCHEME_CLASSIFY] = NVRAM0[EM_SCHEME_CLASSIFY_TMP];
 						loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;//切换待机页面						
-						SetScreen(NVRAM0[EM_DC_PAGE]);	
+#ifdef MODEL_PVGLS_TRI						
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+#endif
+#ifdef MODEL_PVGLS_15W_1470
+						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+						updateStandbyDisplay();	
+#endif
 					}
 					break;
 				}
 				case GDDC_PAGE_SCHEME_KEY_CANCEL:{
-					if(state){			
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;//切换待机页面
+					if(state){
+#ifdef MODEL_PVGLS_TRI						
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
+#endif
+#ifdef MODEL_PVGLS_15W_1470
+						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+#endif
 					}
 					break;
 				}

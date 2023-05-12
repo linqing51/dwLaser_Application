@@ -19,19 +19,20 @@
 #define HMI_WHITE     																	0xFFFF//白色  
 /*****************************************************************************/
 //HMI页面编号
-#define GDDC_PAGE_POWERUP																0
-#define GDDC_PAGE_PASSCODE															1
-#define GDDC_PAGE_NEW_PASSCODE													2
-#define GDDC_PAGE_STANDBY														    3
-#define GDDC_PAGE_READY																	4
-#define GDDC_PAGE_OPTION																5//选项页面
-#define GDDC_PAGE_SCHMEM_CLASSIFY												6//方案分类页
-#define GDDC_PAGE_SCHEME_DETAIL													7//
-#define GDDC_PAGE_INFORMATION														8//信息页面
-#define GDDC_PAGE_DIAGNOSIS															9//诊断页面
-#define GDDC_PAGE_RENAME																10//SCHEME更名
-#define GDDC_PAGE_RESTORE																11//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														12//脚踏安全警告
+#define GDDC_PAGE_POWERUP_1470													0
+#define GDDC_PAGE_POWERUP_TRI														1
+#define GDDC_PAGE_PASSCODE															2
+#define GDDC_PAGE_NEW_PASSCODE													3
+#define GDDC_PAGE_STANDBY														    4
+#define GDDC_PAGE_READY																	5
+#define GDDC_PAGE_OPTION																6//选项页面
+#define GDDC_PAGE_SCHMEM_CLASSIFY												7//方案分类页
+#define GDDC_PAGE_SCHEME_DETAIL													8//
+#define GDDC_PAGE_INFORMATION														9//信息页面
+#define GDDC_PAGE_DIAGNOSIS															10//诊断页面
+#define GDDC_PAGE_RENAME																11//SCHEME更名
+#define GDDC_PAGE_RESTORE																12//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														13//脚踏安全警告
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2

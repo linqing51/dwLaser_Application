@@ -1,8 +1,10 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define CONFIG_ENABLE_LASER_980												1//使能980波长
-#define CONFIG_COMBINE_MODE														0//多波长联合发射功能
+//#define MODEL_PVGLS_15W_1470
+//#define MODEL_PVGLS_7W_1940
+#define MODEL_PVGLS_TRI
+//#define MODEL_PVGLS_TRI_COMBINE
 /*****************************************************************************/
 #define LASER_CHANNEL_1470														0x01
 #define LASER_CHANNEL_980															0x02
@@ -133,8 +135,8 @@
 /*****************************************************************************/
 #define CONFIG_DCHMI_DISKBUF_SIZE											256//显示缓冲区大小
 /*****************************************************************************/
-#define CONFIG_WAIT_HMI_DELAY_TIME										25
-#define CONFIG_WAIT_PASSWORD_DELAY_TIME								5
+#define CONFIG_WAIT_HMI_DELAY_TIME										10
+#define CONFIG_WAIT_PASSWORD_DELAY_TIME								25
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
