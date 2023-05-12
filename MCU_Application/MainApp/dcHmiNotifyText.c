@@ -17,15 +17,10 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 				case GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME:{
 					tmp = NVRAM0[EM_SCHEME_NUM_TMP];
 					if(strlen((const char*)str) <= CONFIG_SCHEME_NAME_SIZE){
-						strcpy((char*)(FDRAM0 + (tmp * 64)), (const char*)str);
-						if(tmp < 16){
-							SetTextValue(GDDC_PAGE_SCHEME_0, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
-						}
-						else{
-							SetTextValue(GDDC_PAGE_SCHEME_1, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp - 16), str);
-						}
+						strcpy((char*)&FDRAM1[tmp * 64 + FD_LASER_SCHEME_NAME], (char*)str);
+						SetTextValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
+						SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					}
-					SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					break;
 				}
 				default:break;
@@ -136,108 +131,6 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.calibrationPwr1[9] = (uint16_t)(fValue * 10.0F);
 					break;
 				}
-				//通道2 功率校正表
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P1:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[0] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P2:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[1] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P3:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[2] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P4:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[3] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P5:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[4] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P6:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[5] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P7:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[6] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P8:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[7] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P9:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[8] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_1P0:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr2[9] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				//通道3 功率校正表
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P1:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[0] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P2:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[1] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P3:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[2] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P4:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[3] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P5:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[4] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P6:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[5] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P7:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[6] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P8:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[7] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P9:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[8] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
-				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_1P0:{
-					sscanf((const char*)str, "%f", &fValue);
-					deviceConfig.calibrationPwr3[9] = (uint16_t)(fValue * 10.0F);
-					break;
-				}
 				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SN:{
 					strncpy(deviceConfig.serialNumber, (const char*)str, sizeof(deviceConfig.serialNumber));
 					break;
@@ -306,6 +199,17 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 						sValue = 1;
 					}
 					deviceConfig.blueLedDc = sValue;	
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SET_AIM_GAIN:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 100){
+						sValue = 100;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.aimGain = sValue;	
 					break;
 				}
 				default:break;

@@ -96,19 +96,7 @@ void resetInit(void){//复位后初始化
 void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	vTaskDelay(delayMs);
 }
-void setAimBrightness(int8_t brg){//设置瞄准光亮度
-	if(brg > CONFIG_AIM_MAX_DC){
-		brg = CONFIG_AIM_MAX_DC;
-	}
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, brg);
-	if(brg != 0){
-		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//打开TIM
-	}
-	else{
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
-	}
-	printf("%s,%d,%s:set aim:%d\n",__FILE__, __LINE__, __func__, brg);
-}
+
 void setFanSpeed(int16_t speed){//设置风扇转速
 	if(FanSpeed != speed){
 		if(speed > CONFIG_FAN_MAX_DC){
@@ -385,3 +373,30 @@ void morseCodeDiag(uint8_t diag){//蜂鸣器诊断声音 摩尔斯电码
 	}
 	vTaskDelay(3000);
 }
+
+uint32_t getOriginBootloadCrc(void){//计算MCU Bootload CRC32
+	uint8_t val;
+	uint32_t i;
+	uint32_t crc32;
+	crc32Clear();
+	for(i = BOOTLOADER_FLASH_START_ADDRESS;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){
+		val = *(__IO uint8_t*)(i);
+		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
+	}
+	return crc32;	
+}
+uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
+	uint8_t val;
+	uint32_t i;
+	uint32_t crc32;
+	crc32Clear();
+	for(i = APPLICATION_FLASH_START_ADDRESS;i < APPLICATION_FLASH_END_ADDRESS;i ++){
+		val = *(__IO uint8_t*)(i);
+		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
+	}
+	return crc32;	
+}
+
+
+
+

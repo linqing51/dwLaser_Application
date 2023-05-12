@@ -3,32 +3,30 @@
 /*****************************************************************************/
 #include "sPlc.h"
 /*****************************************************************************/
-extern char const PRE_SCHEME_TABLE_S0[];
-extern char const PRE_SCHEME_TABLE_S1[];
-extern char const PRE_SCHEME_TABLE_S2[];
-extern char const PRE_SCHEME_TABLE_S3[];
-extern char const PRE_SCHEME_TABLE_S4[];
-extern char const PRE_SCHEME_TABLE_S5[];
-extern char const PRE_SCHEME_TABLE_S6[];
-extern char const PRE_SCHEME_TABLE_S7[];
-extern char const PRE_SCHEME_TABLE_S8[];
-extern char const PRE_SCHEME_TABLE_S9[];
-extern char const PRE_SCHEME_TABLE_S10[];
-extern char const PRE_SCHEME_TABLE_S11[];
-extern char const PRE_SCHEME_TABLE_S12[];
-extern char const PRE_SCHEME_TABLE_S13[];
-extern char const PRE_SCHEME_TABLE_S14[];
-extern char const PRE_SCHEME_TABLE_S15[];
-extern char const PRE_SCHEME_TABLE_S16[];
-extern char const PRE_SCHEME_TABLE_S17[];
-extern char const PRE_SCHEME_TABLE_S18[];
-extern char const PRE_SCHEME_TABLE_S19[];
-extern char const PRE_SCHEME_TABLE_S20[];
-extern char const PRE_SCHEME_TABLE_S21[];
-extern char const PRE_SCHEME_TABLE_S22[];
-extern char const PRE_SCHEME_TABLE_S23[];
-extern char const PRE_SCHEME_TABLE_S24[];
-extern char const PRE_SCHEME_TABLE_S25[];
+typedef struct{
+	char *name;//治疗名字
+	int16_t channel;//激光通道选择
+	int16_t pulse_mode;//脉冲模式
+	int16_t power_1470;//功率 1470
+	int16_t power_980;//功率 980
+	int16_t power_635;//功率 635
+	int16_t poswidth;
+	int16_t negwidth;
+}myScheme_t;
+/*****************************************************************************/
+extern myScheme_t sPhlebology[32];//0
+extern myScheme_t sProctology[32];//1
+extern myScheme_t sGynecology[32];//2
+extern myScheme_t sENT[32];//3
+extern myScheme_t sNeurosurgery[32];//4
+extern myScheme_t sDermatology[32];//5
+extern myScheme_t sLiposuction[32];//6
+extern myScheme_t sDentistry[32];//7
+extern myScheme_t sTherapy[32];//8
+/*****************************************************************************/
+void schemeInit(uint8_t reDef);//治疗方案初始化
+void goNextScheme(void);//切换下一个方案
+void goLastScheme(void);//切换上一个方案
 #endif
 
 

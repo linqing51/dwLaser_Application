@@ -13,6 +13,7 @@
 #include <LIMITS.H>
 #include "stdbool.h"
 #include "stdint.h"
+#include "string.h"
 /*****************************************************************************/
 #include "libcrc.h"
 #include "deviceConfig.h"
@@ -20,6 +21,19 @@
 #include "sPlcFun.h"
 #include "dcHmiApp.h"
 #include "preScheme.h"
+#include "hmiLib.h"
+#include "dcHmiRes.h"
+#include "MainAppLib.h"
+#include "dcHmiLanguage.H"
+#include "deviceConfig.h"
+#include "arm_math.h"
+/*****************************************************************************/
+#include "usbh_platform.h"
+#include "usbh_core.h"
+#include "usbh_msc.h"
+#include "ff.h"
+#include "ff_gen_drv.h"
+#include "flash_if.h"
 /*****************************************************************************/
 #if CONFIG_SPLC_FUNTEST == 1
 #include "sPlcTest.h"
@@ -30,23 +44,10 @@
 #define BEEM_MODE_2														0x12//激光发射固定间隔
 #define BEEM_MODE_3														0x13//异常报警
 #define BEEM_MODE_4														0x14//激光发射固定间隔+提示音
-/*****************************************************************************/
-#define LASER_CHANNEL_0												0x00//通道0
-#define LASER_CHANNEL_1												0x01//通道1
-#define LASER_CHANNEL_2												0x02//通道2
-#define LASER_CHANNEL_3												0x03//通道3
+#define BEEM_MODE_5														0x15
 /*****************************************************************************/
 #define LASER_MODE_CW													0x01//连续模式
-#define LASER_MODE_SP													0x02//单脉冲模式
-#define LASER_MODE_MP													0x04//多脉冲模式
-#define LASER_MODE_GP													0x08//群脉冲模式
-#define LASER_MODE_DERMA											0x10//
-#define LASER_MODE_SIGNAL											0x20//
-#define LASER_SELECT_CH0											0x01
-#define LASER_SELECT_CH1											0x02
-#define LASER_SELECT_CH2											0x04
-#define LASER_SELECT_CH3											0x08
-#define LASER_SELECT_ALL											0x0F
+#define LASER_MODE_MP													0x02//多脉冲模式
 /*****************************************************************************/
 #define MCP4821_NSHDN_MASK										(1 << 12)
 #define MCP4821_NGA_MASK											(1 << 13)
@@ -87,28 +88,23 @@
 #define SET_TICK_LED_OFF											HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
 #define GET_TICK_LED													HAL_GPIO_ReadPin(TICK_LED_GPIO_Port, TICK_LED_Pin)
 #define FLIP_TICK_LED													HAL_GPIO_TogglePin(TICK_LED_GPIO_Port, TICK_LED_Pin)
-#define SET_LASER_CH0_ON											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH0_OFF											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH1_ON											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH1_OFF											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH2_ON											HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH2_OFF											HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH3_ON											HAL_GPIO_WritePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH3_OFF											HAL_GPIO_WritePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin, GPIO_PIN_RESET)
-#define FLIP_LASER_CH0												HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
-#define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
-#define FLIP_LASER_CH2												HAL_GPIO_TogglePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
-#define FLIP_LASER_CH3												HAL_GPIO_TogglePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin)
-#define GET_LASER_CH0													HAL_GPIO_ReadPin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
-#define GET_LASER_CH1													HAL_GPIO_ReadPin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
-#define GET_LASER_CH2													HAL_GPIO_ReadPin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
-#define GET_LASER_CH3													HAL_GPIO_ReadPin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin)
+#define SET_LASER_1470_ON											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_SET)
+#define SET_LASER_1470_OFF										HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET)
+
+#define SET_LASER_980_ON											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_SET)
+#define SET_LASER_980_OFF											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_RESET)
+#define FLIP_LASER_1470												HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
+#define FLIP_LASER_980												HAL_GPIO_TogglePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin);HAL_GPIO_TogglePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
+
+#define GET_LASER_1470												HAL_GPIO_ReadPin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
+#define GET_LASER_980													HAL_GPIO_ReadPin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
+
 #define SET_SPEAKER_ON												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
 #define SET_SPEAKER_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
-#define SET_AIM_ON										   			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1)
-#define SET_AIM_OFF														HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1)
+
 #define SET_FAN_ON														HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2)
 #define SET_FAN_OFF														HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2)
+
 #define SET_TEC_ON														HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_SET)
 #define SET_TEC_OFF														HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_RESET)
 /*****************************************************************************/
@@ -140,8 +136,7 @@ extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-extern int16_t FDRAM0[CONFIG_FDRAM_SIZE];//存档寄存器
-extern int16_t FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
 extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒
@@ -155,9 +150,9 @@ extern uint8_t TD_500MS_SP;
 extern uint8_t TD_1000MS_SP;
 extern uint8_t TD_60000MS_SP;
 extern uint32_t sPlcTick;
+extern uint32_t BootloadCrc, ApplicationCrc;
 /*****************************************************************************/
 extern int8_t LaserTimer_Mode;
-extern int8_t LaserTimer_Select;
 extern int16_t LaserTimer_TCounter;
 extern int16_t LaserTimer_TMate;
 extern int16_t LaserTimer_TOvertime;
@@ -180,7 +175,6 @@ extern void sPlcInputInit(void);
 extern void sPlcInputRefresh(void);
 extern void sPlcOutputInit(void);
 extern void sPlcOutputRefresh(void);
-extern void sPlcloadDefault(void);
 extern void sPlcIsrDisable(void);
 extern void sPlcIsrEnable(void);
 extern void sPlcTimerInit(void);//硬件sTimer计时器初始化
@@ -208,14 +202,16 @@ extern void sPlcFdramSave(void);
 extern void sPlcFdramClear(void);
 extern void sPlcDeviceConfigClear(void);
 extern void sPlcDeviceLogClear(void);
-extern void delayMs(uint32_t delayMs);//SPLC 阻塞延时
+extern void softDelayMs(uint16_t ms);//软件延时
 extern void mucReboot(void);//软件复位
 extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
 extern void UsbGpioReset(void);
-extern void setAimBrightness(int8_t brg);//设置瞄准光亮度
+extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
+extern void setPower_635(int16_t pwr);//设置红激光功率
 extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
+
 extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//在AT24CXX指定地址读出一个数据
 extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//在AT24CXX里面的指定地址开始读出16位数
 extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////在AT24CXX里面的指定地址开始读出32位数
@@ -228,7 +224,16 @@ extern uint8_t sPlcEpromTest(void);
 extern uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
 void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
 void listEpromTable(void);
+
+extern uint32_t getOriginBootloadCrc(void);//计算MCU Bootload CRC32
+extern uint32_t getOriginAppCrc(void);//计算MCU App CRC32
+extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
+extern void confirmBootloadUpdate(void);//执行Bootload更新
+extern void exitBootloadUpdate(void);//退出Bootload更新
 void softDelayMs(uint16_t ms);//软件延时
+/*****************************************************************************/
+extern arm_pid_instance_f32 laserTecPids;
+extern arm_pid_instance_f32 laserFanPids;
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

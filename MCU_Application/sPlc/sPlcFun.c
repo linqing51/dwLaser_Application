@@ -184,8 +184,8 @@ void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
 	if(ftemp >= 100)
 		ftemp =100;
-	if(ftemp <= -40){
-		ftemp = -40;
+	if(ftemp <= -25){
+		ftemp = -25;
 	}
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
@@ -206,43 +206,27 @@ void DECS1(uint16_t Sa){//16位饱和自减
 	}
 }
 void ADL1(uint16_t Sa){//32位非饱和自加
-	int32_t temp = 0;
-	temp = NVRAM0[(Sa + 1)];
-	temp = (temp << 16) & 0xFFFF0000;
-	temp |= NVRAM0[Sa];
-	temp += 1;
-	NVRAM0[Sa] = temp & 0x0000FFFF;
-	NVRAM0[(Sa + 1)] = (temp >> 16) & 0x0000FFFF;
+	int32_t *p;
+	p = (int32_t*)(&NVRAM0[Sa]);	
+	(*p) ++;
 }
 void ADLS1(uint16_t Sa){//32位饱和自加
-	int32_t temp = 0;
-	temp = NVRAM0[(Sa + 1)];
-	temp = (temp << 16) & 0xFFFF0000;
-	temp |= NVRAM0[Sa];
-	if(temp < LONG_MAX){
-		temp ++;
-		NVRAM0[Sa] = temp & 0x0000FFFF;
-		NVRAM0[(Sa + 1)] = (temp >> 16) & 0x0000FFFF;
+	int32_t *p;
+	p = (int32_t*)(&NVRAM0[Sa]);
+	if(*p < LONG_MAX){
+		(*p) ++;
 	}
 }
 void DEL1(uint16_t Sa){//32位非饱和自减
-	int32_t temp = 0;
-	temp = NVRAM0[(Sa + 1)];
-	temp = (temp << 16) & 0xFFFF0000;
-	temp |= NVRAM0[Sa];
-	temp -= 1;
-	NVRAM0[Sa] = temp & 0x0000FFFF;
-	NVRAM0[(Sa + 1)] = (temp >> 16) & 0x0000FFFF;
+	int32_t *p;
+	p = (int32_t*)(&NVRAM0[Sa]);
+	(*p) --;
 }
 void DELS1(uint16_t Sa){//32位饱和自减
-	int32_t temp = 0;
-	temp = NVRAM0[(Sa + 1)];
-	temp = (temp << 16) & 0xFFFF0000;
-	temp |= NVRAM0[Sa];
-	if(temp < LONG_MAX){
-		temp --;
-		NVRAM0[Sa] = temp & 0x0000FFFF;
-		NVRAM0[(Sa + 1)] = (temp >> 16) & 0x0000FFFF;
+	int32_t *p;
+	p = (int32_t*)(&NVRAM0[Sa]);
+	if(*p > LONG_MIN){
+		(*p) --;
 	}
 }
 void ADD16(uint16_t Sa, uint16_t Sb, uint16_t D){//16位非饱和加法 D = Sa + Sb
@@ -258,66 +242,47 @@ void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16位饱和加法 D = Sa + Sb
 	NVRAM0[D] = tmp;
 }
 void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位非饱加法 D = Sa + Sb
-	int32_t tmpSa = 0, tmpSb = 0, tmpD = 0;
-	tmpSa = NVRAM0[(Sa + 1)];
-	tmpSa = (tmpSa << 16) & 0xFFFF0000;
-	tmpSa |= NVRAM0[Sa];
-	
-	tmpSb = NVRAM0[(Sb + 1)];
-	tmpSb = (tmpSb << 16) & 0xFFFF0000;
-	tmpSb |= NVRAM0[Sb];
-	
+	int32_t tmpSa, tmpSb, tmpD;
+	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
+	tmpSb = *((int32_t*)(&NVRAM0[Sb]));
 	tmpD = tmpSa + tmpSb;
-	NVRAM0[D] = tmpD & 0x0000FFFF;
-	NVRAM0[(D + 1)] = (tmpD >> 16) & 0x0000FFFF;
+	*((int32_t*)(&NVRAM0[D])) = tmpD; 
+	
 }
 void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位饱和加法 D = Sa + Sb
-	int32_t tmpSa = 0, tmpSb = 0, tmpD = 0;
-	double fD;
-	tmpSa = NVRAM0[(Sa + 1)];
-	tmpSa = (tmpSa << 16) & 0xFFFF0000;
-	tmpSa |= NVRAM0[Sa];
-	
-	tmpSb = NVRAM0[(Sb + 1)];
-	tmpSb = (tmpSb << 16) & 0xFFFF0000;
-	tmpSb |= NVRAM0[Sb];
-
-	fD = (double)tmpSa + (double)tmpSb;
-	if(fD >= LONG_MAX){
-		fD = LONG_MAX;
+	int32_t tmpSa, tmpSb;
+	int64_t tmpD;
+	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
+	tmpSb = *((int32_t*)(&NVRAM0[Sb]));
+	tmpD = tmpSa + tmpSb;
+	if(tmpD >= LONG_MAX){
+		tmpD = LONG_MAX;
 	}
-	if(fD <= LONG_MIN){
-		fD = LONG_MIN;
+	if(tmpD <= LONG_MIN){
+		tmpD = LONG_MIN;
 	}
-	tmpD = (int32_t)fD;
-	NVRAM0[D] = tmpD & 0x0000FFFF;
-	NVRAM0[(D + 1)] = (tmpD >> 16) & 0x0000FFFF;
-	
+	*((int32_t*)(&NVRAM0[D])) = tmpD;
 }
 void ADDS32D(uint16_t Sa, uint16_t Sb, uint16_t D){//32位饱和加法 D(32) = Sa(32) + Sb(16)
-	int32_t tmpSa = 0, tmpD = 0;
-	double fD;
-	tmpSa = NVRAM0[(Sa + 1)];
-	tmpSa = (tmpSa << 16) & 0xFFFF0000;
-	tmpSa |= NVRAM0[Sa];
-	
-	fD = (double)tmpSa + (double)NVRAM0[Sb];
-	if(fD >= LONG_MAX){
-		fD = LONG_MAX;
+	int32_t tmpSa, tmpSb;
+	int64_t tmpD;
+	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
+	tmpSb = *((int32_t*)(&NVRAM0[Sb]));
+	tmpD = tmpSa + tmpSb;
+	if(tmpD >= LONG_MAX){
+		tmpD = LONG_MAX;
 	}
-	if(fD <= LONG_MIN){
-		fD = LONG_MIN;
+	if(tmpD <= LONG_MIN){
+		tmpD = LONG_MIN;
 	}
-	tmpD = (int32_t)fD;
-	NVRAM0[D] = tmpD & 0x0000FFFF;
-	NVRAM0[(D + 1)] = (tmpD >> 16) & 0x0000FFFF;
+	*((int32_t*)(&NVRAM0[D])) = tmpD; 
 }
 void SUB16(uint16_t Sa, uint16_t Sb, uint16_t D){//16位非饱和减法 D = Sa - Sb
 	NVRAM0[D] = NVRAM0[Sa] - NVRAM0[Sb];
 }
 void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16位饱和减法 D = Sa - Sb
 	int32_t tmp;
-	tmp = (int32_t)NVRAM0[Sa] - (int32_t)NVRAM0[Sb];
+	tmp = NVRAM0[Sa] - NVRAM0[Sb];
 	if(tmp >= SHRT_MAX)
 		tmp = SHRT_MAX;
 	if(tmp <= SHRT_MIN)
@@ -325,18 +290,17 @@ void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16位饱和减法 D = Sa - Sb
 	NVRAM0[D] = tmp;
 }
 void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位非饱和减法 D = Sa - Sb
-	int32_t tmpSa = 0, tmpSb = 0, tmpD = 0;
-	tmpSa = NVRAM0[(Sa + 1)];
-	tmpSa = (tmpSa << 16) & 0xFFFF0000;
-	tmpSa |= NVRAM0[Sa];
-	
-	tmpSb = NVRAM0[(Sb + 1)];
-	tmpSb = (tmpSb << 16) & 0xFFFF0000;
-	tmpSb |= NVRAM0[Sb];
-	
+	int32_t tmpSa, tmpSb;
+	int64_t tmpD;
+	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
+	tmpSb = *((int32_t*)(&NVRAM0[Sb]));
 	tmpD = tmpSa - tmpSb;
-	NVRAM0[D] = tmpD & 0x0000FFFF;
-	NVRAM0[(D + 1)] = (tmpD >> 16) & 0x0000FFFF;
+	if(tmpD >= LONG_MAX){
+		tmpD = LONG_MAX;
+	}
+	if(tmpD <= LONG_MIN){
+		tmpD = LONG_MIN;
+	}
 }
 void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->16非饱和乘法 D = Sa * Sb
 	int32_t tmp = (int32_t)NVRAM0[Sa] * (int32_t)NVRAM0[Sb];
@@ -528,6 +492,7 @@ void PRTM(uint16_t adr, uint8_t len){//在串口中断上打印内存数据
 		}
 	}
 }
+
 
 
 

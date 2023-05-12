@@ -4,8 +4,8 @@
 #pragma pack(push, 4)
 int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-int16_t FDRAM0[CONFIG_FDRAM_SIZE];//存档寄存器
-int16_t FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器 
+int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
 #pragma pack(pop)
 /*****************************************************************************/
 uint16_t TimerCounter_10mS = 0;//10毫秒
@@ -21,7 +21,6 @@ uint8_t TD_200MS_SP = 0;
 uint8_t TD_500MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
-uint32_t sPlcEnterTime, sPlcExitTime, sPlcScanTime;
 /******************************************************************************/
 void sPlcIsrEnable(void){
 }
@@ -270,7 +269,7 @@ void sPlcSpwmLoop(void){//SPWM轮询
 }
 
 /*****************************************************************************/
-void sPlcInit(void){//软逻辑初始化
+void sPlcInit(void){//软逻辑初始化	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	listEpromTable();
 	readStm32UniqueID();
@@ -280,10 +279,12 @@ void sPlcInit(void){//软逻辑初始化
 	loadDeviceConfig();//载入硬件配置
 	sPlcNvramLoad();//上电恢复NVRAM
 	sPlcFdramLoad();//上电恢复FDRAM
-	lockPreScheme();//恢复预设方案
+	BootloadCrc = getOriginBootloadCrc();
+	ApplicationCrc = getOriginAppCrc();
+	printf("%s,%d,%s:bootload crc:0x%08X\n",__FILE__, __LINE__, __func__, BootloadCrc);
+	printf("%s,%d,%s:app crc:0x%08X\n",__FILE__, __LINE__, __func__, ApplicationCrc);
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
-	NVRAM0[SPREG_IDENTITY] = CONFIG_SPLC_DEV;
 	sPlcInputInit();
 	sPlcOutputInit();	
 	sPlcDacInit();//初始化DAC模块
@@ -315,7 +316,6 @@ void sPlcInit(void){//软逻辑初始化
 	}
 }
 void sPlcProcessStart(void){//sPLC轮询起始
-	sPlcEnterTime = HAL_GetTick();
 	if(TD_10MS_SP >= 1){
 		FLIP(SPCOIL_PS10MS);
 		TD_10MS_SP = 0;
@@ -357,9 +357,6 @@ void sPlcProcessEnd(void){//sPLC轮询结束
 	sPlcOutputRefresh();//更新Y口输出
 	sPlcNvramUpdate();//更新NVRAM
 	RRES(SPCOIL_START_UP);
-	sPlcExitTime = HAL_GetTick();
-	sPlcScanTime = sPlcExitTime - sPlcEnterTime;
-	NVRAM0[SPREG_SCAN_TIME] = (uint16_t)sPlcScanTime;
 }
 
 

@@ -2,11 +2,6 @@
 #define __DCHMIAPP_H__
 /*****************************************************************************/
 #include "sPlc.h"
-#include "hmiLib.h"
-#include "dcHmiRes.h"
-#include "MainAppLib.h"
-#include "dcHmiLanguage.H"
-#include "deviceConfig.h"
 /*****************************************************************************/
 #define FSMSTEP_POWERUP															0//上电
 //HMI初始操作	
@@ -27,8 +22,7 @@
 //选项状态
 #define FSMSTEP_OPTION															500//选项菜单
 #define FSMSTEP_INFORMATION													600
-#define FSMSTEP_SCHEME_0														700//方案菜单第一页
-#define FSMSTEP_SCHEME_1														710//方案菜单第二页
+#define FSMSTEP_SCHEME															700//方案菜单第页
 
 #define FSMSTEP_DIAGNOSIS  													800//诊断菜单
 #define FSMSTEP_RENAME															900
@@ -68,23 +62,21 @@ void updateOptionDisplay(void);
 void updateInformationDisplay(void);
 void updateAcousticDisplay(void);
 /*****************************************************************************/
-void updateScheme_0_Display(void);
-void updateScheme_1_Display(void);
-void unselectScheme_0_All(void);
-void unselectScheme_1_All(void);
-void seletcSchemeNum(int16_t sel);
-void unselectSchemeNum(int16_t sel);
+void loadSelectScheme(int16_t classify, int16_t index);
+void updateSchemeDetail(int16_t classify, int16_t index);
+void unselectSchemeAll(void);
+void seletcSchemeNum(int16_t classify, int16_t index);
+void unselectSchemeNum(int16_t index);
 /*****************************************************************************/
 void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
-void updateSchemeInfo(int16_t cn);
+void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);
 void standbyKeyValue(uint8_t value);//设置Standby键值
-void standbyPageTouchEnable(int8_t enable);//Standby界面触摸
 void standbyKeyTouchEnable(int8_t enable);//Standby key触摸
 /*****************************************************************************/
-static void updateExtralDisplay(void);//更新额外显示
+void updateExtralDisplay(void);//更新额外显示
 void standbyDebugInfoVisiable(int8_t enable);
 void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/

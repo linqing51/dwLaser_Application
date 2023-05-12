@@ -6,8 +6,6 @@
 typedef struct{
 	uint16_t calibrationPwr0[10];//通道0功率校正表
 	uint16_t calibrationPwr1[10];//通道1功率校正表
-	uint16_t calibrationPwr2[10];//通道2功率校正表
-	uint16_t calibrationPwr3[10];//通道3功率校正表
 	char serialNumber[16];//序列号
 	int16_t mfg_year;//生产年
 	int16_t mfg_month;//生产月
@@ -15,6 +13,8 @@ typedef struct{
 	int8_t redLedDc;//红灯亮度
 	int8_t greenLedDc;//绿灯亮度
 	int8_t blueLedDc;//蓝灯亮度
+	int8_t aimGain;//指示光增益
+	char normalOpenInterLock;
 }deviceConfig_t;
 
 typedef struct{

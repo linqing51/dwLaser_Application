@@ -26,7 +26,6 @@ void sPlcTimerEnable(void) {//SPLC打开计时器
 }
 void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	uint16_t i;
-	uint32_t temp;
 	for(i = TD_1MS_START;i <= TD_1MS_END;i ++){
 		if(LD(T_1MS_ENA_START * 16 + (i - TD_1MS_START))){
 			if(NVRAM0[i] < SHRT_MAX){
@@ -74,11 +73,6 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 		TimerCounter_500mS = 0;
 	}
 	if(TimerCounter_1000mS > 1000){//1000ms计算
-		temp = *(uint32_t*)(NVRAM0 + SPREG_TICK_L);
-		if(temp < UINT_MAX){
-			temp ++;
-			*(uint32_t*)(NVRAM0 + SPREG_TICK_L) = temp;
-		}
 		TD_1000MS_SP = 1;
 		TimerCounter_1000mS = 0;
 	}
@@ -87,12 +81,6 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 		TimerCounter_60000mS = 0;
 	}
 	
-	if(NVRAM0[SPREG_LINK_SEND_TCOUNTER] < SHRT_MAX){
-		NVRAM0[SPREG_LINK_SEND_TCOUNTER] ++;
-	}
-	if(NVRAM0[SPREG_LINK_RECE_TCOUNTER] < SHRT_MAX){
-		NVRAM0[SPREG_LINK_RECE_TCOUNTER] ++;
-	}
 	TimerCounter_10mS ++;//10毫秒
 	TimerCounter_100mS ++;//100毫秒
 	TimerCounter_200mS ++;//200毫秒

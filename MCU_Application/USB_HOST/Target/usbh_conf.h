@@ -80,7 +80,7 @@
 #define USBH_MAX_SIZE_CONFIGURATION      256U
 
 /*----------   -----------*/
-#define USBH_MAX_DATA_BUFFER      512U
+#define USBH_MAX_DATA_BUFFER      8192U
 
 /*----------   -----------*/
 #define USBH_DEBUG_LEVEL      0U
@@ -136,7 +136,7 @@
 #if (USBH_DEBUG_LEVEL > 1U)
 
 #define  USBH_ErrLog(...) do { \
-                            printf("ERROR: ") ; \
+                            printf("ERROR: "); \
                             printf(__VA_ARGS__); \
                             printf("\n"); \
 } while (0)
@@ -146,7 +146,7 @@
 
 #if (USBH_DEBUG_LEVEL > 2U)
 #define  USBH_DbgLog(...)   do { \
-                            printf("DEBUG : ") ; \
+                            printf("DEBUG : "); \
                             printf(__VA_ARGS__); \
                             printf("\n"); \
 } while (0)
