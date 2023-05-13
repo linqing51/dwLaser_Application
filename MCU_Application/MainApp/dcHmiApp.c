@@ -781,13 +781,17 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 					strcpy(dispBuf, (char*)(sNeurosurgery[3].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
 			}
+			if(strlen((char*)sNeurosurgery[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}
 			//方案4-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
-			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, false);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
@@ -806,7 +810,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
@@ -1651,9 +1655,9 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参数
 			power_1470 = sProctology[index].power_1470;
 			power_980 = sProctology[index].power_980;
 			power_635 = sProctology[index].power_635;
-			posWidth = sGynecology[index].poswidth;
-			negWidth = sGynecology[index].negwidth;
-			mode = sGynecology[index].pulse_mode;	
+			posWidth = sProctology[index].poswidth;
+			negWidth = sProctology[index].negwidth;
+			mode = sProctology[index].pulse_mode;	
 			break;
 		}
 		case SCHEME_GYNECOLOGY:{
@@ -2677,8 +2681,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, false);					
 			SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
 			
-			SetTextValue(GDDC_PAGE_PASSCODE, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
-			SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+			//SetTextValue(GDDC_PAGE_PASSCODE, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
+			//SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
 
 			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
 			
@@ -3401,7 +3405,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[EM_SCHEME_NUM_TMP] = 3;
 			}
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 19 && NVRAM0[EM_SCHEME_NUM_TMP] >= 16){
-				NVRAM0[EM_SCHEME_NUM_TMP] = 18;
+				NVRAM0[EM_SCHEME_NUM_TMP] = 19;
 			}
 			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_3_DOWN);

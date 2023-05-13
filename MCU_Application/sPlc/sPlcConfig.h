@@ -30,8 +30,8 @@
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												22
 #define CONFIG_ENT_SIZE																16
-#define CONFIG_NEUROSURGERY_SIZE											4
-#define CONFIG_DERMATOLOGY_SIZE												8
+#define CONFIG_NEUROSURGERY_SIZE											5
+#define CONFIG_DERMATOLOGY_SIZE												9
 #define CONFIG_LIPOSUCTION_SIZE												7
 #define CONFIG_DENTISRTY_SIZE													23
 #define CONFIG_THERAPY_SIZE														8

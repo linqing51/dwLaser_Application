@@ -544,7 +544,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->name = "EVLA Small Vessel";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 60;
+	p->power_1470 = 30;
 	p->power_980 = 1;
 	p->power_635 = 1;
 	p->poswidth = 1000;
@@ -556,7 +556,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->name = "Hemorrhoids Grade 2, 250J";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 60;
+	p->power_1470 = 70;
 	p->power_980 = 1;
 	p->power_635 = 1;
 	p->poswidth = 1000;
@@ -567,7 +567,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->name ="Hemorrhoids Grade 3, 350J";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 70;
+	p->power_1470 = 80;
 	p->power_980 = 1;
 	p->power_635 = 1;
 	p->poswidth = 1000;
@@ -589,7 +589,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->name = "Fistula";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
+	p->power_1470 = 120;
 	p->power_980 = 1;
 	p->power_635 = 1;
 	p->poswidth = 1000;
@@ -600,7 +600,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->name = "Pilonidal Sinus";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
+	p->power_1470 = 120;
 	p->power_980 = 1;
 	p->power_635 = 1;
 	p->poswidth = 1000;
@@ -688,7 +688,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->name = "Stress Incontinence, 75J";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
+	p->power_1470 = 50;
 	p->power_980 = 1;
 	p->power_635 = 1;
 	p->poswidth = 1000;
@@ -869,7 +869,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_980 = 1;
 	p->power_635 = 1;
 	p->poswidth = 1000;
-	p->negwidth = 7000;
+	p->negwidth = 5000;
 
 	//1470nm, Pulse 7w 1s Ton, 5s Toff
 	p = &sNeurosurgery[1];
@@ -884,7 +884,18 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	
 	//1470nm, Pulse 7w, 1s Ton, 5s Toff
 	p = &sNeurosurgery[2];
-	p->name = "Tumour";
+	p->name = "PLDD 980nm";
+	p->channel = LASER_CHANNEL_980;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_1470 = 1;
+	p->power_980 = 75;
+	p->power_635 = 1;
+	p->poswidth = 700;
+	p->negwidth = 700;		
+	
+	//1470nm, Pulse 7w, 1s Ton, 5s Toff
+	p = &sNeurosurgery[3];
+	p->name = "Tumour 1470nm";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_1470 = 70;
@@ -892,11 +903,11 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_635 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;	
-
+	
 	//980m, Pulse 8w 1s Ton, 5s Toff
-	p = &sNeurosurgery[3];
-	p->name = "Tumour";
-	p->channel = LASER_CHANNEL_1470;
+	p = &sNeurosurgery[4];
+	p->name = "Tumour 980nm";
+	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_1470 = 1;
 	p->power_980 = 80;
@@ -1100,7 +1111,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_1470 = 1;
-	p->power_980 = 60;
+	p->power_980 = 30;
 	p->power_635 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
@@ -1127,7 +1138,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
-//980nm, Pulse, 6w, 1s Ton, 1s Toff
+	//980nm, Pulse, 6w, 1s Ton, 1s Toff
 	p = &sDermatology[4];
 	p->name = "Nail Fungus";
 	p->channel = LASER_CHANNEL_980;
@@ -1138,8 +1149,19 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
-	//980nm, Pulse, 8w, 1s Ton, 5s Toff
+	//980nm, Pulse, 6w, 1s Ton, 1s Toff
 	p = &sDermatology[5];
+	p->name = "Venectasia";
+	p->channel = LASER_CHANNEL_980;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_1470 = 1;
+	p->power_980 = 150;
+	p->power_635 = 1;
+	p->poswidth = 70;
+	p->negwidth = 120;
+
+	//980nm, Pulse, 8w, 1s Ton, 5s Toff
+	p = &sDermatology[6];
 	p->name = "Spider Vein 0.5mm";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -1150,7 +1172,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 5000;
 	
 	//980nm, Pulse, 8w, 1s Ton, 5s Toff
-	p = &sDermatology[6];
+	p = &sDermatology[7];
 	p->name = "Spider Vein 1mm";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -1161,7 +1183,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 5000;
 
 	//980nm, Pulse, 8w, 1s Ton, 5s Toff
-	p = &sDermatology[7];
+	p = &sDermatology[8];
 	p->name = "Spider Vein 1.5mm";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
@@ -1170,7 +1192,6 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_635 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
-	
 	
 /*****************************************************************************/
 	//Liposuction
