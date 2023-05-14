@@ -2249,7 +2249,8 @@ void dcHmiLoopInit(void){//初始化模块
 	RRES(R_MCU_TEMP_LOW);									
 	RRES(R_FAULT);
 	//脚踏插入
-	SSET(R_FOOTSWITCH_PLUG);
+	//SSET(R_FOOTSWITCH_PLUG);
+	RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 }
 static void temperatureLoop(void){//温度轮询轮询
 	TNTC(EM_LASER_TEMP, SPREG_ADC_0);//CODE转换为NTC测量温度温度
@@ -2302,46 +2303,51 @@ static void temperatureLoop(void){//温度轮询轮询
 		}
 		LaserTecOutCounter ++;
 	}
-
-	//运行风扇PID程序
-	if(LDP(SPCOIL_PS1000MS)){
+//温控执行 激光等待发射及错误状态启动温控
+	if(LDP(SPCOIL_PS1000MS)){	
 		if(LD(R_LASER_TEMP_HIGH) || LD(R_LASER_TEMP_LOW) || LD(R_MCU_TEMP_HIGH) || LD(R_MCU_TEMP_LOW)){//过热状态无条件打开风扇
 			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
 		else{	
-			if(LaserTecOut < 10){//功率小于5W
-				NVRAM0[EM_FAN_SET_SPEED] = 20;
+			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
+				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
+					if(NVRAM0[EM_LASER_POWER_1470] <= 50){//功率小于5W
+						NVRAM0[EM_FAN_SET_SPEED] = 45;
+					}
+					else if((NVRAM0[EM_LASER_POWER_1470] > 50) && (NVRAM0[EM_LASER_POWER_1470] < 100)){//5-10W
+						NVRAM0[EM_FAN_SET_SPEED] = 65;
+					}
+					else if((NVRAM0[EM_LASER_POWER_1470] >= 100) && (NVRAM0[EM_LASER_POWER_1470] < 130)){//10-13W
+						NVRAM0[EM_FAN_SET_SPEED] = 75;
+					}
+					else if(NVRAM0[EM_LASER_POWER_1470] >= 130){//13-15W
+						NVRAM0[EM_FAN_SET_SPEED] = 100;
+					}
+				}
+				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){
+					if(NVRAM0[EM_LASER_POWER_980] <= 50){//功率小于5W
+						NVRAM0[EM_FAN_SET_SPEED] = 35;
+					}
+					else if((NVRAM0[EM_LASER_POWER_980] > 50) && (NVRAM0[EM_LASER_POWER_980] < 100)){//5-10W
+						NVRAM0[EM_FAN_SET_SPEED] = 55;
+					}
+					else if((NVRAM0[EM_LASER_POWER_980] >= 100) && (NVRAM0[EM_LASER_POWER_980] < 130)){//10-13W
+						NVRAM0[EM_FAN_SET_SPEED] = 65;
+					}
+					else if(NVRAM0[EM_LASER_POWER_980] >= 130){//13-15W
+						NVRAM0[EM_FAN_SET_SPEED] = 100;
+					}						
+				}
+				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){
+					NVRAM0[EM_FAN_SET_SPEED] = 35;
+				}
 			}
-			else if(LaserTecOut >= 10 && LaserTecOut < 20){
-				NVRAM0[EM_FAN_SET_SPEED] = 25;
-			}
-			else if(LaserTecOut >= 20 && LaserTecOut < 30){
-				NVRAM0[EM_FAN_SET_SPEED] = 30;
-			}
-			else if(LaserTecOut >= 30 && LaserTecOut < 40){
-				NVRAM0[EM_FAN_SET_SPEED] = 40;
-			}
-			else if(LaserTecOut >= 40 && LaserTecOut < 50){
-				NVRAM0[EM_FAN_SET_SPEED] = 50;
-			}
-			else if(LaserTecOut >= 50 && LaserTecOut < 60){
-				NVRAM0[EM_FAN_SET_SPEED] = 60;
-			}
-			else if(LaserTecOut >= 60 && LaserTecOut < 70){
-				NVRAM0[EM_FAN_SET_SPEED] = 70;
-			}
-			else if(LaserTecOut >= 70 && LaserTecOut < 80){
-				NVRAM0[EM_FAN_SET_SPEED] = 80;
-			}
-			else if(LaserTecOut >= 80 && LaserTecOut < 90){
-				NVRAM0[EM_FAN_SET_SPEED] = 90;
-			}
-			else if(LaserTecOut >= 90 && LaserTecOut <= 100){
-				NVRAM0[EM_FAN_SET_SPEED] = 100;
+			else{
+				NVRAM0[EM_FAN_SET_SPEED] = 35;
 			}
 		}
-	setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
-	}
+		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
+	}	
 }
 static void faultLoop(void){//故障轮询
 	uint8_t temp;
@@ -2633,7 +2639,8 @@ void dcHmiLoop(void){//HMI轮训程序
         }                                                                             
 	}
 	//状态机
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤		
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
+		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器		
 		NVRAM0[DM_DC_OLD_PASSCODE2] = 0;
 		NVRAM0[DM_DC_OLD_PASSCODE3] = 0;
 	
@@ -2721,7 +2728,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			//打开蜂鸣器
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
 			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-			SSET(SPCOIL_BEEM_ENABLE);
+			//SSET(SPCOIL_BEEM_ENABLE);
 		}
 		else{
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;	
@@ -3031,14 +3038,12 @@ void dcHmiLoop(void){//HMI轮训程序
 			goNextScheme();
 			loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);//切换方案				
 			updateStandbyDisplay();
-			vTaskDelay(100);
 			RRES(R_STANDBY_KEY_SCHEME_NEXT_DOWN);
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_LAST_DOWN)){
 			goLastScheme();
 			loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
 			updateStandbyDisplay();	
-			vTaskDelay(100);
 			RRES(R_STANDBY_KEY_SCHEME_LAST_DOWN);
 		}
 		return;

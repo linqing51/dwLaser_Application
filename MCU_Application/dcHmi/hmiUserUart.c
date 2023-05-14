@@ -28,13 +28,19 @@ void hmiUartSendChar(uint8_t sdat){
 	}
 }
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	if(huart == &huart4){//´¥ÃþÆÁ´®¿Ú
+	if(huart->Instance == UART4){//´¥ÃþÆÁ´®¿Ú
+		queue_push(uart4_rxDat);
+		HAL_UART_Receive_IT(&huart4, &uart4_rxDat, 1);
+	}	
+}
+void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart){
+	if(huart->Instance == UART4){//´¥ÃþÆÁ´®¿Ú
 		queue_push(uart4_rxDat);
 		HAL_UART_Receive_IT(&huart4, &uart4_rxDat, 1);
 	}	
 }
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
-	if(huart == &huart4){
+	if(huart->Instance == UART4){
 		HAL_UART_Receive_IT(&huart4, &uart4_rxDat, 1);
 	}
 }
