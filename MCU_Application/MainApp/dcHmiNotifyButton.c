@@ -992,10 +992,11 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						restoreDefault();
 						NVFSAVE();//强制更新NVRAM
-						updateOptionDisplay();//更新Option显示
-						SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
+						FDSAV();
+						//updateOptionDisplay();//更新Option显示
+						//SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
+						//NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
+						//SetScreen(NVRAM0[EM_DC_PAGE]);
 						REBOOT();
 					}
 					break;
@@ -1099,7 +1100,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DENTISTRY:{
 					if(state){
-						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_DENTISRTY;	
+						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_DENTISTRY;	
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
@@ -1158,16 +1159,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[DM_SCHEME_INDEX] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
 						NVRAM0[DM_SCHEME_CLASSIFY] = NVRAM0[EM_SCHEME_CLASSIFY_TMP];
 						loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
-#ifdef MODEL_PVGLS_TRI						
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-#endif
-#ifdef MODEL_PVGLS_15W_1470
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 						updateStandbyDisplay();	
-#endif
 					}
 					break;
 				}

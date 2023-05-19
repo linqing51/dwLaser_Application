@@ -55,7 +55,7 @@ void goNextScheme(void){//切换下一个方案
 			}
 			break;
 		}
-		case SCHEME_DENTISRTY:{
+		case SCHEME_DENTISTRY:{
 			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_DENTISRTY_SIZE - 1)){
 					ADDS1(DM_SCHEME_INDEX);
 			}
@@ -182,7 +182,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_NEGWIDTH] = sLiposuction[index].negwidth;
 			break;
 		}
-		case SCHEME_DENTISRTY:{
+		case SCHEME_DENTISTRY:{
 			if(index > (CONFIG_DENTISRTY_SIZE - 1)){
 				index = (CONFIG_DENTISRTY_SIZE - 1);
 			}
@@ -243,10 +243,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	int16_t i;
 	for (i = 0;i < 32; i ++){
 		if(reDef == 1){//自定义方案恢复默认值
-			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i+1)); 
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
-			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = i;
+			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = i + 1;
 			FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
@@ -260,7 +260,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470_635)		&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_980_635)		&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470_980_635)){//自定义方案不正确恢复默认值
-				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i+1)); 
+				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 				FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 1;

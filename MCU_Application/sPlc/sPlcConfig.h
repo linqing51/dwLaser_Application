@@ -21,7 +21,7 @@
 #define SCHEME_NEUROSURGERY														0x0005
 #define SCHEME_DERMATOLOGY														0x0006
 #define SCHEME_LIPOSUCTION														0x0007
-#define SCHEME_DENTISRTY															0x0008
+#define SCHEME_DENTISTRY															0x0008
 #define SCHMEM_THERAPY																0x0009
 #define SCHEME_CUSTIOM																0x0000
 /*****************************************************************************/

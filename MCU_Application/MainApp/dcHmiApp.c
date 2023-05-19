@@ -330,7 +330,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 	//index = NVRAM0[EM_SCHEME_NUM_TMP];
 	switch(classify){
 		case SCHEME_PHLEBOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-PHLEBOLOGY");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Phlebology");
 			if(strlen((char*)sPhlebology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sPhlebology[0].name));
 				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -393,7 +393,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			
 		}
 		case SCHEME_PROCTOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-PROCTOLOGY");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Proctology");
 			if(strlen((char*)sProctology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sProctology[0].name));
 				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -467,7 +467,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;
 		}
 		case SCHEME_GYNECOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-GYNECOLOGY");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Gynecology");
 			if(index < 16){//方案0-15
 				if(strlen((char*)sGynecology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[0].name));
@@ -651,7 +651,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;				
 		}
 		case SCHEME_ENT:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-ENT");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- ENT");
 			if(strlen((char*)sENT[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -764,7 +764,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;
 		}
 		case SCHEME_NEUROSURGERY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-NEUROSURGERY");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Neurosurgery");
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -834,7 +834,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;
 		}
 		case SCHEME_DERMATOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-DERMATOLOGY");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Dermatology");
 			if(strlen((char*)sDermatology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -916,7 +916,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;
 		}
 		case SCHEME_LIPOSUCTION:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-LIPOSUCTION");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Liposuction");
 			if(strlen((char*)sLiposuction[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -993,8 +993,8 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
 			break;
 		}
-		case SCHEME_DENTISRTY:{	
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-DENTISRTY");
+		case SCHEME_DENTISTRY:{	
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Dentistry");
 			if(index < 16){//方案0-15
 				if(strlen((char*)sDentistry[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[0].name));
@@ -1184,7 +1184,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;
 		}
 		case SCHMEM_THERAPY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-THERAPY");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Therapy");
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1266,7 +1266,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;
 		}
 		case SCHEME_CUSTIOM:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "-CUSTIOM");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
 			if(index < 16){
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_0], CONFIG_SCHEME_NAME_SIZE);
@@ -1464,7 +1464,7 @@ void updateInformationDisplay(void){//更新信息界面显示
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE);	
 
 	memset(dispBuf, 0x0,sizeof(dispBuf));
-	sprintf(dispBuf, "SN:%s", (uint8_t*)deviceConfig.serialNumber);
+	sprintf(dispBuf, "SN: %s", (uint8_t*)deviceConfig.serialNumber);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER);
@@ -1473,19 +1473,19 @@ void updateInformationDisplay(void){//更新信息界面显示
 	pMain = (char*)(BOOTLOAD_MAIN_ADDRESS);
 	pMonir = (char*)(BOOTLAOD_MINOR_ADDRESS);
 	if((*pMain >='0' && *pMain <= '9') && (*pMonir >= '0' && *pMonir <= '9')){
-		sprintf(dispBuf, "%s;Bootload Ver: %c.%c", (char*)INFO_MSG_VERSION, *pMain, *pMonir);
+		sprintf(dispBuf, "%s; Bootload Ver: %c.%c", (char*)INFO_MSG_VERSION, *pMain, *pMonir);
 		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)dispBuf);
 	}
 	else{
-		sprintf(dispBuf, "%s;Bootload Ver: 1.0", (char*)INFO_MSG_VERSION);
+		sprintf(dispBuf, "%s; Bootload Ver: 1.0", (char*)INFO_MSG_VERSION);
 		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_VERSION, (uint8_t*)dispBuf);
 	}
 	memset(dispBuf, 0x0,sizeof(dispBuf));
-	sprintf(dispBuf, "MANUFACTURE DATE:%4d-%2d-%2d", deviceConfig.mfg_year, deviceConfig.mfg_month, deviceConfig.mfg_day);
+	sprintf(dispBuf, "MANUFACTURE DATE: %4d-%2d-%2d", deviceConfig.mfg_year, deviceConfig.mfg_month, deviceConfig.mfg_day);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)dispBuf);			
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "UUID:%08X%08X%08X", UniqueId[0], UniqueId[1], UniqueId[2]);
+	sprintf(dispBuf, "UUID: %08X%08X%08X", UniqueId[0], UniqueId[1], UniqueId[2]);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);	
 }
 void returnStandbyDisplay(void){//返回STANDBY界面
@@ -1725,7 +1725,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参数
 			mode = sLiposuction[index].pulse_mode;
 			break;		
 		}
-		case SCHEME_DENTISRTY:{
+		case SCHEME_DENTISTRY:{
 			if(index > (CONFIG_DENTISRTY_SIZE - 1)){
 				index = (CONFIG_DENTISRTY_SIZE - 1);
 			}
@@ -1771,60 +1771,60 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参数
 		case LASER_CHANNEL_1470:{
 			sprintf(dispBuf1, "1470nm: %3.1fW", ((float)power_1470 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:1470nm");
+				sprintf(dispBuf2, "Mode: CW");
 			}
 			if(mode == LASER_MODE_MP){
-				sprintf(dispBuf2, "PULSE:1470nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "Mode: Pulse, On: %dmS, Off: %dmS", posWidth, negWidth);
 			}
 			break;
 		}
 		case LASER_CHANNEL_980:{
 			sprintf(dispBuf1, "980nm: %3.1fW", ((float)power_980 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:980nm");
+				sprintf(dispBuf2, "Mode: CW");
 			}
 			if(mode == LASER_MODE_MP){
-				sprintf(dispBuf2, "PULSE:980nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "Mode: Pulse, On: %dmS, Off: %dmS", posWidth, negWidth);
 			}						
 			break;
 		}
 		case LASER_CHANNEL_635:{
 			sprintf(dispBuf1, "635nm: %3.1fW", ((float)power_635 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:635nm");
+				sprintf(dispBuf2, "Mode: CW");
 			}
 			if(mode == LASER_MODE_MP){
-				sprintf(dispBuf2, "PULSE:635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "Mode: Pulse, On: %dmS, Off: %dmS", posWidth, negWidth);
 			}						
 			break;
 		}
 		case LASER_CHANNEL_1470_980:{
-			sprintf(dispBuf1, "1470nm:%3.1fW,980nm:%3.1fW", ((float)power_1470 / 10.0F), ((float)power_980 / 10.0F));
+			sprintf(dispBuf1, "1470nm: %3.1fW, 980nm: %3.1fW", ((float)power_1470 / 10.0F), ((float)power_980 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:1470nm-980nm");
+				sprintf(dispBuf2, "Mode: CW");
 			}
 			if(mode == LASER_MODE_MP){	
-				sprintf(dispBuf2, "PULSE:1470nm-980nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "Mode: Pulse, On: %dmS, Off: %dmS", posWidth, negWidth);
 			}
 			break;
 		}
 		case LASER_CHANNEL_980_635:{
-			sprintf(dispBuf1, "980nm:%3.1fW,635nm:%3.1fW", ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
+			sprintf(dispBuf1, "980nm: %3.1fW, 635nm: %3.1fW", ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:980nm-635nm");
+				sprintf(dispBuf2, "Mode: CW");
 			}
 			if(mode == LASER_MODE_MP){	
-				sprintf(dispBuf2, "PULSE:980nm-635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "Mode: Pulse, On: %dmS, Off: %dmS", posWidth, negWidth);
 			}		
 			break;
 		}
 		case LASER_CHANNEL_1470_980_635:{
-			sprintf(dispBuf1, "1470nm:%3.1fW,980nm:%3.1fW,635nm:%3.1fW", ((float)power_1470 / 10.0F) , ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
+			sprintf(dispBuf1, "1470nm: %3.1fW, 980nm: %3.1fW, 635nm: %3.1fW", ((float)power_1470 / 10.0F) , ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:1470nm-980nm-635nm");
+				sprintf(dispBuf2, "Mode: CW");
 			}
 			if(mode == LASER_MODE_MP){	
-				sprintf(dispBuf2, "PULSE:1470-980-635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "Mode: Pulse, On: %dmS, Off: %dmS", posWidth, negWidth);
 			}
 			break;
 		}
