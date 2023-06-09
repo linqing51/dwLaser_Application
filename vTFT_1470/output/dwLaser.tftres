@@ -2,19 +2,20 @@
     <pages>
         <page name="GDDC_PAGE_POWERUP_1470" id="0" />
         <page name="GDDC_PAGE_POWERUP_TRI" id="1" />
-        <page name="GDDC_PAGE_PASSCODE" id="2" />
-        <page name="GDDC_PAGE_NEW_PASSCODE" id="3" />
-        <page name="GDDC_PAGE_STANDBY" id="4" />
-        <page name="GDDC_PAGE_READY" id="5" />
-        <page name="GDDC_PAGE_OPTION" id="6" />
-        <page name="GDDC_PAGE_SCHEME_CLASSIFY" id="7" />
-        <page name="GDDC_PAGE_SCHEME_DETAIL" id="8" />
-        <page name="GDDC_PAGE_INFORMATION" id="9" />
-        <page name="GDDC_PAGE_DIAGNOSIS" id="10" />
-        <page name="GDDC_PAGE_RENAME" id="11" />
-        <page name="GDDC_PAGE_RESTORE" id="12" />
-        <page name="GDDC_PAGE_WEAR_SAFETY" id="13" />
-        <page name="Screen_Null" id="14" />
+        <page name="GDDC_PAGE_POWERUP_1940" id="2" />
+        <page name="GDDC_PAGE_PASSCODE" id="3" />
+        <page name="GDDC_PAGE_NEW_PASSCODE" id="4" />
+        <page name="GDDC_PAGE_STANDBY" id="5" />
+        <page name="GDDC_PAGE_READY" id="6" />
+        <page name="GDDC_PAGE_OPTION" id="7" />
+        <page name="GDDC_PAGE_SCHEME_CLASSIFY" id="8" />
+        <page name="GDDC_PAGE_SCHEME_DETAIL" id="9" />
+        <page name="GDDC_PAGE_INFORMATION" id="10" />
+        <page name="GDDC_PAGE_DIAGNOSIS" id="11" />
+        <page name="GDDC_PAGE_RENAME" id="12" />
+        <page name="GDDC_PAGE_RESTORE" id="13" />
+        <page name="GDDC_PAGE_WEAR_SAFETY" id="14" />
+        <page name="Screen_Null" id="15" />
     </pages>
     <images>
         <image id="0" url="d:\github\dwlaser_application\vtft_1470\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />

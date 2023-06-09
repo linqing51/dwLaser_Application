@@ -40,6 +40,9 @@ void sPlcAdcProcess(void){//循环采集ADC
 		NVRAM0[SPREG_ADC_3] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 		NVRAM0[SPREG_ADC_4] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 		NVRAM0[SPREG_ADC_5] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_6] = (uint16_t)((float)sum[6] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_7] = (uint16_t)((float)sum[7] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_8] = (uint16_t)((float)sum[8] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 	}
 	else{//adcBufferSelect = 1
 		HAL_ADC_Stop_DMA(&hadc1);
@@ -58,6 +61,9 @@ void sPlcAdcProcess(void){//循环采集ADC
 		NVRAM0[SPREG_ADC_3] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 		NVRAM0[SPREG_ADC_4] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 		NVRAM0[SPREG_ADC_5] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_6] = (uint16_t)((float)sum[6] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_7] = (uint16_t)((float)sum[7] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
+		NVRAM0[SPREG_ADC_8] = (uint16_t)((float)sum[8] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);
 	}
 }
 

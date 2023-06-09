@@ -1,7 +1,6 @@
 //TIM11->计时
 #include "sPlc.h"
 /*****************************************************************************/
-int8_t LaserOn_635;
 int8_t LaserTimer_Mode;
 int16_t LaserTimer_TCounter;
 int16_t LaserTimer_TMate;
@@ -173,7 +172,11 @@ void EDLAR(void){//停止发射脉冲
 void sPlcLaserInit(void){//激光脉冲功能初始化
 	SET_LASER_1470_OFF;
 	SET_LASER_980_OFF;
-	setRedLaserPwm(0);
+#ifdef MODEL_PVGLS_7W_1940
+	setRedLaserPwmM4(0);
+#else
+	setRedLaserPwmG5(0);
+#endif
 	//设定计时器
 	LaserTimer_Mode = 0;
 	LaserTimer_TCounter = 0;
@@ -196,8 +199,8 @@ static void laserStart(void){//按通道选择打开激光
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_980){
 			SET_LASER_980_ON;
 		}
-		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_635){//打开红激光
-			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_635){//打开红激光			
+			setRedLaserPwmG5(NVRAM0[EM_LASER_POWER_635] * 1000);
 		}
 		LaserFlag_Emiting = true;
 	}
@@ -206,7 +209,11 @@ static void laserStop(void){//按通道选择关闭激光
 	if(LaserFlag_Emiting == true){
 		SET_LASER_1470_OFF;		
 		SET_LASER_980_OFF;
-		setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
+#ifdef MODEL_PVGLS_7W_1940
+		setRedLaserPwmM4(NVRAM0[DM_AIM_BRG] * 10);
+#else
+		setRedLaserPwmG5(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
+#endif
 		LaserFlag_Emiting = false;
 	}
 }
@@ -236,24 +243,40 @@ void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
 	}
 }
 	
-void setRedLaserPwm(int16_t pwm){//设置红激光占空比
+void setRedLaserPwmG5(int16_t pwm){//设置红激光占空比 G5激光器
 	if(pwm >= htim2.Init.Period){
 		pwm = htim2.Init.Period;
 	}
 	if(pwm < 0){
 		pwm = 0;
 	}
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm);
+	SET_G5_AIM_DC(pwm);
 	if(pwm != 0){
-		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//打开TIM
-		LaserOn_635 = true;
+		SET_G5_AIM_ON;//打开TIM
 	}
 	else{
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
-		LaserOn_635 = false;
+		SET_G5_AIM_OFF;//关闭TIM
 	}
 	//printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
 
+}
+
+void setRedLaserPwmM4(int16_t pwm){//设置红激光占空比 M4激光器
+	if(pwm > htim4.Init.Period){
+		pwm = htim4.Init.Period;
+	}
+	if(pwm < 0){
+		pwm = 0;
+	}
+	pwm = pwm / 5; 
+	SET_M4_AIM_DC(pwm);
+	if(pwm != 0){
+		SET_M4_AIM_ON;
+	}
+	else{
+		SET_M4_AIM_OFF;
+	}
+	
 }
 
 

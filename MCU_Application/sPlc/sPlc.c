@@ -270,6 +270,7 @@ void sPlcSpwmLoop(void){//SPWM¬÷—Ø
 
 /*****************************************************************************/
 void sPlcInit(void){//»Ì¬ﬂº≠≥ı ºªØ	
+	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	listEpromTable();
 	readStm32UniqueID();
@@ -295,7 +296,6 @@ void sPlcInit(void){//»Ì¬ﬂº≠≥ı ºªØ
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;	
 	SET_BLUE_LED_OFF;
-	RRES(Y_TICK_LED);
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);
 	}

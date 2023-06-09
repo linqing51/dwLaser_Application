@@ -7,11 +7,7 @@ static uint8_t MsgId = 0xFF;//当前显示的信息ID
 uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
 uint32_t newBootloadCrc32;
 IncPid_t LaserTecIncPids;
-IncPid_t LaserFanIncPids;
 int16_t LaserTecOut;
-int16_t LaserFanOut;
-int16_t LaserTecOutCounter;
-int16_t LaserFanOutCounter;
 /*****************************************************************************/
 FRESULT retUsbH;
 FATFS	USBH_fatfs;
@@ -258,7 +254,7 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 void updateDebugInfo(void){//更新Standby调试信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "TLAS:%05d, TMCU:%05d,FPD:%05d, LPD:%05d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_2], NVRAM0[SPREG_ADC_1]);
+	sprintf(dispBuf, "TLAS:%04d,TMCU:%04d,THT:%04d,TLP0:%04d,TLP1:%04d,TTP:%04d,LPD:%04d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_HT_TEMP], NVRAM0[EM_LD0_DRV_TEMP], NVRAM0[EM_LD1_DRV_TEMP],  NVRAM0[EM_TP_DRV_TEMP], NVRAM0[SPREG_ADC_1]);
 	switch(NVRAM0[EM_DC_PAGE]){
 		case GDDC_PAGE_STANDBY:{
 			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
@@ -1979,8 +1975,17 @@ void updateStandbyDisplay(void){//更新方案显示
 	SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, true);
 #endif
 #ifdef MODEL_PVGLS_15W_1470
-		SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);	
+	SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);
+	SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);	
+#endif
+#ifdef MODEL_PVGLS_7W_1940
+	SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_1470, false);
+	SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);
+	SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_635, false);
+	
+	SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_1470, false);
+	SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);
+	SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_635, false);
 #endif
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
 		SetButtonValue(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_MODE_CW, true);
@@ -2220,8 +2225,15 @@ void dcHmiLoopInit(void){//初始化模块
 	LaserTecIncPids.kp = 0.08;
 	LaserTecIncPids.ki = 0.005;
 	LaserTecIncPids.kd = 0.15;
+	SET_TP_SET_DC(10);
+	SET_TP_SET_ON;
+	SET_TP_PWM_ON;
 	standbyKeyTouchEnableStatus = -1;
-	setRedLaserPwm(0);
+#ifdef MODEL_PVGLS_7W_1940
+	setRedLaserPwmM4(0);
+#else
+	setRedLaserPwmG5(0);
+#endif
 	hmiUartInit();
 	schemeInit(0);//不回复自定义方案
 	loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
@@ -2253,8 +2265,14 @@ void dcHmiLoopInit(void){//初始化模块
 	RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 }
 static void temperatureLoop(void){//温度轮询轮询
-	TNTC(EM_LASER_TEMP, SPREG_ADC_0);//CODE转换为NTC测量温度温度
-	TENV(EM_MCU_TEMP, SPREG_ADC_3);//CODE转换为MCU温度
+	int16_t tmp;
+	//CODE转换为NTC测量温度温度
+	TNTC(EM_LASER_TEMP, 		SPREG_ADC_2);
+	TNTC(EM_HT_TEMP, 				SPREG_ADC_3);
+	TNTC(EM_TP_DRV_TEMP,		SPREG_ADC_4);
+	TNTC(EM_LD0_DRV_TEMP, 	SPREG_ADC_5);
+	TNTC(EM_LD1_DRV_TEMP, 	SPREG_ADC_0);
+	TENV(EM_MCU_TEMP, 			SPREG_ADC_6);//CODE转换为MCU温度
 	//判断二极管温度
 	if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_HIGH_TEMP){//激光器过热
 		SSET(R_LASER_TEMP_HIGH);
@@ -2291,60 +2309,53 @@ static void temperatureLoop(void){//温度轮询轮询
 		if(LaserTecOut < 0){
 			LaserTecOut = 0;
 		}
-		//printf("%s,%d,%s:laser tec out:%d\n",__FILE__, __LINE__, __func__, LaserTecOut);
-		LaserTecOutCounter = 0;
-		if(LaserTecOut > 0){
-			SSET(Y_TEC);
-		}
-	}
-	if(LDP(SPCOIL_PS10MS)){
-		if(LaserTecOutCounter >= LaserTecOut){
-			RRES(Y_TEC);
-		}
-		LaserTecOutCounter ++;
+		SET_TP_SET_DC(LaserTecOut);
 	}
 //温控执行 激光等待发射及错误状态启动温控
 	if(LDP(SPCOIL_PS1000MS)){	
 		if(LD(R_LASER_TEMP_HIGH) || LD(R_LASER_TEMP_LOW) || LD(R_MCU_TEMP_HIGH) || LD(R_MCU_TEMP_LOW)){//过热状态无条件打开风扇
 			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
-		else{	
-			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
-				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
-					if(NVRAM0[EM_LASER_POWER_1470] <= 50){//功率小于5W
-						NVRAM0[EM_FAN_SET_SPEED] = 45;
-					}
-					else if((NVRAM0[EM_LASER_POWER_1470] > 50) && (NVRAM0[EM_LASER_POWER_1470] < 100)){//5-10W
-						NVRAM0[EM_FAN_SET_SPEED] = 65;
-					}
-					else if((NVRAM0[EM_LASER_POWER_1470] >= 100) && (NVRAM0[EM_LASER_POWER_1470] < 130)){//10-13W
-						NVRAM0[EM_FAN_SET_SPEED] = 75;
-					}
-					else if(NVRAM0[EM_LASER_POWER_1470] >= 130){//13-15W
-						NVRAM0[EM_FAN_SET_SPEED] = 100;
-					}
-				}
-				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){
-					if(NVRAM0[EM_LASER_POWER_980] <= 50){//功率小于5W
-						NVRAM0[EM_FAN_SET_SPEED] = 35;
-					}
-					else if((NVRAM0[EM_LASER_POWER_980] > 50) && (NVRAM0[EM_LASER_POWER_980] < 100)){//5-10W
-						NVRAM0[EM_FAN_SET_SPEED] = 55;
-					}
-					else if((NVRAM0[EM_LASER_POWER_980] >= 100) && (NVRAM0[EM_LASER_POWER_980] < 130)){//10-13W
-						NVRAM0[EM_FAN_SET_SPEED] = 65;
-					}
-					else if(NVRAM0[EM_LASER_POWER_980] >= 130){//13-15W
-						NVRAM0[EM_FAN_SET_SPEED] = 100;
-					}						
-				}
-				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){
-					NVRAM0[EM_FAN_SET_SPEED] = 35;
-				}
+		else if(NVRAM0[EM_LASER_TEMP] <= 320){//激光器温度小于32度时启用风扇转速调节
+			if(NVRAM0[EM_HT_TEMP] < 50){//小于5度
+				NVRAM0[EM_FAN_SET_SPEED] = 30;
 			}
-			else{
+			else if((NVRAM0[EM_HT_TEMP] >= 50) && (NVRAM0[EM_HT_TEMP] <100)){//5-10度
 				NVRAM0[EM_FAN_SET_SPEED] = 35;
 			}
+			else if((NVRAM0[EM_HT_TEMP] >= 100) && (NVRAM0[EM_HT_TEMP] <150)){//10-15度
+				NVRAM0[EM_FAN_SET_SPEED] = 40;
+			}
+			else if((NVRAM0[EM_HT_TEMP] >= 150) && (NVRAM0[EM_HT_TEMP] <200)){//15-20度
+				NVRAM0[EM_FAN_SET_SPEED] = 45;
+			}
+			else if((NVRAM0[EM_HT_TEMP] >= 200) && (NVRAM0[EM_HT_TEMP] < 250)){//20-25度
+				NVRAM0[EM_FAN_SET_SPEED] = 50;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300) {//25-30度
+				NVRAM0[EM_FAN_SET_SPEED] = 55;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){//30-35度
+				NVRAM0[EM_FAN_SET_SPEED] = 60;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){//35-40度
+				NVRAM0[EM_FAN_SET_SPEED] = 65;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){//40-45度
+				NVRAM0[EM_FAN_SET_SPEED] = 70;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){//45-50度
+				NVRAM0[EM_FAN_SET_SPEED] = 80;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP] < 550){//50-55度
+				NVRAM0[EM_FAN_SET_SPEED] = 90;
+			}
+			else{//大于55度
+				NVRAM0[EM_FAN_SET_SPEED] = 100;
+			}
+		}
+		else{
+			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
 		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
 	}	
@@ -2724,6 +2735,9 @@ void dcHmiLoop(void){//HMI轮训程序
 #ifdef MODEL_PVGLS_TRI
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_TRI;								
 #endif
+#ifdef MODEL_PVGLS_7W_1940
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1940;
+#endif
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
 			//打开蜂鸣器
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
@@ -3023,7 +3037,11 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 			}
 			//打开指示激光
-			setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
+#ifdef MODEL_PVGLS_7W_1940
+			setRedLaserPwmM4(NVRAM0[DM_AIM_BRG] * 10);
+#else
+			setRedLaserPwmG5(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
+#endif
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);
@@ -3207,7 +3225,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;
 			UPDAC0();UPDAC1();
 			//光比红激光
-			setRedLaserPwm(0);
+#ifdef MODEL_PVGLS_7W_1940
+			setRedLaserPwmM4(0);
+#else
+			setRedLaserPwmG5(0);
+#endif
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);//停止2秒计时器
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
 			SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
@@ -3263,7 +3285,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			EDLAR();//停止发射
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;
 			UPDAC0();UPDAC1();
-			setRedLaserPwm(0);
+#ifdef MODEL_PVGLS_7W_1940
+			setRedLaserPwmM4(0);
+#else
+			setRedLaserPwmG5(0);
+#endif
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
 			SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
 			updateStandbyDisplay();

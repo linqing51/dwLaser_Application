@@ -4,44 +4,47 @@
 //创建画面GDDC_PAGE_POWERUP_TRI的命令索引ID
 #define  _SCREEN_GDDC_PAGE_POWERUP_TRI                                         1
 
+//创建画面GDDC_PAGE_POWERUP_1940的命令索引ID
+#define  _SCREEN_GDDC_PAGE_POWERUP_1940                                        2
+
 //创建画面GDDC_PAGE_PASSCODE的命令索引ID
-#define  _SCREEN_GDDC_PAGE_PASSCODE                                            2
+#define  _SCREEN_GDDC_PAGE_PASSCODE                                            3
 
 //创建画面GDDC_PAGE_NEW_PASSCODE的命令索引ID
-#define  _SCREEN_GDDC_PAGE_NEW_PASSCODE                                        3
+#define  _SCREEN_GDDC_PAGE_NEW_PASSCODE                                        4
 
 //创建画面GDDC_PAGE_STANDBY的命令索引ID
-#define  _SCREEN_GDDC_PAGE_STANDBY                                             4
+#define  _SCREEN_GDDC_PAGE_STANDBY                                             5
 
 //创建画面GDDC_PAGE_READY的命令索引ID
-#define  _SCREEN_GDDC_PAGE_READY                                               5
+#define  _SCREEN_GDDC_PAGE_READY                                               6
 
 //创建画面GDDC_PAGE_OPTION的命令索引ID
-#define  _SCREEN_GDDC_PAGE_OPTION                                              6
+#define  _SCREEN_GDDC_PAGE_OPTION                                              7
 
 //创建画面GDDC_PAGE_SCHEME_CLASSIFY的命令索引ID
-#define  _SCREEN_GDDC_PAGE_SCHEME_CLASSIFY                                     7
+#define  _SCREEN_GDDC_PAGE_SCHEME_CLASSIFY                                     8
 
 //创建画面GDDC_PAGE_SCHEME_DETAIL的命令索引ID
-#define  _SCREEN_GDDC_PAGE_SCHEME_DETAIL                                       8
+#define  _SCREEN_GDDC_PAGE_SCHEME_DETAIL                                       9
 
 //创建画面GDDC_PAGE_INFORMATION的命令索引ID
-#define  _SCREEN_GDDC_PAGE_INFORMATION                                         9
+#define  _SCREEN_GDDC_PAGE_INFORMATION                                        10
 
 //创建画面GDDC_PAGE_DIAGNOSIS的命令索引ID
-#define  _SCREEN_GDDC_PAGE_DIAGNOSIS                                          10
+#define  _SCREEN_GDDC_PAGE_DIAGNOSIS                                          11
 
 //创建画面GDDC_PAGE_RENAME的命令索引ID
-#define  _SCREEN_GDDC_PAGE_RENAME                                             11
+#define  _SCREEN_GDDC_PAGE_RENAME                                             12
 
 //创建画面GDDC_PAGE_RESTORE的命令索引ID
-#define  _SCREEN_GDDC_PAGE_RESTORE                                            12
+#define  _SCREEN_GDDC_PAGE_RESTORE                                            13
 
 //创建画面GDDC_PAGE_WEAR_SAFETY的命令索引ID
-#define  _SCREEN_GDDC_PAGE_WEAR_SAFETY                                        13
+#define  _SCREEN_GDDC_PAGE_WEAR_SAFETY                                        14
 
 //创建画面Screen_Null的命令索引ID
-#define  _SCREEN_SCREEN_NULL                                                  14
+#define  _SCREEN_SCREEN_NULL                                                  15
 
 #define  _BTN_GDDC_PAGE_PASSCODE_GDDC_PAGE_PASSCODE_KEY_NUM1                   1
 

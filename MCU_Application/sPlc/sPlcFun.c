@@ -165,7 +165,7 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 		NVRAM0[SPREG_ADC_4] = 1;
 	}
 	if(NVRAM0[src] >= 10){	
-		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_4] * 4096.0F);//计算电压
+		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_7] * 4096.0F);//计算电压
 		ftemp = ftemp * CONFIG_NTC_RS / (CONFIG_NTC_VREF - ftemp);//计算电阻
 	}
 	else{
@@ -179,7 +179,7 @@ void TNTC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度
 }
 void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
 	float32_t ftemp;
-	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_4] * 4096.0F);
+	ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[SPREG_ADC_7] * 4096.0F);
 	//ftemp = NVRAM0[SPREG_VREF]* NVRAM0[src] / 4096;//单位mV
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
 	if(ftemp >= 100)

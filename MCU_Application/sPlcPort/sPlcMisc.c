@@ -14,29 +14,31 @@ void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
 	/* GPIO Ports Clock Enable */
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(USB_OTG_FS_DP_GPIO_Port, USB_OTG_FS_DP_Pin, GPIO_PIN_RESET);
 	/*Configure GPIO pin : PA12 */
-	GPIO_InitStruct.Pin = GPIO_PIN_12;
+	GPIO_InitStruct.Pin = USB_OTG_FS_DP_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);                                            
+	HAL_GPIO_Init(USB_OTG_FS_DP_GPIO_Port, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(USB_OTG_FS_DP_GPIO_Port, USB_OTG_FS_DP_Pin, GPIO_PIN_RESET);                                            
 	softDelayMs(100);
 	//先把PA12拉低再拉高，利用D+模拟USB的拔插动作   
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(USB_OTG_FS_DP_GPIO_Port, USB_OTG_FS_DP_Pin, GPIO_PIN_SET);
 	softDelayMs(100);
-	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
+	HAL_GPIO_DeInit(USB_OTG_FS_DP_GPIO_Port, USB_OTG_FS_DP_Pin);
 	__HAL_RCC_GPIOA_CLK_DISABLE();
-	__HAL_RCC_GPIOG_CLK_ENABLE();
-	HAL_GPIO_WritePin(GPIOG,GPIO_PIN_8, GPIO_PIN_RESET);
-	GPIO_InitStruct.Pin = GPIO_PIN_8;
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+	
+	GPIO_InitStruct.Pin = USB_OTG_FS_ON_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+	HAL_GPIO_Init(USB_OTG_FS_ON_GPIO_Port, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(USB_OTG_FS_ON_GPIO_Port, USB_OTG_FS_ON_Pin, GPIO_PIN_RESET);
 	softDelayMs(200);
-	HAL_GPIO_DeInit(GPIOG, GPIO_PIN_12);
+	HAL_GPIO_DeInit(USB_OTG_FS_ON_GPIO_Port, USB_OTG_FS_ON_Pin);
+	
 	__HAL_RCC_GPIOG_CLK_DISABLE();	
 	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//关闭USB时钟
 	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//关闭USB 中断
@@ -75,18 +77,23 @@ void resetInit(void){//复位后初始化
 	HAL_DeInit();
 	HAL_CRC_MspDeInit(&hcrc);
 	HAL_RNG_MspDeInit(&hrng);
+	
 	HAL_TIM_Base_MspDeInit(&htim2);
 	HAL_TIM_Base_MspDeInit(&htim3);
-	HAL_TIM_Base_MspDeInit(&htim7);
+	HAL_TIM_Base_MspDeInit(&htim4);
+	HAL_TIM_Base_MspDeInit(&htim5);
+	HAL_TIM_Base_MspDeInit(&htim8);
 	HAL_TIM_Base_MspDeInit(&htim10);
-	HAL_TIM_Base_MspDeInit(&htim12);
-	HAL_TIM_Base_MspDeInit(&htim14);	
-	HAL_I2C_MspDeInit(&hi2c1);
+	HAL_TIM_Base_MspDeInit(&htim13);
+	HAL_TIM_Base_MspDeInit(&htim14);
+	
+	HAL_I2C_MspDeInit(&hi2c2);
 	HAL_UART_MspDeInit(&huart1);
-	HAL_UART_MspDeInit(&huart2);
 	HAL_UART_MspDeInit(&huart4);
+	HAL_UART_MspDeInit(&huart5);
 	HAL_ADC_MspDeInit(&hadc1);
 	HAL_DAC_MspInit(&hdac);
+	
 	USBH_DeInit(&hUsbHostFS);
 	//复位RCC时钟
 	SystemClock_Reset();
@@ -96,7 +103,6 @@ void resetInit(void){//复位后初始化
 void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	vTaskDelay(delayMs);
 }
-
 void setFanSpeed(int16_t speed){//设置风扇转速
 	if(FanSpeed != speed){
 		if(speed > CONFIG_FAN_MAX_DC){
@@ -105,12 +111,12 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 		if(speed < CONFIG_FAN_MIN_DC){
 			speed = CONFIG_FAN_MIN_DC;
 		}
-		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, speed);
+		SET_FAN_PWM_DC(speed);
 		if(speed != 0){
-			HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);//打开TIM
+			SET_FAN_PWM_ON;//打开TIM
 		}
 		else{
-			HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2);//关闭TIM
+			SET_FAN_PWM_OFF;//关闭TIM
 		}
 		FanSpeed = speed;
 		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
