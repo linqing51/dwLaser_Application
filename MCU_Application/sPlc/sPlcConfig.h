@@ -136,7 +136,7 @@
 #define CONFIG_DCHMI_DISKBUF_SIZE											256//显示缓冲区大小
 /*****************************************************************************/
 #define CONFIG_WAIT_HMI_DELAY_TIME										10
-#define CONFIG_WAIT_PASSWORD_DELAY_TIME								25
+#define CONFIG_WAIT_PASSWORD_DELAY_TIME								70
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/

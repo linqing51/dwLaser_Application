@@ -2311,35 +2311,45 @@ static void temperatureLoop(void){//温度轮询轮询
 		else{	
 			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
 				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
-					if(NVRAM0[EM_LASER_POWER_1470] <= 50){//功率小于5W
-						NVRAM0[EM_FAN_SET_SPEED] = 45;
+					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
+						if(NVRAM0[EM_LASER_POWER_1470] <= 50){//功率小于5W
+							NVRAM0[EM_FAN_SET_SPEED] = 45;
+						}
+						else if((NVRAM0[EM_LASER_POWER_1470] > 50) && (NVRAM0[EM_LASER_POWER_1470] < 100)){//5-10W
+							NVRAM0[EM_FAN_SET_SPEED] = 65;
+						}
+						else if((NVRAM0[EM_LASER_POWER_1470] >= 100) && (NVRAM0[EM_LASER_POWER_1470] < 130)){//10-13W
+							NVRAM0[EM_FAN_SET_SPEED] = 75;
+						}
+						else if(NVRAM0[EM_LASER_POWER_1470] >= 130){//13-15W
+							NVRAM0[EM_FAN_SET_SPEED] = 100;
+						}
 					}
-					else if((NVRAM0[EM_LASER_POWER_1470] > 50) && (NVRAM0[EM_LASER_POWER_1470] < 100)){//5-10W
-						NVRAM0[EM_FAN_SET_SPEED] = 65;
-					}
-					else if((NVRAM0[EM_LASER_POWER_1470] >= 100) && (NVRAM0[EM_LASER_POWER_1470] < 130)){//10-13W
-						NVRAM0[EM_FAN_SET_SPEED] = 75;
-					}
-					else if(NVRAM0[EM_LASER_POWER_1470] >= 130){//13-15W
+					else{//激光器温度大于35度风扇满转
 						NVRAM0[EM_FAN_SET_SPEED] = 100;
 					}
 				}
 				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){
-					if(NVRAM0[EM_LASER_POWER_980] <= 50){//功率小于5W
-						NVRAM0[EM_FAN_SET_SPEED] = 35;
+					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
+						if(NVRAM0[EM_LASER_POWER_980] <= 50){//功率小于5W
+							NVRAM0[EM_FAN_SET_SPEED] = 35;
+						}
+						else if((NVRAM0[EM_LASER_POWER_980] > 50) && (NVRAM0[EM_LASER_POWER_980] < 100)){//5-10W
+							NVRAM0[EM_FAN_SET_SPEED] = 55;
+						}
+						else if((NVRAM0[EM_LASER_POWER_980] >= 100) && (NVRAM0[EM_LASER_POWER_980] < 130)){//10-13W
+							NVRAM0[EM_FAN_SET_SPEED] = 65;
+						}
+						else if(NVRAM0[EM_LASER_POWER_980] >= 130){//13-15W
+							NVRAM0[EM_FAN_SET_SPEED] = 100;
+						}
 					}
-					else if((NVRAM0[EM_LASER_POWER_980] > 50) && (NVRAM0[EM_LASER_POWER_980] < 100)){//5-10W
-						NVRAM0[EM_FAN_SET_SPEED] = 55;
-					}
-					else if((NVRAM0[EM_LASER_POWER_980] >= 100) && (NVRAM0[EM_LASER_POWER_980] < 130)){//10-13W
-						NVRAM0[EM_FAN_SET_SPEED] = 65;
-					}
-					else if(NVRAM0[EM_LASER_POWER_980] >= 130){//13-15W
+					else{//激光器温度大于35度风扇满转
 						NVRAM0[EM_FAN_SET_SPEED] = 100;
-					}						
+					}
 				}
 				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){
-					NVRAM0[EM_FAN_SET_SPEED] = 35;
+					NVRAM0[EM_FAN_SET_SPEED] = 40;
 				}
 			}
 			else{

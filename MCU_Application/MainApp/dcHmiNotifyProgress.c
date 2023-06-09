@@ -9,6 +9,9 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value > 100){
 						value = 100;
 					}
+					if(value <= 0){
+						value = 1;
+					}
 					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){//1470
 						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1470;
 						NVRAM0[EM_LASER_POWER_1470] = (int16_t)fpwr;
@@ -29,6 +32,9 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value > 100){
 						value = 100;
 					}
+					if(value <= 0){
+						value = 1;
+					}
 					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1470 * 10.0F;
 					NVRAM0[EM_LASER_AVERAGE_POWER_1470] = (int16_t)fpwr;
 					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
@@ -38,6 +44,9 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_980:{
 					if(value > 100){
 						value = 100;
+					}
+					if(value <= 0){
+						value = 1;
 					}
 					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_980 * 10.0F;
 					NVRAM0[EM_LASER_AVERAGE_POWER_980] = (int16_t)fpwr;
