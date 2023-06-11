@@ -111,6 +111,7 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 		if(speed < CONFIG_FAN_MIN_DC){
 			speed = CONFIG_FAN_MIN_DC;
 		}
+		speed = 50 * speed;
 		SET_FAN_PWM_DC(speed);
 		if(speed != 0){
 			SET_FAN_PWM_ON;//打开TIM

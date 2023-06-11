@@ -623,7 +623,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 								ADDS1(EM_LASER_POWER_635);								
 							}
 						}
-						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1940){//选中1940nm
+							if(NVRAM0[EM_LASER_POWER_1940] < CONFIG_MAX_LASER_POWER_1940){
+								ADDS1(EM_LASER_POWER_1940);
+							}
+						}
+						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635] + NVRAM0[EM_LASER_POWER_1940];
 						updateStandbyDisplay();
 					}					
 					break;
@@ -644,8 +649,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							if(NVRAM0[EM_LASER_POWER_635] > CONFIG_MIN_LASER_POWER_635){
 								DECS1(EM_LASER_POWER_635);								
 							}
+						}
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1940){//选中1940nm
+							if(NVRAM0[EM_LASER_POWER_1940] > CONFIG_MIN_LASER_POWER_1940){
+								DECS1(EM_LASER_POWER_1940);
+							}
 						}						
-						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635] + NVRAM0[EM_LASER_POWER_1940];
 						updateStandbyDisplay();
 					}
 					break;
@@ -788,16 +798,22 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE:{
 					if(state){
 						if (NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_CUSTIOM){
-#ifdef MODEL_PVGLS_15W_1470						
+#if defined(MODEL_PVGLS_15W_1470)						
 							if(NVRAM0[DM_SCHEME_INDEX] >= 27){
 									updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
 									FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
 							}
 #endif								
-#ifdef MODEL_PVGLS_TRI
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
 							updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
 							FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
-#endif 								
+#endif 
+#if defined(MODEL_PVGLS_7W_1940)
+							if(NVRAM0[DM_SCHEME_INDEX] >= 1){
+									updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
+									FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
+							}
+#endif							
 						}
 					}
 					break;
@@ -847,7 +863,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME:{//按键SCHEME
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
-#ifdef MODEL_PVGLS_15W_1470						
+#if defined(MODEL_PVGLS_15W_1470)	|| 	defined(MODEL_PVGLS_7W_1940)			
 						memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));		
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -856,10 +872,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 						seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);							
 #endif
-#ifdef MODEL_PVGLS_TRI				
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)			
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
-#endif	
+#endif				
 					}
 					break;
 				}
@@ -1158,11 +1174,11 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[DM_SCHEME_INDEX] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
 						NVRAM0[DM_SCHEME_CLASSIFY] = NVRAM0[EM_SCHEME_CLASSIFY_TMP];
 						loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
-#ifdef MODEL_PVGLS_TRI						
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)							
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_7W_1940)
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
@@ -1173,11 +1189,11 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_SCHEME_KEY_CANCEL:{
 					if(state){
-#ifdef MODEL_PVGLS_TRI						
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)						
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_7W_1940)
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);

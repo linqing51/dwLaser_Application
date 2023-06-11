@@ -124,7 +124,7 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 #endif
 void STLAR(void){//开始发射脉冲
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470)
 		if(LD(R_ACOUSTIC_ENABLE) && ((NVRAM0[DM_SCHEME_INDEX] < 3) || (NVRAM0[DM_SCHEME_INDEX] > 5))){
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
 		}
@@ -135,7 +135,7 @@ void STLAR(void){//开始发射脉冲
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//激光发射固定间隔
 		}		
 #endif
-#ifdef MODEL_PVGLS_TRI
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
 		if((NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_PROCTOLOGY) && (NVRAM0[DM_SCHEME_INDEX] <= 2)){
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_5;//PROCTOLOGY专用
 		}
@@ -148,6 +148,10 @@ void STLAR(void){//开始发射脉冲
 			}
 		}
 #endif
+#if defined(MODEL_PVGLS_7W_1940)
+
+#endif
+
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
 	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 	NVRAM0[SPREG_BEEM_COUNTER]= 0;
@@ -172,11 +176,9 @@ void EDLAR(void){//停止发射脉冲
 void sPlcLaserInit(void){//激光脉冲功能初始化
 	SET_LASER_1470_OFF;
 	SET_LASER_980_OFF;
-#ifdef MODEL_PVGLS_7W_1940
+	SET_LASER_1940_OFF;
 	setRedLaserPwmM4(0);
-#else
 	setRedLaserPwmG5(0);
-#endif
 	//设定计时器
 	LaserTimer_Mode = 0;
 	LaserTimer_TCounter = 0;
@@ -202,6 +204,10 @@ static void laserStart(void){//按通道选择打开激光
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_635){//打开红激光			
 			setRedLaserPwmG5(NVRAM0[EM_LASER_POWER_635] * 1000);
 		}
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_1940){//
+			SET_LASER_1940_ON;
+		}
+			
 		LaserFlag_Emiting = true;
 	}
 }
@@ -209,11 +215,8 @@ static void laserStop(void){//按通道选择关闭激光
 	if(LaserFlag_Emiting == true){
 		SET_LASER_1470_OFF;		
 		SET_LASER_980_OFF;
-#ifdef MODEL_PVGLS_7W_1940
 		setRedLaserPwmM4(NVRAM0[DM_AIM_BRG] * 10);
-#else
 		setRedLaserPwmG5(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
-#endif
 		LaserFlag_Emiting = false;
 	}
 }

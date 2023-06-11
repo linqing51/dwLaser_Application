@@ -4,8 +4,9 @@
 #include "stm32f4xx_hal.h"
 /*****************************************************************************/
 typedef struct{
-	uint16_t calibrationPwr0[10];//通道0功率校正表
-	uint16_t calibrationPwr1[10];//通道1功率校正表
+	uint16_t calibrationPwr0[10];//通道0功率校正表->1470nm
+	uint16_t calibrationPwr1[10];//通道1功率校正表->980nm
+	uint16_t calibrationPwr2[10];//通道2功率校正表->1940nm
 	char serialNumber[16];//序列号
 	int16_t mfg_year;//生产年
 	int16_t mfg_month;//生产月

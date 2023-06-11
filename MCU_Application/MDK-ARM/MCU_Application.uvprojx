@@ -314,8 +314,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>3</Optim>
-            <oTime>1</oTime>
+            <Optim>1</Optim>
+            <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
             <Strict>0</Strict>
@@ -789,14 +789,14 @@
           <GroupName>MainApp</GroupName>
           <Files>
             <File>
-              <FileName>dcHmiLanguage.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\MainApp\dcHmiLanguage.c</FilePath>
-            </File>
-            <File>
               <FileName>dcHmiNotifyButton.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\MainApp\dcHmiNotifyButton.c</FilePath>
+            </File>
+            <File>
+              <FileName>dcHmiLanguage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\dcHmiLanguage.c</FilePath>
             </File>
             <File>
               <FileName>dcHmiNotifyProgress.c</FileName>
@@ -832,6 +832,11 @@
               <FileName>flash_if.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\MainApp\flash_if.c</FilePath>
+            </File>
+            <File>
+              <FileName>debugVariable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\debugVariable.c</FilePath>
             </File>
           </Files>
         </Group>

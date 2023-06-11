@@ -81,7 +81,13 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 	//X4 光纤探测
-	if(NVRAM0[SPREG_ADC_2] <= CONFIG_FIBER_PD_THRESHOLD){
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
+	temp = GET_G5_FBS;
+#endif
+#if defined(MODEL_PVGLS_7W_1940)
+	temp = GET_M4_FBS;
+#endif
+	if(temp){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
 		}

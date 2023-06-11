@@ -72,8 +72,15 @@ void restoreDefault(void){//恢复默认值
 	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_LASER_POWER_650;
 	NVRAM0[DM_LCD_BRG] = CONFIG_LCD_MAX_DC;
 	schemeInit(1);//初始化自定义方案
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE) //三波长
 	NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_PHLEBOLOGY;
 	NVRAM0[DM_SCHEME_INDEX] = 0;
+#endif
+#if defined(MODEL_PVGLS_7W_1940) || defined(MODEL_PVGLS_15W_1470)
+	NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
+	NVRAM0[DM_SCHEME_INDEX] = 0;
+#endif
+
 	FDSAV();
 	NVFSAVE();
 }
@@ -131,6 +138,12 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率-
 			pmax = (int16_t)CONFIG_MAX_LASER_POWER_980;
 			pmin = (int16_t)CONFIG_MIN_LASER_POWER_980;
 			pCal = deviceConfig.calibrationPwr1;
+			break;
+		}
+		case LASER_CHANNEL_1940:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_1940;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_1940;
+			pCal = deviceConfig.calibrationPwr2;//1940与1470相同通道
 			break;
 		}
 		default:{

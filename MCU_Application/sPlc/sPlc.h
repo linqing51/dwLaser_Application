@@ -15,6 +15,7 @@
 #include "stdint.h"
 #include "string.h"
 /*****************************************************************************/
+#include "debugVariable.h"
 #include "pinDefine.h"
 #include "libcrc.h"
 #include "deviceConfig.h"
@@ -58,6 +59,8 @@ typedef enum {
 	CLEAR_EPROM_DEVICE_CONFIG										= 0x05,
 	CLEAR_EPROM_LOG_INFO												= 0x06
 }clarmEpromCmd_t;
+/*****************************************************************************/
+extern debugVariable_t debugVariable;
 /*****************************************************************************/
 extern I2C_HandleTypeDef hi2c2;
 extern UART_HandleTypeDef huart1;
@@ -156,6 +159,7 @@ extern void setRedLaserPwmM4(int16_t pwm);//设置红激光占空比 M4激光器
 extern void setPower_635(int16_t pwr);//设置红激光功率
 extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
+extern void mapDebugVariable(void);//调试信息-变量映射
 
 extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//在AT24CXX指定地址读出一个数据
 extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//在AT24CXX里面的指定地址开始读出16位数

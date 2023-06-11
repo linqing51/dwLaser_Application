@@ -217,6 +217,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			memcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(&FDRAM0[index * 64 + FD_LASER_SCHEME_NAME]) , 112);
 			NVRAM0[EM_LASER_CHANNEL_SELECT] = FDRAM0[index * 64 + FD_LASER_CHANNEL_SELECT];
 			NVRAM0[EM_LASER_PULSE_MODE] = FDRAM0[index * 64 + FD_LASER_PULSE_MODE];
+			NVRAM0[EM_LASER_POWER_1940] = FDRAM0[index * 64 + FD_LASER_POWER_1940];
 			NVRAM0[EM_LASER_POWER_1470] = FDRAM0[index * 64 + FD_LASER_POWER_1470];
 			NVRAM0[EM_LASER_POWER_980] = FDRAM0[index * 64 + FD_LASER_POWER_980];
 			NVRAM0[EM_LASER_POWER_635] = FDRAM0[index * 64 + FD_LASER_POWER_635];
@@ -231,6 +232,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 	printf("%s,%d,%s:scheme name:%s\n", __FILE__, __LINE__, __func__, (char*)(&NVRAM0[EM_LASER_SCHEME_NAME]));
 	printf("%s,%d,%s:scheme select:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_CHANNEL_SELECT]);
 	printf("%s,%d,%s:scheme mode:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_PULSE_MODE]);
+	printf("%s,%d,%s:scheme power 1940:%d\n", __FILE__, __LINE__, __func__,NVRAM0[EM_LASER_POWER_1940]);
 	printf("%s,%d,%s:scheme power 1470:%d\n", __FILE__, __LINE__, __func__,NVRAM0[EM_LASER_POWER_1470]);
 	printf("%s,%d,%s:scheme power 980:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_980]);
 	printf("%s,%d,%s:scheme power 635:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_POWER_635]);
@@ -243,16 +245,31 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	int16_t i;
 	for (i = 0;i < 32; i ++){
 		if(reDef == 1){//自定义方案恢复默认值
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
 			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i+1)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
-			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = i;
+			FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = 1;
+			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
 			FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;	
+#endif
+#if defined(MODEL_PVGLS_7W_1940)
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i+1)); 
+			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1940;
+			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
+			FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = 1;
+			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 1;
+			FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
+			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
+			FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
+			FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;			
+#endif
 		}
 		else{
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
 			if(	(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470) 			&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_980)  			&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_635)  			&&
@@ -269,9 +286,23 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 				FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
 				FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;		
 			}
+#endif
+#if defined(MODEL_PVGLS_7W_1940)
+			if(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1940){//自定义方案不正确恢复默认值
+				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i+1)); 
+				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1940;
+				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
+				FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = 1;
+				FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 1;
+				FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
+				FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
+				FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
+				FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;		
+			}			
+#endif
 		}
 	}
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470)
 		//S0
 		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (0 * 64)]), "EVLA Thigh"); 
 		FDRAM0[FD_LASER_CHANNEL_SELECT + (0 * 64)] = LASER_CHANNEL_1470;
@@ -518,6 +549,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
 #endif
 /***************************************************************************/
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
 	//Phlebology
 	//1470nm, CW 8w 80J/cm
 	sPhlebology[0].name = "EVLA Thigh";
@@ -1595,5 +1627,6 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_635 = 5;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
-	
+#endif
+
 }

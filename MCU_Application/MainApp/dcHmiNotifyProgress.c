@@ -21,7 +21,11 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_635;
 						NVRAM0[EM_LASER_POWER_635] = (int16_t)fpwr;
 					}
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1940){//1940
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1940;
+						NVRAM0[EM_LASER_POWER_1940] = (int16_t)fpwr;
+					}
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635] + NVRAM0[EM_LASER_POWER_1940];
 					updateStandbyDisplay();
 					break;
 				}
