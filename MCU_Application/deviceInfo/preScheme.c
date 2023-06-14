@@ -762,7 +762,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	
 	//1470nm 12w CW
 	p = &sGynecology[13];
-	p->name = "Hysteroscopy Dysmorphie Uterus";
+	p->name = "Hysteroscopy Dysmorphic Uterus";
 	p->channel = LASER_CHANNEL_1470;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_1470 = 120;
@@ -1375,7 +1375,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;	
 	
 	p = &sDentistry[10];
-	p->name = "Crown Lenthening";
+	p->name = "Crown Lengthening";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_1470 = 1;
@@ -1510,7 +1510,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//Therapy
 	//980nm 8w pulse, 50ms on, 50ms off
 	p = &sTherapy[0];
-	p->name = "Orthopedie Pain";
+	p->name = "Orthopedic Pain";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_1470 = 1;
@@ -1543,7 +1543,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 
 //980nm 6w pulse 50ms on, 50ms off
 	p = &sTherapy[3];
-	p->name = "Plantar Facilities";
+	p->name = "Fasciitis";
 	p->channel = LASER_CHANNEL_980;
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_1470 = 1;
@@ -1565,7 +1565,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 
 //635nm CW
 	p = &sTherapy[5];
-	p->name = "Would Healing";
+	p->name = "Wound Healing";
 	p->channel = LASER_CHANNEL_635;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_1470 = 1;
