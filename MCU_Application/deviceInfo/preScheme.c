@@ -241,16 +241,18 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 void schemeInit(uint8_t reDef){//治疗方案初始化
 	myScheme_t *p;
 	int16_t i;
-	for (i = 0;i < 32; i ++){
+	for (i = 30;i < 32; i ++){
 		if(reDef == 1){//自定义方案恢复默认值
-			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
+#if defined(MODEL_PVGLS_15W_1470)					
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i - 29));
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
-			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = i + 1;
+			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 10;
 			FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
 			FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;	
+#endif
 		}
 		else{
 			if(	(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470) 			&&
@@ -263,7 +265,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
-				FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 1;
+				FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 10;
 				FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 1;
 				FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
 				FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
@@ -516,6 +518,37 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 		FDRAM0[FD_LASER_POSWIDTH + (26 * 64)] = 1000;
 		FDRAM0[FD_LASER_NEGWIDTH + (26 * 64)] = 1000;			
 		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
+		//S27
+		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (27 * 64)]), "Wound Healing"); 
+		FDRAM0[FD_LASER_CHANNEL_SELECT + (26 * 64)] = LASER_CHANNEL_635;
+		FDRAM0[FD_LASER_PULSE_MODE + (26 * 64)] = LASER_MODE_CW;
+		FDRAM0[FD_LASER_POWER_1470 + (26 * 64)] = 1;
+		FDRAM0[FD_LASER_POWER_980 + (26 * 64)] = 1;
+		FDRAM0[FD_LASER_POWER_635 + (26 * 64)] = 5;
+		FDRAM0[FD_LASER_POSWIDTH + (26 * 64)] = 1000;
+		FDRAM0[FD_LASER_NEGWIDTH + (26 * 64)] = 1000;			
+		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
+		//S28
+		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (28 * 64)]), "Low Laser Therapy"); 
+		FDRAM0[FD_LASER_CHANNEL_SELECT + (26 * 64)] = LASER_CHANNEL_635;
+		FDRAM0[FD_LASER_PULSE_MODE + (26 * 64)] = LASER_MODE_CW;
+		FDRAM0[FD_LASER_POWER_1470 + (26 * 64)] = 1;
+		FDRAM0[FD_LASER_POWER_980 + (26 * 64)] = 1;
+		FDRAM0[FD_LASER_POWER_635 + (26 * 64)] = 5;
+		FDRAM0[FD_LASER_POSWIDTH + (26 * 64)] = 1000;
+		FDRAM0[FD_LASER_NEGWIDTH + (26 * 64)] = 1000;			
+		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
+		//S29
+		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (28 * 64)]), "Biostimulation"); 
+		FDRAM0[FD_LASER_CHANNEL_SELECT + (26 * 64)] = LASER_CHANNEL_635;
+		FDRAM0[FD_LASER_PULSE_MODE + (26 * 64)] = LASER_MODE_CW;
+		FDRAM0[FD_LASER_POWER_1470 + (26 * 64)] = 1;
+		FDRAM0[FD_LASER_POWER_980 + (26 * 64)] = 1;
+		FDRAM0[FD_LASER_POWER_635 + (26 * 64)] = 5;
+		FDRAM0[FD_LASER_POSWIDTH + (26 * 64)] = 1000;
+		FDRAM0[FD_LASER_NEGWIDTH + (26 * 64)] = 1000;			
+		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;		
+		
 #endif
 /***************************************************************************/
 	//Phlebology

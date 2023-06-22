@@ -18,7 +18,7 @@ const char WARN_MSG_LASER_EMIT[] 				 		= {"Laser is firing"};//激光正在发�
 const char WARN_MSG_WAIT_TRIGGER[] 				 	= {"Wait Laser Trigger"};//等待激光触发
 const char WARN_MSG_FIBER_MISSMATE[] 			 	= {"Fiber not mate"};
 const char INFO_MSG_SN[] 						 				= {"SN: "};
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a5"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a6"};
 const char INFO_MSG_MANUFACTURE_DATE[] 			= {"MANUFACTURE DATE: "};
 
 #ifdef MODEL_PVGLS_7W_1940
@@ -29,8 +29,8 @@ const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1940nm"};
 
 #ifdef MODEL_PVGLS_15W_1470
 const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS 1470/15"};
-const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15W"};
-const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm"};
+const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15W+0.5W"};
+const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+635nm"};
 #endif
 
 #ifdef MODEL_PVGLS_TRI

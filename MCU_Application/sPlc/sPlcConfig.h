@@ -1,9 +1,9 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-//#define MODEL_PVGLS_15W_1470
+#define MODEL_PVGLS_15W_1470
 //#define MODEL_PVGLS_7W_1940
-#define MODEL_PVGLS_TRI
+//#define MODEL_PVGLS_TRI
 //#define MODEL_PVGLS_TRI_COMBINE
 /*****************************************************************************/
 #define LASER_CHANNEL_1470														0x01
