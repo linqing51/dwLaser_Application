@@ -48,6 +48,10 @@
 #define	MSG_LASER_EMIT															14
 #define	MSG_WAIT_TRIGGER														15
 #define	MSG_FIBER_MISSMATE													16
+#define MSG_RADIATOR_HTEMP													17//散热器过热
+#define MSG_LPS0_HTEMP															18//激光电源过热
+#define MSG_LPS1_HTEMP															19//激光电源过热
+#define MSG_TPS_HTEMP																20//制冷电源过热
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);
@@ -61,6 +65,7 @@ void updateGroupOffDisplay(void);
 void updateOptionDisplay(void);
 void updateInformationDisplay(void);
 void updateAcousticDisplay(void);
+void updateTotalPower(void);//更新总功率
 /*****************************************************************************/
 void loadSelectScheme(int16_t classify, int16_t index);
 void updateSchemeDetail(int16_t classify, int16_t index);

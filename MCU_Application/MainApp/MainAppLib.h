@@ -12,6 +12,8 @@ typedef struct{
 	float ek1;//e(k-1)
 	float ek2;//e(k-2)
 }IncPid_t;
+
+
 /*****************************************************************************/
 void addAcousticTime(void);//增加提示时间 +1
 void decAcousticTime(void);//减小提示时间 -1

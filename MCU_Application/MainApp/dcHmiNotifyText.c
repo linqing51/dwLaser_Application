@@ -81,6 +81,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.calibrationPwr0[9] = (uint16_t)(fValue * 10.0F);
 					break;
 				}
+				
 				//通道1 功率校正表
 				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P1:{
 					sscanf((const char*)str, "%f", &fValue);
@@ -132,6 +133,58 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.calibrationPwr1[9] = (uint16_t)(fValue * 10.0F);
 					break;
 				}
+				//通道2功率校正表
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P1:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[0] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P2:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[1] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P3:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[2] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P4:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[3] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P5:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[4] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P6:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[5] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P7:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[6] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P8:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[7] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P9:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[8] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_1P0:{
+					sscanf((const char*)str, "%f", &fValue);
+					deviceConfig.calibrationPwr2[9] = (uint16_t)(fValue * 10.0F);
+					break;
+				}
+				
 				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SN:{
 					strncpy(deviceConfig.serialNumber, (const char*)str, sizeof(deviceConfig.serialNumber));
 					break;

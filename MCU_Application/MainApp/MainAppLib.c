@@ -68,7 +68,7 @@ void restoreDefault(void){//恢复默认值
 	RRES(R_DISABLE_RFID);
 	RRES(R_DISABLE_FIBER_PROBE);
 	RRES(R_DISABLE_FAN_SPEED);
-	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 2;
+	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 4;
 	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_LASER_POWER_650;
 	NVRAM0[DM_LCD_BRG] = CONFIG_LCD_MAX_DC;
 	schemeInit(1);//初始化自定义方案
@@ -80,7 +80,6 @@ void restoreDefault(void){//恢复默认值
 	NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
 	NVRAM0[DM_SCHEME_INDEX] = 0;
 #endif
-
 	FDSAV();
 	NVFSAVE();
 }
@@ -267,14 +266,11 @@ int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb){//增量PID
 	tmp0 = t->kp * t->ek0;
 	tmp1 = t->ki * t->ek1;
 	tmp2 = t->kd * t->ek2;
-	fout = tmp0 - tmp1 + tmp2;
+	fout = tmp0 + tmp1 + tmp2;
 	t->ek2 = t->ek1;
 	t->ek1 = t->ek0;
 	return (int16_t)(fout);
 }	
-
-
-
 
 
 

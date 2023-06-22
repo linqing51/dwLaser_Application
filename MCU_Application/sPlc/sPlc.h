@@ -16,6 +16,7 @@
 #include "string.h"
 /*****************************************************************************/
 #include "debugVariable.h"
+#include "pid_fuzzy.h"
 #include "pinDefine.h"
 #include "libcrc.h"
 #include "deviceConfig.h"
@@ -46,7 +47,7 @@
 #define BEEM_MODE_2														0x12//激光发射固定间隔
 #define BEEM_MODE_3														0x13//异常报警
 #define BEEM_MODE_4														0x14//激光发射固定间隔+提示音
-#define BEEM_MODE_5														0x15
+#define BEEM_MODE_5														0x15//
 /*****************************************************************************/
 #define LASER_MODE_CW													0x01//连续模式
 #define LASER_MODE_MP													0x02//多脉冲模式

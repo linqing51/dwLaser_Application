@@ -17,8 +17,9 @@ const char WARN_MSG_FOOT_DEPRESSED[] 			 	= {"Foot/finger switch is depressed"};
 const char WARN_MSG_LASER_EMIT[] 				 		= {"Laser is firing"};//激光正在发射
 const char WARN_MSG_WAIT_TRIGGER[] 				 	= {"Wait Laser Trigger"};//等待激光触发
 const char WARN_MSG_FIBER_MISSMATE[] 			 	= {"Fiber not mate"};
+const char WARN_MSG_RADIATOR_HTEMP[]				= {"Radiator overheating"};//散热器温度过高
 const char INFO_MSG_SN[] 						 				= {"SN:"};
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.2a0"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.2a1"};
 const char INFO_MSG_MANUFACTURE_DATE[] 			= {"MANUFACTURE DATE:"};
 
 #if defined(MODEL_PVGLS_7W_1940)

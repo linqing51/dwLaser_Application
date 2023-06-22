@@ -314,8 +314,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
-            <oTime>0</oTime>
+            <Optim>3</Optim>
+            <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
             <Strict>0</Strict>
@@ -837,6 +837,11 @@
               <FileName>debugVariable.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\MainApp\debugVariable.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid_fuzzy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainApp\pid_fuzzy.c</FilePath>
             </File>
           </Files>
         </Group>

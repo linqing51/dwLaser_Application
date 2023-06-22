@@ -628,7 +628,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 								ADDS1(EM_LASER_POWER_1940);
 							}
 						}
-						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635] + NVRAM0[EM_LASER_POWER_1940];
 						updateStandbyDisplay();
 					}					
 					break;
@@ -655,7 +654,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 								DECS1(EM_LASER_POWER_1940);
 							}
 						}						
-						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635] + NVRAM0[EM_LASER_POWER_1940];
 						updateStandbyDisplay();
 					}
 					break;
@@ -685,7 +683,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_1470] < CONFIG_MAX_LASER_POWER_1470){
 							ADDS1(EM_LASER_POWER_1470);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
 						}
 					}
@@ -695,7 +692,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_1470] > CONFIG_MIN_LASER_POWER_1470){
 							DECS1(EM_LASER_POWER_1470);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
 						}
 					}
@@ -705,7 +701,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_980] < CONFIG_MAX_LASER_POWER_980){
 							ADDS1(EM_LASER_POWER_980);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
 						}
 					}
@@ -715,7 +710,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_980] > CONFIG_MIN_LASER_POWER_980){
 							DECS1(EM_LASER_POWER_980);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
 						}
 					}
@@ -725,7 +719,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_635] < CONFIG_MAX_LASER_POWER_635){
 							ADDS1(EM_LASER_POWER_635);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
 						}
 					}
@@ -735,7 +728,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if(NVRAM0[EM_LASER_POWER_635] > CONFIG_MIN_LASER_POWER_635){
 							DECS1(EM_LASER_POWER_635);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
 						}
 					}
@@ -809,7 +801,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
 #endif 
 #if defined(MODEL_PVGLS_7W_1940)
-							if(NVRAM0[DM_SCHEME_INDEX] >= 1){
+							if(NVRAM0[DM_SCHEME_INDEX] >= 10){
 									updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
 									FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
 							}

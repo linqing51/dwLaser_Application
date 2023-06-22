@@ -25,6 +25,7 @@ extern const char INFO_MSG_WAVELENGTH[];
 extern const char INFO_MSG_LASER_POWER[];
 extern const char INFO_MSG_VERSION[];
 extern const char INFO_MSG_MANUFACTURE_DATE[];
+extern const char WARN_MSG_RADIATOR_HTEMP[];//散热器温度过高
 /*****************************************************************************/
 
 #endif

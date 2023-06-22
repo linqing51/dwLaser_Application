@@ -149,7 +149,9 @@ void STLAR(void){//开始发射脉冲
 		}
 #endif
 #if defined(MODEL_PVGLS_7W_1940)
-
+		if(LD(R_ACOUSTIC_ENABLE)){
+			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音
+		}
 #endif
 
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
@@ -268,18 +270,50 @@ void setRedLaserPwmM4(int16_t pwm){//设置红激光占空比 M4激光器
 	if(pwm > htim4.Init.Period){
 		pwm = htim4.Init.Period;
 	}
-	if(pwm < 0){
-		pwm = 0;
+	if(pwm <= 0){
+		SET_M4_AIM_OFF;
+		SET_M4_AIM_DC(0);
 	}
-	pwm = pwm / 5; 
-	SET_M4_AIM_DC(pwm);
-	if(pwm != 0){
+	else if(pwm == 10){
+		SET_M4_AIM_DC(1);
+		SET_M4_AIM_ON;		
+	}
+	else if(pwm == 20){
+		SET_M4_AIM_DC(2);
 		SET_M4_AIM_ON;
 	}
-	else{
-		SET_M4_AIM_OFF;
+	else if(pwm == 30){
+		SET_M4_AIM_DC(5);
+		SET_M4_AIM_ON;
 	}
-	
+	else if(pwm == 40){
+		SET_M4_AIM_DC(10);
+		SET_M4_AIM_ON;
+	}
+	else if(pwm == 50){
+		SET_M4_AIM_DC(15);
+		SET_M4_AIM_ON;
+	}
+	else if(pwm == 60){
+		SET_M4_AIM_DC(20);
+		SET_M4_AIM_ON;
+	}
+	else if(pwm == 70){
+		SET_M4_AIM_DC(40);
+		SET_M4_AIM_ON;
+	}
+	else if(pwm == 80){
+		SET_M4_AIM_DC(60);
+		SET_M4_AIM_ON;
+	}
+	else if(pwm == 90){
+		SET_M4_AIM_DC(80);
+		SET_M4_AIM_ON;
+	}
+	else if(pwm == 100){
+		SET_M4_AIM_DC(100);
+		SET_M4_AIM_ON;
+	}
 }
 
 

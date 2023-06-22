@@ -120,7 +120,7 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 			SET_FAN_PWM_OFF;//关闭TIM
 		}
 		FanSpeed = speed;
-		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
+		//printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
 	}
 }
 

@@ -13,7 +13,7 @@
 #define LASER_CHANNEL_1470_635												0x05
 #define LASER_CHANNEL_980_635													0x06
 #define LASER_CHANNEL_1470_980_635										0x07
-#define LASER_CHANNEL_1940														0x0F
+#define LASER_CHANNEL_1940														0x08
 /*****************************************************************************/
 #define SCHEME_PHLEBOLOGY															0x0001
 #define SCHEME_PROCTOLOGY															0x0002
@@ -142,10 +142,11 @@
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 /*****************************************************************************/
 #define CONFIG_DIODE_SET_TEMP													250//
-#define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
+#define CONFIG_DIODE_HIGH_TEMP												400//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
 #define CONFIG_ENVI_LOW_TEMP													-200//处理器低温极限 -20.0C
+#define CONFIG_DRIVE_HIGH_TEMP												800//驱动器高温极限 80C
 /*****************************************************************************/
 #define CONFIG_HMI_SCHEME_NUM													32//每分类方案数
 #define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码
@@ -173,6 +174,10 @@
 #define CONFIG_MIN_LASER_POWER_635                    1//红激光最小功率
 #define CONFIG_MIN_LASER_POWER_650                    0//指示激光最小功率
 #define CONFIG_MIN_LASER_POWER_1940										1//通道1940最小激光功率
+
+#define CONFIG_THRESHOLD_LASER_1470										400//通道1470阈值
+#define CONFIG_THRESHOLD_LASER_980										400//通道980阈值
+#define CONFIG_THRESHOLD_LASER_1940										400//通道1940阈值
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1
@@ -447,9 +452,9 @@
 /*****************************************************************************/
 #define EM_LASER_TEMP													(EM_START + 70)//激光二极管模块温度
 #define EM_HT_TEMP															(EM_START + 72)//散热器温度
-#define EM_LD0_DRV_TEMP												(EM_START + 73)//激光驱动电源0温度
-#define EM_LD1_DRV_TEMP												(EM_START + 74)//激光驱动电源1温度
-#define EM_TP_DRV_TEMP													(EM_START + 75)//制冷驱动电源温度
+#define EM_LPS0_DRV_TEMP												(EM_START + 73)//激光驱动电源0温度
+#define EM_LPS1_DRV_TEMP												(EM_START + 74)//激光驱动电源1温度
+#define EM_TPS_DRV_TEMP													(EM_START + 75)//制冷驱动电源温度
 #define EM_MCU_TEMP														(EM_START + 76)//处理器温度
 #define EM_FAN_SET_SPEED												(EM_START + 77)//激光散热风扇设定速度 0-100%
 #define EM_FAN_GET_SPEED												(EM_START + 78)//激光散热风扇实际速度 转速
@@ -483,7 +488,7 @@
 #define FD_LASER_POWER_1470										(FD_START +  58)//通道1470功率
 #define FD_LASER_POWER_980											(FD_START +  59)//通道980功率
 #define FD_LASER_POWER_635											(FD_START +  60)//红激光功率
-#define FD_LASER_POWER_1940											(EM_START +  61)//通道1940功率
+#define FD_LASER_POWER_1940											(FD_START +  61)//通道1940功率
 #define FD_LASER_POSWIDTH												(FD_START +  62)//多脉冲正脉宽
 #define FD_LASER_NEGWIDTH												(FD_START +  63)//多脉冲负脉宽
 /*****************************************************************************/
@@ -675,40 +680,44 @@
 #define R_RFID_PASS																	(R_START * 16 + 3)//NFC光纤插入标志
 #define R_LASER_TEMP_HIGH														(R_START * 16 + 4)//激光二极管激光模块高温标志
 #define R_LASER_TEMP_LOW														(R_START * 16 + 5)//激光二极管激光模块低温标志
-#define R_MCU_TEMP_HIGH															(R_START * 16 + 6)//处理器高温标志
-#define R_MCU_TEMP_LOW															(R_START * 16 + 7)//处理器低温标志
-#define R_FOOTSWITCH_PLUG														(R_START * 16 + 8)//脚踏插入标志
-#define R_FOOTSWITCH_PRESS													(R_START * 16 + 9)//脚踏按下标志
-#define R_HMI_FOOTSWITCH_PRESS											(R_START * 16 + 10)//屏幕模拟脚踏按下标志
-#define R_FAULT																			(R_START * 16 + 11)//故障标志
-#define R_DISABLE_ESTOP															(R_START * 16 + 12)//屏蔽急停开关检测
-#define R_DISABLE_TEMPERATURE												(R_START * 16 + 13)//屏蔽温度检测
-#define	R_DISABLE_FOOTSWITCH												(R_START * 16 + 14)//屏蔽脚踏开关检测
-#define R_DISABLE_RFID															(R_START * 16 + 15)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE												(R_START * 16 + 16)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED													(R_START * 16 + 17)//屏蔽风扇控制
-#define R_DISABLE_INTERLOCK													(R_START * 16 + 18)//屏蔽安全连锁
-#define R_CLEAR_EPROM																(R_START * 16 + 19)//完全清空EPROM
-#define R_SAVE_EPROM																(R_START * 16 + 20)//储存SAVE
-#define R_ENGINEER_MODE															(R_START * 16 + 21)//工程师模式
-#define R_CALIBRATION_MODE													(R_START * 16 + 22)//功率校正模式
-#define R_ACOUSTIC_ENABLE														(R_START * 16 + 23)//使能提示音
-#define R_CLEAR_CRC																	(R_START * 16 + 24)//清除固件CRC
-#define R_UPDATE_BOOTLOAD_REQ												(R_START * 16 + 25)//请求更新引导固件
-#define R_UPDATE_BOOTLOAD_YES												(R_START * 16 + 26)//同意更新固件
-#define R_UPDATE_BOOTLOAD_NO												(R_START * 16 + 27)//否定更新固件
+#define R_RADIATOR_TEMP_HIGH												(R_START * 16 + 6)//散热器高温标志
+#define R_LPS0_TEMP_HIGH														(R_START * 16 + 7)//激光电源通道1高温标志
+#define R_LPS1_TEMP_HIGH 														(R_START * 16 + 8)//激光电源通道2高温标志
+#define R_TPS_TEMP_HIGH															(R_START * 16 + 9)//制冷电源高温标志
+#define R_MCU_TEMP_HIGH															(R_START * 16 + 10)//处理器高温标志
+#define R_MCU_TEMP_LOW															(R_START * 16 + 11)//处理器低温标志
+#define R_FOOTSWITCH_PLUG														(R_START * 16 + 12)//脚踏插入标志
+#define R_FOOTSWITCH_PRESS													(R_START * 16 + 13)//脚踏按下标志
+#define R_HMI_FOOTSWITCH_PRESS											(R_START * 16 + 14)//屏幕模拟脚踏按下标志
+#define R_FAULT																			(R_START * 16 + 15)//故障标志
+#define R_DISABLE_ESTOP															(R_START * 16 + 16)//屏蔽急停开关检测
+#define R_DISABLE_TEMPERATURE												(R_START * 16 + 17)//屏蔽温度检测
+#define	R_DISABLE_FOOTSWITCH												(R_START * 16 + 18)//屏蔽脚踏开关检测
+#define R_DISABLE_RFID															(R_START * 16 + 19)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE												(R_START * 16 + 20)//屏蔽光纤探测
+#define R_DISABLE_FAN_SPEED													(R_START * 16 + 21)//屏蔽风扇控制
+#define R_DISABLE_INTERLOCK													(R_START * 16 + 22)//屏蔽安全连锁
+#define R_CLEAR_EPROM																(R_START * 16 + 23)//完全清空EPROM
+#define R_SAVE_EPROM																(R_START * 16 + 24)//储存SAVE
+#define R_ENGINEER_MODE															(R_START * 16 + 25)//工程师模式
+#define R_CALIBRATION_MODE													(R_START * 16 + 26)//功率校正模式
+#define R_ACOUSTIC_ENABLE														(R_START * 16 + 27)//使能提示音
+#define R_CLEAR_CRC																	(R_START * 16 + 28)//清除固件CRC
+#define R_UPDATE_BOOTLOAD_REQ												(R_START * 16 + 29)//请求更新引导固件
+#define R_UPDATE_BOOTLOAD_YES												(R_START * 16 + 30)//同意更新固件
+#define R_UPDATE_BOOTLOAD_NO												(R_START * 16 + 31)//否定更新固件
 //HMI相关状态
-#define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMI复位请求
-#define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMI复位中
-#define R_DCHMI_RESET_DONE													(R_START * 16 + 32)//HMI复位完成	
-#define R_DCHMI_UPDATEUI_REQ												(R_START * 16 + 33)//HMI内容更新请求
-#define R_DCHMI_UPDATEUI_DOING											(R_START * 16 + 34)//HMI内容更新中
-#define R_DCHMI_UPDATEUI_DONE												(R_START * 16 + 35)//HMI内容更新请求完成
-#define R_DCHMI_RESTORE_REQ													(R_START * 16 + 36)//HMI从FLASH中恢复设置请求
-#define R_DCHMI_RESTORE_DOING												(R_START * 16 + 37)//HMI从FLASH中恢复中
-#define R_DCHMI_RESTORE_DONE												(R_START * 16 + 38)//HMI从FLASH中恢复设置完成	
-#define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 39)//HMI显示报警信息
-#define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 40)//STANDBY 使能
+#define R_DCHMI_RESET_REQ														(R_START * 16 + 32)//HMI复位请求
+#define R_DCHMI_RESET_DOING													(R_START * 16 + 33)//HMI复位中
+#define R_DCHMI_RESET_DONE													(R_START * 16 + 34)//HMI复位完成	
+#define R_DCHMI_UPDATEUI_REQ												(R_START * 16 + 35)//HMI内容更新请求
+#define R_DCHMI_UPDATEUI_DOING											(R_START * 16 + 36)//HMI内容更新中
+#define R_DCHMI_UPDATEUI_DONE												(R_START * 16 + 37)//HMI内容更新请求完成
+#define R_DCHMI_RESTORE_REQ													(R_START * 16 + 38)//HMI从FLASH中恢复设置请求
+#define R_DCHMI_RESTORE_DOING												(R_START * 16 + 39)//HMI从FLASH中恢复中
+#define R_DCHMI_RESTORE_DONE												(R_START * 16 + 40)//HMI从FLASH中恢复设置完成	
+#define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 41)//HMI显示报警信息
+#define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 42)//STANDBY 使能
 /*****************************************************************************/
 #define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 50)
 #define R_STANDBY_KEY_POSWIDTH_ADD_UP								(R_START * 16 + 51)

@@ -437,6 +437,7 @@ void FDSAV(void){//FDRAM->EPROM
 	sPlcIsrEnable();
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
+	uint32_t crc32_fd;
 	sPlcIsrDisable();
 	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
 		cn = (CONFIG_HMI_SCHEME_NUM - 1);
@@ -446,6 +447,9 @@ void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	}
 	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM0), 128);
 	printf("%s,%d,%s:save One FD NVRAM done...\n",__FILE__, __LINE__, __func__);
+	crc32_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + FD_START), (CONFIG_FDRAM_SIZE / 2));
+	epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_fd);//在的指定地址开始写入32位数
+	printf("%s,%d,%s:save NVRAM done...(FD CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_fd);
 	sPlcIsrEnable();
 }
 void FDLAD(void){//FDRAM<-EPROM
