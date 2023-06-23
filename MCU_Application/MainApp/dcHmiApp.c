@@ -1266,7 +1266,14 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			break;
 		}
 		case SCHEME_CUSTIOM:{
+#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
+#endif
+			
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_7W_1940)
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "");
+#endif
+			
 			if(index < 16){
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_0], CONFIG_SCHEME_NAME_SIZE);
