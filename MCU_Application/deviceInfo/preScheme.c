@@ -258,7 +258,6 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	}
 #endif
 	
-	
 #if defined(MODEL_PVGLS_15W_1470)
 		//S0
 		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (0 * 64)]), "EVLA Thigh"); 
@@ -531,1061 +530,940 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	sPhlebology[1].negwidth = 1000;
 	
 	//1470nm, CW 3w 30J/cm
-	p = &sPhlebology[2];
-	p->name = "EVLA Small Vessel";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 30;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sPhlebology[2].name = "EVLA Small Vessel";
+	sPhlebology[2].channel = LASER_CHANNEL_1470;
+	sPhlebology[2].pulse_mode = LASER_MODE_CW; 
+	sPhlebology[2].power_1470 = 30;
+	sPhlebology[2].power_980 = 1;
+	sPhlebology[2].power_635 = 1;
+	sPhlebology[2].poswidth = 1000;
+	sPhlebology[2].negwidth = 1000;
 /***************************************************************************/
 	//Proctology
 	//1470nm, CW 6w, 250 Joules per hemorrhoid
-	p = &sProctology[0];
-	p->name = "Hemorrhoids Grade 2, 250J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 70;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sProctology[0].name = "Hemorrhoids Grade 2, 250J";
+	sProctology[0].channel = LASER_CHANNEL_1470;
+	sProctology[0].pulse_mode = LASER_MODE_CW; 
+	sProctology[0].power_1470 = 70;
+	sProctology[0].power_980 = 1;
+	sProctology[0].power_635 = 1;
+	sProctology[0].poswidth = 1000;
+	sProctology[0].negwidth = 1000;
 	
 	//1470nm, CW 7w, 350 Joules per hemorrhoid
-	p = &sProctology[1];
-	p->name ="Hemorrhoids Grade 3, 350J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 	
+	sProctology[1].name ="Hemorrhoids Grade 3, 350J";
+	sProctology[1].channel = LASER_CHANNEL_1470;
+	sProctology[1].pulse_mode = LASER_MODE_CW; 
+	sProctology[1].power_1470 = 80;
+	sProctology[1].power_980 = 1;
+	sProctology[1].power_635 = 1;
+	sProctology[1].poswidth = 1000;
+	sProctology[1].negwidth = 1000; 	
 	
 	//1470nm, CW 8w, 350 Joules per hemorrhoid
-	p = &sProctology[2];
-	p->name = "Hemorrhoids Grade 4, 350J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 
+	sProctology[2].name = "Hemorrhoids Grade 4, 350J";
+	sProctology[2].channel = LASER_CHANNEL_1470;
+	sProctology[2].pulse_mode = LASER_MODE_CW; 
+	sProctology[2].power_1470 = 80;
+	sProctology[2].power_980 = 1;
+	sProctology[2].power_635 = 1;
+	sProctology[2].poswidth = 1000;
+	sProctology[2].negwidth = 1000; 
 	
 	//1470nm, CW 10w 100J/cm
-	p = &sProctology[3];
-	p->name = "Fistula";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 
+	sProctology[3].name = "Fistula";
+	sProctology[3].channel = LASER_CHANNEL_1470;
+	sProctology[3].pulse_mode = LASER_MODE_CW; 
+	sProctology[3].power_1470 = 120;
+	sProctology[3].power_980 = 1;
+	sProctology[3].power_635 = 1;
+	sProctology[3].poswidth = 1000;
+	sProctology[3].negwidth = 1000; 
 
 	//1470nm, CW 10w 100J/cm
-	p = &sProctology[4];
-	p->name = "Pilonidal Sinus";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 
+	sProctology[4].name = "Pilonidal Sinus";
+	sProctology[4].channel = LASER_CHANNEL_1470;
+	sProctology[4].pulse_mode = LASER_MODE_CW; 
+	sProctology[4].power_1470 = 120;
+	sProctology[4].power_980 = 1;
+	sProctology[4].power_635 = 1;
+	sProctology[4].poswidth = 1000;
+	sProctology[4].negwidth = 1000; 
 	
 	//1470nm, CW 7w 100J/cm
-	p = &sProctology[5];
-	p->name = "Fissure Ablation";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 70;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 
+	sProctology[5].name = "Fissure Ablation";
+	sProctology[5].channel = LASER_CHANNEL_1470;
+	sProctology[5].pulse_mode = LASER_MODE_CW; 
+	sProctology[5].power_1470 = 70;
+	sProctology[5].power_980 = 1;
+	sProctology[5].power_635 = 1;
+	sProctology[5].poswidth = 1000;
+	sProctology[5].negwidth = 1000; 
 /*****************************************************************************/
 	//1470nm, Pulse 6w 500ms Ton, 500ms Toff
-	p = &sGynecology[0];
-	p->name = "Laser Vaginal Tightening 1st 600J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 60;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 500;
-	p->negwidth = 500; 	
+	sGynecology[0].name = "Laser Vaginal Tightening 1st 600J";
+	sGynecology[0].channel = LASER_CHANNEL_1470;
+	sGynecology[0].pulse_mode = LASER_MODE_MP; 
+	sGynecology[0].power_1470 = 60;
+	sGynecology[0].power_980 = 1;
+	sGynecology[0].power_635 = 1;
+	sGynecology[0].poswidth = 500;
+	sGynecology[0].negwidth = 500; 	
 	
 	//1470nm, Pulse 7w 500ms Ton, 500ms Toff
-	p = &sGynecology[1];
-	p->name = "Laser Vaginal Tightening 2nd 600J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 70;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 500;
-	p->negwidth = 500; 
+	sGynecology[1].name = "Laser Vaginal Tightening 2nd 600J";
+	sGynecology[1].channel = LASER_CHANNEL_1470;
+	sGynecology[1].pulse_mode = LASER_MODE_MP; 
+	sGynecology[1].power_1470 = 70;
+	sGynecology[1].power_980 = 1;
+	sGynecology[1].power_635 = 1;
+	sGynecology[1].poswidth = 500;
+	sGynecology[1].negwidth = 500; 
 	
 	//1470nm, Pulse 8w 500ms Ton, 500ms Toff
-	p = &sGynecology[2];
-	p->name = "Laser Vaginal Tightening 3rd 600J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 500;
-	p->negwidth = 500; 
+	sGynecology[2].name = "Laser Vaginal Tightening 3rd 600J";
+	sGynecology[2].channel = LASER_CHANNEL_1470;
+	sGynecology[2].pulse_mode = LASER_MODE_MP; 
+	sGynecology[2].power_1470 = 80;
+	sGynecology[2].power_980 = 1;
+	sGynecology[2].power_635 = 1;
+	sGynecology[2].poswidth = 500;
+	sGynecology[2].negwidth = 500; 
 	
 	//1470nm, Pulse 8w 500ms Ton, 500ms Toff
-	p = &sGynecology[3];
-	p->name = "Laser Vaginal Tightening 4th 600J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 500;
-	p->negwidth = 500; 
+	sGynecology[3].name = "Laser Vaginal Tightening 4th 600J";
+	sGynecology[3].channel = LASER_CHANNEL_1470;
+	sGynecology[3].pulse_mode = LASER_MODE_MP; 
+	sGynecology[3].power_1470 = 80;
+	sGynecology[3].power_980 = 1;
+	sGynecology[3].power_635 = 1;
+	sGynecology[3].poswidth = 500;
+	sGynecology[3].negwidth = 500; 
 	
 	//1470nm, CW 6w 15s Ton
-	p = &sGynecology[4];
-	p->name ="Laser Vaginal Rejuvenation 360J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 60;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 	
+	sGynecology[4].name ="Laser Vaginal Rejuvenation 360J";
+	sGynecology[4].channel = LASER_CHANNEL_1470;
+	sGynecology[4].pulse_mode = LASER_MODE_CW; 
+	sGynecology[4].power_1470 = 60;
+	sGynecology[4].power_980 = 1;
+	sGynecology[4].power_635 = 1;
+	sGynecology[4].poswidth = 1000;
+	sGynecology[4].negwidth = 1000; 	
 	
 	//1470nm, CW 10w 15s Ton
-	p = &sGynecology[5];
-	p->name = "Laser Vaginal Rejuvenation+ 600J"; 
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 15000;
-	p->negwidth = 1000; 	
+	sGynecology[5].name = "Laser Vaginal Rejuvenation+ 600J"; 
+	sGynecology[5].channel = LASER_CHANNEL_1470;
+	sGynecology[5].pulse_mode = LASER_MODE_CW; 
+	sGynecology[5].power_1470 = 100;
+	sGynecology[5].power_980 = 1;
+	sGynecology[5].power_635 = 1;
+	sGynecology[5].poswidth = 15000;
+	sGynecology[5].negwidth = 1000; 	
 	
 	//1470nm, CW 5w
-	p = &sGynecology[6];
-	p->name = "Stress Incontinence, 75J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 50;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 
+	sGynecology[6].name = "Stress Incontinence, 75J";
+	sGynecology[6].channel = LASER_CHANNEL_1470;
+	sGynecology[6].pulse_mode = LASER_MODE_CW; 
+	sGynecology[6].power_1470 = 50;
+	sGynecology[6].power_980 = 1;
+	sGynecology[6].power_635 = 1;
+	sGynecology[6].poswidth = 1000;
+	sGynecology[6].negwidth = 1000; 
 	
 	//1470nm, CW 5w
-	p = &sGynecology[7];
-	p->name = "Infection control, 50J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 50;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 	
+	sGynecology[7].name = "Infection control, 50J";
+	sGynecology[7].channel = LASER_CHANNEL_1470;
+	sGynecology[7].pulse_mode = LASER_MODE_CW; 
+	sGynecology[7].power_1470 = 50;
+	sGynecology[7].power_980 = 1;
+	sGynecology[7].power_635 = 1;
+	sGynecology[7].poswidth = 1000;
+	sGynecology[7].negwidth = 1000; 	
 	
 	//1470nm, CW 8w
-	p = &sGynecology[8];
-	p->name = "Treatment after Menopause, 480J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000; 	
+	sGynecology[8].name = "Treatment after Menopause, 480J";
+	sGynecology[8].channel = LASER_CHANNEL_1470;
+	sGynecology[8].pulse_mode = LASER_MODE_CW; 
+	sGynecology[8].power_1470 = 80;
+	sGynecology[8].power_980 = 1;
+	sGynecology[8].power_635 = 1;
+	sGynecology[8].poswidth = 1000;
+	sGynecology[8].negwidth = 1000; 	
 
 	//1470nm 12w CW
-	p = &sGynecology[9];
-	p->name = "Hysteroscopy Myomas";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sGynecology[9].name = "Hysteroscopy Myomas";
+	sGynecology[9].channel = LASER_CHANNEL_1470;
+	sGynecology[9].pulse_mode = LASER_MODE_CW; 
+	sGynecology[9].power_1470 = 120;
+	sGynecology[9].power_980 = 1;
+	sGynecology[9].power_635 = 1;
+	sGynecology[9].poswidth = 1000;
+	sGynecology[9].negwidth = 1000;
 	
 	//1470nm 8w CW
-	p = &sGynecology[10];
-	p->name = "Hysteroscopy Polyps";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
+	sGynecology[10].name = "Hysteroscopy Polyps";
+	sGynecology[10].channel = LASER_CHANNEL_1470;
+	sGynecology[10].pulse_mode = LASER_MODE_CW; 
+	sGynecology[10].power_1470 = 80;
+	sGynecology[10].power_980 = 1;
+	sGynecology[10].power_635 = 1;
+	sGynecology[10].poswidth = 1000;
+	sGynecology[10].negwidth = 1000;	
 	
 	//1470nm 10w CW
-	p = &sGynecology[11];
-	p->name = "Hysteroscopy Septum";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;		
+	sGynecology[11].name = "Hysteroscopy Septum";
+	sGynecology[11].channel = LASER_CHANNEL_1470;
+	sGynecology[11].pulse_mode = LASER_MODE_CW; 
+	sGynecology[11].power_1470 = 100;
+	sGynecology[11].power_980 = 1;
+	sGynecology[11].power_635 = 1;
+	sGynecology[11].poswidth = 1000;
+	sGynecology[11].negwidth = 1000;		
 	
 	//1470nm 10w CW
-	p = &sGynecology[12];
-	p->name = "Hysteroscopy Adhesion";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;		
+	sGynecology[12].name = "Hysteroscopy Adhesion";
+	sGynecology[12].channel = LASER_CHANNEL_1470;
+	sGynecology[12].pulse_mode = LASER_MODE_CW; 
+	sGynecology[12].power_1470 = 100;
+	sGynecology[12].power_980 = 1;
+	sGynecology[12].power_635 = 1;
+	sGynecology[12].poswidth = 1000;
+	sGynecology[12].negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[13];
-	p->name = "Hysteroscopy Dysmorphie Uterus";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;		
+	sGynecology[13].name = "Hysteroscopy Dysmorphie Uterus";
+	sGynecology[13].channel = LASER_CHANNEL_1470;
+	sGynecology[13].pulse_mode = LASER_MODE_CW; 
+	sGynecology[13].power_1470 = 120;
+	sGynecology[13].power_980 = 1;
+	sGynecology[13].power_635 = 1;
+	sGynecology[13].poswidth = 1000;
+	sGynecology[13].negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[14];
-	p->name = "Hysteroscopy Isthmocele";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;		
+	sGynecology[14].name = "Hysteroscopy Isthmocele";
+	sGynecology[14].channel = LASER_CHANNEL_1470;
+	sGynecology[14].pulse_mode = LASER_MODE_CW; 
+	sGynecology[14].power_1470 = 120;
+	sGynecology[14].power_980 = 1;
+	sGynecology[14].power_635 = 1;
+	sGynecology[14].poswidth = 1000;
+	sGynecology[14].negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[15];
-	p->name = "Hysteroscopy T-Shape Uterus";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;		
+	sGynecology[15].name = "Hysteroscopy T-Shape Uterus";
+	sGynecology[15].channel = LASER_CHANNEL_1470;
+	sGynecology[15].pulse_mode = LASER_MODE_CW; 
+	sGynecology[15].power_1470 = 120;
+	sGynecology[15].power_980 = 1;
+	sGynecology[15].power_635 = 1;
+	sGynecology[15].poswidth = 1000;
+	sGynecology[15].negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[16];
-	p->name = "Laparoscopy Myomas";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sGynecology[16].name = "Laparoscopy Myomas";
+	sGynecology[16].channel = LASER_CHANNEL_1470;
+	sGynecology[16].pulse_mode = LASER_MODE_CW; 
+	sGynecology[16].power_1470 = 120;
+	sGynecology[16].power_980 = 1;
+	sGynecology[16].power_635 = 1;
+	sGynecology[16].poswidth = 1000;
+	sGynecology[16].negwidth = 1000;
 
 	//1470nm 10w CW
-	p = &sGynecology[17];
-	p->name = "Laparoscopy Ovarian Cysts";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sGynecology[17].name = "Laparoscopy Ovarian Cysts";
+	sGynecology[17].channel = LASER_CHANNEL_1470;
+	sGynecology[17].pulse_mode = LASER_MODE_CW; 
+	sGynecology[17].power_1470 = 100;
+	sGynecology[17].power_980 = 1;
+	sGynecology[17].power_635 = 1;
+	sGynecology[17].poswidth = 1000;
+	sGynecology[17].negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &sGynecology[18];
-	p->name = "Laparoscopy Adhesion";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sGynecology[18].name = "Laparoscopy Adhesion";
+	sGynecology[18].channel = LASER_CHANNEL_1470;
+	sGynecology[18].pulse_mode = LASER_MODE_CW; 
+	sGynecology[18].power_1470 = 100;
+	sGynecology[18].power_980 = 1;
+	sGynecology[18].power_635 = 1;
+	sGynecology[18].poswidth = 1000;
+	sGynecology[18].negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &sGynecology[19];
-	p->name = "Laparoscopy Salpingectomy";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sGynecology[19].name = "Laparoscopy Salpingectomy";
+	sGynecology[19].channel = LASER_CHANNEL_1470;
+	sGynecology[19].pulse_mode = LASER_MODE_CW; 
+	sGynecology[19].power_1470 = 100;
+	sGynecology[19].power_980 = 1;
+	sGynecology[19].power_635 = 1;
+	sGynecology[19].poswidth = 1000;
+	sGynecology[19].negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &sGynecology[20];
-	p->name = "Laparoscopy Cysts";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
+	sGynecology[20].name = "Laparoscopy Cysts";
+	sGynecology[20].channel = LASER_CHANNEL_1470;
+	sGynecology[20].pulse_mode = LASER_MODE_CW; 
+	sGynecology[20].power_1470 = 100;
+	sGynecology[20].power_980 = 1;
+	sGynecology[20].power_635 = 1;
+	sGynecology[20].poswidth = 1000;
+	sGynecology[20].negwidth = 1000;	
 	
 	//1470nm 10w CW
-	p = &sGynecology[21];
-	p->name = "Laparoscopy Endometriosis";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sGynecology[21].name = "Laparoscopy Endometriosis";
+	sGynecology[21].channel = LASER_CHANNEL_1470;
+	sGynecology[21].pulse_mode = LASER_MODE_CW; 
+	sGynecology[21].power_1470 = 100;
+	sGynecology[21].power_980 = 1;
+	sGynecology[21].power_635 = 1;
+	sGynecology[21].poswidth = 1000;
+	sGynecology[21].negwidth = 1000;
 	
 /*****************************************************************************/
 	//1470nm, Pulse 7w 1s Ton, 5s Toff
-	p = &sNeurosurgery[0];
-	p->name = "PLDD L2-L3, L3-L4, L5-S1 800-1500J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 70;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 5000;
+	sNeurosurgery[0].name = "PLDD L2-L3, L3-L4, L5-S1 800-1500J";
+	sNeurosurgery[0].channel = LASER_CHANNEL_1470;
+	sNeurosurgery[0].pulse_mode = LASER_MODE_MP; 
+	sNeurosurgery[0].power_1470 = 70;
+	sNeurosurgery[0].power_980 = 1;
+	sNeurosurgery[0].power_635 = 1;
+	sNeurosurgery[0].poswidth = 1000;
+	sNeurosurgery[0].negwidth = 5000;
 
 	//1470nm, Pulse 7w 1s Ton, 5s Toff
-	p = &sNeurosurgery[1];
-	p->name = "PLDD L4-L5 Total 800-1800J";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 70;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 5000;
+	sNeurosurgery[1].name = "PLDD L4-L5 Total 800-1800J";
+	sNeurosurgery[1].channel = LASER_CHANNEL_1470;
+	sNeurosurgery[1].pulse_mode = LASER_MODE_MP; 
+	sNeurosurgery[1].power_1470 = 70;
+	sNeurosurgery[1].power_980 = 1;
+	sNeurosurgery[1].power_635 = 1;
+	sNeurosurgery[1].poswidth = 1000;
+	sNeurosurgery[1].negwidth = 5000;
 	
 	//1470nm, Pulse 7w, 1s Ton, 5s Toff
-	p = &sNeurosurgery[2];
-	p->name = "PLDD 980nm";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 75;
-	p->power_635 = 1;
-	p->poswidth = 700;
-	p->negwidth = 700;		
+	sNeurosurgery[2].name = "PLDD 980nm";
+	sNeurosurgery[2].channel = LASER_CHANNEL_980;
+	sNeurosurgery[2].pulse_mode = LASER_MODE_MP; 
+	sNeurosurgery[2].power_1470 = 1;
+	sNeurosurgery[2].power_980 = 75;
+	sNeurosurgery[2].power_635 = 1;
+	sNeurosurgery[2].poswidth = 700;
+	sNeurosurgery[2].negwidth = 700;		
 	
 	//1470nm, Pulse 7w, 1s Ton, 5s Toff
-	p = &sNeurosurgery[3];
-	p->name = "Tumour 1470nm";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 70;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 5000;	
+	sNeurosurgery[3].name = "Tumour 1470nm";
+	sNeurosurgery[3].channel = LASER_CHANNEL_1470;
+	sNeurosurgery[3].pulse_mode = LASER_MODE_MP; 
+	sNeurosurgery[3].power_1470 = 70;
+	sNeurosurgery[3].power_980 = 1;
+	sNeurosurgery[3].power_635 = 1;
+	sNeurosurgery[3].poswidth = 1000;
+	sNeurosurgery[3].negwidth = 5000;	
 	
 	//980m, Pulse 8w 1s Ton, 5s Toff
-	p = &sNeurosurgery[4];
-	p->name = "Tumour 980nm";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 80;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 5000;
+	sNeurosurgery[4].name = "Tumour 980nm";
+	sNeurosurgery[4].channel = LASER_CHANNEL_980;
+	sNeurosurgery[4].pulse_mode = LASER_MODE_MP; 
+	sNeurosurgery[4].power_1470 = 1;
+	sNeurosurgery[4].power_980 = 80;
+	sNeurosurgery[4].power_635 = 1;
+	sNeurosurgery[4].poswidth = 1000;
+	sNeurosurgery[4].negwidth = 5000;
 /*****************************************************************************/
 	//ENT
 	//980nm 13w CW
-	p = &sENT[0];
-	p->name = "Vocal Polyps";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 130;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[0].name = "Vocal Polyps";
+	sENT[0].channel = LASER_CHANNEL_980;
+	sENT[0].pulse_mode = LASER_MODE_CW; 
+	sENT[0].power_1470 = 1;
+	sENT[0].power_980 = 130;
+	sENT[0].power_635 = 1;
+	sENT[0].poswidth = 1000;
+	sENT[0].negwidth = 1000;
 
 	//980nm 12w CW
-	p = &sENT[1];
-	p->name = "Cordectomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 120;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[1].name = "Cordectomy";
+	sENT[1].channel = LASER_CHANNEL_980;
+	sENT[1].pulse_mode = LASER_MODE_CW; 
+	sENT[1].power_1470 = 1;
+	sENT[1].power_980 = 120;
+	sENT[1].power_635 = 1;
+	sENT[1].poswidth = 1000;
+	sENT[1].negwidth = 1000;
 	
 	//980nm 14w CW
-	p = &sENT[2];
-	p->name = "Laryngeal Carcinoma";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 140;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[2].name = "Laryngeal Carcinoma";
+	sENT[2].channel = LASER_CHANNEL_980;
+	sENT[2].pulse_mode = LASER_MODE_CW; 
+	sENT[2].power_1470 = 1;
+	sENT[2].power_980 = 140;
+	sENT[2].power_635 = 1;
+	sENT[2].poswidth = 1000;
+	sENT[2].negwidth = 1000;
 	
 	//980nm 14w CW
-	p = &sENT[3];
-	p->name = "Haematomas";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 140;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[3].name = "Haematomas";
+	sENT[3].channel = LASER_CHANNEL_980;
+	sENT[3].pulse_mode = LASER_MODE_CW; 
+	sENT[3].power_1470 = 1;
+	sENT[3].power_980 = 140;
+	sENT[3].power_635 = 1;
+	sENT[3].poswidth = 1000;
+	sENT[3].negwidth = 1000;
 	
 	//980nm 14w CW
-	p = &sENT[4];
-	p->name = "Fibromas";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 140;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[4].name = "Fibromas";
+	sENT[4].channel = LASER_CHANNEL_980;
+	sENT[4].pulse_mode = LASER_MODE_CW; 
+	sENT[4].power_1470 = 1;
+	sENT[4].power_980 = 140;
+	sENT[4].power_635 = 1;
+	sENT[4].poswidth = 1000;
+	sENT[4].negwidth = 1000;
 	
 	//980nm 14w CW
-	p = &sENT[5];
-	p->name = "Larynxpapillomatosis";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 140;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[5].name = "Larynxpapillomatosis";
+	sENT[5].channel = LASER_CHANNEL_980;
+	sENT[5].pulse_mode = LASER_MODE_CW; 
+	sENT[5].power_1470 = 1;
+	sENT[5].power_980 = 140;
+	sENT[5].power_635 = 1;
+	sENT[5].poswidth = 1000;
+	sENT[5].negwidth = 1000;
 	
 	//980nm 13w CW
-	p = &sENT[6];
-	p->name = "Paracentesis";		
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 130;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[6].name = "Paracentesis";		
+	sENT[6].channel = LASER_CHANNEL_980;
+	sENT[6].pulse_mode = LASER_MODE_CW; 
+	sENT[6].power_1470 = 1;
+	sENT[6].power_980 = 130;
+	sENT[6].power_635 = 1;
+	sENT[6].poswidth = 1000;
+	sENT[6].negwidth = 1000;
 	
 	//980nm 13w CW
-	p = &sENT[7];
-	p->name = "Acoustic Neuroma";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 130;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[7].name = "Acoustic Neuroma";
+	sENT[7].channel = LASER_CHANNEL_980;
+	sENT[7].pulse_mode = LASER_MODE_CW; 
+	sENT[7].power_1470 = 1;
+	sENT[7].power_980 = 130;
+	sENT[7].power_635 = 1;
+	sENT[7].poswidth = 1000;
+	sENT[7].negwidth = 1000;
 	
 	//980nm 10w CW
-	p = &sENT[8];
-	p->name = "Cholesteatoma";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 100;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[8].name = "Cholesteatoma";
+	sENT[8].channel = LASER_CHANNEL_980;
+	sENT[8].pulse_mode = LASER_MODE_CW; 
+	sENT[8].power_1470 = 1;
+	sENT[8].power_980 = 100;
+	sENT[8].power_635 = 1;
+	sENT[8].poswidth = 1000;
+	sENT[8].negwidth = 1000;
 	
 	//980nm 13w CW
-	p = &sENT[9];
-	p->name = "Tonsillectomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 130;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[9].name = "Tonsillectomy";
+	sENT[9].channel = LASER_CHANNEL_980;
+	sENT[9].pulse_mode = LASER_MODE_CW; 
+	sENT[9].power_1470 = 1;
+	sENT[9].power_980 = 130;
+	sENT[9].power_635 = 1;
+	sENT[9].poswidth = 1000;
+	sENT[9].negwidth = 1000;
 	
 	//980nm 13w CW
-	p = &sENT[10];
-	p->name = "Tumour Vaporisation";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 130;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[10].name = "Tumour Vaporisation";
+	sENT[10].channel = LASER_CHANNEL_980;
+	sENT[10].pulse_mode = LASER_MODE_CW; 
+	sENT[10].power_1470 = 1;
+	sENT[10].power_980 = 130;
+	sENT[10].power_635 = 1;
+	sENT[10].poswidth = 1000;
+	sENT[10].negwidth = 1000;
 	
 	//980nm 10w CW
-	p = &sENT[11];
-	p->name = "Uvulopalatoplasty (LAUP)";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 100;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[11].name = "Uvulopalatoplasty (LAUP)";
+	sENT[11].channel = LASER_CHANNEL_980;
+	sENT[11].pulse_mode = LASER_MODE_CW; 
+	sENT[11].power_1470 = 1;
+	sENT[11].power_980 = 100;
+	sENT[11].power_635 = 1;
+	sENT[11].poswidth = 1000;
+	sENT[11].negwidth = 1000;
 	
 	//980nm 13w CW
-	p = &sENT[12];
-	p->name = "Conchotomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 130;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[12].name = "Conchotomy";
+	sENT[12].channel = LASER_CHANNEL_980;
+	sENT[12].pulse_mode = LASER_MODE_CW; 
+	sENT[12].power_1470 = 1;
+	sENT[12].power_980 = 130;
+	sENT[12].power_635 = 1;
+	sENT[12].poswidth = 1000;
+	sENT[12].negwidth = 1000;
 	
 	//980nm 10w Pulse, 50ms Ton, 90ms Toff 
-	p = &sENT[13];
-	p->name = "Dacryocystorhinostomy (DCR)";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 100;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 90;
+	sENT[13].name = "Dacryocystorhinostomy (DCR)";
+	sENT[13].channel = LASER_CHANNEL_980;
+	sENT[13].pulse_mode = LASER_MODE_MP; 
+	sENT[13].power_1470 = 1;
+	sENT[13].power_980 = 100;
+	sENT[13].power_635 = 1;
+	sENT[13].poswidth = 50;
+	sENT[13].negwidth = 90;
 	
 	//980nm 10w CW
-	p = &sENT[14];
-	p->name = "Turbinate Reduction";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 100;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[14].name = "Turbinate Reduction";
+	sENT[14].channel = LASER_CHANNEL_980;
+	sENT[14].pulse_mode = LASER_MODE_CW; 
+	sENT[14].power_1470 = 1;
+	sENT[14].power_980 = 100;
+	sENT[14].power_635 = 1;
+	sENT[14].poswidth = 1000;
+	sENT[14].negwidth = 1000;
 	
 	//980nm 12w CW
-	p = &sENT[15];
-	p->name = "Nasal Polypectomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 120;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sENT[15].name = "Nasal Polypectomy";
+	sENT[15].channel = LASER_CHANNEL_980;
+	sENT[15].pulse_mode = LASER_MODE_CW; 
+	sENT[15].power_1470 = 1;
+	sENT[15].power_980 = 120;
+	sENT[15].power_635 = 1;
+	sENT[15].poswidth = 1000;
+	sENT[15].negwidth = 1000;
 	
 /*****************************************************************************/
 	//Dermatology
 	//980nm, CW 10W
-	p = &sDermatology[0];
-	p->name = "Cut";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 100;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
+	sDermatology[0].name = "Cut";
+	sDermatology[0].channel = LASER_CHANNEL_980;
+	sDermatology[0].pulse_mode = LASER_MODE_CW; 
+	sDermatology[0].power_1470 = 1;
+	sDermatology[0].power_980 = 100;
+	sDermatology[0].power_635 = 1;
+	sDermatology[0].poswidth = 1000;
+	sDermatology[0].negwidth = 1000;
 	//980nm, CW 6w
-	p = &sDermatology[1];
-	p->name = "Coagulation";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 30;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
+	sDermatology[1].name = "Coagulation";
+	sDermatology[1].channel = LASER_CHANNEL_980;
+	sDermatology[1].pulse_mode = LASER_MODE_CW; 
+	sDermatology[1].power_1470 = 1;
+	sDermatology[1].power_980 = 30;
+	sDermatology[1].power_635 = 1;
+	sDermatology[1].poswidth = 1000;
+	sDermatology[1].negwidth = 1000;	
 	//980nm, CW 8w
-	p = &sDermatology[2];
-	p->name = "Moles Removal";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 80;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
+	sDermatology[2].name = "Moles Removal";
+	sDermatology[2].channel = LASER_CHANNEL_980;
+	sDermatology[2].pulse_mode = LASER_MODE_CW; 
+	sDermatology[2].power_1470 = 1;
+	sDermatology[2].power_980 = 80;
+	sDermatology[2].power_635 = 1;
+	sDermatology[2].poswidth = 1000;
+	sDermatology[2].negwidth = 1000;
 	//980nm, CW 10w
-	p = &sDermatology[3];
-	p->name = "Warts Removal";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 100;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
+	sDermatology[3].name = "Warts Removal";
+	sDermatology[3].channel = LASER_CHANNEL_980;
+	sDermatology[3].pulse_mode = LASER_MODE_CW; 
+	sDermatology[3].power_1470 = 1;
+	sDermatology[3].power_980 = 100;
+	sDermatology[3].power_635 = 1;
+	sDermatology[3].poswidth = 1000;
+	sDermatology[3].negwidth = 1000;
 	//980nm, Pulse, 6w, 1s Ton, 1s Toff
-	p = &sDermatology[4];
-	p->name = "Nail Fungus";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 60;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
+	sDermatology[4].name = "Nail Fungus";
+	sDermatology[4].channel = LASER_CHANNEL_980;
+	sDermatology[4].pulse_mode = LASER_MODE_MP; 
+	sDermatology[4].power_1470 = 1;
+	sDermatology[4].power_980 = 60;
+	sDermatology[4].power_635 = 1;
+	sDermatology[4].poswidth = 1000;
+	sDermatology[4].negwidth = 1000;
 	//980nm, Pulse, 6w, 1s Ton, 1s Toff
-	p = &sDermatology[5];
-	p->name = "Venectasia";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 150;
-	p->power_635 = 1;
-	p->poswidth = 70;
-	p->negwidth = 120;
-
+	sDermatology[5].name = "Venectasia";
+	sDermatology[5].channel = LASER_CHANNEL_980;
+	sDermatology[5].pulse_mode = LASER_MODE_MP; 
+	sDermatology[5].power_1470 = 1;
+	sDermatology[5].power_980 = 150;
+	sDermatology[5].power_635 = 1;
+	sDermatology[5].poswidth = 70;
+	sDermatology[5].negwidth = 120;
 	//980nm, Pulse, 8w, 1s Ton, 5s Toff
-	p = &sDermatology[6];
-	p->name = "Spider Vein 0.5mm";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 80;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 5000;
-	
+	sDermatology[6].name = "Spider Vein 0.5mm";
+	sDermatology[6].channel = LASER_CHANNEL_980;
+	sDermatology[6].pulse_mode = LASER_MODE_MP; 
+	sDermatology[6].power_1470 = 1;
+	sDermatology[6].power_980 = 80;
+	sDermatology[6].power_635 = 1;
+	sDermatology[6].poswidth = 1000;
+	sDermatology[6].negwidth = 5000;
 	//980nm, Pulse, 8w, 1s Ton, 5s Toff
-	p = &sDermatology[7];
-	p->name = "Spider Vein 1mm";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 80;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 5000;
-
+	sDermatology[7].name = "Spider Vein 1mm";
+	sDermatology[7].channel = LASER_CHANNEL_980;
+	sDermatology[7].pulse_mode = LASER_MODE_MP; 
+	sDermatology[7].power_1470 = 1;
+	sDermatology[7].power_980 = 80;
+	sDermatology[7].power_635 = 1;
+	sDermatology[7].poswidth = 1000;
+	sDermatology[7].negwidth = 5000;
 	//980nm, Pulse, 8w, 1s Ton, 5s Toff
-	p = &sDermatology[8];
-	p->name = "Spider Vein 1.5mm";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 80;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 5000;
-	
+	sDermatology[8].name = "Spider Vein 1.5mm";
+	sDermatology[8].channel = LASER_CHANNEL_980;
+	sDermatology[8].pulse_mode = LASER_MODE_MP; 
+	sDermatology[8].power_1470 = 1;
+	sDermatology[8].power_980 = 80;
+	sDermatology[8].power_635 = 1;
+	sDermatology[8].poswidth = 1000;
+	sDermatology[8].negwidth = 5000;
 /*****************************************************************************/
 	//Liposuction
 	//1470nm, 3w CW
-	p = &sLiposuction[0];
-	p->name =  "Liposuction Under Eye";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 30;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
+	sLiposuction[0].name =  "Liposuction Under Eye";
+	sLiposuction[0].channel = LASER_CHANNEL_1470;
+	sLiposuction[0].pulse_mode = LASER_MODE_CW; 
+	sLiposuction[0].power_1470 = 30;
+	sLiposuction[0].power_980 = 1;
+	sLiposuction[0].power_635 = 1;
+	sLiposuction[0].poswidth = 1000;
+	sLiposuction[0].negwidth = 1000;
 	//1470nm 6w CW	
-	p = &sLiposuction[1];
-	p->name = "Liposuction Chin";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 60;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
+	sLiposuction[1].name = "Liposuction Chin";
+	sLiposuction[1].channel = LASER_CHANNEL_1470;
+	sLiposuction[1].pulse_mode = LASER_MODE_CW; 
+	sLiposuction[1].power_1470 = 60;
+	sLiposuction[1].power_980 = 1;
+	sLiposuction[1].power_635 = 1;
+	sLiposuction[1].poswidth = 1000;
+	sLiposuction[1].negwidth = 1000;
 	//1470nm 8w CW
-	p = &sLiposuction[2];
-	p->name = "Liposuction Arm";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
+	sLiposuction[2].name = "Liposuction Arm";
+	sLiposuction[2].channel = LASER_CHANNEL_1470;
+	sLiposuction[2].pulse_mode = LASER_MODE_CW; 
+	sLiposuction[2].power_1470 = 80;
+	sLiposuction[2].power_980 = 1;
+	sLiposuction[2].power_635 = 1;
+	sLiposuction[2].poswidth = 1000;
+	sLiposuction[2].negwidth = 1000;
 	//1470nm 12 CW
-	p = &sLiposuction[3];
-	p->name = "Liposuction Abdomen";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 120;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
+	sLiposuction[3].name = "Liposuction Abdomen";
+	sLiposuction[3].channel = LASER_CHANNEL_1470;
+	sLiposuction[3].pulse_mode = LASER_MODE_CW; 
+	sLiposuction[3].power_1470 = 120;
+	sLiposuction[3].power_980 = 1;
+	sLiposuction[3].power_635 = 1;
+	sLiposuction[3].poswidth = 1000;
+	sLiposuction[3].negwidth = 1000;
 	//1470nm 10w CW
-	p = &sLiposuction[4];
-	p->name = "Liposuction Buttock";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 100;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
+	sLiposuction[4].name = "Liposuction Buttock";
+	sLiposuction[4].channel = LASER_CHANNEL_1470;
+	sLiposuction[4].pulse_mode = LASER_MODE_CW; 
+	sLiposuction[4].power_1470 = 100;
+	sLiposuction[4].power_980 = 1;
+	sLiposuction[4].power_635 = 1;
+	sLiposuction[4].poswidth = 1000;
+	sLiposuction[4].negwidth = 1000;
 	//1470nm 8w CW
-	p = &sLiposuction[5];
-	p->name = "Liposuction Thigh";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-		
+	sLiposuction[5].name = "Liposuction Thigh";
+	sLiposuction[5].channel = LASER_CHANNEL_1470;
+	sLiposuction[5].pulse_mode = LASER_MODE_CW; 
+	sLiposuction[5].power_1470 = 80;
+	sLiposuction[5].power_980 = 1;
+	sLiposuction[5].power_635 = 1;
+	sLiposuction[5].poswidth = 1000;
+	sLiposuction[5].negwidth = 1000;
 	//1470nm 8w CW	
-	p = &sLiposuction[6];
-	p->name = "Gynecomastia";
-	p->channel = LASER_CHANNEL_1470;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 80;
-	p->power_980 = 1;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sLiposuction[6].name = "Gynecomastia";
+	sLiposuction[6].channel = LASER_CHANNEL_1470;
+	sLiposuction[6].pulse_mode = LASER_MODE_CW; 
+	sLiposuction[6].power_1470 = 80;
+	sLiposuction[6].power_980 = 1;
+	sLiposuction[6].power_635 = 1;
+	sLiposuction[6].poswidth = 1000;
+	sLiposuction[6].negwidth = 1000;
 /*****************************************************************************/
 	//DENTISTRY
 	//
-	p = &sDentistry[0];
-	p->name = "Incision & Drainage Of Abscess";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 12;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
-	p = &sDentistry[1];
-	p->name = "Excision & Incisional Biopsy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
-	p = &sDentistry[2];
-	p->name = "Aphthous Ulcer & herpetic";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 20;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;	
-	
-	p = &sDentistry[3];
-	p->name = "Pulpotomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 15;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;	
-	
-	p = &sDentistry[4];
-	p->name = "Expose of unerupted teeth";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[5];
-	p->name = "Fibroma Removal";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[6];
-	p->name = "Frenectomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[7];
-	p->name = "Gingivectomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[8];
-	p->name = "Gingivoplasty";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[9];
-	p->name = "Gingival incision & excision Hemostasis";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[10];
-	p->name = "Crown Lenthening";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 18;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;	
-	
-	p = &sDentistry[11];
-	p->name = "Reduction of Gingival Hypertrophy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 15;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[12];
-	p->name = "Implant Recovery";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;	
-	
-	p = &sDentistry[13];
-	p->name = "Hemostasis and Coagulation";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 12;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sDentistry[0].name = "Incision & Drainage Of Abscess";
+	sDentistry[0].channel = LASER_CHANNEL_980;
+	sDentistry[0].pulse_mode = LASER_MODE_CW; 
+	sDentistry[0].power_1470 = 1;
+	sDentistry[0].power_980 = 12;
+	sDentistry[0].power_635 = 1;
+	sDentistry[0].poswidth = 1000;
+	sDentistry[0].negwidth = 1000;
+	//
+	sDentistry[1].name = "Excision & Incisional Biopsy";
+	sDentistry[1].channel = LASER_CHANNEL_980;
+	sDentistry[1].pulse_mode = LASER_MODE_CW; 
+	sDentistry[1].power_1470 = 1;
+	sDentistry[1].power_980 = 10;
+	sDentistry[1].power_635 = 1;
+	sDentistry[1].poswidth = 1000;
+	sDentistry[1].negwidth = 1000;
+	//
+	sDentistry[2].name = "Aphthous Ulcer & herpetic";
+	sDentistry[2].channel = LASER_CHANNEL_980;
+	sDentistry[2].pulse_mode = LASER_MODE_MP; 
+	sDentistry[2].power_1470 = 1;
+	sDentistry[2].power_980 = 20;
+	sDentistry[2].power_635 = 1;
+	sDentistry[2].poswidth = 50;
+	sDentistry[2].negwidth = 50;	
+	//
+	sDentistry[3].name = "Pulpotomy";
+	sDentistry[3].channel = LASER_CHANNEL_980;
+	sDentistry[3].pulse_mode = LASER_MODE_MP; 
+	sDentistry[3].power_1470 = 1;
+	sDentistry[3].power_980 = 15;
+	sDentistry[3].power_635 = 1;
+	sDentistry[3].poswidth = 50;
+	sDentistry[3].negwidth = 50;	
+	//
+	sDentistry[4].name = "Expose of unerupted teeth";
+	sDentistry[4].channel = LASER_CHANNEL_980;
+	sDentistry[4].pulse_mode = LASER_MODE_CW; 
+	sDentistry[4].power_1470 = 1;
+	sDentistry[4].power_980 = 10;
+	sDentistry[4].power_635 = 1;
+	sDentistry[4].poswidth = 1000;
+	sDentistry[4].negwidth = 1000;	
+	//
+	sDentistry[5].name = "Fibroma Removal";
+	sDentistry[5].channel = LASER_CHANNEL_980;
+	sDentistry[5].pulse_mode = LASER_MODE_CW; 
+	sDentistry[5].power_1470 = 1;
+	sDentistry[5].power_980 = 10;
+	sDentistry[5].power_635 = 1;
+	sDentistry[5].poswidth = 1000;
+	sDentistry[5].negwidth = 1000;	
+	//
+	sDentistry[6].name = "Frenectomy";
+	sDentistry[6].channel = LASER_CHANNEL_980;
+	sDentistry[6].pulse_mode = LASER_MODE_CW; 
+	sDentistry[6].power_1470 = 1;
+	sDentistry[6].power_980 = 10;
+	sDentistry[6].power_635 = 1;
+	sDentistry[6].poswidth = 1000;
+	sDentistry[6].negwidth = 1000;	
+	//
+	sDentistry[7].name = "Gingivectomy";
+	sDentistry[7].channel = LASER_CHANNEL_980;
+	sDentistry[7].pulse_mode = LASER_MODE_CW; 
+	sDentistry[7].power_1470 = 1;
+	sDentistry[7].power_980 = 10;
+	sDentistry[7].power_635 = 1;
+	sDentistry[7].poswidth = 1000;
+	sDentistry[7].negwidth = 1000;	
+	//
+	sDentistry[8].name = "Gingivoplasty";
+	sDentistry[8].channel = LASER_CHANNEL_980;
+	sDentistry[8].pulse_mode = LASER_MODE_CW; 
+	sDentistry[8].power_1470 = 1;
+	sDentistry[8].power_980 = 10;
+	sDentistry[8].power_635 = 1;
+	sDentistry[8].poswidth = 1000;
+	sDentistry[8].negwidth = 1000;	
+	//
+	sDentistry[9].name = "Gingival incision & excision Hemostasis";
+	sDentistry[9].channel = LASER_CHANNEL_980;
+	sDentistry[9].pulse_mode = LASER_MODE_CW; 
+	sDentistry[9].power_1470 = 1;
+	sDentistry[9].power_980 = 10;
+	sDentistry[9].power_635 = 1;
+	sDentistry[9].poswidth = 1000;
+	sDentistry[9].negwidth = 1000;	
+	//
+	sDentistry[10].name = "Crown Lenthening";
+	sDentistry[10].channel = LASER_CHANNEL_980;
+	sDentistry[10].pulse_mode = LASER_MODE_MP; 
+	sDentistry[10].power_1470 = 1;
+	sDentistry[10].power_980 = 18;
+	sDentistry[10].power_635 = 1;
+	sDentistry[10].poswidth = 50;
+	sDentistry[10].negwidth = 50;	
+	//
+	sDentistry[11].name = "Reduction of Gingival Hypertrophy";
+	sDentistry[11].channel = LASER_CHANNEL_980;
+	sDentistry[11].pulse_mode = LASER_MODE_CW; 
+	sDentistry[11].power_1470 = 1;
+	sDentistry[11].power_980 = 15;
+	sDentistry[11].power_635 = 1;
+	sDentistry[11].poswidth = 1000;
+	sDentistry[11].negwidth = 1000;	
+	//
+	sDentistry[12].name = "Implant Recovery";
+	sDentistry[12].channel = LASER_CHANNEL_980;
+	sDentistry[12].pulse_mode = LASER_MODE_CW; 
+	sDentistry[12].power_1470 = 1;
+	sDentistry[12].power_980 = 10;
+	sDentistry[12].power_635 = 1;
+	sDentistry[12].poswidth = 1000;
+	sDentistry[12].negwidth = 1000;	
+	//
+	sDentistry[15].name = "Hemostasis and Coagulation";
+	sDentistry[15].channel = LASER_CHANNEL_980;
+	sDentistry[15].pulse_mode = LASER_MODE_CW; 
+	sDentistry[15].power_1470 = 1;
+	sDentistry[15].power_980 = 12;
+	sDentistry[15].power_635 = 1;
+	sDentistry[15].poswidth = 1000;
+	sDentistry[15].negwidth = 1000;
+	//
+	sDentistry[14].name = "Gingival Troughing";
+	sDentistry[14].channel = LASER_CHANNEL_980;
+	sDentistry[14].pulse_mode = LASER_MODE_CW; 
+	sDentistry[14].power_1470 = 1;
+	sDentistry[14].power_980 = 18;
+	sDentistry[14].power_635 = 1;
+	sDentistry[14].poswidth = 1000;
+	sDentistry[14].negwidth = 1000;
+	//
+	sDentistry[15].name = "Operculectomy";
+	sDentistry[15].channel = LASER_CHANNEL_980;
+	sDentistry[15].pulse_mode = LASER_MODE_CW; 
+	sDentistry[15].power_1470 = 1;
+	sDentistry[15].power_980 = 15;
+	sDentistry[15].power_635 = 1;
+	sDentistry[15].poswidth = 1000;
+	sDentistry[15].negwidth = 1000;
+	//
+	sDentistry[16].name = "Infected Pockets Removal";
+	sDentistry[16].channel = LASER_CHANNEL_980;
+	sDentistry[16].pulse_mode = LASER_MODE_CW; 
+	sDentistry[16].power_1470 = 1;
+	sDentistry[16].power_980 = 18;
+	sDentistry[16].power_635 = 1;
+	sDentistry[16].poswidth = 1000;
+	sDentistry[16].negwidth = 1000;
+	//
+	sDentistry[17].name = "Gingival Bleeding Index";
+	sDentistry[17].channel = LASER_CHANNEL_980;
+	sDentistry[17].pulse_mode = LASER_MODE_CW; 
+	sDentistry[17].power_1470 = 1;
+	sDentistry[17].power_980 = 8;
+	sDentistry[17].power_635 = 1;
+	sDentistry[17].poswidth = 1000;
+	sDentistry[17].negwidth = 1000;
 
-	p = &sDentistry[14];
-	p->name = "Gingival Troughing";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 18;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
-	p = &sDentistry[15];
-	p->name = "Operculectomy";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 15;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
-	p = &sDentistry[16];
-	p->name = "Infected Pockets Removal";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 18;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
-	p = &sDentistry[17];
-	p->name = "Gingival Bleeding Index";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 8;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
-	p = &sDentistry[18];
-	p->name = "Sulcular Debridement";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 8;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
-	p = &sDentistry[19];
-	p->name = "Leukoplakia";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
-	p = &sDentistry[20];
-	p->name = "Vestibuloplasty";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 10;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-	
-	p = &sDentistry[21];
-	p->name = "Oral Papilectomies";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 9;
-	p->power_635 = 1;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
-	p = &sDentistry[22];
-	p->name = "Tooth Whitening";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 50;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;
-
-
-
+	//
+	sDentistry[18].name = "Sulcular Debridement";
+	sDentistry[18].channel = LASER_CHANNEL_980;
+	sDentistry[18].pulse_mode = LASER_MODE_CW; 
+	sDentistry[18].power_1470 = 1;
+	sDentistry[18].power_980 = 8;
+	sDentistry[18].power_635 = 1;
+	sDentistry[18].poswidth = 1000;
+	sDentistry[18].negwidth = 1000;
+	//
+	sDentistry[19].name = "Leukoplakia";
+	sDentistry[19].channel = LASER_CHANNEL_980;
+	sDentistry[19].pulse_mode = LASER_MODE_CW; 
+	sDentistry[19].power_1470 = 1;
+	sDentistry[19].power_980 = 10;
+	sDentistry[19].power_635 = 1;
+	sDentistry[19].poswidth = 1000;
+	sDentistry[19].negwidth = 1000;
+	//
+	sDentistry[20].name = "Vestibuloplasty";
+	sDentistry[20].channel = LASER_CHANNEL_980;
+	sDentistry[20].pulse_mode = LASER_MODE_CW; 
+	sDentistry[20].power_1470 = 1;
+	sDentistry[20].power_980 = 10;
+	sDentistry[20].power_635 = 1;
+	sDentistry[20].poswidth = 1000;
+	sDentistry[20].negwidth = 1000;
+	//
+	sDentistry[21].name = "Oral Papilectomies";
+	sDentistry[21].channel = LASER_CHANNEL_980;
+	sDentistry[21].pulse_mode = LASER_MODE_CW; 
+	sDentistry[21].power_1470 = 1;
+	sDentistry[21].power_980 = 9;
+	sDentistry[21].power_635 = 1;
+	sDentistry[21].poswidth = 1000;
+	sDentistry[21].negwidth = 1000;
+	//
+	sDentistry[22].name = "Tooth Whitening";
+	sDentistry[22].channel = LASER_CHANNEL_980;
+	sDentistry[22].pulse_mode = LASER_MODE_MP; 
+	sDentistry[22].power_1470 = 1;
+	sDentistry[22].power_980 = 50;
+	sDentistry[22].power_635 = 1;
+	sDentistry[22].poswidth = 50;
+	sDentistry[22].negwidth = 50;
 /*****************************************************************************/
 	//Therapy
 	//980nm 8w pulse, 50ms on, 50ms off
-	p = &sTherapy[0];
-	p->name = "Orthopedie Pain";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 80;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;
-	
+	sTherapy[0].name = "Orthopedie Pain";
+	sTherapy[0].channel = LASER_CHANNEL_980;
+	sTherapy[0].pulse_mode = LASER_MODE_MP; 
+	sTherapy[0].power_1470 = 1;
+	sTherapy[0].power_980 = 80;
+	sTherapy[0].power_635 = 1;
+	sTherapy[0].poswidth = 50;
+	sTherapy[0].negwidth = 50;
 	//980nm 8w pulse 50ms on, 50ms off
-	p = &sTherapy[1];
-	p->name = "Spine Pain";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 80;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;
-
+	sTherapy[1].name = "Spine Pain";
+	sTherapy[1].channel = LASER_CHANNEL_980;
+	sTherapy[1].pulse_mode = LASER_MODE_MP; 
+	sTherapy[1].power_1470 = 1;
+	sTherapy[1].power_980 = 80;
+	sTherapy[1].power_635 = 1;
+	sTherapy[1].poswidth = 50;
+	sTherapy[1].negwidth = 50;
 	//980nm 10w pulse 50ms on, 50ms off
-	p = &sTherapy[2];
-	p->name = "Frozen Shoulder";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 100;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;
-
-//980nm 6w pulse 50ms on, 50ms off
-	p = &sTherapy[3];
-	p->name = "Plantar Facilities";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 60;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;
-	
-//980nm 6w pulse 50ms on, 50ms off
-	p = &sTherapy[4];
-	p->name = "Pain Management";
-	p->channel = LASER_CHANNEL_980;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_1470 = 1;
-	p->power_980 = 60;
-	p->power_635 = 1;
-	p->poswidth = 50;
-	p->negwidth = 50;
-
-//635nm CW
-	p = &sTherapy[5];
-	p->name = "Would Healing";
-	p->channel = LASER_CHANNEL_635;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 1;
-	p->power_635 = 5;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
-//635nm CW
-	p = &sTherapy[6];
-	p->name = "Low Laser Therapy";
-	p->channel = LASER_CHANNEL_635;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 1;
-	p->power_635 = 5;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
-
-//635nm CW
-	p = &sTherapy[7];
-	p->name = "Biostimulation";
-	p->channel = LASER_CHANNEL_635;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_1470 = 1;
-	p->power_980 = 1;
-	p->power_635 = 5;
-	p->poswidth = 1000;
-	p->negwidth = 1000;
+	sTherapy[2].name = "Frozen Shoulder";
+	sTherapy[2].channel = LASER_CHANNEL_980;
+	sTherapy[2].pulse_mode = LASER_MODE_MP; 
+	sTherapy[2].power_1470 = 1;
+	sTherapy[2].power_980 = 100;
+	sTherapy[2].power_635 = 1;
+	sTherapy[2].poswidth = 50;
+	sTherapy[2].negwidth = 50;
+	//980nm 6w pulse 50ms on, 50ms off
+	sTherapy[3].name = "Plantar Facilities";
+	sTherapy[3].channel = LASER_CHANNEL_980;
+	sTherapy[3].pulse_mode = LASER_MODE_MP; 
+	sTherapy[3].power_1470 = 1;
+	sTherapy[3].power_980 = 60;
+	sTherapy[3].power_635 = 1;
+	sTherapy[3].poswidth = 50;
+	sTherapy[3].negwidth = 50;
+	//980nm 6w pulse 50ms on, 50ms off
+	sTherapy[4].name = "Pain Management";
+	sTherapy[4].channel = LASER_CHANNEL_980;
+	sTherapy[4].pulse_mode = LASER_MODE_MP; 
+	sTherapy[4].power_1470 = 1;
+	sTherapy[4].power_980 = 60;
+	sTherapy[4].power_635 = 1;
+	sTherapy[4].poswidth = 50;
+	sTherapy[4].negwidth = 50;
+	//635nm CW
+	sTherapy[5].name = "Would Healing";
+	sTherapy[5].channel = LASER_CHANNEL_635;
+	sTherapy[5].pulse_mode = LASER_MODE_CW; 
+	sTherapy[5].power_1470 = 1;
+	sTherapy[5].power_980 = 1;
+	sTherapy[5].power_635 = 5;
+	sTherapy[5].poswidth = 1000;
+	sTherapy[5].negwidth = 1000;
+	//635nm CW
+	sTherapy[6].name = "Low Laser Therapy";
+	sTherapy[6].channel = LASER_CHANNEL_635;
+	sTherapy[6].pulse_mode = LASER_MODE_CW; 
+	sTherapy[6].power_1470 = 1;
+	sTherapy[6].power_980 = 1;
+	sTherapy[6].power_635 = 5;
+	sTherapy[6].poswidth = 1000;
+	sTherapy[6].negwidth = 1000;
+	//635nm CW
+	sTherapy[7].name = "Biostimulation";
+	sTherapy[7].channel = LASER_CHANNEL_635;
+	sTherapy[7].pulse_mode = LASER_MODE_CW; 
+	sTherapy[7].power_1470 = 1;
+	sTherapy[7].power_980 = 1;
+	sTherapy[7].power_635 = 5;
+	sTherapy[7].poswidth = 1000;
+	sTherapy[7].negwidth = 1000;
 #endif
 
 #if defined(MODEL_PVGLS_7W_1940)

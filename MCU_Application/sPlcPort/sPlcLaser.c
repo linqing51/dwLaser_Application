@@ -199,6 +199,7 @@ static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_1470){
 			SET_LASER_1470_ON;
+			SET_LASER_980_ON;
 		}
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_980){
 			SET_LASER_980_ON;

@@ -2426,8 +2426,8 @@ static void temperatureLoop(void){//温度轮询轮询
 		//运行温控PID程序
 		//LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
 		LaserTecOut = fuzzyPidRealize(&fuzzyPid, ((float)CONFIG_DIODE_SET_TEMP), ((float)NVRAM0[EM_LASER_TEMP]));
-		if(LaserTecOut >= 500){
-			LaserTecOut = 500;
+		if(LaserTecOut >= 550){
+			LaserTecOut = 550;
 		}
 		if(LaserTecOut < 0){
 			LaserTecOut = 0;
@@ -2461,21 +2461,18 @@ static void temperatureLoop(void){//温度轮询轮询
 				NVRAM0[EM_FAN_SET_SPEED] = 30;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300) {//25-30度
-				NVRAM0[EM_FAN_SET_SPEED] = 35;
+				NVRAM0[EM_FAN_SET_SPEED] = 40;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){//30-35度
-				NVRAM0[EM_FAN_SET_SPEED] = 45;
+				NVRAM0[EM_FAN_SET_SPEED] = 60;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){//35-40度
-				NVRAM0[EM_FAN_SET_SPEED] = 55;
+				NVRAM0[EM_FAN_SET_SPEED] = 80;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){//40-45度
-				NVRAM0[EM_FAN_SET_SPEED] = 75;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){//45-50度
 				NVRAM0[EM_FAN_SET_SPEED] = 90;
 			}
-			else{//大于50度
+			else{//大于45度
 				NVRAM0[EM_FAN_SET_SPEED] = 100;
 			}
 		}
@@ -3166,10 +3163,15 @@ void dcHmiLoop(void){//HMI轮训程序
 #if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)//3波长			
 			//校正输出功率
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
-				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, NVRAM0[EM_LASER_POWER_1470], &deviceConfig);
-				UPDAC0();
-				NVRAM0[SPREG_DAC_1] = 0;
-				UPDAC1();
+//				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, NVRAM0[EM_LASER_POWER_1470], &deviceConfig);
+//				UPDAC0();
+//				NVRAM0[SPREG_DAC_1] = 0;
+//				UPDAC1();
+					//压力测试
+					NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, 140, &deviceConfig);;
+					UPDAC0();
+					NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_CHANNEL_980, 150, &deviceConfig);
+					UPDAC1();
 			}
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){
 				NVRAM0[SPREG_DAC_0] = 0;

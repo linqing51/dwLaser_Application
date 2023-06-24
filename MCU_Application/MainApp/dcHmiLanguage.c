@@ -34,12 +34,17 @@ const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15W"};
 const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm"};
 #endif
 
-#if defined(MODEL_PVGLS_TRI) || (MODEL_PVGLS_TRI_COMBINE)
+#if defined(MODEL_PVGLS_TRI)
 const char INFO_MSG_TYPE[] 						 				= {"TYPE:PVGLS TRI"};
 const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15+15+0.5W"};
 const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+980nm+635nm"};
 #endif
 
+#if defined(MODEL_PVGLS_TRI_COMBINE)
+const char INFO_MSG_TYPE[] 						 				= {"TYPE:PVGLS TRI COMBINE"};
+const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15+15+0.5W"};
+const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+980nm+635nm"};
+#endif
 /*****************************************************************************/
 
 

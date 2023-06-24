@@ -2,8 +2,8 @@
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
 //#define MODEL_PVGLS_15W_1470
-#define MODEL_PVGLS_7W_1940
-//#define MODEL_PVGLS_TRI
+//#define MODEL_PVGLS_7W_1940
+#define MODEL_PVGLS_TRI
 //#define MODEL_PVGLS_TRI_COMBINE
 /*****************************************************************************/
 #define LASER_CHANNEL_1470														0x01
@@ -57,7 +57,7 @@
 #define BOOTLOAD_MAIN_ADDRESS													0x0800FE00//主版本标识地址															
 #define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//次版本标识地址
 #define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
-#define DEVID_H																				'1'//设备ID
+#define DEVID_H																				'2'//设备ID
 #define DEVID_L																				'A'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
 #define CONFIG_JUMP_DELAY															7000//检测U盘时间
