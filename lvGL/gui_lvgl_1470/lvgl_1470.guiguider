@@ -1,0 +1,452 @@
+{
+	"projectName": "lvgl_1470",
+	"lvglVersion": "v8",
+	"boardPlatformSettings": {
+		"id": 67,
+		"name": "Simulator",
+		"version": "v1.0.0",
+		"description": "Simulator",
+		"lvgl_version_major": 8,
+		"lvgl_version_minor": 2,
+		"lvgl_version_micro": 0,
+		"author": "NXP",
+		"file": "",
+		"checksum": "",
+		"images": [
+			"C:\\NXP\\GUI-Guider-1.5.1-GA\\environment\\template\\board\\v8\\Simulator\\images\\simulator.png"
+		],
+		"type": "Simulator",
+		"configuration": {
+			"OS": "Windows/Linux/Darwin",
+			"mcu": "Simulator",
+			"support_sdCard": true,
+			"BuildStatus": {
+				"enable_pxp": false,
+				"supportPXP": false
+			},
+			"color_depth": [
+				16,
+				24
+			],
+			"Optimizations": "Balance",
+			"display_panels": [
+				{
+					"width": 480,
+					"height": 272,
+					"display_panel_name": "Simulator",
+					"display_part_number": "Simulator"
+				},
+				{
+					"width": 392,
+					"height": 392,
+					"display_panel_name": "Simulator",
+					"display_part_number": "Simulator"
+				},
+				{
+					"width": 320,
+					"height": 240,
+					"display_panel_name": "Simulator",
+					"display_part_number": "Simulator"
+				},
+				{
+					"width": 800,
+					"height": 480,
+					"display_panel_name": "Simulator",
+					"display_part_number": "Simulator"
+				},
+				{
+					"width": 720,
+					"height": 1280,
+					"display_panel_name": "Simulator",
+					"display_part_number": "Simulator"
+				},
+				{
+					"width": 1280,
+					"height": 720,
+					"display_panel_name": "Simulator",
+					"display_part_number": "Simulator"
+				}
+			],
+			"mcuxpresso_config": {
+				"CMAKE_BUILD_TYPE": "null"
+			}
+		},
+		"originType": "builtIn"
+	},
+	"demoTemplateSettings": {
+		"id": 24,
+		"name": "EmptyUI",
+		"version": "v1.0.0",
+		"description": "An empty UI template",
+		"lvgl_version_major": 8,
+		"lvgl_version_minor": 2,
+		"lvgl_version_micro": 0,
+		"author": "NXP",
+		"file": "1.4.0/application/EmptyUI/v8/EmptyUI_v1.0.0.zip",
+		"checksum": "9ea6bcd7c79f6508b195f3c1b590e2b7",
+		"images": [
+			"C:\\NXP\\GUI-Guider-1.5.1-GA\\environment\\template\\application\\v8\\EmptyUI\\images\\simulator.png"
+		],
+		"support_board": [
+			"Simulator",
+			"MIMXRT1052xxxxB",
+			"MIMXRT1042xxxxB",
+			"MIMXRT1062xxxxA",
+			"MIMXRT1064xxxxA",
+			"LPC54S018",
+			"LPC54S018J4M",
+			"LPC54628",
+			"LPC55S69",
+			"LPC55S28",
+			"LPC55S16",
+			"LPC55S06",
+			"MCXN947BRK",
+			"MIMXRT595S",
+			"MIMXRT1166xxxxx",
+			"MIMXRT1176xxxxx",
+			"MIMXRT1170EVKB",
+			"MIMXRT1011xxxxx",
+			"MIMXRT1021xxxxx",
+			"MIMXRT1024xxxxx",
+			"MIMXRT1015xxxxx",
+			"MIMXRT1060EVKB"
+		],
+		"originType": "builtIn"
+	},
+	"projectSettings": {
+		"resolution": {
+			"width": "1024",
+			"height": "600"
+		},
+		"color_depth": 24,
+		"panel_name": "TFT",
+		"display_part_number": "",
+		"OS": "Windows/Linux/Darwin",
+		"mcu": "Simulator",
+		"name": "Simulator",
+		"mcuxpresso_config": {
+			"CMAKE_BUILD_TYPE": "null"
+		},
+		"Optimizations": "Balance",
+		"frameBuffer_region": null
+	},
+	"version": "1.5.1-GA",
+	"lvConf": {
+		"LV_HOR_RES_MAX": "(1024)",
+		"LV_VER_RES_MAX": "(600)",
+		"LV_USE_MEM_MONITOR": false,
+		"LV_COLOR_DEPTH": 24,
+		"LV_COLOR_16_SWAP": false,
+		"LV_MEM_CUSTOM": false,
+		"LV_MEM_SIZE": "320",
+		"LV_MEM_ADR": false,
+		"LV_MEM_AUTO_DEFRAG": true,
+		"LV_MEM_CUSTOM_INCLUDE": "<stdlib.h>",
+		"LV_MEM_CUSTOM_ALLOC": "malloc",
+		"LV_MEM_CUSTOM_FREE": "free",
+		"LV_USE_GPU": true,
+		"LV_USE_GPU_NXP_PXP": "~~",
+		"LV_USE_GPU_NXP_PXP_AUTO_INIT": "~~",
+		"LV_USE_GPU_NXP_VG_LITE": "~~",
+		"LV_ATTRIBUTE_MEM_ALIGN_SIZE": "~~",
+		"LV_ATTRIBUTE_MEM_ALIGN": "~~",
+		"LV_DISP_DEF_REFR_PERIOD": "30",
+		"LV_FS_RAWFS_XIP": false,
+		"LV_FS_RAWFS_XIP_BASE_ADDR": "",
+		"LV_USE_PERF_MONITOR": false
+	},
+	"ImportFonts": {
+		"simsun": "font\\simsun.woff",
+		"montserratMedium": "font\\Montserrat-medium.ttf",
+		"arial": "font\\ARIAL.TTF",
+		"Abel_regular": "font\\abel-regular.ttf",
+		"Acme_Regular": "font\\Acme-Regular.ttf",
+		"Adventpro_regular": "font\\adventpro-regular.ttf",
+		"AguafinaScript_Regular": "font\\AguafinaScript-Regular.ttf",
+		"Alatsi_Regular": "font\\Alatsi-Regular.ttf",
+		"AlexBrush_Regular": "font\\AlexBrush-Regular.ttf",
+		"AmaticSC_Regular": "font\\AmaticSC-Regular.ttf",
+		"Amiko_Regular": "font\\Amiko-Regular.ttf",
+		"Antonio_Regular": "font\\Antonio-Regular.ttf",
+		"ArchitectsDaughter": "font\\ArchitectsDaughter.ttf"
+	},
+	"FrontJson": [
+		{
+			"name": "screen_0",
+			"id": "defaultScreen",
+			"type": "scr",
+			"version": 151,
+			"width": 480,
+			"height": 272,
+			"visible": true,
+			"scrollbar_mode": "OFF",
+			"display_kb": true,
+			"chinese_input": false,
+			"chinese_library": "mini",
+			"keyboard_font_type": "simsun",
+			"keyboard_font_size": "18",
+			"list": [
+				{
+					"name": "label_1",
+					"id": "f9yj7j2d",
+					"type": "label",
+					"left": 64,
+					"top": 36,
+					"visible": true,
+					"is_move_animation": false,
+					"desX": 0,
+					"desY": 0,
+					"path_type": "linear",
+					"duration": 1000,
+					"width": 354,
+					"height": 33,
+					"default_style": false,
+					"scrollbar_mode": "OFF",
+					"text": "Demo  MyriadPro",
+					"long_mode": "LV_LABEL_LONG_WRAP",
+					"style": [
+						{
+							"part": "LV_PART_MAIN",
+							"state": "LV_STATE_DEFAULT",
+							"disable": false,
+							"radius": 0,
+							"text_color": "#ffffff",
+							"font": 16,
+							"text_align": "LV_TEXT_ALIGN_CENTER",
+							"font_family": "montserratMedium",
+							"letter_space": 2,
+							"line_space": 0,
+							"bg_color": "#2195f6",
+							"bg_grad_color": "#2195f6",
+							"bg_opa": 255,
+							"bg_grad_dir": "LV_GRAD_DIR_NONE",
+							"padding_top": 8,
+							"padding_right": 0,
+							"padding_bottom": 0,
+							"padding_left": 0,
+							"shadow_color": "#2195f6",
+							"shadow_opa": 255,
+							"shadow_width": 0,
+							"shadow_spread": 0,
+							"shadow_ofs_x": 0,
+							"shadow_ofs_y": 0
+						},
+						{
+							"part": "LV_PART_MAIN",
+							"state": "LV_STATE_DISABLED",
+							"disable": true,
+							"radius": 0,
+							"text_color": "#ffffff",
+							"font": 16,
+							"font_family": "montserratMedium",
+							"text_align": "LV_TEXT_ALIGN_CENTER",
+							"letter_space": 2,
+							"line_space": 0,
+							"bg_color": "#2195f6",
+							"bg_grad_color": "#2195f6",
+							"bg_opa": 255,
+							"bg_grad_dir": "LV_GRAD_DIR_NONE",
+							"padding_top": 8,
+							"padding_right": 0,
+							"padding_bottom": 0,
+							"padding_left": 0,
+							"shadow_color": "#2195f6",
+							"shadow_opa": 255,
+							"shadow_width": 0,
+							"shadow_spread": 0,
+							"shadow_ofs_x": 0,
+							"shadow_ofs_y": 0
+						}
+					]
+				},
+				{
+					"name": "img_1",
+					"id": "geh8adkt",
+					"type": "img",
+					"left": 0,
+					"top": 0,
+					"visible": true,
+					"is_move_animation": false,
+					"desX": 0,
+					"desY": 0,
+					"path_type": "linear",
+					"duration": 1000,
+					"width": 1024,
+					"height": 600,
+					"default_style": false,
+					"scrollbar_mode": "OFF",
+					"use_fs": false,
+					"fs_type": "sd",
+					"sd_path": "",
+					"img_path": "D:\\GitHub\\dwLaser_Application\\lvGL\\gui_lvgl_1470\\import\\image\\1_0_GDDC_PAGE_POWERUP_TRI.jpg",
+					"rotate": 0,
+					"x": 50,
+					"y": 50,
+					"color_format": "true-color-alpha",
+					"style": [
+						{
+							"part": "LV_PART_MAIN",
+							"state": "LV_STATE_DEFAULT",
+							"disable": false,
+							"image_recolor": "#ffffff",
+							"image_recolor_opa": 0,
+							"image_opa": 255
+						}
+					]
+				}
+			],
+			"event": [],
+			"style": [
+				{
+					"part": "LV_PART_MAIN",
+					"state": "LV_STATE_DEFAULT",
+					"disable": false,
+					"bg_color": "#ffffff",
+					"bg_grad_dir": "LV_GRAD_DIR_NONE",
+					"bg_grad_color": "#2195f6",
+					"bg_opa": 0
+				}
+			]
+		},
+		{
+			"name": "screen_1",
+			"id": "sffvxc8e",
+			"type": "scr",
+			"version": 151,
+			"width": 480,
+			"height": 272,
+			"visible": true,
+			"scrollbar_mode": "OFF",
+			"display_kb": true,
+			"chinese_input": false,
+			"chinese_library": "mini",
+			"keyboard_font_type": "simsun",
+			"keyboard_font_size": "18",
+			"list": [],
+			"event": [],
+			"style": [
+				{
+					"part": "LV_PART_MAIN",
+					"state": "LV_STATE_DEFAULT",
+					"disable": false,
+					"bg_color": "#ffffff",
+					"bg_grad_dir": "LV_GRAD_DIR_NONE",
+					"bg_grad_color": "#2195f6",
+					"bg_opa": 0
+				}
+			]
+		}
+	],
+	"FrontStatus": {},
+	"Application": {
+		"name": "testingJson",
+		"size": {
+			"width": "1024",
+			"height": "600"
+		},
+		"version": "test_v1",
+		"default_scr": "screen_0",
+		"theme": "LV_THEME_MATERIAL_FLAG_LIGHT",
+		"screen": [
+			{
+				"name": "screen_0",
+				"id": "defaultScreen",
+				"type": "scr",
+				"version": 151,
+				"width": 480,
+				"height": 272,
+				"visible": true,
+				"scrollbar_mode": "OFF",
+				"display_kb": true,
+				"chinese_input": false,
+				"chinese_library": "mini",
+				"keyboard_font_type": "simsun",
+				"keyboard_font_size": "18",
+				"style": [
+					{
+						"part": "LV_PART_MAIN",
+						"state": "LV_STATE_DEFAULT",
+						"disable": false,
+						"bg_color": "#ffffff",
+						"bg_grad_dir": "LV_GRAD_DIR_NONE",
+						"bg_grad_color": "#2195f6",
+						"bg_opa": 0
+					}
+				],
+				"widgets": [
+					{
+						"name": "screen_0_img_1",
+						"id": "geh8adkt",
+						"type": "img",
+						"visible": true,
+						"scrollbar_mode": "OFF",
+						"pos": [
+							0,
+							0
+						],
+						"size": [
+							1024,
+							600
+						],
+						"is_move_animation": false,
+						"path_type": "linear",
+						"move_animation": {
+							"des_pos": [
+								0,
+								0
+							],
+							"duration": 1000
+						},
+						"default_style": false,
+						"img_path": "D:\\GitHub\\dwLaser_Application\\lvGL\\gui_lvgl_1470\\import\\image\\1_0_GDDC_PAGE_POWERUP_TRI.jpg",
+						"color_format": "true-color-alpha",
+						"rotate": 0,
+						"pivot": "50,50",
+						"use_fs": false,
+						"fs_type": "sd",
+						"img_flash_path": "F:/1_0_GDDC_PAGE_POWERUP_TRI.jpg",
+						"img_sd_path": "S:/1_0_GDDC_PAGE_POWERUP_TRI.jpg",
+						"style": [
+							{
+								"part": "LV_PART_MAIN",
+								"state": "LV_STATE_DEFAULT",
+								"disable": false,
+								"image_recolor": "#ffffff",
+								"image_recolor_opa": 0,
+								"image_opa": 255
+							}
+						]
+					}
+				]
+			},
+			{
+				"name": "screen_1",
+				"id": "sffvxc8e",
+				"type": "scr",
+				"version": 151,
+				"width": 480,
+				"height": 272,
+				"visible": true,
+				"scrollbar_mode": "OFF",
+				"display_kb": true,
+				"chinese_input": false,
+				"chinese_library": "mini",
+				"keyboard_font_type": "simsun",
+				"keyboard_font_size": "18",
+				"style": [
+					{
+						"part": "LV_PART_MAIN",
+						"state": "LV_STATE_DEFAULT",
+						"disable": false,
+						"bg_color": "#ffffff",
+						"bg_grad_dir": "LV_GRAD_DIR_NONE",
+						"bg_grad_color": "#2195f6",
+						"bg_opa": 0
+					}
+				],
+				"widgets": []
+			}
+		],
+		"event": []
+	}
+}
