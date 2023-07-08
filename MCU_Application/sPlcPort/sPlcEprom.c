@@ -402,6 +402,28 @@ uint8_t sPlcEpromTest(void){//EPROM ¶ÁÐ´×Ô²âÊÔ
 		}
 	}
 	printf("%s,%d,%s:random write pass!\r\n", __FILE__, __LINE__, __func__);
+	//²é¿Õ
+	tempWrite = 0;
+	tempRead = 0;
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+		epromWriteByte((i + 0), ((uint8_t*)&tempWrite + 0));
+		epromWriteByte((i + 1), ((uint8_t*)&tempWrite + 1));
+		epromWriteByte((i + 2), ((uint8_t*)&tempWrite + 2));
+		epromWriteByte((i + 3), ((uint8_t*)&tempWrite + 3));
+	}
+	
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+		epromReadByte((i + 0), ((uint8_t*)&tempRead + 0));
+		epromReadByte((i + 1), ((uint8_t*)&tempRead + 1));
+		epromReadByte((i + 2), ((uint8_t*)&tempRead + 2));
+		epromReadByte((i + 3), ((uint8_t*)&tempRead + 3));
+		if(tempRead != 0){
+			printf("%s,%d,%s:check blank fail!\r\n", __FILE__, __LINE__, __func__);
+		}
+		else{
+			printf("%s,%d,%s:check blank pass!\r\n", __FILE__, __LINE__, __func__);
+		}
+	}
 	return res;
 }
 

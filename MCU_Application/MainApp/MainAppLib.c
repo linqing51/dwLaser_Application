@@ -81,7 +81,7 @@ void restoreDefault(void){//恢复默认值
 	NVRAM0[DM_SCHEME_INDEX] = 0;
 #endif
 	FDSAV();
-	NVFSAVE();
+	NVFSAVE();	
 }
 
 uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比

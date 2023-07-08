@@ -661,6 +661,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_SELECT_1470:{
 					if(state){
 						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_1470;
+						if(NVRAM0[EM_LASER_POWER_1470] <= CONFIG_MIN_LASER_POWER_1470){
+							NVRAM0[EM_LASER_POWER_1470] = CONFIG_MIN_LASER_POWER_1470;
+						}
+						if(NVRAM0[EM_LASER_POWER_1470] >= CONFIG_MAX_LASER_POWER_1470){
+							NVRAM0[EM_LASER_POWER_1470] = CONFIG_MAX_LASER_POWER_1470;
+						}
 						updateStandbyDisplay();
 					}
 					break;
@@ -668,6 +674,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_SELECT_980:{
 					if(state){
 						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_980;
+						if(NVRAM0[EM_LASER_POWER_980] <= CONFIG_MIN_LASER_POWER_980){
+							NVRAM0[EM_LASER_POWER_980] = CONFIG_MIN_LASER_POWER_980;
+						}
+						if(NVRAM0[EM_LASER_POWER_980] >= CONFIG_MAX_LASER_POWER_980){
+							NVRAM0[EM_LASER_POWER_980] = CONFIG_MAX_LASER_POWER_980;
+						}
 						updateStandbyDisplay();
 					}
 					break;
@@ -675,6 +687,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_SELECT_635:{
 					if(state){
 						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_635;
+						if(NVRAM0[EM_LASER_POWER_635] <= CONFIG_MIN_LASER_POWER_635){
+							NVRAM0[EM_LASER_POWER_635] = CONFIG_MIN_LASER_POWER_635;
+						}
+						if(NVRAM0[EM_LASER_POWER_635] >= CONFIG_MAX_LASER_POWER_635){
+							NVRAM0[EM_LASER_POWER_635] = CONFIG_MAX_LASER_POWER_635;
+						}
 						updateStandbyDisplay();
 					}
 					break;
@@ -999,11 +1017,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_RESTORE_KEY_YES:{
 					if(state){
 						restoreDefault();
-						NVFSAVE();//强制更新NVRAM
-						updateOptionDisplay();//更新Option显示
-						SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
 						REBOOT();
 					}
 					break;
@@ -1166,16 +1179,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[DM_SCHEME_INDEX] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
 						NVRAM0[DM_SCHEME_CLASSIFY] = NVRAM0[EM_SCHEME_CLASSIFY_TMP];
 						loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
-#if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)							
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHMEM_CLASSIFY;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-#endif
-#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_7W_1940)
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 						updateStandbyDisplay();	
-#endif
 					}
 					break;
 				}

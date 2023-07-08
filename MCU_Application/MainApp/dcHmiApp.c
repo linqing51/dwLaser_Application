@@ -217,7 +217,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.mfg_month = 6;
 		deviceConfig.mfg_day = 18;
 			
-		sprintf(deviceConfig.serialNumber, "PH23-E001");
+		sprintf(deviceConfig.serialNumber, "PH23-E0019");
 		deviceConfig.greenLedDc = CONFIG_GREEN_LED_DEFAULT_DC;
 		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
 		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
@@ -3163,15 +3163,15 @@ void dcHmiLoop(void){//HMI轮训程序
 #if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)//3波长			
 			//校正输出功率
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
-//				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, NVRAM0[EM_LASER_POWER_1470], &deviceConfig);
-//				UPDAC0();
-//				NVRAM0[SPREG_DAC_1] = 0;
-//				UPDAC1();
+				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, NVRAM0[EM_LASER_POWER_1470], &deviceConfig);
+				UPDAC0();
+				NVRAM0[SPREG_DAC_1] = 0;
+				UPDAC1();
 					//压力测试
-					NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, 140, &deviceConfig);;
-					UPDAC0();
-					NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_CHANNEL_980, 150, &deviceConfig);
-					UPDAC1();
+					//NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_1470, 140, &deviceConfig);;
+					//UPDAC0();
+					//NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_CHANNEL_980, 150, &deviceConfig);
+					//UPDAC1();
 			}
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){
 				NVRAM0[SPREG_DAC_0] = 0;
@@ -3791,6 +3791,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcNvramClear();//清空NVRAM
 			sPlcFdramClear();//清空FDRAM
 			sPlcDeviceConfigClear();//清空config
+			restoreDefault();//恢复预设方案
 			resetGddcHmi();
 			softDelayMs(4000);//等待4秒
 			REBOOT();	

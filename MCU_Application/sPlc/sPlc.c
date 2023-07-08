@@ -2,9 +2,9 @@
 //避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
 /*****************************************************************************/
 #pragma pack(push, 4)
-int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
-int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+__IO int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
+__IO int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
+__IO int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
 uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
 #pragma pack(pop)
 /*****************************************************************************/
@@ -23,8 +23,10 @@ uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
 /******************************************************************************/
 void sPlcIsrEnable(void){
+	__set_PRIMASK(0);
 }
 void sPlcIsrDisable(void){
+	__set_PRIMASK(1);
 }
 void sPlcErrorHandler(uint16_t errCode){
 	while(1);
@@ -49,9 +51,10 @@ void sPlcAssertRegisterAddress(uint16_t adr){//检查寄存器地址
 	adr = ~adr;
 #endif
 }
-void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
+void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM	
 	uint32_t crc32_mr, crc32_dm;
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
+	sPlcIsrDisable();
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
 	//从EPROM中恢复MR NVRAM
 	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//从EPROM中恢复MR
@@ -72,9 +75,11 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	else{
 		printf("%s,%d,%s:load NVRAM done...\n",__FILE__, __LINE__, __func__);
 	}
+	sPlcIsrEnable();	
 }
 void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	uint32_t crc32_mr, crc32_dm;
+	sPlcIsrDisable();	
 	//MR NVRAM写入EPROM
 	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//将NVRAM中MR储存入EPROM																				
 	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
@@ -84,6 +89,7 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
+	sPlcIsrEnable();
 }
 void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 	uint8_t *sp0, *sp1;
@@ -143,10 +149,8 @@ void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 	uint32_t crc32_eprom_fd;
 	sPlcIsrDisable();
 	epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
-	
-	crc32_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
+	crc32_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
 	epromReadDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);
-	
 	sPlcIsrEnable();//恢复中断
 	printf("%s,%d,%s:FDRAM EPROM CRC:0x%08X,FDRAM CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_fd, crc32_fd);
 	if(crc32_eprom_fd != crc32_fd){
@@ -157,24 +161,18 @@ void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 	}
 }
 void sPlcFdramSave(void){//强制将FDRAM存入EPROM
-	HAL_StatusTypeDef ref;
 	uint32_t crc32_fd;
 	sPlcIsrDisable();
-	ref = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
-	crc32_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + FD_START), (CONFIG_FDRAM_SIZE / 2));
+	epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)(FDRAM0), (CONFIG_FDRAM_SIZE * 2));//
+	crc32_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_fd);//在的指定地址开始写入32位数
-	if(ref != HAL_OK){
-		printf("%s,%d,%s:save FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
-	}
-	else{
-		printf("%s,%d,%s:save FD NVRAM done...\n",__FILE__, __LINE__, __func__);
-	}
+	printf("%s,%d,%s:save FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	sPlcIsrEnable();//恢复中断
 }
 void sPlcFdramClear(void){//清除FDRAM数据
 	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_FDRAM);//clear mr dm
-	memset(FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
+	memset((uint8_t*)FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	sPlcIsrEnable();//恢复中断
 }

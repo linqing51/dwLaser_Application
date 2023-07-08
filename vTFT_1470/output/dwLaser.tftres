@@ -18,46 +18,46 @@
         <page name="Screen_Null" id="15" />
     </pages>
     <images>
-        <image id="0" url="d:\github\dwlaser_application\vtft_1470\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />
-        <image id="1" url="d:\github\dwlaser_application\vtft_1470\Images\1.0_GDDC_PAGE_POWERUP_TRI.jpg" effect_width="1024" effect_height="600" />
-        <image id="2" url="d:\github\dwlaser_application\vtft_1470\Images\1.2_GDDC_PAGE_POWERUP_1940.jpg" effect_width="1024" effect_height="600" />
-        <image id="3" url="d:\github\dwlaser_application\vtft_1470\Images\2_GDDC_PAGE_PASSCODE_0.jpg" effect_width="1024" effect_height="600" />
-        <image id="4" url="d:\github\dwlaser_application\vtft_1470\Images\3_GDDC_PAGE_PASSCODE_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="5" url="d:\github\dwlaser_application\vtft_1470\Images\4_GDDC_PAGE_NEW_PASSCODE_0 .jpg" effect_width="1024" effect_height="600" />
-        <image id="6" url="d:\github\dwlaser_application\vtft_1470\Images\5_GDDC_PAGE_NEW_PASSCODE_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="7" url="d:\github\dwlaser_application\vtft_1470\Images\6_GDDC_PAGE_STANDBY_0.jpg" effect_width="1024" effect_height="600" />
-        <image id="8" url="d:\github\dwlaser_application\vtft_1470\Images\28_STANDBY_MP_KEY_ICON.png" effect_width="224" effect_height="149" />
-        <image id="9" url="d:\github\dwlaser_application\vtft_1470\Images\7_GDDC_PAGE_STANDBY_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="10" url="d:\github\dwlaser_application\vtft_1470\Images\PROGRESS_SET_POWER_BAR.jpg" effect_width="694" effect_height="20" />
-        <image id="11" url="d:\github\dwlaser_application\vtft_1470\Images\30_STANDBY_PROGRESS_AIM.png" effect_width="329" effect_height="14" />
-        <image id="12" url="d:\github\dwlaser_application\vtft_1470\Images\31_STNADBY_SELECT_KEY_980_0.png" effect_width="165" effect_height="38" />
-        <image id="13" url="d:\github\dwlaser_application\vtft_1470\Images\31_STNADBY_SELECT_KEY_980_1.png" effect_width="165" effect_height="38" />
-        <image id="14" url="d:\github\dwlaser_application\vtft_1470\Images\12_GDDC_PAGE_READY_0.png" effect_width="1024" effect_height="600" />
-        <image id="15" url="d:\github\dwlaser_application\vtft_1470\Images\13_GDDC_PAGE_READY_1.png" effect_width="1024" effect_height="600" />
-        <image id="16" url="d:\github\dwlaser_application\vtft_1470\Images\18_GDDC_PAGE_OPTION_0.jpg" effect_width="1024" effect_height="600" />
-        <image id="17" url="d:\github\dwlaser_application\vtft_1470\Images\OPTION_BAR.jpg" effect_width="836" effect_height="30" />
-        <image id="18" url="d:\github\dwlaser_application\vtft_1470\Images\19_GDDC_PAGE_OPTION_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="19" url="d:\github\dwlaser_application\vtft_1470\Images\EngineerModel_0.jpg" effect_width="64" effect_height="64" />
-        <image id="20" url="d:\github\dwlaser_application\vtft_1470\Images\EngineerModel_1.jpg" effect_width="64" effect_height="64" />
-        <image id="21" url="d:\github\dwlaser_application\vtft_1470\Images\14_GDDC_PACE_CLASSIFY_0.jpg" effect_width="1024" effect_height="600" />
-        <image id="22" url="d:\github\dwlaser_application\vtft_1470\Images\15_GDDC_PACE_CLASSIFY_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="23" url="d:\github\dwlaser_application\vtft_1470\Images\参数黑色版按下状态.png" effect_width="1024" effect_height="600" />
-        <image id="24" url="d:\github\dwlaser_application\vtft_1470\Images\21_GDDC_PAGE_SCHEME_1.jpg" effect_width="1024" effect_height="600" />
-        <image id="25" url="d:\github\dwlaser_application\vtft_1470\Images\20.3_LEFT_KEY_0.png" effect_width="77" effect_height="68" />
-        <image id="26" url="d:\github\dwlaser_application\vtft_1470\Images\20.4_LEFT_KEY_1.png" effect_width="77" effect_height="68" />
-        <image id="27" url="d:\github\dwlaser_application\vtft_1470\Images\20.2_LEFT_KEY_0.png" effect_width="77" effect_height="68" />
-        <image id="28" url="d:\github\dwlaser_application\vtft_1470\Images\20.1_LEFT_KEY_1.png" effect_width="77" effect_height="68" />
-        <image id="29" url="d:\github\dwlaser_application\vtft_1470\Images\22_GDDC_PAGE_INFORMATION_0.JPG" effect_width="1024" effect_height="600" />
-        <image id="30" url="d:\github\dwlaser_application\vtft_1470\Images\23_GDDC_PAGE_INFORMATION_1.JPG" effect_width="1024" effect_height="600" />
-        <image id="31" url="d:\github\dwlaser_application\vtft_1470\Images\24_GDDC_PAGE_DIAGNOSIS_0.jpg" effect_width="1024" effect_height="600" />
-        <image id="32" url="d:\github\dwlaser_application\vtft_1470\Images\Diagnosis_button_0.jpg" effect_width="120" effect_height="40" />
-        <image id="33" url="d:\github\dwlaser_application\vtft_1470\Images\Diagnosis_button_1.jpg" effect_width="120" effect_height="40" />
-        <image id="34" url="d:\github\dwlaser_application\vtft_1470\Images\full_800_600_up.jpg" effect_width="1024" effect_height="600" />
-        <image id="35" url="d:\github\dwlaser_application\vtft_1470\Images\full_800_600_down.jpg" effect_width="1024" effect_height="600" />
-        <image id="36" url="d:\github\dwlaser_application\vtft_1470\Images\26_GDDC_PAGE_RESTORE_0.jpg" effect_width="431" effect_height="200" />
-        <image id="37" url="d:\github\dwlaser_application\vtft_1470\Images\Cancel.png" effect_width="205" effect_height="62" />
-        <image id="38" url="d:\github\dwlaser_application\vtft_1470\Images\Yes.png" effect_width="212" effect_height="62" />
-        <image id="39" url="d:\github\dwlaser_application\vtft_1470\Images\27_GDDC_PAGE_WEAR_SAFETY.jpg" effect_width="330" effect_height="168" />
+        <image id="0" url="e:\github\dwlaser_application\vtft_1470\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />
+        <image id="1" url="e:\github\dwlaser_application\vtft_1470\Images\1.0_GDDC_PAGE_POWERUP_TRI.jpg" effect_width="1024" effect_height="600" />
+        <image id="2" url="e:\github\dwlaser_application\vtft_1470\Images\1.2_GDDC_PAGE_POWERUP_1940.jpg" effect_width="1024" effect_height="600" />
+        <image id="3" url="e:\github\dwlaser_application\vtft_1470\Images\2_GDDC_PAGE_PASSCODE_0.jpg" effect_width="1024" effect_height="600" />
+        <image id="4" url="e:\github\dwlaser_application\vtft_1470\Images\3_GDDC_PAGE_PASSCODE_1.jpg" effect_width="1024" effect_height="600" />
+        <image id="5" url="e:\github\dwlaser_application\vtft_1470\Images\4_GDDC_PAGE_NEW_PASSCODE_0 .jpg" effect_width="1024" effect_height="600" />
+        <image id="6" url="e:\github\dwlaser_application\vtft_1470\Images\5_GDDC_PAGE_NEW_PASSCODE_1.jpg" effect_width="1024" effect_height="600" />
+        <image id="7" url="e:\github\dwlaser_application\vtft_1470\Images\6_GDDC_PAGE_STANDBY_0.jpg" effect_width="1024" effect_height="600" />
+        <image id="8" url="e:\github\dwlaser_application\vtft_1470\Images\28_STANDBY_MP_KEY_ICON.png" effect_width="224" effect_height="149" />
+        <image id="9" url="e:\github\dwlaser_application\vtft_1470\Images\7_GDDC_PAGE_STANDBY_1.jpg" effect_width="1024" effect_height="600" />
+        <image id="10" url="e:\github\dwlaser_application\vtft_1470\Images\PROGRESS_SET_POWER_BAR.jpg" effect_width="694" effect_height="20" />
+        <image id="11" url="e:\github\dwlaser_application\vtft_1470\Images\30_STANDBY_PROGRESS_AIM.png" effect_width="329" effect_height="14" />
+        <image id="12" url="e:\github\dwlaser_application\vtft_1470\Images\31_STNADBY_SELECT_KEY_980_0.png" effect_width="165" effect_height="38" />
+        <image id="13" url="e:\github\dwlaser_application\vtft_1470\Images\31_STNADBY_SELECT_KEY_980_1.png" effect_width="165" effect_height="38" />
+        <image id="14" url="e:\github\dwlaser_application\vtft_1470\Images\12_GDDC_PAGE_READY_0.png" effect_width="1024" effect_height="600" />
+        <image id="15" url="e:\github\dwlaser_application\vtft_1470\Images\13_GDDC_PAGE_READY_1.png" effect_width="1024" effect_height="600" />
+        <image id="16" url="e:\github\dwlaser_application\vtft_1470\Images\18_GDDC_PAGE_OPTION_0.jpg" effect_width="1024" effect_height="600" />
+        <image id="17" url="e:\github\dwlaser_application\vtft_1470\Images\OPTION_BAR.jpg" effect_width="836" effect_height="30" />
+        <image id="18" url="e:\github\dwlaser_application\vtft_1470\Images\19_GDDC_PAGE_OPTION_1.jpg" effect_width="1024" effect_height="600" />
+        <image id="19" url="e:\github\dwlaser_application\vtft_1470\Images\EngineerModel_0.jpg" effect_width="64" effect_height="64" />
+        <image id="20" url="e:\github\dwlaser_application\vtft_1470\Images\EngineerModel_1.jpg" effect_width="64" effect_height="64" />
+        <image id="21" url="e:\github\dwlaser_application\vtft_1470\Images\14_GDDC_PACE_CLASSIFY_0.jpg" effect_width="1024" effect_height="600" />
+        <image id="22" url="e:\github\dwlaser_application\vtft_1470\Images\15_GDDC_PACE_CLASSIFY_1.jpg" effect_width="1024" effect_height="600" />
+        <image id="23" url="e:\github\dwlaser_application\vtft_1470\Images\参数黑色版按下状态.png" effect_width="1024" effect_height="600" />
+        <image id="24" url="e:\github\dwlaser_application\vtft_1470\Images\21_GDDC_PAGE_SCHEME_1.jpg" effect_width="1024" effect_height="600" />
+        <image id="25" url="e:\github\dwlaser_application\vtft_1470\Images\20.3_LEFT_KEY_0.png" effect_width="77" effect_height="68" />
+        <image id="26" url="e:\github\dwlaser_application\vtft_1470\Images\20.4_LEFT_KEY_1.png" effect_width="77" effect_height="68" />
+        <image id="27" url="e:\github\dwlaser_application\vtft_1470\Images\20.2_LEFT_KEY_0.png" effect_width="77" effect_height="68" />
+        <image id="28" url="e:\github\dwlaser_application\vtft_1470\Images\20.1_LEFT_KEY_1.png" effect_width="77" effect_height="68" />
+        <image id="29" url="e:\github\dwlaser_application\vtft_1470\Images\22_GDDC_PAGE_INFORMATION_0.JPG" effect_width="1024" effect_height="600" />
+        <image id="30" url="e:\github\dwlaser_application\vtft_1470\Images\23_GDDC_PAGE_INFORMATION_1.JPG" effect_width="1024" effect_height="600" />
+        <image id="31" url="e:\github\dwlaser_application\vtft_1470\Images\24_GDDC_PAGE_DIAGNOSIS_0.jpg" effect_width="1024" effect_height="600" />
+        <image id="32" url="e:\github\dwlaser_application\vtft_1470\Images\Diagnosis_button_0.jpg" effect_width="120" effect_height="40" />
+        <image id="33" url="e:\github\dwlaser_application\vtft_1470\Images\Diagnosis_button_1.jpg" effect_width="120" effect_height="40" />
+        <image id="34" url="e:\github\dwlaser_application\vtft_1470\Images\full_800_600_up.jpg" effect_width="1024" effect_height="600" />
+        <image id="35" url="e:\github\dwlaser_application\vtft_1470\Images\full_800_600_down.jpg" effect_width="1024" effect_height="600" />
+        <image id="36" url="e:\github\dwlaser_application\vtft_1470\Images\26_GDDC_PAGE_RESTORE_0.jpg" effect_width="431" effect_height="200" />
+        <image id="37" url="e:\github\dwlaser_application\vtft_1470\Images\Cancel.png" effect_width="205" effect_height="62" />
+        <image id="38" url="e:\github\dwlaser_application\vtft_1470\Images\Yes.png" effect_width="212" effect_height="62" />
+        <image id="39" url="e:\github\dwlaser_application\vtft_1470\Images\27_GDDC_PAGE_WEAR_SAFETY.jpg" effect_width="330" effect_height="168" />
     </images>
     <waves />
 </Resource>

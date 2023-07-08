@@ -243,12 +243,12 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 void schemeInit(uint8_t reDef){//治疗方案初始化
 	int16_t i;
 #if defined(MODEL_PVGLS_7W_1940)
-	for (i = 10;i < 32; i ++){
-		if(reDef == 1){//自定义方案恢复默认值
+	if(reDef == 1){//自定义方案恢复默认值
+		for (i = 10;i < 32; i ++){	
 			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i - 9)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1940;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
-			FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = 10;
+			FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = i+1;
 			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 0;
 			FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 0;
 			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 0;
@@ -508,6 +508,21 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 #endif
 /***************************************************************************/
 #if defined(MODEL_PVGLS_TRI) || defined(MODEL_PVGLS_TRI_COMBINE)
+	if(reDef == 1){//自定义方案恢复默认值
+		memset((uint8_t*)FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));
+		memset((uint8_t*)FDRAM1, 0x0, (CONFIG_FDRAM_SIZE * 2));
+		for (i = 0;i < 32; i ++){	
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i + 1)); 
+			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
+			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
+			FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = 0;
+			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = i+1;
+			FDRAM0[FD_LASER_POWER_980 + (i * 64)] = 0;
+			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 0;
+			FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
+			FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;			
+		}
+	}
 	//Phlebology
 	//1470nm, CW 8w 80J/cm
 	sPhlebology[0].name = "EVLA Thigh";
@@ -1300,14 +1315,14 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	sDentistry[12].poswidth = 1000;
 	sDentistry[12].negwidth = 1000;	
 	//
-	sDentistry[15].name = "Hemostasis and Coagulation";
-	sDentistry[15].channel = LASER_CHANNEL_980;
-	sDentistry[15].pulse_mode = LASER_MODE_CW; 
-	sDentistry[15].power_1470 = 1;
-	sDentistry[15].power_980 = 12;
-	sDentistry[15].power_635 = 1;
-	sDentistry[15].poswidth = 1000;
-	sDentistry[15].negwidth = 1000;
+	sDentistry[13].name = "Hemostasis and Coagulation";
+	sDentistry[13].channel = LASER_CHANNEL_980;
+	sDentistry[13].pulse_mode = LASER_MODE_CW; 
+	sDentistry[13].power_1470 = 1;
+	sDentistry[13].power_980 = 12;
+	sDentistry[13].power_635 = 1;
+	sDentistry[13].poswidth = 1000;
+	sDentistry[13].negwidth = 1000;
 	//
 	sDentistry[14].name = "Gingival Troughing";
 	sDentistry[14].channel = LASER_CHANNEL_980;

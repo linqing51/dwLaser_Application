@@ -102,7 +102,7 @@
 #define CONFIG_EPROM_DM_END														(CONFIG_EPROM_DM_START + DM_END - DM_START)
 
 #define CONFIG_EPROM_FD_SCHEME_SIZE										((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//单个方案占用的EPROM空间
-#define CONFIG_EPROM_FD_START													(CONFIG_EPROM_DM_END + 1)
+#define CONFIG_EPROM_FD_START													(0x500)
 #define CONFIG_EPROM_FD_END														(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
 #define CONFIG_EPROM_MR_CRC														(7524L)//4B MR NVRAM CRC32 硬件计算
@@ -812,8 +812,8 @@
 #define R_RENAME_TEXTDISPLAY_READ_DONE							(R_START * 16 + 172)
 /*****************************************************************************/
 /*****************************************************************************/
-#define MR_FOOSWITCH_HAND_SWITCH										(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
-#define MR_BEEP_TONE																(MR_START * 16 + 11)//蜂鸣器模式 0:SYNC 1:BEEP
+#define MR_FOOSWITCH_HAND_SWITCH										(MR_START * 16 +  0)//脚踏HandSwitch 脉冲控制
+#define MR_BEEP_TONE																(MR_START * 16 +  1)//蜂鸣器模式 0:SYNC 1:BEEP
 /*****************************************************************************/
 #define T100MS_HMI_POWERUP_DELAY										0//HMI启动复位延时
 #define T100MS_ENTER_PASSCODE_DELAY									1

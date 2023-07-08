@@ -416,25 +416,17 @@ void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//块复制
 	}
 }
 void NVFSAVE(void){//NVRAM全部写入EPROM
-	sPlcIsrDisable();
 	sPlcNvramSave();
-	sPlcIsrEnable();
 }
 void NVSAVE(void){//储存NVRAM更新数据到EPROM
-	sPlcIsrDisable();
 	sPlcNvramUpdate();
-	sPlcIsrEnable();
 }
 void NVLOAD(void){
-	sPlcIsrDisable();
 	sPlcNvramLoad();
-	sPlcIsrEnable();	
 }
 
 void FDSAV(void){//FDRAM->EPROM
-	sPlcIsrDisable();
 	sPlcFdramSave();
-	sPlcIsrEnable();
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	uint32_t crc32_fd;
