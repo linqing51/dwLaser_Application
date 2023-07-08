@@ -14,6 +14,7 @@ typedef struct{
 	int8_t greenLedDc;//绿灯亮度
 	int8_t blueLedDc;//蓝灯亮度
 	int8_t aimGain;//指示光增益
+	int16_t fiberDetect;//光纤探测阈值
 	char normalOpenInterLock;
 }deviceConfig_t;
 typedef struct{

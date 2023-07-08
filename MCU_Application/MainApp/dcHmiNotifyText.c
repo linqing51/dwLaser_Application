@@ -213,6 +213,16 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.aimGain = sValue;	
 					break;
 				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIBER_DETECT:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 4095){
+						sValue = 4095;
+					}
+					if(sValue < 1){
+						sValue = 1;
+					}
+					deviceConfig.fiberDetect = sValue;
+				}
 				default:break;
 			}
 			break;
