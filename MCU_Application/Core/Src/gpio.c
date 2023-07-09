@@ -89,9 +89,9 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
-                           PBPin */
-  GPIO_InitStruct.Pin = SYSID0_Pin|SYSID1_Pin|ESTOP_NC_Pin|FS_NO_Pin
-                          |FS_NC_Pin;
+                           PBPin PBPin */
+  GPIO_InitStruct.Pin = SYSID0_Pin|SYSID1_Pin|LAS_FB_Pin|ESTOP_NC_Pin
+                          |FS_NO_Pin|FS_NC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -102,12 +102,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = LAS_FB_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(LAS_FB_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = FAN_ENA_Pin;
