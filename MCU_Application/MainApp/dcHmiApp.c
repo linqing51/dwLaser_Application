@@ -1795,70 +1795,70 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参数
 		case LASER_CHANNEL_1470:{
 			sprintf(dispBuf1, "1470nm: %3.1fW", ((float)power_1470 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:1470nm");
+				sprintf(dispBuf2, "CW: 1470nm");
 			}
 			if(mode == LASER_MODE_MP){
-				sprintf(dispBuf2, "PULSE:1470nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "PULSE: 1470nm; On: %dmS; Off: %dmS", posWidth, negWidth);
 			}
 			break;
 		}
 		case LASER_CHANNEL_980:{
 			sprintf(dispBuf1, "980nm: %3.1fW", ((float)power_980 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:980nm");
+				sprintf(dispBuf2, "CW: 980nm");
 			}
 			if(mode == LASER_MODE_MP){
-				sprintf(dispBuf2, "PULSE:980nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "PULSE: 980nm; On: %dmS; Off: %dmS", posWidth, negWidth);
 			}						
 			break;
 		}
 		case LASER_CHANNEL_635:{
 			sprintf(dispBuf1, "635nm: %3.1fW", ((float)power_635 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:635nm");
+				sprintf(dispBuf2, "CW: 635nm");
 			}
 			if(mode == LASER_MODE_MP){
-				sprintf(dispBuf2, "PULSE:635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "PULSE: 635nm; On: %dmS; Off: %dmS", posWidth, negWidth);
 			}						
 			break;
 		}
 		case LASER_CHANNEL_1470_980:{
-			sprintf(dispBuf1, "1470nm:%3.1fW,980nm:%3.1fW", ((float)power_1470 / 10.0F), ((float)power_980 / 10.0F));
+			sprintf(dispBuf1, "1470nm: %3.1fW, 980nm: %3.1fW", ((float)power_1470 / 10.0F), ((float)power_980 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:1470nm-980nm");
+				sprintf(dispBuf2, "CW: 1470nm-980nm");
 			}
 			if(mode == LASER_MODE_MP){	
-				sprintf(dispBuf2, "PULSE:1470nm-980nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "PULSE: 1470nm-980nm; On: %dmS; Off: %dmS", posWidth, negWidth);
 			}
 			break;
 		}
 		case LASER_CHANNEL_980_635:{
-			sprintf(dispBuf1, "980nm:%3.1fW,635nm:%3.1fW", ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
+			sprintf(dispBuf1, "980nm: %3.1fW, 635nm: %3.1fW", ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:980nm-635nm");
+				sprintf(dispBuf2, "CW: 980nm-635nm");
 			}
 			if(mode == LASER_MODE_MP){	
-				sprintf(dispBuf2, "PULSE:980nm-635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "PULSE: 980nm-635nm; On: %dmS;Off: %dmS", posWidth, negWidth);
 			}		
 			break;
 		}
 		case LASER_CHANNEL_1470_980_635:{
-			sprintf(dispBuf1, "1470nm:%3.1fW,980nm:%3.1fW,635nm:%3.1fW", ((float)power_1470 / 10.0F) , ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
+			sprintf(dispBuf1, "1470nm: %3.1fW, 980nm: %3.1fW, 635nm: %3.1fW", ((float)power_1470 / 10.0F) , ((float)power_980 / 10.0F), ((float)power_635 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:1470nm-980nm-635nm");
+				sprintf(dispBuf2, "CW: 1470nm-980nm-635nm");
 			}
 			if(mode == LASER_MODE_MP){	
-				sprintf(dispBuf2, "PULSE:1470-980-635nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "PULSE: 1470-980-635nm; On: %dmS; Off: %dmS", posWidth, negWidth);
 			}
 			break;
 		}
 		case LASER_CHANNEL_1940:{
 			sprintf(dispBuf1, "1940nm: %3.1fW", ((float)power_1940 / 10.0F));
 			if(mode == LASER_MODE_CW){
-				sprintf(dispBuf2, "CW:1940nm");
+				sprintf(dispBuf2, "CW: 1940nm");
 			}
 			if(mode == LASER_MODE_MP){
-				sprintf(dispBuf2, "PULSE:1940nm;On:%dmS;Off:%dmS", posWidth, negWidth);
+				sprintf(dispBuf2, "PULSE: 1940nm; On: %dmS; Off: %dmS", posWidth, negWidth);
 			}			
 			break;
 		}

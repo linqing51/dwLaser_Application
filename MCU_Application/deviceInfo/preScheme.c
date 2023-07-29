@@ -245,7 +245,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 #if defined(MODEL_PVGLS_7W_1940)
 	if(reDef == 1){//自定义方案恢复默认值
 		for (i = 10;i < 32; i ++){	
-			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i - 9)); 
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i - 9)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1940;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 			FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = i+1;
@@ -512,7 +512,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 		memset((uint8_t*)FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));
 		memset((uint8_t*)FDRAM1, 0x0, (CONFIG_FDRAM_SIZE * 2));
 		for (i = 0;i < 32; i ++){	
-			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "custom %d", (i + 1)); 
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i + 1)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 			FDRAM0[FD_LASER_POWER_1940 + (i * 64)] = 0;
@@ -1483,7 +1483,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 
 #if defined(MODEL_PVGLS_7W_1940)
 	//S0
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (0 * 64)]), "EVLA Thigh CW i"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (0 * 64)]), "EVLA Thigh CW I"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (0 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (0 * 64)] = LASER_MODE_CW;
 	FDRAM0[FD_LASER_POWER_1470 + (0 * 64)] = 0;
@@ -1493,7 +1493,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (0 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (0 * 64)] = 1000;	
 	//S1
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (1 * 64)]), "EVLA Thigh Pulse i"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (1 * 64)]), "EVLA Thigh Pulse I"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (1 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (1 * 64)] = LASER_MODE_MP;
 	FDRAM0[FD_LASER_POWER_1470 + (1 * 64)] = 0;
@@ -1503,7 +1503,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (1 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (1 * 64)] = 1000;	
 	//S2
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (2 * 64)]), "EVLA Thigh CW ii"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (2 * 64)]), "EVLA Thigh CW II"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (2 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (2 * 64)] = LASER_MODE_CW;
 	FDRAM0[FD_LASER_POWER_1470 + (2 * 64)] = 0;
@@ -1513,7 +1513,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (2 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (2 * 64)] = 1000;
 	//S3
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (3 * 64)]), "EVLA Thigh Pulse ii"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (3 * 64)]), "EVLA Thigh Pulse II"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (3 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (3 * 64)] = LASER_MODE_MP;
 	FDRAM0[FD_LASER_POWER_1470 + (3 * 64)] = 0;
@@ -1523,7 +1523,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (3 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (3 * 64)] = 1000;
 	//S4
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (4 * 64)]), "EVLA Thigh CW iii"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (4 * 64)]), "EVLA Thigh CW III"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (4 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (4 * 64)] = LASER_MODE_CW;
 	FDRAM0[FD_LASER_POWER_1470 + (4 * 64)] = 0;
@@ -1533,7 +1533,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (4 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (4 * 64)] = 1000;
 	//S5
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (5 * 64)]), "EVLA Thigh Pulse iii"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (5 * 64)]), "EVLA Thigh Pulse III"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (5 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (5 * 64)] = LASER_MODE_MP;
 	FDRAM0[FD_LASER_POWER_1470 + (5 * 64)] = 0;
@@ -1543,7 +1543,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (5 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (5 * 64)] = 1000;
 	//S6
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (6 * 64)]), "EVLA calf CW i"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (6 * 64)]), "EVLA Calf CW I"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (6 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (6 * 64)] = LASER_MODE_CW;
 	FDRAM0[FD_LASER_POWER_1470 + (6 * 64)] = 0;
@@ -1553,7 +1553,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (6 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (6 * 64)] = 1000;
 	//S7
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (7 * 64)]), "EVLA calf Pulse i"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (7 * 64)]), "EVLA Calf Pulse I"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (7 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (7 * 64)] = LASER_MODE_MP;
 	FDRAM0[FD_LASER_POWER_1470 + (7 * 64)] = 0;
@@ -1563,7 +1563,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (7 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (7 * 64)] = 1000;
 	//S8
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (8 * 64)]), "EVLA calf CW ii"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (8 * 64)]), "EVLA Calf CW II"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (8 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (8 * 64)] = LASER_MODE_CW;
 	FDRAM0[FD_LASER_POWER_1470 + (8 * 64)] = 0;
@@ -1573,7 +1573,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POSWIDTH + (8 * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (8 * 64)] = 1000;
 	//S9
-	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (9* 64)]), "EVLA calf Pulse ii"); 
+	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (9* 64)]), "EVLA Calf Pulse II"); 
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (9 * 64)] = LASER_CHANNEL_1940;
 	FDRAM0[FD_LASER_PULSE_MODE + (9 * 64)] = LASER_MODE_MP;
 	FDRAM0[FD_LASER_POWER_1470 + (9 * 64)] = 0;
