@@ -86,6 +86,12 @@ void sPlcInputRefresh(void){//ªÒ»° ‰»ÎIO
 #endif
 #if defined(MODEL_PVGLS_7W_1940)
 	temp = GET_M4_FBS;
+	if(temp){
+		temp = false;
+	}
+	else{
+		temp = true;
+	}
 #endif
 	if(temp == false){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
