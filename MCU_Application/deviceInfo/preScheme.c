@@ -241,10 +241,9 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 void schemeInit(uint8_t reDef){//治疗方案初始化
 	myScheme_t *p;
 	int16_t i;
-	for (i = 30;i < 32; i ++){
+	for (i = 0;i < 32; i ++){
 		if(reDef == 1){//自定义方案恢复默认值
-#if defined(MODEL_PVGLS_15W_1470)					
-			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i - 29));
+			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_1470;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 			FDRAM0[FD_LASER_POWER_1470 + (i * 64)] = 10;
@@ -252,7 +251,6 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 			FDRAM0[FD_LASER_POWER_635 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
 			FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;	
-#endif
 		}
 		else{
 			if(	(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_1470) 			&&
@@ -273,283 +271,6 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 			}
 		}
 	}
-#ifdef MODEL_PVGLS_15W_1470
-		//S0
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (0 * 64)]), "EVLA Thigh"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (0 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (0 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (0 * 64)] = 80;
-		FDRAM0[FD_LASER_POWER_980 + (0 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (0 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (0 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (0 * 64)] = 1000;	
-		//S1
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (1 * 64)]), "EVLA calf"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (1 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (1 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (1 * 64)] = 60;
-		FDRAM0[FD_LASER_POWER_980 + (1 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (1 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (1 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (1 * 64)] = 1000;	
-		//S2
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (2 * 64)]), "EVLA Small Vessel"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (2 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (2 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (2 * 64)] = 30;
-		FDRAM0[FD_LASER_POWER_980 + (2 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (2 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (2 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (2 * 64)] = 1000;
-		//S3
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (3 * 64)]), "Hemorrhoids Grade 2, 250J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (3 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (3 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (3 * 64)] = 60;
-		FDRAM0[FD_LASER_POWER_980 + (3 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (3 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (3 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (3 * 64)] = 1000;
-		//S4
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (4 * 64)]), "Hemorrhoids Grade 3, 250J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (4 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (4 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (4 * 64)] = 70;
-		FDRAM0[FD_LASER_POWER_980 + (4 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (4 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (4 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (4 * 64)] = 1000;
-		//S5
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (5 * 64)]), "Hemorrhoids Grade 4, 250J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (5 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (5 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (5 * 64)] = 80;
-		FDRAM0[FD_LASER_POWER_980 + (5 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (5 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (5 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (5 * 64)] = 1000;
-		//S6
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (6 * 64)]), "Fistula"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (6 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (6 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (6 * 64)] = 120;
-		FDRAM0[FD_LASER_POWER_980 + (6 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (6 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (6 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (6 * 64)] = 1000;
-		//S7
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (7 * 64)]), "Pilonidal Sinus"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (7 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (7 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (7 * 64)] = 120;
-		FDRAM0[FD_LASER_POWER_980 + (7 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (7 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (7 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (7 * 64)] = 1000;
-		//S8
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (8 * 64)]), "Fissure Ablation"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (8 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (8 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (8 * 64)] = 70;
-		FDRAM0[FD_LASER_POWER_980 + (8 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (8 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (8 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (8 * 64)] = 1000;
-		//S9
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (9* 64)]), "Laser Vaginal Tightening 1st 600J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (9 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (9 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (9 * 64)] = 60;
-		FDRAM0[FD_LASER_POWER_980 + (9 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (9 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (9 * 64)] = 500;
-		FDRAM0[FD_LASER_NEGWIDTH + (9 * 64)] = 500;
-		//S10
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (10 * 64)]), "Laser Vaginal Tightening 2nd 600J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (10 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (10 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (10 * 64)] = 70;
-		FDRAM0[FD_LASER_POWER_980 + (10 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (10 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (10 * 64)] = 500;
-		FDRAM0[FD_LASER_NEGWIDTH + (10 * 64)] = 500;
-		//S11
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (11 * 64)]), "Laser Vaginal Tightening 3rd 600J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (11 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (11 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (11 * 64)] = 80;
-		FDRAM0[FD_LASER_POWER_980 + (11 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (11 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (11 * 64)] = 500;
-		FDRAM0[FD_LASER_NEGWIDTH + (11 * 64)] = 500;
-		//S12
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (12 * 64)]), "Laser Vaginal Tightening 4th 600J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (12 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (12 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (12 * 64)] = 80;
-		FDRAM0[FD_LASER_POWER_980 + (12 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (12 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (12 * 64)] = 500;
-		FDRAM0[FD_LASER_NEGWIDTH + (12 * 64)] = 500;
-		//S13
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (13 * 64)]), "Laser Vaginal Rejuvenation 360J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (13 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (13 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (13 * 64)] = 60;
-		FDRAM0[FD_LASER_POWER_980 + (13 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (13 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (13 * 64)] = 15000;
-		FDRAM0[FD_LASER_NEGWIDTH + (13 * 64)] = 1000;
-		//S14
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (14 * 64)]), "Laser Vaginal Rejuvenation+ 600J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (14 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (14 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (14 * 64)] = 100;
-		FDRAM0[FD_LASER_POWER_980 + (14 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (14 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (14 * 64)] = 15000;
-		FDRAM0[FD_LASER_NEGWIDTH + (14 * 64)] = 1000;	
-		//S15
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (15 * 64)]), "Stress Incontinence, 75J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (15 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (15 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (15 * 64)] = 50;
-		FDRAM0[FD_LASER_POWER_980 + (15 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (15 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (15 * 64)] = 15000;
-		FDRAM0[FD_LASER_NEGWIDTH + (15 * 64)] = 1000;
-		//S16
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (16 * 64)]), "Infection control, 50J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (16 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (16 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (16 * 64)] = 50;
-		FDRAM0[FD_LASER_POWER_980 + (16 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (16 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (16 * 64)] = 10000;
-		FDRAM0[FD_LASER_NEGWIDTH + (16 * 64)] = 1000;
-		//S17
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (17 * 64)]), "Treatment after Menopause, 480J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (17 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (17 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (17 * 64)] = 80;
-		FDRAM0[FD_LASER_POWER_980 + (17 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (17 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (17 * 64)] = 15000;
-		FDRAM0[FD_LASER_NEGWIDTH + (17 * 64)] = 1000;
-		//S18
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (18 * 64)]), "PLDD L2-L3, L3-L4, L5-S1 800-1500J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (18 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (18 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (18 * 64)] = 70;
-		FDRAM0[FD_LASER_POWER_980 + (18 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (18 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (18 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (18 * 64)] = 5000;
-		//S19
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (19 * 64)]), "PLDD L4-L5 Total 800-1800J"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (19 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (19 * 64)] = LASER_MODE_MP;
-		FDRAM0[FD_LASER_POWER_1470 + (19 * 64)] = 70;
-		FDRAM0[FD_LASER_POWER_980 + (19 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (19 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (19 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (19 * 64)] = 5000;
-		//S20
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (20 * 64)]), "Liposuction Under Eye"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (20 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (20 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (20 * 64)] = 30;
-		FDRAM0[FD_LASER_POWER_980 + (20 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (20 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (20 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (20 * 64)] = 1000;
-		//S21
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (21 * 64)]), "Liposuction Chin"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (21 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (21 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (21 * 64)] = 60;
-		FDRAM0[FD_LASER_POWER_980 + (21 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (21 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (21 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (21 * 64)] = 1000;
-		//S22
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (22 * 64)]), "Liposuction Arm"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (22 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (22 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (22 * 64)] = 80;
-		FDRAM0[FD_LASER_POWER_980 + (22 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (22 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (22 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (22 * 64)] = 1000;
-		//S23
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (23 * 64)]), "Liposuction Abdomen"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (23 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (23 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (23 * 64)] = 120;
-		FDRAM0[FD_LASER_POWER_980 + (23 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (23 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (23 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (23 * 64)] = 1000;
-		//S24
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (24 * 64)]), "Liposuction Buttock"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (24 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (24 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (24 * 64)] = 100;
-		FDRAM0[FD_LASER_POWER_980 + (24 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (24 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (24 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (24 * 64)] = 1000;
-		//S25
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (25 * 64)]), "Liposuction Thigh"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (25 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (25 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (25 * 64)] = 8;
-		FDRAM0[FD_LASER_POWER_980 + (25 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (25 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (25 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (25 * 64)] = 1000;	
-		//S26
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (26 * 64)]), "Gynecomastia"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (26 * 64)] = LASER_CHANNEL_1470;
-		FDRAM0[FD_LASER_PULSE_MODE + (26 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (26 * 64)] = 8;
-		FDRAM0[FD_LASER_POWER_980 + (26 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (26 * 64)] = 1;
-		FDRAM0[FD_LASER_POSWIDTH + (26 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (26 * 64)] = 1000;			
-		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
-		//S27
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (27 * 64)]), "Wound Healing"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (27 * 64)] = LASER_CHANNEL_635;
-		FDRAM0[FD_LASER_PULSE_MODE + (27 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (27 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_980 + (27 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (27 * 64)] = 5;
-		FDRAM0[FD_LASER_POSWIDTH + (27 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (27 * 64)] = 1000;			
-		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
-		//S28
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (28 * 64)]), "Low Laser Therapy"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (28 * 64)] = LASER_CHANNEL_635;
-		FDRAM0[FD_LASER_PULSE_MODE + (28 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (28 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_980 + (28 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (28 * 64)] = 5;
-		FDRAM0[FD_LASER_POSWIDTH + (28 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (28 * 64)] = 1000;			
-		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
-		//S29
-		sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (29 * 64)]), "Biostimulation"); 
-		FDRAM0[FD_LASER_CHANNEL_SELECT + (29 * 64)] = LASER_CHANNEL_635;
-		FDRAM0[FD_LASER_PULSE_MODE + (29 * 64)] = LASER_MODE_CW;
-		FDRAM0[FD_LASER_POWER_1470 + (29 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_980 + (29 * 64)] = 1;
-		FDRAM0[FD_LASER_POWER_635 + (29 * 64)] = 5;
-		FDRAM0[FD_LASER_POSWIDTH + (29 * 64)] = 1000;
-		FDRAM0[FD_LASER_NEGWIDTH + (29 * 64)] = 1000;			
-		NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;		
-		
-#endif
 /***************************************************************************/
 	//Phlebology
 	//1470nm, CW 8w 80J/cm
@@ -893,6 +614,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 	
 /*****************************************************************************/
+#ifdef MODEL_PVGLS_TRI
 	//1470nm, Pulse 7w 1s Ton, 5s Toff
 	p = &sNeurosurgery[0];
 	p->name = "PLDD L2-L3, L3-L4, L5-S1 800-1500J";
@@ -947,6 +669,43 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_635 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
+#endif
+
+#ifdef MODEL_PVGLS_15W_1470
+//1470nm, Pulse 7w 1s Ton, 5s Toff
+	p = &sNeurosurgery[0];
+	p->name = "PLDD L2-L3, L3-L4, L5-S1 800-1500J";
+	p->channel = LASER_CHANNEL_1470;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_1470 = 70;
+	p->power_980 = 1;
+	p->power_635 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 5000;
+
+	//1470nm, Pulse 7w 1s Ton, 5s Toff
+	p = &sNeurosurgery[1];
+	p->name = "PLDD L4-L5 Total 800-1800J";
+	p->channel = LASER_CHANNEL_1470;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_1470 = 70;
+	p->power_980 = 1;
+	p->power_635 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 5000;
+	
+	
+	//1470nm, Pulse 7w, 1s Ton, 5s Toff
+	p = &sNeurosurgery[2];
+	p->name = "Tumour 1470nm";
+	p->channel = LASER_CHANNEL_1470;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_1470 = 70;
+	p->power_980 = 1;
+	p->power_635 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 5000;	
+#endif
 /*****************************************************************************/
 	//ENT
 	//980nm 13w CW
@@ -1540,6 +1299,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 
 
 /*****************************************************************************/
+#ifdef MODEL_PVGLS_TRI
 	//Therapy
 	//980nm 8w pulse, 50ms on, 50ms off
 	p = &sTherapy[0];
@@ -1628,5 +1388,42 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->power_635 = 5;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
-	
+#endif
+#ifdef MODEL_PVGLS_15W_1470
+	//Therapy
+	//635nm CW
+	p = &sTherapy[0];
+	p->name = "Wound Healing";
+	p->channel = LASER_CHANNEL_635;
+	p->pulse_mode = LASER_MODE_CW; 
+	p->power_1470 = 1;
+	p->power_980 = 1;
+	p->power_635 = 5;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+
+	//635nm CW
+	p = &sTherapy[1];
+	p->name = "Low Laser Therapy";
+	p->channel = LASER_CHANNEL_635;
+	p->pulse_mode = LASER_MODE_CW; 
+	p->power_1470 = 1;
+	p->power_980 = 1;
+	p->power_635 = 5;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+
+	//635nm CW
+	p = &sTherapy[2];
+	p->name = "Biostimulation";
+	p->channel = LASER_CHANNEL_635;
+	p->pulse_mode = LASER_MODE_CW; 
+	p->power_1470 = 1;
+	p->power_980 = 1;
+	p->power_635 = 5;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+
+#endif
+
 }

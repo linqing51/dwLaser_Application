@@ -30,11 +30,22 @@
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												22
 #define CONFIG_ENT_SIZE																16
+#ifdef MODEL_PVGLS_TRI
 #define CONFIG_NEUROSURGERY_SIZE											5
+#endif
+#ifdef MODEL_PVGLS_15W_1470
+#define CONFIG_NEUROSURGERY_SIZE											3
+#endif
 #define CONFIG_DERMATOLOGY_SIZE												9
 #define CONFIG_LIPOSUCTION_SIZE												7
 #define CONFIG_DENTISRTY_SIZE													23
+#ifdef MODEL_PVGLS_TRI
 #define CONFIG_THERAPY_SIZE														8
+#endif
+#define CONFIG_THERAPY_SIZE														3
+#ifdef MODEL_PVGLS_15W_1470
+#endif
+
 #define CONFIG_CUSTIOM_SIZE														32
 /*****************************************************************************/
 #define CONFIG_MORSECODE_SPACE_TIME										3000
@@ -129,7 +140,7 @@
 #define CONFIG_NTC_B																	3477.0F
 #define CONFIG_NTC_R25																10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF																3300L//
-#define CONFIG_FIBER_PD_THRESHOLD											500//光纤插入时ADC阈值
+#define CONFIG_FIBER_PD_THRESHOLD											200//光纤插入时ADC阈值
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LASER_TEST									0
 /*****************************************************************************/

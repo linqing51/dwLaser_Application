@@ -767,6 +767,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 		}
 		case SCHEME_NEUROSURGERY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Neurosurgery");
+#ifdef MODEL_PVGLS_TRI
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -825,7 +826,59 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
-
+#endif
+#ifdef MODEL_PVGLS_15W_1470
+			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sNeurosurgery[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sNeurosurgery[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sNeurosurgery[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			//方案4-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, false);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+#endif
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
 			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
 				
@@ -1187,6 +1240,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 		}
 		case SCHMEM_THERAPY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Therapy");
+#ifdef MODEL_PVGLS_TRI
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1257,7 +1311,59 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
-
+#endif
+#ifdef MODEL_PVGLS_15W_1470
+			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sTherapy[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sTherapy[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sTherapy[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}	
+			//方案8-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, false);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+#endif
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
 			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
 				
@@ -1982,12 +2088,33 @@ void updateStandbyDisplay(void){//更新方案显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	float barValue;
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] +NVRAM0[EM_LASER_POWER_635];
+	//NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] +NVRAM0[EM_LASER_POWER_635];
 #ifdef MODEL_PVGLS_TRI	
+	switch(NVRAM0[EM_LASER_CHANNEL_SELECT]){
+		case LASER_CHANNEL_1470:{
+			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470];
+			break;
+		}
+		case LASER_CHANNEL_980:{
+			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_980];
+			break;
+		}
+		case LASER_CHANNEL_635:{
+			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_635];
+			break;
+		}
+		default:break;
+	}
 	SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, true);
 	SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, true);
 #endif
 #ifdef MODEL_PVGLS_15W_1470
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
+			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470];
+		}
+		else if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){
+			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_635];
+		}
 		SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);
 		SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, false);	
 #endif
