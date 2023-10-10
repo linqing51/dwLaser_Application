@@ -788,16 +788,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE:{
 					if(state){
 						if (NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_CUSTIOM){
-#ifdef MODEL_PVGLS_15W_1470						
-							if(NVRAM0[DM_SCHEME_INDEX] >= 27){
-									updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
-									FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
-							}
-#endif								
-#ifdef MODEL_PVGLS_TRI
 							updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
 							FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
-#endif 								
 						}
 					}
 					break;
