@@ -19,10 +19,10 @@ const char WARN_MSG_WAIT_TRIGGER[] 				 	= {"Wait Laser Trigger"};//等待激光
 const char WARN_MSG_FIBER_MISSMATE[] 			 	= {"Fiber not mate"};
 const char INFO_MSG_SN[] 						 				= {"SN: "};
 #ifdef MODEL_PVGLS_15W_1470
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a10(beta)-Dual"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a11(beta)-Dual"};
 #endif
 #ifdef MODEL_PVGLS_TRI
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a10(beta)-Triple"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a11(beta)-Triple"};
 #endif
 
 const char INFO_MSG_MANUFACTURE_DATE[] 			= {"MANUFACTURE DATE: "};
