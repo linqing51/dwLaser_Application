@@ -42,8 +42,9 @@
 #ifdef MODEL_PVGLS_TRI
 #define CONFIG_THERAPY_SIZE														8
 #endif
-//#define CONFIG_THERAPY_SIZE														3
+
 #ifdef MODEL_PVGLS_15W_1470
+#define CONFIG_THERAPY_SIZE														3
 #endif
 
 #define CONFIG_CUSTIOM_SIZE														32
