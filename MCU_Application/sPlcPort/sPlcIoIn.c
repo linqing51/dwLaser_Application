@@ -96,6 +96,6 @@ void sPlcInputRefresh(void){//ªÒ»° ‰»ÎIO
 		else{
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
 		}
-	}
+	}	
 }
 

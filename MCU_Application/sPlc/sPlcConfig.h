@@ -1,9 +1,9 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-//#define MODEL_PVGLS_15W_1470
+#define MODEL_PVGLS_15W_1470
 //#define MODEL_PVGLS_7W_1940
-#define MODEL_PVGLS_TRI
+//#define MODEL_PVGLS_TRI
 //#define MODEL_PVGLS_TRI_COMBINE
 /*****************************************************************************/
 #define LASER_CHANNEL_1470														0x01
@@ -33,9 +33,11 @@
 #ifdef MODEL_PVGLS_TRI
 #define CONFIG_NEUROSURGERY_SIZE											5
 #endif
+
 #ifdef MODEL_PVGLS_15W_1470
 #define CONFIG_NEUROSURGERY_SIZE											3
 #endif
+
 #define CONFIG_DERMATOLOGY_SIZE												9
 #define CONFIG_LIPOSUCTION_SIZE												7
 #define CONFIG_DENTISRTY_SIZE													23
@@ -151,6 +153,7 @@
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								70
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
+#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
 #define CONFIG_DIODE_SET_TEMP													250//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
@@ -215,7 +218,10 @@
 /*****************************************************************************/
 #define CONFIG_USING_DEFAULT_SCHEME										1//是能预设模式
 #define CONFIG_MAX_SCHEME_NAME_SIZE										40//方案名称长度
-/******************************************************************************/
+/*****************************************************************************/
+#define CONFIG_FSWITCH_USB_VID												0x16C0
+#define CONFIG_FSWITCH_USB_PID												0x05E2
+/*****************************************************************************/
 #define POWER_REAL_CH0_5P															200
 #define POWER_REAL_CH0_10P														400
 #define POWER_REAL_CH0_15P														600
@@ -387,6 +393,9 @@
 /*****************************************************************************/
 #define SPCOIL_BEEM_ENABLE														(SPCOIL_START * 16 + 32)//蜂鸣器使能
 #define SPCOIL_BEEM_BUSY															(SPCOIL_START * 16 + 33)//蜂鸣器工作状态
+/*****************************************************************************/
+#define SPCOIL_WFSWITCH_PLUG													(SPCOIL_START * 16 + 40)//无线脚踏插入					
+#define SPCOIL_WFSWITCH_ON														(SPCOIL_START * 16 + 41)//无线脚踏按下
 /*****************************************************************************/
 #define SPCOIL_SPWM_OUT_0															(SPCOIL_START * 16 + 48)//SPWM0输出状态
 #define SPCOIL_SPWM_RESET_0														(SPCOIL_START * 16 + 49)//SPWM0复位
@@ -827,7 +836,7 @@
 #define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			8
 #define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			9
 #define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				10
-#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				11		
+#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				11	
 /*****************************************************************************/
 #endif
 

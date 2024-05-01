@@ -61,6 +61,8 @@ void updateGroupOffDisplay(void);
 void updateOptionDisplay(void);
 void updateInformationDisplay(void);
 void updateAcousticDisplay(void);
+uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost);
+void wfswLoop(USBH_HandleTypeDef *phost);
 /*****************************************************************************/
 void loadSelectScheme(int16_t classify, int16_t index);
 void updateSchemeDetail(int16_t classify, int16_t index);

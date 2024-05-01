@@ -16,6 +16,9 @@ int16_t LaserFanOutCounter;
 FRESULT retUsbH;
 FATFS	USBH_fatfs;
 FIL BootLoadFile;//FATFS File Object 记录信息
+extern ApplicationTypeDef Appli_state;
+static uint16_t legalUsbDev[5] = {0x16C0, 0, 0, 0, 0};
+static uint16_t legalUsbPid[5] = {0x05E2, 0, 0, 0, 0};
 /*****************************************************************************/
 void saveConfigToDisk(void){//将配置储存到U盘
 
@@ -328,8 +331,13 @@ void updateDiognosisInfo(void){//更新诊断信息
 	sprintf(dispBuf, "FS NC:%1d, FS NO:%1d, ES:%d, IL:%1d, FP:%1d", LD(X_FOOTSWITCH_NC),  LD(X_FOOTSWITCH_NO), LD(X_ESTOP_NC), LD(X_INTERLOCK_NC), LD(X_FIBER_PROBE));
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO1, (uint8_t*)dispBuf);
 	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "TLAS:%05d,TMCU:%05d,FANs:%3d,FANg:%3d", NVRAM0[EM_LASER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_FAN_SET_SPEED], NVRAM0[EM_FAN_GET_SPEED]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
+
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "WFSW NC:%1d,WFSW NO:%1d", LD(SPCOIL_WFSWITCH_PLUG), LD(SPCOIL_WFSWITCH_ON));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO3, (uint8_t*)dispBuf);
 }
 
 void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
@@ -2566,6 +2574,15 @@ static void faultLoop(void){//故障轮询
 			RRES(R_FOOTSWITCH_PRESS);
 		}
 	}
+	else if(LD(SPCOIL_WFSWITCH_PLUG)){//无线脚踏插入、屏蔽有线脚踏
+		SSET(R_FOOTSWITCH_PLUG);
+		if(LD(SPCOIL_WFSWITCH_ON)){
+			SSET(R_FOOTSWITCH_PRESS);
+		}
+		else{
+			RRES(R_FOOTSWITCH_PRESS);
+		}
+	}
 	else{
 		if(LD(X_FOOTSWITCH_NC)){//常闭
 			SSET(R_FOOTSWITCH_PLUG);
@@ -2780,8 +2797,54 @@ static void speakerLoop(void){//蜂鸣器轮询
 	}
 }
 
+uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost){//判断是否是允许的无线脚踏适配器
+	uint8_t i;
+	for(i = 0;i < 5;i ++){
+		if((phost->device.DevDesc.idVendor == legalUsbDev[i]) && phost->device.DevDesc.idProduct == legalUsbPid[i]){
+			return true;
+		}
+	}
+	return false;
+}
+
+void wfswLoop(USBH_HandleTypeDef *phost){//无线脚踏轮询
+	HID_KEYBD_Info_TypeDef *k_pinfo;
+  char c;
+	if(Appli_state == APPLICATION_READY){//判断适配器是否插入
+		if(isLegalUsbDev(phost)){		
+			if(LDB(SPCOIL_WFSWITCH_PLUG)){
+				printf("%s,%d,%s:wireless footswich plug......\n",__FILE__, __LINE__, __func__);
+				SSET(SPCOIL_WFSWITCH_PLUG);
+			}
+			k_pinfo = USBH_HID_GetKeybdInfo(phost); 	
+			if(k_pinfo != NULL){
+				c = USBH_HID_GetASCIICode(k_pinfo);
+				if(c == '1'){//凯昆脚踏默认为数字1
+					printf("%s,%d,%s:wireless footswich press......\n",__FILE__, __LINE__, __func__);
+					SSET(SPCOIL_WFSWITCH_ON);
+				}
+				if(c == 0x0){
+					printf("%s,%d,%s:wireless footswich release......\n",__FILE__, __LINE__, __func__);		
+					RRES(SPCOIL_WFSWITCH_ON);
+				}		
+			}
+		}
+		else{
+			printf("%s,%d,%s:inlega footswitch usb device......!\n",__FILE__, __LINE__, __func__);
+		}
+	}
+	else{
+		if(LD(SPCOIL_WFSWITCH_PLUG)){
+			RRES(SPCOIL_WFSWITCH_PLUG);
+			RRES(SPCOIL_WFSWITCH_ON);
+			printf("%s,%d,%s:wireless footswich unplug......\n",__FILE__, __LINE__, __func__);
+		}	
+	}
+}
+
 void dcHmiLoop(void){//HMI轮训程序
 	uint8_t tmp8;
+	wfswLoop(&hUsbHostFS);
 	speakerLoop();
 	temperatureLoop();//温控程序
 	faultLoop();
@@ -3812,7 +3875,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
 			RRES(R_UPDATE_BOOTLOAD_NO);
 		}
-		else if(LDP(SPCOIL_PS1000MS)){
+		else if(LDP(SPCOIL_PS200MS)){
 			updateDiognosisInfo();
 		}
 		return;
