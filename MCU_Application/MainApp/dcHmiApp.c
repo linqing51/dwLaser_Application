@@ -3148,22 +3148,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			//ACOUSTIC 初始化
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
 				//能量大于设置功率的两倍	
-#ifdef MODEL_PVGLS_15W_1470
-				if(NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_CUSTIOM){
-					if((NVRAM0[DM_SCHEME_INDEX] == 3) ||
-					   (NVRAM0[DM_SCHEME_INDEX] == 4) ||
-					   (NVRAM0[DM_SCHEME_INDEX] == 5)){
-						RRES(R_ACOUSTIC_ENABLE);
-					}
-					else{
-						SSET(R_ACOUSTIC_ENABLE);
-					}
-				}
-				else{
-					SSET(R_ACOUSTIC_ENABLE);
-				}
-#endif
-#ifdef MODEL_PVGLS_TRI
 				if(NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_PROCTOLOGY){
 					if((NVRAM0[DM_SCHEME_INDEX] == 0) || 
 						 (NVRAM0[DM_SCHEME_INDEX] == 1) ||
@@ -3177,7 +3161,6 @@ void dcHmiLoop(void){//HMI轮训程序
 				else{
 					SSET(R_ACOUSTIC_ENABLE);
 				}							   
-#endif				
 				NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CW模式每次加减量1秒
 				//NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_TOTAL] / 10;//CW模式每次加减量
 				NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_TOTAL];//CW模式每次加减量
