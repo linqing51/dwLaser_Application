@@ -208,9 +208,9 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.calibrationPwr1[8] = 144;
 		deviceConfig.calibrationPwr1[9] = 153;
 		
-		deviceConfig.mfg_year = 2023;
-		deviceConfig.mfg_month = 5;
-		deviceConfig.mfg_day = 15;
+		deviceConfig.mfg_year = 2025;
+		deviceConfig.mfg_month = 4;
+		deviceConfig.mfg_day = 3;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 			
 		sprintf(deviceConfig.serialNumber, "PH23-E001");
@@ -218,7 +218,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
 		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
 		deviceConfig.aimGain = CONFIG_AIM_DEFAULT_GAIN;
-		deviceConfig.normalOpenInterLock = 1;//默认常开脚踏 
+		deviceConfig.normalOpenInterLock = 1;//默认常开联锁 
 		saveDeviceConfig();
 	}
 	else{
@@ -842,7 +842,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
 #endif
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1327,7 +1327,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
 #endif
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -2123,7 +2123,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	SetControlEnable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, true);
 	SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_980, true);
 #endif
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){
 			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470];
 		}
@@ -2552,6 +2552,7 @@ static void faultLoop(void){//故障轮询
 	}
 	else{
 		if(deviceConfig.normalOpenInterLock == 1){//常开连锁
+#ifdef MODEL_PVGLS_15W_1470
 			if(LD(X_INTERLOCK_NC)){
 				RRES(R_INTERLOCK);
 			}
@@ -2567,6 +2568,26 @@ static void faultLoop(void){//故障轮询
 				RRES(R_INTERLOCK);
 			}
 		}
+#endif
+
+#ifdef MODEL_PVGLS_15W_1470_A1
+			if(LD(X_INTERLOCK_NC)){
+				SSET(R_INTERLOCK);
+			}
+			else{
+				RRES(R_INTERLOCK);
+			}
+		}
+		else{//常闭连锁
+			if(LD(X_INTERLOCK_NC)){
+				RRES(R_INTERLOCK);
+			}
+			else{
+				SSET(R_INTERLOCK);
+			}
+		}
+#endif	
+
 	}
 	if(LD(R_DISABLE_TEMPERATURE)){//屏蔽高温报警
 		RRES(R_LASER_TEMP_HIGH);
@@ -2632,7 +2653,7 @@ static void faultLoop(void){//故障轮询
 		SSET(Y_RED_LED);//关闭红灯
 	}
 	else{
-		RRES(Y_GREEN_LED);//打开绿灯
+		SSET(Y_GREEN_LED);//打开绿灯
 		RRES(Y_YELLOW_LED);//关闭黄灯
 		RRES(Y_RED_LED);//关闭红灯
 	}
@@ -2839,7 +2860,9 @@ void wfswLoop(USBH_HandleTypeDef *phost){//无线脚踏轮询
 			}
 		}
 		else{
+#if CONFIG_DEBUG_WSW == 1
 			printf("%s,%d,%s:inlega footswitch usb device......!\n",__FILE__, __LINE__, __func__);
+#endif
 		}
 	}
 	else{
@@ -2943,7 +2966,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 			
 			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1470;												
 #endif
 #ifdef MODEL_PVGLS_TRI

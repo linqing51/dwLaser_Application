@@ -839,7 +839,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME:{//°´¼üSCHEME
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 						
@@ -1258,7 +1258,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_TRI;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif

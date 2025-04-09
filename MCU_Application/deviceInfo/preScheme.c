@@ -671,7 +671,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 5000;
 #endif
 
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 //1470nm, Pulse 7w 1s Ton, 5s Toff
 	p = &sNeurosurgery[0];
 	p->name = "PLDD L2-L3, L3-L4, L5-S1 800-1500J";
@@ -1389,7 +1389,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 #endif
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 	//Therapy
 	//635nm CW
 	p = &sTherapy[0];

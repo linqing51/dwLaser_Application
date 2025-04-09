@@ -1,7 +1,8 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define MODEL_PVGLS_15W_1470
+//#define MODEL_PVGLS_15W_1470
+#define MODEL_PVGLS_15W_1470_A1
 //#define MODEL_PVGLS_7W_1940
 //#define MODEL_PVGLS_TRI
 //#define MODEL_PVGLS_TRI_COMBINE
@@ -34,18 +35,19 @@
 #define CONFIG_NEUROSURGERY_SIZE											5
 #endif
 
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 #define CONFIG_NEUROSURGERY_SIZE											3
 #endif
 
 #define CONFIG_DERMATOLOGY_SIZE												9
 #define CONFIG_LIPOSUCTION_SIZE												7
 #define CONFIG_DENTISRTY_SIZE													23
+
 #ifdef MODEL_PVGLS_TRI
 #define CONFIG_THERAPY_SIZE														8
 #endif
 
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
 #define CONFIG_THERAPY_SIZE														3
 #endif
 
@@ -64,6 +66,7 @@
 #define CONFIG_DEBUG_AIM															0//调试指示光驱动
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
+#define CONFIG_DEBUG_WSW															0//调试无线脚踏
 /*****************************************************************************/
 #define CONFIG_GDDC_UART_BAUDRATE											230400//LCD通信波特率
 /*****************************************************************************/
@@ -199,12 +202,24 @@
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//变音持续时间
 //定义指示灯亮度
+#ifdef MODEL_PVGLS_15W_1470
 #define CONFIG_BLUE_LED_MAX_DC												100
 #define CONFIG_BLUE_LED_DEFAULT_DC										10
 #define CONFIG_RED_LED_MAX_DC													100	
 #define CONFIG_RED_LED_DEFAULT_DC											25
 #define CONFIG_GREEN_LED_MAX_DC												100
 #define CONFIG_GREEN_LED_DEFAULT_DC										10
+#endif
+
+#ifdef MODEL_PVGLS_15W_1470_A1
+#define CONFIG_BLUE_LED_MAX_DC												100
+#define CONFIG_BLUE_LED_DEFAULT_DC										50
+#define CONFIG_RED_LED_MAX_DC													100	
+#define CONFIG_RED_LED_DEFAULT_DC											50
+#define CONFIG_GREEN_LED_MAX_DC												100
+#define CONFIG_GREEN_LED_DEFAULT_DC										50
+#endif
+
 #define CONFIG_AIM_DEFAULT_GAIN												30
 //定义蜂鸣器音量
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
@@ -672,8 +687,8 @@
 /*****************************************************************************/
 #define X_ESTOP_NC																	(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC															(X_START * 16 + 1)//XIN1 安全连锁
-#define X_FOOTSWITCH_NO															(X_START * 16 + 2)//XIN2 脚踏常闭
-#define X_FOOTSWITCH_NC															(X_START * 16 + 3)//XIN3 脚踏常开
+#define X_FOOTSWITCH_NO															(X_START * 16 + 2)//XIN2 脚踏常开
+#define X_FOOTSWITCH_NC															(X_START * 16 + 3)//XIN3 脚踏常闭
 #define X_FIBER_PROBE																(X_START * 16 + 4)//XIN5 光纤探测
 /*****************************************************************************/
 #define Y_GREEN_LED																	(Y_START * 16 + 0)//YOUT0 绿灯开关
