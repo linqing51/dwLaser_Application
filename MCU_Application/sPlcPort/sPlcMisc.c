@@ -73,6 +73,8 @@ void SystemClock_Reset(void){//复位系统时钟
 }
 void resetInit(void){//复位后初始化
 	HAL_DeInit();
+
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 	HAL_CRC_MspDeInit(&hcrc);
 	HAL_RNG_MspDeInit(&hrng);
 	HAL_TIM_Base_MspDeInit(&htim2);
@@ -88,6 +90,27 @@ void resetInit(void){//复位后初始化
 	HAL_ADC_MspDeInit(&hadc1);
 	HAL_DAC_MspInit(&hdac);
 	USBH_DeInit(&hUsbHostFS);
+#endif
+
+#if defined(MODEL_PVGLS_10W_1940_A1)
+
+	HAL_CRC_MspDeInit(&hcrc);
+	HAL_RNG_MspDeInit(&hrng);
+	HAL_TIM_Base_MspDeInit(&htim2);
+	HAL_TIM_Base_MspDeInit(&htim3);
+	HAL_TIM_Base_MspDeInit(&htim4);
+	HAL_TIM_Base_MspDeInit(&htim10);
+	HAL_TIM_Base_MspDeInit(&htim14);	
+	HAL_I2C_MspDeInit(&hi2c2);
+	HAL_UART_MspDeInit(&huart1);
+	HAL_UART_MspDeInit(&huart3);
+	HAL_UART_MspDeInit(&huart5);
+	HAL_ADC_MspDeInit(&hadc1);
+	HAL_DAC_MspInit(&hdac);
+	USBH_DeInit(&hUsbHostFS);
+
+#endif
+
 	//复位RCC时钟
 	SystemClock_Reset();
 	UsbGpioReset();
@@ -105,6 +128,7 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 		if(speed < CONFIG_FAN_MIN_DC){
 			speed = CONFIG_FAN_MIN_DC;
 		}
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, speed);
 		if(speed != 0){
 			HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);//打开TIM
@@ -112,6 +136,16 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 		else{
 			HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2);//关闭TIM
 		}
+#endif
+#if defined(MODEL_PVGLS_10W_1940_A1)
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, speed);
+		if(speed != 0){
+			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);//打开TIM
+		}
+		else{
+			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);//关闭TIM
+		}
+#endif
 		FanSpeed = speed;
 		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
 	}

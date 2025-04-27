@@ -22,19 +22,20 @@
 #define GDDC_PAGE_START																	0
 #define GDDC_PAGE_POWERUP_1470													1
 #define GDDC_PAGE_POWERUP_TRI														2
-#define GDDC_PAGE_PASSCODE															3
-#define GDDC_PAGE_NEW_PASSCODE													4
-#define GDDC_PAGE_STANDBY														    5
-#define GDDC_PAGE_READY																	6
-#define GDDC_PAGE_OPTION																7//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										8//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									9//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_DETAIL													10//
-#define GDDC_PAGE_INFORMATION														11//信息页面
-#define GDDC_PAGE_DIAGNOSIS															12//诊断页面
-#define GDDC_PAGE_RENAME																13//SCHEME更名
-#define GDDC_PAGE_RESTORE																14//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														15//脚踏安全警告
+#define GDDC_PAGE_POWERUP_1940													3
+#define GDDC_PAGE_PASSCODE															4
+#define GDDC_PAGE_NEW_PASSCODE													5
+#define GDDC_PAGE_STANDBY														    6
+#define GDDC_PAGE_READY																	7
+#define GDDC_PAGE_OPTION																8//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										9//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									10//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_DETAIL													11//
+#define GDDC_PAGE_INFORMATION														12//信息页面
+#define GDDC_PAGE_DIAGNOSIS															13//诊断页面
+#define GDDC_PAGE_RENAME																14//SCHEME更名
+#define GDDC_PAGE_RESTORE																15//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														16//脚踏安全警告
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -70,14 +71,14 @@
 /*****************************************************************************/
 #define GDDC_PAGE_STANDBY_KEY_POWER_SEL_ADD							1//当前选择功率增加
 #define GDDC_PAGE_STANDBY_KEY_POWER_SEL_INC							2//当前选择功率减小
-#define GDDC_PAGE_STANDBY_KEY_POWER_1470_ADD						3//功率增加
-#define GDDC_PAGE_STANDBY_KEY_POWER_1470_INC						4//功率减小
-#define GDDC_PAGE_STANDBY_KEY_POWER_980_ADD             5
-#define GDDC_PAGE_STANDBY_KEY_POWER_980_INC             6
-#define GDDC_PAGE_STANDBY_KEY_POWER_635_ADD             7
-#define GDDC_PAGE_STANDBY_KEY_POWER_635_INC             8
-#define GDDC_PAGE_STANDBY_KEY_POWER_650_ADD							9//指示光亮度加
-#define GDDC_PAGE_STANDBY_KEY_POWER_650_INC							10//指示光亮度减
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD							3//功率增加
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH0_INC							4//功率减小
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD             5
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_INC             6
+#define GDDC_PAGE_STANDBY_KEY_POWER_RED_ADD             7
+#define GDDC_PAGE_STANDBY_KEY_POWER_RED_INC             8
+#define GDDC_PAGE_STANDBY_KEY_POWER_AIM_ADD							9//指示光亮度加
+#define GDDC_PAGE_STANDBY_KEY_POWER_AIM_INC							10//指示光亮度减
 #define GDDC_PAGE_STANDBY_KEY_STANDBY										11//进入准备
 #define GDDC_PAGE_STANDBY_KEY_MODE_CW										12//连续模式
 #define	GDDC_PAGE_STANDBY_KEY_MODE_MP										13//连续模式
@@ -90,15 +91,15 @@
 #define GDDC_PAGE_STANDBY_KEY_POSWIDTH_INC							20//
 #define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD							21//
 #define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_INC							22//
-#define GDDC_PAGE_STANDBY_KEY_SELECT_1470								23
-#define GDDC_PAGE_STANDBY_KEY_SELECT_980								24
-#define GDDC_PAGE_STANDBY_KEY_SELECT_635								25
+#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0								23
+#define GDDC_PAGE_STANDBY_KEY_SELECT_CH1								24
+#define GDDC_PAGE_STANDBY_KEY_SELECT_RED								25
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME							26//方案名称显示
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL			27//当前设定功率
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_1470		28//设定功率 1470
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_980     29//设定功率 980
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_635     30//设定功率 635
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_650     31//设定功率 650
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0			28//设定功率 1470 / 1940
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH1     29//设定功率 980
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED     30//设定功率 635
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM     31//设定功率 650
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN							32//报警显示
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER			33//平均功率显示
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY					34//频率显示
@@ -107,18 +108,18 @@
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH					37//负脉宽显示
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_TOTAL_POWER				38//总功率显示
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL				39//当前功率设定拖动条
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_1470			  40//功率设定拖动条 1470
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_980        41//功率设定拖动条 980
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_635        42//功率设定拖动条 635
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_650				43
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0			  40//功率设定拖动条 1470 /1940
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1        41//功率设定拖动条 980
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED 				42//功率设定拖动条 635
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM				43
 #define GDDC_PAGE_STANDBY_ICON_MPKEY										44//脉冲模式背景图
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_1470					2//发射功率显示 1470
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_980           3//发射功率显示 980
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_635           4//发射功率显示 635
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_650						5//发射功率显示 650
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//发射功率显示 1470 /1940
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH1           3//发射功率显示 980
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_RED           4//发射功率显示 635
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_AIM						5//发射功率显示 650
 #define GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL					6//总发射功率显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY							7//发射能量显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME			8//发射时间显示

@@ -65,7 +65,7 @@ void sPlcInputRefresh(void){//获取输入IO
 	}
 	//X3 脚踏常闭
 	temp = GET_FSWITCH_NC;
-#ifdef MODEL_PVGLS_15W_1470
+#if defined(MODEL_PVGLS_15W_1470_A0)
 	if(temp == 0){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
@@ -83,7 +83,7 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 #endif
-#ifdef MODEL_PVGLS_15W_1470_A1
+#if defined(MODEL_PVGLS_15W_1470_A1)
 	if(temp == 1){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;

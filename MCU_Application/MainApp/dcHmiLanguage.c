@@ -18,20 +18,24 @@ const char WARN_MSG_LASER_EMIT[] 				 		= {"Laser is firing"};//激光正在发�
 const char WARN_MSG_WAIT_TRIGGER[] 				 	= {"Wait Laser Trigger"};//等待激光触发
 const char WARN_MSG_FIBER_MISSMATE[] 			 	= {"Fiber not mate"};
 const char INFO_MSG_SN[] 						 				= {"SN: "};
-
-#if defined(MODEL_PVGLS_15W_1470)
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a13b3-Dual"};
+/*****************************************************************************/
+#if defined(MODEL_PVGLS_15W_1470_A0)
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-Dual"};
 #endif
 
 #if defined(MODEL_PVGLS_15W_1470_A1)
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a13b3-A1-Dual"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-A1-Dual"};
 #endif
 
-#ifdef MODEL_PVGLS_TRI
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a13b2-Triple"};
+#if defined(MODEL_PVGLS_TRI_A0)
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-Triple"};
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470) || defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(MODEL_PVGLS_10W_1940_A1)
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-A1-Dual"};
+#endif
+/*****************************************************************************/
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS 1470/15"};
 const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15W+0.5W"};
 const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+635nm"};
@@ -39,13 +43,19 @@ const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+635nm"};
 
 const char INFO_MSG_MANUFACTURE_DATE[] 			= {"MANUFACTURE DATE: "};
 
-#ifdef MODEL_PVGLS_7W_1940
+#if defined(MODEL_PVGLS_7W_1940_A0)
 const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS 1940/7"};
 const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 7W"};
 const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1940nm"};
 #endif
 
-#ifdef MODEL_PVGLS_TRI
+#if defined(MODEL_PVGLS_10W_1940_A1)
+const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS 1940/10"};
+const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 10W"};
+const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1940nm"};
+#endif
+
+#if defined(MODEL_PVGLS_TRI_A0)
 const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS - TRI"};
 const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15w+15w+0.5w"};
 const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+980nm+635nm"};

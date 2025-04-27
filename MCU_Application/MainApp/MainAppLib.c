@@ -69,7 +69,7 @@ void restoreDefault(void){//恢复默认值
 	RRES(R_DISABLE_FIBER_PROBE);
 	RRES(R_DISABLE_FAN_SPEED);
 	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 2;
-	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_LASER_POWER_650;
+	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_LASER_POWER_AIM;
 	NVRAM0[DM_LCD_BRG] = CONFIG_LCD_MAX_DC;
 	schemeInit(1);//初始化自定义方案
 	NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_PHLEBOLOGY;
@@ -100,12 +100,12 @@ void updateCustomScheme(uint8_t index){//EM->FD
 uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power){//功率->DAC CODE 使用默认拟合校正表
 	uint16_t tmp;
 	switch(ch){
-		case LASER_CHANNEL_1470:{
-			tmp = (uint16_t)((int32_t)power * 4095 / CONFIG_MAX_LASER_POWER_1470);
+		case LASER_CHANNEL_CH0:{
+			tmp = (uint16_t)((int32_t)power * 4095 / CONFIG_MAX_LASER_POWER_CH0);
 			break;
 		}
-		case LASER_CHANNEL_980:{
-			tmp = (uint16_t)((int32_t)power * 4095 / CONFIG_MAX_LASER_POWER_980);
+		case LASER_CHANNEL_CH1:{
+			tmp = (uint16_t)((int32_t)power * 4095 / CONFIG_MAX_LASER_POWER_CH1);
 			break;
 		}
 		default:{
@@ -121,15 +121,15 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率-
 	uint16_t *pCal;
 	uint16_t out;
 	switch(ch){
-		case LASER_CHANNEL_1470:{
-			pmax = (int16_t)CONFIG_MAX_LASER_POWER_1470;
-			pmin = (int16_t)CONFIG_MIN_LASER_POWER_1470;
+		case LASER_CHANNEL_CH0:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH0;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH0;
 			pCal = deviceConfig.calibrationPwr0;
 			break;
 		}
-		case LASER_CHANNEL_980:{
-			pmax = (int16_t)CONFIG_MAX_LASER_POWER_980;
-			pmin = (int16_t)CONFIG_MIN_LASER_POWER_980;
+		case LASER_CHANNEL_CH1:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH1;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH1;
 			pCal = deviceConfig.calibrationPwr1;
 			break;
 		}

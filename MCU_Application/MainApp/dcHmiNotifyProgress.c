@@ -12,70 +12,70 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value <= 1){
 						value = 1;
 					}
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_1470){//1470
-						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1470;
-						if(fpwr < CONFIG_MIN_LASER_POWER_1470){
-							fpwr = CONFIG_MIN_LASER_POWER_1470;
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH0;
+						if(fpwr < CONFIG_MIN_LASER_POWER_CH0){
+							fpwr = CONFIG_MIN_LASER_POWER_CH0;
 						}
-						NVRAM0[EM_LASER_POWER_1470] = (int16_t)fpwr;
+						NVRAM0[EM_LASER_POWER_CH0] = (int16_t)fpwr;
 					}
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_980){//980
-						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_980;
-						if(fpwr < CONFIG_MIN_LASER_POWER_980){
-							fpwr = CONFIG_MIN_LASER_POWER_980;
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH1;
+						if(fpwr < CONFIG_MIN_LASER_POWER_CH1){
+							fpwr = CONFIG_MIN_LASER_POWER_CH1;
 						}
-						NVRAM0[EM_LASER_POWER_980] = (int16_t)fpwr;
+						NVRAM0[EM_LASER_POWER_CH1] = (int16_t)fpwr;
 					}
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_635){//635
-						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_635;
-						if(fpwr < CONFIG_MIN_LASER_POWER_635){
-							fpwr = CONFIG_MIN_LASER_POWER_635;
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//635
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_RED;
+						if(fpwr < CONFIG_MIN_LASER_POWER_RED){
+							fpwr = CONFIG_MIN_LASER_POWER_RED;
 						}
 						NVRAM0[EM_LASER_POWER_635] = (int16_t)fpwr;
 					}
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 					updateStandbyDisplay();
 					break;
 				}
-				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_1470:{
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0:{
 					if(value > 100){
 						value = 100;
 					}
 					if(value <= 0){
 						value = 1;
 					}
-					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_1470 * 10.0F;
-					NVRAM0[EM_LASER_AVERAGE_POWER_1470] = (int16_t)fpwr;
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH0 * 10.0F;
+					NVRAM0[EM_LASER_AVERAGE_POWER_CH0] = (int16_t)fpwr;
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 					updateStandbyDisplay();					
 					break;
 				}
-				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_980:{
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1:{
 					if(value > 100){
 						value = 100;
 					}
 					if(value <= 0){
 						value = 1;
 					}
-					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_980 * 10.0F;
-					NVRAM0[EM_LASER_AVERAGE_POWER_980] = (int16_t)fpwr;
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH1 * 10.0F;
+					NVRAM0[EM_LASER_AVERAGE_POWER_CH1] = (int16_t)fpwr;
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 					updateStandbyDisplay();
 					break;
 				}
-				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_635:{
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED:{
 					if(value > 100){
 						value = 100;
 					}
-					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_635 * 10.0F;
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_RED * 10.0F;
 					NVRAM0[EM_LASER_AVERAGE_POWER_635] = (int16_t)fpwr;
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_1470] + NVRAM0[EM_LASER_POWER_980] + NVRAM0[EM_LASER_POWER_635];
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 					updateStandbyDisplay();
 					break;
 				}
-				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_650:{
-					if(value > CONFIG_MAX_LASER_POWER_650){
-						value = CONFIG_MAX_LASER_POWER_650;
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM:{
+					if(value > CONFIG_MAX_LASER_POWER_AIM){
+						value = CONFIG_MAX_LASER_POWER_AIM;
 					}
 					NVRAM0[DM_AIM_BRG] = (int16_t)value;
 					updateStandbyDisplay();

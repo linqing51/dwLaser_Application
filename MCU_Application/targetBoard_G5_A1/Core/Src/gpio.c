@@ -38,13 +38,6 @@
         * Output
         * EVENT_OUT
         * EXTI
-     PC10   ------> USART3_TX
-     PC11   ------> USART3_RX
-     PC12   ------> UART5_TX
-     PD2   ------> UART5_RX
-     PB7   ------> S_TIM4_CH2
-     PB8   ------> S_TIM4_CH3
-     PB9   ------> S_TIM4_CH4
 */
 void MX_GPIO_Init(void)
 {
@@ -52,17 +45,95 @@ void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, LAS_PWM1_Pin|EDAC1_SDI_Pin|EDAC1_SCK_Pin|EDAC1_CS_Pin
+                          |LAS_PWM0_Pin|EDAC0_SDI_Pin|EDAC0_SCK_Pin|EDAC0_CS_Pin
+                          |ERR_LED_Pin|LAS_PWM3_Pin|EDAC3_SDI_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, NFC_RST_Pin|LAS_TEC_Pin|SPK_EN_Pin|EDAC3_CS_Pin
+                          |LAS_PWM2_Pin|EDAC2_SDI_Pin|EDAC2_SCK_Pin|EDAC2_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(OTG_FS_PSON_GPIO_Port, OTG_FS_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(EDAC3_SCK_GPIO_Port, EDAC3_SCK_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : LAS_PWM1_Pin EDAC1_SDI_Pin EDAC1_SCK_Pin LAS_PWM0_Pin
+                           EDAC0_SDI_Pin EDAC0_SCK_Pin ERR_LED_Pin LAS_PWM3_Pin
+                           EDAC3_SDI_Pin */
+  GPIO_InitStruct.Pin = LAS_PWM1_Pin|EDAC1_SDI_Pin|EDAC1_SCK_Pin|LAS_PWM0_Pin
+                          |EDAC0_SDI_Pin|EDAC0_SCK_Pin|ERR_LED_Pin|LAS_PWM3_Pin
+                          |EDAC3_SDI_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : EDAC1_CS_Pin */
+  GPIO_InitStruct.Pin = EDAC1_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(EDAC1_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : EDAC0_CS_Pin */
+  GPIO_InitStruct.Pin = EDAC0_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(EDAC0_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : FS_NC_Pin OTG_FS_PSOC_Pin */
+  GPIO_InitStruct.Pin = FS_NC_Pin|OTG_FS_PSOC_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : FS_NO_Pin NFC_STA_Pin ESTOP_NC_Pin */
+  GPIO_InitStruct.Pin = FS_NO_Pin|NFC_STA_Pin|ESTOP_NC_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : INTERLOCK_NC_Pin */
+  GPIO_InitStruct.Pin = INTERLOCK_NC_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(INTERLOCK_NC_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : NFC_RST_Pin TICK_LED_Pin EDAC2_CS_Pin */
+  GPIO_InitStruct.Pin = NFC_RST_Pin|TICK_LED_Pin|EDAC2_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LAS_TEC_Pin */
+  GPIO_InitStruct.Pin = LAS_TEC_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LAS_TEC_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : SPK_EN_Pin EDAC3_CS_Pin LAS_PWM2_Pin EDAC2_SDI_Pin
+                           EDAC2_SCK_Pin */
+  GPIO_InitStruct.Pin = SPK_EN_Pin|EDAC3_CS_Pin|LAS_PWM2_Pin|EDAC2_SDI_Pin
+                          |EDAC2_SCK_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : OTG_FS_PSON_Pin */
   GPIO_InitStruct.Pin = OTG_FS_PSON_Pin;
@@ -71,50 +142,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(OTG_FS_PSON_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_15;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PC10 PC11 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PC12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_12;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PD2 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PB6 */
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
+  /*Configure GPIO pin : EDAC3_SCK_Pin */
+  GPIO_InitStruct.Pin = EDAC3_SCK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PB7 PB8 PB9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF2_TIM4;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  HAL_GPIO_Init(EDAC3_SCK_GPIO_Port, &GPIO_InitStruct);
 
 }
 

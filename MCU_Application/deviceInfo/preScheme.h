@@ -7,9 +7,9 @@ typedef struct{
 	char *name;//治疗名字
 	int16_t channel;//激光通道选择
 	int16_t pulse_mode;//脉冲模式
-	int16_t power_1470;//功率 1470
-	int16_t power_980;//功率 980
-	int16_t power_635;//功率 635
+	int16_t power_ch0;//功率 1470
+	int16_t power_ch1;//功率 980
+	int16_t power_red;//功率 635
 	int16_t poswidth;
 	int16_t negwidth;
 }myScheme_t;

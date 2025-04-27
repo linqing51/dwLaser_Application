@@ -826,21 +826,12 @@ ARM Macro Assembler    Page 13
               00002000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
-interwork --depend=targetboard_g5_a1\startup_stm32f405xx.d -otargetboard_g5_a1\
-startup_stm32f405xx.o -I../Core/Inc -I../FATFS/Target -I../FATFS/App -I../USB_H
-OST/App -I../USB_HOST/Target -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers
-/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/i
-nclude -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewa
-res/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../Middlewares/Third_P
-arty/FatFs/src -I../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I../Middlew
-ares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I../Middlewares/ST/STM32_USB_Ho
-st_Library/Class/CDC/Inc -I../Middlewares/ST/STM32_USB_Host_Library/Class/HID/I
-nc -I../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I../Middlewares/ST
-/STM32_USB_Host_Library/Class/MTP/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/In
-clude -I../Drivers/CMSIS/Include -I.\RTE\_targetBoard_G5_A1 -IC:\Users\linqi\Ap
-pData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include --predefine="__UVISION
-_VERSION SETA 538" --predefine="_RTE_ SETA 1" --predefine="STM32F405xx SETA 1" 
---predefine="_RTE_ SETA 1" --list=startup_stm32f405xx.lst startup_stm32f405xx.s
+interwork --depend=mcu_application\startup_stm32f405xx.d -omcu_application\star
+tup_stm32f405xx.o -I..\Core\Inc -I../Core/Inc -I../Drivers/CMSIS/Include -IC:\U
+sers\linqing\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\De
+vice\ST\STM32F4xx\Include -IC:\Keil_v5\ARM\CMSIS\Include --predefine="__UVISION
+_VERSION SETA 542" --predefine="STM32F405xx SETA 1" --list=startup_stm32f405xx.
+lst startup_stm32f405xx.s
 
 
 
@@ -1911,4 +1902,4 @@ Symbol: __use_two_region_memory
       None
 Comment: __use_two_region_memory unused
 3 symbols
-445 symbols in table
+444 symbols in table
