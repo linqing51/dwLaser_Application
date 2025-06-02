@@ -25,12 +25,12 @@
 #define GDDC_PAGE_POWERUP_1940													3
 #define GDDC_PAGE_PASSCODE															4
 #define GDDC_PAGE_NEW_PASSCODE													5
-#define GDDC_PAGE_STANDBY														    6
+#define GDDC_PAGE_STANDBY																6
 #define GDDC_PAGE_READY																	7
 #define GDDC_PAGE_OPTION																8//选项页面
 #define GDDC_PAGE_SCHEME_CLASSIFY_TRI										9//方案分类页 三波长
 #define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									10//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_DETAIL													11//
+#define GDDC_PAGE_SCHEME_DETAIL													11//方案分类页 自定义
 #define GDDC_PAGE_INFORMATION														12//信息页面
 #define GDDC_PAGE_DIAGNOSIS															13//诊断页面
 #define GDDC_PAGE_RENAME																14//SCHEME更名
@@ -81,8 +81,8 @@
 #define GDDC_PAGE_STANDBY_KEY_POWER_AIM_INC							10//指示光亮度减
 #define GDDC_PAGE_STANDBY_KEY_STANDBY										11//进入准备
 #define GDDC_PAGE_STANDBY_KEY_MODE_CW										12//连续模式
-#define	GDDC_PAGE_STANDBY_KEY_MODE_MP										13//连续模式
-#define GDDC_PAGE_STANDBY_KEY_ENTER_OPTION							14//脉冲模式
+#define	GDDC_PAGE_STANDBY_KEY_MODE_MP										13//脉冲模式
+#define GDDC_PAGE_STANDBY_KEY_ENTER_OPTION							14//
 #define GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME							15//
 #define GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE								16//
 #define GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT								17//
@@ -91,7 +91,8 @@
 #define GDDC_PAGE_STANDBY_KEY_POSWIDTH_INC							20//
 #define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD							21//
 #define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_INC							22//
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0								23
+#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0A								23//1470
+#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0B								45//1940
 #define GDDC_PAGE_STANDBY_KEY_SELECT_CH1								24
 #define GDDC_PAGE_STANDBY_KEY_SELECT_RED								25
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME							26//方案名称显示
@@ -219,6 +220,8 @@
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO1						2
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2						3
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO3						4
+#define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4						17
+#define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO5						22
 //通道0 功率校正表
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P1				100
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P2				101

@@ -1,6 +1,7 @@
 #include "MainApp.h"
-extern UART_HandleTypeDef huart4;
+extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
+extern UART_HandleTypeDef huart4;
 extern uint8_t dchmi_rxDat;
 /*****************************************************************************/
 void mainAppTask(void *argument){

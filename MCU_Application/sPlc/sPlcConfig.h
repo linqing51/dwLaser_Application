@@ -148,6 +148,14 @@
 #define CONFIG_ADC_DMA_BUFFER_SIZE										(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_AMBIENT_TEMP             							25// Ambient temp in deg C
 #define CONFIG_VREF_CAL                         			*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
+
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+#define CONFIG_VREF_ADC																SPREG_ADC_4
+#endif
+
+#if defined(MODEL_PVGLS_10W_1940_A1)
+#define CONFIG_VREF_ADC																SPREG_ADC_14
+#endif
 #define CONFIG_ADC_AVG_SLOPE													2.5F
 #define CONFIG_ADC_V25																760.0F//0.76V@25D
 #define CONFIG_NTC_RS																	4700L//NTC分压电阻
@@ -457,7 +465,7 @@
 #define SPREG_ADC_6																		(SPREG_START + 17)//采集值 CH6 CURRENT
 #define SPREG_ADC_7																		(SPREG_START + 18)//采集值 TEC CURRENT
 #define SPREG_ADC_8																		(SPREG_START + 19)//采集值 BAT NTC
-#define SPREG_ADC_9																		(SPREG_START + 20)//采集值 LASER_FBPD
+#define SPREG_ADC_9																		(SPREG_START + 20)//采集值 LASER_FPD
 #define SPREG_ADC_10																	(SPREG_START + 21)//采集值 LASER_LPD
 #define SPREG_ADC_11																	(SPREG_START + 22)//采集值 LASER_NTC
 #define SPREG_ADC_12																	(SPREG_START + 23)//采集值 HT_NTC
@@ -513,20 +521,7 @@
 #define EM_LASER_NEGWIDTH															(EM_START + 63)//多脉冲负脉宽
 /*****************************************************************************/
 #define EM_LASER_AVERAGE_POWER_CH0										(EM_START + 64)//当前模式平均功率 1470/1940
-
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-#define EM_LASER_AVERAGE_POWER_1470 									EM_LASER_AVERAGE_POWER_CH0
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-#define EM_LASER_AVERAGE_POWER_1940										EM_LASER_AVERAGE_POWER_CH0
-#endif
-
 #define EM_LASER_AVERAGE_POWER_CH1              			(EM_START + 65)//当前模式平均功率 980
-
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-#define EM_LASER_AVERAGE_POWER_980 										EM_LASER_AVERAGE_POWER_CH1
-#endif
-
 #define EM_LASER_AVERAGE_POWER_CH2										(EM_START + 66)//当前模式平均功率 980
 #define EM_LASER_AVERAGE_POWER_CH3										(EM_START + 67)//当前模式平均功率 980
 #define EM_LASER_AVERAGE_POWER_635              			(EM_START + 68)//当前模式平均高功率 635
@@ -536,8 +531,9 @@
 #define EM_LASER_TEMP																	(EM_START + 71)//激光二极管模块温度
 #define EM_HT_TEMP																		(EM_START + 72)//散热器温度
 #define EM_MCU_TEMP																		(EM_START + 73)//处理器温度
-#define EM_FAN_SET_SPEED															(EM_START + 74)//激光散热风扇设定速度 0-100%
-#define EM_FAN_GET_SPEED															(EM_START + 75)//激光散热风扇实际速度 转速
+#define EM_MBAT_TEMP																	(EM_START + 74)//电池温度
+#define EM_FAN_SET_SPEED															(EM_START + 75)//激光散热风扇设定速度 0-100%
+#define EM_FAN_GET_SPEED															(EM_START + 76)//激光散热风扇实际速度 转速
 
 #define EM_ACOUSTIC_ENERGY														(EM_START + 77)//提示音能量间隔 16BIT
 #define EM_ACOUSTIC_TIME															(EM_START + 78)//提示音时间间隔 16BIT

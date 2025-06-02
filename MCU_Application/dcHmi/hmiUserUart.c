@@ -23,18 +23,18 @@ void hmiUartInit(void){
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
-  huart3.Instance = USART3;
-  huart3.Init.BaudRate = CONFIG_GDDC_UART_BAUDRATE;
-  huart3.Init.WordLength = UART_WORDLENGTH_8B;
-  huart3.Init.StopBits = UART_STOPBITS_1;
-  huart3.Init.Parity = UART_PARITY_NONE;
-  huart3.Init.Mode = UART_MODE_TX_RX;
-  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart3) != HAL_OK){
-    Error_Handler();
-  }
-	HAL_UART_Receive_IT(&huart3, &dchmi_rxDat, 1);
+//  huart3.Instance = USART3;
+//  huart3.Init.BaudRate = CONFIG_GDDC_UART_BAUDRATE;
+//  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+//  huart3.Init.StopBits = UART_STOPBITS_1;
+//  huart3.Init.Parity = UART_PARITY_NONE;
+//  huart3.Init.Mode = UART_MODE_TX_RX;
+//  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+//  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+//  if (HAL_UART_Init(&huart3) != HAL_OK){
+//    Error_Handler();
+//  }
+		HAL_UART_Receive_IT(&huart3, &dchmi_rxDat, 1);
 #endif
 
 	printf("%s,%d,%s:start hmi uart init......\n",__FILE__, __LINE__, __func__);

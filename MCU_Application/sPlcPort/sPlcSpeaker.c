@@ -13,8 +13,8 @@ void sPlcSpeakerInit(void){//喇叭初始化
 
 void sPlcSpeakerDisable(void){//关闭喇叭数据流
 	if(LoudspeakerEnable != false){
-		SET_SPEAKER_OFF;
-		SET_SPK_TIM_OFF;
+		SET_SPK_AP_OFF;
+		//SET_SPK_TIM_OFF;
 		//printf("%s,%d,%s:set loadspeaker off!\n",__FILE__, __LINE__, __func__);
 		LoudspeakerEnable = false;
 	}
@@ -22,8 +22,8 @@ void sPlcSpeakerDisable(void){//关闭喇叭数据流
 
 void sPlcSpeakerEnable(void){//打开喇叭数据流
 	if(LoudspeakerEnable != true){
-		SET_SPEAKER_ON;
-		SET_SPK_TIM_ON;
+		SET_SPK_AP_ON;
+		//SET_SPK_TIM_ON;
 		//printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
 		LoudspeakerEnable = true;
 	}
@@ -139,24 +139,34 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 }
 
 
-static void setSpeakerFreq(uint16_t freq){
-  TIM_OC_InitTypeDef sConfigOC = {0};
-	uint32_t uwPrescalerValue = (uint32_t)((HAL_RCC_GetPCLK1Freq() / (9+1) / freq) - 1);  
-	htim2.Instance = TIM1;
-  htim2.Init.Period        			= uwPrescalerValue;
-  htim2.Init.Prescaler     			= 9;
-  htim2.Init.ClockDivision 			= 0;
-  htim2.Init.CounterMode   			= TIM_COUNTERMODE_UP;
-  htim2.Init.AutoReloadPreload 	= TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if(HAL_TIM_OC_Init(&htim2) 		!= HAL_OK){
-		printf("reSet TIM1 base clk fail!!!\n");
+static void setSpeakerFreq(uint16_t frequency){
+	int32_t  temp ;
+	TIM_OC_InitTypeDef sConfigOC = {0};
+	temp = HAL_RCC_GetPCLK1Freq();
+  // 计算自动重载值(ARR)和预分频器值(PSC)
+  uint32_t SystemCoreClock = HAL_RCC_GetPCLK1Freq();
+  uint32_t psc = 84 - 1; // 预分频器值，将42MHz时钟分频为1MHz
+  uint32_t arr = (SystemCoreClock / (psc + 1)) / frequency - 1;
+
+  // TIM2初始化
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = psc;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = arr;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK){
+		printf("reSet TIM2 base clk fail!!!\n");
+    Error_Handler();
   }
-	
-	sConfigOC.OCMode = TIM_OCMODE_TOGGLE;
-  //sConfigOC.Pulse = 11;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
-  if(HAL_TIM_OC_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK){
-    printf("reSet TIM5 out freq fail!!!\n");
+  // 配置PWM模式 (使用CH2)
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = arr / 2; // 50%占空比
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK){
+		printf("reSet TIM2 out freq fail!!!\n");
+    Error_Handler();
   }
 }
 
@@ -174,8 +184,8 @@ inline void sPlcSpeakerVolume(int16_t volume){//设置喇叭音量
 	float ftmp;
 	if(LoudspeakerVolume != volume){
 		ftmp = volume * 255 / 100;
-		if(ftmp >255){
-			ftmp = 0;
+		if(ftmp > 0xFF){
+			ftmp = 0xFF;
 		}
 		if(ftmp < 0){
 			ftmp = 0;

@@ -109,11 +109,13 @@
 #define SET_FAN_ON														HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2)
 #define SET_FAN_OFF														HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2)
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-extern uint16_t audioSineTable[];
-#endif
+extern uint16_t audioSineTable[]; 
 #define SET_SPK_TIM_OFF												HAL_TIM_Base_Stop(&htim7);HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
-#define SET_SPK_TIM_ON												HAL_TIM_Base_Start(&htim7);HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);						
+#define SET_SPK_TIM_ON												HAL_TIM_Base_Start(&htim7);HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t *)audioSineTable, 256, DAC_ALIGN_12B_R);	
+
+#define SET_AIM_TIM_OFF												HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1)
+#define SET_AIM_TIM_ON												HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1)
+#define SET_AIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, b);
 #endif
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_10W_1940_A1)
@@ -165,8 +167,12 @@ extern uint16_t audioSineTable[];
 #define SET_FAN_ON														HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1)
 #define SET_FAN_OFF														HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1)
 
-#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2)
-#define SET_SPK_TIM_ON												HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2)
+#define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2)
+#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2)
+
+#define SET_AIM_TIM_OFF												HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2)
+#define SET_AIM_TIM_ON												HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2)
+#define SET_AIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, b);
 #endif
 /*****************************************************************************/
 #define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
@@ -174,8 +180,8 @@ extern uint16_t audioSineTable[];
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
 #define GET_FSWITCH_NC												HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
 
-#define SET_SPEAKER_ON												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
-#define SET_SPEAKER_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
+#define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
+#define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
 
 #define SET_TEC_ON														HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_SET)
 #define SET_TEC_OFF														HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_RESET)
@@ -222,6 +228,7 @@ extern TIM_HandleTypeDef htim2;//SPEAK
 extern TIM_HandleTypeDef htim3;//FAN
 extern TIM_HandleTypeDef htim4;//LED
 extern TIM_HandleTypeDef htim10;//Laser Timer
+extern TIM_HandleTypeDef htim12;//AIM Timer
 extern TIM_HandleTypeDef htim14;//sPlc Timer
 extern RNG_HandleTypeDef hrng;
 #endif
@@ -370,7 +377,8 @@ extern void ADL1(uint16_t Sa) ;//32位非饱和自加
 extern void ADLS1(uint16_t Sa) ;//32位饱和自加
 extern void DEL1(uint16_t Sa) ;//32位非饱和自减
 extern void DELS1(uint16_t Sa) ;//32位饱和自减
-extern void TNTC(uint16_t dist, uint16_t src);//CODE转换为环境温度
+extern void TNTUC(uint16_t dist, uint16_t src);//CODE转换为环境温度
+extern void TNTLC(uint16_t dist, uint16_t src);//CODE转换为环境温度
 extern void TENV(uint16_t dist, uint16_t src);//CODE转换为NTC测量温度温度
 extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);//块复制
 extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);//有符号16位数限制幅度指令
@@ -378,6 +386,10 @@ extern void UPDAC0(void);//立即更新DAC0
 extern void UPDAC1(void);//立即更新DAC1
 extern void UPDAC2(void);
 extern void UPDAC3(void);
+extern void UPDAC4(void);
+extern void UPDAC5(void);
+extern void UPDAC6(void);
+extern void UPDAC7(void);
 extern void CLDAC(void);//立即清空DAC0和DAC1
 extern void IMDIO(void) ;//立即更新IO点状态含输入输出
 extern void NVSAVE(void);//强制立即更新NVRAM

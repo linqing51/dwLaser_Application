@@ -230,13 +230,13 @@ void setRedLaserPwm(int16_t pwm){//设置红激光占空比
 	if(pwm < 0){
 		pwm = 0;
 	}
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm);
+	SET_AIM_TIM_PWM(pwm);
 	if(pwm != 0){
-		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//打开TIM
+		SET_AIM_TIM_ON;//打开TIM
 		LaserOn_635 = true;
 	}
 	else{
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);//关闭TIM
+		SET_AIM_TIM_OFF;//关闭TIM
 		LaserOn_635 = false;
 	}
 	//printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);

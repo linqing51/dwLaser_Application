@@ -300,13 +300,42 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
 					dispBuf[4] = 0x0;
-					SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, "1940nm");
-					SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, "");
-					SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, "635nm");
-					SetControlVisiable(GDDC_PAGE_STANDBY,GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
+					
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
-					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(dispBuf));
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//ÇÐ»»´ý»úÒ³Ãæ						
+
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);					
+#endif				
+#if defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0)
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
+
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
+					
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);					
+#endif
+#if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
+					
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
+					
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
+					
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
+					
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
+#endif							
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//ÇÐ»»´ý»úÒ³Ãæ
+					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(dispBuf));					
 					SetScreen(NVRAM0[EM_DC_PAGE]);					
 					updateStandbyDisplay();
 					break;
@@ -657,13 +686,20 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_SELECT_CH0:{
+				case GDDC_PAGE_STANDBY_KEY_SELECT_CH0A:{
 					if(state){
 						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH0;
 						updateStandbyDisplay();
 					}
 					break;
 				}
+				case GDDC_PAGE_STANDBY_KEY_SELECT_CH0B:{
+					if(state){
+						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH0;
+						updateStandbyDisplay();
+					}
+					break;
+				}				
 				case GDDC_PAGE_STANDBY_KEY_SELECT_CH1:{
 					if(state){
 						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH1;
@@ -824,6 +860,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
 						//Òþ²ØMPÄ£Ê½°´¼ü
 						updateExtralDisplay();
+						updateStandbyDisplay();
 					}
 					break;
 				}
@@ -834,6 +871,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						updatePosWidthDisplay();
 						updateNegWidthDisplay();
 						updateExtralDisplay();
+						updateStandbyDisplay();
 					}
 					break;
 				}
@@ -865,7 +903,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #if defined(MODEL_PVGLS_10W_1940_A1)		
 					memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));						
 					NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;											
-					NVRAM0[EM_SCHEME_NUM_TMP] = 0;
+					NVRAM0[EM_SCHEME_NUM_TMP] = NVRAM0[DM_SCHEME_INDEX];
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;	
 					SetScreen(NVRAM0[EM_DC_PAGE]);						
 					updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
@@ -1277,6 +1315,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
+#endif
+#if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)			
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
+						updateStandbyDisplay();	
 #endif
 					}
 					break;

@@ -101,6 +101,7 @@ void CLDAC(void){//立即清空全部DAC
 
 static void hgc5615(uint16_t dat){//HGC5616 模拟SPI写入
 	uint16_t tmp, i, wdat;
+	dat = dat & 0x3FF;
 	SET_HGC5615_CS(GPIO_PIN_SET);//CS = 1
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
@@ -143,6 +144,7 @@ void sPlcDacInit(void){//DAC初始化
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // 开启DAC输出
+	hgc5615(0);
 }
 void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
@@ -163,6 +165,7 @@ void UPDAC7(void){//立即从SPREG_DAC_0中更新DAC0
 void CLDAC(void){//立即清空全部DAC
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // 设置DAC输出值	
+	hgc5615(0);
 }
 #endif
 

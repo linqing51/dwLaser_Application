@@ -101,8 +101,27 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 #endif
+#if defined(MODEL_PVGLS_10W_1940_A1)
+	if(temp == 1){
+		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
+			inputFilter[3] ++;
+		}
+		else{
+			NVRAM0[X_START] |= (int16_t)(1 << 3);
+		}
+	}
+	else{
+		if(inputFilter[3] > (CONFIG_INPUT_FILTER_TIME * -1)){
+			inputFilter[3] --;
+		}
+		else{
+			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
+		}
+	}
+#endif
 	//X4 光纤探测
-	if(NVRAM0[SPREG_ADC_2] <= deviceConfig.fiberDetect){
+#if defined(MODEL_PVGLS_15W_1470_A0) &&  defined(MODEL_PVGLS_15W_1470_A1)
+	if(NVRAM0[SPREG_ADC_9] <= deviceConfig.fiberDetect){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
 		}
@@ -118,5 +137,24 @@ void sPlcInputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
 		}
 	}	
+#endif
+#if defined(MODEL_PVGLS_10W_1940_A1)
+	if(NVRAM0[SPREG_ADC_9] >= deviceConfig.fiberDetect){
+		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
+			inputFilter[4] ++;
+		}
+		else{
+			NVRAM0[X_START] |= (int16_t)(1 << 4);
+		}
+	}
+	else{
+		if(inputFilter[4] > (CONFIG_INPUT_FILTER_TIME * -1)){
+			inputFilter[4] --;
+		}
+		else{
+			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
+		}
+	}
+#endif
 }
 
