@@ -9,6 +9,27 @@ void softDelayMs(uint16_t ms){//软件延时
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	}
 }
+
+
+
+void FanTimerInit(void) {
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 0;          // 不分频，时钟频率 = 84MHz
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 3359;//25KHZ PWM    
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  HAL_TIM_PWM_Init(&htim3);
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 1680;     // 初始占空比值 (CCR1)
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1);
+}
+
+
 void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
 	GPIO_InitTypeDef GPIO_InitStruct;
 	/* GPIO Ports Clock Enable */
@@ -138,13 +159,20 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 		}
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, speed);
-		if(speed != 0){
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);//打开TIM
+		
+		if(speed <= 0){
+			SET_FAN_OFF;
+			//
 		}
-		else{
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);//关闭TIM
+		else if(speed >0 && speed < 100){
+			SET_FAN_ON;
+			SET_FAN_TIM_PWM(speed);
 		}
+		else if(speed >= 100){
+			SET_FAN_ON;
+			SET_FAN_TIM_PWM(100);
+		}
+
 #endif
 		FanSpeed = speed;
 		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	

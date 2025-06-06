@@ -138,11 +138,8 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	SET_MCP41010_CS(GPIO_PIN_SET);
 }
 
-
 static void setSpeakerFreq(uint16_t frequency){
-	int32_t  temp ;
 	TIM_OC_InitTypeDef sConfigOC = {0};
-	temp = HAL_RCC_GetPCLK1Freq();
   // 计算自动重载值(ARR)和预分频器值(PSC)
   uint32_t SystemCoreClock = HAL_RCC_GetPCLK1Freq();
   uint32_t psc = 84 - 1; // 预分频器值，将42MHz时钟分频为1MHz
@@ -169,7 +166,6 @@ static void setSpeakerFreq(uint16_t frequency){
     Error_Handler();
   }
 }
-
 
 inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
 	if(freq > CONFIG_BEEM_MAX_FREQ){

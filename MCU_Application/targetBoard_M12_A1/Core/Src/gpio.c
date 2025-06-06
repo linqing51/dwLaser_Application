@@ -62,8 +62,8 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, TICK_LED_Pin|ERR_LED_Pin|HGC5615_CS_Pin|HGC5615_SCK_Pin
                           |HGC5615_SDI_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : FS_NC_Pin RFID_INT_Pin */
-  GPIO_InitStruct.Pin = FS_NC_Pin|RFID_INT_Pin;
+  /*Configure GPIO pins : FS_NC_Pin RFID_INT_Pin ESTOP_NC_Pin */
+  GPIO_InitStruct.Pin = FS_NC_Pin|RFID_INT_Pin|ESTOP_NC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
@@ -109,12 +109,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : ESTOP_NC_Pin */
-  GPIO_InitStruct.Pin = ESTOP_NC_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(ESTOP_NC_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : INTERLOCK_NC_Pin */
   GPIO_InitStruct.Pin = INTERLOCK_NC_Pin;

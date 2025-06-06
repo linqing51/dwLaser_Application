@@ -174,7 +174,7 @@
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													250//
+#define CONFIG_DIODE_SET_TEMP													150//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C

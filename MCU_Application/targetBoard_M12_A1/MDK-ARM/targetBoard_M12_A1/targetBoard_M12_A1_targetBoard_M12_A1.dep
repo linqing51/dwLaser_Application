@@ -1,7 +1,7 @@
 Dependencies for Project 'targetBoard_M12_A1', Target 'targetBoard_M12_A1': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::ARMCC
-F (.\startup_stm32f405xx.s)(0x683D607C)(--cpu Cortex-M4.fp.sp -g --apcs=interwork -I ..\Core\Inc -I ../Core/Inc -I ../Drivers/CMSIS/Include-IC:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 542" --pd "STM32F405xx SETA 1"-o .\targetboard_m12_a1\startup_stm32f405xx.o --depend .\targetboard_m12_a1\startup_stm32f405xx.d)
-F (../Core/Src/main.c)(0x682C8AF7)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\main.o --omf_browse .\targetboard_m12_a1\main.crf --depend .\targetboard_m12_a1\main.d)
+F (.\startup_stm32f405xx.s)(0x68406269)(--cpu Cortex-M4.fp.sp -g --apcs=interwork -I ..\Core\Inc -I ../Core/Inc -I ../Drivers/CMSIS/Include-IC:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 542" --pd "STM32F405xx SETA 1"-o .\targetboard_m12_a1\startup_stm32f405xx.o --depend .\targetboard_m12_a1\startup_stm32f405xx.d)
+F (../Core/Src/main.c)(0x683F0BD6)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\main.o --omf_browse .\targetboard_m12_a1\main.crf --depend .\targetboard_m12_a1\main.d)
 I (../Core/Inc/main.h)(0x683D607B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x682304F2)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x680B9871)
@@ -84,7 +84,7 @@ I (../Core/Inc/tim.h)(0x680B9870)
 I (../Core/Inc/usart.h)(0x680B9870)
 I (../USB_HOST/App/usb_host.h)(0x682312CA)
 I (../Core/Inc/gpio.h)(0x680B986E)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (C:\Keil_v5\ARM\CMSIS\Include\arm_math.h)(0x559CEB9A)
 I (C:\Keil_v5\ARM\CMSIS\Include\core_cm4.h)(0x559CEB9A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
@@ -93,7 +93,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -113,7 +113,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h)(0x68
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp.h)(0x682304F2)
 I (../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h)(0x682304F2)
 I (../../MainApp/flash_if.h)(0x65D8C943)
-F (../Core/Src/gpio.c)(0x683D55D8)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\gpio.o --omf_browse .\targetboard_m12_a1\gpio.crf --depend .\targetboard_m12_a1\gpio.d)
+F (../Core/Src/gpio.c)(0x684061C4)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\gpio.o --omf_browse .\targetboard_m12_a1\gpio.crf --depend .\targetboard_m12_a1\gpio.d)
 I (../Core/Inc/gpio.h)(0x680B986E)
 I (../Core/Inc/main.h)(0x683D607B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x682304F2)
@@ -212,7 +212,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h)(0x682304F2)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h)(0x682304DD)
 I (../../MainApp/mainApp.h)(0x6631F25E)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (C:\Keil_v5\ARM\CMSIS\Include\arm_math.h)(0x559CEB9A)
 I (C:\Keil_v5\ARM\CMSIS\Include\core_cm4.h)(0x559CEB9A)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
@@ -230,7 +230,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -523,7 +523,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x682304F2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x682304F2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h)(0x682304F2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h)(0x682304F2)
-F (../Core/Src/tim.c)(0x683D607A)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\tim.o --omf_browse .\targetboard_m12_a1\tim.crf --depend .\targetboard_m12_a1\tim.d)
+F (../Core/Src/tim.c)(0x68406267)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\tim.o --omf_browse .\targetboard_m12_a1\tim.crf --depend .\targetboard_m12_a1\tim.d)
 I (../Core/Inc/tim.h)(0x680B9870)
 I (../Core/Inc/main.h)(0x683D607B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x682304F2)
@@ -827,7 +827,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h)(0x682304F2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h)(0x682304F2)
 F (..\..\sPlc\sPlcFun.c)(0x682F2E11)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcfun.o --omf_browse .\targetboard_m12_a1\splcfun.crf --depend .\targetboard_m12_a1\splcfun.d)
 I (..\..\sPlc\sPlcFun.h)(0x65D8C943)
-I (..\..\sPlc\sPlc.h)(0x683D7135)
+I (..\..\sPlc\sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -898,9 +898,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (..\..\sPlc\sPlcConfig.h)(0x682F2816)
+I (..\..\sPlc\sPlcConfig.h)(0x684069B8)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
 I (../../dcHmi/hmiLib.h)(0x65D8C943)
 I (../../dcHmi/hmiCmdQueue.h)(0x65D8B644)
@@ -928,7 +928,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\sPlc\sPlc.c)(0x67EE8EFC)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splc.o --omf_browse .\targetboard_m12_a1\splc.crf --depend .\targetboard_m12_a1\splc.d)
-I (..\..\sPlc\sPlc.h)(0x683D7135)
+I (..\..\sPlc\sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -999,7 +999,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (..\..\sPlc\sPlcConfig.h)(0x682F2816)
+I (..\..\sPlc\sPlcConfig.h)(0x684069B8)
 I (..\..\sPlc\sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1073,7 +1073,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h)(0x682304F2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h)(0x682304F2)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
 F (..\..\sPlcPort\sPlcEprom.c)(0x680DC182)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splceprom.o --omf_browse .\targetboard_m12_a1\splceprom.crf --depend .\targetboard_m12_a1\splceprom.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1144,7 +1144,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1174,7 +1174,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\sPlcPort\sPlcIoIn.c)(0x683D58B8)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcioin.o --omf_browse .\targetboard_m12_a1\splcioin.crf --depend .\targetboard_m12_a1\splcioin.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1245,7 +1245,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1275,7 +1275,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\sPlcPort\sPlcIoOut.c)(0x680CEBD9)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcioout.o --omf_browse .\targetboard_m12_a1\splcioout.crf --depend .\targetboard_m12_a1\splcioout.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1346,7 +1346,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1376,7 +1376,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\sPlcPort\sPlcLaser.c)(0x682C5370)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splclaser.o --omf_browse .\targetboard_m12_a1\splclaser.crf --depend .\targetboard_m12_a1\splclaser.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1447,7 +1447,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1476,8 +1476,8 @@ I (../FATFS/Target/ffconf.h)(0x682312CA)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
-F (..\..\sPlcPort\sPlcMisc.c)(0x680CEA5F)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcmisc.o --omf_browse .\targetboard_m12_a1\splcmisc.crf --depend .\targetboard_m12_a1\splcmisc.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+F (..\..\sPlcPort\sPlcMisc.c)(0x684064B6)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcmisc.o --omf_browse .\targetboard_m12_a1\splcmisc.crf --depend .\targetboard_m12_a1\splcmisc.d)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1548,7 +1548,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1577,8 +1577,8 @@ I (../FATFS/Target/ffconf.h)(0x682312CA)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
-F (..\..\sPlcPort\sPlcSpeaker.c)(0x683D75BB)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcspeaker.o --omf_browse .\targetboard_m12_a1\splcspeaker.crf --depend .\targetboard_m12_a1\splcspeaker.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+F (..\..\sPlcPort\sPlcSpeaker.c)(0x68406519)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcspeaker.o --omf_browse .\targetboard_m12_a1\splcspeaker.crf --depend .\targetboard_m12_a1\splcspeaker.d)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1649,7 +1649,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1679,7 +1679,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\sPlcPort\sPlcTimer.c)(0x65D8C943)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splctimer.o --omf_browse .\targetboard_m12_a1\splctimer.crf --depend .\targetboard_m12_a1\splctimer.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1750,7 +1750,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1780,7 +1780,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\sPlcPort\sPlcAdc.c)(0x682F226C)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcadc.o --omf_browse .\targetboard_m12_a1\splcadc.crf --depend .\targetboard_m12_a1\splcadc.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1851,7 +1851,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1881,7 +1881,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x682304DD)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\sPlcPort\sPlcDac.c)(0x682F35BE)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\splcdac.o --omf_browse .\targetboard_m12_a1\splcdac.crf --depend .\targetboard_m12_a1\splcdac.d)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -1952,7 +1952,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -1984,7 +1984,7 @@ I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\dcHmi\hmiCmdQueue.c)(0x65D8B644)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\hmicmdqueue.o --omf_browse .\targetboard_m12_a1\hmicmdqueue.crf --depend .\targetboard_m12_a1\hmicmdqueue.d)
 I (..\..\dcHmi\hmiCmdQueue.h)(0x65D8B644)
 I (..\..\dcHmi\hmiLib.h)(0x65D8C943)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2055,7 +2055,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2086,7 +2086,7 @@ I (..\..\dcHmi\hmiCmdProcess.h)(0x65D8B644)
 F (..\..\dcHmi\hmiDriver.c)(0x65D8B644)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\hmidriver.o --omf_browse .\targetboard_m12_a1\hmidriver.crf --depend .\targetboard_m12_a1\hmidriver.d)
 I (..\..\dcHmi\hmiDriver.h)(0x65D8C943)
 I (..\..\dcHmi\hmiLib.h)(0x65D8C943)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2157,7 +2157,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2187,7 +2187,7 @@ I (..\..\dcHmi\hmiCmdQueue.h)(0x65D8B644)
 I (..\..\dcHmi\hmiCmdProcess.h)(0x65D8B644)
 F (..\..\dcHmi\hmiUserUart.c)(0x682C900F)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\hmiuseruart.o --omf_browse .\targetboard_m12_a1\hmiuseruart.crf --depend .\targetboard_m12_a1\hmiuseruart.d)
 I (..\..\dcHmi\hmiLib.h)(0x65D8C943)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2258,7 +2258,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2287,9 +2287,9 @@ I (../../MainApp/flash_if.h)(0x65D8C943)
 I (..\..\dcHmi\hmiCmdQueue.h)(0x65D8B644)
 I (..\..\dcHmi\hmiDriver.h)(0x65D8C943)
 I (..\..\dcHmi\hmiCmdProcess.h)(0x65D8B644)
-F (..\..\MainApp\dcHmiApp.c)(0x683D7148)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\dchmiapp.o --omf_browse .\targetboard_m12_a1\dchmiapp.crf --depend .\targetboard_m12_a1\dchmiapp.d)
+F (..\..\MainApp\dcHmiApp.c)(0x68406C0E)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\dchmiapp.o --omf_browse .\targetboard_m12_a1\dchmiapp.crf --depend .\targetboard_m12_a1\dchmiapp.d)
 I (..\..\MainApp\dcHmiApp.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2360,7 +2360,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2391,7 +2391,7 @@ I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\MainApp\dcHmiLanguage.c)(0x680DC49E)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\dchmilanguage.o --omf_browse .\targetboard_m12_a1\dchmilanguage.crf --depend .\targetboard_m12_a1\dchmilanguage.d)
 I (..\..\MainApp\dcHmiLanguage.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2462,7 +2462,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2494,7 +2494,7 @@ I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\MainApp\dcHmiNotifyButton.c)(0x682ED5EC)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\dchminotifybutton.o --omf_browse .\targetboard_m12_a1\dchminotifybutton.crf --depend .\targetboard_m12_a1\dchminotifybutton.d)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiApp.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2565,7 +2565,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2597,7 +2597,7 @@ I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\MainApp\dcHmiNotifyProgress.c)(0x682D5E73)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\dchminotifyprogress.o --omf_browse .\targetboard_m12_a1\dchminotifyprogress.crf --depend .\targetboard_m12_a1\dchminotifyprogress.d)
 I (..\..\MainApp\dcHmiNotifyProgress.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiApp.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2668,7 +2668,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2700,7 +2700,7 @@ I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\MainApp\dcHmiNotifyReadRTC.c)(0x65D8B643)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\dchminotifyreadrtc.o --omf_browse .\targetboard_m12_a1\dchminotifyreadrtc.crf --depend .\targetboard_m12_a1\dchminotifyreadrtc.d)
 I (..\..\MainApp\dcHmiNotifyReadRTC.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiApp.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2771,7 +2771,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2803,7 +2803,7 @@ I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\MainApp\dcHmiNotifyText.c)(0x67EE8EFC)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\dchminotifytext.o --omf_browse .\targetboard_m12_a1\dchminotifytext.crf --depend .\targetboard_m12_a1\dchminotifytext.d)
 I (..\..\MainApp\dcHmiNotifyText.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiApp.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -2874,7 +2874,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -2948,7 +2948,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h)(0x682304F2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h)(0x682304F2)
 F (..\..\MainApp\MainApp.c)(0x682C8C04)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\mainapp.o --omf_browse .\targetboard_m12_a1\mainapp.crf --depend .\targetboard_m12_a1\mainapp.d)
 I (..\..\MainApp\MainApp.h)(0x6631F25E)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -3019,7 +3019,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -3050,7 +3050,7 @@ I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x682304DD)
 I (../../MainApp/flash_if.h)(0x65D8C943)
 F (..\..\MainApp\MainAppLib.c)(0x682DE3BB)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\mainapplib.o --omf_browse .\targetboard_m12_a1\mainapplib.crf --depend .\targetboard_m12_a1\mainapplib.d)
 I (..\..\MainApp\MainAppLib.h)(0x67EE8EFC)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -3121,7 +3121,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)
@@ -3195,7 +3195,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h)(0x682304F2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h)(0x682304F2)
 F (..\..\deviceInfo\preScheme.c)(0x680E364B)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../lib -I ../../sPlc -I ../../sPlcPort -I ../../dcHmi -I ../../MainApp -I ../../deviceInfo -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F405xx -DUSE_HAL_DRIVER -DSTM32F405xx -DUSER_VECT_TAB_ADDRESS -DARM_MATH_CM4 -DMODEL_PVGLS_10W_1940_A1-o .\targetboard_m12_a1\prescheme.o --omf_browse .\targetboard_m12_a1\prescheme.crf --depend .\targetboard_m12_a1\prescheme.d)
 I (..\..\deviceInfo\preScheme.h)(0x680E3612)
-I (../../sPlc/sPlc.h)(0x683D7135)
+I (../../sPlc/sPlc.h)(0x684064C8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x682304DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x682304DD)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
@@ -3266,7 +3266,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\LIMITS.H)(0x5CEB79D6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEB79DE)
 I (../../lib/libcrc.h)(0x65D8C943)
 I (../../deviceInfo/deviceConfig.h)(0x67EE8EFC)
-I (../../sPlc/sPlcConfig.h)(0x682F2816)
+I (../../sPlc/sPlcConfig.h)(0x684069B8)
 I (../../sPlc/sPlcFun.h)(0x65D8C943)
 I (../../MainApp/dcHmiApp.h)(0x67EE8EFC)
 I (../../deviceInfo/preScheme.h)(0x680E3612)

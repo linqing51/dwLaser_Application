@@ -164,8 +164,10 @@ extern uint16_t audioSineTable[];
 #define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
 #define GET_LASER_CH1													HAL_GPIO_ReadPin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
 
-#define SET_FAN_ON														HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1)
-#define SET_FAN_OFF														HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1)
+#define SET_FAN_ON														HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+#define SET_FAN_OFF														HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+#define SET_FAN_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, b);
+
 
 #define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2)
 #define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2)

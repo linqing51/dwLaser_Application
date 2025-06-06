@@ -2324,7 +2324,12 @@ void updateReadyDisplay(void){//更新READY显示
 	switch(NVRAM0[EM_LASER_CHANNEL_SELECT]){
 		case LASER_CHANNEL_CH0:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH0] / 10.0F;
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)			
 			sprintf(dispBuf, "1470nm");
+#endif
+#if defined(MODEL_PVGLS_10W_1940_A1) || defined(MODEL_PVGLS_7W_1940_A0)
+			sprintf(dispBuf, "1940nm");
+#endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
@@ -2340,7 +2345,7 @@ void updateReadyDisplay(void){//更新READY显示
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}		
-		case LASER_CHANNEL_CH0_RED:{
+		case LASER_CHANNEL_CH0_RED:{  
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_CH0] + (float)NVRAM0[EM_LASER_POWER_635])/ 10.0F;
 			sprintf(dispBuf, "1470+635nm");
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
@@ -2422,9 +2427,9 @@ void dcHmiLoopInit(void){//初始化模块
 	LaserTecIncPids.kd = 0.15;
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-	LaserTecIncPids.kp = 0.04;
-	LaserTecIncPids.ki = 0.002;
-	LaserTecIncPids.kd = 0.05;
+	LaserTecIncPids.kp = 1.1;
+	LaserTecIncPids.ki = 0.1;
+	LaserTecIncPids.kd = 0.9;
 #endif
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
@@ -2509,6 +2514,12 @@ static void temperatureLoop(void){//温度轮询轮询
 			LaserTecOut = 0;
 		}
 		NVRAM0[SPREG_DAC_7] = LaserTecOut;
+		if(LaserTecOut <= 0 ){
+			RRES(Y_TEC);
+		}
+		else{
+			SSET(Y_TEC);
+		}
 		UPDAC7();
 	}
 #endif
@@ -2549,6 +2560,7 @@ static void temperatureLoop(void){//温度轮询轮询
 			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
 		else{	
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
 				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
@@ -2595,6 +2607,48 @@ static void temperatureLoop(void){//温度轮询轮询
 			else{
 				NVRAM0[EM_FAN_SET_SPEED] = 35;
 			}
+#endif
+#if defined(MODEL_PVGLS_10W_1940_A1)
+			if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
+				NVRAM0[EM_FAN_SET_SPEED] = 0;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
+				NVRAM0[EM_FAN_SET_SPEED] = 30;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
+				NVRAM0[EM_FAN_SET_SPEED] = 33;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
+				NVRAM0[EM_FAN_SET_SPEED] = 36;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
+				NVRAM0[EM_FAN_SET_SPEED] = 40;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
+				NVRAM0[EM_FAN_SET_SPEED] = 50;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
+				NVRAM0[EM_FAN_SET_SPEED] = 60;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
+				NVRAM0[EM_FAN_SET_SPEED] = 70;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
+				NVRAM0[EM_FAN_SET_SPEED] = 80;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 550 && NVRAM0[EM_HT_TEMP] < 600){
+				NVRAM0[EM_FAN_SET_SPEED] = 85;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 600 && NVRAM0[EM_HT_TEMP] <650){
+						NVRAM0[EM_FAN_SET_SPEED] = 90;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 650 && NVRAM0[EM_HT_TEMP]< 700){
+				NVRAM0[EM_FAN_SET_SPEED] = 95;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= 700){
+				NVRAM0[EM_FAN_SET_SPEED] = 100;
+			}
+#endif
 		}
 		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
 	}	
