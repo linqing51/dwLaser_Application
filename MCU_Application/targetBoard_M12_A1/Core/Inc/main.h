@@ -107,12 +107,12 @@ void Error_Handler(void);
 #define FAN_FG_GPIO_Port GPIOB
 #define FS_NO_Pin GPIO_PIN_6
 #define FS_NO_GPIO_Port GPIOB
-#define GREEN_LED_PWN_Pin GPIO_PIN_7
+#define RED_LED_PWN_Pin GPIO_PIN_7
+#define RED_LED_PWN_GPIO_Port GPIOB
+#define BLUE_LED_PWM_Pin GPIO_PIN_8
+#define BLUE_LED_PWM_GPIO_Port GPIOB
+#define GREEN_LED_PWN_Pin GPIO_PIN_9
 #define GREEN_LED_PWN_GPIO_Port GPIOB
-#define RED_LED_PWM_Pin GPIO_PIN_8
-#define RED_LED_PWM_GPIO_Port GPIOB
-#define BLUE_LED_PWN_Pin GPIO_PIN_9
-#define BLUE_LED_PWN_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

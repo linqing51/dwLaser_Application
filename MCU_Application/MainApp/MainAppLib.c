@@ -153,7 +153,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率-
 	printf("%s,%d,%s:Calibration input power = %d\n", __FILE__, __LINE__, __func__, power);
 	printf("%s,%d,%s:Calibration max power = %d\n", __FILE__, __LINE__, __func__, pmax);
 	printf("%s,%d,%s:Calibration min power = %d\n", __FILE__, __LINE__, __func__, pmin);
-	if(LDB(R_CALIBRATION_MODE)){//正模式
+	if(LDB(R_CALIBRATION_MODE)){//开启功率校正
 		//通过校正表计算DAC值
 		if(power > 0 && (power <= pCal[0])){//0-10%
 			fk = pCal[0] / 0.1F;

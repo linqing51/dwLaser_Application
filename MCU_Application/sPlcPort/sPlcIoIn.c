@@ -139,7 +139,7 @@ void sPlcInputRefresh(void){//»ñÈ¡ÊäÈëIO
 	}	
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-	if(NVRAM0[SPREG_ADC_9] >= deviceConfig.fiberDetect){
+	if(NVRAM0[SPREG_ADC_9] <= deviceConfig.fiberDetect){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
 		}

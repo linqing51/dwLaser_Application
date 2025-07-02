@@ -484,7 +484,7 @@ void bootLoadProcess(void){//bootload 执行程序
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下	
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-			if(	(GET_INTERLOCK_NC == GPIO_PIN_RESET) &&//安全连锁插入
+			if(	(GET_INTERLOCK_NC == GPIO_PIN_SET) &&//安全连锁插入
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下	
 #endif

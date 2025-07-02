@@ -162,7 +162,7 @@
 #define CONFIG_NTC_B																	3477.0F
 #define CONFIG_NTC_R25																10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF																3300L//
-#define CONFIG_FIBER_PD_THRESHOLD											200//光纤插入时ADC阈值
+#define CONFIG_FIBER_PD_THRESHOLD											600//光纤插入时ADC阈值
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LASER_TEST									0
 /*****************************************************************************/
@@ -174,7 +174,7 @@
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													150//
+#define CONFIG_DIODE_SET_TEMP													250//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
@@ -246,11 +246,11 @@
 /*****************************************************************************/
 #ifdef MODEL_PVGLS_10W_1940_A1
 #define CONFIG_BLUE_LED_MAX_DC												100
-#define CONFIG_BLUE_LED_DEFAULT_DC										50
+#define CONFIG_BLUE_LED_DEFAULT_DC										90
 #define CONFIG_RED_LED_MAX_DC													100	
-#define CONFIG_RED_LED_DEFAULT_DC											50
+#define CONFIG_RED_LED_DEFAULT_DC											90
 #define CONFIG_GREEN_LED_MAX_DC												100
-#define CONFIG_GREEN_LED_DEFAULT_DC										50
+#define CONFIG_GREEN_LED_DEFAULT_DC										90
 #endif
 /*****************************************************************************/
 #define CONFIG_AIM_DEFAULT_GAIN												30
