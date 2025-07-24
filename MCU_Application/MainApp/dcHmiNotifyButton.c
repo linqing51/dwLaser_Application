@@ -1,15 +1,15 @@
 #include "dcHmiNotifyButton.h"
 /*****************************************************************************/
-//°´Å¥¿Ø¼şÍ¨Öªµ±°´Å¥×´Ì¬¸Ä±ä(»òµ÷ÓÃGetControlValue)Ê±£¬Ö´ĞĞ´Ëº¯Êı
-//screen_id »­ÃæID;control_id ¿Ø¼şID;state °´Å¥×´Ì¬£º0µ¯Æğ£¬1°´ÏÂ
+//æŒ‰é’®æ§ä»¶é€šçŸ¥å½“æŒ‰é’®çŠ¶æ€æ”¹å˜(æˆ–è°ƒç”¨GetControlValue)æ—¶ï¼Œæ‰§è¡Œæ­¤å‡½æ•°
+//screen_id ç”»é¢ID;control_id æ§ä»¶ID;state æŒ‰é’®çŠ¶æ€ï¼š0å¼¹èµ·ï¼Œ1æŒ‰ä¸‹
 void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){ 
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	//PASSCODE ÃÜÂëÊäÈëÒ³Ãæ
+	//PASSCODE å¯†ç è¾“å…¥é¡µé¢
 	switch(screen_id){
-		case GDDC_PAGE_PASSCODE:{//µÈ´ıÃÜÂëÊäÈë
+		case GDDC_PAGE_PASSCODE:{//ç­‰å¾…å¯†ç è¾“å…¥
 			dispBuf[4] = 0;
 			switch(control_id){
-				case GDDC_PAGE_PASSCODE_KEY_NUM1:{//°´¼ü1
+				case GDDC_PAGE_PASSCODE_KEY_NUM1:{//æŒ‰é”®1
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0031;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -31,7 +31,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM2:{//°´¼ü2
+				case GDDC_PAGE_PASSCODE_KEY_NUM2:{//æŒ‰é”®2
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0032;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -53,7 +53,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM3:{//°´¼ü3
+				case GDDC_PAGE_PASSCODE_KEY_NUM3:{//æŒ‰é”®3
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0033;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -76,7 +76,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));				
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM4:{//°´¼ü4
+				case GDDC_PAGE_PASSCODE_KEY_NUM4:{//æŒ‰é”®4
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0034;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -98,7 +98,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM5:{//°´¼ü5
+				case GDDC_PAGE_PASSCODE_KEY_NUM5:{//æŒ‰é”®5
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0035;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -120,7 +120,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM6:{//°´¼ü6
+				case GDDC_PAGE_PASSCODE_KEY_NUM6:{//æŒ‰é”®6
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0036;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -142,7 +142,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM7:{//°´¼ü7
+				case GDDC_PAGE_PASSCODE_KEY_NUM7:{//æŒ‰é”®7
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0037;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -164,7 +164,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM8:{//°´¼ü8
+				case GDDC_PAGE_PASSCODE_KEY_NUM8:{//æŒ‰é”®8
 						if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0038;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -186,7 +186,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM9:{//°´¼ü9
+				case GDDC_PAGE_PASSCODE_KEY_NUM9:{//æŒ‰é”®9
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0039;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -209,7 +209,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_NUM0:{//°´¼ü0
+				case GDDC_PAGE_PASSCODE_KEY_NUM0:{//æŒ‰é”®0
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0030;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -231,15 +231,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_CANCEL:{//°´¼üCANCEL
-					CLR(EM_DC_NEW_PASSCODE0);//Çå¿ÕÒÑÊäÈëÃÜÂë
+				case GDDC_PAGE_PASSCODE_KEY_CANCEL:{//æŒ‰é”®CANCEL
+					CLR(EM_DC_NEW_PASSCODE0);//æ¸…ç©ºå·²è¾“å…¥å¯†ç 
 					CLR(EM_DC_NEW_PASSCODE1);
-					CLR(EM_DC_PASSCODE_INDEX);//Çå¿ÕÃÜÂëÏÔÊ¾Î»Ë÷Òı
+					CLR(EM_DC_PASSCODE_INDEX);//æ¸…ç©ºå¯†ç æ˜¾ç¤ºä½ç´¢å¼•
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_PASSCODE;
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_BACKSPACE:{//°´¼üBACKSPACE
+				case GDDC_PAGE_PASSCODE_KEY_BACKSPACE:{//æŒ‰é”®BACKSPACE
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 4){
 						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0x00FF;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x3;
@@ -261,7 +261,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_CHANGEPASSCODE:{//°´¼üCHANGEPASSCODE
+				case GDDC_PAGE_PASSCODE_KEY_CHANGEPASSCODE:{//æŒ‰é”®CHANGEPASSCODE
 					if((NVRAM0[EM_DC_NEW_PASSCODE0] == NVRAM0[DM_DC_OLD_PASSCODE0]) && (NVRAM0[EM_DC_NEW_PASSCODE1] == NVRAM0[DM_DC_OLD_PASSCODE1])){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_NEW0;
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_NEW_PASSCODE;
@@ -272,16 +272,16 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_NEW_PASSCODE;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 					}
-					CLR(EM_DC_NEW_PASSCODE0);//Çå¿ÕÒÑÊäÈëÃÜÂë
+					CLR(EM_DC_NEW_PASSCODE0);//æ¸…ç©ºå·²è¾“å…¥å¯†ç 
 					CLR(EM_DC_NEW_PASSCODE1);
-					CLR(EM_DC_PASSCODE_INDEX);//Çå¿ÕÃÜÂëÏÔÊ¾Î»Ë÷Òı
+					CLR(EM_DC_PASSCODE_INDEX);//æ¸…ç©ºå¯†ç æ˜¾ç¤ºä½ç´¢å¼•
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
 					dispBuf[4] = 0x0;
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_PASSCODE_KEY_ENTER:{//°´¼üENTER
+				case GDDC_PAGE_PASSCODE_KEY_ENTER:{//æŒ‰é”®ENTER
 					if((NVRAM0[EM_DC_NEW_PASSCODE0] == CONFIG_HMI_ADMIN_PASSWORD0) && (NVRAM0[EM_DC_NEW_PASSCODE1] == CONFIG_HMI_ADMIN_PASSWORD1)){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						SSET(R_ENGINEER_MODE);
@@ -294,9 +294,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					else{
 						break;
 					}
-					CLR(EM_DC_NEW_PASSCODE0);//Çå¿ÕÒÑÊäÈëÃÜÂë
+					CLR(EM_DC_NEW_PASSCODE0);//æ¸…ç©ºå·²è¾“å…¥å¯†ç 
 					CLR(EM_DC_NEW_PASSCODE1);
-					CLR(EM_DC_PASSCODE_INDEX);//Çå¿ÕÃÜÂëÏÔÊ¾Î»Ë÷Òı 
+					CLR(EM_DC_PASSCODE_INDEX);//æ¸…ç©ºå¯†ç æ˜¾ç¤ºä½ç´¢å¼• 
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
 					dispBuf[4] = 0x0;
@@ -333,7 +333,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
 #endif							
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//ÇĞ»»´ı»úÒ³Ãæ
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//åˆ‡æ¢å¾…æœºé¡µé¢
 					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(dispBuf));					
 					SetScreen(NVRAM0[EM_DC_PAGE]);					
 					updateStandbyDisplay();
@@ -343,10 +343,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}
-		case GDDC_PAGE_NEW_PASSCODE:{//ĞÂÃÜÂëÊäÈëÒ³Ãæ
+		case GDDC_PAGE_NEW_PASSCODE:{//æ–°å¯†ç è¾“å…¥é¡µé¢
 			dispBuf[4] = 0x0;
 			switch(control_id){
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM1:{//°´¼ü1
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM1:{//æŒ‰é”®1
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0031;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -368,7 +368,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM2:{//°´¼ü2	
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM2:{//æŒ‰é”®2	
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0032;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -390,7 +390,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM3:{//°´¼ü3
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM3:{//æŒ‰é”®3
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0033;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -412,7 +412,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM4:{//°´¼ü4
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM4:{//æŒ‰é”®4
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0034;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -434,7 +434,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM5:{//°´¼ü5
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM5:{//æŒ‰é”®5
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0035;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -456,7 +456,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM6:{//°´¼ü6
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM6:{//æŒ‰é”®6
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0036;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -478,7 +478,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM7:{//°´¼ü7
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM7:{//æŒ‰é”®7
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0037;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -500,7 +500,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM8:{//°´¼ü8
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM8:{//æŒ‰é”®8
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0038;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -522,7 +522,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM9:{//°´¼ü9
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM9:{//æŒ‰é”®9
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0039;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -544,7 +544,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;	
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM0:{//°´¼ü0
+				case GDDC_PAGE_NEWPASSCODE_KEY_NUM0:{//æŒ‰é”®0
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0030;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -569,7 +569,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_NEWPASSCODE_KEY_CANCEL:{
 					CLR(EM_DC_NEW_PASSCODE0);
 					CLR(EM_DC_NEW_PASSCODE1);
-					CLR(EM_DC_PASSCODE_INDEX);//Çå¿ÕÃÜÂëÏÔÊ¾Î»Ë÷Òı 
+					CLR(EM_DC_PASSCODE_INDEX);//æ¸…ç©ºå¯†ç æ˜¾ç¤ºä½ç´¢å¼• 
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
@@ -602,7 +602,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[DM_DC_OLD_PASSCODE0] = NVRAM0[EM_DC_NEW_PASSCODE0];
 						NVRAM0[DM_DC_OLD_PASSCODE1] = NVRAM0[EM_DC_NEW_PASSCODE1];
 						NVSAVE();
-						CLR(EM_DC_PASSCODE_INDEX);//Çå¿ÕÃÜÂëÏÔÊ¾Î»Ë÷Òı 
+						CLR(EM_DC_PASSCODE_INDEX);//æ¸…ç©ºå¯†ç æ˜¾ç¤ºä½ç´¢å¼• 
 						CLR(EM_DC_NEW_PASSCODE0);
 						CLR(EM_DC_NEW_PASSCODE1);
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_INPUT;
@@ -610,7 +610,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 					}
 					else{
-						CLR(EM_DC_PASSCODE_INDEX);//Çå¿ÕÃÜÂëÏÔÊ¾Î»Ë÷Òı 
+						CLR(EM_DC_PASSCODE_INDEX);//æ¸…ç©ºå¯†ç æ˜¾ç¤ºä½ç´¢å¼• 
 						CLR(EM_DC_NEW_PASSCODE0);
 						CLR(EM_DC_NEW_PASSCODE1);
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_NEW0;
@@ -621,10 +621,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_BACK:{//·ÅÆúĞÂÃÜÂëĞŞ¸Ä
+				case GDDC_PAGE_NEWPASSCODE_KEY_BACK:{//æ”¾å¼ƒæ–°å¯†ç ä¿®æ”¹
 					CLR(EM_DC_NEW_PASSCODE0);
 					CLR(EM_DC_NEW_PASSCODE1);
-					CLR(EM_DC_PASSCODE_INDEX);//Çå¿ÕÃÜÂëÏÔÊ¾Î»Ë÷Òı 
+					CLR(EM_DC_PASSCODE_INDEX);//æ¸…ç©ºå¯†ç æ˜¾ç¤ºä½ç´¢å¼• 
 					NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_INPUT;
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
@@ -637,21 +637,21 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}		
-		case GDDC_PAGE_STANDBY:{//Ö÷½çÃæSTANDBY CW
+		case GDDC_PAGE_STANDBY:{//ä¸»ç•Œé¢STANDBY CW
 			switch(control_id){
 				case GDDC_PAGE_STANDBY_KEY_POWER_SEL_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//Ñ¡ÖĞ1470nm
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//é€‰ä¸­1470nm
 							if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASER_POWER_CH0){
 								ADDS1(EM_LASER_POWER_CH0);
 							}
 						}
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//Ñ¡ÖĞ980nm
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//é€‰ä¸­980nm
 							if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_MAX_LASER_POWER_CH1){
 								ADDS1(EM_LASER_POWER_CH1);							
 							}
 						}
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//Ñ¡ÖĞ635nm
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//é€‰ä¸­635nm
 							if(NVRAM0[EM_LASER_POWER_635] < CONFIG_MAX_LASER_POWER_RED){
 								ADDS1(EM_LASER_POWER_635);								
 							}
@@ -664,18 +664,18 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_POWER_SEL_INC:{
 					if(state){
 
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//Ñ¡ÖĞ1470nm
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//é€‰ä¸­1470nm
 							if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_MIN_LASER_POWER_CH0){
 								DECS1(EM_LASER_POWER_CH0);
 							}
 						}
 
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//Ñ¡ÖĞ980nm
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//é€‰ä¸­980nm
 							if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_MIN_LASER_POWER_CH1){
 								DECS1(EM_LASER_POWER_CH1);							
 							}
 						}
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//Ñ¡ÖĞ635nm
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//é€‰ä¸­635nm
 							if(NVRAM0[EM_LASER_POWER_635] > CONFIG_MIN_LASER_POWER_RED){
 								DECS1(EM_LASER_POWER_635);								
 							}
@@ -836,13 +836,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_SCHEME_LAST:{//Ñ¡ÔñÉÏÒ»¸ö·½°¸
+				case GDDC_PAGE_STANDBY_KEY_SCHEME_LAST:{//é€‰æ‹©ä¸Šä¸€ä¸ªæ–¹æ¡ˆ
 					if(state){
 						SSET(R_STANDBY_KEY_SCHEME_LAST_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT:{//Ñ¡ÔñÏÂÒ»¸ö·½°¸
+				case GDDC_PAGE_STANDBY_KEY_SCHEME_NEXT:{//é€‰æ‹©ä¸‹ä¸€ä¸ªæ–¹æ¡ˆ
 					if(state){
 						SSET(R_STANDBY_KEY_SCHEME_NEXT_DOWN);
 					}
@@ -857,7 +857,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_MODE_CW:{
 					if(state){
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_CW;
-						//Òş²ØMPÄ£Ê½°´¼ü
+						//éšè—MPæ¨¡å¼æŒ‰é”®
 						updateExtralDisplay();
 						updateStandbyDisplay();
 					}
@@ -866,7 +866,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_MODE_MP:{
 					if(state){
 						NVRAM0[EM_LASER_PULSE_MODE] = LASER_MODE_MP;
-						//ÏÔÊ¾MPÄ£Ê½°´¼ü
+						//æ˜¾ç¤ºMPæ¨¡å¼æŒ‰é”®
 						updatePosWidthDisplay();
 						updateNegWidthDisplay();
 						updateExtralDisplay();
@@ -880,7 +880,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME:{//°´¼üSCHEME
+				case GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME:{//æŒ‰é”®SCHEME
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
@@ -964,7 +964,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}
-		case GDDC_PAGE_OPTION:{//Ñ¡ÏîÒ³Ãæ
+		case GDDC_PAGE_OPTION:{//é€‰é¡¹é¡µé¢
 			switch(control_id){
 				case GDDC_PAGE_OPTION_KEY_TONE:{
 					if(state){
@@ -999,7 +999,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;					
 				}
-				case GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION:{//ĞÅÏ¢
+				case GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION:{//ä¿¡æ¯
 					if(state){
 						SSET(R_OPTION_KEY_ENTER_INFORMATION_DOWN);
 					}
@@ -1009,8 +1009,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						//loadScheme();
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//ÇĞ»»´ı»úÒ³Ãæ
-						SetScreen(NVRAM0[EM_DC_PAGE]);//ÇĞ»»´ı»úÒ³Ãæ
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//åˆ‡æ¢å¾…æœºé¡µé¢
+						SetScreen(NVRAM0[EM_DC_PAGE]);//åˆ‡æ¢å¾…æœºé¡µé¢
 						updateStandbyDisplay();
 					}
 					break;
@@ -1039,10 +1039,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_RESTORE_KEY_YES:{
 					if(state){
 						restoreDefault();
-						NVFSAVE();//Ç¿ÖÆ¸üĞÂNVRAM
+						NVFSAVE();//å¼ºåˆ¶æ›´æ–°NVRAM
 						FDSAV();
-						//updateOptionDisplay();//¸üĞÂOptionÏÔÊ¾
-						//SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//¸üĞÂ±³¹âÁÁ¶È
+						//updateOptionDisplay();//æ›´æ–°Optionæ˜¾ç¤º
+						//SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//æ›´æ–°èƒŒå…‰äº®åº¦
 						//NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
 						//SetScreen(NVRAM0[EM_DC_PAGE]);
 						REBOOT();
@@ -1295,7 +1295,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						if(NVRAM0[EM_SCHEME_CLASSIFY_TMP] == SCHEME_CUSTIOM){
 							memcpy((char*)FDRAM0, (char*)FDRAM1, (CONFIG_FDRAM_SIZE * 2));
 						}							
-						NVRAM0[DM_SCHEME_INDEX] = NVRAM0[EM_SCHEME_NUM_TMP];//Ñ¡¶¨·½°¸ÉúĞ§
+						NVRAM0[DM_SCHEME_INDEX] = NVRAM0[EM_SCHEME_NUM_TMP];//é€‰å®šæ–¹æ¡ˆç”Ÿæ•ˆ
 						NVRAM0[DM_SCHEME_CLASSIFY] = NVRAM0[EM_SCHEME_CLASSIFY_TMP];
 						loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
@@ -1523,32 +1523,32 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM:{//Çå¿ÕEPROM
+				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM:{//æ¸…ç©ºEPROM
 					if(state){
 						SSET(R_CLEAR_EPROM);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_CRC:{//Çå¿Õ¹Ì¼şCRC
+				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_CRC:{//æ¸…ç©ºå›ºä»¶CRC
 					if(state){
 						SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 						SSET(R_CLEAR_CRC);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM:{//´¢´æEPROM
+				case GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM:{//å‚¨å­˜EPROM
 					if(state){
 						SSET(R_SAVE_EPROM);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ:{//¸üĞÂBOOTLOADÇëÇó
+				case GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ:{//æ›´æ–°BOOTLOADè¯·æ±‚
 					if(state){
 						SSET(R_UPDATE_BOOTLOAD_REQ);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES:{//¼ÆËãUÅÌBOOTLOADÎÄ¼şCRCÖµ
+				case GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES:{//è®¡ç®—Uç›˜BOOTLOADæ–‡ä»¶CRCå€¼
 					if(state){
 						SSET(R_UPDATE_BOOTLOAD_YES);
 					}
@@ -1562,10 +1562,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK:{
 					if(state){
-						deviceConfig.normalOpenInterLock = 0;//°´ÏÂÉèÖÃÎªÁªËø³£±Õ
+						deviceConfig.normalOpenInterLock = 0;//æŒ‰ä¸‹è®¾ç½®ä¸ºè”é”å¸¸é—­
 					}
 					else{
-						deviceConfig.normalOpenInterLock = 1;//µ¯ÆğÉèÖÃÎªÁ¬Ëø³£¿ª
+						deviceConfig.normalOpenInterLock = 1;//å¼¹èµ·è®¾ç½®ä¸ºè¿é”å¸¸å¼€
 					}
 					break;
 				}

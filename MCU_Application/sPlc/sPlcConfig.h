@@ -14,7 +14,7 @@
 #define LASER_CHANNEL_CH1															0x02//980
 #define LASER_CHANNEL_CH2															0x03
 #define LASER_CHANNEL_CH3															0x04
-#define LASER_CHANNEL_RED															0x05//ºì¼¤¹â
+#define LASER_CHANNEL_RED															0x05//çº¢æ¿€å…‰
 #define LASER_CHANNEL_CH0_RED													0x06
 #define LASER_CHANNEL_CH1_RED													0x07
 /*****************************************************************************/
@@ -29,7 +29,7 @@
 #define SCHMEM_THERAPY																0x0009
 #define SCHEME_CUSTIOM																0x0000
 /*****************************************************************************/
-//¶¨Òå·ÖÀà·½°¸¸öÊý
+//å®šä¹‰åˆ†ç±»æ–¹æ¡ˆä¸ªæ•°
 #define CONFIG_PHLEBOLOGY_SIZE												3
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												22
@@ -60,94 +60,94 @@
 #define CONFIG_MORSECODE_LONG_TIME										900
 #define CONFIG_MORSECODE_SHORT_TIME										300
 /*****************************************************************************/
-#define CONFIG_DEBUG_DAC															0//µ÷ÊÔDACÇý¶¯
-#define CONFIG_DEBUB_ADC															0//µ÷ÊÔADCÇý¶¯
-#define CONFIG_DEBUG_EPROM														0//µ÷ÊÔEPROMÇý¶¯
-#define CONFIG_DEBUG_IO																0//µ÷ÊÔIO
-#define CONFIG_DEBUG_SPK															0//µ÷ÊÔ·äÃùÆ÷Çý¶¯
-#define CONFIG_DEBUG_LED															0//µ÷ÊÔÖ¸Ê¾µÆÇý¶¯
-#define CONFIG_DEBUG_AIM															0//µ÷ÊÔÖ¸Ê¾¹âÇý¶¯
-#define CONFIG_DEBUG_LASER														0//µ÷ÊÔLASERÇý¶¯
-#define CONFIG_DEBUG_SPLC															0//µ÷ÊÔSPLCÃüÁî
-#define CONFIG_DEBUG_WSW															0//µ÷ÊÔÎÞÏß½ÅÌ¤
+#define CONFIG_DEBUG_DAC															0//è°ƒè¯•DACé©±åŠ¨
+#define CONFIG_DEBUB_ADC															0//è°ƒè¯•ADCé©±åŠ¨
+#define CONFIG_DEBUG_EPROM														0//è°ƒè¯•EPROMé©±åŠ¨
+#define CONFIG_DEBUG_IO																0//è°ƒè¯•IO
+#define CONFIG_DEBUG_SPK															0//è°ƒè¯•èœ‚é¸£å™¨é©±åŠ¨
+#define CONFIG_DEBUG_LED															0//è°ƒè¯•æŒ‡ç¤ºç¯é©±åŠ¨
+#define CONFIG_DEBUG_AIM															0//è°ƒè¯•æŒ‡ç¤ºå…‰é©±åŠ¨
+#define CONFIG_DEBUG_LASER														0//è°ƒè¯•LASERé©±åŠ¨
+#define CONFIG_DEBUG_SPLC															0//è°ƒè¯•SPLCå‘½ä»¤
+#define CONFIG_DEBUG_WSW															0//è°ƒè¯•æ— çº¿è„šè¸
 /*****************************************************************************/
-#define CONFIG_GDDC_UART_BAUDRATE											230400//LCDÍ¨ÐÅ²¨ÌØÂÊ
+#define CONFIG_GDDC_UART_BAUDRATE											230400//LCDé€šä¿¡æ³¢ç‰¹çŽ‡
 /*****************************************************************************/
-#define BOOTLOAD_MAIN_ADDRESS													0x0800FE00//Ö÷°æ±¾±êÊ¶µØÖ·															
-#define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//´Î°æ±¾±êÊ¶µØÖ·
-#define STM32_UNIQUE_ID_SIZE 													12//MCUÐòÁÐºÅ  8*12=96Bit
-#define DEVID_H																				'1'//Éè±¸ID
-#define DEVID_L																				'A'//Éè±¸ID
-#define BUFFER_SIZE        														((uint16_t)512*32)//512µÄÕûÊý±¶
-#define CONFIG_JUMP_DELAY															7000//¼ì²âUÅÌÊ±¼ä
+#define BOOTLOAD_MAIN_ADDRESS													0x0800FE00//ä¸»ç‰ˆæœ¬æ ‡è¯†åœ°å€															
+#define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//æ¬¡ç‰ˆæœ¬æ ‡è¯†åœ°å€
+#define STM32_UNIQUE_ID_SIZE 													12//MCUåºåˆ—å·  8*12=96Bit
+#define DEVID_H																				'1'//è®¾å¤‡ID
+#define DEVID_L																				'A'//è®¾å¤‡ID
+#define BUFFER_SIZE        														((uint16_t)512*32)//512çš„æ•´æ•°å€
+#define CONFIG_JUMP_DELAY															7000//æ£€æµ‹Uç›˜æ—¶é—´
 #define FATFS_ROOT																		"0:"
-#define BOOTLOAD_FILENAME															"/bootload.bin"//Òýµ¼¹Ì¼þ
-#define LOG_FIRMWARE_FILENAME													"/log.txt"//²Ù×÷¼ÇÂ¼ÎÄ¼þ
-#define CFG_FIRMWARE_FILENAME													"/las.cfg"//²Ù×÷ÅäÖÃÎÄ¼þ
-#define LMCU_FIRMWARE_FILENAME												"/ld_mcu.bin"//¸üÐÂMCU¹Ì¼þµØÖ·
-#define LLCD_FIRMWARE_FILENAME												"/ld_lcd.pkg"//¸üÐÂLCD¹Ì¼þµØÖ·
-#define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK ´¢´æÃû³Æ
-#define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM »Ö¸´Ãû³Æ
+#define BOOTLOAD_FILENAME															"/bootload.bin"//å¼•å¯¼å›ºä»¶
+#define LOG_FIRMWARE_FILENAME													"/log.txt"//æ“ä½œè®°å½•æ–‡ä»¶
+#define CFG_FIRMWARE_FILENAME													"/las.cfg"//æ“ä½œé…ç½®æ–‡ä»¶
+#define LMCU_FIRMWARE_FILENAME												"/ld_mcu.bin"//æ›´æ–°MCUå›ºä»¶åœ°å€
+#define LLCD_FIRMWARE_FILENAME												"/ld_lcd.pkg"//æ›´æ–°LCDå›ºä»¶åœ°å€
+#define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK å‚¨å­˜åç§°
+#define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM æ¢å¤åç§°
 /*****************************************************************************/				
-#define CONFIG_SPLC_MAX_SPK_FREQ											4500L//À®°È×î¸ßÆµÂÊ
-#define CONFIG_SPLC_MIN_SPL_FREQ											500//À®°È×îµÍÆµÂÊ
-#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1100//·äÃùÆ÷Ä¬ÈÏÆµÂÊ
-#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1400//·äÃùÆ÷±äÉùÆµÂÊ
+#define CONFIG_SPLC_MAX_SPK_FREQ											4500L//å–‡å­æœ€é«˜é¢‘çŽ‡
+#define CONFIG_SPLC_MIN_SPL_FREQ											500//å–‡å­æœ€ä½Žé¢‘çŽ‡
+#define CONFIG_SPLC_DEFAULT_SPK_FREQ									1100//èœ‚é¸£å™¨é»˜è®¤é¢‘çŽ‡
+#define CONFIG_SPLC_ACOUSITC_SPK_FREQ									1400//èœ‚é¸£å™¨å˜å£°é¢‘çŽ‡
 /*****************************************************************************/
-#define CONFIG_INPUT_FILTER_TIME											8//ÊäÈëÊý×ÖÂË²¨É¨ÃèÖÜÆÚ 1mS * N
+#define CONFIG_INPUT_FILTER_TIME											8//è¾“å…¥æ•°å­—æ»¤æ³¢æ‰«æå‘¨æœŸ 1mS * N
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_SPWM												1//Ê¹ÁËÈí¼þPWM¹¦ÄÜ
-#define CONFIG_SPLC_FUNTEST														0//¹¦ÄÜÖ¸Áî²âÊÔ
+#define CONFIG_SPLC_USING_SPWM												1//ä½¿äº†è½¯ä»¶PWMåŠŸèƒ½
+#define CONFIG_SPLC_FUNTEST														0//åŠŸèƒ½æŒ‡ä»¤æµ‹è¯•
 /*****************************************************************************/
-#define CONFIG_SPLC_ASSERT														1//¼ì²éµØÖ··¶Î§
+#define CONFIG_SPLC_ASSERT														1//æ£€æŸ¥åœ°å€èŒƒå›´
 #define CONFIG_SPLC_CLEAR_CODE												0xA58E
 #define CONFIG_SOFTPLC_TICK														200L//5mS
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM ¶ÁÐ´²âÊÔ
-//EPROM×Ô¼ì
+#define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM è¯»å†™æµ‹è¯•
+//EPROMè‡ªæ£€
 #define CONFIG_EPROM_SIZE 														CONFIG_AT24C64_SIZE
 #define	CONFIG_AT24C64_SIZE														8192
 #define	CONFIG_AT24C128_SIZE 													16384
 #define	CONFIG_AT24C256_SIZE 													32768//32K*8
 #define CONFIG_EPROM_WRITE_ADDR												0xA0//
 #define CONFIG_EPROM_READ_ADDR												0xA1//
-#define CONFIG_EPROM_TIMEOUT													1000//EPROM¶ÁÐ´³¬Ê±
-#define CONFIG_EPROM_PAGE_SIZE												0x08//EPROM Ò³´óÐ¡
-#define CONFIG_EPROM_WRITE_DELAY											0//Ð´ÈëµÈ´ýÊ±¼ämS
+#define CONFIG_EPROM_TIMEOUT													1000//EPROMè¯»å†™è¶…æ—¶
+#define CONFIG_EPROM_PAGE_SIZE												0x08//EPROM é¡µå¤§å°
+#define CONFIG_EPROM_WRITE_DELAY											0//å†™å…¥ç­‰å¾…æ—¶é—´mS
 /*****************************************************************************/
 #define CONFIG_EPROM_MR_START													(0x0L)//
 #define CONFIG_EPROM_MR_END														(CONFIG_EPROM_MR_START + MR_END - MR_START)
-#define CONFIG_EPROM_DM_START													(CONFIG_EPROM_MR_END + 1)//NVRAMÖÐDMÔÚEPROM´¢´æµØÖ·
+#define CONFIG_EPROM_DM_START													(CONFIG_EPROM_MR_END + 1)//NVRAMä¸­DMåœ¨EPROMå‚¨å­˜åœ°å€
 #define CONFIG_EPROM_DM_END														(CONFIG_EPROM_DM_START + DM_END - DM_START)
 
-#define CONFIG_EPROM_FD_SCHEME_SIZE										((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//µ¥¸ö·½°¸Õ¼ÓÃµÄEPROM¿Õ¼ä
+#define CONFIG_EPROM_FD_SCHEME_SIZE										((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//å•ä¸ªæ–¹æ¡ˆå ç”¨çš„EPROMç©ºé—´
 #define CONFIG_EPROM_FD_START													(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END														(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-#define CONFIG_EPROM_MR_CRC														(7524L)//4B MR NVRAM CRC32 Ó²¼þ¼ÆËã
-#define CONFIG_EPROM_DM_CRC														(7528L)//4B DM NVRAM CRC32 Ó²¼þ¼ÆËã
-#define CONFIG_EPROM_FD_CRC														(7532L)//4B FD NVRAM CRC32 Ó²¼þ¼ÆËã
-#define CONFIG_EPROM_MCU_FW_CRC												(7536L)//4B MCU¹Ì¼þCRC32Öµ Èí¼þ¼ÆËã
-#define CONFIG_EPROM_LCD_FW_CRC												(7540L)//4B LCD¹Ì¼þCRC32Öµ Èí¼þ¼ÆËã
-#define CONFIG_EPROM_CFG_CRC													(7544L)//4B deviceConfig CRC32Öµ Ó²¼þ¼ÆËã
-#define CONFIG_EPROM_LOG_CRC													(7548L)//4B logInfo CRC32Öµ Ó²¼þ¼ÆËã
+#define CONFIG_EPROM_MR_CRC														(7524L)//4B MR NVRAM CRC32 ç¡¬ä»¶è®¡ç®—
+#define CONFIG_EPROM_DM_CRC														(7528L)//4B DM NVRAM CRC32 ç¡¬ä»¶è®¡ç®—
+#define CONFIG_EPROM_FD_CRC														(7532L)//4B FD NVRAM CRC32 ç¡¬ä»¶è®¡ç®—
+#define CONFIG_EPROM_MCU_FW_CRC												(7536L)//4B MCUå›ºä»¶CRC32å€¼ è½¯ä»¶è®¡ç®—
+#define CONFIG_EPROM_LCD_FW_CRC												(7540L)//4B LCDå›ºä»¶CRC32å€¼ è½¯ä»¶è®¡ç®—
+#define CONFIG_EPROM_CFG_CRC													(7544L)//4B deviceConfig CRC32å€¼ ç¡¬ä»¶è®¡ç®—
+#define CONFIG_EPROM_LOG_CRC													(7548L)//4B logInfo CRC32å€¼ ç¡¬ä»¶è®¡ç®—
 
-#define CONFIG_EPROM_CONFIG_START											(7552L)//512B ÅäÖÃÐÅÏ¢Çø
+#define CONFIG_EPROM_CONFIG_START											(7552L)//512B é…ç½®ä¿¡æ¯åŒº
 #define CONFIG_EPROM_CONFIG_END												(8063L)
-#define CONFIG_EPROM_LOGINFO_START										(8064L)//128B ¼ÇÂ¼ÐÅÏ¢Çø 
+#define CONFIG_EPROM_LOGINFO_START										(8064L)//128B è®°å½•ä¿¡æ¯åŒº 
 #define CONFIG_EPROM_LOGINFO_END											(8191L)
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_ADC													1//Ê¹ÄÜADCÄ£¿é
+#define CONFIG_SPLC_USING_ADC													1//ä½¿èƒ½ADCæ¨¡å—
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-#define CONFIG_SPLC_ADC_CHANNEL												6//ADC²É¼¯Í¨µÀ
+#define CONFIG_SPLC_ADC_CHANNEL												6//ADCé‡‡é›†é€šé“
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-#define CONFIG_SPLC_ADC_CHANNEL												10//ADC²É¼¯Í¨µÀ
+#define CONFIG_SPLC_ADC_CHANNEL												10//ADCé‡‡é›†é€šé“
 #endif
-#define CONFIG_SPLC_ADC_AVERAGE_NUM										8//ADCÆ½¾ùÖµ´ÎÊý
-#define CONFIG_ADC_DMA_BUFFER_SIZE										(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA²É¼¯»º³å
+#define CONFIG_SPLC_ADC_AVERAGE_NUM										8//ADCå¹³å‡å€¼æ¬¡æ•°
+#define CONFIG_ADC_DMA_BUFFER_SIZE										(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMAé‡‡é›†ç¼“å†²
 #define CONFIG_AMBIENT_TEMP             							25// Ambient temp in deg C
-#define CONFIG_VREF_CAL                         			*(__IO uint16_t *)(0x1FFF7A2A)//Ð£ÕýµçÑ¹Ô´
+#define CONFIG_VREF_CAL                         			*(__IO uint16_t *)(0x1FFF7A2A)//æ ¡æ­£ç”µåŽ‹æº
 
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 #define CONFIG_VREF_ADC																SPREG_ADC_4
@@ -158,74 +158,74 @@
 #endif
 #define CONFIG_ADC_AVG_SLOPE													2.5F
 #define CONFIG_ADC_V25																760.0F//0.76V@25D
-#define CONFIG_NTC_RS																	4700L//NTC·ÖÑ¹µç×è
+#define CONFIG_NTC_RS																	4700L//NTCåˆ†åŽ‹ç”µé˜»
 #define CONFIG_NTC_B																	3477.0F
-#define CONFIG_NTC_R25																10000.0F//25ÉãÊÏ¶ÈÊ±µç×è
+#define CONFIG_NTC_R25																10000.0F//25æ‘„æ°åº¦æ—¶ç”µé˜»
 #define CONFIG_NTC_VREF																3300L//
-#define CONFIG_FIBER_PD_THRESHOLD											600//¹âÏË²åÈëÊ±ADCãÐÖµ
+#define CONFIG_FIBER_PD_THRESHOLD											600//å…‰çº¤æ’å…¥æ—¶ADCé˜ˆå€¼
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_LASER_TEST									0
 /*****************************************************************************/
-#define CONFIG_DCHMI_DISKBUF_SIZE											256//ÏÔÊ¾»º³åÇø´óÐ¡
+#define CONFIG_DCHMI_DISKBUF_SIZE											256//æ˜¾ç¤ºç¼“å†²åŒºå¤§å°
 /*****************************************************************************/
 #define CONFIG_WAIT_HMI_DELAY_TIME										10
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								70
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
-#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//ÎÞÏß½ÅÌ¤µôÏß³¬Ê± 10mS * 100
+#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//æ— çº¿è„šè¸æŽ‰çº¿è¶…æ—¶ 10mS * 100
 /*****************************************************************************/
 #define CONFIG_DIODE_SET_TEMP													250//
-#define CONFIG_DIODE_HIGH_TEMP												450//¼¤¹âÆ÷¸ßÎÂ¼«ÏÞ 46.0C
-#define CONFIG_DIODE_LOW_TEMP													-250//¼¤¹âÆ÷µÍÎÂ¼«ÏÞ -25.0C
-#define CONFIG_ENVI_HIGH_TEMP													750//´¦ÀíÆ÷¸ßÎÂ¼«ÏÞ 75.0C
-#define CONFIG_ENVI_LOW_TEMP													-200//´¦ÀíÆ÷µÍÎÂ¼«ÏÞ -20.0C
+#define CONFIG_DIODE_HIGH_TEMP												450//æ¿€å…‰å™¨é«˜æ¸©æžé™ 46.0C
+#define CONFIG_DIODE_LOW_TEMP													-250//æ¿€å…‰å™¨ä½Žæ¸©æžé™ -25.0C
+#define CONFIG_ENVI_HIGH_TEMP													750//å¤„ç†å™¨é«˜æ¸©æžé™ 75.0C
+#define CONFIG_ENVI_LOW_TEMP													-200//å¤„ç†å™¨ä½Žæ¸©æžé™ -20.0C
 /*****************************************************************************/
-#define CONFIG_HMI_SCHEME_NUM													32//Ã¿·ÖÀà·½°¸Êý
-#define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//¹ÜÀíÔ±ÃÜÂë
-#define CONFIG_HMI_ADMIN_PASSWORD1										0x3038//¹ÜÀíÔ±ÃÜÂë
-#define CONFIG_HMI_ADMIN_PASSWORD2										0x3030//¹ÜÀíÔ±ÃÜÂë
-#define CONFIG_HMI_ADMIN_PASSWORD3										0x3030//¹ÜÀíÔ±ÃÜÂë
-#define CONFIG_HMI_DEFAULT_PASSWORD0									0x3030//Ä¬ÈÏÃÜÂë
-#define CONFIG_HMI_DEFAULT_PASSWORD1									0x3030//Ä¬ÈÏÃÜÂë
-#define CONFIG_HMI_DEFAULT_PASSWORD2									0x3030//Ä¬ÈÏÃÜÂë
-#define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//Ä¬ÈÏÃÜÂë
+#define CONFIG_HMI_SCHEME_NUM													32//æ¯åˆ†ç±»æ–¹æ¡ˆæ•°
+#define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//ç®¡ç†å‘˜å¯†ç 
+#define CONFIG_HMI_ADMIN_PASSWORD1										0x3038//ç®¡ç†å‘˜å¯†ç 
+#define CONFIG_HMI_ADMIN_PASSWORD2										0x3030//ç®¡ç†å‘˜å¯†ç 
+#define CONFIG_HMI_ADMIN_PASSWORD3										0x3030//ç®¡ç†å‘˜å¯†ç 
+#define CONFIG_HMI_DEFAULT_PASSWORD0									0x3030//é»˜è®¤å¯†ç 
+#define CONFIG_HMI_DEFAULT_PASSWORD1									0x3030//é»˜è®¤å¯†ç 
+#define CONFIG_HMI_DEFAULT_PASSWORD2									0x3030//é»˜è®¤å¯†ç 
+#define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//é»˜è®¤å¯†ç 
 #define CONFIG_SCHEME_NAME_SIZE											((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
 /*****************************************************************************/
 #define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
 #define CONFIG_MAX_LASER_DAC_CH1											0xFFF//
 
-#define CONFIG_MAX_LASER_POWER_RED                    5//ºì¼¤¹â×î´ó¹¦ÂÊ 5µµ
-#define CONFIG_MAX_LASER_POWER_AIM                    10//Ö¸Ê¾¼¤¹â×î´ó¹¦ÂÊ 10µµ
+#define CONFIG_MAX_LASER_POWER_RED                    5//çº¢æ¿€å…‰æœ€å¤§åŠŸçŽ‡ 5æ¡£
+#define CONFIG_MAX_LASER_POWER_AIM                    10//æŒ‡ç¤ºæ¿€å…‰æœ€å¤§åŠŸçŽ‡ 10æ¡£
 
-#define CONFIG_MIN_LASER_POWER_RED                    1//ºì¼¤¹â×îÐ¡¹¦ÂÊ
-#define CONFIG_MIN_LASER_POWER_AIM                    0//Ö¸Ê¾¼¤¹â×îÐ¡¹¦ÂÊ
+#define CONFIG_MIN_LASER_POWER_RED                    1//çº¢æ¿€å…‰æœ€å°åŠŸçŽ‡
+#define CONFIG_MIN_LASER_POWER_AIM                    0//æŒ‡ç¤ºæ¿€å…‰æœ€å°åŠŸçŽ‡
 
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-#define CONFIG_MAX_LASER_POWER_CH0										150//Í¨µÀ1470×î´ó¼¤¹â¹¦ÂÊ
-#define CONFIG_MAX_LASER_POWER_CH1										150//Í¨µÀ980×î´ó¼¤¹â¹¦ÂÊ
-#define CONFIG_MIN_LASER_POWER_CH0										1//Í¨µÀ1470×îÐ¡¼¤¹â¹¦ÂÊ		
-#define CONFIG_MIN_LASER_POWER_CH1										1//Í¨µÀ980×îÐ¡¼¤¹â¹¦ÂÊ								
+#define CONFIG_MAX_LASER_POWER_CH0										150//é€šé“1470æœ€å¤§æ¿€å…‰åŠŸçŽ‡
+#define CONFIG_MAX_LASER_POWER_CH1										150//é€šé“980æœ€å¤§æ¿€å…‰åŠŸçŽ‡
+#define CONFIG_MIN_LASER_POWER_CH0										1//é€šé“1470æœ€å°æ¿€å…‰åŠŸçŽ‡		
+#define CONFIG_MIN_LASER_POWER_CH1										1//é€šé“980æœ€å°æ¿€å…‰åŠŸçŽ‡								
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-#define CONFIG_MAX_LASER_POWER_CH0										100//Í¨µÀ1940×î´ó¼¤¹â¹¦ÂÊ
-#define CONFIG_MAX_LASER_POWER_CH1										150//Í¨µÀ980×î´ó¼¤¹â¹¦ÂÊ
-#define CONFIG_MIN_LASER_POWER_CH0										1//Í¨µÀ1940×îÐ¡¼¤¹â¹¦ÂÊ
-#define CONFIG_MIN_LASER_POWER_CH1										1//Í¨µÀ980×îÐ¡¼¤¹â¹¦ÂÊ
+#define CONFIG_MAX_LASER_POWER_CH0										100//é€šé“1940æœ€å¤§æ¿€å…‰åŠŸçŽ‡
+#define CONFIG_MAX_LASER_POWER_CH1										150//é€šé“980æœ€å¤§æ¿€å…‰åŠŸçŽ‡
+#define CONFIG_MIN_LASER_POWER_CH0										1//é€šé“1940æœ€å°æ¿€å…‰åŠŸçŽ‡
+#define CONFIG_MIN_LASER_POWER_CH1										1//é€šé“980æœ€å°æ¿€å…‰åŠŸçŽ‡
 #endif
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1
 #define CONFIG_MAX_LASER_NEGWIDTH											16000
 #define CONFIG_MIN_LASER_NEGWIDTH											1
-#define CONFIG_MAX_LASER_TIMES												10//×î´ó¿É¼ÆÊýÂö³åÊý
-#define CONFIG_MIN_LASER_TIMES												1//×îÐ¡¿É¼ÆÊýÂö³åÊý
+#define CONFIG_MAX_LASER_TIMES												10//æœ€å¤§å¯è®¡æ•°è„‰å†²æ•°
+#define CONFIG_MIN_LASER_TIMES												1//æœ€å°å¯è®¡æ•°è„‰å†²æ•°
 #define CONFIG_MAX_LASER_GROUP_OFF										1000
 #define CONFIG_MIN_LASER_GROUP_OFF										10
 #define CONFIG_MAX_LASER_ENERGY_INTERVAL							200
 #define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
-#define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//±äÒô³ÖÐøÊ±¼ä
-//¶¨ÒåÖ¸Ê¾µÆÁÁ¶È
+#define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//å˜éŸ³æŒç»­æ—¶é—´
+//å®šä¹‰æŒ‡ç¤ºç¯äº®åº¦
 #ifdef MODEL_PVGLS_15W_1470_A0
 #define CONFIG_BLUE_LED_MAX_DC												100
 #define CONFIG_BLUE_LED_DEFAULT_DC										10
@@ -254,20 +254,20 @@
 #endif
 /*****************************************************************************/
 #define CONFIG_AIM_DEFAULT_GAIN												30
-//¶¨Òå·äÃùÆ÷ÒôÁ¿/ÆµÂÊ
-#define CONFIG_BEEM_MAX_VOLUME													100//·äÃùÆ÷×î´óÒôÁ¿
+//å®šä¹‰èœ‚é¸£å™¨éŸ³é‡/é¢‘çŽ‡
+#define CONFIG_BEEM_MAX_VOLUME													100//èœ‚é¸£å™¨æœ€å¤§éŸ³é‡
 #define CONFIG_BEEM_MAX_LIMIT													0.7F//
-#define CONFIG_BEEM_MAX_FREQ														4500L//À®°È×î¸ßÆµÂÊ
-#define CONFIG_BEEM_MIN_FREQ														500//À®°È×îµÍÆµÂÊ
-//¶¨ÒåÆÁÄ»ÁÁ¶È
-#define CONFIG_LCD_MAX_DC															100//ÆÁÄ»ÁÁ¶È×î´óÖµ
-#define CONFIG_LCD_MIN_DC															1//ÆÁÄ»ÁÁ¶È×îÐ¡Öµ
-//¶¨Òå·çÉÈ×ªËÙ
+#define CONFIG_BEEM_MAX_FREQ														4500L//å–‡å­æœ€é«˜é¢‘çŽ‡
+#define CONFIG_BEEM_MIN_FREQ														500//å–‡å­æœ€ä½Žé¢‘çŽ‡
+//å®šä¹‰å±å¹•äº®åº¦
+#define CONFIG_LCD_MAX_DC															100//å±å¹•äº®åº¦æœ€å¤§å€¼
+#define CONFIG_LCD_MIN_DC															1//å±å¹•äº®åº¦æœ€å°å€¼
+//å®šä¹‰é£Žæ‰‡è½¬é€Ÿ
 #define CONFIG_FAN_MAX_DC															100
 #define CONFIG_FAN_MIN_DC															0
 /*****************************************************************************/
-#define CONFIG_USING_DEFAULT_SCHEME										1//ÊÇÄÜÔ¤ÉèÄ£Ê½
-#define CONFIG_MAX_SCHEME_NAME_SIZE										40//·½°¸Ãû³Æ³¤¶È
+#define CONFIG_USING_DEFAULT_SCHEME										1//æ˜¯èƒ½é¢„è®¾æ¨¡å¼
+#define CONFIG_MAX_SCHEME_NAME_SIZE										40//æ–¹æ¡ˆåç§°é•¿åº¦
 /*****************************************************************************/
 #define CONFIG_FSWITCH_USB_VID												0x16C0
 #define CONFIG_FSWITCH_USB_PID												0x05E2
@@ -356,19 +356,19 @@
 #define POWER_REAL_CH3_95P														3800
 #define POWER_REAL_CH3_100P														4000
 /*****************************************************************************/
-//ÏßÈ¦ ±£³Ö 16 * 32 = 512 
+//çº¿åœˆ ä¿æŒ 16 * 32 = 512 
 #define MR_START																			0
 #define MR_END   																			31
-//Êý¾Ý¼Ä´æÆ÷ ±£³Ö 512
+//æ•°æ®å¯„å­˜å™¨ ä¿æŒ 512
 #define DM_START																			32
 #define DM_END																				543
-//ÏßÈ¦¼Ä´æÆ÷ ·Ç±£³Ö 16 * 32 = 512
+//çº¿åœˆå¯„å­˜å™¨ éžä¿æŒ 16 * 32 = 512
 #define R_START																				544
 #define R_END																					575						
-//Êý¾Ý¼Ä´æÆ÷ ·Ç±£³Ö 512
+//æ•°æ®å¯„å­˜å™¨ éžä¿æŒ 512
 #define EM_START																			576
 #define EM_END																				1087
-//ÑÓÊ±ÏßÈ¦
+//å»¶æ—¶çº¿åœˆ
 //1MS  16 * 4 = 64
 #define T_1MS_START																		1088
 #define T_1MS_END																			1091
@@ -378,7 +378,7 @@
 //100MS 16 * 4 = 64
 #define T_100MS_START																	1096
 #define T_100MS_END																		1099
-//ÑÓÊ±Æ÷Ê¹ÄÜ
+//å»¶æ—¶å™¨ä½¿èƒ½
 //1MS  16 * 4 = 64
 #define T_1MS_ENA_START																1100
 #define T_1MS_ENA_END																	1103
@@ -388,7 +388,7 @@
 //100MS 16 * 4 = 64
 #define T_100MS_ENA_START															1108
 #define T_100MS_ENA_END																1111
-//ÑÓÊ±¼ÆÊ±Æ÷
+//å»¶æ—¶è®¡æ—¶å™¨
 //1MS   64
 #define TD_1MS_START																	1112
 #define TD_1MS_END																		1175
@@ -398,25 +398,25 @@
 //100MS 64
 #define TD_100MS_START																1240
 #define TD_100MS_END																	1303
-//ÊäÈëÎ»¼Ä´æÆ÷ 16 * 8 = 128
+//è¾“å…¥ä½å¯„å­˜å™¨ 16 * 8 = 128
 #define X_START																				1304
 #define X_END																					1311
-//Êä³öÎ»¼Ä´æÆ÷ 16 * 8 = 128
+//è¾“å‡ºä½å¯„å­˜å™¨ 16 * 8 = 128
 #define Y_START																				1312
 #define Y_END																					1319
-//ÌØÊâ¼Ä´æÆ÷ 64
+//ç‰¹æ®Šå¯„å­˜å™¨ 64
 #define SPREG_START																		1320
 #define SPREG_END																			1383
-//ÌØÊâÏßÈ¦ 16 * 16 = 256
+//ç‰¹æ®Šçº¿åœˆ 16 * 16 = 256
 #define SPCOIL_START																	1384
 #define SPCOIL_END																		1399
-//ÁÙÊ±¼Ä´æÆ÷ 64
+//ä¸´æ—¶å¯„å­˜å™¨ 64
 #define TMP_START																			1400
 #define TMP_END																				1463
 /*****************************************************************************/
 #define CONFIG_NVRAM_SIZE 														(TMP_END + 1)
 /*****************************************************************************/
-//´æµµ¼Ä´æÆ÷
+//å­˜æ¡£å¯„å­˜å™¨
 #define FD_START																			0
 #define FD_END																				2047
 /*****************************************************************************/
@@ -424,8 +424,8 @@
 #define CONFIG_DMRAM_SIZE															(DM_END - DM_START + 1)
 #define CONFIG_FDRAM_SIZE															(FD_END - FD_START + 1)
 /*****************************************************************************/
-#define SPCOIL_ON																			(SPCOIL_START * 16 + 0)//³¤Í¨ÏßÈ¦
-#define SPCOIL_START_UP																(SPCOIL_START * 16 + 1)//³õ´ÎÉÏµç
+#define SPCOIL_ON																			(SPCOIL_START * 16 + 0)//é•¿é€šçº¿åœˆ
+#define SPCOIL_START_UP																(SPCOIL_START * 16 + 1)//åˆæ¬¡ä¸Šç”µ
 #define SPCOIL_PS10MS																	(SPCOIL_START * 16 + 2)//10mS
 #define SPCOIL_PS50MS																	(SPCOIL_START * 16 + 3)//50mS
 #define SPCOIL_PS100MS																(SPCOIL_START * 16 + 4)//100mS
@@ -434,370 +434,370 @@
 #define SPCOIL_PS1000MS																(SPCOIL_START * 16 + 7)//1000mS
 #define SPCOIL_PS1MINS																(SPCOIL_START * 16 + 8)//1mins
 /*****************************************************************************/
-#define SPCOIL_LINK_SEND_BUSY													(SPCOIL_START * 16 + 16)//·¢ËÍ½øÐÐÖÐ
-#define SPCOIL_LINK_SEND_DONE													(SPCOIL_START * 16 + 17)//·¢ËÍÍê³É
-#define SPCOIL_LINK_SEND_ERR													(SPCOIL_START * 16 + 18)//·¢ËÍ´íÎó
-#define SPCOIL_LINK_RECE_BUSY													(SPCOIL_START * 16 + 19)//½ÓÊÕ½øÐÐÖÐ
-#define SPCOIL_LINK_RECE_DONE													(SPCOIL_START * 16 + 20)//½ÓÊÕÍê³É
-#define SPCOIL_LINK_RECE_ERR													(SPCOIL_START * 16 + 21)//·¢ËÍ´íÎó
+#define SPCOIL_LINK_SEND_BUSY													(SPCOIL_START * 16 + 16)//å‘é€è¿›è¡Œä¸­
+#define SPCOIL_LINK_SEND_DONE													(SPCOIL_START * 16 + 17)//å‘é€å®Œæˆ
+#define SPCOIL_LINK_SEND_ERR													(SPCOIL_START * 16 + 18)//å‘é€é”™è¯¯
+#define SPCOIL_LINK_RECE_BUSY													(SPCOIL_START * 16 + 19)//æŽ¥æ”¶è¿›è¡Œä¸­
+#define SPCOIL_LINK_RECE_DONE													(SPCOIL_START * 16 + 20)//æŽ¥æ”¶å®Œæˆ
+#define SPCOIL_LINK_RECE_ERR													(SPCOIL_START * 16 + 21)//å‘é€é”™è¯¯
 /*****************************************************************************/
-#define SPCOIL_BEEM_ENABLE														(SPCOIL_START * 16 + 32)//·äÃùÆ÷Ê¹ÄÜ
-#define SPCOIL_BEEM_BUSY															(SPCOIL_START * 16 + 33)//·äÃùÆ÷¹¤×÷×´Ì¬
+#define SPCOIL_BEEM_ENABLE														(SPCOIL_START * 16 + 32)//èœ‚é¸£å™¨ä½¿èƒ½
+#define SPCOIL_BEEM_BUSY															(SPCOIL_START * 16 + 33)//èœ‚é¸£å™¨å·¥ä½œçŠ¶æ€
 /*****************************************************************************/
-#define SPCOIL_WFSWITCH_PLUG													(SPCOIL_START * 16 + 40)//ÎÞÏß½ÅÌ¤²åÈë					
-#define SPCOIL_WFSWITCH_ON														(SPCOIL_START * 16 + 41)//ÎÞÏß½ÅÌ¤°´ÏÂ
+#define SPCOIL_WFSWITCH_PLUG													(SPCOIL_START * 16 + 40)//æ— çº¿è„šè¸æ’å…¥					
+#define SPCOIL_WFSWITCH_NO														(SPCOIL_START * 16 + 41)//æ— çº¿è„šè¸æŒ‰ä¸‹
 /*****************************************************************************/
-#define SPCOIL_SPWM_OUT_0															(SPCOIL_START * 16 + 48)//SPWM0Êä³ö×´Ì¬
-#define SPCOIL_SPWM_RESET_0														(SPCOIL_START * 16 + 49)//SPWM0¸´Î»
-#define SPCOIL_SPWM_OUT_1															(SPCOIL_START * 16 + 50)//SPWM1Êä³ö×´Ì¬
-#define SPCOIL_SPWM_RESET_1														(SPCOIL_START * 16 + 51)//SPWM1¸´Î»
-#define SPCOIL_SPWM_OUT_2															(SPCOIL_START * 16 + 52)//SPWM2Êä³ö×´Ì¬
-#define SPCOIL_SPWM_RESET_2														(SPCOIL_START * 16 + 53)//SPWM2¸´Î»
-#define SPCOIL_SPWM_OUT_3															(SPCOIL_START * 16 + 54)//SPWM3Êä³ö×´Ì¬
-#define SPCOIL_SPWM_RESET_3														(SPCOIL_START * 16 + 55)//SPWM3¸´Î»
+#define SPCOIL_SPWM_OUT_0															(SPCOIL_START * 16 + 48)//SPWM0è¾“å‡ºçŠ¶æ€
+#define SPCOIL_SPWM_RESET_0														(SPCOIL_START * 16 + 49)//SPWM0å¤ä½
+#define SPCOIL_SPWM_OUT_1															(SPCOIL_START * 16 + 50)//SPWM1è¾“å‡ºçŠ¶æ€
+#define SPCOIL_SPWM_RESET_1														(SPCOIL_START * 16 + 51)//SPWM1å¤ä½
+#define SPCOIL_SPWM_OUT_2															(SPCOIL_START * 16 + 52)//SPWM2è¾“å‡ºçŠ¶æ€
+#define SPCOIL_SPWM_RESET_2														(SPCOIL_START * 16 + 53)//SPWM2å¤ä½
+#define SPCOIL_SPWM_OUT_3															(SPCOIL_START * 16 + 54)//SPWM3è¾“å‡ºçŠ¶æ€
+#define SPCOIL_SPWM_RESET_3														(SPCOIL_START * 16 + 55)//SPWM3å¤ä½
 /*****************************************************************************/
-#define SPREG_ADC_0																		(SPREG_START + 11)//²É¼¯Öµ CH0 CURRENT
-#define SPREG_ADC_1																		(SPREG_START + 12)//²É¼¯Öµ CH1 CURRENT
-#define SPREG_ADC_2																		(SPREG_START + 13)//²É¼¯Öµ CH2 CURRENT
-#define SPREG_ADC_3																		(SPREG_START + 14)//²É¼¯Öµ CH3 CURRENT
-#define SPREG_ADC_4																		(SPREG_START + 15)//²É¼¯Öµ CH4 CURRENT
-#define SPREG_ADC_5																		(SPREG_START + 16)//²É¼¯Öµ CH5 CURRENT
-#define SPREG_ADC_6																		(SPREG_START + 17)//²É¼¯Öµ CH6 CURRENT
-#define SPREG_ADC_7																		(SPREG_START + 18)//²É¼¯Öµ TEC CURRENT
-#define SPREG_ADC_8																		(SPREG_START + 19)//²É¼¯Öµ BAT NTC
-#define SPREG_ADC_9																		(SPREG_START + 20)//²É¼¯Öµ LASER_FPD
-#define SPREG_ADC_10																	(SPREG_START + 21)//²É¼¯Öµ LASER_LPD
-#define SPREG_ADC_11																	(SPREG_START + 22)//²É¼¯Öµ LASER_NTC
-#define SPREG_ADC_12																	(SPREG_START + 23)//²É¼¯Öµ HT_NTC
-#define SPREG_ADC_13																	(SPREG_START + 24)//CHIP TEMPÆ¬ÄÚÎÂ¶È´«¸ÐÆ÷
-#define SPREG_ADC_14																	(SPREG_START + 25)//CHIP VREFINTÆ¬ÄÚ»ù×¼Ô´
-#define SPREG_ADC_15																	(SPREG_START + 26)//VBAT µôµç´æ´¢µç³Ø 
+#define SPREG_ADC_0																		(SPREG_START + 11)//é‡‡é›†å€¼ CH0 CURRENT
+#define SPREG_ADC_1																		(SPREG_START + 12)//é‡‡é›†å€¼ CH1 CURRENT
+#define SPREG_ADC_2																		(SPREG_START + 13)//é‡‡é›†å€¼ CH2 CURRENT
+#define SPREG_ADC_3																		(SPREG_START + 14)//é‡‡é›†å€¼ CH3 CURRENT
+#define SPREG_ADC_4																		(SPREG_START + 15)//é‡‡é›†å€¼ CH4 CURRENT
+#define SPREG_ADC_5																		(SPREG_START + 16)//é‡‡é›†å€¼ CH5 CURRENT
+#define SPREG_ADC_6																		(SPREG_START + 17)//é‡‡é›†å€¼ CH6 CURRENT
+#define SPREG_ADC_7																		(SPREG_START + 18)//é‡‡é›†å€¼ TEC CURRENT
+#define SPREG_ADC_8																		(SPREG_START + 19)//é‡‡é›†å€¼ BAT NTC
+#define SPREG_ADC_9																		(SPREG_START + 20)//é‡‡é›†å€¼ LASER_FPD
+#define SPREG_ADC_10																	(SPREG_START + 21)//é‡‡é›†å€¼ LASER_LPD
+#define SPREG_ADC_11																	(SPREG_START + 22)//é‡‡é›†å€¼ LASER_NTC
+#define SPREG_ADC_12																	(SPREG_START + 23)//é‡‡é›†å€¼ HT_NTC
+#define SPREG_ADC_13																	(SPREG_START + 24)//CHIP TEMPç‰‡å†…æ¸©åº¦ä¼ æ„Ÿå™¨
+#define SPREG_ADC_14																	(SPREG_START + 25)//CHIP VREFINTç‰‡å†…åŸºå‡†æº
+#define SPREG_ADC_15																	(SPREG_START + 26)//VBAT æŽ‰ç”µå­˜å‚¨ç”µæ±  
 
-#define SPREG_DAC_0																		(SPREG_START + 30)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH0 ->1470 1940
-#define SPREG_DAC_1																		(SPREG_START + 31)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH1 ->980
-#define SPREG_DAC_2																		(SPREG_START + 32)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH2 
-#define SPREG_DAC_3																		(SPREG_START + 33)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH3
-#define SPREG_DAC_4																		(SPREG_START + 34)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH4
-#define SPREG_DAC_5																		(SPREG_START + 35)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH5
-#define SPREG_DAC_6																		(SPREG_START + 36)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH6 -> 635 PWM Õ¼¿Õ±È
-#define SPREG_DAC_7																		(SPREG_START + 37)//DACÉè¶¨Öµ ¼¤¹âÍ¨µÀ CH7 ->TEC 
+#define SPREG_DAC_0																		(SPREG_START + 30)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH0 ->1470 1940
+#define SPREG_DAC_1																		(SPREG_START + 31)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH1 ->980
+#define SPREG_DAC_2																		(SPREG_START + 32)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH2 
+#define SPREG_DAC_3																		(SPREG_START + 33)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH3
+#define SPREG_DAC_4																		(SPREG_START + 34)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH4
+#define SPREG_DAC_5																		(SPREG_START + 35)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH5
+#define SPREG_DAC_6																		(SPREG_START + 36)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH6 -> 635 PWM å ç©ºæ¯”
+#define SPREG_DAC_7																		(SPREG_START + 37)//DACè®¾å®šå€¼ æ¿€å…‰é€šé“ CH7 ->TEC 
 /*****************************************************************************/
-#define SPREG_SPWM_POS_0															(SPREG_START + 40)//Èí¼þPWM0ÕýÂö¿íÉèÖÃ
-#define SPREG_SPWM_POS_SHADOW_0												(SPREG_START + 41)//Èí¼þPWM0ÕýÂö¿íÒõÓ°
-#define SPREG_SPWM_CYCLE_0														(SPREG_START + 42)//Èí¼þPWM0ÖÜÆÚÉèÖÃ
-#define SPREG_SPWM_CYCLE_SHADOW_0											(SPREG_START + 43)//Èí¼þPWM0ÖÜÆÚÒõÓ°
-#define SPREG_SPWM_COUNTER_0													(SPREG_START + 44)//Èí¼þPWM0¼ÆÊýÆ÷
-#define SPREG_SPWM_POS_1															(SPREG_START + 45)//Èí¼þPWM1ÕýÂö¿íÉèÖÃ
-#define SPREG_SPWM_POS_SHADOW_1												(SPREG_START + 46)//Èí¼þPWM1ÕýÂö¿íÒõÓ°
-#define SPREG_SPWM_CYCLE_1														(SPREG_START + 47)//Èí¼þPWM1ÖÜÆÚÉèÖÃ
-#define SPREG_SPWM_CYCLE_SHADOW_1											(SPREG_START + 48)//Èí¼þPWM1ÖÜÆÚÒõÓ°
-#define SPREG_SPWM_COUNTER_1													(SPREG_START + 49)//Èí¼þPWM1¼ÆÊýÆ÷
-#define SPREG_SPWM_POS_2															(SPREG_START + 50)//Èí¼þPWM2ÕýÂö¿íÉèÖÃ
-#define SPREG_SPWM_POS_SHADOW_2												(SPREG_START + 51)//Èí¼þPWM2ÕýÂö¿íÒõÓ°
-#define SPREG_SPWM_CYCLE_2														(SPREG_START + 52)//Èí¼þPWM2ÖÜÆÚÉèÖÃ
-#define SPREG_SPWM_CYCLE_SHADOW_2											(SPREG_START + 53)//Èí¼þPWM2ÖÜÆÚÒõÓ°
-#define SPREG_SPWM_COUNTER_2													(SPREG_START + 54)//Èí¼þPWM2¼ÆÊýÆ÷
-#define SPREG_SPWM_POS_3															(SPREG_START + 55)//Èí¼þPWM3ÕýÂö¿íÉèÖÃ
-#define SPREG_SPWM_POS_SHADOW_3												(SPREG_START + 56)//Èí¼þPWM3ÕýÂö¿íÒõÓ°
-#define SPREG_SPWM_CYCLE_3														(SPREG_START + 57)//Èí¼þPWM3ÖÜÆÚÉèÖÃ
-#define SPREG_SPWM_CYCLE_SHADOW_3											(SPREG_START + 58)//Èí¼þPWM3ÖÜÆÚÒõÓ°
-#define SPREG_SPWM_COUNTER_3													(SPREG_START + 59)//Èí¼þPWM3¼ÆÊýÆ÷
+#define SPREG_SPWM_POS_0															(SPREG_START + 40)//è½¯ä»¶PWM0æ­£è„‰å®½è®¾ç½®
+#define SPREG_SPWM_POS_SHADOW_0												(SPREG_START + 41)//è½¯ä»¶PWM0æ­£è„‰å®½é˜´å½±
+#define SPREG_SPWM_CYCLE_0														(SPREG_START + 42)//è½¯ä»¶PWM0å‘¨æœŸè®¾ç½®
+#define SPREG_SPWM_CYCLE_SHADOW_0											(SPREG_START + 43)//è½¯ä»¶PWM0å‘¨æœŸé˜´å½±
+#define SPREG_SPWM_COUNTER_0													(SPREG_START + 44)//è½¯ä»¶PWM0è®¡æ•°å™¨
+#define SPREG_SPWM_POS_1															(SPREG_START + 45)//è½¯ä»¶PWM1æ­£è„‰å®½è®¾ç½®
+#define SPREG_SPWM_POS_SHADOW_1												(SPREG_START + 46)//è½¯ä»¶PWM1æ­£è„‰å®½é˜´å½±
+#define SPREG_SPWM_CYCLE_1														(SPREG_START + 47)//è½¯ä»¶PWM1å‘¨æœŸè®¾ç½®
+#define SPREG_SPWM_CYCLE_SHADOW_1											(SPREG_START + 48)//è½¯ä»¶PWM1å‘¨æœŸé˜´å½±
+#define SPREG_SPWM_COUNTER_1													(SPREG_START + 49)//è½¯ä»¶PWM1è®¡æ•°å™¨
+#define SPREG_SPWM_POS_2															(SPREG_START + 50)//è½¯ä»¶PWM2æ­£è„‰å®½è®¾ç½®
+#define SPREG_SPWM_POS_SHADOW_2												(SPREG_START + 51)//è½¯ä»¶PWM2æ­£è„‰å®½é˜´å½±
+#define SPREG_SPWM_CYCLE_2														(SPREG_START + 52)//è½¯ä»¶PWM2å‘¨æœŸè®¾ç½®
+#define SPREG_SPWM_CYCLE_SHADOW_2											(SPREG_START + 53)//è½¯ä»¶PWM2å‘¨æœŸé˜´å½±
+#define SPREG_SPWM_COUNTER_2													(SPREG_START + 54)//è½¯ä»¶PWM2è®¡æ•°å™¨
+#define SPREG_SPWM_POS_3															(SPREG_START + 55)//è½¯ä»¶PWM3æ­£è„‰å®½è®¾ç½®
+#define SPREG_SPWM_POS_SHADOW_3												(SPREG_START + 56)//è½¯ä»¶PWM3æ­£è„‰å®½é˜´å½±
+#define SPREG_SPWM_CYCLE_3														(SPREG_START + 57)//è½¯ä»¶PWM3å‘¨æœŸè®¾ç½®
+#define SPREG_SPWM_CYCLE_SHADOW_3											(SPREG_START + 58)//è½¯ä»¶PWM3å‘¨æœŸé˜´å½±
+#define SPREG_SPWM_COUNTER_3													(SPREG_START + 59)//è½¯ä»¶PWM3è®¡æ•°å™¨
 /*****************************************************************************/
-#define SPREG_BEEM_VOLUME											  			(SPREG_START + 60)//·äÃùÆ÷ÒôÁ¿ 0-100% 1320+60=1380
-#define SPREG_BEEM_FREQ												  			(SPREG_START + 61)//·äÃùÆ÷ÆµÂÊ        1320+61=1381
-#define SPREG_BEEM_MODE												  			(SPREG_START + 62)//·äÃùÆ÷Ä£Ê½        1320+62=1382
-#define SPREG_BEEM_COUNTER										  			(SPREG_START + 63)//·äÃùÆ÷¼ÆÊ±Æ÷      1320+63=1383
+#define SPREG_BEEM_VOLUME											  			(SPREG_START + 60)//èœ‚é¸£å™¨éŸ³é‡ 0-100% 1320+60=1380
+#define SPREG_BEEM_FREQ												  			(SPREG_START + 61)//èœ‚é¸£å™¨é¢‘çŽ‡        1320+61=1381
+#define SPREG_BEEM_MODE												  			(SPREG_START + 62)//èœ‚é¸£å™¨æ¨¡å¼        1320+62=1382
+#define SPREG_BEEM_COUNTER										  			(SPREG_START + 63)//èœ‚é¸£å™¨è®¡æ—¶å™¨      1320+63=1383
 /*****************************************************************************/
-//ÐèÒª´æ´¢µÄ·½°¸
-#define EM_LASER_SCHEME_NAME													(EM_START + 0)//·½°¸Ãû³Æ
-#define EM_LASER_CHANNEL_SELECT												(EM_START + 55)//¼¤¹âÍ¨µÀÑ¡Ôñ
-#define EM_LASER_PULSE_MODE														(EM_START + 56)//Âö³åÄ£Ê½
-#define EM_LASER_POWER_CH0														(EM_START + 57)//Í¨µÀ1470/1940¹¦ÂÊ
-#define EM_LASER_POWER_CH1														(EM_START + 58)//Í¨µÀ980¹¦ÂÊ
-#define EM_LASER_POWER_CH2														(EM_START + 59)//±¸ÓÃÍ¨µÀ
-#define EM_LASER_POWER_CH3														(EM_START + 60)//±¸ÓÃÍ¨µÀ
-#define EM_LASER_POWER_635														(EM_START + 61)//ºì¼¤¹â¹¦ÂÊ
-#define EM_LASER_POSWIDTH															(EM_START + 62)//¶àÂö³åÕýÂö¿í
-#define EM_LASER_NEGWIDTH															(EM_START + 63)//¶àÂö³å¸ºÂö¿í
+//éœ€è¦å­˜å‚¨çš„æ–¹æ¡ˆ
+#define EM_LASER_SCHEME_NAME													(EM_START + 0)//æ–¹æ¡ˆåç§°
+#define EM_LASER_CHANNEL_SELECT												(EM_START + 55)//æ¿€å…‰é€šé“é€‰æ‹©
+#define EM_LASER_PULSE_MODE														(EM_START + 56)//è„‰å†²æ¨¡å¼
+#define EM_LASER_POWER_CH0														(EM_START + 57)//é€šé“1470/1940åŠŸçŽ‡
+#define EM_LASER_POWER_CH1														(EM_START + 58)//é€šé“980åŠŸçŽ‡
+#define EM_LASER_POWER_CH2														(EM_START + 59)//å¤‡ç”¨é€šé“
+#define EM_LASER_POWER_CH3														(EM_START + 60)//å¤‡ç”¨é€šé“
+#define EM_LASER_POWER_635														(EM_START + 61)//çº¢æ¿€å…‰åŠŸçŽ‡
+#define EM_LASER_POSWIDTH															(EM_START + 62)//å¤šè„‰å†²æ­£è„‰å®½
+#define EM_LASER_NEGWIDTH															(EM_START + 63)//å¤šè„‰å†²è´Ÿè„‰å®½
 /*****************************************************************************/
-#define EM_LASER_AVERAGE_POWER_CH0										(EM_START + 64)//µ±Ç°Ä£Ê½Æ½¾ù¹¦ÂÊ 1470/1940
-#define EM_LASER_AVERAGE_POWER_CH1              			(EM_START + 65)//µ±Ç°Ä£Ê½Æ½¾ù¹¦ÂÊ 980
-#define EM_LASER_AVERAGE_POWER_CH2										(EM_START + 66)//µ±Ç°Ä£Ê½Æ½¾ù¹¦ÂÊ 980
-#define EM_LASER_AVERAGE_POWER_CH3										(EM_START + 67)//µ±Ç°Ä£Ê½Æ½¾ù¹¦ÂÊ 980
-#define EM_LASER_AVERAGE_POWER_635              			(EM_START + 68)//µ±Ç°Ä£Ê½Æ½¾ù¸ß¹¦ÂÊ 635
-#define EM_LASER_FREQUENCY														(EM_START + 69)//µ±Ç°Ä£Ê½ÆµÂÊ
-#define EM_LASER_DUTY_CYCLE														(EM_START + 70)//µ±Ç°Ä£Ê½Õ¼¿Õ±È 
+#define EM_LASER_AVERAGE_POWER_CH0										(EM_START + 64)//å½“å‰æ¨¡å¼å¹³å‡åŠŸçŽ‡ 1470/1940
+#define EM_LASER_AVERAGE_POWER_CH1              			(EM_START + 65)//å½“å‰æ¨¡å¼å¹³å‡åŠŸçŽ‡ 980
+#define EM_LASER_AVERAGE_POWER_CH2										(EM_START + 66)//å½“å‰æ¨¡å¼å¹³å‡åŠŸçŽ‡ 980
+#define EM_LASER_AVERAGE_POWER_CH3										(EM_START + 67)//å½“å‰æ¨¡å¼å¹³å‡åŠŸçŽ‡ 980
+#define EM_LASER_AVERAGE_POWER_635              			(EM_START + 68)//å½“å‰æ¨¡å¼å¹³å‡é«˜åŠŸçŽ‡ 635
+#define EM_LASER_FREQUENCY														(EM_START + 69)//å½“å‰æ¨¡å¼é¢‘çŽ‡
+#define EM_LASER_DUTY_CYCLE														(EM_START + 70)//å½“å‰æ¨¡å¼å ç©ºæ¯” 
 /*****************************************************************************/
-#define EM_LASER_TEMP																	(EM_START + 71)//¼¤¹â¶þ¼«¹ÜÄ£¿éÎÂ¶È
-#define EM_HT_TEMP																		(EM_START + 72)//É¢ÈÈÆ÷ÎÂ¶È
-#define EM_MCU_TEMP																		(EM_START + 73)//´¦ÀíÆ÷ÎÂ¶È
-#define EM_MBAT_TEMP																	(EM_START + 74)//µç³ØÎÂ¶È
-#define EM_FAN_SET_SPEED															(EM_START + 75)//¼¤¹âÉ¢ÈÈ·çÉÈÉè¶¨ËÙ¶È 0-100%
-#define EM_FAN_GET_SPEED															(EM_START + 76)//¼¤¹âÉ¢ÈÈ·çÉÈÊµ¼ÊËÙ¶È ×ªËÙ
+#define EM_LASER_TEMP																	(EM_START + 71)//æ¿€å…‰äºŒæžç®¡æ¨¡å—æ¸©åº¦
+#define EM_HT_TEMP																		(EM_START + 72)//æ•£çƒ­å™¨æ¸©åº¦
+#define EM_MCU_TEMP																		(EM_START + 73)//å¤„ç†å™¨æ¸©åº¦
+#define EM_MBAT_TEMP																	(EM_START + 74)//ç”µæ± æ¸©åº¦
+#define EM_FAN_SET_SPEED															(EM_START + 75)//æ¿€å…‰æ•£çƒ­é£Žæ‰‡è®¾å®šé€Ÿåº¦ 0-100%
+#define EM_FAN_GET_SPEED															(EM_START + 76)//æ¿€å…‰æ•£çƒ­é£Žæ‰‡å®žé™…é€Ÿåº¦ è½¬é€Ÿ
 
-#define EM_ACOUSTIC_ENERGY														(EM_START + 77)//ÌáÊ¾ÒôÄÜÁ¿¼ä¸ô 16BIT
-#define EM_ACOUSTIC_TIME															(EM_START + 78)//ÌáÊ¾ÒôÊ±¼ä¼ä¸ô 16BIT
-#define EM_ACOUSTIC_ENERGY_STEP												(EM_START + 79)//ÌáÊ¾Òô²½½øÄÜÁ¿
-#define EM_ACOUSTIC_TIME_STEP													(EM_START + 80)//ÌáÊ¾Òô²½½øÊ±¼ä
-#define EM_ACOUSTIC_ENERGY_MAX												(EM_START + 81)//ÌáÊ¾ÒôÄÜÁ¿×î´óÖµ
-#define EM_ACOUSTIC_ENERGY_MIN												(EM_START + 82)//ÌáÊ¾ÒôÄÜÁ¿×îÐ¡Öµ
-#define EM_ACOUSTIC_TIME_MAX													(EM_START + 83)//ÌáÊ¾ÒôÊ±¼ä×î´óÖµ
-#define EM_ACOUSTIC_TIME_MIN													(EM_START + 84)//ÌáÊ¾ÒôÊ±¼ä×îÐ¡Öµ
+#define EM_ACOUSTIC_ENERGY														(EM_START + 77)//æç¤ºéŸ³èƒ½é‡é—´éš” 16BIT
+#define EM_ACOUSTIC_TIME															(EM_START + 78)//æç¤ºéŸ³æ—¶é—´é—´éš” 16BIT
+#define EM_ACOUSTIC_ENERGY_STEP												(EM_START + 79)//æç¤ºéŸ³æ­¥è¿›èƒ½é‡
+#define EM_ACOUSTIC_TIME_STEP													(EM_START + 80)//æç¤ºéŸ³æ­¥è¿›æ—¶é—´
+#define EM_ACOUSTIC_ENERGY_MAX												(EM_START + 81)//æç¤ºéŸ³èƒ½é‡æœ€å¤§å€¼
+#define EM_ACOUSTIC_ENERGY_MIN												(EM_START + 82)//æç¤ºéŸ³èƒ½é‡æœ€å°å€¼
+#define EM_ACOUSTIC_TIME_MAX													(EM_START + 83)//æç¤ºéŸ³æ—¶é—´æœ€å¤§å€¼
+#define EM_ACOUSTIC_TIME_MIN													(EM_START + 84)//æç¤ºéŸ³æ—¶é—´æœ€å°å€¼
 /*****************************************************************************/				
-#define EM_LASER_POWER_TOTAL													(EM_START + 85)//·¢Éä×Ü¹¦ÂÊ
-#define EM_HMI_OPERA_STEP															(EM_START +	86)//²Ù×÷²½Öè								
-#define EM_ERROR_CODE																	(EM_START + 87)//´íÎóÂë					
-#define EM_SCHEME_NUM_TMP															(EM_START + 88)//ÁÙÊ±·½°¸±àºÅ	
-#define EM_SCHEME_CLASSIFY_TMP												(EM_START + 89)//ÁÙÊ±·ÖÀà±àºÅ
+#define EM_LASER_POWER_TOTAL													(EM_START + 85)//å‘å°„æ€»åŠŸçŽ‡
+#define EM_HMI_OPERA_STEP															(EM_START +	86)//æ“ä½œæ­¥éª¤								
+#define EM_ERROR_CODE																	(EM_START + 87)//é”™è¯¯ç 					
+#define EM_SCHEME_NUM_TMP															(EM_START + 88)//ä¸´æ—¶æ–¹æ¡ˆç¼–å·	
+#define EM_SCHEME_CLASSIFY_TMP												(EM_START + 89)//ä¸´æ—¶åˆ†ç±»ç¼–å·
 /*****************************************************************************/
-#define EM_DC_PAGE																		(EM_START + 90)//HMIÒ³Ãæ±àºÅ 			
-#define EM_DC_PASSCODE_INDEX													(EM_START + 91)//ÃÜÂëÊäÈëÎ»Ë÷Òý		
-#define EM_DC_NEW_PASSCODE0														(EM_START + 92)//ÊäÈëÐÂÃÜÂë0			
-#define EM_DC_NEW_PASSCODE1														(EM_START + 93)//ÊäÈëÐÂÃÜÂë1			
-#define EM_DC_NEW_PASSCODE2														(EM_START + 94)//ÊäÈëÐÂÃÜÂë2			
-#define EM_DC_NEW_PASSCODE3														(EM_START + 95)//ÊäÈëÐÂÃÜÂë3						
+#define EM_DC_PAGE																		(EM_START + 90)//HMIé¡µé¢ç¼–å· 			
+#define EM_DC_PASSCODE_INDEX													(EM_START + 91)//å¯†ç è¾“å…¥ä½ç´¢å¼•		
+#define EM_DC_NEW_PASSCODE0														(EM_START + 92)//è¾“å…¥æ–°å¯†ç 0			
+#define EM_DC_NEW_PASSCODE1														(EM_START + 93)//è¾“å…¥æ–°å¯†ç 1			
+#define EM_DC_NEW_PASSCODE2														(EM_START + 94)//è¾“å…¥æ–°å¯†ç 2			
+#define EM_DC_NEW_PASSCODE3														(EM_START + 95)//è¾“å…¥æ–°å¯†ç 3						
 /*****************************************************************************/
-#define EM_LASER_RELEASE_TIME													(EM_START + 100)//Êµ¼Ê¼¤¹â·¢ÉäÀÛ¼ÆÊ±¼ä	
-#define EM_LASER_RELEASE_ENERGY												(EM_START + 102)//Êµ¼Ê¼¤¹â·¢ÉäÀÛ¼ÆÄÜÁ¿
-#define EM_LASER_TRIG_TIME														(EM_START + 104)//¼¤¹â´¥·¢Ê±¼ä
+#define EM_LASER_RELEASE_TIME													(EM_START + 100)//å®žé™…æ¿€å…‰å‘å°„ç´¯è®¡æ—¶é—´	
+#define EM_LASER_RELEASE_ENERGY												(EM_START + 102)//å®žé™…æ¿€å…‰å‘å°„ç´¯è®¡èƒ½é‡
+#define EM_LASER_TRIG_TIME														(EM_START + 104)//æ¿€å…‰è§¦å‘æ—¶é—´
 /*****************************************************************************/
-#define FD_LASER_SCHEME_NAME													(FD_START +  0)//·½°¸Ãû³Æ
-#define FD_LASER_CHANNEL_SELECT												(FD_START +  55)//¼¤¹âÍ¨µÀÑ¡Ôñ
-#define FD_LASER_PULSE_MODE														(FD_START +  56)//Âö³åÄ£Ê½
-#define FD_LASER_POWER_CH0														(FD_START +  57)//Í¨µÀ1470¹¦ÂÊ
-#define FD_LASER_POWER_CH1														(FD_START +  58)//Í¨µÀ980¹¦ÂÊ
-#define FD_LASER_POWER_CH2														(FD_START +  59)//±¸ÓÃÍ¨µÀ
-#define FD_LASER_POWER_CH3														(FD_START +  60)//±¸ÓÃÍ¨µÀ
-#define FD_LASER_POWER_RED														(FD_START +  61)//ºì¼¤¹â¹¦ÂÊ
-#define FD_LASER_POSWIDTH															(FD_START +  62)//¶àÂö³åÕýÂö¿í
-#define FD_LASER_NEGWIDTH															(FD_START +  63)//¶àÂö³å¸ºÂö¿í
+#define FD_LASER_SCHEME_NAME													(FD_START +  0)//æ–¹æ¡ˆåç§°
+#define FD_LASER_CHANNEL_SELECT												(FD_START +  55)//æ¿€å…‰é€šé“é€‰æ‹©
+#define FD_LASER_PULSE_MODE														(FD_START +  56)//è„‰å†²æ¨¡å¼
+#define FD_LASER_POWER_CH0														(FD_START +  57)//é€šé“1470åŠŸçŽ‡
+#define FD_LASER_POWER_CH1														(FD_START +  58)//é€šé“980åŠŸçŽ‡
+#define FD_LASER_POWER_CH2														(FD_START +  59)//å¤‡ç”¨é€šé“
+#define FD_LASER_POWER_CH3														(FD_START +  60)//å¤‡ç”¨é€šé“
+#define FD_LASER_POWER_RED														(FD_START +  61)//çº¢æ¿€å…‰åŠŸçŽ‡
+#define FD_LASER_POSWIDTH															(FD_START +  62)//å¤šè„‰å†²æ­£è„‰å®½
+#define FD_LASER_NEGWIDTH															(FD_START +  63)//å¤šè„‰å†²è´Ÿè„‰å®½
 /*****************************************************************************/
-#define FD_SCHEME_START_0															(FD_START +  0)//×Ô¶¨Òå1´æ´¢ÇøÆðÊ¼ 
-#define FD_SCHEME_END_0																(FD_START +  63)//×Ô¶¨Òå0´æ´¢Çø½áÊø		
+#define FD_SCHEME_START_0															(FD_START +  0)//è‡ªå®šä¹‰1å­˜å‚¨åŒºèµ·å§‹ 
+#define FD_SCHEME_END_0																(FD_START +  63)//è‡ªå®šä¹‰0å­˜å‚¨åŒºç»“æŸ		
 
-#define FD_SCHEME_START_1															(FD_START +  64)//×Ô¶¨Òå1´æ´¢ÇøÆðÊ¼		
-#define FD_SCHEME_END_1																(FD_START +  127)//×Ô¶¨Òå1´æ´¢Çø½áÊø
+#define FD_SCHEME_START_1															(FD_START +  64)//è‡ªå®šä¹‰1å­˜å‚¨åŒºèµ·å§‹		
+#define FD_SCHEME_END_1																(FD_START +  127)//è‡ªå®šä¹‰1å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_2															(FD_START +  128)//×Ô¶¨Òå2´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_2																(FD_START +  191)//×Ô¶¨Òå2´æ´¢Çø½áÊø
+#define FD_SCHEME_START_2															(FD_START +  128)//è‡ªå®šä¹‰2å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_2																(FD_START +  191)//è‡ªå®šä¹‰2å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_3															(FD_START +  192)//×Ô¶¨Òå3´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_3																(FD_START +  255)//×Ô¶¨Òå3´æ´¢Çø½áÊø
+#define FD_SCHEME_START_3															(FD_START +  192)//è‡ªå®šä¹‰3å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_3																(FD_START +  255)//è‡ªå®šä¹‰3å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_4															(FD_START +  256)//×Ô¶¨Òå4´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_4																(FD_START +  319)//×Ô¶¨Òå4´æ´¢Çø½áÊø
+#define FD_SCHEME_START_4															(FD_START +  256)//è‡ªå®šä¹‰4å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_4																(FD_START +  319)//è‡ªå®šä¹‰4å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_5															(FD_START +  320)//×Ô¶¨Òå5´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_5																(FD_START +  383)//×Ô¶¨Òå5´æ´¢Çø½áÊø
+#define FD_SCHEME_START_5															(FD_START +  320)//è‡ªå®šä¹‰5å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_5																(FD_START +  383)//è‡ªå®šä¹‰5å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_6															(FD_START +  384)//×Ô¶¨Òå6´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_6																(FD_START +  447)//×Ô¶¨Òå6´æ´¢Çø½áÊø
+#define FD_SCHEME_START_6															(FD_START +  384)//è‡ªå®šä¹‰6å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_6																(FD_START +  447)//è‡ªå®šä¹‰6å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_7															(FD_START +  448)//×Ô¶¨Òå7´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_7																(FD_START +  511)//×Ô¶¨Òå7´æ´¢Çø½áÊø
+#define FD_SCHEME_START_7															(FD_START +  448)//è‡ªå®šä¹‰7å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_7																(FD_START +  511)//è‡ªå®šä¹‰7å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_8															(FD_START +  512)//×Ô¶¨Òå8´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_8																(FD_START +  575)//×Ô¶¨Òå8´æ´¢Çø½áÊø
+#define FD_SCHEME_START_8															(FD_START +  512)//è‡ªå®šä¹‰8å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_8																(FD_START +  575)//è‡ªå®šä¹‰8å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_9															(FD_START +  576)//×Ô¶¨Òå9´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_9																(FD_START +  639)//×Ô¶¨Òå9´æ´¢Çø½áÊø
+#define FD_SCHEME_START_9															(FD_START +  576)//è‡ªå®šä¹‰9å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_9																(FD_START +  639)//è‡ªå®šä¹‰9å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_10														(FD_START +  640)//×Ô¶¨Òå10´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_10															(FD_START +  703)//×Ô¶¨Òå10´æ´¢Çø½áÊø
+#define FD_SCHEME_START_10														(FD_START +  640)//è‡ªå®šä¹‰10å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_10															(FD_START +  703)//è‡ªå®šä¹‰10å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_11														(FD_START +  704)//×Ô¶¨Òå11´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_11															(FD_START +  767)//×Ô¶¨Òå11´æ´¢Çø½áÊø
+#define FD_SCHEME_START_11														(FD_START +  704)//è‡ªå®šä¹‰11å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_11															(FD_START +  767)//è‡ªå®šä¹‰11å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_12														(FD_START +  768)//×Ô¶¨Òå12´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_12															(FD_START +  831)//×Ô¶¨Òå12´æ´¢Çø½áÊø
+#define FD_SCHEME_START_12														(FD_START +  768)//è‡ªå®šä¹‰12å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_12															(FD_START +  831)//è‡ªå®šä¹‰12å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_13														(FD_START +  832)//×Ô¶¨Òå13´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_13															(FD_START +  895)//×Ô¶¨Òå13´æ´¢Çø½áÊø
+#define FD_SCHEME_START_13														(FD_START +  832)//è‡ªå®šä¹‰13å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_13															(FD_START +  895)//è‡ªå®šä¹‰13å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_14														(FD_START +  896)//×Ô¶¨Òå14´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_14															(FD_START +  959)//×Ô¶¨Òå14´æ´¢Çø½áÊø
+#define FD_SCHEME_START_14														(FD_START +  896)//è‡ªå®šä¹‰14å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_14															(FD_START +  959)//è‡ªå®šä¹‰14å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_15														(FD_START +  960)//×Ô¶¨Òå15´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_15															(FD_START + 1023)//×Ô¶¨Òå15´æ´¢Çø½áÊø
+#define FD_SCHEME_START_15														(FD_START +  960)//è‡ªå®šä¹‰15å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_15															(FD_START + 1023)//è‡ªå®šä¹‰15å­˜å‚¨åŒºç»“æŸ
 /*****************************************************************************/
-#define FD_SCHEME_START_16														(FD_START + 1024)//×Ô¶¨Òå16´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_16															(FD_START + 1087)//×Ô¶¨Òå16´æ´¢Çø½áÊø
+#define FD_SCHEME_START_16														(FD_START + 1024)//è‡ªå®šä¹‰16å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_16															(FD_START + 1087)//è‡ªå®šä¹‰16å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_17														(FD_START + 1088)//×Ô¶¨Òå17´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_17															(FD_START + 1151)//×Ô¶¨Òå17´æ´¢Çø½áÊø
+#define FD_SCHEME_START_17														(FD_START + 1088)//è‡ªå®šä¹‰17å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_17															(FD_START + 1151)//è‡ªå®šä¹‰17å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_18														(FD_START + 1152)//×Ô¶¨Òå18´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_18															(FD_START + 1215)//×Ô¶¨Òå18´æ´¢Çø½áÊø
+#define FD_SCHEME_START_18														(FD_START + 1152)//è‡ªå®šä¹‰18å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_18															(FD_START + 1215)//è‡ªå®šä¹‰18å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_19														(FD_START + 1216)//×Ô¶¨Òå19´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_19															(FD_START + 1279)//×Ô¶¨Òå19´æ´¢Çø½áÊø
+#define FD_SCHEME_START_19														(FD_START + 1216)//è‡ªå®šä¹‰19å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_19															(FD_START + 1279)//è‡ªå®šä¹‰19å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_20														(FD_START + 1280)//×Ô¶¨Òå20´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_20															(FD_START + 1343)//×Ô¶¨Òå20´æ´¢Çø½áÊø
+#define FD_SCHEME_START_20														(FD_START + 1280)//è‡ªå®šä¹‰20å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_20															(FD_START + 1343)//è‡ªå®šä¹‰20å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_21														(FD_START + 1344)//×Ô¶¨Òå21´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_21															(FD_START + 1407)//×Ô¶¨Òå21´æ´¢Çø½áÊø
+#define FD_SCHEME_START_21														(FD_START + 1344)//è‡ªå®šä¹‰21å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_21															(FD_START + 1407)//è‡ªå®šä¹‰21å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_22														(FD_START + 1408)//×Ô¶¨Òå22´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_22															(FD_START + 1471)//×Ô¶¨Òå22´æ´¢Çø½áÊø
+#define FD_SCHEME_START_22														(FD_START + 1408)//è‡ªå®šä¹‰22å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_22															(FD_START + 1471)//è‡ªå®šä¹‰22å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_23														(FD_START + 1472)//×Ô¶¨Òå23´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_23															(FD_START + 1535)//×Ô¶¨Òå23´æ´¢Çø½áÊø
+#define FD_SCHEME_START_23														(FD_START + 1472)//è‡ªå®šä¹‰23å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_23															(FD_START + 1535)//è‡ªå®šä¹‰23å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_24														(FD_START + 1536)//×Ô¶¨Òå24´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_24															(FD_START + 1599)//×Ô¶¨Òå24´æ´¢Çø½áÊø
+#define FD_SCHEME_START_24														(FD_START + 1536)//è‡ªå®šä¹‰24å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_24															(FD_START + 1599)//è‡ªå®šä¹‰24å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_25														(FD_START + 1600)//×Ô¶¨Òå25´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_25															(FD_START + 1663)//×Ô¶¨Òå25´æ´¢Çø½áÊø
+#define FD_SCHEME_START_25														(FD_START + 1600)//è‡ªå®šä¹‰25å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_25															(FD_START + 1663)//è‡ªå®šä¹‰25å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_26														(FD_START + 1664)//×Ô¶¨Òå26´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_26															(FD_START + 1727)//×Ô¶¨Òå26´æ´¢Çø½áÊø
+#define FD_SCHEME_START_26														(FD_START + 1664)//è‡ªå®šä¹‰26å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_26															(FD_START + 1727)//è‡ªå®šä¹‰26å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_27														(FD_START + 1728)//×Ô¶¨Òå27´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_27															(FD_START + 1791)//×Ô¶¨Òå27´æ´¢Çø½áÊø
+#define FD_SCHEME_START_27														(FD_START + 1728)//è‡ªå®šä¹‰27å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_27															(FD_START + 1791)//è‡ªå®šä¹‰27å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_28														(FD_START + 1792)//×Ô¶¨Òå28´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_28															(FD_START + 1855)//×Ô¶¨Òå28´æ´¢Çø½áÊø
+#define FD_SCHEME_START_28														(FD_START + 1792)//è‡ªå®šä¹‰28å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_28															(FD_START + 1855)//è‡ªå®šä¹‰28å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_29														(FD_START + 1856)//×Ô¶¨Òå29´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_29															(FD_START + 1919)//×Ô¶¨Òå29´æ´¢Çø½áÊø
+#define FD_SCHEME_START_29														(FD_START + 1856)//è‡ªå®šä¹‰29å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_29															(FD_START + 1919)//è‡ªå®šä¹‰29å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_30														(FD_START + 1920)//×Ô¶¨Òå30´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_30															(FD_START + 1983)//×Ô¶¨Òå30´æ´¢Çø½áÊø
+#define FD_SCHEME_START_30														(FD_START + 1920)//è‡ªå®šä¹‰30å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_30															(FD_START + 1983)//è‡ªå®šä¹‰30å­˜å‚¨åŒºç»“æŸ
 
-#define FD_SCHEME_START_31											(FD_START + 1984)//×Ô¶¨Òå31´æ´¢ÇøÆðÊ¼
-#define FD_SCHEME_END_31												(FD_START + 2047)//×Ô¶¨Òå31´æ´¢Çø½áÊø
+#define FD_SCHEME_START_31											(FD_START + 1984)//è‡ªå®šä¹‰31å­˜å‚¨åŒºèµ·å§‹
+#define FD_SCHEME_END_31												(FD_START + 2047)//è‡ªå®šä¹‰31å­˜å‚¨åŒºç»“æŸ
 /*****************************************************************************/
-#define TMP_REG_0																(TMP_START + 0)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_1																(TMP_START + 1)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_2																(TMP_START + 2)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_3																(TMP_START + 3)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_4																(TMP_START + 4)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_5																(TMP_START + 5)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_6																(TMP_START + 6)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_7																(TMP_START + 7)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_8																(TMP_START + 8)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_9																(TMP_START + 9)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_10															(TMP_START + 10)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_11													(TMP_START + 11)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_12													(TMP_START + 12)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_13													(TMP_START + 13)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_14													(TMP_START + 14)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_15													(TMP_START + 15)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_16													(TMP_START + 16)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_17													(TMP_START + 17)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_18													(TMP_START + 18)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_19													(TMP_START + 19)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_20													(TMP_START + 20)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_21													(TMP_START + 21)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_22													(TMP_START + 22)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_23													(TMP_START + 23)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_24													(TMP_START + 24)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_25													(TMP_START + 25)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_26													(TMP_START + 26)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_27													(TMP_START + 27)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_28													(TMP_START + 28)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_29													(TMP_START + 29)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_30													(TMP_START + 30)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_31													(TMP_START + 31)//ÁÙÊ±Ãû³Æ´¢´æÇø
+#define TMP_REG_0																(TMP_START + 0)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_1																(TMP_START + 1)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_2																(TMP_START + 2)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_3																(TMP_START + 3)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_4																(TMP_START + 4)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_5																(TMP_START + 5)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_6																(TMP_START + 6)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_7																(TMP_START + 7)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_8																(TMP_START + 8)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_9																(TMP_START + 9)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_10															(TMP_START + 10)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_11													(TMP_START + 11)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_12													(TMP_START + 12)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_13													(TMP_START + 13)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_14													(TMP_START + 14)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_15													(TMP_START + 15)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_16													(TMP_START + 16)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_17													(TMP_START + 17)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_18													(TMP_START + 18)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_19													(TMP_START + 19)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_20													(TMP_START + 20)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_21													(TMP_START + 21)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_22													(TMP_START + 22)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_23													(TMP_START + 23)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_24													(TMP_START + 24)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_25													(TMP_START + 25)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_26													(TMP_START + 26)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_27													(TMP_START + 27)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_28													(TMP_START + 28)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_29													(TMP_START + 29)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_30													(TMP_START + 30)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_31													(TMP_START + 31)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
 
-#define TMP_REG_32													(TMP_START + 32)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_33													(TMP_START + 33)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_34													(TMP_START + 34)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_35												(TMP_START + 35)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_36												(TMP_START + 36)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_37												(TMP_START + 37)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_38												(TMP_START + 38)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_39												(TMP_START + 39)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_40												(TMP_START + 40)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_41												(TMP_START + 41)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_42												(TMP_START + 42)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_43												(TMP_START + 43)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_44												(TMP_START + 44)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_45												(TMP_START + 45)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_46												(TMP_START + 46)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_47												(TMP_START + 47)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_48												(TMP_START + 48)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_49												(TMP_START + 49)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_50												(TMP_START + 50)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_51												(TMP_START + 51)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_52												(TMP_START + 52)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_53												(TMP_START + 53)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_54												(TMP_START + 54)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_55												(TMP_START + 55)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_56												(TMP_START + 56)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_57												(TMP_START + 57)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_58												(TMP_START + 58)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_59												(TMP_START + 59)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_60												(TMP_START + 60)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_61												(TMP_START + 61)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_62												(TMP_START + 62)//ÁÙÊ±Ãû³Æ´¢´æÇø
-#define TMP_REG_63													(TMP_START + 63)//ÁÙÊ±Ãû³Æ´¢´æÇø
+#define TMP_REG_32													(TMP_START + 32)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_33													(TMP_START + 33)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_34													(TMP_START + 34)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_35												(TMP_START + 35)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_36												(TMP_START + 36)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_37												(TMP_START + 37)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_38												(TMP_START + 38)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_39												(TMP_START + 39)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_40												(TMP_START + 40)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_41												(TMP_START + 41)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_42												(TMP_START + 42)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_43												(TMP_START + 43)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_44												(TMP_START + 44)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_45												(TMP_START + 45)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_46												(TMP_START + 46)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_47												(TMP_START + 47)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_48												(TMP_START + 48)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_49												(TMP_START + 49)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_50												(TMP_START + 50)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_51												(TMP_START + 51)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_52												(TMP_START + 52)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_53												(TMP_START + 53)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_54												(TMP_START + 54)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_55												(TMP_START + 55)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_56												(TMP_START + 56)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_57												(TMP_START + 57)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_58												(TMP_START + 58)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_59												(TMP_START + 59)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_60												(TMP_START + 60)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_61												(TMP_START + 61)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_62												(TMP_START + 62)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
+#define TMP_REG_63													(TMP_START + 63)//ä¸´æ—¶åç§°å‚¨å­˜åŒº
 /*****************************************************************************/
-#define DM_SCHEME_CLASSIFY													(DM_START + 0)//Ñ¡ÔñµÄ·½°¸·ÖÀà 
-#define DM_SCHEME_INDEX															(DM_START + 1)//Ñ¡ÔñµÄ·½°¸Ë÷Òý
-#define DM_BEEM_VOLUME															(DM_START + 2)//·äÃùÆ÷ÒôÁ¿ 0-100% 32+3=35
-#define DM_AIM_BRG																	(DM_START + 3)//Ö¸Ê¾¼¤¹âÁÁ¶È
-#define DM_LCD_BRG																	(DM_START + 4)//ÆÁÄ»ÁÁ¶È
-#define DM_DC_OLD_PASSCODE0													(DM_START + 5)//ÆÁ¾ÉÃÜÂë0-1
-#define DM_DC_OLD_PASSCODE1													(DM_START + 6)//ÆÁ¾ÉÃÜÂë2-3
-#define DM_DC_OLD_PASSCODE2													(DM_START + 7)//ÆÁ¾ÉÃÜÂë0-1
-#define DM_DC_OLD_PASSCODE3													(DM_START + 8)//ÆÁ¾ÉÃÜÂë2-3
+#define DM_SCHEME_CLASSIFY													(DM_START + 0)//é€‰æ‹©çš„æ–¹æ¡ˆåˆ†ç±» 
+#define DM_SCHEME_INDEX															(DM_START + 1)//é€‰æ‹©çš„æ–¹æ¡ˆç´¢å¼•
+#define DM_BEEM_VOLUME															(DM_START + 2)//èœ‚é¸£å™¨éŸ³é‡ 0-100% 32+3=35
+#define DM_AIM_BRG																	(DM_START + 3)//æŒ‡ç¤ºæ¿€å…‰äº®åº¦
+#define DM_LCD_BRG																	(DM_START + 4)//å±å¹•äº®åº¦
+#define DM_DC_OLD_PASSCODE0													(DM_START + 5)//å±æ—§å¯†ç 0-1
+#define DM_DC_OLD_PASSCODE1													(DM_START + 6)//å±æ—§å¯†ç 2-3
+#define DM_DC_OLD_PASSCODE2													(DM_START + 7)//å±æ—§å¯†ç 0-1
+#define DM_DC_OLD_PASSCODE3													(DM_START + 8)//å±æ—§å¯†ç 2-3
 /*****************************************************************************/
-#define X_ESTOP_NC																	(X_START * 16 + 0)//XIN0 ½ô¼±Í£Ö¹¿ª¹Ø
-#define X_INTERLOCK_NC															(X_START * 16 + 1)//XIN1 °²È«Á¬Ëø
-#define X_FOOTSWITCH_NO															(X_START * 16 + 2)//XIN2 ½ÅÌ¤³£¿ª
-#define X_FOOTSWITCH_NC															(X_START * 16 + 3)//XIN3 ½ÅÌ¤³£±Õ
-#define X_FIBER_PROBE																(X_START * 16 + 4)//XIN5 ¹âÏËÌ½²â
+#define X_ESTOP_NC																	(X_START * 16 + 0)//XIN0 ç´§æ€¥åœæ­¢å¼€å…³
+#define X_INTERLOCK_NC															(X_START * 16 + 1)//XIN1 å®‰å…¨è¿žé”
+#define X_FOOTSWITCH_NO															(X_START * 16 + 2)//XIN2 è„šè¸å¸¸å¼€
+#define X_FOOTSWITCH_NC															(X_START * 16 + 3)//XIN3 è„šè¸å¸¸é—­
+#define X_FIBER_PROBE																(X_START * 16 + 4)//XIN5 å…‰çº¤æŽ¢æµ‹
 /*****************************************************************************/
-#define Y_GREEN_LED																	(Y_START * 16 + 0)//YOUT0 ÂÌµÆ¿ª¹Ø
-#define Y_RED_LED																		(Y_START * 16 + 1)//YOUT1 ºìµÆ¿ª¹Ø
-#define Y_YELLOW_LED																(Y_START * 16 + 2)//YOUT2 À¶µÆ¿ª¹Ø
-#define Y_TICK_LED																	(Y_START * 16 + 3)//YOUT3 °åÔØÔËÐÐLEDÖ¸Ê¾µÆ
-#define Y_ERR_LED																		(Y_START * 16 + 4)//YOUT4 °åÔØ´íÎóLEDÖ¸Ê¾µÆ
-#define Y_BEEM_LED																	(Y_START * 16 + 5)//YOUT5 °åÔØ´íÎóLEDÖ¸Ê¾µÆ
-#define Y_TEC																				(Y_START * 16 + 6)//YOUT6 TECÊä³ö
+#define Y_GREEN_LED																	(Y_START * 16 + 0)//YOUT0 ç»¿ç¯å¼€å…³
+#define Y_RED_LED																		(Y_START * 16 + 1)//YOUT1 çº¢ç¯å¼€å…³
+#define Y_YELLOW_LED																(Y_START * 16 + 2)//YOUT2 è“ç¯å¼€å…³
+#define Y_TICK_LED																	(Y_START * 16 + 3)//YOUT3 æ¿è½½è¿è¡ŒLEDæŒ‡ç¤ºç¯
+#define Y_ERR_LED																		(Y_START * 16 + 4)//YOUT4 æ¿è½½é”™è¯¯LEDæŒ‡ç¤ºç¯
+#define Y_BEEM_LED																	(Y_START * 16 + 5)//YOUT5 æ¿è½½é”™è¯¯LEDæŒ‡ç¤ºç¯
+#define Y_TEC																				(Y_START * 16 + 6)//YOUT6 TECè¾“å‡º
 /*****************************************************************************/
-#define R_ESTOP																			(R_START * 16 + 0)//¼±Í£±êÖ¾
-#define R_INTERLOCK																	(R_START * 16 + 1)//Á¬Ëø±êÖ¾
-#define R_FIBER_PROBE																(R_START * 16 + 2)//¹âÏË²åÈë±êÖ¾
-#define R_RFID_PASS																	(R_START * 16 + 3)//NFC¹âÏË²åÈë±êÖ¾
-#define R_LASER_TEMP_HIGH														(R_START * 16 + 4)//¼¤¹â¶þ¼«¹Ü¼¤¹âÄ£¿é¸ßÎÂ±êÖ¾
-#define R_LASER_TEMP_LOW														(R_START * 16 + 5)//¼¤¹â¶þ¼«¹Ü¼¤¹âÄ£¿éµÍÎÂ±êÖ¾
-#define R_MCU_TEMP_HIGH															(R_START * 16 + 6)//´¦ÀíÆ÷¸ßÎÂ±êÖ¾
-#define R_MCU_TEMP_LOW															(R_START * 16 + 7)//´¦ÀíÆ÷µÍÎÂ±êÖ¾
-#define R_FOOTSWITCH_PLUG														(R_START * 16 + 8)//½ÅÌ¤²åÈë±êÖ¾
-#define R_FOOTSWITCH_PRESS													(R_START * 16 + 9)//½ÅÌ¤°´ÏÂ±êÖ¾
-#define R_HMI_FOOTSWITCH_PRESS											(R_START * 16 + 10)//ÆÁÄ»Ä£Äâ½ÅÌ¤°´ÏÂ±êÖ¾
-#define R_FAULT																			(R_START * 16 + 11)//¹ÊÕÏ±êÖ¾
-#define R_DISABLE_ESTOP															(R_START * 16 + 12)//ÆÁ±Î¼±Í£¿ª¹Ø¼ì²â
-#define R_DISABLE_TEMPERATURE												(R_START * 16 + 13)//ÆÁ±ÎÎÂ¶È¼ì²â
-#define	R_DISABLE_FOOTSWITCH												(R_START * 16 + 14)//ÆÁ±Î½ÅÌ¤¿ª¹Ø¼ì²â
-#define R_DISABLE_RFID															(R_START * 16 + 15)//ÆÁ±ÎNFC¼ì²â
-#define R_DISABLE_FIBER_PROBE												(R_START * 16 + 16)//ÆÁ±Î¹âÏËÌ½²â
-#define R_DISABLE_FAN_SPEED													(R_START * 16 + 17)//ÆÁ±Î·çÉÈ¿ØÖÆ
-#define R_DISABLE_INTERLOCK													(R_START * 16 + 18)//ÆÁ±Î°²È«Á¬Ëø
-#define R_CLEAR_EPROM																(R_START * 16 + 19)//ÍêÈ«Çå¿ÕEPROM
-#define R_SAVE_EPROM																(R_START * 16 + 20)//´¢´æSAVE
-#define R_ENGINEER_MODE															(R_START * 16 + 21)//¹¤³ÌÊ¦Ä£Ê½
-#define R_CALIBRATION_MODE													(R_START * 16 + 22)//¹¦ÂÊÐ£ÕýÄ£Ê½
-#define R_ACOUSTIC_ENABLE														(R_START * 16 + 23)//Ê¹ÄÜÌáÊ¾Òô
-#define R_CLEAR_CRC																	(R_START * 16 + 24)//Çå³ý¹Ì¼þCRC
-#define R_UPDATE_BOOTLOAD_REQ												(R_START * 16 + 25)//ÇëÇó¸üÐÂÒýµ¼¹Ì¼þ
-#define R_UPDATE_BOOTLOAD_YES												(R_START * 16 + 26)//Í¬Òâ¸üÐÂ¹Ì¼þ
-#define R_UPDATE_BOOTLOAD_NO												(R_START * 16 + 27)//·ñ¶¨¸üÐÂ¹Ì¼þ
-//HMIÏà¹Ø×´Ì¬
-#define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMI¸´Î»ÇëÇó
-#define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMI¸´Î»ÖÐ
-#define R_DCHMI_RESET_DONE													(R_START * 16 + 32)//HMI¸´Î»Íê³É	
-#define R_DCHMI_UPDATEUI_REQ												(R_START * 16 + 33)//HMIÄÚÈÝ¸üÐÂÇëÇó
-#define R_DCHMI_UPDATEUI_DOING											(R_START * 16 + 34)//HMIÄÚÈÝ¸üÐÂÖÐ
-#define R_DCHMI_UPDATEUI_DONE												(R_START * 16 + 35)//HMIÄÚÈÝ¸üÐÂÇëÇóÍê³É
-#define R_DCHMI_RESTORE_REQ													(R_START * 16 + 36)//HMI´ÓFLASHÖÐ»Ö¸´ÉèÖÃÇëÇó
-#define R_DCHMI_RESTORE_DOING												(R_START * 16 + 37)//HMI´ÓFLASHÖÐ»Ö¸´ÖÐ
-#define R_DCHMI_RESTORE_DONE												(R_START * 16 + 38)//HMI´ÓFLASHÖÐ»Ö¸´ÉèÖÃÍê³É	
-#define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 39)//HMIÏÔÊ¾±¨¾¯ÐÅÏ¢
-#define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 40)//STANDBY Ê¹ÄÜ
+#define R_ESTOP																			(R_START * 16 + 0)//æ€¥åœæ ‡å¿—
+#define R_INTERLOCK																	(R_START * 16 + 1)//è¿žé”æ ‡å¿—
+#define R_FIBER_PROBE																(R_START * 16 + 2)//å…‰çº¤æ’å…¥æ ‡å¿—
+#define R_RFID_PASS																	(R_START * 16 + 3)//NFCå…‰çº¤æ’å…¥æ ‡å¿—
+#define R_LASER_TEMP_HIGH														(R_START * 16 + 4)//æ¿€å…‰äºŒæžç®¡æ¿€å…‰æ¨¡å—é«˜æ¸©æ ‡å¿—
+#define R_LASER_TEMP_LOW														(R_START * 16 + 5)//æ¿€å…‰äºŒæžç®¡æ¿€å…‰æ¨¡å—ä½Žæ¸©æ ‡å¿—
+#define R_MCU_TEMP_HIGH															(R_START * 16 + 6)//å¤„ç†å™¨é«˜æ¸©æ ‡å¿—
+#define R_MCU_TEMP_LOW															(R_START * 16 + 7)//å¤„ç†å™¨ä½Žæ¸©æ ‡å¿—
+#define R_FOOTSWITCH_PLUG														(R_START * 16 + 8)//è„šè¸æ’å…¥æ ‡å¿—
+#define R_FOOTSWITCH_PRESS													(R_START * 16 + 9)//è„šè¸æŒ‰ä¸‹æ ‡å¿—
+#define R_HMI_FOOTSWITCH_PRESS											(R_START * 16 + 10)//å±å¹•æ¨¡æ‹Ÿè„šè¸æŒ‰ä¸‹æ ‡å¿—
+#define R_FAULT																			(R_START * 16 + 11)//æ•…éšœæ ‡å¿—
+#define R_DISABLE_ESTOP															(R_START * 16 + 12)//å±è”½æ€¥åœå¼€å…³æ£€æµ‹
+#define R_DISABLE_TEMPERATURE												(R_START * 16 + 13)//å±è”½æ¸©åº¦æ£€æµ‹
+#define	R_DISABLE_FOOTSWITCH												(R_START * 16 + 14)//å±è”½è„šè¸å¼€å…³æ£€æµ‹
+#define R_DISABLE_RFID															(R_START * 16 + 15)//å±è”½NFCæ£€æµ‹
+#define R_DISABLE_FIBER_PROBE												(R_START * 16 + 16)//å±è”½å…‰çº¤æŽ¢æµ‹
+#define R_DISABLE_FAN_SPEED													(R_START * 16 + 17)//å±è”½é£Žæ‰‡æŽ§åˆ¶
+#define R_DISABLE_INTERLOCK													(R_START * 16 + 18)//å±è”½å®‰å…¨è¿žé”
+#define R_CLEAR_EPROM																(R_START * 16 + 19)//å®Œå…¨æ¸…ç©ºEPROM
+#define R_SAVE_EPROM																(R_START * 16 + 20)//å‚¨å­˜SAVE
+#define R_ENGINEER_MODE															(R_START * 16 + 21)//å·¥ç¨‹å¸ˆæ¨¡å¼
+#define R_CALIBRATION_MODE													(R_START * 16 + 22)//åŠŸçŽ‡æ ¡æ­£æ¨¡å¼
+#define R_ACOUSTIC_ENABLE														(R_START * 16 + 23)//ä½¿èƒ½æç¤ºéŸ³
+#define R_CLEAR_CRC																	(R_START * 16 + 24)//æ¸…é™¤å›ºä»¶CRC
+#define R_UPDATE_BOOTLOAD_REQ												(R_START * 16 + 25)//è¯·æ±‚æ›´æ–°å¼•å¯¼å›ºä»¶
+#define R_UPDATE_BOOTLOAD_YES												(R_START * 16 + 26)//åŒæ„æ›´æ–°å›ºä»¶
+#define R_UPDATE_BOOTLOAD_NO												(R_START * 16 + 27)//å¦å®šæ›´æ–°å›ºä»¶
+//HMIç›¸å…³çŠ¶æ€
+#define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMIå¤ä½è¯·æ±‚
+#define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMIå¤ä½ä¸­
+#define R_DCHMI_RESET_DONE													(R_START * 16 + 32)//HMIå¤ä½å®Œæˆ	
+#define R_DCHMI_UPDATEUI_REQ												(R_START * 16 + 33)//HMIå†…å®¹æ›´æ–°è¯·æ±‚
+#define R_DCHMI_UPDATEUI_DOING											(R_START * 16 + 34)//HMIå†…å®¹æ›´æ–°ä¸­
+#define R_DCHMI_UPDATEUI_DONE												(R_START * 16 + 35)//HMIå†…å®¹æ›´æ–°è¯·æ±‚å®Œæˆ
+#define R_DCHMI_RESTORE_REQ													(R_START * 16 + 36)//HMIä»ŽFLASHä¸­æ¢å¤è®¾ç½®è¯·æ±‚
+#define R_DCHMI_RESTORE_DOING												(R_START * 16 + 37)//HMIä»ŽFLASHä¸­æ¢å¤ä¸­
+#define R_DCHMI_RESTORE_DONE												(R_START * 16 + 38)//HMIä»ŽFLASHä¸­æ¢å¤è®¾ç½®å®Œæˆ	
+#define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 39)//HMIæ˜¾ç¤ºæŠ¥è­¦ä¿¡æ¯
+#define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 40)//STANDBY ä½¿èƒ½
 /*****************************************************************************/
 #define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 50)
 #define R_STANDBY_KEY_POSWIDTH_ADD_UP								(R_START * 16 + 51)
@@ -892,13 +892,13 @@
 #define R_RENAME_TEXTDISPLAY_READ_DONE							(R_START * 16 + 172)
 /*****************************************************************************/
 /*****************************************************************************/
-#define MR_FOOSWITCH_HAND_SWITCH										(MR_START * 16 + 10)//½ÅÌ¤HandSwitch Âö³å¿ØÖÆ
-#define MR_BEEP_TONE																(MR_START * 16 + 11)//·äÃùÆ÷Ä£Ê½ 0:SYNC 1:BEEP
+#define MR_FOOSWITCH_HAND_SWITCH										(MR_START * 16 + 10)//è„šè¸HandSwitch è„‰å†²æŽ§åˆ¶
+#define MR_BEEP_TONE																(MR_START * 16 + 11)//èœ‚é¸£å™¨æ¨¡å¼ 0:SYNC 1:BEEP
 /*****************************************************************************/
-#define T100MS_HMI_POWERUP_DELAY										0//HMIÆô¶¯¸´Î»ÑÓÊ±
+#define T100MS_HMI_POWERUP_DELAY										0//HMIå¯åŠ¨å¤ä½å»¶æ—¶
 #define T100MS_ENTER_PASSCODE_DELAY									1
-#define T100MS_READY_BEEM_DELAY											2//½øÈëREADY×´Ì¬ºó·äÃùÆ÷ÏìÑÓ³Ù
-#define T100MS_PULSE_BEEM_DELAY											3//Âö³åÄ£Ê½·äÃùÆ÷ÑÓ³Ù
+#define T100MS_READY_BEEM_DELAY											2//è¿›å…¥READYçŠ¶æ€åŽèœ‚é¸£å™¨å“å»¶è¿Ÿ
+#define T100MS_PULSE_BEEM_DELAY											3//è„‰å†²æ¨¡å¼èœ‚é¸£å™¨å»¶è¿Ÿ
 /*****************************************************************************/
 #define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						0
 #define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						1

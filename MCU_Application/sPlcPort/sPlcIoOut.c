@@ -2,7 +2,7 @@
 extern TIM_HandleTypeDef htim12;//FAN PWM
 extern TIM_HandleTypeDef htim2;//FAN PWM
 /*****************************************************************************/
-void sPlcOutputInit(void){//IOÊä³ö³õÊ¼»¯
+void sPlcOutputInit(void){//IOè¾“å‡ºåˆå§‹åŒ–
 	NVRAM0[Y_START] = 0x0;
 	SET_TEC_OFF;
 	SET_RED_LED_OFF;
@@ -13,15 +13,15 @@ void sPlcOutputInit(void){//IOÊä³ö³õÊ¼»¯
 	printf("%s,%d,%s:output init......\n",__FILE__, __LINE__, __func__);
 }
 
-void sPlcOutputRefresh(void){//ÉèÖÃÊä³öIO	
-	//YOUT0 ÂÌµÆ
+void sPlcOutputRefresh(void){//è®¾ç½®è¾“å‡ºIO	
+	//YOUT0 ç»¿ç¯
 	if(LDP(Y_GREEN_LED)){
 		SET_GREEN_LED_ON;
 	}
 	if(LDN(Y_GREEN_LED)){
 		SET_GREEN_LED_OFF;
 	}
-	//YOUT1 ºìµÆ
+	//YOUT1 çº¢ç¯
 	if(LDP(Y_RED_LED)){
 		SET_RED_LED_ON;
 	}
@@ -29,9 +29,9 @@ void sPlcOutputRefresh(void){//ÉèÖÃÊä³öIO
 		SET_RED_LED_OFF;
 	}
 	
-	//YOUT2 »ÆµÆ
+	//YOUT2 é»„ç¯
 	if(LDP(Y_YELLOW_LED)){
-		//ÂÌÉ«+À¶É«Ä£Äâ»ÆÉ«
+		//ç»¿è‰²+è“è‰²æ¨¡æ‹Ÿé»„è‰²
 		SET_BLUE_LED_ON;
 	}
 	if(LDN(Y_YELLOW_LED)){

@@ -1,19 +1,19 @@
 #include "sPlc.h"
-//±ÜÃâÖ¸ÕëºÍ¶¯Ì¬RAM·ÖÅä ÒÆÖ²´ó²¿·Ö8BITºÍ16BITµ¥Æ¬»úĞ§ÂÊµÍ´æÔÚÎÊÌâ
+//é¿å…æŒ‡é’ˆå’ŒåŠ¨æ€RAMåˆ†é… ç§»æ¤å¤§éƒ¨åˆ†8BITå’Œ16BITå•ç‰‡æœºæ•ˆç‡ä½å­˜åœ¨é—®é¢˜
 /*****************************************************************************/
 #pragma pack(push, 4)
-int16_t NVRAM0[CONFIG_NVRAM_SIZE];//µôµç±£³Ö¼Ä´æÆ÷ µ±Ç° °üº¬´æµµ¼Ä´æÆ÷
-int16_t NVRAM1[CONFIG_NVRAM_SIZE];//µôµç±£³Ö¼Ä´æÆ÷ ÉÏÒ»´Î
-int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//´æµµ¼Ä´æÆ÷
-uint32_t BootloadCrc, ApplicationCrc;//µ±Ç°¹Ì¼şĞ£ÑéÂë
+int16_t NVRAM0[CONFIG_NVRAM_SIZE];//æ‰ç”µä¿æŒå¯„å­˜å™¨ å½“å‰ åŒ…å«å­˜æ¡£å¯„å­˜å™¨
+int16_t NVRAM1[CONFIG_NVRAM_SIZE];//æ‰ç”µä¿æŒå¯„å­˜å™¨ ä¸Šä¸€æ¬¡
+int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//å­˜æ¡£å¯„å­˜å™¨
+uint32_t BootloadCrc, ApplicationCrc;//å½“å‰å›ºä»¶æ ¡éªŒç 
 #pragma pack(pop)
 /*****************************************************************************/
-uint16_t TimerCounter_10mS = 0;//10ºÁÃë
-uint16_t TimerCounter_100mS = 0;//100ºÁÃë
-uint16_t TimerCounter_200mS = 0;//200ºÁÃë
-uint16_t TimerCounter_500mS = 0;//500ºÁÃë
-uint16_t TimerCounter_1000mS = 0;//1Ãë
-uint16_t TimerCounter_60000mS = 0;//1·ÖÖÓ
+uint16_t TimerCounter_10mS = 0;//10æ¯«ç§’
+uint16_t TimerCounter_100mS = 0;//100æ¯«ç§’
+uint16_t TimerCounter_200mS = 0;//200æ¯«ç§’
+uint16_t TimerCounter_500mS = 0;//500æ¯«ç§’
+uint16_t TimerCounter_1000mS = 0;//1ç§’
+uint16_t TimerCounter_60000mS = 0;//1åˆ†é’Ÿ
 /*****************************************************************************/
 uint8_t TD_10MS_SP = 0;
 uint8_t TD_100MS_SP = 0;
@@ -30,7 +30,7 @@ void sPlcErrorHandler(uint16_t errCode){
 	while(1);
 }
 
-void sPlcAssertCoilAddress(uint16_t adr){//¼ì²éÏßÈ¦µØÖ·
+void sPlcAssertCoilAddress(uint16_t adr){//æ£€æŸ¥çº¿åœˆåœ°å€
 #if CONFIG_SPLC_ASSERT == 1
 	uint32_t maxCoilAdr = CONFIG_NVRAM_SIZE * 16 - 1;
 	if(adr > (maxCoilAdr)){
@@ -40,7 +40,7 @@ void sPlcAssertCoilAddress(uint16_t adr){//¼ì²éÏßÈ¦µØÖ·
 	adr = ~adr;
 #endif
 }
-void sPlcAssertRegisterAddress(uint16_t adr){//¼ì²é¼Ä´æÆ÷µØÖ·
+void sPlcAssertRegisterAddress(uint16_t adr){//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
 #if CONFIG_SPLC_ASSERT == 1
 	if(adr > (CONFIG_NVRAM_SIZE - 1)){
 		while(1);
@@ -49,17 +49,17 @@ void sPlcAssertRegisterAddress(uint16_t adr){//¼ì²é¼Ä´æÆ÷µØÖ·
 	adr = ~adr;
 #endif
 }
-void sPlcNvramLoad(void){//´ÓEPROMÖĞÔØÈëNVRAM MRºÍDM
+void sPlcNvramLoad(void){//ä»EPROMä¸­è½½å…¥NVRAM MRå’ŒDM
 	uint32_t crc32_mr, crc32_dm;
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
-	//´ÓEPROMÖĞ»Ö¸´MR NVRAM
-	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//´ÓEPROMÖĞ»Ö¸´MR
+	//ä»EPROMä¸­æ¢å¤MR NVRAM
+	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//ä»EPROMä¸­æ¢å¤MR
 	epromReadDword(CONFIG_EPROM_MR_CRC, &crc32_eprom_mr);
 	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
 	
-	//´ÓEPROMÖĞ»Ö¸´DM NVRAM
-	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//´ÓEPROMÖĞ»Ö¸´DM
+	//ä»EPROMä¸­æ¢å¤DM NVRAM
+	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//ä»EPROMä¸­æ¢å¤DM
 	epromReadDword(CONFIG_EPROM_DM_CRC, &crc32_eprom_dm);
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
 	
@@ -73,28 +73,28 @@ void sPlcNvramLoad(void){//´ÓEPROMÖĞÔØÈëNVRAM MRºÍDM
 		printf("%s,%d,%s:load NVRAM done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void sPlcNvramSave(void){//Ç¿ÖÆ½«NVRAM´æÈëEPROM
+void sPlcNvramSave(void){//å¼ºåˆ¶å°†NVRAMå­˜å…¥EPROM
 	uint32_t crc32_mr, crc32_dm;
-	//MR NVRAMĞ´ÈëEPROM
-	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//½«NVRAMÖĞMR´¢´æÈëEPROM																				
+	//MR NVRAMå†™å…¥EPROM
+	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//å°†NVRAMä¸­MRå‚¨å­˜å…¥EPROM																				
 	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
-	epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
-	//DM NVRAMĞ´ÈëEPROM
-	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//½«NVRAMÖĞDM´¢´æÈëEPROM
+	epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
+	//DM NVRAMå†™å…¥EPROM
+	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//å°†NVRAMä¸­DMå‚¨å­˜å…¥EPROM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
-	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
+	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
-void sPlcNvramUpdate(void){//¸üĞÂNVRAM->EPROM
+void sPlcNvramUpdate(void){//æ›´æ–°NVRAM->EPROM
 	uint8_t *sp0, *sp1;
 	uint8_t updateFlagMr, updateFlagDm;
 	uint16_t i;
 	uint32_t crc32_mr, crc32_dm;
-	//´¢´æMR
+	//å‚¨å­˜MR
 	updateFlagMr = 0;
 	sp0 = (uint8_t*)(NVRAM0 + MR_START);
 	sp1 = (uint8_t*)(NVRAM1 + MR_START);
-	for(i = 0;i < (CONFIG_MRRAM_SIZE * 2);i ++){//´¢´æMR
+	for(i = 0;i < (CONFIG_MRRAM_SIZE * 2);i ++){//å‚¨å­˜MR
 		if(*sp0 != *sp1){
 			epromWriteByte((i + CONFIG_EPROM_MR_START), sp0);
 			updateFlagMr |= 0xFF;
@@ -104,13 +104,13 @@ void sPlcNvramUpdate(void){//¸üĞÂNVRAM->EPROM
 	}
 	if(updateFlagMr){
 		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
-		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
+		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
 	}
-	//´¢´æDM
+	//å‚¨å­˜DM
 	updateFlagDm = 0;
 	sp0 = (uint8_t*)(NVRAM0 + DM_START);
 	sp1 = (uint8_t*)(NVRAM1 + DM_START);
-	for(i = 0;i < (CONFIG_DMRAM_SIZE * 2);i ++){//´¢´æMR
+	for(i = 0;i < (CONFIG_DMRAM_SIZE * 2);i ++){//å‚¨å­˜MR
 		if(*sp0 != *sp1){
 			epromWriteByte((i + CONFIG_EPROM_DM_START), sp0);
 			updateFlagDm |= 0xFF;
@@ -120,9 +120,9 @@ void sPlcNvramUpdate(void){//¸üĞÂNVRAM->EPROM
 	}
 	if(updateFlagDm){
 		crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
-		epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
+		epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
 	}
-	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//¸üĞÂNVRAM1 ·Ç±£³Ö¼Ä´æÆ÷
+	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//æ›´æ–°NVRAM1 éä¿æŒå¯„å­˜å™¨
 	if(updateFlagMr){
 		printf("%s,%d,%s:update MR NVRAM done...(MR CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr);
 	}
@@ -130,19 +130,19 @@ void sPlcNvramUpdate(void){//¸üĞÂNVRAM->EPROM
 		printf("%s,%d,%s:update DM NVRAM done...(DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_dm);
 	}
 }
-void sPlcNvramClear(void){//Çå³ıNVRAMÊı¾İ	
+void sPlcNvramClear(void){//æ¸…é™¤NVRAMæ•°æ®	
 	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_NVRAM);//clear mr dm
-	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//³õÊ¼»¯NVRAM0
-	memset((uint8_t*)NVRAM1, 0x0, (CONFIG_NVRAM_SIZE * 2));//³õÊ¼»¯NVRAM1
-	sPlcIsrEnable();//»Ö¸´ÖĞ¶Ï
+	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//åˆå§‹åŒ–NVRAM0
+	memset((uint8_t*)NVRAM1, 0x0, (CONFIG_NVRAM_SIZE * 2));//åˆå§‹åŒ–NVRAM1
+	sPlcIsrEnable();//æ¢å¤ä¸­æ–­
 	printf("%s,%d,%s:clear NVRAM done...\n",__FILE__, __LINE__, __func__);
 }
-void sPlcFdramLoad(void){//´ÓEPROMÖĞÔØÈëFDRAM
+void sPlcFdramLoad(void){//ä»EPROMä¸­è½½å…¥FDRAM
 	HAL_StatusTypeDef ref;
 	sPlcIsrDisable();
-	ref = epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));//´ÓEPROMÖĞ»Ö¸´MR
-	sPlcIsrEnable();//»Ö¸´ÖĞ¶Ï
+	ref = epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));//ä»EPROMä¸­æ¢å¤MR
+	sPlcIsrEnable();//æ¢å¤ä¸­æ–­
 	if(ref != HAL_OK){
 		printf("%s,%d,%s:load FD NVRAM crc fail!!!\n",__FILE__, __LINE__, __func__);
 	}
@@ -150,7 +150,7 @@ void sPlcFdramLoad(void){//´ÓEPROMÖĞÔØÈëFDRAM
 		printf("%s,%d,%s:load FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void sPlcFdramSave(void){//Ç¿ÖÆ½«FDRAM´æÈëEPROM
+void sPlcFdramSave(void){//å¼ºåˆ¶å°†FDRAMå­˜å…¥EPROM
 	HAL_StatusTypeDef ref;
 	sPlcIsrDisable();
 	ref = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
@@ -160,44 +160,44 @@ void sPlcFdramSave(void){//Ç¿ÖÆ½«FDRAM´æÈëEPROM
 	else{
 		printf("%s,%d,%s:save FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	}
-	sPlcIsrEnable();//»Ö¸´ÖĞ¶Ï
+	sPlcIsrEnable();//æ¢å¤ä¸­æ–­
 }
-void sPlcFdramClear(void){//Çå³ıFDRAMÊı¾İ
+void sPlcFdramClear(void){//æ¸…é™¤FDRAMæ•°æ®
 	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_FDRAM);//clear mr dm
-	memset(FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//³õÊ¼»¯FDRAM
+	memset(FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//åˆå§‹åŒ–FDRAM
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
-	sPlcIsrEnable();//»Ö¸´ÖĞ¶Ï
+	sPlcIsrEnable();//æ¢å¤ä¸­æ–­
 }
-void sPlcDeviceConfigClear(void){//Çå³ıÉè±¸ÅäÖÃ²ÎÊı
+void sPlcDeviceConfigClear(void){//æ¸…é™¤è®¾å¤‡é…ç½®å‚æ•°
 	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_DEVICE_CONFIG);
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
-	sPlcIsrEnable();//»Ö¸´ÖĞ¶Ï	
+	sPlcIsrEnable();//æ¢å¤ä¸­æ–­	
 }
-void sPlcDeviceLogClear(void){//Çå³ıÉè±¸¼ÇÂ¼
+void sPlcDeviceLogClear(void){//æ¸…é™¤è®¾å¤‡è®°å½•
 	sPlcIsrDisable();
 	clearEprom(CLEAR_EPROM_LOG_INFO);
 	printf("%s,%d,%s:clear device log done...\n",__FILE__, __LINE__, __func__);
-	sPlcIsrEnable();//»Ö¸´ÖĞ¶Ï	
+	sPlcIsrEnable();//æ¢å¤ä¸­æ–­	
 }
 
-void sPlcSpwmLoop(void){//SPWMÂÖÑ¯	
-	if(LDP(SPCOIL_PS10MS)){//Ã¿10mSÖ´ĞĞÒ»´Î
+void sPlcSpwmLoop(void){//SPWMè½®è¯¢	
+	if(LDP(SPCOIL_PS10MS)){//æ¯10mSæ‰§è¡Œä¸€æ¬¡
 		//SPWM0
-		if(LD(SPCOIL_SPWM_RESET_0)){//¸´Î»
+		if(LD(SPCOIL_SPWM_RESET_0)){//å¤ä½
 			NVRAM0[SPREG_SPWM_COUNTER_0] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0] = 0;
 			RRES(SPCOIL_SPWM_RESET_0);
 			RRES(SPCOIL_SPWM_OUT_0);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_0] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0]){//·¢ÉúÒç³ö
+		if(NVRAM0[SPREG_SPWM_COUNTER_0] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0]){//å‘ç”Ÿæº¢å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_0] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_0] = NVRAM0[SPREG_SPWM_POS_0];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0] = NVRAM0[SPREG_SPWM_CYCLE_0];
 			SSET(SPCOIL_SPWM_OUT_0);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_0] == NVRAM0[SPREG_SPWM_POS_SHADOW_0]){//·¢ÉúÆ¥Åä·­×ªÊä³ö
+		else if(NVRAM0[SPREG_SPWM_COUNTER_0] == NVRAM0[SPREG_SPWM_POS_SHADOW_0]){//å‘ç”ŸåŒ¹é…ç¿»è½¬è¾“å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_0] = NVRAM0[SPREG_SPWM_COUNTER_0] + 1;
 			RRES(SPCOIL_SPWM_OUT_0);
 		}
@@ -205,19 +205,19 @@ void sPlcSpwmLoop(void){//SPWMÂÖÑ¯
 			NVRAM0[SPREG_SPWM_COUNTER_0] = NVRAM0[SPREG_SPWM_COUNTER_0] + 1;
 		}
 		//SPWM1
-		if(LD(SPCOIL_SPWM_RESET_1)){//¸´Î»
+		if(LD(SPCOIL_SPWM_RESET_1)){//å¤ä½
 			NVRAM0[SPREG_SPWM_COUNTER_1] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1] = 0; 
 			RRES(SPCOIL_SPWM_RESET_1);
 			RRES(SPCOIL_SPWM_OUT_1);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_1] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1]){//·¢ÉúÒç³ö
+		if(NVRAM0[SPREG_SPWM_COUNTER_1] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1]){//å‘ç”Ÿæº¢å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_1] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_1] = NVRAM0[SPREG_SPWM_POS_1];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1] = NVRAM0[SPREG_SPWM_CYCLE_1];
 			SSET(SPCOIL_SPWM_OUT_1);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_1] == NVRAM0[SPREG_SPWM_POS_SHADOW_1]){//·¢ÉúÆ¥Åä·­×ªÊä³ö
+		else if(NVRAM0[SPREG_SPWM_COUNTER_1] == NVRAM0[SPREG_SPWM_POS_SHADOW_1]){//å‘ç”ŸåŒ¹é…ç¿»è½¬è¾“å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_1] = NVRAM0[SPREG_SPWM_COUNTER_1] + 1;
 			RRES(SPCOIL_SPWM_OUT_1);
 		}
@@ -226,19 +226,19 @@ void sPlcSpwmLoop(void){//SPWMÂÖÑ¯
 			NVRAM0[SPREG_SPWM_COUNTER_1] = NVRAM0[SPREG_SPWM_COUNTER_1] + 1;
 		}
 		//SPWM2
-		if(LD(SPCOIL_SPWM_RESET_2)){//¸´Î»
+		if(LD(SPCOIL_SPWM_RESET_2)){//å¤ä½
 			NVRAM0[SPREG_SPWM_COUNTER_2] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1] = 0;
 			RRES(SPCOIL_SPWM_RESET_2);
 			RRES(SPCOIL_SPWM_OUT_2);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_2] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_2]){//·¢ÉúÒç³ö
+		if(NVRAM0[SPREG_SPWM_COUNTER_2] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_2]){//å‘ç”Ÿæº¢å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_2] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_2] = NVRAM0[SPREG_SPWM_POS_2];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_2] = NVRAM0[SPREG_SPWM_CYCLE_2];
 			SSET(SPCOIL_SPWM_OUT_2);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_2] == NVRAM0[SPREG_SPWM_POS_SHADOW_2]){//·¢ÉúÆ¥Åä·­×ªÊä³ö
+		else if(NVRAM0[SPREG_SPWM_COUNTER_2] == NVRAM0[SPREG_SPWM_POS_SHADOW_2]){//å‘ç”ŸåŒ¹é…ç¿»è½¬è¾“å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_2] = NVRAM0[SPREG_SPWM_COUNTER_2] + 1;
 			RRES(SPCOIL_SPWM_OUT_2);
 		}
@@ -246,19 +246,19 @@ void sPlcSpwmLoop(void){//SPWMÂÖÑ¯
 			NVRAM0[SPREG_SPWM_COUNTER_2] = NVRAM0[SPREG_SPWM_COUNTER_2] + 1;
 		}
 		//SPWM3
-		if(LD(SPCOIL_SPWM_RESET_3)){//¸´Î»
+		if(LD(SPCOIL_SPWM_RESET_3)){//å¤ä½
 			NVRAM0[SPREG_SPWM_COUNTER_3] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3] = 0;
 			RRES(SPCOIL_SPWM_RESET_3);
 			RRES(SPCOIL_SPWM_OUT_3);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_3] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3]){//·¢ÉúÒç³ö
+		if(NVRAM0[SPREG_SPWM_COUNTER_3] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3]){//å‘ç”Ÿæº¢å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_3] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_3] = NVRAM0[SPREG_SPWM_POS_3];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3] = NVRAM0[SPREG_SPWM_CYCLE_3];
 			SSET(SPCOIL_SPWM_OUT_3);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_3] == NVRAM0[SPREG_SPWM_POS_SHADOW_3]){//·¢ÉúÆ¥Åä·­×ªÊä³ö
+		else if(NVRAM0[SPREG_SPWM_COUNTER_3] == NVRAM0[SPREG_SPWM_POS_SHADOW_3]){//å‘ç”ŸåŒ¹é…ç¿»è½¬è¾“å‡º
 			NVRAM0[SPREG_SPWM_COUNTER_3] = NVRAM0[SPREG_SPWM_COUNTER_3] + 1;
 			RRES(SPCOIL_SPWM_OUT_3);
 		}
@@ -269,16 +269,16 @@ void sPlcSpwmLoop(void){//SPWMÂÖÑ¯
 }
 
 /*****************************************************************************/
-void sPlcInit(void){//ÈíÂß¼­³õÊ¼»¯	
+void sPlcInit(void){//è½¯é€»è¾‘åˆå§‹åŒ–	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	listEpromTable();
 	readStm32UniqueID();
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
 	sPlcEpromTest();
 #endif
-	loadDeviceConfig();//ÔØÈëÓ²¼şÅäÖÃ
-	sPlcNvramLoad();//ÉÏµç»Ö¸´NVRAM
-	sPlcFdramLoad();//ÉÏµç»Ö¸´FDRAM
+	loadDeviceConfig();//è½½å…¥ç¡¬ä»¶é…ç½®
+	sPlcNvramLoad();//ä¸Šç”µæ¢å¤NVRAM
+	sPlcFdramLoad();//ä¸Šç”µæ¢å¤FDRAM
 	BootloadCrc = getOriginBootloadCrc();
 	ApplicationCrc = getOriginAppCrc();
 	printf("%s,%d,%s:bootload crc:0x%08X\n",__FILE__, __LINE__, __func__, BootloadCrc);
@@ -287,10 +287,10 @@ void sPlcInit(void){//ÈíÂß¼­³õÊ¼»¯
 	SSET(SPCOIL_START_UP);
 	sPlcInputInit();
 	sPlcOutputInit();	
-	sPlcDacInit();//³õÊ¼»¯DACÄ£¿é
-	sPlcAdcInit();//³õÊ¼»¯ADCÄ£¿é
+	sPlcDacInit();//åˆå§‹åŒ–DACæ¨¡å—
+	sPlcAdcInit();//åˆå§‹åŒ–ADCæ¨¡å—
 	sPlcLaserInit();
-	sPlcTimerInit();//³õÊ¼»¯Ó²¼ş¼ÆÊ±Æ÷Ä£¿é Æô¶¯¼ÆÊ±Æ÷
+	sPlcTimerInit();//åˆå§‹åŒ–ç¡¬ä»¶è®¡æ—¶å™¨æ¨¡å— å¯åŠ¨è®¡æ—¶å™¨
 	sPlcSpeakerInit();
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;	
@@ -315,7 +315,7 @@ void sPlcInit(void){//ÈíÂß¼­³õÊ¼»¯
 		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
 	}
 }
-void sPlcProcessStart(void){//sPLCÂÖÑ¯ÆğÊ¼
+void sPlcProcessStart(void){//sPLCè½®è¯¢èµ·å§‹
 	if(TD_10MS_SP >= 1){
 		FLIP(SPCOIL_PS10MS);
 		TD_10MS_SP = 0;
@@ -343,19 +343,19 @@ void sPlcProcessStart(void){//sPLCÂÖÑ¯ÆğÊ¼
 		FLIP(SPCOIL_PS1MINS);
 		TD_60000MS_SP = 0;
 	}
-	sPlcInputRefresh();//¶ÁÈ¡X¿ÚÊäÈë
+	sPlcInputRefresh();//è¯»å–Xå£è¾“å…¥
 #if CONFIG_SPLC_USING_SPWM == 1
 	sPlcSpwmLoop();
 #endif
-	sPlcAdcProcess();//ADC ¸üĞÂNVRAM
+	sPlcAdcProcess();//ADC æ›´æ–°NVRAM
 }
 
-void sPlcProcessEnd(void){//sPLCÂÖÑ¯½áÊø
+void sPlcProcessEnd(void){//sPLCè½®è¯¢ç»“æŸ
 //	if(LDP(SPCOIL_PS500MS)){
 //		FLIP(Y_TICK_LED);
 //	}
-	sPlcOutputRefresh();//¸üĞÂY¿ÚÊä³ö
-	sPlcNvramUpdate();//¸üĞÂNVRAM
+	sPlcOutputRefresh();//æ›´æ–°Yå£è¾“å‡º
+	sPlcNvramUpdate();//æ›´æ–°NVRAM
 	RRES(SPCOIL_START_UP);
 }
 

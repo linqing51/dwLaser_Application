@@ -2,31 +2,31 @@
 //
 extern CRC_HandleTypeDef hcrc;
 /*****************************************************************************/
-void REBOOT(void) {//Èí¼ş¸´Î»	
+void REBOOT(void) {//è½¯ä»¶å¤ä½	
 	__set_FAULTMASK(1);
 	NVIC_SystemReset();
 }
 void ORG(uint16_t A) {
 }
-//Î»Ö¸Áî
+//ä½æŒ‡ä»¤
 void OUT(uint16_t A) {
 }
-void SSET(uint16_t A){//ÏßÈ¦ÖÃÎ»
+void SSET(uint16_t A){//çº¿åœˆç½®ä½
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertCoilAddress(A);//¼ì²éµØÖ··¶Î§
+	sPlcAssertCoilAddress(A);//æ£€æŸ¥åœ°å€èŒƒå›´
 #endif
 	NVRAM0[(A / 16)] |= 1 << (A % 16);
 }
-void RRES(uint16_t A){//ÏßÈ¦ÖÃÁã
+void RRES(uint16_t A){//çº¿åœˆç½®é›¶
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertCoilAddress(A);//¼ì²éµØÖ··¶Î§
+	sPlcAssertCoilAddress(A);//æ£€æŸ¥åœ°å€èŒƒå›´
 #endif
 	NVRAM0[(A / 16)] &= ~(1 << (A % 16));
 }
-void FLIP(uint16_t A){//·­×ª
+void FLIP(uint16_t A){//ç¿»è½¬
 	uint16_t temp;
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertCoilAddress(A);//¼ì²éµØÖ··¶Î§
+	sPlcAssertCoilAddress(A);//æ£€æŸ¥åœ°å€èŒƒå›´
 #endif
 	temp= (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;;
 	if(temp)
@@ -34,10 +34,10 @@ void FLIP(uint16_t A){//·­×ª
 	else
 		SSET(A);
 }
-uint8_t LD(uint16_t A){//ÔØÈë
+uint8_t LD(uint16_t A){//è½½å…¥
 	uint8_t res = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertCoilAddress(A);//¼ì²éµØÖ··¶Î§
+	sPlcAssertCoilAddress(A);//æ£€æŸ¥åœ°å€èŒƒå›´
 #endif
 	res = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	if(res)
@@ -45,10 +45,10 @@ uint8_t LD(uint16_t A){//ÔØÈë
 	else
 		return false;
 }
-uint8_t LDB(uint16_t A){//·´ÏòÔØÈë
+uint8_t LDB(uint16_t A){//åå‘è½½å…¥
 	uint8_t res = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertCoilAddress(A);//¼ì²éµØÖ··¶Î§
+	sPlcAssertCoilAddress(A);//æ£€æŸ¥åœ°å€èŒƒå›´
 #endif
 	res = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	if(res)
@@ -56,10 +56,10 @@ uint8_t LDB(uint16_t A){//·´ÏòÔØÈë
 	else
 		return true;
 }
-uint8_t LDP(uint16_t A){//Âö³åÉÏÉıÑØ
+uint8_t LDP(uint16_t A){//è„‰å†²ä¸Šå‡æ²¿
 	uint8_t temp0 = 0, temp1 = 0;
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertCoilAddress(A);//¼ì²éµØÖ··¶Î§
+	sPlcAssertCoilAddress(A);//æ£€æŸ¥åœ°å€èŒƒå›´
 #endif
 	temp0 = (uint8_t)(NVRAM0[(A / 16)] >> (A % 16)) & 0x01;
 	temp1 = (uint8_t)(NVRAM1[(A / 16)] >> (A % 16)) & 0x01;
@@ -68,7 +68,7 @@ uint8_t LDP(uint16_t A){//Âö³åÉÏÉıÑØ
 	else
 		return false;
 }
-uint8_t LDN(uint16_t A){//Âö³åÏÂ½µÑØ
+uint8_t LDN(uint16_t A){//è„‰å†²ä¸‹é™æ²¿
 	uint8_t temp0 = 0, temp1 = 0;
 #if CONFIG_SPLC_ASSERT == 1
 	sPlcAssertCoilAddress(A);
@@ -81,8 +81,8 @@ uint8_t LDN(uint16_t A){//Âö³åÏÂ½µÑØ
 		return false;
 }
 /*****************************************************************************/
-//ÑÓÊ±Æ÷Ö¸Áî
-void T10MS(uint8_t A, uint8_t start, uint16_t value){//10MSÑÓÊ±Æ÷
+//å»¶æ—¶å™¨æŒ‡ä»¤
+void T10MS(uint8_t A, uint8_t start, uint16_t value){//10MSå»¶æ—¶å™¨
 	if(start){
 		SSET(T_10MS_ENA_START * 16 + A);
 		if(NVRAM0[(TD_10MS_START + A)] >= value){
@@ -98,7 +98,7 @@ void T10MS(uint8_t A, uint8_t start, uint16_t value){//10MSÑÓÊ±Æ÷
 		NVRAM0[(TD_10MS_START + A)] = 0x0;
 	}	
 }
-void T100MS(uint8_t A, uint8_t start, uint16_t value){//100MSÑÓÊ±Æ÷
+void T100MS(uint8_t A, uint8_t start, uint16_t value){//100MSå»¶æ—¶å™¨
 	if(start){
 		SSET(T_100MS_ENA_START * 16 + A);
 		if(NVRAM0[(TD_100MS_START + A)] >= value){
@@ -115,64 +115,64 @@ void T100MS(uint8_t A, uint8_t start, uint16_t value){//100MSÑÓÊ±Æ÷
 	}
 }
 /*****************************************************************************/
-//¼ÆËãÖ¸Áî
-void CLR(uint16_t A){//16Î»¼Ä´æÆ÷ÇåÁã
+//è®¡ç®—æŒ‡ä»¤
+void CLR(uint16_t A){//16ä½å¯„å­˜å™¨æ¸…é›¶
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertRegisterAddress(A);//¼ì²é¼Ä´æÆ÷µØÖ·
+	sPlcAssertRegisterAddress(A);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
 #endif
 	NVRAM0[A] = 0x0;
 }
-void CLRD(uint16_t A){//32Î»¼Ä´æÆ÷ÇåÁã
+void CLRD(uint16_t A){//32ä½å¯„å­˜å™¨æ¸…é›¶
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertRegisterAddress(A);//¼ì²é¼Ä´æÆ÷µØÖ·
-	sPlcAssertRegisterAddress(A + 1);//¼ì²é¼Ä´æÆ÷µØÖ·
+	sPlcAssertRegisterAddress(A);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
+	sPlcAssertRegisterAddress(A + 1);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
 #endif
 	NVRAM0[A] = 0x0;NVRAM0[A + 1] = 0x0;
 }
-void MOV(uint16_t dist, uint16_t src){//16Î»¼Ä´æÆ÷´«Êä
+void MOV(uint16_t dist, uint16_t src){//16ä½å¯„å­˜å™¨ä¼ è¾“
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertRegisterAddress(dist);//¼ì²é¼Ä´æÆ÷µØÖ·
-	sPlcAssertRegisterAddress(src);//¼ì²é¼Ä´æÆ÷µØÖ·
+	sPlcAssertRegisterAddress(dist);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
+	sPlcAssertRegisterAddress(src);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
 #endif
 	NVRAM0[dist] = NVRAM0[src];
 }
-void MOVD(uint16_t dist, uint16_t src){//32Î»¼Ä´æÆ÷´«Êä
+void MOVD(uint16_t dist, uint16_t src){//32ä½å¯„å­˜å™¨ä¼ è¾“
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertRegisterAddress(dist);//¼ì²é¼Ä´æÆ÷µØÖ·
-	sPlcAssertRegisterAddress(dist+1);//¼ì²é¼Ä´æÆ÷µØÖ·
-	sPlcAssertRegisterAddress(src);//¼ì²é¼Ä´æÆ÷µØÖ·
-	sPlcAssertRegisterAddress(src+1);//¼ì²é¼Ä´æÆ÷µØÖ·
+	sPlcAssertRegisterAddress(dist);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
+	sPlcAssertRegisterAddress(dist+1);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
+	sPlcAssertRegisterAddress(src);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
+	sPlcAssertRegisterAddress(src+1);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
 #endif
 	NVRAM0[dist] = NVRAM0[src];
 	NVRAM0[dist + 1] = NVRAM0[src + 1];
 }
-//void AND(uint16_t A, uint16_t A){//16Î»Êı °´Î»ÇóÓë
+//void AND(uint16_t A, uint16_t A){//16ä½æ•° æŒ‰ä½æ±‚ä¸
 //	
 //}
-//void ANDD(uint16_t dist){//32Î»Êı °´Î»ÇóÓë
+//void ANDD(uint16_t dist){//32ä½æ•° æŒ‰ä½æ±‚ä¸
 //}
-void TNTUC(uint16_t dist, uint16_t src){//CODE×ª»»ÎªNTC²âÁ¿ÎÂ¶ÈÎÂ¶È µç×èÉÏÀ­
+void TNTUC(uint16_t dist, uint16_t src){//CODEè½¬æ¢ä¸ºNTCæµ‹é‡æ¸©åº¦æ¸©åº¦ ç”µé˜»ä¸Šæ‹‰
 	float32_t ftemp;
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertRegisterAddress(dist);//¼ì²é¼Ä´æÆ÷µØÖ·
-	sPlcAssertRegisterAddress(src);//¼ì²é¼Ä´æÆ÷µØÖ·
+	sPlcAssertRegisterAddress(dist);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
+	sPlcAssertRegisterAddress(src);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
 #endif
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = 0xFFF;
 	LIMS16(src, TMP_REG_0, TMP_REG_1);
-	//Ê¹ÓÃÄÚ²¿»ù×¼Ğ£×¼
+	//ä½¿ç”¨å†…éƒ¨åŸºå‡†æ ¡å‡†
 	if(NVRAM0[src] >= 10){
 		if(NVRAM0[CONFIG_VREF_ADC]  > 0){
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//¼ÆËãµçÑ¹
+			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//è®¡ç®—ç”µå‹
 		}
 		else{
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//¼ÆËãµçÑ¹
+			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//è®¡ç®—ç”µå‹
 		}
 		if(ftemp == CONFIG_NTC_VREF){
-			ftemp = 999999.9F;//¼ÆËãµç×è
+			ftemp = 999999.9F;//è®¡ç®—ç”µé˜»
 		}
 		else{
-			ftemp = ftemp * CONFIG_NTC_RS / (CONFIG_NTC_VREF - ftemp);//¼ÆËãµç×è
+			ftemp = ftemp * CONFIG_NTC_RS / (CONFIG_NTC_VREF - ftemp);//è®¡ç®—ç”µé˜»
 		}
 	}
 	else{
@@ -184,28 +184,28 @@ void TNTUC(uint16_t dist, uint16_t src){//CODE×ª»»ÎªNTC²âÁ¿ÎÂ¶ÈÎÂ¶È µç×èÉÏÀ­
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 
-void TNTLC(uint16_t dist, uint16_t src){//CODE×ª»»ÎªNTC²âÁ¿ÎÂ¶ÈÎÂ¶È µç×èÏÂÀ­
+void TNTLC(uint16_t dist, uint16_t src){//CODEè½¬æ¢ä¸ºNTCæµ‹é‡æ¸©åº¦æ¸©åº¦ ç”µé˜»ä¸‹æ‹‰
 	float32_t ftemp;
 #if CONFIG_SPLC_ASSERT == 1
-	sPlcAssertRegisterAddress(dist);//¼ì²é¼Ä´æÆ÷µØÖ·
-	sPlcAssertRegisterAddress(src);//¼ì²é¼Ä´æÆ÷µØÖ·
+	sPlcAssertRegisterAddress(dist);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
+	sPlcAssertRegisterAddress(src);//æ£€æŸ¥å¯„å­˜å™¨åœ°å€
 #endif
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = 0xFFF;
 	LIMS16(src, TMP_REG_0, TMP_REG_1);
-	//Ê¹ÓÃÄÚ²¿»ù×¼Ğ£×¼
+	//ä½¿ç”¨å†…éƒ¨åŸºå‡†æ ¡å‡†
 	if(NVRAM0[src] >= 10){
 		if(NVRAM0[CONFIG_VREF_ADC]  > 0){
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//¼ÆËãµçÑ¹
+			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//è®¡ç®—ç”µå‹
 		}
 		else{
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//¼ÆËãµçÑ¹
+			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//è®¡ç®—ç”µå‹
 		}
 		if(ftemp == CONFIG_NTC_RS){
-			ftemp = 999999.9F;//¼ÆËãµç×è
+			ftemp = 999999.9F;//è®¡ç®—ç”µé˜»
 		}
 		else{
-			ftemp = CONFIG_NTC_RS * CONFIG_NTC_VREF / ftemp - CONFIG_NTC_RS;//¼ÆËãµç×è
+			ftemp = CONFIG_NTC_RS * CONFIG_NTC_VREF / ftemp - CONFIG_NTC_RS;//è®¡ç®—ç”µé˜»
 		}
 	}
 	else{
@@ -217,7 +217,7 @@ void TNTLC(uint16_t dist, uint16_t src){//CODE×ª»»ÎªNTC²âÁ¿ÎÂ¶ÈÎÂ¶È µç×èÏÂÀ­
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 
-void TENV(uint16_t dist, uint16_t src){//CODE×ª»»ÎªMCUÎÂ¶È
+void TENV(uint16_t dist, uint16_t src){//CODEè½¬æ¢ä¸ºMCUæ¸©åº¦
 	float32_t ftemp;
 	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
 		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);
@@ -225,7 +225,7 @@ void TENV(uint16_t dist, uint16_t src){//CODE×ª»»ÎªMCUÎÂ¶È
 	else{
 		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;
 	}
-	//ftemp = NVRAM0[SPREG_VREF]* NVRAM0[src] / 4096;//µ¥Î»mV
+	//ftemp = NVRAM0[SPREG_VREF]* NVRAM0[src] / 4096;//å•ä½mV
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
 	if(ftemp >= 100)
 		ftemp =100;
@@ -234,50 +234,50 @@ void TENV(uint16_t dist, uint16_t src){//CODE×ª»»ÎªMCUÎÂ¶È
 	}
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
-void ADD1(uint16_t Sa){//16Î»·Ç±¥ºÍ×Ô¼Ó
+void ADD1(uint16_t Sa){//16ä½éé¥±å’Œè‡ªåŠ 
 	NVRAM0[Sa] += 1;
 }
-void ADDS1(uint16_t Sa){//16Î»±¥ºÍ×Ô¼Ó
+void ADDS1(uint16_t Sa){//16ä½é¥±å’Œè‡ªåŠ 
 	if(NVRAM0[Sa] < SHRT_MAX){
 		NVRAM0[Sa] += 1;
 	}
 }
-void DEC1(uint16_t Sa){//16Î»·Ç±¥ºÍ×Ô¼õ
+void DEC1(uint16_t Sa){//16ä½éé¥±å’Œè‡ªå‡
 	NVRAM0[Sa] -= 1;
 }
-void DECS1(uint16_t Sa){//16Î»±¥ºÍ×Ô¼õ
+void DECS1(uint16_t Sa){//16ä½é¥±å’Œè‡ªå‡
 	if(NVRAM0[Sa] > SHRT_MIN){
 		NVRAM0[Sa] -= 1;
 	}
 }
-void ADL1(uint16_t Sa){//32Î»·Ç±¥ºÍ×Ô¼Ó
+void ADL1(uint16_t Sa){//32ä½éé¥±å’Œè‡ªåŠ 
 	int32_t *p;
 	p = (int32_t*)(&NVRAM0[Sa]);	
 	(*p) ++;
 }
-void ADLS1(uint16_t Sa){//32Î»±¥ºÍ×Ô¼Ó
+void ADLS1(uint16_t Sa){//32ä½é¥±å’Œè‡ªåŠ 
 	int32_t *p;
 	p = (int32_t*)(&NVRAM0[Sa]);
 	if(*p < LONG_MAX){
 		(*p) ++;
 	}
 }
-void DEL1(uint16_t Sa){//32Î»·Ç±¥ºÍ×Ô¼õ
+void DEL1(uint16_t Sa){//32ä½éé¥±å’Œè‡ªå‡
 	int32_t *p;
 	p = (int32_t*)(&NVRAM0[Sa]);
 	(*p) --;
 }
-void DELS1(uint16_t Sa){//32Î»±¥ºÍ×Ô¼õ
+void DELS1(uint16_t Sa){//32ä½é¥±å’Œè‡ªå‡
 	int32_t *p;
 	p = (int32_t*)(&NVRAM0[Sa]);
 	if(*p > LONG_MIN){
 		(*p) --;
 	}
 }
-void ADD16(uint16_t Sa, uint16_t Sb, uint16_t D){//16Î»·Ç±¥ºÍ¼Ó·¨ D = Sa + Sb
+void ADD16(uint16_t Sa, uint16_t Sb, uint16_t D){//16ä½éé¥±å’ŒåŠ æ³• D = Sa + Sb
 	NVRAM0[D] = NVRAM0[Sa] + NVRAM0[Sb];
 }
-void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16Î»±¥ºÍ¼Ó·¨ D = Sa + Sb
+void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16ä½é¥±å’ŒåŠ æ³• D = Sa + Sb
 	int32_t tmp;
 	tmp = NVRAM0[Sa] + NVRAM0[Sb];
 	if(tmp >= SHRT_MAX)
@@ -286,7 +286,7 @@ void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16Î»±¥ºÍ¼Ó·¨ D = Sa + Sb
 		tmp = SHRT_MIN;
 	NVRAM0[D] = tmp;
 }
-void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»·Ç±¥¼Ó·¨ D = Sa + Sb
+void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D){//32ä½éé¥±åŠ æ³• D = Sa + Sb
 	int32_t tmpSa, tmpSb, tmpD;
 	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
 	tmpSb = *((int32_t*)(&NVRAM0[Sb]));
@@ -294,7 +294,7 @@ void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»·Ç±¥¼Ó·¨ D = Sa + Sb
 	*((int32_t*)(&NVRAM0[D])) = tmpD; 
 	
 }
-void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»±¥ºÍ¼Ó·¨ D = Sa + Sb
+void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32ä½é¥±å’ŒåŠ æ³• D = Sa + Sb
 	int32_t tmpSa, tmpSb;
 	int64_t tmpD;
 	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
@@ -308,7 +308,7 @@ void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»±¥ºÍ¼Ó·¨ D = Sa + Sb
 	}
 	*((int32_t*)(&NVRAM0[D])) = tmpD;
 }
-void ADDS32D(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»±¥ºÍ¼Ó·¨ D(32) = Sa(32) + Sb(16)
+void ADDS32D(uint16_t Sa, uint16_t Sb, uint16_t D){//32ä½é¥±å’ŒåŠ æ³• D(32) = Sa(32) + Sb(16)
 	int32_t tmpSa, tmpSb;
 	int64_t tmpD;
 	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
@@ -322,10 +322,10 @@ void ADDS32D(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»±¥ºÍ¼Ó·¨ D(32) = Sa(32)
 	}
 	*((int32_t*)(&NVRAM0[D])) = tmpD; 
 }
-void SUB16(uint16_t Sa, uint16_t Sb, uint16_t D){//16Î»·Ç±¥ºÍ¼õ·¨ D = Sa - Sb
+void SUB16(uint16_t Sa, uint16_t Sb, uint16_t D){//16ä½éé¥±å’Œå‡æ³• D = Sa - Sb
 	NVRAM0[D] = NVRAM0[Sa] - NVRAM0[Sb];
 }
-void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16Î»±¥ºÍ¼õ·¨ D = Sa - Sb
+void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16ä½é¥±å’Œå‡æ³• D = Sa - Sb
 	int32_t tmp;
 	tmp = NVRAM0[Sa] - NVRAM0[Sb];
 	if(tmp >= SHRT_MAX)
@@ -334,7 +334,7 @@ void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16Î»±¥ºÍ¼õ·¨ D = Sa - Sb
 		tmp = SHRT_MIN;
 	NVRAM0[D] = tmp;
 }
-void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»·Ç±¥ºÍ¼õ·¨ D = Sa - Sb
+void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D){//32ä½éé¥±å’Œå‡æ³• D = Sa - Sb
 	int32_t tmpSa, tmpSb;
 	int64_t tmpD;
 	tmpSa = *((int32_t*)(&NVRAM0[Sa]));
@@ -347,11 +347,11 @@ void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D){//32Î»·Ç±¥ºÍ¼õ·¨ D = Sa - Sb
 		tmpD = LONG_MIN;
 	}
 }
-void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->16·Ç±¥ºÍ³Ë·¨ D = Sa * Sb
+void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->16éé¥±å’Œä¹˜æ³• D = Sa * Sb
 	int32_t tmp = (int32_t)NVRAM0[Sa] * (int32_t)NVRAM0[Sb];
 	NVRAM0[D] = (int16_t)(tmp & 0xFFFF);
 }
-void MULTS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->16±¥ºÍ³Ë·¨ D = Sa * Sb
+void MULTS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->16é¥±å’Œä¹˜æ³• D = Sa * Sb
 	int32_t tmp = (int32_t)NVRAM0[Sa] * (int32_t)NVRAM0[Sb];
 	if(tmp >= SHRT_MAX)
 		tmp = SHRT_MAX;
@@ -359,7 +359,7 @@ void MULTS16(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->16±¥ºÍ³Ë·¨ D = Sa * 
 		tmp = SHRT_MIN;
 	NVRAM0[D] = (int16_t)tmp;
 }
-void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->32·Ç±¥ºÍ³Ë·¨ D = Sa * Sb
+void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->32éé¥±å’Œä¹˜æ³• D = Sa * Sb
 	int32_t tmpSa = 0, tmpSb = 0, tmpD = 0;
 	tmpSa = NVRAM0[(Sa + 1)];
 	tmpSa = (tmpSa << 16) & 0xFFFF0000;
@@ -373,7 +373,7 @@ void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->32·Ç±¥ºÍ³Ë·¨ D = Sa *
 	NVRAM0[D] = tmpD & 0x0000FFFF;
 	NVRAM0[(D + 1)] = (tmpD >> 16) & 0x0000FFFF;
 }
-void SUM16(uint16_t index, uint16_t length, uint16_t sum){//16BITÊıÇóºÍ->32BIT
+void SUM16(uint16_t index, uint16_t length, uint16_t sum){//16BITæ•°æ±‚å’Œ->32BIT
 	int32_t tmp = 0;
 	uint16_t i = 0;
 	for(i = 0; i < NVRAM0[length]; i++)
@@ -382,7 +382,7 @@ void SUM16(uint16_t index, uint16_t length, uint16_t sum){//16BITÊıÇóºÍ->32BIT
 	}
 	*((int32_t*)&NVRAM0[sum]) = tmp;
 }
-void UMAX16(uint16_t index, uint16_t length, uint16_t max){//16Î»ÎŞ·ûºÅÊı×éÕÒ×î´óÖµ
+void UMAX16(uint16_t index, uint16_t length, uint16_t max){//16ä½æ— ç¬¦å·æ•°ç»„æ‰¾æœ€å¤§å€¼
 	uint16_t i = 0;
 	uint16_t tmp = 0;
 	for(i = 0;i < NVRAM0[length];i ++ ){
@@ -392,7 +392,7 @@ void UMAX16(uint16_t index, uint16_t length, uint16_t max){//16Î»ÎŞ·ûºÅÊı×éÕÒ×î´
 	}
 	NVRAM0[max] = tmp;
 }
-void UMIN16(uint16_t index, uint16_t length, uint16_t min){//16Î»ÎŞ·ûºÅÊı×éÕÒ×îĞ¡Öµ
+void UMIN16(uint16_t index, uint16_t length, uint16_t min){//16ä½æ— ç¬¦å·æ•°ç»„æ‰¾æœ€å°å€¼
 	uint16_t i = 0;
 	uint16_t tmp = 0;
 	for(i = 0;i < NVRAM0[length];i ++){
@@ -402,7 +402,7 @@ void UMIN16(uint16_t index, uint16_t length, uint16_t min){//16Î»ÎŞ·ûºÅÊı×éÕÒ×îĞ
 	}
 	NVRAM0[min] = tmp;
 }
-void SMAX16(uint16_t index, uint16_t length, uint16_t max){//16Î»ÓĞ·ûºÅÊı×éÕÒ×î´óÖµ
+void SMAX16(uint16_t index, uint16_t length, uint16_t max){//16ä½æœ‰ç¬¦å·æ•°ç»„æ‰¾æœ€å¤§å€¼
 	uint16_t i = 0;
 	int16_t tmp = 0;
 	for(i = 0;i < NVRAM0[length];i ++ ){
@@ -412,7 +412,7 @@ void SMAX16(uint16_t index, uint16_t length, uint16_t max){//16Î»ÓĞ·ûºÅÊı×éÕÒ×î´
 	}
 	NVRAM0[max] = tmp;
 }
-void SMIN16(uint16_t index, uint16_t length, uint16_t min){//16Î»ÓĞ·ûºÅÊı×éÕÒ×îĞ¡Öµ
+void SMIN16(uint16_t index, uint16_t length, uint16_t min){//16ä½æœ‰ç¬¦å·æ•°ç»„æ‰¾æœ€å°å€¼
 	uint16_t i = 0;
 	int16_t tmp = 0;
 	for(i = 0;i < NVRAM0[length];i ++){
@@ -422,7 +422,7 @@ void SMIN16(uint16_t index, uint16_t length, uint16_t min){//16Î»ÓĞ·ûºÅÊı×éÕÒ×îĞ
 	}
 	NVRAM0[min] = tmp;
 }
-void ABS16(uint16_t dist, uint16_t src){//16Î»ÊıÇò¾ø¶ÔÖµ
+void ABS16(uint16_t dist, uint16_t src){//16ä½æ•°çƒç»å¯¹å€¼
 	if(NVRAM0[src] >= 0){
 		NVRAM0[dist] = NVRAM0[src];
 	}
@@ -430,7 +430,7 @@ void ABS16(uint16_t dist, uint16_t src){//16Î»ÊıÇò¾ø¶ÔÖµ
 		NVRAM0[dist] = NVRAM0[src] * -1;
 	}
 }
-void ABS32(uint16_t dist, uint16_t src){//32Î»ÊıÇó¾ø¶ÔÖµ
+void ABS32(uint16_t dist, uint16_t src){//32ä½æ•°æ±‚ç»å¯¹å€¼
 	if(NVRAM0[src] >= 0){
 		NVRAM0[dist] = NVRAM0[src];
 	}
@@ -438,14 +438,14 @@ void ABS32(uint16_t dist, uint16_t src){//32Î»ÊıÇó¾ø¶ÔÖµ
 		NVRAM0[dist] = NVRAM0[src] * -1;
 	}
 }
-void SWAP(uint16_t dist, uint16_t src){//½»»»AµÄ¸ßµÍ×Ö½Ú
+void SWAP(uint16_t dist, uint16_t src){//äº¤æ¢Açš„é«˜ä½å­—èŠ‚
 	uint16_t tmpL = 0, tmpH = 0;
 	tmpL = (NVRAM0[src] & 0x00FF);
 	tmpH = (NVRAM0[src] >> 8) & 0x00FF;
 	tmpH |= tmpL;
 	NVRAM0[dist] = tmpH;
 }
-void LIMS16(uint16_t src, uint16_t min, uint16_t max){//ÓĞ·ûºÅ16Î»ÊıÏŞÖÆ·ù¶ÈÖ¸Áî
+void LIMS16(uint16_t src, uint16_t min, uint16_t max){//æœ‰ç¬¦å·16ä½æ•°é™åˆ¶å¹…åº¦æŒ‡ä»¤
 	if(NVRAM0[src] >= NVRAM0[max]){
 		NVRAM0[src] = NVRAM0[max];
 	}
@@ -454,18 +454,18 @@ void LIMS16(uint16_t src, uint16_t min, uint16_t max){//ÓĞ·ûºÅ16Î»ÊıÏŞÖÆ·ù¶ÈÖ¸Áî
 	}
 }
 /*****************************************************************************/
-void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//¿é¸´ÖÆ
+void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//å—å¤åˆ¶
 	uint16_t i;
 	for(i = 0;i < length;i ++){
 		NVRAM0[dist + i] = NVRAM0[src + i];
 	}
 }
-void NVFSAVE(void){//NVRAMÈ«²¿Ğ´ÈëEPROM
+void NVFSAVE(void){//NVRAMå…¨éƒ¨å†™å…¥EPROM
 	sPlcIsrDisable();
 	sPlcNvramSave();
 	sPlcIsrEnable();
 }
-void NVSAVE(void){//´¢´æNVRAM¸üĞÂÊı¾İµ½EPROM
+void NVSAVE(void){//å‚¨å­˜NVRAMæ›´æ–°æ•°æ®åˆ°EPROM
 	sPlcIsrDisable();
 	sPlcNvramUpdate();
 	sPlcIsrEnable();
@@ -481,7 +481,7 @@ void FDSAV(void){//FDRAM->EPROM
 	sPlcFdramSave();
 	sPlcIsrEnable();
 }
-void FDSAV_ONE(int16_t cn){//´¢´æÒ»¸ö·½°¸µ½EPROMÖĞ
+void FDSAV_ONE(int16_t cn){//å‚¨å­˜ä¸€ä¸ªæ–¹æ¡ˆåˆ°EPROMä¸­
 	sPlcIsrDisable();
 	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
 		cn = (CONFIG_HMI_SCHEME_NUM - 1);
@@ -502,21 +502,21 @@ void FDLAD(void){//FDRAM<-EPROM
 
 
 /*****************************************************************************/
-//IOÖ¸Áî
-void IMDIO(void) {//Á¢¼´¸üĞÂIOµã×´Ì¬º¬ÊäÈëÊä³ö
+//IOæŒ‡ä»¤
+void IMDIO(void) {//ç«‹å³æ›´æ–°IOç‚¹çŠ¶æ€å«è¾“å…¥è¾“å‡º
 
 }
-//²½Ö¸Áî
-//void TO(uint16_t SA) {//²½½ø¿ªÊ¼Ö¸Áî
+//æ­¥æŒ‡ä»¤
+//void TO(uint16_t SA) {//æ­¥è¿›å¼€å§‹æŒ‡ä»¤
 //}
-//void STP(uint16_t SA) {//²½½øÖ¸Áî
+//void STP(uint16_t SA) {//æ­¥è¿›æŒ‡ä»¤
 //}
-//void STPEND(void) {//²½½ø½áÊøÖ¸Áî
+//void STPEND(void) {//æ­¥è¿›ç»“æŸæŒ‡ä»¤
 //}
-//void FROM(uint16_t SA) {//²½½øÖ´ĞĞÖ¸Áî
+//void FROM(uint16_t SA) {//æ­¥è¿›æ‰§è¡ŒæŒ‡ä»¤
 //}
 
-void PRTM(uint16_t adr, uint8_t len){//ÔÚ´®¿ÚÖĞ¶ÏÉÏ´òÓ¡ÄÚ´æÊı¾İ
+void PRTM(uint16_t adr, uint8_t len){//åœ¨ä¸²å£ä¸­æ–­ä¸Šæ‰“å°å†…å­˜æ•°æ®
 	uint16_t index;
 	index = adr;
 	printf("NVRAM MEMORY TABLE:\n");
@@ -528,11 +528,11 @@ void PRTM(uint16_t adr, uint8_t len){//ÔÚ´®¿ÚÖĞ¶ÏÉÏ´òÓ¡ÄÚ´æÊı¾İ
 			printf("END OF NVRAM\n");
 			break;
 		}
-		if((index & 0x000F) == 0x0){//ĞĞÆğÊ¼
+		if((index & 0x000F) == 0x0){//è¡Œèµ·å§‹
 			printf("%5d:", (index & 0xFFF0));
 		}
 		printf(",%04X",NVRAM0[index]);
-		if((index & 0x000F) == 0xF){//×îºóÒ»¸ö
+		if((index & 0x000F) == 0xF){//æœ€åä¸€ä¸ª
 			printf("\n");
 		}
 	}

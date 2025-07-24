@@ -1,15 +1,15 @@
 #include "dcHmiNotifyText.h"
 /*! 
-*  \brief  ÎÄ±¾¿Ø¼şÍ¨Öª
-*  \details  µ±ÎÄ±¾Í¨¹ı¼üÅÌ¸üĞÂ(»òµ÷ÓÃGetControlValue)Ê±£¬Ö´ĞĞ´Ëº¯Êı
-*  \details  ÎÄ±¾¿Ø¼şµÄÄÚÈİÒÔ×Ö·û´®ĞÎÊ½ÏÂ·¢µ½MCU£¬Èç¹ûÎÄ±¾¿Ø¼şÄÚÈİÊÇ¸¡µãÖµ£¬
-*  \details  ÔòĞèÒªÔÚ´Ëº¯ÊıÖĞ½«ÏÂ·¢×Ö·û´®ÖØĞÂ×ª»Ø¸¡µãÖµ¡£
-*  \param screen_id »­ÃæID
-*  \param control_id ¿Ø¼şID
-*  \param str ÎÄ±¾¿Ø¼şÄÚÈİ
+*  \brief  æ–‡æœ¬æ§ä»¶é€šçŸ¥
+*  \details  å½“æ–‡æœ¬é€šè¿‡é”®ç›˜æ›´æ–°(æˆ–è°ƒç”¨GetControlValue)æ—¶ï¼Œæ‰§è¡Œæ­¤å‡½æ•°
+*  \details  æ–‡æœ¬æ§ä»¶çš„å†…å®¹ä»¥å­—ç¬¦ä¸²å½¢å¼ä¸‹å‘åˆ°MCUï¼Œå¦‚æœæ–‡æœ¬æ§ä»¶å†…å®¹æ˜¯æµ®ç‚¹å€¼ï¼Œ
+*  \details  åˆ™éœ€è¦åœ¨æ­¤å‡½æ•°ä¸­å°†ä¸‹å‘å­—ç¬¦ä¸²é‡æ–°è½¬å›æµ®ç‚¹å€¼ã€‚
+*  \param screen_id ç”»é¢ID
+*  \param control_id æ§ä»¶ID
+*  \param str æ–‡æœ¬æ§ä»¶å†…å®¹
 */
 void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
-   //TODO: Ìí¼ÓÓÃ»§
+   //TODO: æ·»åŠ ç”¨æˆ·
 	uint16_t tmp;int32_t sValue;float fValue;
 	switch(screen_id){
 		case GDDC_PAGE_RENAME:{
@@ -30,7 +30,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 		}
 		case GDDC_PAGE_DIAGNOSIS:{
 			switch(control_id){
-				//Í¨µÀ0 ¹¦ÂÊĞ£Õı±í
+				//é€šé“0 åŠŸç‡æ ¡æ­£è¡¨
 				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P1:{	                                                          
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[0] = (uint16_t)(fValue * 10.0F);            					
@@ -81,7 +81,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.calibrationPwr0[9] = (uint16_t)(fValue * 10.0F);
 					break;
 				}
-				//Í¨µÀ1 ¹¦ÂÊĞ£Õı±í
+				//é€šé“1 åŠŸç‡æ ¡æ­£è¡¨
 				case GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P1:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[0] = (uint16_t)(fValue * 10.0F);

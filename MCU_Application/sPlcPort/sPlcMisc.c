@@ -3,7 +3,7 @@
 /*****************************************************************************/
 static int16_t FanSpeed = -1;
 /*****************************************************************************/
-void softDelayMs(uint16_t ms){//Èí¼şÑÓÊ±
+void softDelayMs(uint16_t ms){//è½¯ä»¶å»¶æ—¶
 	uint32_t i;
 	for(i = 0;i < 1000;i ++){
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
@@ -15,7 +15,7 @@ void softDelayMs(uint16_t ms){//Èí¼şÑÓÊ±
 void FanTimerInit(void) {
   TIM_OC_InitTypeDef sConfigOC = {0};
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;          // ²»·ÖÆµ£¬Ê±ÖÓÆµÂÊ = 84MHz
+  htim3.Init.Prescaler = 0;          // ä¸åˆ†é¢‘ï¼Œæ—¶é’Ÿé¢‘ç‡ = 84MHz
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 3359;//25KHZ PWM    
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -23,14 +23,14 @@ void FanTimerInit(void) {
   HAL_TIM_PWM_Init(&htim3);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 1680;     // ³õÊ¼Õ¼¿Õ±ÈÖµ (CCR1)
+  sConfigOC.Pulse = 1680;     // åˆå§‹å ç©ºæ¯”å€¼ (CCR1)
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1);
 }
 
 
-void UsbGpioReset(void){//Ä£ÄâUSB°Î²å¶¯×÷²¢¹Ø±ÕVBUS¹©µç
+void UsbGpioReset(void){//æ¨¡æ‹ŸUSBæ‹”æ’åŠ¨ä½œå¹¶å…³é—­VBUSä¾›ç”µ
 	GPIO_InitTypeDef GPIO_InitStruct;
 	/* GPIO Ports Clock Enable */
 	__HAL_RCC_GPIOA_CLK_ENABLE();
@@ -44,7 +44,7 @@ void UsbGpioReset(void){//Ä£ÄâUSB°Î²å¶¯×÷²¢¹Ø±ÕVBUS¹©µç
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);                                            
 	softDelayMs(100);
-	//ÏÈ°ÑPA12À­µÍÔÙÀ­¸ß£¬ÀûÓÃD+Ä£ÄâUSBµÄ°Î²å¶¯×÷   
+	//å…ˆæŠŠPA12æ‹‰ä½å†æ‹‰é«˜ï¼Œåˆ©ç”¨D+æ¨¡æ‹ŸUSBçš„æ‹”æ’åŠ¨ä½œ   
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
 	softDelayMs(100);
 	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
@@ -59,11 +59,11 @@ void UsbGpioReset(void){//Ä£ÄâUSB°Î²å¶¯×÷²¢¹Ø±ÕVBUS¹©µç
 	softDelayMs(200);
 	HAL_GPIO_DeInit(GPIOG, GPIO_PIN_12);
 	__HAL_RCC_GPIOG_CLK_DISABLE();	
-	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//¹Ø±ÕUSBÊ±ÖÓ
-	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//¹Ø±ÕUSB ÖĞ¶Ï
-	HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);//Çå³ş USB ÖĞ¶Ï±êÖ¾
+	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//å…³é—­USBæ—¶é’Ÿ
+	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//å…³é—­USB ä¸­æ–­
+	HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);//æ¸…æ¥š USB ä¸­æ–­æ ‡å¿—
 }
-void SystemClock_Reset(void){//¸´Î»ÏµÍ³Ê±ÖÓ
+void SystemClock_Reset(void){//å¤ä½ç³»ç»Ÿæ—¶é’Ÿ
 	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 	__HAL_RCC_BACKUPRESET_RELEASE();
@@ -92,7 +92,7 @@ void SystemClock_Reset(void){//¸´Î»ÏµÍ³Ê±ÖÓ
 		Error_Handler();
 	}
 }
-void resetInit(void){//¸´Î»ºó³õÊ¼»¯
+void resetInit(void){//å¤ä½ååˆå§‹åŒ–
 	HAL_DeInit();
 
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
@@ -132,16 +132,16 @@ void resetInit(void){//¸´Î»ºó³õÊ¼»¯
 
 #endif
 
-	//¸´Î»RCCÊ±ÖÓ
+	//å¤ä½RCCæ—¶é’Ÿ
 	SystemClock_Reset();
 	UsbGpioReset();
 	__enable_irq();
 }
-void delayMs(uint32_t delayMs){//SPLC ×èÈûÑÓÊ±
+void delayMs(uint32_t delayMs){//SPLC é˜»å¡å»¶æ—¶
 	vTaskDelay(delayMs);
 }
 
-void setFanSpeed(int16_t speed){//ÉèÖÃ·çÉÈ×ªËÙ
+void setFanSpeed(int16_t speed){//è®¾ç½®é£æ‰‡è½¬é€Ÿ
 	if(FanSpeed != speed){
 		if(speed > CONFIG_FAN_MAX_DC){
 			speed = CONFIG_FAN_MAX_DC;
@@ -152,10 +152,10 @@ void setFanSpeed(int16_t speed){//ÉèÖÃ·çÉÈ×ªËÙ
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, speed);
 		if(speed != 0){
-			HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);//´ò¿ªTIM
+			HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);//æ‰“å¼€TIM
 		}
 		else{
-			HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2);//¹Ø±ÕTIM
+			HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2);//å…³é—­TIM
 		}
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
@@ -179,8 +179,8 @@ void setFanSpeed(int16_t speed){//ÉèÖÃ·çÉÈ×ªËÙ
 	}
 }
 
-void morseCodeDiag(uint8_t diag){//·äÃùÆ÷Õï¶ÏÉùÒô Ä¦¶ûË¹µçÂë
-	//¹Ø±ÕUSB VBUS
+void morseCodeDiag(uint8_t diag){//èœ‚é¸£å™¨è¯Šæ–­å£°éŸ³ æ‘©å°”æ–¯ç”µç 
+	//å…³é—­USB VBUS
 	switch(diag){
 		case '0':{
 			//-
@@ -413,7 +413,7 @@ void morseCodeDiag(uint8_t diag){//·äÃùÆ÷Õï¶ÏÉùÒô Ä¦¶ûË¹µçÂë
 			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
 			break;
 		}
-		case 'L':{//£®©¥ £®£®
+		case 'L':{//ï¼â” ï¼ï¼
 			//.
 			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
 			//-
@@ -424,7 +424,7 @@ void morseCodeDiag(uint8_t diag){//·äÃùÆ÷Õï¶ÏÉùÒô Ä¦¶ûË¹µçÂë
 			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
 			break;
 		}
-		case 'M':{//©¥ ©¥
+		case 'M':{//â” â”
 			//-
 			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
 			//-
@@ -436,25 +436,25 @@ void morseCodeDiag(uint8_t diag){//·äÃùÆ÷Õï¶ÏÉùÒô Ä¦¶ûË¹µçÂë
 	vTaskDelay(3000);
 }
 
-uint32_t getOriginBootloadCrc(void){//¼ÆËãMCU Bootload CRC32
+uint32_t getOriginBootloadCrc(void){//è®¡ç®—MCU Bootload CRC32
 	uint8_t val;
 	uint32_t i;
 	uint32_t crc32;
 	crc32Clear();
 	for(i = BOOTLOADER_FLASH_START_ADDRESS;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){
 		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32¼ÆËãÁ¬Ğø×Ö½Ú
+		crc32 = crc32CalculateAdd(val);//CRC32è®¡ç®—è¿ç»­å­—èŠ‚
 	}
 	return crc32;	
 }
-uint32_t getOriginAppCrc(void){//¼ÆËãMCU APP CRC32
+uint32_t getOriginAppCrc(void){//è®¡ç®—MCU APP CRC32
 	uint8_t val;
 	uint32_t i;
 	uint32_t crc32;
 	crc32Clear();
 	for(i = APPLICATION_FLASH_START_ADDRESS;i < APPLICATION_FLASH_END_ADDRESS;i ++){
 		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32¼ÆËãÁ¬Ğø×Ö½Ú
+		crc32 = crc32CalculateAdd(val);//CRC32è®¡ç®—è¿ç»­å­—èŠ‚
 	}
 	return crc32;	
 }

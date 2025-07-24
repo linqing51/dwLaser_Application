@@ -4,29 +4,29 @@
 #include "stm32f4xx_hal.h"
 /*****************************************************************************/
 typedef struct{
-	uint16_t calibrationPwr0[10];//Í¨µÀ0¹¦ÂÊĞ£Õı±í
-	uint16_t calibrationPwr1[10];//Í¨µÀ1¹¦ÂÊĞ£Õı±í
-	char serialNumber[16];//ĞòÁĞºÅ
-	int16_t mfg_year;//Éú²úÄê
-	int16_t mfg_month;//Éú²úÔÂ
-	int16_t mfg_day;//Éú²úÈÕ
-	int8_t redLedDc;//ºìµÆÁÁ¶È
-	int8_t greenLedDc;//ÂÌµÆÁÁ¶È
-	int8_t blueLedDc;//À¶µÆÁÁ¶È
-	int8_t aimGain;//Ö¸Ê¾¹âÔöÒæ
-	int16_t fiberDetect;//¹âÏËÌ½²âãĞÖµ
+	uint16_t calibrationPwr0[10];//é€šé“0åŠŸç‡æ ¡æ­£è¡¨
+	uint16_t calibrationPwr1[10];//é€šé“1åŠŸç‡æ ¡æ­£è¡¨
+	char serialNumber[16];//åºåˆ—å·
+	int16_t mfg_year;//ç”Ÿäº§å¹´
+	int16_t mfg_month;//ç”Ÿäº§æœˆ
+	int16_t mfg_day;//ç”Ÿäº§æ—¥
+	int8_t redLedDc;//çº¢ç¯äº®åº¦
+	int8_t greenLedDc;//ç»¿ç¯äº®åº¦
+	int8_t blueLedDc;//è“ç¯äº®åº¦
+	int8_t aimGain;//æŒ‡ç¤ºå…‰å¢ç›Š
+	int16_t fiberDetect;//å…‰çº¤æ¢æµ‹é˜ˆå€¼
 	char normalOpenInterLock;
 }deviceConfig_t;
 typedef struct{
-	uint32_t powerUpCycle;//¿ª»ú´ÎÊı
-	uint32_t runTime;//ÔËĞĞÀÛ¼ÆÊ±¼ä µ¥Î»·ÖÖÓ
-	int16_t laserMaxPhotoDiode;//¼¤¹âÆ÷×î´ó¹¦ÂÊ
-	int16_t mucMaxTemper;//´¦ÀíÆ÷×î¸ßÎÂ¶È
+	uint32_t powerUpCycle;//å¼€æœºæ¬¡æ•°
+	uint32_t runTime;//è¿è¡Œç´¯è®¡æ—¶é—´ å•ä½åˆ†é’Ÿ
+	int16_t laserMaxPhotoDiode;//æ¿€å…‰å™¨æœ€å¤§åŠŸç‡
+	int16_t mucMaxTemper;//å¤„ç†å™¨æœ€é«˜æ¸©åº¦
 }deviceLogInfo_t;
 /*****************************************************************************/
 extern deviceConfig_t deviceConfig;
 extern deviceLogInfo_t deviceLogInfo;
-extern uint32_t	UniqueId[3];//´¦ÀíÆ÷ĞòÁĞºÅ 
+extern uint32_t	UniqueId[3];//å¤„ç†å™¨åºåˆ—å· 
 /*****************************************************************************/
 extern uint16_t cpuGetFlashSize(void);
 extern void readStm32UniqueID(void);

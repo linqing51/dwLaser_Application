@@ -4,12 +4,12 @@
 #include "sPlc.h"
 /*****************************************************************************/
 typedef struct{
-	char *name;//ÖÎÁÆÃû×Ö
-	int16_t channel;//¼¤¹âÍ¨µÀÑ¡Ôñ
-	int16_t pulse_mode;//Âö³åÄ£Ê½
-	int16_t power_ch0;//¹¦ÂÊ 1470
-	int16_t power_ch1;//¹¦ÂÊ 980
-	int16_t power_red;//¹¦ÂÊ 635
+	char *name;//æ²»ç–—åå­—
+	int16_t channel;//æ¿€å…‰é€šé“é€‰æ‹©
+	int16_t pulse_mode;//è„‰å†²æ¨¡å¼
+	int16_t power_ch0;//åŠŸç‡ 1470
+	int16_t power_ch1;//åŠŸç‡ 980
+	int16_t power_red;//åŠŸç‡ 635
 	int16_t poswidth;
 	int16_t negwidth;
 }myScheme_t;
@@ -24,9 +24,9 @@ extern myScheme_t sLiposuction[32];//6
 extern myScheme_t sDentistry[32];//7
 extern myScheme_t sTherapy[32];//8
 /*****************************************************************************/
-void schemeInit(uint8_t reDef);//ÖÎÁÆ·½°¸³õÊ¼»¯
-void goNextScheme(void);//ÇĞ»»ÏÂÒ»¸ö·½°¸
-void goLastScheme(void);//ÇĞ»»ÉÏÒ»¸ö·½°¸
+void schemeInit(uint8_t reDef);//æ²»ç–—æ–¹æ¡ˆåˆå§‹åŒ–
+void goNextScheme(void);//åˆ‡æ¢ä¸‹ä¸€ä¸ªæ–¹æ¡ˆ
+void goLastScheme(void);//åˆ‡æ¢ä¸Šä¸€ä¸ªæ–¹æ¡ˆ
 #endif
 
 

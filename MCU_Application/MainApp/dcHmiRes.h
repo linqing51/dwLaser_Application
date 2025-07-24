@@ -1,24 +1,24 @@
 #ifndef __DCHMIRES_H__
 #define __DCHMIRES_H__
 /*****************************************************************************/
-#define HMI_BLACK     																	0x0000//��ɫ    
-#define HMI_NAVY      																	0x000F//����ɫ  
-#define HMI_DGREEN    																	0x03E0//����ɫ  
-#define HMI_DCYAN     																	0x03EF//����ɫ  
-#define HMI_MAROON    																	0x7800//���ɫ      
-#define HMI_PURPLE    																	0x780F//��ɫ  
-#define HMI_OLIVE     																	0x7BE0//�����      
-#define HMI_LGRAY     																	0xC618//�Ұ�ɫ
-#define HMI_DGRAY     																	0x7BEF//���ɫ      
-#define HMI_BLUE      																	0x001F//��ɫ    
-#define HMI_GREEN     																	0x07E0//��ɫ          
-#define HMI_CYAN      																	0x07FF//��ɫ  
-#define HMI_RED       																	0xF800//��ɫ       
-#define HMI_MAGENTA   																	0xF81F//Ʒ��    
-#define HMI_YELLOW    																	0xFFE0//��ɫ        
-#define HMI_WHITE     																	0xFFFF//��ɫ  
+#define HMI_BLACK     																	0x0000//黑色    
+#define HMI_NAVY      																	0x000F//深蓝色  
+#define HMI_DGREEN    																	0x03E0//深绿色  
+#define HMI_DCYAN     																	0x03EF//深青色  
+#define HMI_MAROON    																	0x7800//深红色      
+#define HMI_PURPLE    																	0x780F//紫色  
+#define HMI_OLIVE     																	0x7BE0//橄榄绿      
+#define HMI_LGRAY     																	0xC618//灰白色
+#define HMI_DGRAY     																	0x7BEF//深灰色      
+#define HMI_BLUE      																	0x001F//蓝色    
+#define HMI_GREEN     																	0x07E0//绿色          
+#define HMI_CYAN      																	0x07FF//青色  
+#define HMI_RED       																	0xF800//红色       
+#define HMI_MAGENTA   																	0xF81F//品红    
+#define HMI_YELLOW    																	0xFFE0//黄色        
+#define HMI_WHITE     																	0xFFFF//白色  
 /*****************************************************************************/
-//HMIҳ����
+//HMI页面编号
 #define GDDC_PAGE_START																	0
 #define GDDC_PAGE_POWERUP_1470													1
 #define GDDC_PAGE_POWERUP_TRI														2
@@ -27,16 +27,16 @@
 #define GDDC_PAGE_NEW_PASSCODE													5
 #define GDDC_PAGE_STANDBY																6
 #define GDDC_PAGE_READY																	7
-#define GDDC_PAGE_OPTION																8//ѡ��ҳ��
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										9//��������ҳ ������
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									10//��������ҳ ˫����
-#define GDDC_PAGE_SCHEME_DETAIL													11//��������ҳ �Զ���
-#define GDDC_PAGE_INFORMATION														12//��Ϣҳ��
-#define GDDC_PAGE_DIAGNOSIS															13//���ҳ��
-#define GDDC_PAGE_RENAME																14//SCHEME����
-#define GDDC_PAGE_RESTORE																15//�����˵� ȷ�ϻָ�Ĭ��ֵ
-#define GDDC_PAGE_WEAR_SAFETY														16//��̤��ȫ����
-//GDDCҳ��ؼ����
+#define GDDC_PAGE_OPTION																8//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										9//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									10//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_DETAIL													11//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														12//信息页面
+#define GDDC_PAGE_DIAGNOSIS															13//诊断页面
+#define GDDC_PAGE_RENAME																14//SCHEME更名
+#define GDDC_PAGE_RESTORE																15//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														16//脚踏安全警告
+//GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
 #define GDDC_PAGE_PASSCODE_KEY_NUM3											3
@@ -69,19 +69,19 @@
 #define GDDC_PAGE_NEWPASSCODE_KEY_BACK									14
 #define GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY								15
 /*****************************************************************************/
-#define GDDC_PAGE_STANDBY_KEY_POWER_SEL_ADD							1//��ǰѡ��������
-#define GDDC_PAGE_STANDBY_KEY_POWER_SEL_INC							2//��ǰѡ���ʼ�С
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD							3//��������
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH0_INC							4//���ʼ�С
+#define GDDC_PAGE_STANDBY_KEY_POWER_SEL_ADD							1//当前选择功率增加
+#define GDDC_PAGE_STANDBY_KEY_POWER_SEL_INC							2//当前选择功率减小
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD							3//功率增加
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH0_INC							4//功率减小
 #define GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD             5
 #define GDDC_PAGE_STANDBY_KEY_POWER_CH1_INC             6
 #define GDDC_PAGE_STANDBY_KEY_POWER_RED_ADD             7
 #define GDDC_PAGE_STANDBY_KEY_POWER_RED_INC             8
-#define GDDC_PAGE_STANDBY_KEY_POWER_AIM_ADD							9//ָʾ�����ȼ�
-#define GDDC_PAGE_STANDBY_KEY_POWER_AIM_INC							10//ָʾ�����ȼ�
-#define GDDC_PAGE_STANDBY_KEY_STANDBY										11//����׼��
-#define GDDC_PAGE_STANDBY_KEY_MODE_CW										12//����ģʽ
-#define	GDDC_PAGE_STANDBY_KEY_MODE_MP										13//����ģʽ
+#define GDDC_PAGE_STANDBY_KEY_POWER_AIM_ADD							9//指示光亮度加
+#define GDDC_PAGE_STANDBY_KEY_POWER_AIM_INC							10//指示光亮度减
+#define GDDC_PAGE_STANDBY_KEY_STANDBY										11//进入准备
+#define GDDC_PAGE_STANDBY_KEY_MODE_CW										12//连续模式
+#define	GDDC_PAGE_STANDBY_KEY_MODE_MP										13//脉冲模式
 #define GDDC_PAGE_STANDBY_KEY_ENTER_OPTION							14//
 #define GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME							15//
 #define GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE								16//
@@ -95,63 +95,63 @@
 #define GDDC_PAGE_STANDBY_KEY_SELECT_CH0B								45//1940
 #define GDDC_PAGE_STANDBY_KEY_SELECT_CH1								24
 #define GDDC_PAGE_STANDBY_KEY_SELECT_RED								25
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME							26//����������ʾ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL			27//��ǰ�趨����
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0			28//�趨���� 1470 / 1940
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH1     29//�趨���� 980
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED     30//�趨���� 635
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM     31//�趨���� 650
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN							32//������ʾ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER			33//ƽ��������ʾ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY					34//Ƶ����ʾ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE					35//ռ�ձ���ʾ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH					36//��������ʾ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH					37//��������ʾ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_TOTAL_POWER				38//�ܹ�����ʾ
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL				39//��ǰ�����趨�϶���
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0			  40//�����趨�϶��� 1470 /1940
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1        41//�����趨�϶��� 980
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED 				42//�����趨�϶��� 635
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME							26//方案名称显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL			27//当前设定功率
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0			28//设定功率 1470 / 1940
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH1     29//设定功率 980
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED     30//设定功率 635
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM     31//设定功率 650
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN							32//报警显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER			33//平均功率显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY					34//频率显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE					35//占空比显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH					36//正脉宽显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH					37//负脉宽显示
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_TOTAL_POWER				38//总功率显示
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL				39//当前功率设定拖动条
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0			  40//功率设定拖动条 1470 /1940
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1        41//功率设定拖动条 980
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED 				42//功率设定拖动条 635
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM				43
-#define GDDC_PAGE_STANDBY_ICON_MPKEY										44//����ģʽ����ͼ
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//��ʾ������Ϣ
+#define GDDC_PAGE_STANDBY_ICON_MPKEY										44//脉冲模式背景图
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
-#define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//����������ʾ
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//���书����ʾ 1470 /1940
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH1           3//���书����ʾ 980
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_RED           4//���书����ʾ 635
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_AIM						5//���书����ʾ 650
-#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL					6//�ܷ��书����ʾ
-#define GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY							7//����������ʾ
-#define GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME			8//����ʱ����ʾ
-#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY		9//��ʾ������
-#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME				10//��ʾ��ʱ��
-#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE			11//��ʾ������
-#define GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE						12//ѡ�񲨳���ʾ
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD					13//��ʾ����������
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_INC					14//��ʾ��������С
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD						15//��ʾ��ʱ������
-#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC						16//��ʾ��ʱ���С
-#define GDDC_PAGE_READY_KEY_READY												17//�л���������
-#define GDDC_PAGE_READY_TEXTDISPLAY_DEBUG								99//��ʾ������Ϣ
+#define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//发射功率显示 1470 /1940
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH1           3//发射功率显示 980
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_RED           4//发射功率显示 635
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_AIM						5//发射功率显示 650
+#define GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL					6//总发射功率显示
+#define GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY							7//发射能量显示
+#define GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME			8//发射时间显示
+#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY		9//提示音能量
+#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME				10//提示音时间
+#define GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE			11//提示音周期
+#define GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE						12//选择波长显示
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD					13//提示音能量增加
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_INC					14//提示音能量减小
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD						15//提示音时间增加
+#define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC						16//提示音时间减小
+#define GDDC_PAGE_READY_KEY_READY												17//切换待机按键
+#define GDDC_PAGE_READY_TEXTDISPLAY_DEBUG								99//显示调试信息
 /*****************************************************************************/
-#define GDDC_PAGE_OPTION_KEY_TONE									 			1//����������ͬ��												
-#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD						2//������������
-#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_INC						3//������������
-#define GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD								4//Һ������������
-#define GDDC_PAGE_OPTION_KEY_LCD_BRG_INC								5//Һ�������ȼ���
-#define GDDC_PAGE_OPTION_KEY_ENTER_OK										6//���ش���ҳ��
-#define GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION					7//������Ϣ�˵�
+#define GDDC_PAGE_OPTION_KEY_TONE									 			1//蜂鸣器声光同步												
+#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD						2//蜂鸣器音量加
+#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_INC						3//蜂鸣器音量减
+#define GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD								4//液晶屏亮度增加
+#define GDDC_PAGE_OPTION_KEY_LCD_BRG_INC								5//液晶屏亮度减少
+#define GDDC_PAGE_OPTION_KEY_ENTER_OK										6//返回待机页面
+#define GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION					7//进入信息菜单
 #define GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON							8//
-#define GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER							9//���빤��ʦģʽ��
+#define GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER							9//进入工程师模式。
 #define GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME				10
 #define GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG						11
-#define GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME						12//��������������
-#define GDDC_PAGE_OPTION_PROGRESS_LCD_BRG								13//��Ļ���ȵ���
-#define GDDC_PAGE_OPTION_KEY_RESTORE										14//�ָ�Ĭ������
+#define GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME						12//蜂鸣器音量调节
+#define GDDC_PAGE_OPTION_PROGRESS_LCD_BRG								13//屏幕亮度调节
+#define GDDC_PAGE_OPTION_KEY_RESTORE										14//恢复默认设置
 /*****************************************************************************/
-#define GDDC_PAGE_RESTORE_KEY_CANCEL										1//ȡ���ָ�Ĭ��ֵ
-#define GDDC_PAGE_RESTORE_KEY_YES												2//ȷ�ϻָ�Ĭ��ֵ
+#define GDDC_PAGE_RESTORE_KEY_CANCEL										1//取消恢复默认值
+#define GDDC_PAGE_RESTORE_KEY_YES												2//确认恢复默认值
 /*****************************************************************************/
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY				1		
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY				2
@@ -165,10 +165,10 @@
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM						10
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN						11
 /*****************************************************************************/
-//����ҳ��
-#define GDDC_PAGE_SCHEME_KEY_RENAME											1//��������
-#define GDDC_PAGE_SCHEME_KEY_OK													2//ȷ��
-#define GDDC_PAGE_SCHEME_KEY_CANCEL											3//ȡ��
+//方案页面
+#define GDDC_PAGE_SCHEME_KEY_RENAME											1//更名按键
+#define GDDC_PAGE_SCHEME_KEY_OK													2//确定
+#define GDDC_PAGE_SCHEME_KEY_CANCEL											3//取消
 #define GDDC_PAGE_SCHEME_KEY_SELECT_0										4	
 #define GDDC_PAGE_SCHEME_KEY_SELECT_1										5
 #define GDDC_PAGE_SCHEME_KEY_SELECT_2										6
@@ -222,7 +222,7 @@
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO3						4
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4						17
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO5						22
-//ͨ��0 ����У����
+//通道0 功率校正表
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P1				100
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P2				101
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P3				102
@@ -233,7 +233,7 @@
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P8				107
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P9				108
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_1P0				109
-//ͨ��1 ����У����
+//通道1 功率校正表
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P1				110
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P2				111
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P3				112
@@ -244,7 +244,7 @@
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P8				117
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P9				118
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_1P0				119
-//ͨ��2 ����У����
+//通道2 功率校正表
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P1				120
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P2				121
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P3				122
@@ -255,7 +255,7 @@
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P8				127
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_0P9				128
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR2_1P0				129
-//ͨ��3 ����У����
+//通道3 功率校正表
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P1				130
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P2				131
 #define GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR3_0P3				132
@@ -277,21 +277,21 @@
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SET_AIM_GAIN		148
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIBER_DETECT  	149
 //
-#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE			300//�����¶ȼ��
-#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE			301//���ι���̽��
-#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID						302//����RFID
-#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP						303//���μ�ͣ���
-#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH			304//���ν�̤���
-#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK				305//���ΰ�ȫ����
-#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FAN_CONTRAL			306//���η���
-#define GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION_MODE				307//�л�������У��ģʽ
-#define GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM							308//��������� ERPOM 
-#define GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM							309//�ָ�Ĭ�ϲ��� EPROM						
-#define GDDC_PAGE_DISGNOSIS_KEY_CLEAR_CRC								310//����̼�CRC��Ϣ
-#define GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ			311//���������̼�����
-#define GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES			312//ȷ�ϸ��¹̼�
-#define GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO			313//ȷ�ϲ����¹̼�
-#define GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK							314//Ĭ�ϳ�����ȫ����
+#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE			300//屏蔽温度检测
+#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE			301//屏蔽光纤探测
+#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID						302//屏蔽RFID
+#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP						303//屏蔽急停检测
+#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH			304//屏蔽脚踏检测
+#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK				305//屏蔽安全连锁
+#define GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FAN_CONTRAL			306//屏蔽风扇
+#define GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION_MODE				307//切换正常和校正模式
+#define GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM							308//储存参数到 ERPOM 
+#define GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM							309//恢复默认参数 EPROM						
+#define GDDC_PAGE_DISGNOSIS_KEY_CLEAR_CRC								310//清除固件CRC信息
+#define GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ			311//更新引导固件请求
+#define GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES			312//确认更新固件
+#define GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO			313//确认不更新固件
+#define GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK							314//默认常开安全连锁
 #define GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK								99
 /*****************************************************************************/
 #define GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME						1

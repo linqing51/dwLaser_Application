@@ -7,52 +7,52 @@
 #define DK25L_HWVER												0x34
 /*****************************************************************************/
 #define DK25L_STX												0xAA//
-//Í¨ÓÃÖ¸Áî
-#define CMD_FIND_CARD_UID										0x01//»ñÈ¡¿¨Æ¬UID
-#define CMD_FIND_CARD_TYPE										0x02//»ñÈ¡¿¨Æ¬ÀàĞÍ
-#define CMD_AUTO_FIND_CARD										0x95//×Ô¶¯Ñ°¿¨¿ª¹Ø
-#define CMD_MOD_BAUDRATE										0xA0//ĞŞ¸ÄÄ£¿é²¨ÌØÂÊ
-#define CMD_CONFIG_SYS_PARA										0xA1//ÅäÖÃÏµÍ³²ÎÊıÖ¸Áî
-#define CMD_READ_SYS_PARA										0xA2//¶ÁÈ¡ÏµÍ³²ÎÊıÖ¸Áî
-#define CMD_READ_FW_VER											0xB0//»ñÈ¡Ä£¿é¹Ì¼ş°æ±¾ºÅ
-#define CMD_READ_HW_VER											0xB1//»ñÈ¡Ä£¿éÓ²¼ş°æ±¾ºÅ
-//MifareÖ¸Áî
-#define CMD_MIFARE_SET_KEYA										0x03//ÏòÄ£¿éĞ´ÈëĞèÒªÑéÖ¤µÄÃÜÔ¿(AÃÜÔ¿)
-#define CMD_MIFARE_READ_BLOCK									0x04//Mifare ¿¨¶Á¿é
-#define CMD_MIFARE_WRITE_BLOCK									0x05//Mifare ¿¨Ğ´¿é
-#define CMD_MIFATE_WALLET_INIT									0x06//Mifare ¿¨Ôö¼õÖµ³õÊ¼»¯
-#define CMD_MIFARE_WALLET_CHARGE								0x07//Mifare ¿¨ÔöÖµ
-#define CMD_MIFARE_WALLET_CHARGEBACK							0x08//Mifare ¿¨¼õÖµ
-#define CMD_MIFARE_SET_KEYB										0x0B//Î÷°²Ä£¿éĞ´ÈëĞèÒªÑéÖ¤µÄÃÜÔ¿(BÃÜÔ¿)
-#define CMD_MIFARE_SET_KEY_TYPE									0x0C//ÉèÖÃÄ£¿éÊ¹ÓÃÃÜÔ¿µÄÀàĞÍ
-//Ultralight ¿¨²Ù×÷Ö¸Áî
-#define CMD_ULTRALIGHT_READ_BLOCK								0x09//Ultralight¿¨¶Á¿é
-#define CMD_ULTRALIGHT_WRITE_BLOCK								0x0A//Ultralight¿¨Ğ´¿é
-#define CMD_ULTRALIGHT_READ_MBLOCK								0x1C//Ultralight¿¨¶Á¶à¸ö¿é
-#define CMD_ULTRALIGHT_SET_MBLOCK								0x1D//Ultralight¿¨Ğ´¶à¸ö¿é
-//ISO14443-A CPU¿¨²Ù×÷Ö¸Áî
-#define CMD_ISO14443A_ACTIVATE									0x15//ISO14443-A CPU¿¨Æ¬¼¤»îÖ¸Áî
-#define CMD_ISO14443A_APDU										0x17//ISO14443-A CPU¿¨APDUÖ¸Áî½Ó¿Ú
-#define CMD_ISO14443A_POWEROFF									0x18//ISO14443-A CPU¿¨Æ¬¶ÏµçÖ¸Áî
-//ISO14443-BÉí·İÖ¤
-#define CMD_ISO14443B_ACTIVATE									0x14//Éí·İÖ¤¼¤»îÖ¸Áî
-#define CMD_ISO14443B_APDU										0x16//Éí·İÖ¤APDUÖ¸Áî½Ó¿Ú
-#define CMD_ISO14443B_POWEROFF									0x18//¿¨Æ¬¶ÏµçÖ¸Áî¡¢¹Ø±ÕÌìÏßÖ¸Áî½Ó¿Ú
+//é€šç”¨æŒ‡ä»¤
+#define CMD_FIND_CARD_UID										0x01//è·å–å¡ç‰‡UID
+#define CMD_FIND_CARD_TYPE										0x02//è·å–å¡ç‰‡ç±»å‹
+#define CMD_AUTO_FIND_CARD										0x95//è‡ªåŠ¨å¯»å¡å¼€å…³
+#define CMD_MOD_BAUDRATE										0xA0//ä¿®æ”¹æ¨¡å—æ³¢ç‰¹ç‡
+#define CMD_CONFIG_SYS_PARA										0xA1//é…ç½®ç³»ç»Ÿå‚æ•°æŒ‡ä»¤
+#define CMD_READ_SYS_PARA										0xA2//è¯»å–ç³»ç»Ÿå‚æ•°æŒ‡ä»¤
+#define CMD_READ_FW_VER											0xB0//è·å–æ¨¡å—å›ºä»¶ç‰ˆæœ¬å·
+#define CMD_READ_HW_VER											0xB1//è·å–æ¨¡å—ç¡¬ä»¶ç‰ˆæœ¬å·
+//MifareæŒ‡ä»¤
+#define CMD_MIFARE_SET_KEYA										0x03//å‘æ¨¡å—å†™å…¥éœ€è¦éªŒè¯çš„å¯†é’¥(Aå¯†é’¥)
+#define CMD_MIFARE_READ_BLOCK									0x04//Mifare å¡è¯»å—
+#define CMD_MIFARE_WRITE_BLOCK									0x05//Mifare å¡å†™å—
+#define CMD_MIFATE_WALLET_INIT									0x06//Mifare å¡å¢å‡å€¼åˆå§‹åŒ–
+#define CMD_MIFARE_WALLET_CHARGE								0x07//Mifare å¡å¢å€¼
+#define CMD_MIFARE_WALLET_CHARGEBACK							0x08//Mifare å¡å‡å€¼
+#define CMD_MIFARE_SET_KEYB										0x0B//è¥¿å®‰æ¨¡å—å†™å…¥éœ€è¦éªŒè¯çš„å¯†é’¥(Bå¯†é’¥)
+#define CMD_MIFARE_SET_KEY_TYPE									0x0C//è®¾ç½®æ¨¡å—ä½¿ç”¨å¯†é’¥çš„ç±»å‹
+//Ultralight å¡æ“ä½œæŒ‡ä»¤
+#define CMD_ULTRALIGHT_READ_BLOCK								0x09//Ultralightå¡è¯»å—
+#define CMD_ULTRALIGHT_WRITE_BLOCK								0x0A//Ultralightå¡å†™å—
+#define CMD_ULTRALIGHT_READ_MBLOCK								0x1C//Ultralightå¡è¯»å¤šä¸ªå—
+#define CMD_ULTRALIGHT_SET_MBLOCK								0x1D//Ultralightå¡å†™å¤šä¸ªå—
+//ISO14443-A CPUå¡æ“ä½œæŒ‡ä»¤
+#define CMD_ISO14443A_ACTIVATE									0x15//ISO14443-A CPUå¡ç‰‡æ¿€æ´»æŒ‡ä»¤
+#define CMD_ISO14443A_APDU										0x17//ISO14443-A CPUå¡APDUæŒ‡ä»¤æ¥å£
+#define CMD_ISO14443A_POWEROFF									0x18//ISO14443-A CPUå¡ç‰‡æ–­ç”µæŒ‡ä»¤
+//ISO14443-Bèº«ä»½è¯
+#define CMD_ISO14443B_ACTIVATE									0x14//èº«ä»½è¯æ¿€æ´»æŒ‡ä»¤
+#define CMD_ISO14443B_APDU										0x16//èº«ä»½è¯APDUæŒ‡ä»¤æ¥å£
+#define CMD_ISO14443B_POWEROFF									0x18//å¡ç‰‡æ–­ç”µæŒ‡ä»¤ã€å…³é—­å¤©çº¿æŒ‡ä»¤æ¥å£
 //ISO15693
-#define CMD_ISO15693_GET_BLOCK									0x09//ISO15693¿¨¶Á¿é
-#define CMD_ISO15693_GET_MBLOCK									0x1C//ISO15693¿¨¶Á¶à¸ö¿é
-#define CMD_ISO15693_SET_MBLOCK									0x1D//ISO15693¿¨Ğ´¶à¸ö¿é
-//Ä£¿é·´À¡
-#define CMD_ERR_TAG_TYPE										0xE0//¿¨ÀàĞÍ´íÎó·´À¡Ö¸Áî	
-#define CMD_ERR_NOT_FIND										0xE1//Î´Ñ°ÕÒ¿¨´íÎó·´À¡Ö¸Áî
-#define CMD_ERR_NOT_MACH										0xE2//ÃÜÔ¿²»Æ¥Åä´íÎó·´À¡Ö¸Áî
-#define CMD_ERR_GET												0xE3//¶Á¿éÊ§°Ü´íÎóÖ¸Áî
-#define CMD_ERR_SET												0xE4//Ğ´¿éÊ§°Ü´íÎóÖ¸Áî
-#define CMD_ERR_M1_INIT											0xE5//M1¿¨Öµ³õÊ¼»¯Ê§°Ü´íÎóÖ¸Áî
-#define CMD_ERR_M1_ADD											0xE6//M1¿¨ÔöÖµÊ§°Ü´íÎóÖ¸Áî
-#define CMD_ERR_M1_DEC											0xE7//M1¿¨¼õÖµÊ§°Ü´íÎóÖ¸Áî
-#define CMD_ACK													0xFE//ACKÈ·ÈÏÃüÁî
-#define CMD_NACK												0xFF//NACK·ñÈÏÃüÁî
+#define CMD_ISO15693_GET_BLOCK									0x09//ISO15693å¡è¯»å—
+#define CMD_ISO15693_GET_MBLOCK									0x1C//ISO15693å¡è¯»å¤šä¸ªå—
+#define CMD_ISO15693_SET_MBLOCK									0x1D//ISO15693å¡å†™å¤šä¸ªå—
+//æ¨¡å—åé¦ˆ
+#define CMD_ERR_TAG_TYPE										0xE0//å¡ç±»å‹é”™è¯¯åé¦ˆæŒ‡ä»¤	
+#define CMD_ERR_NOT_FIND										0xE1//æœªå¯»æ‰¾å¡é”™è¯¯åé¦ˆæŒ‡ä»¤
+#define CMD_ERR_NOT_MACH										0xE2//å¯†é’¥ä¸åŒ¹é…é”™è¯¯åé¦ˆæŒ‡ä»¤
+#define CMD_ERR_GET												0xE3//è¯»å—å¤±è´¥é”™è¯¯æŒ‡ä»¤
+#define CMD_ERR_SET												0xE4//å†™å—å¤±è´¥é”™è¯¯æŒ‡ä»¤
+#define CMD_ERR_M1_INIT											0xE5//M1å¡å€¼åˆå§‹åŒ–å¤±è´¥é”™è¯¯æŒ‡ä»¤
+#define CMD_ERR_M1_ADD											0xE6//M1å¡å¢å€¼å¤±è´¥é”™è¯¯æŒ‡ä»¤
+#define CMD_ERR_M1_DEC											0xE7//M1å¡å‡å€¼å¤±è´¥é”™è¯¯æŒ‡ä»¤
+#define CMD_ACK													0xFE//ACKç¡®è®¤å‘½ä»¤
+#define CMD_NACK												0xFF//NACKå¦è®¤å‘½ä»¤
 /*****************************************************************************/
 #define CARD_UNKNOWN											0x00
 #define CARD_MIFARE												0x01
@@ -61,28 +61,28 @@
 #define CARD_ISO14443A											0x04
 #define CARD_ISO15693											0x05
 /*****************************************************************************/
-extern uint8_t DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//Ö¸Áî·¢ËÍ»º³åÇø
-extern uint8_t DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//Ö¸Áî½ÓÊÕ»º³åÇø
+extern uint8_t DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//æŒ‡ä»¤å‘é€ç¼“å†²åŒº
+extern uint8_t DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//æŒ‡ä»¤æ¥æ”¶ç¼“å†²åŒº
 /*****************************************************************************/
-void DL25L_Init(void);//DK25L NFCÄ£¿é³õÊ¼»¯
-void DK25L_GET_UID(void);//»ñÈ¡¿¨Æ¬ UID
-void DK25L_GET_TPYE(void);//»ñÈ¡¿¨Æ¬ÀàĞÍ
-void DK25L_GET_FWVER(void);//»ñÈ¡Ä£¿éÈí¼ş°æ±¾ºÅ
-void DK25L_GET_HWVER(void);//»ñÈ¡Ä£¿éÓ²¼ş°æ±¾ºÅ
-void DK25L_MIFARE_SET_KEYA(uint8_t *pKey);//Ğ´ÈëM1¿¨KEYAÃÜÔ¿µ½Ä£¿é
-void DK25L_MIFARE_SET_KEYB(uint16_t *pKey);//Ğ´ÈëM1¿¨KEYBÃÜÔ¿µ½Ä£¿é
-void DK25L_MIFARE_WALLET_INIT(uint8_t block);//M1¿¨µç×ÓÇ®°ü³õÊ¼»¯Ö¸Áî
-void DK25L_MIFARE_WALLET_CHARGE(uint8_t block, uint8_t *pdat);//M1¿¨µç×ÓÇ®°ü³äÖµÖ¸Áî
-void DK25L_MIFARE_WALLET_CHARGEBACK(uint8_t block, uint8_t *pdat);//M1¿¨µç×ÓÇ®°ü¿Û¿îÖ¸Áî
-void DL25L_MIFARE_WRITE_BLOCK(uint8_t block, uint8_t *pdat);//M1¿¨Ğ´¿éÖ¸Áî
-void DL25L_MIFARE_READ_BLOCK(uint8_t block);//M1¿¨¶Á¿éÖ¸Áî
-void DL25L_MIFARE_SET_KEY_TYPE(uint8_t type);//ÉèÖÃÄ£¿éÊ¹ÓÃÃÜÔ¿µÄÀàĞÍ
-void DL25L_ULTRALIGHT_READ_BLOCK(uint8_t block);//UL¿¨¶Á¿éÖ¸Áî
-void DL25L_ULTRALIGHT_WRITE_BLOCK(uint8_t block, uint8_t *pdat);//UL¿¨Ğ´¿éÖ¸Áî
-void DL25L_ULTRALIGHT_READ_MBLOCK(uint8_t blockStart, uint8_t blockEnd);//UL¿¨¶Á¶à¸ö¿éÖ¸Áî
-void DL25L_ULTRALIGHT_WRITE_MBLOCK(uint8_t blockStart, uint8_t blockEnd, uint8_t *pdat);//UL¿¨Ğ´¶à¸ö¿éÖ¸Áî
-void DL25L_ISO14443A_ACTIVATE(void);//ISO14443A ¿¨¼¤»îÖ¸Áî
-void DL25L_ISO14443A_APDU(uint8_t length, uint8_t *pdat);//ISO14443A PDUÖ¸Áî½Ó¿Ú
+void DL25L_Init(void);//DK25L NFCæ¨¡å—åˆå§‹åŒ–
+void DK25L_GET_UID(void);//è·å–å¡ç‰‡ UID
+void DK25L_GET_TPYE(void);//è·å–å¡ç‰‡ç±»å‹
+void DK25L_GET_FWVER(void);//è·å–æ¨¡å—è½¯ä»¶ç‰ˆæœ¬å·
+void DK25L_GET_HWVER(void);//è·å–æ¨¡å—ç¡¬ä»¶ç‰ˆæœ¬å·
+void DK25L_MIFARE_SET_KEYA(uint8_t *pKey);//å†™å…¥M1å¡KEYAå¯†é’¥åˆ°æ¨¡å—
+void DK25L_MIFARE_SET_KEYB(uint16_t *pKey);//å†™å…¥M1å¡KEYBå¯†é’¥åˆ°æ¨¡å—
+void DK25L_MIFARE_WALLET_INIT(uint8_t block);//M1å¡ç”µå­é’±åŒ…åˆå§‹åŒ–æŒ‡ä»¤
+void DK25L_MIFARE_WALLET_CHARGE(uint8_t block, uint8_t *pdat);//M1å¡ç”µå­é’±åŒ…å……å€¼æŒ‡ä»¤
+void DK25L_MIFARE_WALLET_CHARGEBACK(uint8_t block, uint8_t *pdat);//M1å¡ç”µå­é’±åŒ…æ‰£æ¬¾æŒ‡ä»¤
+void DL25L_MIFARE_WRITE_BLOCK(uint8_t block, uint8_t *pdat);//M1å¡å†™å—æŒ‡ä»¤
+void DL25L_MIFARE_READ_BLOCK(uint8_t block);//M1å¡è¯»å—æŒ‡ä»¤
+void DL25L_MIFARE_SET_KEY_TYPE(uint8_t type);//è®¾ç½®æ¨¡å—ä½¿ç”¨å¯†é’¥çš„ç±»å‹
+void DL25L_ULTRALIGHT_READ_BLOCK(uint8_t block);//ULå¡è¯»å—æŒ‡ä»¤
+void DL25L_ULTRALIGHT_WRITE_BLOCK(uint8_t block, uint8_t *pdat);//ULå¡å†™å—æŒ‡ä»¤
+void DL25L_ULTRALIGHT_READ_MBLOCK(uint8_t blockStart, uint8_t blockEnd);//ULå¡è¯»å¤šä¸ªå—æŒ‡ä»¤
+void DL25L_ULTRALIGHT_WRITE_MBLOCK(uint8_t blockStart, uint8_t blockEnd, uint8_t *pdat);//ULå¡å†™å¤šä¸ªå—æŒ‡ä»¤
+void DL25L_ISO14443A_ACTIVATE(void);//ISO14443A å¡æ¿€æ´»æŒ‡ä»¤
+void DL25L_ISO14443A_APDU(uint8_t length, uint8_t *pdat);//ISO14443A PDUæŒ‡ä»¤æ¥å£
 void DK25L_EnableRx(int8_t ena);
 #endif
 

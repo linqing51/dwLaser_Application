@@ -1,16 +1,16 @@
 #include "sPlc.h"
 /*****************************************************************************/
-int8_t inputFilter[(X_END - X_START + 1) * 16];//IOÊäÈëÂË²¨Æ÷»º³åÇø
+int8_t inputFilter[(X_END - X_START + 1) * 16];//IOè¾“å…¥æ»¤æ³¢å™¨ç¼“å†²åŒº
 /*****************************************************************************/
-void sPlcInputInit(void){//IOÊäÈëÂË²¨Æ÷³õÊ¼»¯
+void sPlcInputInit(void){//IOè¾“å…¥æ»¤æ³¢å™¨åˆå§‹åŒ–
 	memset((uint8_t*)inputFilter, 0x0, ((X_END - X_START + 1) * 16));
 	printf("%s,%d,%s:input init......\n",__FILE__, __LINE__, __func__);
 }
-void sPlcInputRefresh(void){//»ñÈ¡ÊäÈëIO
+void sPlcInputRefresh(void){//è·å–è¾“å…¥IO
 	uint8_t	temp;
-	//X0 ¼±Í£
+	//X0 æ€¥åœ
 	temp = GET_ESTOP_NC;
-	if(temp == 0){//¼±Í£³£±Õ
+	if(temp == 0){//æ€¥åœå¸¸é—­
 		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[0] ++;
 		}
@@ -18,7 +18,7 @@ void sPlcInputRefresh(void){//»ñÈ¡ÊäÈëIO
 			NVRAM0[X_START] |= (int16_t)(1 << 0);
 		}
 	}
-	else{//¼±Í£³£¿ª
+	else{//æ€¥åœå¸¸å¼€
 		if(inputFilter[0] > (CONFIG_INPUT_FILTER_TIME * -1)){
 			inputFilter[0] --;
 		}
@@ -26,7 +26,7 @@ void sPlcInputRefresh(void){//»ñÈ¡ÊäÈëIO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 0);
 		}
 	}
-	//X1 °²È«Á¬Ëø
+	//X1 å®‰å…¨è¿é”
 	temp = GET_INTERLOCK_NC;
 	if(temp == 0){
 		if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
@@ -45,8 +45,8 @@ void sPlcInputRefresh(void){//»ñÈ¡ÊäÈëIO
 		}
 	}
 
-	//X2 ½ÅÌ¤³£¿ª
-	temp = GET_FSWITCH_NO;//»ñÈ¡³£¿ª½ÅÌ¤¿ª¹Ø×´Ì¬
+	//X2 è„šè¸å¸¸å¼€
+	temp = GET_FSWITCH_NO;//è·å–å¸¸å¼€è„šè¸å¼€å…³çŠ¶æ€
 	if(temp == 0){
 		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[2] ++;
@@ -63,7 +63,7 @@ void sPlcInputRefresh(void){//»ñÈ¡ÊäÈëIO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 2);
 		}
 	}
-	//X3 ½ÅÌ¤³£±Õ
+	//X3 è„šè¸å¸¸é—­
 	temp = GET_FSWITCH_NC;
 #if defined(MODEL_PVGLS_15W_1470_A0)
 	if(temp == 0){
@@ -119,7 +119,7 @@ void sPlcInputRefresh(void){//»ñÈ¡ÊäÈëIO
 		}
 	}
 #endif
-	//X4 ¹âÏËÌ½²â
+	//X4 å…‰çº¤æ¢æµ‹
 #if defined(MODEL_PVGLS_15W_1470_A0) &&  defined(MODEL_PVGLS_15W_1470_A1)
 	if(NVRAM0[SPREG_ADC_9] <= deviceConfig.fiberDetect){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){

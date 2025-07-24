@@ -1,31 +1,31 @@
 #include "MainAppLib.h"
 /*****************************************************************************/
-void addAcousticTime(void){//Ôö¼ÓÌáÊ¾Ê±¼ä +STEP
+void addAcousticTime(void){//å¢žåŠ æç¤ºæ—¶é—´ +STEP
 	NVRAM0[EM_ACOUSTIC_TIME] += NVRAM0[EM_ACOUSTIC_TIME_STEP];
 	LIMS16(EM_ACOUSTIC_TIME, EM_ACOUSTIC_TIME_MIN, EM_ACOUSTIC_TIME_MAX);
 	NVRAM0[EM_ACOUSTIC_ENERGY] += NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
 	LIMS16(EM_ACOUSTIC_ENERGY, EM_ACOUSTIC_ENERGY_MIN, EM_ACOUSTIC_ENERGY_MAX);
 }
-void decAcousticTime(void){//¼õÐ¡ÌáÊ¾Ê±¼ä -STEP
+void decAcousticTime(void){//å‡å°æç¤ºæ—¶é—´ -STEP
 	NVRAM0[EM_ACOUSTIC_TIME] -= NVRAM0[EM_ACOUSTIC_TIME_STEP];
 	LIMS16(EM_ACOUSTIC_TIME, EM_ACOUSTIC_TIME_MIN, EM_ACOUSTIC_TIME_MAX);
 	NVRAM0[EM_ACOUSTIC_ENERGY] -= NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
 	LIMS16(EM_ACOUSTIC_ENERGY, EM_ACOUSTIC_ENERGY_MIN, EM_ACOUSTIC_ENERGY_MAX);
 }
-void addAcousticEnergy(void){//Ôö¼ÓÌáÊ¾ÄÜÁ¿ +STEP
+void addAcousticEnergy(void){//å¢žåŠ æç¤ºèƒ½é‡ +STEP
 	NVRAM0[EM_ACOUSTIC_TIME] += NVRAM0[EM_ACOUSTIC_TIME_STEP];
 	LIMS16(EM_ACOUSTIC_TIME, EM_ACOUSTIC_TIME_MIN, EM_ACOUSTIC_TIME_MAX);
 	NVRAM0[EM_ACOUSTIC_ENERGY] += NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
 	LIMS16(EM_ACOUSTIC_ENERGY, EM_ACOUSTIC_ENERGY_MIN, EM_ACOUSTIC_ENERGY_MAX);
 }
-void decAcousticEnergy(void){//¼õÐ¡ÌáÊ¾ÄÜÁ¿ -STEP
+void decAcousticEnergy(void){//å‡å°æç¤ºèƒ½é‡ -STEP
 	NVRAM0[EM_ACOUSTIC_TIME] -= NVRAM0[EM_ACOUSTIC_TIME_STEP];
 	LIMS16(EM_ACOUSTIC_TIME, EM_ACOUSTIC_TIME_MIN, EM_ACOUSTIC_TIME_MAX);
 	NVRAM0[EM_ACOUSTIC_ENERGY] -= NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
 	LIMS16(EM_ACOUSTIC_ENERGY, EM_ACOUSTIC_ENERGY_MIN, EM_ACOUSTIC_ENERGY_MAX);
 }
 
-int16_t keyRuleAdd(int16_t ps, int16_t max){//Ôö¼Ó
+int16_t keyRuleAdd(int16_t ps, int16_t max){//å¢žåŠ 
 	if(ps >= 1 && ps < 10){
 		ps += 1;
 	}
@@ -43,7 +43,7 @@ int16_t keyRuleAdd(int16_t ps, int16_t max){//Ôö¼Ó
 	}
 	return ps;
 }
-int16_t keyRuleDec(int16_t ps, int16_t min){//¼õÉÙ
+int16_t keyRuleDec(int16_t ps, int16_t min){//å‡å°‘
 	if(ps > 1 && ps <= 10){
 		ps -= 1;
 	}
@@ -62,7 +62,7 @@ int16_t keyRuleDec(int16_t ps, int16_t min){//¼õÉÙ
 	return ps;
 }
 
-void restoreDefault(void){//»Ö¸´Ä¬ÈÏÖµ
+void restoreDefault(void){//æ¢å¤é»˜è®¤å€¼
 	RRES(MR_FOOSWITCH_HAND_SWITCH);
 	RRES(MR_BEEP_TONE);			
 	RRES(R_DISABLE_RFID);
@@ -71,7 +71,7 @@ void restoreDefault(void){//»Ö¸´Ä¬ÈÏÖµ
 	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 2;
 	NVRAM0[DM_AIM_BRG] = CONFIG_MAX_LASER_POWER_AIM;
 	NVRAM0[DM_LCD_BRG] = CONFIG_LCD_MAX_DC;
-	schemeInit(1);//³õÊ¼»¯×Ô¶¨Òå·½°¸
+	schemeInit(1);//åˆå§‹åŒ–è‡ªå®šä¹‰æ–¹æ¡ˆ
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0)
 	NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_PHLEBOLOGY;
 	NVRAM0[DM_SCHEME_INDEX] = 0;
@@ -84,7 +84,7 @@ void restoreDefault(void){//»Ö¸´Ä¬ÈÏÖµ
 	NVFSAVE();
 }
 
-uint8_t getLcdDuty(int16_t LcdBrg){//ÆÁÄ»ÁÁ¶ÈÖµ×ª»»ÎªÕ¼¿Õ±È
+uint8_t getLcdDuty(int16_t LcdBrg){//å±å¹•äº®åº¦å€¼è½¬æ¢ä¸ºå ç©ºæ¯”
 	uint16_t temp;
 	LcdBrg = 100 - LcdBrg; 
 	if(LcdBrg <= 0)
@@ -103,7 +103,7 @@ void updateCustomScheme(uint8_t index){//EM->FD
 	memcpy(pdist, psrc, ((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2));
 }
 
-uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power){//¹¦ÂÊ->DAC CODE Ê¹ÓÃÄ¬ÈÏÄâºÏÐ£Õý±í
+uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power){//åŠŸçŽ‡->DAC CODE ä½¿ç”¨é»˜è®¤æ‹Ÿåˆæ ¡æ­£è¡¨
 	uint16_t tmp;
 	switch(ch){
 		case LASER_CHANNEL_CH0:{
@@ -121,7 +121,7 @@ uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power){//¹¦ÂÊ->DAC CODE Ê¹ÓÃÄ¬ÈÏ
 	}
 	return tmp;
 }
-uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//¹¦ÂÊ->DAC CODE Ê¹ÓÃÐ£Õý±í
+uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//åŠŸçŽ‡->DAC CODE ä½¿ç”¨æ ¡æ­£è¡¨
 	double fpower, fout, fk, fb;
 	int16_t pmax, pmin;
 	uint16_t *pCal;
@@ -153,8 +153,8 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//¹¦ÂÊ-
 	printf("%s,%d,%s:Calibration input power = %d\n", __FILE__, __LINE__, __func__, power);
 	printf("%s,%d,%s:Calibration max power = %d\n", __FILE__, __LINE__, __func__, pmax);
 	printf("%s,%d,%s:Calibration min power = %d\n", __FILE__, __LINE__, __func__, pmin);
-	if(LDB(R_CALIBRATION_MODE)){//¿ªÆô¹¦ÂÊÐ£Õý
-		//Í¨¹ýÐ£Õý±í¼ÆËãDACÖµ
+	if(LDB(R_CALIBRATION_MODE)){//å¼€å¯åŠŸçŽ‡æ ¡æ­£
+		//é€šè¿‡æ ¡æ­£è¡¨è®¡ç®—DACå€¼
 		if(power > 0 && (power <= pCal[0])){//0-10%
 			fk = pCal[0] / 0.1F;
 			fb = 0.0F;
@@ -201,7 +201,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//¹¦ÂÊ-
 		printf("%s,%d,%s:Calibration fK=%f, fB=%f\n", __FILE__, __LINE__, __func__, fk, fb);
 		printf("%s,%d,%s:Calibration fOut=%f\n", __FILE__, __LINE__, __func__, fout);
 	}
-	else{//¹¦ÂÊÐ£ÕýÄ£Ê½ ->°´µÈ±ÈÊä³öDACÖµ
+	else{//åŠŸçŽ‡æ ¡æ­£æ¨¡å¼ ->æŒ‰ç­‰æ¯”è¾“å‡ºDACå€¼
 		printf("%s,%d,%s:Disable calibration mode\n", __FILE__, __LINE__, __func__);
 		fout = fpower / pmax;			
 	}
@@ -217,28 +217,28 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//¹¦ÂÊ-
 	return out;
 }
 
-uint8_t saveSchemeToUdisk(void){//½«FDRAMÐ´ÈëUSB DISK
-	//·µ»Ø 1:Ð´Èë³É¹¦ 0:Ð´ÈëÊ§°Ü
+uint8_t saveSchemeToUdisk(void){//å°†FDRAMå†™å…¥USB DISK
+	//è¿”å›ž 1:å†™å…¥æˆåŠŸ 0:å†™å…¥å¤±è´¥
 //	FRESULT retUsbH;
 //	FATFS	USBH_fatfs;
-//	FIL saveFile;//FATFS File Object ÏÂÔØÍê³ÉÐÅÏ¢
-//	FILINFO FileInfo;//FATFS ÎÄ¼þÐÅÏ¢
+//	FIL saveFile;//FATFS File Object ä¸‹è½½å®Œæˆä¿¡æ¯
+//	FILINFO FileInfo;//FATFS æ–‡ä»¶ä¿¡æ¯
 //	char fileName[64];
 //	retUsbH = f_mount(&USBH_fatfs, FATFS_ROOT, 0);
-//	if(retUsbH != FR_OK){//¹ÒÔØUÅÌÊ§°Ü
+//	if(retUsbH != FR_OK){//æŒ‚è½½Uç›˜å¤±è´¥
 //		printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
 //		return false
 //	}
-//	else{//¹ÒÔØUÅÌ³É¹¦
+//	else{//æŒ‚è½½Uç›˜æˆåŠŸ
 //		printf("Bootloader:Mount Fatfs sucess!\n");
 //	}
 //	sprintf(fileName, "/las.cfg");
-//	retUsbH = f_open(&saveFile, CFG_FIRMWARE_FILENAME, FA_CREATE_ALWAYS | FA_READ | FA_WRITE);//¶ÁÈ¡Íê³ÉÐÅÏ¢ÎÄ¼þ
-//	if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°ÜÌø¹ý¹Ì¼þ¸üÐÂÖ±½ÓÔËÐÐ³ÌÐò
+//	retUsbH = f_open(&saveFile, CFG_FIRMWARE_FILENAME, FA_CREATE_ALWAYS | FA_READ | FA_WRITE);//è¯»å–å®Œæˆä¿¡æ¯æ–‡ä»¶
+//	if(retUsbH != FR_OK){//è¯»å–å¤±è´¥è·³è¿‡å›ºä»¶æ›´æ–°ç›´æŽ¥è¿è¡Œç¨‹åº
 //		printf("BootLoader:Open %s fail,ECODE=0x%02XH\n", CFG_FIRMWARE_FILENAME, retUsbH);
 //	}
-//	else{//¶ÁÈ¡³É¹¦¼ì²éÎÄ¼þÄÚÈÝ
-//		f_lseek(&CfgFile, 0);//¶ÁÈ¡Ö¸ÕëÒÆ¶¯µ½¿ªÍ·
+//	else{//è¯»å–æˆåŠŸæ£€æŸ¥æ–‡ä»¶å†…å®¹
+//		f_lseek(&CfgFile, 0);//è¯»å–æŒ‡é’ˆç§»åŠ¨åˆ°å¼€å¤´
 //		if(f_write(&CfgFile, fileBuff, 3, (void *)&bwByte) != FR_OK){
 //				bootLoadFailHandler(BT_FAIL_WRITE_CFG);
 //			}
@@ -246,15 +246,15 @@ uint8_t saveSchemeToUdisk(void){//½«FDRAMÐ´ÈëUSB DISK
 //	}
 	return 0;
 }
-uint8_t loadSchemeFromUdisk(void){//´ÓUSB DISKÔØÈëFDRAM
-	//·µ»Ø 1:Ð´Èë³É¹¦ 0:Ð´ÈëÊ§°Ü
+uint8_t loadSchemeFromUdisk(void){//ä»ŽUSB DISKè½½å…¥FDRAM
+	//è¿”å›ž 1:å†™å…¥æˆåŠŸ 0:å†™å…¥å¤±è´¥
 	return 0;
 }
 
-int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb){//ÔöÁ¿PID
+int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb){//å¢žé‡PID
 	float tmp0, tmp1, tmp2, fout;
 	t->ek0 = (ref - fb) * -1.0F;
-	if((t->ek0 >= -1) && (t->ek0 <= 1) ){//ËÀÇøÏû¶¶
+	if((t->ek0 >= -1) && (t->ek0 <= 1) ){//æ­»åŒºæ¶ˆæŠ–
 		t->ek0 = 0;
 	}
 	tmp0 = t->kp * t->ek0;

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright © 2017 STMicroelectronics International N.V.
+  * <h2><center>&copy; Copyright ?2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without
@@ -118,7 +118,7 @@ uint32_t FLASH_If_EraseApplication(void){
 		return (0);
 	}
 }
-uint32_t FLASH_If_EraseBootload(void){//²Á³ýBOOTLOAD
+uint32_t FLASH_If_EraseBootload(void){//æ“¦é™¤BOOTLOAD
   /* Erase the user Flash area (area defined by APPLICATION_ADDRESS and
    * USER_FLASH_LAST_PAGE_ADDRESS) *** */
 	/* Get the 1st sector to erase */

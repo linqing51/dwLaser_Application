@@ -2,13 +2,13 @@
 /*****************************************************************************/
 deviceConfig_t deviceConfig;
 deviceLogInfo_t deviceLogInfo;
-uint32_t	UniqueId[3];//´¦ÀíÆ÷ĞòÁĞºÅ 
+uint32_t	UniqueId[3];//å¤„ç†å™¨åºåˆ—å· 
 /*****************************************************************************/
-uint16_t cpuGetFlashSize(void){//»ñÈ¡´¦ÀíÆ÷³ÌĞòÈİÁ¿
+uint16_t cpuGetFlashSize(void){//è·å–å¤„ç†å™¨ç¨‹åºå®¹é‡
    return *(volatile uint16_t*)(0x1FFF7A22);
 }
 
-void readStm32UniqueID(void){//»ñÈ¡´¦ÀíÆ÷Î¨Ò»ĞòÁĞºÅ        
+void readStm32UniqueID(void){//è·å–å¤„ç†å™¨å”¯ä¸€åºåˆ—å·        
     UniqueId[0] = *(volatile uint32_t*)(0x1FFF7A10);
     UniqueId[1] = *(volatile uint32_t*)(0x1FFF7A14);
     UniqueId[2] = *(volatile uint32_t*)(0x1FFF7A18);

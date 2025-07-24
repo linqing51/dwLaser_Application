@@ -1,4 +1,4 @@
-//ÊÊÓÃÓÚFRAM²»ÊÊÓÃÓÚEEPROM
+//é€‚ç”¨äºFRAMä¸é€‚ç”¨äºEEPROM
 #include "sPlc.h"
 /*****************************************************************************/
 extern I2C_HandleTypeDef hi2c1;
@@ -22,11 +22,11 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 	}
 	return true;
 }
-HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//ÔÚÖ¸¶¨µØÖ·¶Á³ö8Î»Êı¾İ
-//ReadAddr:¿ªÊ¼¶ÁÊıµÄµØÖ·  
-//·µ»ØÖµ  :Êı¾İ				  
+HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//åœ¨æŒ‡å®šåœ°å€è¯»å‡º8ä½æ•°æ®
+//ReadAddr:å¼€å§‹è¯»æ•°çš„åœ°å€  
+//è¿”å›å€¼  :æ•°æ®				  
 	HAL_StatusTypeDef ret;
-	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}	
@@ -38,17 +38,17 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//ÔÚÖ¸¶¨µØÖ·¶Á
 	                       1,
 	                       CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&RPROM_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&RPROM_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//ÔÚÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö16Î»Êı
-//¸Ãº¯ÊıÓÃÓÚ¶Á³ö16bit»òÕß32bitµÄÊı¾İ.
-//ReadAddr   :¿ªÊ¼¶Á³öµÄµØÖ· 
-//·µ»ØÖµ     :Êı¾İ  	
+HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//åœ¨æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º16ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºè¯»å‡º16bitæˆ–è€…32bitçš„æ•°æ®.
+//ReadAddr   :å¼€å§‹è¯»å‡ºçš„åœ°å€ 
+//è¿”å›å€¼     :æ•°æ®  	
 	HAL_StatusTypeDef ret;
-	if((ReadAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((ReadAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}	
@@ -60,17 +60,17 @@ HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//ÔÚÖ¸¶¨µØÖ·
 	                       2,
 	                       CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&RPROM_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&RPROM_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////ÔÚÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö32Î»Êı
-//¸Ãº¯ÊıÓÃÓÚ¶Á³ö32bitµÄÊı¾İ.
-//ReadAddr   :¿ªÊ¼¶Á³öµÄµØÖ· 
-//·µ»ØÖµ     :Êı¾İ  	
+HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////åœ¨æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º32ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºè¯»å‡º32bitçš„æ•°æ®.
+//ReadAddr   :å¼€å§‹è¯»å‡ºçš„åœ°å€ 
+//è¿”å›å€¼     :æ•°æ®  	
 	HAL_StatusTypeDef ret;	
-	if((ReadAddr + 3) > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((ReadAddr + 3) > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}	
@@ -82,16 +82,16 @@ HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////ÔÚÖ¸¶¨µØ
 	                       4,
 	                       CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&RPROM_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&RPROM_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//ÔÚÖ¸¶¨µØÖ·Ğ´Èë8Î»Êı¾İ
-//WriteAddr  :Ğ´ÈëÊı¾İµÄÄ¿µÄµØÖ·    
-//DataToWrite:ÒªĞ´ÈëµÄÊı¾İ
+HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//åœ¨æŒ‡å®šåœ°å€å†™å…¥8ä½æ•°æ®
+//WriteAddr  :å†™å…¥æ•°æ®çš„ç›®çš„åœ°å€    
+//DataToWrite:è¦å†™å…¥çš„æ•°æ®
 	HAL_StatusTypeDef ret;
-	if(WriteAddr > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if(WriteAddr > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}
@@ -103,17 +103,17 @@ HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//ÔÚÖ¸¶¨µØÖ·
 	                        1, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&RPROM_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&RPROM_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë16Î»Êı
-//¸Ãº¯ÊıÓÃÓÚĞ´Èë16bitµÄÊı¾İ.
-//WriteAddr  :¿ªÊ¼Ğ´ÈëµÄµØÖ·  
-//DataToWrite:Êı¾İÊı×éÊ×µØÖ·
+HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥16ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºå†™å…¥16bitçš„æ•°æ®.
+//WriteAddr  :å¼€å§‹å†™å…¥çš„åœ°å€  
+//DataToWrite:æ•°æ®æ•°ç»„é¦–åœ°å€
 	HAL_StatusTypeDef ret;
-	if((WriteAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((WriteAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}
@@ -125,17 +125,17 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//ÔÚµÄÖ¸¶¨
 	                        2, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&RPROM_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&RPROM_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷	
+		ret = HAL_I2C_DeInit(&RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨	
 	}
 	return ret;
 }
-HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
-//¸Ãº¯ÊıÓÃÓÚĞ´Èë32bitµÄÊı¾İ.
-//WriteAddr  :¿ªÊ¼Ğ´ÈëµÄµØÖ·  
-//DataToWrite:Êı¾İÊı×éÊ×µØÖ·
+HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºå†™å…¥32bitçš„æ•°æ®.
+//WriteAddr  :å¼€å§‹å†™å…¥çš„åœ°å€  
+//DataToWrite:æ•°æ®æ•°ç»„é¦–åœ°å€
 	HAL_StatusTypeDef ret;
-	if((WriteAddr + 3) >= (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((WriteAddr + 3) >= (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}
@@ -147,19 +147,19 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//ÔÚµÄÖ¸¶¨
 	                        4, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&RPROM_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&RPROM_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }   
-HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼¶Á³öÖ¸¶¨¸öÊıµÄÊı¾İ
-//ReadAddr :¿ªÊ¼¶Á³öµÄµØÖ· ¶Ô24c02Îª0~255
-//pBuffer  :Êı¾İÊı×éÊ×µØÖ·
-//NumToRead:Òª¶Á³öÊı¾İµÄ¸öÊı
+HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡ºæŒ‡å®šä¸ªæ•°çš„æ•°æ®
+//ReadAddr :å¼€å§‹è¯»å‡ºçš„åœ°å€ å¯¹24c02ä¸º0~255
+//pBuffer  :æ•°æ®æ•°ç»„é¦–åœ°å€
+//NumToRead:è¦è¯»å‡ºæ•°æ®çš„ä¸ªæ•°
 	HAL_StatusTypeDef ret;
 	__IO uint16_t rAddr, rBlock, rByte, doBlock;
 	uint8_t* rBuffer;
-	if((ReadAddr + NumToRead) > CONFIG_EPROM_SIZE){//¶ÁµØÖ·³¬¹ıÏŞÖÆ
+	if((ReadAddr + NumToRead) > CONFIG_EPROM_SIZE){//è¯»åœ°å€è¶…è¿‡é™åˆ¶
 		ret = HAL_ERROR;
 		return ret;
 	}
@@ -170,8 +170,8 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 	for(doBlock = 0;doBlock < rBlock;doBlock ++){
 		ret = HAL_I2C_Mem_Read(&RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&RPROM_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&RPROM_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 		rAddr += CONFIG_EPROM_PAGE_SIZE;
 		rBuffer += CONFIG_EPROM_PAGE_SIZE;
@@ -179,20 +179,20 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 	if(rByte != 0x0){
 		ret = HAL_I2C_Mem_Read(&RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, rByte ,CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&RPROM_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&RPROM_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 	}
 	return ret;	
 }  
-HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´ÈëÖ¸¶¨¸öÊıµÄÊı¾İ
-//WriteAddr :¿ªÊ¼Ğ´ÈëµÄµØÖ· ¶Ô24c02Îª0~255
-//pBuffer   :Êı¾İÊı×éÊ×µØÖ·
-//NumToWrite:ÒªĞ´ÈëÊı¾İµÄ¸öÊı
+HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥æŒ‡å®šä¸ªæ•°çš„æ•°æ®
+//WriteAddr :å¼€å§‹å†™å…¥çš„åœ°å€ å¯¹24c02ä¸º0~255
+//pBuffer   :æ•°æ®æ•°ç»„é¦–åœ°å€
+//NumToWrite:è¦å†™å…¥æ•°æ®çš„ä¸ªæ•°
 	HAL_StatusTypeDef ret;
 	uint16_t wAddr, wBlock, wByte, doBlock;
 	uint8_t* wBuffer;
-	if((WriteAddr + NumToWrite) > CONFIG_EPROM_SIZE){//¶ÁµØÖ·³¬¹ıÏŞÖÆ
+	if((WriteAddr + NumToWrite) > CONFIG_EPROM_SIZE){//è¯»åœ°å€è¶…è¿‡é™åˆ¶
 		ret = HAL_ERROR;
 		return ret;
 	}
@@ -203,8 +203,8 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 	for(doBlock = 0;doBlock < wBlock;doBlock ++){
 		ret = HAL_I2C_Mem_Write(&RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&RPROM_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&RPROM_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 		wAddr += CONFIG_EPROM_PAGE_SIZE;
 		wBuffer += CONFIG_EPROM_PAGE_SIZE;
@@ -215,8 +215,8 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 	if(wByte != 0x0){		
 		ret = HAL_I2C_Mem_Write(&RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, wByte, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&RPROM_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&RPROM_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 	}
 #if CONFIG_EPROM_WRITE_DELAY > 0
@@ -225,7 +225,7 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 	return ret;
 }
 /*****************************************************************************/
-void listEpromTable(void){//Êä³öEPROM·Ö²¼±í
+void listEpromTable(void){//è¾“å‡ºEPROMåˆ†å¸ƒè¡¨
 	printf("MR EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
 	printf("DM EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
 	printf("FD EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
@@ -239,7 +239,7 @@ void listEpromTable(void){//Êä³öEPROM·Ö²¼±í
 	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
 	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
 }
-void clearEprom(clarmEpromCmd_t cmd){//Çå³ıEPROMÄÚÈİ
+void clearEprom(clarmEpromCmd_t cmd){//æ¸…é™¤EPROMå†…å®¹
 	uint8_t var = 0;
 	uint32_t i;	
 	switch(cmd){
@@ -299,7 +299,7 @@ void clearEprom(clarmEpromCmd_t cmd){//Çå³ıEPROMÄÚÈİ
 		default:break;
 	}
 }
-uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash ²é¿Õ
+uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash æŸ¥ç©º
 	uint8_t val;
 	uint32_t i;
 	for(i = 0;i < size;i ++){
@@ -310,14 +310,14 @@ uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash ²é¿Õ
 	}
 	return true;
 }
-uint8_t sPlcEpromTest(void){//EPROM ¶ÁĞ´×Ô²âÊÔ
+uint8_t sPlcEpromTest(void){//EPROM è¯»å†™è‡ªæµ‹è¯•
 	uint32_t i, crcRead = 0, crcWrite = 0;	
-	uint16_t bk, remain;//Ğ´ÈëµØÖ·
+	uint16_t bk, remain;//å†™å…¥åœ°å€
 	uint8_t rblock[64], wblock[64];
 	uint32_t tempRead, tempWrite;
 	uint8_t res = 0;
-	//×Ö½ÚË³ĞòĞ´Èë
-	__HAL_CRC_DR_RESET(&hcrc);//Çå¿ÕÖ®Ç°CRC32½á¹û
+	//å­—èŠ‚é¡ºåºå†™å…¥
+	__HAL_CRC_DR_RESET(&hcrc);//æ¸…ç©ºä¹‹å‰CRC32ç»“æœ
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);	
 		epromWriteByte((i + 0), ((uint8_t*)&tempWrite + 0));
@@ -326,7 +326,7 @@ uint8_t sPlcEpromTest(void){//EPROM ¶ÁĞ´×Ô²âÊÔ
 		epromWriteByte((i + 3), ((uint8_t*)&tempWrite + 3));
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
-	__HAL_CRC_DR_RESET(&hcrc);//Çå¿ÕÖ®Ç°CRC32½á¹û
+	__HAL_CRC_DR_RESET(&hcrc);//æ¸…ç©ºä¹‹å‰CRC32ç»“æœ
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadByte((i + 0), ((uint8_t*)&tempRead + 0));
 		epromReadByte((i + 1), ((uint8_t*)&tempRead + 1));
@@ -341,15 +341,15 @@ uint8_t sPlcEpromTest(void){//EPROM ¶ÁĞ´×Ô²âÊÔ
 		printf("%s,%d,%s:byte(8bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
 		res = false;
 	}
-	//×ÖË³ĞòĞ´Èë
-	__HAL_CRC_DR_RESET(&hcrc);//Çå¿ÕÖ®Ç°CRC32½á¹û
+	//å­—é¡ºåºå†™å…¥
+	__HAL_CRC_DR_RESET(&hcrc);//æ¸…ç©ºä¹‹å‰CRC32ç»“æœ
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
 		epromWriteHword((i + 0), ((uint16_t*)&tempWrite + 0)); 
 		epromWriteHword((i + 2), ((uint16_t*)&tempWrite + 1));
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
-	__HAL_CRC_DR_RESET(&hcrc);//Çå¿ÕÖ®Ç°CRC32½á¹û
+	__HAL_CRC_DR_RESET(&hcrc);//æ¸…ç©ºä¹‹å‰CRC32ç»“æœ
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadHword((i + 0), ((uint16_t*)&tempRead + 0));
 		epromReadHword((i + 2), ((uint16_t*)&tempRead + 1));
@@ -362,14 +362,14 @@ uint8_t sPlcEpromTest(void){//EPROM ¶ÁĞ´×Ô²âÊÔ
 		printf("%s,%d,%s:howrd(16bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
 		res = false;
 	}
-	//Ë«×ÖË³ĞòĞ´Èë
-	__HAL_CRC_DR_RESET(&hcrc);//Çå¿ÕÖ®Ç°CRC32½á¹û
+	//åŒå­—é¡ºåºå†™å…¥
+	__HAL_CRC_DR_RESET(&hcrc);//æ¸…ç©ºä¹‹å‰CRC32ç»“æœ
 	for(i = 0;i < (CONFIG_EPROM_SIZE - 4);i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
 		epromWriteDword(i, &tempWrite);
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
-	__HAL_CRC_DR_RESET(&hcrc);//Çå¿ÕÖ®Ç°CRC32½á¹û
+	__HAL_CRC_DR_RESET(&hcrc);//æ¸…ç©ºä¹‹å‰CRC32ç»“æœ
 	for(i = 0;i < (CONFIG_EPROM_SIZE - 4);i += 4){
 		epromReadDword(i, &tempRead);
 		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
@@ -381,7 +381,7 @@ uint8_t sPlcEpromTest(void){//EPROM ¶ÁĞ´×Ô²âÊÔ
 		printf("%s,%d,%s:dword(32bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
 		res = false;
 	}
-	//¿éË³ĞòĞ´Èë
+	//å—é¡ºåºå†™å…¥
 	bk = CONFIG_EPROM_SIZE / sizeof(wblock);
 	remain =  CONFIG_EPROM_SIZE % sizeof(wblock);
 	for(i = 0; i < bk;i ++){
@@ -403,11 +403,11 @@ uint8_t sPlcEpromTest(void){//EPROM ¶ÁĞ´×Ô²âÊÔ
 		res = false;
 	}
 	printf("%s,%d,%s:block sequential Write pass!\r\n", __FILE__, __LINE__, __func__);
-	//Ëæ»úĞ´Èë
+	//éšæœºå†™å…¥
 	for(i=0;i<10000;i++){
-		tempWrite = HAL_RNG_GetRandomNumber(&hrng)%(CONFIG_EPROM_SIZE- 5 -0+1 ) + 0;;//»ñÈ¡Ëæ»úÊı¾İ
-		epromWrite(bk, ((uint8_t*)&tempWrite), 4);//Ğ´Èë
-		epromRead(bk, ((uint8_t*)&tempRead), 4);//¶ÁÈ¡
+		tempWrite = HAL_RNG_GetRandomNumber(&hrng)%(CONFIG_EPROM_SIZE- 5 -0+1 ) + 0;;//è·å–éšæœºæ•°æ®
+		epromWrite(bk, ((uint8_t*)&tempWrite), 4);//å†™å…¥
+		epromRead(bk, ((uint8_t*)&tempRead), 4);//è¯»å–
 		if(tempWrite != tempRead){
 			printf("%s,%d,%s:random write fail!\r\n", __FILE__, __LINE__, __func__);
 			res = false;

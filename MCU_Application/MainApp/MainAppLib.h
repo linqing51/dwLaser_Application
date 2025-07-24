@@ -13,24 +13,24 @@ typedef struct{
 	float ek2;//e(k-2)
 }IncPid_t;
 /*****************************************************************************/
-void addAcousticTime(void);//Ôö¼ÓÌáÊ¾Ê±¼ä +1
-void decAcousticTime(void);//¼õĞ¡ÌáÊ¾Ê±¼ä -1
-void addAcousticEnergy(void);//Ôö¼ÓÌáÊ¾ÄÜÁ¿ +1
-void decAcousticEnergy(void);//¼õĞ¡ÌáÊ¾ÄÜÁ¿ -1		
-uint8_t fanSpeedToPwm(uint8_t speed);//·çÉÈÊäÈë×ª»»ÎªÕ¼¿Õ±È
-uint8_t getLcdDuty(int16_t LcdBrg);//ÆÁÄ»ÁÁ¶ÈÖµ×ª»»ÎªÕ¼¿Õ±È
+void addAcousticTime(void);//å¢åŠ æç¤ºæ—¶é—´ +1
+void decAcousticTime(void);//å‡å°æç¤ºæ—¶é—´ -1
+void addAcousticEnergy(void);//å¢åŠ æç¤ºèƒ½é‡ +1
+void decAcousticEnergy(void);//å‡å°æç¤ºèƒ½é‡ -1		
+uint8_t fanSpeedToPwm(uint8_t speed);//é£æ‰‡è¾“å…¥è½¬æ¢ä¸ºå ç©ºæ¯”
+uint8_t getLcdDuty(int16_t LcdBrg);//å±å¹•äº®åº¦å€¼è½¬æ¢ä¸ºå ç©ºæ¯”
 int16_t keyRuleAdd(int16_t ps, int16_t max);
 int16_t keyRuleDec(int16_t ps, int16_t min);
 void loadScheme(void);//DM->EM
 void updateSchemeName(void);//TMP->FD
 void updateCustomScheme(uint8_t index);//FD->EM
-int8_t checkScheme(int8_t cn);//·½°¸¼ì²â
-void defaultScheme(void);//»Ö¸´Ä¬ÈÏÉèÖÃ
+int8_t checkScheme(int8_t cn);//æ–¹æ¡ˆæ£€æµ‹
+void defaultScheme(void);//æ¢å¤é»˜è®¤è®¾ç½®
 void restoreDefault(void);
 uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg);
 uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power);
-uint8_t saveSchemeToUdisk(void);//½«FDRAMĞ´ÈëUSB DISK
-uint8_t loadSchemeFromUdisk(void);//´ÓUSB DISKÔØÈëFDRAM
+uint8_t saveSchemeToUdisk(void);//å°†FDRAMå†™å…¥USB DISK
+uint8_t loadSchemeFromUdisk(void);//ä»USB DISKè½½å…¥FDRAM
 int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb);
 /*****************************************************************************/
 #endif

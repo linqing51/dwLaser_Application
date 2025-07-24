@@ -1,12 +1,12 @@
 #include "sPlcDK25L.h"
 /*****************************************************************************/
-uint8_t DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//Ö¸Áî·¢ËÍ»º³åÇø
-uint8_t DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//Ö¸Áî½ÓÊÕ»º³åÇø
-static uint8_t DL25L_TxIndex;//·¢ËÍÎ»ÖÃË÷Òı
-static uint8_t DL25L_RxIndex;//½ÓÊÕÎ»ÖÃË÷Òı
-static uint8_t DL25L_TXLength;//·¢ËÍ³¤¶È
+uint8_t DK25L_TxBuffer[CONFIG_DK25L_TXBUF_SIZE];//æŒ‡ä»¤å‘é€ç¼“å†²åŒº
+uint8_t DK25L_RxBuffer[CONFIG_DK25L_RXBUF_SIZE];//æŒ‡ä»¤æ¥æ”¶ç¼“å†²åŒº
+static uint8_t DL25L_TxIndex;//å‘é€ä½ç½®ç´¢å¼•
+static uint8_t DL25L_RxIndex;//æ¥æ”¶ä½ç½®ç´¢å¼•
+static uint8_t DL25L_TXLength;//å‘é€é•¿åº¦
 /*****************************************************************************/
-void DL25L_Init(void){//DK25L NFCÄ£¿é³õÊ¼»¯
+void DL25L_Init(void){//DK25L NFCæ¨¡å—åˆå§‹åŒ–
 	uint8_t fwver, hwver;
 	uint16_t overTime;
 	RRES(SPCOIL_DK25L_INIT_FAIL);
@@ -15,7 +15,7 @@ void DL25L_Init(void){//DK25L NFCÄ£¿é³õÊ¼»¯
 	while(LDB(SPCOIL_DK25L_TXCMD_DONE));
 	DK25L_EnableRx(true);
 	overTime = 0;
-	while(LDB(SPCOIL_DK25L_RXCMD_DONE) && (overTime < CONFIG_SPLC_USING_DK25L_OVERTIME)){//DK25L ·µ»Ø³É¹¦
+	while(LDB(SPCOIL_DK25L_RXCMD_DONE) && (overTime < CONFIG_SPLC_USING_DK25L_OVERTIME)){//DK25L è¿”å›æˆåŠŸ
 		delayMs(1);
 		overTime ++;
 	}
@@ -24,10 +24,10 @@ void DL25L_Init(void){//DK25L NFCÄ£¿é³õÊ¼»¯
 		return;
 	}
 	fwver = DK25L_TxBuffer[2];
-	DK25L_GET_FWVER();//»ñÈ¡Ä£¿éÓ²¼ş°æ±¾ºÅ
+	DK25L_GET_FWVER();//è·å–æ¨¡å—ç¡¬ä»¶ç‰ˆæœ¬å·
 	while(LDB(SPCOIL_DK25L_TXCMD_DONE));
 	overTime = 0;
-	while(LDB(SPCOIL_DK25L_RXCMD_DONE) && (overTime < CONFIG_SPLC_USING_DK25L_OVERTIME)){//DK25L ·µ»Ø³É¹¦
+	while(LDB(SPCOIL_DK25L_RXCMD_DONE) && (overTime < CONFIG_SPLC_USING_DK25L_OVERTIME)){//DK25L è¿”å›æˆåŠŸ
 		delayMs(1);
 		overTime ++;
 	}
@@ -42,7 +42,7 @@ void DL25L_Init(void){//DK25L NFCÄ£¿é³õÊ¼»¯
 	}
 	
 }
-void DK25L_EnableRx(int8_t ena){//½ÓÊÕÖĞ¶ÏÊ¹ÄÜ
+void DK25L_EnableRx(int8_t ena){//æ¥æ”¶ä¸­æ–­ä½¿èƒ½
 	uint8_t SFRPAGE_SAVE = SFRPAGE;// Preserve SFRPAGE	
 	SFRPAGE = UART0_PAGE;
 	if(ena){
@@ -82,7 +82,7 @@ static void DK25L_UartIsr() interrupt INTERRUPT_UART0{
 		}
 		RI0 = 0;
 		rxDat = SBUF0;
-		if(rxDat == DK25L_STX){//½ÓÊÕµ½Ö¡Í·
+		if(rxDat == DK25L_STX){//æ¥æ”¶åˆ°å¸§å¤´
 			DL25L_RxIndex = 0;	
 			DK25L_RxBuffer[0] = DK25L_STX;
 			RES(SPCOIL_DK25L_RXCMD_DONE);
@@ -91,12 +91,12 @@ static void DK25L_UartIsr() interrupt INTERRUPT_UART0{
 			RES(SPCOIL_DK25L_RXCMD_ERROR);
 			return;
 		}
-		if(DL25L_RxIndex == 1){//½ÓÊÕµ½³¤¶È×Ö½Ú
+		if(DL25L_RxIndex == 1){//æ¥æ”¶åˆ°é•¿åº¦å­—èŠ‚
 			DL25L_RxIndex ++;
 			DK25L_RxBuffer[2] = rxDat;
 			return;
 		}
-		if(DL25L_RxIndex >= CONFIG_DK25L_RXBUF_SIZE){//³¬³ö»º³åÇø
+		if(DL25L_RxIndex >= CONFIG_DK25L_RXBUF_SIZE){//è¶…å‡ºç¼“å†²åŒº
 			SET(SPCOIL_DK25L_RXCMD_DONE);
 			RES(SPCOIL_DK25L_RXCMD_DOING);
 			SET(SPCOIL_DK25L_RXCMD_OVERFLOW);
@@ -104,22 +104,22 @@ static void DK25L_UartIsr() interrupt INTERRUPT_UART0{
 			DL25L_RxIndex = 0;
 			return;
 		}
-        if((DL25L_RxIndex >= 2) && (DL25L_RxIndex <  CONFIG_DK25L_RXBUF_SIZE) && (DL25L_RxIndex <= (DK25L_RxBuffer[1] + 2))){//Ö¸Áî½ÓÊÕÖĞ
+        if((DL25L_RxIndex >= 2) && (DL25L_RxIndex <  CONFIG_DK25L_RXBUF_SIZE) && (DL25L_RxIndex <= (DK25L_RxBuffer[1] + 2))){//æŒ‡ä»¤æ¥æ”¶ä¸­
 			DK25L_RxBuffer[DL25L_RxIndex] = rxDat;
-			if(DL25L_RxIndex == (DK25L_RxBuffer[1] + 2)){//ÃüÁî½ÓÊÕÍê±Ï¿ªÊ¼
+			if(DL25L_RxIndex == (DK25L_RxBuffer[1] + 2)){//å‘½ä»¤æ¥æ”¶å®Œæ¯•å¼€å§‹
 				DL25L_RxIndex = 0;
 				SET(SPCOIL_DK25L_RXCMD_DONE);
 				RES(SPCOIL_DK25L_RXCMD_DOING);
 				RES(SPCOIL_DK25L_RXCMD_OVERFLOW);
 				RES(SPCOIL_DK25L_RXCMD_ERROR);
-				SCON0 &= 0xEF;//¹Ø±Õ½ÓÊÕÖĞ¶Ï
+				SCON0 &= 0xEF;//å…³é—­æ¥æ”¶ä¸­æ–­
 			}
 			DL25L_RxIndex ++;
 			return;
 		}
 	}   
 }
-static void DK25L_CmdSend(void){//·¢ËÍDK25LÖ¸Áî
+static void DK25L_CmdSend(void){//å‘é€DK25LæŒ‡ä»¤
 	uint8_t SFRPAGE_SAVE = SFRPAGE;// Preserve SFRPAGE	
 	RES(SPCOIL_DK25L_RXCMD_DONE);
 	RES(SPCOIL_DK25L_RXCMD_DOING);	
@@ -135,36 +135,36 @@ static void DK25L_CmdSend(void){//·¢ËÍDK25LÖ¸Áî
 	memset(DK25L_RxBuffer, 0x00, CONFIG_DK25L_RXBUF_SIZE);
 	DK25L_EnableRx(false);
 	SFRPAGE = UART0_PAGE;
-	DL25L_TXLength = (DK25L_TxBuffer[1] + 2);//µÚ¶şÎ»Îª·¢ËÍ³¤¶È
+	DL25L_TXLength = (DK25L_TxBuffer[1] + 2);//ç¬¬äºŒä½ä¸ºå‘é€é•¿åº¦
 	TI0 = 1;
 	SFRPAGE = SFRPAGE_SAVE;// Restore SFRPAGE
 }
-void DK25L_GET_UID(void){//»ñÈ¡¿¨Æ¬ UID
+void DK25L_GET_UID(void){//è·å–å¡ç‰‡ UID
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x01;
 	DK25L_TxBuffer[2] = CMD_FIND_CARD_UID;
 	DK25L_CmdSend();
 }
-void DK25L_GET_TPYE(void){//»ñÈ¡¿¨Æ¬ÀàĞÍ
+void DK25L_GET_TPYE(void){//è·å–å¡ç‰‡ç±»å‹
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x01;
 	DK25L_TxBuffer[2] = CMD_FIND_CARD_TYPE;
 	DK25L_CmdSend();
 }
-void DK25L_GET_FWVER(void){//»ñÈ¡Ä£¿éÈí¼ş°æ±¾ºÅ
+void DK25L_GET_FWVER(void){//è·å–æ¨¡å—è½¯ä»¶ç‰ˆæœ¬å·
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x01;
 	DK25L_TxBuffer[2] = CMD_READ_FW_VER;
 	DK25L_CmdSend();
 }
-void DK25L_GET_HWVER(void){//»ñÈ¡Ä£¿éÓ²¼ş°æ±¾ºÅ
+void DK25L_GET_HWVER(void){//è·å–æ¨¡å—ç¡¬ä»¶ç‰ˆæœ¬å·
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x01;
 	DK25L_TxBuffer[2] = CMD_READ_HW_VER;
 	DK25L_CmdSend();
 }
 
-void DK25L_MIFARE_SET_KEYA(uint8_t *pKey){//Ğ´ÈëM1¿¨KEYAÃÜÔ¿µ½Ä£¿é
+void DK25L_MIFARE_SET_KEYA(uint8_t *pKey){//å†™å…¥M1å¡KEYAå¯†é’¥åˆ°æ¨¡å—
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x07;
 	DK25L_TxBuffer[2] = CMD_MIFARE_SET_KEYA;
@@ -176,7 +176,7 @@ void DK25L_MIFARE_SET_KEYA(uint8_t *pKey){//Ğ´ÈëM1¿¨KEYAÃÜÔ¿µ½Ä£¿é
 	DK25L_TxBuffer[8] = *(pKey + 5);
 	DK25L_CmdSend();
 }
-void DK25L_MIFARE_SET_KEYB(uint16_t *pKey){//Ğ´ÈëM1¿¨KEYBÃÜÔ¿µ½Ä£¿é
+void DK25L_MIFARE_SET_KEYB(uint16_t *pKey){//å†™å…¥M1å¡KEYBå¯†é’¥åˆ°æ¨¡å—
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x0B;
 	DK25L_TxBuffer[2] = CMD_MIFARE_SET_KEYB;
@@ -188,14 +188,14 @@ void DK25L_MIFARE_SET_KEYB(uint16_t *pKey){//Ğ´ÈëM1¿¨KEYBÃÜÔ¿µ½Ä£¿é
 	DK25L_TxBuffer[8] = *(pKey + 5);
 	DK25L_CmdSend();
 }
-void DK25L_MIFARE_WALLET_INIT(uint8_t block){//M1¿¨µç×ÓÇ®°ü³õÊ¼»¯Ö¸Áî
+void DK25L_MIFARE_WALLET_INIT(uint8_t block){//M1å¡ç”µå­é’±åŒ…åˆå§‹åŒ–æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x06;
 	DK25L_TxBuffer[2] = CMD_MIFATE_WALLET_INIT;
 	DK25L_TxBuffer[3] = block;
 	DK25L_CmdSend();
 }
-void DK25L_MIFARE_WALLET_CHARGE(uint8_t block, uint8_t *pdat){//M1¿¨µç×ÓÇ®°ü³äÖµÖ¸Áî
+void DK25L_MIFARE_WALLET_CHARGE(uint8_t block, uint8_t *pdat){//M1å¡ç”µå­é’±åŒ…å……å€¼æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x06;
 	DK25L_TxBuffer[2] = CMD_MIFARE_WALLET_CHARGE;
@@ -206,7 +206,7 @@ void DK25L_MIFARE_WALLET_CHARGE(uint8_t block, uint8_t *pdat){//M1¿¨µç×ÓÇ®°ü³äÖµ
 	DK25L_TxBuffer[3] = *(pdat + 3);
 	DK25L_CmdSend();
 }
-void DK25L_MIFARE_WALLET_CHARGEBACK(uint8_t block, uint8_t *pdat){//M1¿¨µç×ÓÇ®°ü¿Û¿îÖ¸Áî
+void DK25L_MIFARE_WALLET_CHARGEBACK(uint8_t block, uint8_t *pdat){//M1å¡ç”µå­é’±åŒ…æ‰£æ¬¾æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x06;
 	DK25L_TxBuffer[2] = CMD_MIFARE_WALLET_CHARGEBACK;
@@ -217,7 +217,7 @@ void DK25L_MIFARE_WALLET_CHARGEBACK(uint8_t block, uint8_t *pdat){//M1¿¨µç×ÓÇ®°ü
 	DK25L_TxBuffer[3] = *(pdat + 3);
 	DK25L_CmdSend();
 }
-void DL25L_MIFARE_WRITE_BLOCK(uint8_t block, uint8_t *pdat){//M1¿¨Ğ´¿éÖ¸Áî
+void DL25L_MIFARE_WRITE_BLOCK(uint8_t block, uint8_t *pdat){//M1å¡å†™å—æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x12;
 	DK25L_TxBuffer[2] = CMD_MIFARE_WRITE_BLOCK;
@@ -225,7 +225,7 @@ void DL25L_MIFARE_WRITE_BLOCK(uint8_t block, uint8_t *pdat){//M1¿¨Ğ´¿éÖ¸Áî
 	memcpy((DK25L_TxBuffer + 4), pdat, 16);
 	DK25L_CmdSend();
 }
-void DL25L_MIFARE_READ_BLOCK(uint8_t block){//M1¿¨¶Á¿éÖ¸Áî
+void DL25L_MIFARE_READ_BLOCK(uint8_t block){//M1å¡è¯»å—æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x12;
 	DK25L_TxBuffer[2] = CMD_MIFARE_READ_BLOCK;
@@ -233,21 +233,21 @@ void DL25L_MIFARE_READ_BLOCK(uint8_t block){//M1¿¨¶Á¿éÖ¸Áî
 	
 	DK25L_CmdSend();
 }
-void DL25L_MIFARE_SET_KEY_TYPE(uint8_t type){//ÉèÖÃÄ£¿éÊ¹ÓÃÃÜÔ¿µÄÀàĞÍ
+void DL25L_MIFARE_SET_KEY_TYPE(uint8_t type){//è®¾ç½®æ¨¡å—ä½¿ç”¨å¯†é’¥çš„ç±»å‹
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x02;
 	DK25L_TxBuffer[2] = CMD_MIFARE_SET_KEY_TYPE;
 	DK25L_TxBuffer[3] = type;
 	DK25L_CmdSend();	
 }
-void DL25L_ULTRALIGHT_READ_BLOCK(uint8_t block){//UL¿¨¶Á¿éÖ¸Áî
+void DL25L_ULTRALIGHT_READ_BLOCK(uint8_t block){//ULå¡è¯»å—æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x02;
 	DK25L_TxBuffer[2] = CMD_ULTRALIGHT_READ_BLOCK;
 	DK25L_TxBuffer[3] = block;
 	DK25L_CmdSend();	
 }
-void DL25L_ULTRALIGHT_WRITE_BLOCK(uint8_t block, uint8_t *pdat){//UL¿¨Ğ´¿éÖ¸Áî
+void DL25L_ULTRALIGHT_WRITE_BLOCK(uint8_t block, uint8_t *pdat){//ULå¡å†™å—æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x06;
 	DK25L_TxBuffer[2] = CMD_ULTRALIGHT_WRITE_BLOCK;
@@ -258,7 +258,7 @@ void DL25L_ULTRALIGHT_WRITE_BLOCK(uint8_t block, uint8_t *pdat){//UL¿¨Ğ´¿éÖ¸Áî
 	DK25L_TxBuffer[7] = *(pdat + 3);
 	DK25L_CmdSend();
 }
-void DL25L_ULTRALIGHT_READ_MBLOCK(uint8_t blockStart, uint8_t blockEnd){//UL¿¨¶Á¶à¸ö¿éÖ¸Áî
+void DL25L_ULTRALIGHT_READ_MBLOCK(uint8_t blockStart, uint8_t blockEnd){//ULå¡è¯»å¤šä¸ªå—æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x03;
 	DK25L_TxBuffer[2] = CMD_ULTRALIGHT_READ_MBLOCK;
@@ -266,16 +266,16 @@ void DL25L_ULTRALIGHT_READ_MBLOCK(uint8_t blockStart, uint8_t blockEnd){//UL¿¨¶Á
 	DK25L_TxBuffer[4] = blockEnd;
 	DK25L_CmdSend();
 }
-void DL25L_ULTRALIGHT_WRITE_MBLOCK(uint8_t blockStart, uint8_t blockEnd, uint8_t *pdat){//UL¿¨Ğ´¶à¸ö¿éÖ¸Áî
+void DL25L_ULTRALIGHT_WRITE_MBLOCK(uint8_t blockStart, uint8_t blockEnd, uint8_t *pdat){//ULå¡å†™å¤šä¸ªå—æŒ‡ä»¤
 	
 }
-void DL25L_ISO14443A_ACTIVATE(void){//ISO14443A ¿¨¼¤»îÖ¸Áî
+void DL25L_ISO14443A_ACTIVATE(void){//ISO14443A å¡æ¿€æ´»æŒ‡ä»¤
 	DK25L_TxBuffer[0] = DK25L_STX;
 	DK25L_TxBuffer[1] = 0x01;
 	DK25L_TxBuffer[2] = CMD_ISO14443A_ACTIVATE;
 	DK25L_CmdSend();
 }
-void DL25L_ISO14443A_APDU(uint8_t length, uint8_t *pdat){//ISO14443A PDUÖ¸Áî½Ó¿Ú
+void DL25L_ISO14443A_APDU(uint8_t length, uint8_t *pdat){//ISO14443A PDUæŒ‡ä»¤æ¥å£
 	
 }
 #endif

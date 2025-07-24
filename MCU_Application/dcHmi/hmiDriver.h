@@ -3,902 +3,902 @@
 /*****************************************************************************/
 #include "hmiLib.h"
 /*****************************************************************************/
-#define FIRMWARE_VER 						921// ±£³Ö´Ë¹Ì¼ş°æ±¾ºÅÓëÕæÊµÆÁÄ»Ò»ÖÂ£¬È·±£ĞÂÔö¹¦ÄÜ¿ÉÓÃ
-#define CRC16_ENABLE 						0// Èç¹ûĞèÒªCRC16Ğ£Ñé¹¦ÄÜ£¬ĞŞ¸Ä´ËºêÎª1(´ËÊ±ĞèÒªÔÚVisualTFT¹¤³ÌÖĞÅäCRCĞ£Ñé)
-#define CMD_MAX_SIZE 						256// µ¥ÌõÖ¸Áî´óĞ¡£¬¸ù¾İĞèÒªµ÷Õû£¬¾¡Á¿ÉèÖÃ´óÒ»Ğ©
-#define QUEUE_MAX_SIZE 					4096// Ö¸Áî½ÓÊÕ»º³åÇø´óĞ¡£¬¸ù¾İĞèÒªµ÷Õû£¬¾¡Á¿ÉèÖÃ´óÒ»Ğ©
+#define FIRMWARE_VER 						921// ä¿æŒæ­¤å›ºä»¶ç‰ˆæœ¬å·ä¸çœŸå®å±å¹•ä¸€è‡´ï¼Œç¡®ä¿æ–°å¢åŠŸèƒ½å¯ç”¨
+#define CRC16_ENABLE 						0// å¦‚æœéœ€è¦CRC16æ ¡éªŒåŠŸèƒ½ï¼Œä¿®æ”¹æ­¤å®ä¸º1(æ­¤æ—¶éœ€è¦åœ¨VisualTFTå·¥ç¨‹ä¸­é…CRCæ ¡éªŒ)
+#define CMD_MAX_SIZE 						256// å•æ¡æŒ‡ä»¤å¤§å°ï¼Œæ ¹æ®éœ€è¦è°ƒæ•´ï¼Œå°½é‡è®¾ç½®å¤§ä¸€äº›
+#define QUEUE_MAX_SIZE 					4096// æŒ‡ä»¤æ¥æ”¶ç¼“å†²åŒºå¤§å°ï¼Œæ ¹æ®éœ€è¦è°ƒæ•´ï¼Œå°½é‡è®¾ç½®å¤§ä¸€äº›
 #define SD_FILE_EN 							0			
 /*****************************************************************************/
 /*! 
-*  \brief  ¼ì²éÊı¾İÊÇ·ñ·ûºÏCRC16Ğ£Ñé
-*  \param buffer ´ıĞ£ÑéµÄÊı¾İ£¬Ä©Î²´æ´¢CRC16
-*  \param n Êı¾İ³¤¶È£¬°üº¬CRC16
-*  \return Ğ£ÑéÍ¨¹ı·µ»Ø1£¬·ñÔò·µ»Ø0
+*  \brief  æ£€æŸ¥æ•°æ®æ˜¯å¦ç¬¦åˆCRC16æ ¡éªŒ
+*  \param buffer å¾…æ ¡éªŒçš„æ•°æ®ï¼Œæœ«å°¾å­˜å‚¨CRC16
+*  \param n æ•°æ®é•¿åº¦ï¼ŒåŒ…å«CRC16
+*  \return æ ¡éªŒé€šè¿‡è¿”å›1ï¼Œå¦åˆ™è¿”å›0
 */
 uint16_t CheckCRC16(uint8_t *buffer,uint16_t n);
 
 /*! 
-*  \brief  ÑÓÊ±
-*  \param  n ÑÓÊ±Ê±¼ä(ºÁÃëµ¥Î»)
+*  \brief  å»¶æ—¶
+*  \param  n å»¶æ—¶æ—¶é—´(æ¯«ç§’å•ä½)
 */
 void DelayMS(unsigned int n);
 
 /*! 
-*  \brief  Ëø¶¨Éè±¸ÅäÖÃ£¬Ëø¶¨Ö®ºóĞèÒª½âËø£¬²ÅÄÜĞŞ¸Ä²¨ÌØÂÊ¡¢´¥ÃşÆÁ¡¢·äÃùÆ÷¹¤×÷·½Ê½
+*  \brief  é”å®šè®¾å¤‡é…ç½®ï¼Œé”å®šä¹‹åéœ€è¦è§£é”ï¼Œæ‰èƒ½ä¿®æ”¹æ³¢ç‰¹ç‡ã€è§¦æ‘¸å±ã€èœ‚é¸£å™¨å·¥ä½œæ–¹å¼
 */
 void LockDeviceConfig(void);
 
 /*! 
-*  \brief  ½âËøÉè±¸ÅäÖÃ
+*  \brief  è§£é”è®¾å¤‡é…ç½®
 */
 void UnlockDeviceConfig(void);
 
 /*! 
-*  \brief    ĞŞ¸Ä´®¿ÚÆÁµÄ²¨ÌØÂÊ
-*  \details  ²¨ÌØÂÊÑ¡Ïî·¶Î§[0~14]£¬¶ÔÓ¦Êµ¼Ê²¨ÌØÂÊ
+*  \brief    ä¿®æ”¹ä¸²å£å±çš„æ³¢ç‰¹ç‡
+*  \details  æ³¢ç‰¹ç‡é€‰é¡¹èŒƒå›´[0~14]ï¼Œå¯¹åº”å®é™…æ³¢ç‰¹ç‡
 {1200,2400,4800,9600,19200,38400,57600,115200,1000000,2000000,218750,437500,875000,921800,2500000}
-*  \param  option ²¨ÌØÂÊÑ¡Ïî
+*  \param  option æ³¢ç‰¹ç‡é€‰é¡¹
 */
 void SetCommBps(uint8_t option);
 
 /*! 
-*  \brief  ·¢ËÍÎÕÊÖÃüÁî
+*  \brief  å‘é€æ¡æ‰‹å‘½ä»¤
 */
 void SetHandShake(void);
 
 /*! 
-*  \brief  ÉèÖÃÇ°¾°É«
-*  \param  color Ç°¾°É«
+*  \brief  è®¾ç½®å‰æ™¯è‰²
+*  \param  color å‰æ™¯è‰²
 */
 void SetFcolor(uint16_t color);
 
 /*! 
-*  \brief  ÉèÖÃ±³¾°É«
-*  \param  color ±³¾°É«
+*  \brief  è®¾ç½®èƒŒæ™¯è‰²
+*  \param  color èƒŒæ™¯è‰²
 */
 void SetBcolor(uint16_t color);
 
 /*! 
-*  \brief  Çå³ı»­Ãæ
+*  \brief  æ¸…é™¤ç”»é¢
 */
 void GUI_CleanScreen(void);
 
 /*! 
-*  \brief  ÉèÖÃÎÄ×Ö¼ä¸ô
-*  \param  x_w ºáÏò¼ä¸ô
-*  \param  y_w ×İÏò¼ä¸ô
+*  \brief  è®¾ç½®æ–‡å­—é—´éš”
+*  \param  x_w æ¨ªå‘é—´éš”
+*  \param  y_w çºµå‘é—´éš”
 */
 void SetTextSpace(uint8_t x_w, uint8_t y_w);
 
 /*! 
-*  \brief  ÉèÖÃÎÄ×ÖÏÔÊ¾ÏŞÖÆ
-*  \param  enable ÊÇ·ñÆôÓÃÏŞÖÆ
-*  \param  width ¿í¶È
-*  \param  height ¸ß¶È
+*  \brief  è®¾ç½®æ–‡å­—æ˜¾ç¤ºé™åˆ¶
+*  \param  enable æ˜¯å¦å¯ç”¨é™åˆ¶
+*  \param  width å®½åº¦
+*  \param  height é«˜åº¦
 */
 void SetFont_Region(uint8_t enable,uint16_t width,uint16_t height );
 
 /*! 
-*  \brief  ÉèÖÃ¹ıÂËÉ«
-*  \param  fillcolor_dwon ÑÕÉ«ÏÂ½ç
-*  \param  fillcolor_up ÑÕÉ«ÉÏ½ç
+*  \brief  è®¾ç½®è¿‡æ»¤è‰²
+*  \param  fillcolor_dwon é¢œè‰²ä¸‹ç•Œ
+*  \param  fillcolor_up é¢œè‰²ä¸Šç•Œ
 */
 void SetFilterColor(uint16_t fillcolor_dwon, uint16_t fillcolor_up);
 
 /*! 
-*  \brief  ÉèÖÃ¹ıÂËÉ«
-*  \param  x Î»ÖÃX×ø±ê
-*  \param  y Î»ÖÃY×ø±ê
-*  \param  back ÑÕÉ«ÉÏ½ç
-*  \param  font ×ÖÌå
-*  \param  strings ×Ö·û´®ÄÚÈİ
+*  \brief  è®¾ç½®è¿‡æ»¤è‰²
+*  \param  x ä½ç½®Xåæ ‡
+*  \param  y ä½ç½®Yåæ ‡
+*  \param  back é¢œè‰²ä¸Šç•Œ
+*  \param  font å­—ä½“
+*  \param  strings å­—ç¬¦ä¸²å†…å®¹
 */
 void DisText(uint16_t x, uint16_t y,uint8_t back,uint8_t font,uint8_t *strings );
 
 /*! 
-*  \brief    ÏÔÊ¾¹â±ê
-*  \param  enable ÊÇ·ñÏÔÊ¾
-*  \param  x Î»ÖÃX×ø±ê
-*  \param  y Î»ÖÃY×ø±ê
-*  \param  width ¿í¶È
-*  \param  height ¸ß¶È
+*  \brief    æ˜¾ç¤ºå…‰æ ‡
+*  \param  enable æ˜¯å¦æ˜¾ç¤º
+*  \param  x ä½ç½®Xåæ ‡
+*  \param  y ä½ç½®Yåæ ‡
+*  \param  width å®½åº¦
+*  \param  height é«˜åº¦
 */
 void DisCursor(uint8_t enable,uint16_t x, uint16_t y,uint8_t width,uint8_t height );
 
 /*! 
-*  \brief      ÏÔÊ¾È«ÆÁÍ¼Æ¬
-*  \param  image_id Í¼Æ¬Ë÷Òı
-*  \param  masken ÊÇ·ñÆôÓÃÍ¸Ã÷ÑÚÂë
+*  \brief      æ˜¾ç¤ºå…¨å±å›¾ç‰‡
+*  \param  image_id å›¾ç‰‡ç´¢å¼•
+*  \param  masken æ˜¯å¦å¯ç”¨é€æ˜æ©ç 
 */
 void DisFull_Image(uint16_t image_id,uint8_t masken);
 
 /*! 
-*  \brief      Ö¸¶¨Î»ÖÃÏÔÊ¾Í¼Æ¬
-*  \param  x Î»ÖÃX×ø±ê
-*  \param  y Î»ÖÃY×ø±ê
-*  \param  image_id Í¼Æ¬Ë÷Òı
-*  \param  masken ÊÇ·ñÆôÓÃÍ¸Ã÷ÑÚÂë
+*  \brief      æŒ‡å®šä½ç½®æ˜¾ç¤ºå›¾ç‰‡
+*  \param  x ä½ç½®Xåæ ‡
+*  \param  y ä½ç½®Yåæ ‡
+*  \param  image_id å›¾ç‰‡ç´¢å¼•
+*  \param  masken æ˜¯å¦å¯ç”¨é€æ˜æ©ç 
 */
 void DisArea_Image(uint16_t x,uint16_t y,uint16_t image_id,uint8_t masken);
 
 /*! 
-*  \brief      ÏÔÊ¾²Ã¼ôÍ¼Æ¬
-*  \param  x Î»ÖÃX×ø±ê
-*  \param  y Î»ÖÃY×ø±ê
-*  \param  image_id Í¼Æ¬Ë÷Òı
-*  \param  image_x Í¼Æ¬²Ã¼ôÎ»ÖÃX×ø±ê
-*  \param  image_y Í¼Æ¬²Ã¼ôÎ»ÖÃY×ø±ê
-*  \param  image_l Í¼Æ¬²Ã¼ô³¤¶È
-*  \param  image_w Í¼Æ¬²Ã¼ô¸ß¶È
-*  \param  masken ÊÇ·ñÆôÓÃÍ¸Ã÷ÑÚÂë
+*  \brief      æ˜¾ç¤ºè£å‰ªå›¾ç‰‡
+*  \param  x ä½ç½®Xåæ ‡
+*  \param  y ä½ç½®Yåæ ‡
+*  \param  image_id å›¾ç‰‡ç´¢å¼•
+*  \param  image_x å›¾ç‰‡è£å‰ªä½ç½®Xåæ ‡
+*  \param  image_y å›¾ç‰‡è£å‰ªä½ç½®Yåæ ‡
+*  \param  image_l å›¾ç‰‡è£å‰ªé•¿åº¦
+*  \param  image_w å›¾ç‰‡è£å‰ªé«˜åº¦
+*  \param  masken æ˜¯å¦å¯ç”¨é€æ˜æ©ç 
 */
 void DisCut_Image(uint16_t x,uint16_t y,uint16_t image_id,uint16_t image_x,uint16_t image_y,
                   uint16_t image_l, uint16_t image_w,uint8_t masken);
 
 /*! 
-*  \brief      ÏÔÊ¾GIF¶¯»­
-*  \param  x Î»ÖÃX×ø±ê
-*  \param  y Î»ÖÃY×ø±ê
-*  \param  flashimage_id Í¼Æ¬Ë÷Òı
-*  \param  enable ÊÇ·ñÏÔÊ¾
-*  \param  playnum ²¥·Å´ÎÊı
+*  \brief      æ˜¾ç¤ºGIFåŠ¨ç”»
+*  \param  x ä½ç½®Xåæ ‡
+*  \param  y ä½ç½®Yåæ ‡
+*  \param  flashimage_id å›¾ç‰‡ç´¢å¼•
+*  \param  enable æ˜¯å¦æ˜¾ç¤º
+*  \param  playnum æ’­æ”¾æ¬¡æ•°
 */
 void DisFlashImage(uint16_t x,uint16_t y,uint16_t flashimage_id,uint8_t enable,uint8_t playnum);
 
 /*! 
-*  \brief      »­µã
-*  \param  x Î»ÖÃX×ø±ê
-*  \param  y Î»ÖÃY×ø±ê
+*  \brief      ç”»ç‚¹
+*  \param  x ä½ç½®Xåæ ‡
+*  \param  y ä½ç½®Yåæ ‡
 */
 void GUI_Dot(uint16_t x,uint16_t y);
 
 /*! 
-*  \brief      »­Ïß
-*  \param  x0 ÆğÊ¼Î»ÖÃX×ø±ê
-*  \param  y0 ÆğÊ¼Î»ÖÃY×ø±ê
-*  \param  x1 ½áÊøÎ»ÖÃX×ø±ê
-*  \param  y1 ½áÊøÎ»ÖÃY×ø±ê
+*  \brief      ç”»çº¿
+*  \param  x0 èµ·å§‹ä½ç½®Xåæ ‡
+*  \param  y0 èµ·å§‹ä½ç½®Yåæ ‡
+*  \param  x1 ç»“æŸä½ç½®Xåæ ‡
+*  \param  y1 ç»“æŸä½ç½®Yåæ ‡
 */
 void GUI_Line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 
 /*! 
-*  \brief      »­ÕÛÏß
-*  \param  mode Ä£Ê½
-*  \param  dot Êı¾İµã
-*  \param  dot_cnt µãÊı
+*  \brief      ç”»æŠ˜çº¿
+*  \param  mode æ¨¡å¼
+*  \param  dot æ•°æ®ç‚¹
+*  \param  dot_cnt ç‚¹æ•°
 */
 void GUI_ConDots(uint8_t mode,uint16_t *dot,uint16_t dot_cnt);
 
 /*! 
-*  \brief      »­¿ÕĞÄÔ²
-*  \param  x0 Ô²ĞÄÎ»ÖÃX×ø±ê
-*  \param  y0 Ô²ĞÄÎ»ÖÃY×ø±ê
-*  \param  r °ë¾¶
+*  \brief      ç”»ç©ºå¿ƒåœ†
+*  \param  x0 åœ†å¿ƒä½ç½®Xåæ ‡
+*  \param  y0 åœ†å¿ƒä½ç½®Yåæ ‡
+*  \param  r åŠå¾„
 */
 void GUI_Circle(uint16_t x0, uint16_t y0, uint16_t r);
 
 /*! 
-*  \brief      »­ÊµĞÄÔ²
-*  \param  x0 Ô²ĞÄÎ»ÖÃX×ø±ê
-*  \param  y0 Ô²ĞÄÎ»ÖÃY×ø±ê
-*  \param  r °ë¾¶
+*  \brief      ç”»å®å¿ƒåœ†
+*  \param  x0 åœ†å¿ƒä½ç½®Xåæ ‡
+*  \param  y0 åœ†å¿ƒä½ç½®Yåæ ‡
+*  \param  r åŠå¾„
 */
 void GUI_CircleFill(uint16_t x0, uint16_t y0, uint16_t r);
 
 /*! 
-*  \brief      »­»¡Ïß
-*  \param  x0 Ô²ĞÄÎ»ÖÃX×ø±ê
-*  \param  y0 Ô²ĞÄÎ»ÖÃY×ø±ê
-*  \param  r °ë¾¶
-*  \param  sa ÆğÊ¼½Ç¶È
-*  \param  ea ÖÕÖ¹½Ç¶È
+*  \brief      ç”»å¼§çº¿
+*  \param  x0 åœ†å¿ƒä½ç½®Xåæ ‡
+*  \param  y0 åœ†å¿ƒä½ç½®Yåæ ‡
+*  \param  r åŠå¾„
+*  \param  sa èµ·å§‹è§’åº¦
+*  \param  ea ç»ˆæ­¢è§’åº¦
 */
 void GUI_Arc(uint16_t x,uint16_t y, uint16_t r,uint16_t sa, uint16_t ea);
 
 /*! 
-*  \brief      »­¿ÕĞÄ¾ØĞÎ
-*  \param  x0 ÆğÊ¼Î»ÖÃX×ø±ê
-*  \param  y0 ÆğÊ¼Î»ÖÃY×ø±ê
-*  \param  x1 ½áÊøÎ»ÖÃX×ø±ê
-*  \param  y1 ½áÊøÎ»ÖÃY×ø±ê
+*  \brief      ç”»ç©ºå¿ƒçŸ©å½¢
+*  \param  x0 èµ·å§‹ä½ç½®Xåæ ‡
+*  \param  y0 èµ·å§‹ä½ç½®Yåæ ‡
+*  \param  x1 ç»“æŸä½ç½®Xåæ ‡
+*  \param  y1 ç»“æŸä½ç½®Yåæ ‡
 */
 void GUI_Rectangle(uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
 
 /*! 
-*  \brief      »­ÊµĞÄ¾ØĞÎ
-*  \param  x0 ÆğÊ¼Î»ÖÃX×ø±ê
-*  \param  y0 ÆğÊ¼Î»ÖÃY×ø±ê
-*  \param  x1 ½áÊøÎ»ÖÃX×ø±ê
-*  \param  y1 ½áÊøÎ»ÖÃY×ø±ê
+*  \brief      ç”»å®å¿ƒçŸ©å½¢
+*  \param  x0 èµ·å§‹ä½ç½®Xåæ ‡
+*  \param  y0 èµ·å§‹ä½ç½®Yåæ ‡
+*  \param  x1 ç»“æŸä½ç½®Xåæ ‡
+*  \param  y1 ç»“æŸä½ç½®Yåæ ‡
 */
 void GUI_RectangleFill(uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
 
 /*! 
-*  \brief      »­¿ÕĞÄÍÖÔ²
-*  \param  x0 ÆğÊ¼Î»ÖÃX×ø±ê
-*  \param  y0 ÆğÊ¼Î»ÖÃY×ø±ê
-*  \param  x1 ½áÊøÎ»ÖÃX×ø±ê
-*  \param  y1 ½áÊøÎ»ÖÃY×ø±ê
+*  \brief      ç”»ç©ºå¿ƒæ¤­åœ†
+*  \param  x0 èµ·å§‹ä½ç½®Xåæ ‡
+*  \param  y0 èµ·å§‹ä½ç½®Yåæ ‡
+*  \param  x1 ç»“æŸä½ç½®Xåæ ‡
+*  \param  y1 ç»“æŸä½ç½®Yåæ ‡
 */
 void GUI_Ellipse (uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
 
 /*! 
-*  \brief      »­ÊµĞÄÍÖÔ²
-*  \param  x0 ÆğÊ¼Î»ÖÃX×ø±ê
-*  \param  y0 ÆğÊ¼Î»ÖÃY×ø±ê
-*  \param  x1 ½áÊøÎ»ÖÃX×ø±ê
-*  \param  y1 ½áÊøÎ»ÖÃY×ø±ê
+*  \brief      ç”»å®å¿ƒæ¤­åœ†
+*  \param  x0 èµ·å§‹ä½ç½®Xåæ ‡
+*  \param  y0 èµ·å§‹ä½ç½®Yåæ ‡
+*  \param  x1 ç»“æŸä½ç½®Xåæ ‡
+*  \param  y1 ç»“æŸä½ç½®Yåæ ‡
 */
 void GUI_EllipseFill (uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
 
 /*! 
-*  \brief      »­Ïß
-*  \param  x0 ÆğÊ¼Î»ÖÃX×ø±ê
-*  \param  y0 ÆğÊ¼Î»ÖÃY×ø±ê
-*  \param  x1 ½áÊøÎ»ÖÃX×ø±ê
-*  \param  y1 ½áÊøÎ»ÖÃY×ø±ê
+*  \brief      ç”»çº¿
+*  \param  x0 èµ·å§‹ä½ç½®Xåæ ‡
+*  \param  y0 èµ·å§‹ä½ç½®Yåæ ‡
+*  \param  x1 ç»“æŸä½ç½®Xåæ ‡
+*  \param  y1 ç»“æŸä½ç½®Yåæ ‡
 */
 void SetBackLight(uint8_t light_level);
 
 /*! 
-*  \brief   ·äÃùÆ÷ÉèÖÃ
-*  \time  time ³ÖĞøÊ±¼ä(ºÁÃëµ¥Î»)
+*  \brief   èœ‚é¸£å™¨è®¾ç½®
+*  \time  time æŒç»­æ—¶é—´(æ¯«ç§’å•ä½)
 */
 void SetBuzzer(uint8_t time);
 
 /*! 
-*  \brief   ´¥ÃşÆÁÉèÖÃ
-*  \param enable ´¥ÃşÊ¹ÄÜ
-*  \param beep_on ´¥Ãş·äÃùÆ÷
-*  \param work_mode ´¥Ãş¹¤×÷Ä£Ê½£º0°´ÏÂ¾ÍÉÏ´«£¬1ËÉ¿ª²ÅÉÏ´«£¬2²»¶ÏÉÏ´«×ø±êÖµ£¬3°´ÏÂºÍËÉ¿ª¾ùÉÏ´«Êı¾İ
-*  \param press_calibration Á¬Ğøµã»÷´¥ÃşÆÁ20ÏÂĞ£×¼´¥ÃşÆÁ£º0½ûÓÃ£¬1ÆôÓÃ
+*  \brief   è§¦æ‘¸å±è®¾ç½®
+*  \param enable è§¦æ‘¸ä½¿èƒ½
+*  \param beep_on è§¦æ‘¸èœ‚é¸£å™¨
+*  \param work_mode è§¦æ‘¸å·¥ä½œæ¨¡å¼ï¼š0æŒ‰ä¸‹å°±ä¸Šä¼ ï¼Œ1æ¾å¼€æ‰ä¸Šä¼ ï¼Œ2ä¸æ–­ä¸Šä¼ åæ ‡å€¼ï¼Œ3æŒ‰ä¸‹å’Œæ¾å¼€å‡ä¸Šä¼ æ•°æ®
+*  \param press_calibration è¿ç»­ç‚¹å‡»è§¦æ‘¸å±20ä¸‹æ ¡å‡†è§¦æ‘¸å±ï¼š0ç¦ç”¨ï¼Œ1å¯ç”¨
 */
 void SetTouchPaneOption(uint8_t enbale,uint8_t beep_on,uint8_t work_mode,uint8_t press_calibration);
 
 /*! 
-*  \brief   Ğ£×¼´¥ÃşÆÁ
+*  \brief   æ ¡å‡†è§¦æ‘¸å±
 */
 void    CalibrateTouchPane(void);
 
 /*! 
-*  \brief  ´¥ÃşÆÁ²âÊÔ
+*  \brief  è§¦æ‘¸å±æµ‹è¯•
 */
 void TestTouchPane(void);
 
 /*! 
-*  \brief      ÉèÖÃµ±Ç°Ğ´ÈëÍ¼²ã
-*  \details  Ò»°ãÓÃÓÚÊµÏÖË«»º´æĞ§¹û(»æÍ¼Ê±±ÜÃâÉÁË¸)£º
+*  \brief      è®¾ç½®å½“å‰å†™å…¥å›¾å±‚
+*  \details  ä¸€èˆ¬ç”¨äºå®ç°åŒç¼“å­˜æ•ˆæœ(ç»˜å›¾æ—¶é¿å…é—ªçƒ)ï¼š
 *  \details  uint8_t layer = 0;
-*  \details  WriteLayer(layer);   ÉèÖÃĞ´Èë²ã
-*  \details  ClearLayer(layer);   Ê¹Í¼²ã±äÍ¸Ã÷
-*  \details  Ìí¼ÓÒ»ÏµÁĞ»æÍ¼Ö¸Áî
+*  \details  WriteLayer(layer);   è®¾ç½®å†™å…¥å±‚
+*  \details  ClearLayer(layer);   ä½¿å›¾å±‚å˜é€æ˜
+*  \details  æ·»åŠ ä¸€ç³»åˆ—ç»˜å›¾æŒ‡ä»¤
 *  \details  DisText(100,100,0,4,"hello hmi!!!");
-*  \details  DisplyLayer(layer);  ÇĞ»»ÏÔÊ¾²ã
-*  \details  layer = (layer+1)%2; Ë«»º´æÇĞ»»
+*  \details  DisplyLayer(layer);  åˆ‡æ¢æ˜¾ç¤ºå±‚
+*  \details  layer = (layer+1)%2; åŒç¼“å­˜åˆ‡æ¢
 *  \see DisplyLayer
 *  \see ClearLayer
-*  \param  layer Í¼²ã±àºÅ
+*  \param  layer å›¾å±‚ç¼–å·
 */
 void WriteLayer(uint8_t layer);
 
 /*! 
-*  \brief      ÉèÖÃµ±Ç°ÏÔÊ¾Í¼²ã
-*  \param  layer Í¼²ã±àºÅ
+*  \brief      è®¾ç½®å½“å‰æ˜¾ç¤ºå›¾å±‚
+*  \param  layer å›¾å±‚ç¼–å·
 */
 void DisplyLayer(uint8_t layer);
 
 /*! 
-*  \brief      Çå³ıÍ¼²ã£¬Ê¹Í¼²ã±ä³ÉÍ¸Ã÷
-*  \param  layer Í¼²ã±àºÅ
+*  \brief      æ¸…é™¤å›¾å±‚ï¼Œä½¿å›¾å±‚å˜æˆé€æ˜
+*  \param  layer å›¾å±‚ç¼–å·
 */
 void ClearLayer(uint8_t layer);
 
 /*! 
-*  \brief  Ğ´Êı¾İµ½´®¿ÚÆÁÓÃ»§´æ´¢Çø
-*  \param  startAddress ÆğÊ¼µØÖ·
-*  \param  length ×Ö½ÚÊı
-*  \param  _data ´ıĞ´ÈëµÄÊı¾İ
+*  \brief  å†™æ•°æ®åˆ°ä¸²å£å±ç”¨æˆ·å­˜å‚¨åŒº
+*  \param  startAddress èµ·å§‹åœ°å€
+*  \param  length å­—èŠ‚æ•°
+*  \param  _data å¾…å†™å…¥çš„æ•°æ®
 */
 void WriteUserFlash(uint32_t startAddress,uint16_t length,uint8_t *_data);
 
 /*! 
-*  \brief  ´Ó´®¿ÚÆÁÓÃ»§´æ´¢Çø¶ÁÈ¡Êı¾İ
-*  \param  startAddress ÆğÊ¼µØÖ·
-*  \param  length ×Ö½ÚÊı
+*  \brief  ä»ä¸²å£å±ç”¨æˆ·å­˜å‚¨åŒºè¯»å–æ•°æ®
+*  \param  startAddress èµ·å§‹åœ°å€
+*  \param  length å­—èŠ‚æ•°
 */
 void ReadUserFlash(uint32_t startAddress,uint16_t length);
 
 /*! 
-*  \brief      ¿½±´Í¼²ã
-*  \param  src_layer Ô­Ê¼Í¼²ã
-*  \param  dest_layer Ä¿±êÍ¼²ã
+*  \brief      æ‹·è´å›¾å±‚
+*  \param  src_layer åŸå§‹å›¾å±‚
+*  \param  dest_layer ç›®æ ‡å›¾å±‚
 */
 void CopyLayer(uint8_t src_layer,uint8_t dest_layer);
 
 /*! 
-*  \brief      ÉèÖÃµ±Ç°»­Ãæ
-*  \param  screen_id »­ÃæID
+*  \brief      è®¾ç½®å½“å‰ç”»é¢
+*  \param  screen_id ç”»é¢ID
 */
 void SetScreen(uint16_t screen_id);
 
 /*! 
-*  \brief      »ñÈ¡µ±Ç°»­Ãæ
+*  \brief      è·å–å½“å‰ç”»é¢
 */
 void GetScreen(uint16_t screen_id);
 
 /*! 
-*  \brief     ½ûÓÃ\ÆôÓÃ»­Ãæ¸üĞÂ
-*  \details ½ûÓÃ\ÆôÓÃÒ»°ã³É¶ÔÊ¹ÓÃ£¬ÓÃÓÚ±ÜÃâÉÁË¸¡¢Ìá¸ßË¢ĞÂËÙ¶È
-*  \details ÓÃ·¨£º
-*    \details SetScreenUpdateEnable(0);//½ûÖ¹¸üĞÂ
-*    \details Ò»ÏµÁĞ¸üĞÂ»­ÃæµÄÖ¸Áî
-*    \details SetScreenUpdateEnable(1);//Á¢¼´¸üĞÂ
-*  \param  enable 0½ûÓÃ£¬1ÆôÓÃ
+*  \brief     ç¦ç”¨\å¯ç”¨ç”»é¢æ›´æ–°
+*  \details ç¦ç”¨\å¯ç”¨ä¸€èˆ¬æˆå¯¹ä½¿ç”¨ï¼Œç”¨äºé¿å…é—ªçƒã€æé«˜åˆ·æ–°é€Ÿåº¦
+*  \details ç”¨æ³•ï¼š
+*    \details SetScreenUpdateEnable(0);//ç¦æ­¢æ›´æ–°
+*    \details ä¸€ç³»åˆ—æ›´æ–°ç”»é¢çš„æŒ‡ä»¤
+*    \details SetScreenUpdateEnable(1);//ç«‹å³æ›´æ–°
+*  \param  enable 0ç¦ç”¨ï¼Œ1å¯ç”¨
 */
 void SetScreenUpdateEnable(uint8_t enable);
 
 /*! 
-*  \brief     ÉèÖÃ¿Ø¼şÊäÈë½¹µã
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  focus ÊÇ·ñ¾ßÓĞÊäÈë½¹µã
+*  \brief     è®¾ç½®æ§ä»¶è¾“å…¥ç„¦ç‚¹
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  focus æ˜¯å¦å…·æœ‰è¾“å…¥ç„¦ç‚¹
 */
 void SetControlFocus(uint16_t screen_id,uint16_t control_id,uint8_t focus);
 
 /*! 
-*  \brief     ÏÔÊ¾\Òş²Ø¿Ø¼ş
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  visible ÊÇ·ñÏÔÊ¾
+*  \brief     æ˜¾ç¤º\éšè—æ§ä»¶
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  visible æ˜¯å¦æ˜¾ç¤º
 */
 void SetControlVisiable(uint16_t screen_id,uint16_t control_id,uint8_t visible);
 
 /*! 
-*  \brief     ÉèÖÃ´¥Ãş¿Ø¼şÊ¹ÄÜ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  enable ¿Ø¼şÊÇ·ñÊ¹ÄÜ
+*  \brief     è®¾ç½®è§¦æ‘¸æ§ä»¶ä½¿èƒ½
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  enable æ§ä»¶æ˜¯å¦ä½¿èƒ½
 */
 void SetControlEnable(uint16_t screen_id,uint16_t control_id,uint8_t enable);
 
 /*! 
-*  \brief     »ñÈ¡¿Ø¼şÖµ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     è·å–æ§ä»¶å€¼
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void GetControlValue(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ÉèÖÃ°´Å¥×´Ì¬
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value °´Å¥×´Ì¬
+*  \brief     è®¾ç½®æŒ‰é’®çŠ¶æ€
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value æŒ‰é’®çŠ¶æ€
 */
 void SetButtonValue(uint16_t screen_id,uint16_t control_id,uint8_t value);
 
 /*! 
-*  \brief     ÉèÖÃÎÄ±¾Öµ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  str ÎÄ±¾Öµ
+*  \brief     è®¾ç½®æ–‡æœ¬å€¼
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  str æ–‡æœ¬å€¼
 */
 void SetTextValue(uint16_t screen_id,uint16_t control_id,uint8_t *str);
 
 #if FIRMWARE_VER>=908
 
 /*! 
-*  \brief     ÉèÖÃÎÄ±¾ÎªÕûÊıÖµ£¬ÒªÇóFIRMWARE_VER>=908
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÎÄ±¾ÊıÖµ
-*  \param  sign 0-ÎŞ·ûºÅ£¬1-ÓĞ·ûºÅ
-*  \param  fill_zero Êı×ÖÎ»Êı£¬²»×ãÊ±×ó²à²¹Áã
+*  \brief     è®¾ç½®æ–‡æœ¬ä¸ºæ•´æ•°å€¼ï¼Œè¦æ±‚FIRMWARE_VER>=908
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ–‡æœ¬æ•°å€¼
+*  \param  sign 0-æ— ç¬¦å·ï¼Œ1-æœ‰ç¬¦å·
+*  \param  fill_zero æ•°å­—ä½æ•°ï¼Œä¸è¶³æ—¶å·¦ä¾§è¡¥é›¶
 */
 void SetTextInt32(uint16_t screen_id,uint16_t control_id,uint32_t value,uint8_t sign,uint8_t fill_zero);
 
 /*! 
-*  \brief     ÉèÖÃÎÄ±¾µ¥¾«¶È¸¡µãÖµ£¬ÒªÇóFIRMWARE_VER>=908
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÎÄ±¾ÊıÖµ
-*  \param  precision Ğ¡ÊıÎ»Êı
-*  \param  show_zeros Îª1Ê±£¬ÏÔÊ¾Ä©Î²0
+*  \brief     è®¾ç½®æ–‡æœ¬å•ç²¾åº¦æµ®ç‚¹å€¼ï¼Œè¦æ±‚FIRMWARE_VER>=908
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ–‡æœ¬æ•°å€¼
+*  \param  precision å°æ•°ä½æ•°
+*  \param  show_zeros ä¸º1æ—¶ï¼Œæ˜¾ç¤ºæœ«å°¾0
 */
 void SetTextFloat(uint16_t screen_id,uint16_t control_id,float value,uint8_t precision,uint8_t show_zeros);
 
 #endif
 
 /*! 
-*  \brief      ÉèÖÃ½ø¶ÈÖµ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief      è®¾ç½®è¿›åº¦å€¼
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 void SetProgressValue(uint16_t screen_id,uint16_t control_id,uint32_t value);
 
 /*! 
-*  \brief     ÉèÖÃÒÇ±íÖµ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief     è®¾ç½®ä»ªè¡¨å€¼
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 void SetMeterValue(uint16_t screen_id,uint16_t control_id,uint32_t value);
 
 /*! 
-*  \brief     ÉèÖÃÒÇ±íÖµ
-*  \param  screen_id »­ÃæID
-*  \param  control_id Í¼Æ¬¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief     è®¾ç½®ä»ªè¡¨å€¼
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id å›¾ç‰‡æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 void Set_picMeterValue(uint16_t screen_id,uint16_t control_id,uint16_t value);
 
 /*! 
-*  \brief      ÉèÖÃ»¬¶¯Ìõ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief      è®¾ç½®æ»‘åŠ¨æ¡
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 
 void SetSliderValue(uint16_t screen_id,uint16_t control_id,uint32_t value);
 
 /*! 
-*  \brief      ÉèÖÃÑ¡Ôñ¿Ø¼ş
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  item µ±Ç°Ñ¡Ïî
+*  \brief      è®¾ç½®é€‰æ‹©æ§ä»¶
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  item å½“å‰é€‰é¡¹
 */
 void SetSelectorValue(uint16_t screen_id,uint16_t control_id,uint8_t item);
 
 /*! 
-*  \brief      ¿ªÊ¼²¥·Å¶¯»­
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief      å¼€å§‹æ’­æ”¾åŠ¨ç”»
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void AnimationStart(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief      Í£Ö¹²¥·Å¶¯»­
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief      åœæ­¢æ’­æ”¾åŠ¨ç”»
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void AnimationStop(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief      ÔİÍ£²¥·Å¶¯»­
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief      æš‚åœæ’­æ”¾åŠ¨ç”»
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void AnimationPause(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ²¥·ÅÖÆ¶¨Ö¡
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  frame_id Ö¡ID
+*  \brief     æ’­æ”¾åˆ¶å®šå¸§
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  frame_id å¸§ID
 */
 void AnimationPlayFrame(uint16_t screen_id,uint16_t control_id,uint8_t frame_id);
 
 /*! 
-*  \brief     ²¥·ÅÉÏÒ»Ö¡
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     æ’­æ”¾ä¸Šä¸€å¸§
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void AnimationPlayPrev(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ²¥·ÅÏÂÒ»Ö¡
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     æ’­æ”¾ä¸‹ä¸€å¸§
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void AnimationPlayNext(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ÇúÏß¿Ø¼ş-Ìí¼ÓÍ¨µÀ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  channel Í¨µÀºÅ
-*  \param  color ÑÕÉ«
+*  \brief     æ›²çº¿æ§ä»¶-æ·»åŠ é€šé“
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  channel é€šé“å·
+*  \param  color é¢œè‰²
 */
 void GraphChannelAdd(uint16_t screen_id,uint16_t control_id,uint8_t channel,uint16_t color);
 
 /*! 
-*  \brief     ÇúÏß¿Ø¼ş-É¾³ıÍ¨µÀ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  channel Í¨µÀºÅ
+*  \brief     æ›²çº¿æ§ä»¶-åˆ é™¤é€šé“
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  channel é€šé“å·
 */
 void GraphChannelDel(uint16_t screen_id,uint16_t control_id,uint8_t channel);
 
 /*! 
-*  \brief     ÇúÏß¿Ø¼ş-Ìí¼ÓÊı¾İ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  channel Í¨µÀºÅ
-*  \param  pData ÇúÏßÊı¾İ
-*  \param  nDataLen Êı¾İ¸öÊı
+*  \brief     æ›²çº¿æ§ä»¶-æ·»åŠ æ•°æ®
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  channel é€šé“å·
+*  \param  pData æ›²çº¿æ•°æ®
+*  \param  nDataLen æ•°æ®ä¸ªæ•°
 */
 void GraphChannelDataAdd(uint16_t screen_id,uint16_t control_id,uint8_t channel,uint8_t *pData,uint16_t nDataLen);
 
 /*! 
-*  \brief     ÇúÏß¿Ø¼ş-Çå³ıÊı¾İ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  channel Í¨µÀºÅ
+*  \brief     æ›²çº¿æ§ä»¶-æ¸…é™¤æ•°æ®
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  channel é€šé“å·
 */
 void GraphChannelDataClear(uint16_t screen_id,uint16_t control_id,uint8_t channel);
 
 /*! 
-*  \brief     ÇúÏß¿Ø¼ş-ÉèÖÃÊÓÍ¼´°¿Ú
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  x_offset Ë®Æ½Æ«ÒÆ
-*  \param  x_mul Ë®Æ½Ëõ·ÅÏµÊı
-*  \param  y_offset ´¹Ö±Æ«ÒÆ
-*  \param  y_mul ´¹Ö±Ëõ·ÅÏµÊı
+*  \brief     æ›²çº¿æ§ä»¶-è®¾ç½®è§†å›¾çª—å£
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  x_offset æ°´å¹³åç§»
+*  \param  x_mul æ°´å¹³ç¼©æ”¾ç³»æ•°
+*  \param  y_offset å‚ç›´åç§»
+*  \param  y_mul å‚ç›´ç¼©æ”¾ç³»æ•°
 */
 void GraphSetViewport(uint16_t screen_id,uint16_t control_id,int16_t x_offset,uint16_t x_mul,int16_t y_offset,uint16_t y_mul);
 
 /*! 
-*  \brief     ¿ªÊ¼ÅúÁ¿¸üĞÂ
-*  \param  screen_id »­ÃæID
+*  \brief     å¼€å§‹æ‰¹é‡æ›´æ–°
+*  \param  screen_id ç”»é¢ID
 */
 void BatchBegin(uint16_t screen_id);
 
 /*! 
-*  \brief     ÅúÁ¿¸üĞÂ°´Å¥¿Ø¼ş
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief     æ‰¹é‡æ›´æ–°æŒ‰é’®æ§ä»¶
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 void BatchSetButtonValue(uint16_t control_id,uint8_t state);
 
 /*! 
-*  \brief     ÅúÁ¿¸üĞÂ½ø¶ÈÌõ¿Ø¼ş
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief     æ‰¹é‡æ›´æ–°è¿›åº¦æ¡æ§ä»¶
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 void BatchSetProgressValue(uint16_t control_id,uint32_t value);
 
 /*! 
-*  \brief     ÅúÁ¿¸üĞÂ»¬¶¯Ìõ¿Ø¼ş
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief     æ‰¹é‡æ›´æ–°æ»‘åŠ¨æ¡æ§ä»¶
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 void BatchSetSliderValue(uint16_t control_id,uint32_t value);
 
 /*! 
-*  \brief     ÅúÁ¿¸üĞÂÒÇ±í¿Ø¼ş
-*  \param  control_id ¿Ø¼şID
-*  \param  value ÊıÖµ
+*  \brief     æ‰¹é‡æ›´æ–°ä»ªè¡¨æ§ä»¶
+*  \param  control_id æ§ä»¶ID
+*  \param  value æ•°å€¼
 */
 void BatchSetMeterValue(uint16_t control_id,uint32_t value);
 
 /*! 
-*  \brief     ÅúÁ¿¸üĞÂÎÄ±¾¿Ø¼ş
-*  \param  control_id ¿Ø¼şID
-*  \param  strings ×Ö·û´®
+*  \brief     æ‰¹é‡æ›´æ–°æ–‡æœ¬æ§ä»¶
+*  \param  control_id æ§ä»¶ID
+*  \param  strings å­—ç¬¦ä¸²
 */
 void BatchSetText(uint16_t control_id,uint8_t *strings);
 
 /*! 
-*  \brief     ÅúÁ¿¸üĞÂ¶¯»­\Í¼±ê¿Ø¼ş
-*  \param  control_id ¿Ø¼şID
-*  \param  frame_id Ö¡ID
+*  \brief     æ‰¹é‡æ›´æ–°åŠ¨ç”»\å›¾æ ‡æ§ä»¶
+*  \param  control_id æ§ä»¶ID
+*  \param  frame_id å¸§ID
 */
 void BatchSetFrame(uint16_t control_id,uint16_t frame_id);
 
 #if FIRMWARE_VER>=921
 
 /*! 
-*  \brief     ÅúÁ¿ÉèÖÃ¿Ø¼ş¿É¼û
-*  \param  control_id ¿Ø¼şID
-*  \param  visible Ö¡ID
+*  \brief     æ‰¹é‡è®¾ç½®æ§ä»¶å¯è§
+*  \param  control_id æ§ä»¶ID
+*  \param  visible å¸§ID
 */
 void BatchSetVisible(uint16_t control_id,uint8_t visible);
 
 /*! 
-*  \brief     ÅúÁ¿ÉèÖÃ¿Ø¼şÊ¹ÄÜ
-*  \param  control_id ¿Ø¼şID
-*  \param  enable Ö¡ID
+*  \brief     æ‰¹é‡è®¾ç½®æ§ä»¶ä½¿èƒ½
+*  \param  control_id æ§ä»¶ID
+*  \param  enable å¸§ID
 */
 void BatchSetEnable(uint16_t control_id,uint8_t enable);
 
 #endif
 
 /*! 
-*  \brief    ½áÊøÅúÁ¿¸üĞÂ
+*  \brief    ç»“æŸæ‰¹é‡æ›´æ–°
 */
 void BatchEnd(void);
 
 /*! 
-*  \brief     ÉèÖÃµ¹¼ÆÊ±¿Ø¼ş
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  timeout µ¹¼ÆÊ±(Ãë)
+*  \brief     è®¾ç½®å€’è®¡æ—¶æ§ä»¶
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  timeout å€’è®¡æ—¶(ç§’)
 */
 void SeTimer(uint16_t screen_id,uint16_t control_id,uint32_t timeout);
 
 /*! 
-*  \brief     ¿ªÆôµ¹¼ÆÊ±¿Ø¼ş
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     å¼€å¯å€’è®¡æ—¶æ§ä»¶
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void StartTimer(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     Í£Ö¹µ¹¼ÆÊ±¿Ø¼ş
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     åœæ­¢å€’è®¡æ—¶æ§ä»¶
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void StopTimer(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ÔİÍ£µ¹¼ÆÊ±¿Ø¼ş
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     æš‚åœå€’è®¡æ—¶æ§ä»¶
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void PauseTimer(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ÉèÖÃ¿Ø¼ş±³¾°É«
-*  \details  Ö§³Ö¿Ø¼ş£º½ø¶ÈÌõ¡¢ÎÄ±¾
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  color ±³¾°É«
+*  \brief     è®¾ç½®æ§ä»¶èƒŒæ™¯è‰²
+*  \details  æ”¯æŒæ§ä»¶ï¼šè¿›åº¦æ¡ã€æ–‡æœ¬
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  color èƒŒæ™¯è‰²
 */
 void SetControlBackColor(uint16_t screen_id,uint16_t control_id,uint16_t color);
 
 /*! 
-*  \brief     ÉèÖÃ¿Ø¼şÇ°¾°É«
-* \details  Ö§³Ö¿Ø¼ş£º½ø¶ÈÌõ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  color Ç°¾°É«
+*  \brief     è®¾ç½®æ§ä»¶å‰æ™¯è‰²
+* \details  æ”¯æŒæ§ä»¶ï¼šè¿›åº¦æ¡
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  color å‰æ™¯è‰²
 */
 void SetControlForeColor(uint16_t screen_id,uint16_t control_id,uint16_t color);
 
 /*! 
-*  \brief     ÏÔÊ¾\Òş²Øµ¯³ö²Ëµ¥¿Ø¼ş
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  show ÊÇ·ñÏÔÊ¾£¬Îª0Ê±focus_control_idÎŞĞ§
-*  \param  focus_control_id ¹ØÁªµÄÎÄ±¾¿Ø¼ş(²Ëµ¥¿Ø¼şµÄÄÚÈİÊä³öµ½ÎÄ±¾¿Ø¼ş)
+*  \brief     æ˜¾ç¤º\éšè—å¼¹å‡ºèœå•æ§ä»¶
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  show æ˜¯å¦æ˜¾ç¤ºï¼Œä¸º0æ—¶focus_control_idæ— æ•ˆ
+*  \param  focus_control_id å…³è”çš„æ–‡æœ¬æ§ä»¶(èœå•æ§ä»¶çš„å†…å®¹è¾“å‡ºåˆ°æ–‡æœ¬æ§ä»¶)
 */
 void ShowPopupMenu(uint16_t screen_id,uint16_t control_id,uint8_t show,uint16_t focus_control_id);
 
 /*! 
-*  \brief     ÏÔÊ¾\Òş²ØÏµÍ³¼üÅÌ
-*  \param  show 0Òş²Ø£¬1ÏÔÊ¾
-*  \param  x ¼üÅÌÏÔÊ¾Î»ÖÃX×ø±ê
-*  \param  y ¼üÅÌÏÔÊ¾Î»ÖÃY×ø±ê
-*  \param  type 0Ğ¡¼üÅÌ£¬1È«¼üÅÌ
-*  \param  option 0Õı³£×Ö·û£¬1ÃÜÂë£¬2Ê±¼äÉèÖÃ
-*  \param  max_len ¼üÅÌÂ¼Èë×Ö·û³¤¶ÈÏŞÖÆ
+*  \brief     æ˜¾ç¤º\éšè—ç³»ç»Ÿé”®ç›˜
+*  \param  show 0éšè—ï¼Œ1æ˜¾ç¤º
+*  \param  x é”®ç›˜æ˜¾ç¤ºä½ç½®Xåæ ‡
+*  \param  y é”®ç›˜æ˜¾ç¤ºä½ç½®Yåæ ‡
+*  \param  type 0å°é”®ç›˜ï¼Œ1å…¨é”®ç›˜
+*  \param  option 0æ­£å¸¸å­—ç¬¦ï¼Œ1å¯†ç ï¼Œ2æ—¶é—´è®¾ç½®
+*  \param  max_len é”®ç›˜å½•å…¥å­—ç¬¦é•¿åº¦é™åˆ¶
 */
 void ShowKeyboard(uint8_t show,uint16_t x,uint16_t y,uint8_t type,uint8_t option,uint8_t max_len);
 
 #if FIRMWARE_VER>=914
 /*! 
-*  \brief     ¶àÓïÑÔÉèÖÃ
-*  \param  ui_lang ÓÃ»§½çÃæÓïÑÔ0~9
-*  \param  sys_lang ÏµÍ³¼üÅÌÓïÑÔ-0ÖĞÎÄ£¬1Ó¢ÎÄ
+*  \brief     å¤šè¯­è¨€è®¾ç½®
+*  \param  ui_lang ç”¨æˆ·ç•Œé¢è¯­è¨€0~9
+*  \param  sys_lang ç³»ç»Ÿé”®ç›˜è¯­è¨€-0ä¸­æ–‡ï¼Œ1è‹±æ–‡
 */
 void SetLanguage(uint8_t ui_lang,uint8_t sys_lang);
 #endif
 
 #if FIRMWARE_VER>=917
 /*! 
-*  \brief     ¿ªÊ¼±£´æ¿Ø¼şÊıÖµµ½FLASH
-*  \param  version Êı¾İ°æ±¾ºÅ£¬¿ÉÈÎÒâÖ¸¶¨£¬¸ß16Î»ÎªÖ÷°æ±¾ºÅ£¬µÍ16Î»Îª´Î°æ±¾ºÅ
-*  \param  address Êı¾İÔÚÓÃ»§´æ´¢ÇøµÄ´æ·ÅµØÖ·£¬×¢Òâ·ÀÖ¹µØÖ·ÖØµş¡¢³åÍ»
+*  \brief     å¼€å§‹ä¿å­˜æ§ä»¶æ•°å€¼åˆ°FLASH
+*  \param  version æ•°æ®ç‰ˆæœ¬å·ï¼Œå¯ä»»æ„æŒ‡å®šï¼Œé«˜16ä½ä¸ºä¸»ç‰ˆæœ¬å·ï¼Œä½16ä½ä¸ºæ¬¡ç‰ˆæœ¬å·
+*  \param  address æ•°æ®åœ¨ç”¨æˆ·å­˜å‚¨åŒºçš„å­˜æ”¾åœ°å€ï¼Œæ³¨æ„é˜²æ­¢åœ°å€é‡å ã€å†²çª
 */
 void FlashBeginSaveControl(uint32_t version,uint32_t address);
 
 /*! 
-*  \brief     ±£´æÄ³¸ö¿Ø¼şµÄÊıÖµµ½FLASH
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     ä¿å­˜æŸä¸ªæ§ä»¶çš„æ•°å€¼åˆ°FLASH
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void FlashSaveControl(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ±£´æ½áÊø
+*  \brief     ä¿å­˜ç»“æŸ
 */
 void FlashEndSaveControl(void);
 
 /*! 
-*  \brief     ´ÓFLASHÖĞ»Ö¸´¿Ø¼şÊı¾İ
-*  \param  version Êı¾İ°æ±¾ºÅ£¬Ö÷°æ±¾ºÅ±ØĞëÓë´æ´¢Ê±Ò»ÖÂ£¬·ñÔò»á¼ÓÔØÊ§°Ü
-*  \param  address Êı¾İÔÚÓÃ»§´æ´¢ÇøµÄ´æ·ÅµØÖ·
+*  \brief     ä»FLASHä¸­æ¢å¤æ§ä»¶æ•°æ®
+*  \param  version æ•°æ®ç‰ˆæœ¬å·ï¼Œä¸»ç‰ˆæœ¬å·å¿…é¡»ä¸å­˜å‚¨æ—¶ä¸€è‡´ï¼Œå¦åˆ™ä¼šåŠ è½½å¤±è´¥
+*  \param  address æ•°æ®åœ¨ç”¨æˆ·å­˜å‚¨åŒºçš„å­˜æ”¾åœ°å€
 */
 void FlashRestoreControl(uint32_t version,uint32_t address);
 #endif
 
 #if FIRMWARE_VER>=921
 /*! 
-*  \brief     ÉèÖÃÀúÊ·ÇúÏß²ÉÑùÊı¾İÖµ(µ¥×Ö½Ú£¬uint8_t»òint8)
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ²ÉÑùµãÊı¾İ
-*  \param  channel Í¨µÀÊı
+*  \brief     è®¾ç½®å†å²æ›²çº¿é‡‡æ ·æ•°æ®å€¼(å•å­—èŠ‚ï¼Œuint8_tæˆ–int8)
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value é‡‡æ ·ç‚¹æ•°æ®
+*  \param  channel é€šé“æ•°
 */
 void HistoryGraph_SetValueInt8(uint16_t screen_id,uint16_t control_id,uint8_t *value,uint8_t channel);
 
 /*! 
-*  \brief     ÉèÖÃÀúÊ·ÇúÏß²ÉÑùÊı¾İÖµ(Ë«×Ö½Ú£¬uint16_t»òint16_t)
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ²ÉÑùµãÊı¾İ
-*  \param  channel Í¨µÀÊı
+*  \brief     è®¾ç½®å†å²æ›²çº¿é‡‡æ ·æ•°æ®å€¼(åŒå­—èŠ‚ï¼Œuint16_tæˆ–int16_t)
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value é‡‡æ ·ç‚¹æ•°æ®
+*  \param  channel é€šé“æ•°
 */
 void HistoryGraph_SetValueInt16(uint16_t screen_id,uint16_t control_id,uint16_t *value,uint8_t channel);
 
 /*! 
-*  \brief     ÉèÖÃÀúÊ·ÇúÏß²ÉÑùÊı¾İÖµ(ËÄ×Ö½Ú£¬uint32_t»òint32)
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ²ÉÑùµãÊı¾İ
-*  \param  channel Í¨µÀÊı
+*  \brief     è®¾ç½®å†å²æ›²çº¿é‡‡æ ·æ•°æ®å€¼(å››å­—èŠ‚ï¼Œuint32_tæˆ–int32)
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value é‡‡æ ·ç‚¹æ•°æ®
+*  \param  channel é€šé“æ•°
 */
 void HistoryGraph_SetValueInt32(uint16_t screen_id,uint16_t control_id,uint32_t *value,uint8_t channel);
 
 /*! 
-*  \brief     ÉèÖÃÀúÊ·ÇúÏß²ÉÑùÊı¾İÖµ(µ¥¾«¶È¸¡µãÊı)
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ²ÉÑùµãÊı¾İ
-*  \param  channel Í¨µÀÊı
+*  \brief     è®¾ç½®å†å²æ›²çº¿é‡‡æ ·æ•°æ®å€¼(å•ç²¾åº¦æµ®ç‚¹æ•°)
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value é‡‡æ ·ç‚¹æ•°æ®
+*  \param  channel é€šé“æ•°
 */
 void HistoryGraph_SetValueFloat(uint16_t screen_id,uint16_t control_id,float *value,uint8_t channel);
 
 /*! 
-*  \brief     ÔÊĞí»ò½ûÖ¹ÀúÊ·ÇúÏß²ÉÑù
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  enable 0-½ûÖ¹£¬1-ÔÊĞí
+*  \brief     å…è®¸æˆ–ç¦æ­¢å†å²æ›²çº¿é‡‡æ ·
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  enable 0-ç¦æ­¢ï¼Œ1-å…è®¸
 */
 void HistoryGraph_EnableSampling(uint16_t screen_id,uint16_t control_id,uint8_t enable);
 
 /*! 
-*  \brief     ÏÔÊ¾»òÒş²ØÀúÊ·ÇúÏßÍ¨µÀ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  channel Í¨µÀ±àºÅ
-*  \param  show 0-Òş²Ø£¬1-ÏÔÊ¾
+*  \brief     æ˜¾ç¤ºæˆ–éšè—å†å²æ›²çº¿é€šé“
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  channel é€šé“ç¼–å·
+*  \param  show 0-éšè—ï¼Œ1-æ˜¾ç¤º
 */
 void HistoryGraph_ShowChannel(uint16_t screen_id,uint16_t control_id,uint8_t channel,uint8_t show);
 
 
 /*! 
-*  \brief     ÉèÖÃÀúÊ·ÇúÏßÊ±¼ä³¤¶È(¼´²ÉÑùµãÊı)
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  sample_count Ò»ÆÁÏÔÊ¾µÄ²ÉÑùµãÊı
+*  \brief     è®¾ç½®å†å²æ›²çº¿æ—¶é—´é•¿åº¦(å³é‡‡æ ·ç‚¹æ•°)
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  sample_count ä¸€å±æ˜¾ç¤ºçš„é‡‡æ ·ç‚¹æ•°
 */
 void HistoryGraph_SetTimeLength(uint16_t screen_id,uint16_t control_id,uint16_t sample_count);
 
 /*! 
-*  \brief     ÀúÊ·ÇúÏßËõ·Åµ½È«ÆÁ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     å†å²æ›²çº¿ç¼©æ”¾åˆ°å…¨å±
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void HistoryGraph_SetTimeFullScreen(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ÉèÖÃÀúÊ·ÇúÏßËõ·Å±ÈÀıÏµÊı
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  zoom Ëõ·Å°Ù·Ö±È(zoom>100%Ê±Ë®Æ½·½ÏòËõĞ¡£¬·´Õı·Å´ó)
-*  \param  max_zoom Ëõ·ÅÏŞÖÆ£¬Ò»ÆÁ×î¶àÏÔÊ¾²ÉÑùµãÊı
-*  \param  min_zoom Ëõ·ÅÏŞÖÆ£¬Ò»ÆÁ×îÉÙÏÔÊ¾²ÉÑùµãÊı
+*  \brief     è®¾ç½®å†å²æ›²çº¿ç¼©æ”¾æ¯”ä¾‹ç³»æ•°
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  zoom ç¼©æ”¾ç™¾åˆ†æ¯”(zoom>100%æ—¶æ°´å¹³æ–¹å‘ç¼©å°ï¼Œåæ­£æ”¾å¤§)
+*  \param  max_zoom ç¼©æ”¾é™åˆ¶ï¼Œä¸€å±æœ€å¤šæ˜¾ç¤ºé‡‡æ ·ç‚¹æ•°
+*  \param  min_zoom ç¼©æ”¾é™åˆ¶ï¼Œä¸€å±æœ€å°‘æ˜¾ç¤ºé‡‡æ ·ç‚¹æ•°
 */
 void HistoryGraph_SetTimeZoom(uint16_t screen_id,uint16_t control_id,uint16_t zoom,uint16_t max_zoom,uint16_t min_zoom);
 #endif
 
 #if SD_FILE_EN
 /*! 
-*  \brief     ¼ì²âSD¿¨ÊÇ·ñ²åÈë
+*  \brief     æ£€æµ‹SDå¡æ˜¯å¦æ’å…¥
 */
 void SD_IsInsert(void);
 
-#define    FA_READ                   0x01  // ¿É¶ÁÈ¡
-#define    FA_WRITE               0x02  // ¿ÉĞ´Èë
-#define    FA_CREATE_NEW           0x04  // ´´½¨ĞÂÎÄ¼ş£¬Èç¹ûÎÄ¼şÒÑ¾­´æÔÚ£¬Ôò·µ»ØÊ§°Ü
-#define    FA_CREATE_ALWAYS       0x08  // ´´½¨ĞÂÎÄ¼ş£¬Èç¹ûÎÄ¼şÒÑ¾­´æÔÚ£¬Ôò¸²¸Ç
-#define    FA_OPEN_EXISTING       0x00  // ´ò¿ªÎÄ¼ş£¬Èç¹ûÎÄ¼ş²»´æÔÚ£¬Ôò·µ»ØÊ§°Ü
-#define    FA_OPEN_ALWAYS           0x10  // ´ò¿ªÎÄ¼ş£¬Èç¹ûÎÄ¼ş²»´æÔÚ£¬Ôò´´½¨ĞÂÎÄ¼ş
+#define    FA_READ                   0x01  // å¯è¯»å–
+#define    FA_WRITE               0x02  // å¯å†™å…¥
+#define    FA_CREATE_NEW           0x04  // åˆ›å»ºæ–°æ–‡ä»¶ï¼Œå¦‚æœæ–‡ä»¶å·²ç»å­˜åœ¨ï¼Œåˆ™è¿”å›å¤±è´¥
+#define    FA_CREATE_ALWAYS       0x08  // åˆ›å»ºæ–°æ–‡ä»¶ï¼Œå¦‚æœæ–‡ä»¶å·²ç»å­˜åœ¨ï¼Œåˆ™è¦†ç›–
+#define    FA_OPEN_EXISTING       0x00  // æ‰“å¼€æ–‡ä»¶ï¼Œå¦‚æœæ–‡ä»¶ä¸å­˜åœ¨ï¼Œåˆ™è¿”å›å¤±è´¥
+#define    FA_OPEN_ALWAYS           0x10  // æ‰“å¼€æ–‡ä»¶ï¼Œå¦‚æœæ–‡ä»¶ä¸å­˜åœ¨ï¼Œåˆ™åˆ›å»ºæ–°æ–‡ä»¶
 
 /*! 
-*  \brief     ´ò¿ª»ò´´½¨ÎÄ¼ş
-*  \param  filename ÎÄ¼şÃû³Æ(½öASCII±àÂë)
-*  \param  mode Ä£Ê½£¬¿ÉÑ¡×éºÏÄ£Ê½ÈçÉÏFA_XXXX
+*  \brief     æ‰“å¼€æˆ–åˆ›å»ºæ–‡ä»¶
+*  \param  filename æ–‡ä»¶åç§°(ä»…ASCIIç¼–ç )
+*  \param  mode æ¨¡å¼ï¼Œå¯é€‰ç»„åˆæ¨¡å¼å¦‚ä¸ŠFA_XXXX
 */
 void SD_CreateFile(uint8_t *filename,uint8_t mode);
 
 /*! 
-*  \brief     ÒÔµ±Ç°Ê±¼ä´´½¨ÎÄ¼ş£¬ÀıÈç:20161015083000.txt
-*  \param  ext ÎÄ¼şºó×º£¬ÀıÈç txt
+*  \brief     ä»¥å½“å‰æ—¶é—´åˆ›å»ºæ–‡ä»¶ï¼Œä¾‹å¦‚:20161015083000.txt
+*  \param  ext æ–‡ä»¶åç¼€ï¼Œä¾‹å¦‚ txt
 */
 void SD_CreateFileByTime(uint8_t *ext);
 
 /*! 
-*  \brief     ÔÚµ±Ç°ÎÄ¼şÄ©Î²Ğ´ÈëÊı¾İ
-*  \param  buffer Êı¾İ
-*  \param  dlc Êı¾İ³¤¶È
+*  \brief     åœ¨å½“å‰æ–‡ä»¶æœ«å°¾å†™å…¥æ•°æ®
+*  \param  buffer æ•°æ®
+*  \param  dlc æ•°æ®é•¿åº¦
 */
 void SD_WriteFile(uint8_t *buffer,uint16_t dlc);
 
 /*! 
-*  \brief     ¶ÁÈ¡µ±Ç°ÎÄ¼ş
-*  \param  offset ÎÄ¼şÎ»ÖÃÆ«ÒÆ
-*  \param  dlc Êı¾İ³¤¶È
+*  \brief     è¯»å–å½“å‰æ–‡ä»¶
+*  \param  offset æ–‡ä»¶ä½ç½®åç§»
+*  \param  dlc æ•°æ®é•¿åº¦
 */
 void SD_ReadFile(uint32_t offset,uint16_t dlc);
 
 /*! 
-*  \brief     »ñÈ¡µ±Ç°ÎÄ¼ş³¤¶È
+*  \brief     è·å–å½“å‰æ–‡ä»¶é•¿åº¦
 */
 void SD_GetFileSize();
 
 /*! 
-*  \brief     ¹Ø±Õµ±Ç°ÎÄ¼ş
+*  \brief     å…³é—­å½“å‰æ–‡ä»¶
 */
 void SD_CloseFile();
 #endif
 
 /*! 
-*  \brief     ¼ÇÂ¼¿Ø¼ş-´¥·¢¾¯¸æ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ¸æ¾¯Öµ
-*  \param  time ¸æ¾¯²úÉúµÄÊ±¼ä£¬Îª0Ê±Ê¹ÓÃÆÁÄ»ÄÚ²¿Ê±¼ä
+*  \brief     è®°å½•æ§ä»¶-è§¦å‘è­¦å‘Š
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value å‘Šè­¦å€¼
+*  \param  time å‘Šè­¦äº§ç”Ÿçš„æ—¶é—´ï¼Œä¸º0æ—¶ä½¿ç”¨å±å¹•å†…éƒ¨æ—¶é—´
 */
 void Record_SetEvent(uint16_t screen_id,uint16_t control_id,uint16_t value,uint8_t *time);
 
 /*! 
-*  \brief     ¼ÇÂ¼¿Ø¼ş-½â³ı¾¯¸æ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  value ¸æ¾¯Öµ
-*  \param  time ¸æ¾¯½â³ıµÄÊ±¼ä£¬Îª0Ê±Ê¹ÓÃÆÁÄ»ÄÚ²¿Ê±¼ä
+*  \brief     è®°å½•æ§ä»¶-è§£é™¤è­¦å‘Š
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  value å‘Šè­¦å€¼
+*  \param  time å‘Šè­¦è§£é™¤çš„æ—¶é—´ï¼Œä¸º0æ—¶ä½¿ç”¨å±å¹•å†…éƒ¨æ—¶é—´
 */
 void Record_ResetEvent(uint16_t screen_id,uint16_t control_id,uint16_t value,uint8_t *time);
 
 /*! 
-*  \brief    ¼ÇÂ¼¿Ø¼ş- Ìí¼Ó³£¹æ¼ÇÂ¼
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  record Ò»Ìõ¼ÇÂ¼(×Ö·û´®)£¬×ÓÏîÍ¨¹ı·ÖºÅ¸ô¿ª£¬ÀıÈç£ºµÚÒ»Ïî;µÚ¶şÏî;µÚÈıÏî;
+*  \brief    è®°å½•æ§ä»¶- æ·»åŠ å¸¸è§„è®°å½•
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  record ä¸€æ¡è®°å½•(å­—ç¬¦ä¸²)ï¼Œå­é¡¹é€šè¿‡åˆ†å·éš”å¼€ï¼Œä¾‹å¦‚ï¼šç¬¬ä¸€é¡¹;ç¬¬äºŒé¡¹;ç¬¬ä¸‰é¡¹;
 */
 void Record_Add(uint16_t screen_id,uint16_t control_id,uint8_t *record);
 
 /*! 
-*  \brief     ¼ÇÂ¼¿Ø¼ş-Çå³ı¼ÇÂ¼Êı¾İ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     è®°å½•æ§ä»¶-æ¸…é™¤è®°å½•æ•°æ®
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void Record_Clear(uint16_t screen_id,uint16_t control_id);
 
 /*! 
-*  \brief     ¼ÇÂ¼¿Ø¼ş-ÉèÖÃ¼ÇÂ¼ÏÔÊ¾Æ«ÒÆ
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
-*  \param  offset ÏÔÊ¾Æ«ÒÆ£¬¹ö¶¯ÌõÎ»ÖÃ
+*  \brief     è®°å½•æ§ä»¶-è®¾ç½®è®°å½•æ˜¾ç¤ºåç§»
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
+*  \param  offset æ˜¾ç¤ºåç§»ï¼Œæ»šåŠ¨æ¡ä½ç½®
 */
 void Record_SetOffset(uint16_t screen_id,uint16_t control_id,uint16_t offset);
 
 /*! 
-*  \brief     ¼ÇÂ¼¿Ø¼ş-»ñÈ¡µ±Ç°¼ÇÂ¼ÊıÄ¿
-*  \param  screen_id »­ÃæID
-*  \param  control_id ¿Ø¼şID
+*  \brief     è®°å½•æ§ä»¶-è·å–å½“å‰è®°å½•æ•°ç›®
+*  \param  screen_id ç”»é¢ID
+*  \param  control_id æ§ä»¶ID
 */
 void Record_GetCount(uint16_t screen_id,uint16_t control_id);
 
-//¶ÁÈ¡RTC
+//è¯»å–RTC
 void ReadRTC(void);
 
 /*! 
-*  \brief   ²¥·ÅÒôÀÖ
-*  \param   buffer Ê®Áù½øÖÆµÄÒôÀÖÂ·¾¶¼°Ãû×Ö
+*  \brief   æ’­æ”¾éŸ³ä¹
+*  \param   buffer åå…­è¿›åˆ¶çš„éŸ³ä¹è·¯å¾„åŠåå­—
 */
 void PlayMusic(uint8_t *buffer);
 
@@ -909,5 +909,5 @@ void SuspendMusicId(void);
 void ResumeMusicId(void);
 void StopMusicId(void);
 /*****************************************************************************/
-void resetGddcHmi(void);//ÖØÆôGDDC HMI
+void resetGddcHmi(void);//é‡å¯GDDC HMI
 #endif      //_HMI_DRIVER_

@@ -1,8 +1,8 @@
 #include "sPlcTest.h"
-//÷∏¡Ó≤‚ ‘≥Ã–Ú
+//Êåá‰ª§ÊµãËØïÁ®ãÂ∫è
 #if CONFIG_SPLC_FUNTEST == 1
 static void sPlcTest_XTAB(void){
-	//ÃÓ≥‰X÷·
+	//Â°´ÂÖÖXËΩ¥
 	int16_t srcX, distY, length;
 	NVRAM0[EM_START + 0] = 100;
 	NVRAM0[EM_START + 1] = 440;
@@ -14,7 +14,7 @@ static void sPlcTest_XTAB(void){
 	NVRAM0[EM_START + 7] = 4503;
 	NVRAM0[EM_START + 8] = 5327;
 	NVRAM0[EM_START + 9] = 6909;
-	//ÃÓ≥‰Y÷·
+	//Â°´ÂÖÖYËΩ¥
 	NVRAM0[EM_START + 10] = 1101;
 	NVRAM0[EM_START + 11] = 1442;
 	NVRAM0[EM_START + 12] = 11123;

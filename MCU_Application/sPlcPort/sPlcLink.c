@@ -1,33 +1,33 @@
 #include "sPlcLink.h"
-//SPLC LINKÍ¨ĞÅ³ÌĞò ¹Ì¶¨´®¿Ú PORT0Îª´ËĞ­Òé
-//LINK×Ô¶¨ÒåĞ­ÒéÓëMODBUS ASCII¼æÈİ²¢À©Õ¹ÁË¹¦ÄÜÖ¸Áî
+//SPLC LINKé€šä¿¡ç¨‹åº å›ºå®šä¸²å£ PORT0ä¸ºæ­¤åè®®
+//LINKè‡ªå®šä¹‰åè®®ä¸MODBUS ASCIIå…¼å®¹å¹¶æ‰©å±•äº†åŠŸèƒ½æŒ‡ä»¤
 /*****************************************************************************/
 extern UART_HandleTypeDef huart1;
 /*****************************************************************************/
-#define LINK_FUN_01												0x01//¶ÁÈ¡ÏßÈ¦×´Ì¬
-#define LINK_FUN_02												0x02//¶ÁÈ¡ÊäÈë×´Ì¬
-#define LINK_FUN_03												0x03//¶ÁÈ¡±£³Ö¼Ä´æÆ÷
-#define LINK_FUN_04												0x04//¶ÁÈ¡ÊäÈë¼Ä´æÆ÷
-#define LINK_FUN_05												0x05//Ç¿ÖÆµ¥¸öÏßÈ¦
-#define LINK_FUN_06												0x06//Ô¤ÖÃµ¥¸ö¼Ä´æÆ÷
-#define LINK_FUN_0F												0x0F//Ç¿ÖÆ¶à¸öÏßÈ¦
-#define LINK_FUN_10												0x10//Ô¤ÖÃ¶à¸ö¼Ä´æÆ÷
-#define LINK_FUN_14												0x14//¶ÁÈ¡ÎÄ¼ş¼ÇÂ¼
-#define LINK_FUN_16												0x16//ÑÚÂëĞ´Èë¼Ä´æÆ÷
-#define LINK_FUN_17												0x17//¶ÁĞ´¶à¸ö¼Ä´æÆ÷
-#define LINK_FUN_2B												0x18//¶ÁÈ¡Éè±¸ID
-#define LINK_FUN_55												0x19//ÖØÆô
+#define LINK_FUN_01												0x01//è¯»å–çº¿åœˆçŠ¶æ€
+#define LINK_FUN_02												0x02//è¯»å–è¾“å…¥çŠ¶æ€
+#define LINK_FUN_03												0x03//è¯»å–ä¿æŒå¯„å­˜å™¨
+#define LINK_FUN_04												0x04//è¯»å–è¾“å…¥å¯„å­˜å™¨
+#define LINK_FUN_05												0x05//å¼ºåˆ¶å•ä¸ªçº¿åœˆ
+#define LINK_FUN_06												0x06//é¢„ç½®å•ä¸ªå¯„å­˜å™¨
+#define LINK_FUN_0F												0x0F//å¼ºåˆ¶å¤šä¸ªçº¿åœˆ
+#define LINK_FUN_10												0x10//é¢„ç½®å¤šä¸ªå¯„å­˜å™¨
+#define LINK_FUN_14												0x14//è¯»å–æ–‡ä»¶è®°å½•
+#define LINK_FUN_16												0x16//æ©ç å†™å…¥å¯„å­˜å™¨
+#define LINK_FUN_17												0x17//è¯»å†™å¤šä¸ªå¯„å­˜å™¨
+#define LINK_FUN_2B												0x18//è¯»å–è®¾å¤‡ID
+#define LINK_FUN_55												0x19//é‡å¯
 /*****************************************************************************/
-#define LINK_STX												0x3A//ÆğÊ¼×Ö·û
-#define LINK_ETX0												0x0D//½áÊø×Ö·û
-#define LINK_ETX1												0x0A//½áÊø×Ö·û
+#define LINK_STX												0x3A//èµ·å§‹å­—ç¬¦
+#define LINK_ETX0												0x0D//ç»“æŸå­—ç¬¦
+#define LINK_ETX1												0x0A//ç»“æŸå­—ç¬¦
 /******************************************************************************/
-#define LINK_STATE_M_IDEL										0x00//Ö÷»ú¿ÕÏĞ
-#define LINK_STATE_M_SEND_REQ									0x01//Ö÷»úÇëÇó·¢ËÍ
-#define LINK_STATE_M_WAIT_SEND_DONE								0x02//µÈ´ıÖ÷»ú·¢ËÍÍê³É
-#define LINK_STATE_M_WAIT_RECE_DONE								0x03//µÈ´ıÖ÷»ú½ÓÊÕÍê³É
-#define LINK_STATE_M_DONE										0x04//´«ÊäÍê³É
-#define LINK_STATE_M_FAIL										0xFF//Ê§°Ü
+#define LINK_STATE_M_IDEL										0x00//ä¸»æœºç©ºé—²
+#define LINK_STATE_M_SEND_REQ									0x01//ä¸»æœºè¯·æ±‚å‘é€
+#define LINK_STATE_M_WAIT_SEND_DONE								0x02//ç­‰å¾…ä¸»æœºå‘é€å®Œæˆ
+#define LINK_STATE_M_WAIT_RECE_DONE								0x03//ç­‰å¾…ä¸»æœºæ¥æ”¶å®Œæˆ
+#define LINK_STATE_M_DONE										0x04//ä¼ è¾“å®Œæˆ
+#define LINK_STATE_M_FAIL										0xFF//å¤±è´¥
 /*****************************************************************************/
 #define LIKN_STATE_S_IDEL										0x01
 #define LINK_STATE_S_WAIT_RECE									0x02
@@ -39,12 +39,12 @@ extern UART_HandleTypeDef huart1;
 #define LINK_RET_RECE_OVERTIME									0x03
 #define LINK_RET_LRC_ERR										0x04
 /*****************************************************************************/
-//static void uint8ToAscii(uint8_t *pchar, uint8_t* pAscii);//UINT8×ªASCII
-//static uint8_t  asciiToUint8(uint8_t *pdat);//ASCII×ªÎŞ·ûºÅÊı
-static uint8_t  checkLrc(uint8_t *pdata, uint8_t len);//¼ÆËãLRCĞ£ÑéÖµ
-static uint8_t  mLinkState, sLinkState;//×´Ì¬»ú
+//static void uint8ToAscii(uint8_t *pchar, uint8_t* pAscii);//UINT8è½¬ASCII
+//static uint8_t  asciiToUint8(uint8_t *pdat);//ASCIIè½¬æ— ç¬¦å·æ•°
+static uint8_t  checkLrc(uint8_t *pdata, uint8_t len);//è®¡ç®—LRCæ ¡éªŒå€¼
+static uint8_t  mLinkState, sLinkState;//çŠ¶æ€æœº
 /******************************************************************************/
-static uint8_t checkLrc(uint8_t *pdata, uint8_t len){//¼ÆËãLRCĞ£ÑéÖµ
+static uint8_t checkLrc(uint8_t *pdata, uint8_t len){//è®¡ç®—LRCæ ¡éªŒå€¼
     /* LRC result */
     uint8_t lrc = 0;
     /* pass through all the data */
@@ -56,7 +56,7 @@ static uint8_t checkLrc(uint8_t *pdata, uint8_t len){//¼ÆËãLRCĞ£ÑéÖµ
     return lrc;
 }
 /*
-static void uint8ToAscii(uint8_t *pchar, uint8_t* pAscii){//UINT8×ªASCII
+static void uint8ToAscii(uint8_t *pchar, uint8_t* pAscii){//UINT8è½¬ASCII
 	*pAscii = (uint8_t)(*pchar / 16);
 	if(*pAscii < 10){
 		*pAscii += 48;
@@ -74,7 +74,7 @@ static void uint8ToAscii(uint8_t *pchar, uint8_t* pAscii){//UINT8×ªASCII
 }
 */
 /*
-static uint8_t asciiToUint8(uint8_t *pdat){//ASCII×ªUINT8
+static uint8_t asciiToUint8(uint8_t *pdat){//ASCIIè½¬UINT8
 	uint8_t temp0, temp1;
 	if (*pdat >= '0' && *pdat <= '9'){
 		temp0 = *pdat - '0';

@@ -1,7 +1,7 @@
 #include "sPlc.h"
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-static void writeMcp4821_0(uint16_t dat){//MCP4821 SPIĞ´Èë
+static void writeMcp4821_0(uint16_t dat){//MCP4821 SPIå†™å…¥
 	uint8_t tmp, i;
 	SET_EDAC0_CS(GPIO_PIN_RESET);//CS = 0
 	dat &= 0x0FFF;
@@ -21,7 +21,7 @@ static void writeMcp4821_0(uint16_t dat){//MCP4821 SPIĞ´Èë
 	SET_EDAC0_CS(GPIO_PIN_SET);
 }
 
-static void writeMcp4821_1(uint16_t dat){//MCP4821 SPIĞ´Èë
+static void writeMcp4821_1(uint16_t dat){//MCP4821 SPIå†™å…¥
 	uint8_t tmp, i;
 	SET_EDAC1_CS(GPIO_PIN_RESET);//CS = 0
 	dat &= 0x0FFF;
@@ -41,7 +41,7 @@ static void writeMcp4821_1(uint16_t dat){//MCP4821 SPIĞ´Èë
 	SET_EDAC1_CS(GPIO_PIN_SET);
 }
 
-static void writeMcp4821_2(uint16_t dat){//MCP4821 SPIĞ´Èë
+static void writeMcp4821_2(uint16_t dat){//MCP4821 SPIå†™å…¥
 	uint8_t tmp, i;
 	SET_EDAC2_CS(GPIO_PIN_RESET);//CS = 0
 	dat &= 0x0FFF;
@@ -62,7 +62,7 @@ static void writeMcp4821_2(uint16_t dat){//MCP4821 SPIĞ´Èë
 }
 
 
-void sPlcDacInit(void){//DAC³õÊ¼»¯
+void sPlcDacInit(void){//DACåˆå§‹åŒ–
 	SET_EDAC0_CS(GPIO_PIN_SET);SET_EDAC1_CS(GPIO_PIN_SET);SET_EDAC2_CS(GPIO_PIN_SET);SET_EDAC3_CS(GPIO_PIN_SET);//SPI CS=1
 	SET_EDAC0_SCK(GPIO_PIN_RESET);SET_EDAC1_SCK(GPIO_PIN_RESET);SET_EDAC2_SCK(GPIO_PIN_RESET);SET_EDAC3_SCK(GPIO_PIN_RESET); //SPI CLK = 0
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
@@ -74,13 +74,13 @@ void sPlcDacInit(void){//DAC³õÊ¼»¯
 	printf("%s,%d,%s:init dac done!\n",__FILE__, __LINE__, __func__);
 }
 
-void UPDAC0(void){//Á¢¼´´ÓSPREG_DAC_0ÖĞ¸üĞÂDAC0
+void UPDAC0(void){//ç«‹å³ä»SPREG_DAC_0ä¸­æ›´æ–°DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_0] & 0x0FFF;
 	writeMcp4821_0(temp);
 	printf("%s,%d,%s:update dac0=%d\n",__FILE__, __LINE__, __func__, temp);
 }
-void UPDAC1(void){//Á¢¼´´ÓSPREG_DAC_1¸üĞÂDAC1
+void UPDAC1(void){//ç«‹å³ä»SPREG_DAC_1æ›´æ–°DAC1
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_1] & 0x0FFF;
 	writeMcp4821_1(temp);
@@ -88,7 +88,7 @@ void UPDAC1(void){//Á¢¼´´ÓSPREG_DAC_1¸üĞÂDAC1
 	printf("%s,%d,%s:update dac1=%d\n",__FILE__, __LINE__, __func__, temp);
 }
 
-void CLDAC(void){//Á¢¼´Çå¿ÕÈ«²¿DAC
+void CLDAC(void){//ç«‹å³æ¸…ç©ºå…¨éƒ¨DAC
 	writeMcp4821_0(0);
 	writeMcp4821_1(0);
 	writeMcp4821_2(0);
@@ -99,7 +99,7 @@ void CLDAC(void){//Á¢¼´Çå¿ÕÈ«²¿DAC
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
 
-static void hgc5615(uint16_t dat){//HGC5616 Ä£ÄâSPIĞ´Èë
+static void hgc5615(uint16_t dat){//HGC5616 æ¨¡æ‹ŸSPIå†™å…¥
 	uint16_t tmp, i, wdat;
 	dat = dat & 0x3FF;
 	SET_HGC5615_CS(GPIO_PIN_SET);//CS = 1
@@ -140,31 +140,31 @@ static void hgc5615(uint16_t dat){//HGC5616 Ä£ÄâSPIĞ´Èë
 
 
 
-void sPlcDacInit(void){//DAC³õÊ¼»¯
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // ÉèÖÃDACÊä³öÖµ
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // ÉèÖÃDACÊä³öÖµ	
-	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // ¿ªÆôDACÊä³ö
+void sPlcDacInit(void){//DACåˆå§‹åŒ–
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // è®¾ç½®DACè¾“å‡ºå€¼
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // è®¾ç½®DACè¾“å‡ºå€¼	
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // å¼€å¯DACè¾“å‡º
 	hgc5615(0);
 }
-void UPDAC0(void){//Á¢¼´´ÓSPREG_DAC_0ÖĞ¸üĞÂDAC0
+void UPDAC0(void){//ç«‹å³ä»SPREG_DAC_0ä¸­æ›´æ–°DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_0] & 0x0FFF;
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // ÉèÖÃDACÊä³öÖµ	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // è®¾ç½®DACè¾“å‡ºå€¼	
 }
-void UPDAC1(void){//Á¢¼´´ÓSPREG_DAC_1ÖĞ¸üĞÂDAC0
+void UPDAC1(void){//ç«‹å³ä»SPREG_DAC_1ä¸­æ›´æ–°DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_1] & 0x0FFF;
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // ÉèÖÃDACÊä³öÖµ	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // è®¾ç½®DACè¾“å‡ºå€¼	
 }
 
-void UPDAC7(void){//Á¢¼´´ÓSPREG_DAC_0ÖĞ¸üĞÂDAC0
+void UPDAC7(void){//ç«‹å³ä»SPREG_DAC_0ä¸­æ›´æ–°DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_7] & 0x0FFF;
 	hgc5615(temp);
 }
-void CLDAC(void){//Á¢¼´Çå¿ÕÈ«²¿DAC
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // ÉèÖÃDACÊä³öÖµ	
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // ÉèÖÃDACÊä³öÖµ	
+void CLDAC(void){//ç«‹å³æ¸…ç©ºå…¨éƒ¨DAC
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // è®¾ç½®DACè¾“å‡ºå€¼	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // è®¾ç½®DACè¾“å‡ºå€¼	
 	hgc5615(0);
 }
 #endif

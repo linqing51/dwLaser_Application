@@ -1,10 +1,10 @@
 #include "dcHmiApp.h"
 /*****************************************************************************/
-uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//Ö¸Áî»º´æ
+uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//æŒ‡ä»¤ç¼“å­˜
 static int8_t standbyKeyTouchEnableStatus = -1;
-uint16_t hmiCmdSize;//ÒÑ»º³åµÄÖ¸ÁîÊı
-static uint8_t MsgId = 0xFF;//µ±Ç°ÏÔÊ¾µÄĞÅÏ¢ID
-uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//ÎÄ¼ş¶ÁĞ´»º³å
+uint16_t hmiCmdSize;//å·²ç¼“å†²çš„æŒ‡ä»¤æ•°
+static uint8_t MsgId = 0xFF;//å½“å‰æ˜¾ç¤ºçš„ä¿¡æ¯ID
+uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//æ–‡ä»¶è¯»å†™ç¼“å†²
 uint32_t newBootloadCrc32;
 IncPid_t LaserTecIncPids;
 IncPid_t LaserFanIncPids;
@@ -15,51 +15,51 @@ int16_t LaserFanOutCounter;
 /*****************************************************************************/
 FRESULT retUsbH;
 FATFS	USBH_fatfs;
-FIL BootLoadFile;//FATFS File Object ¼ÇÂ¼ĞÅÏ¢
+FIL BootLoadFile;//FATFS File Object è®°å½•ä¿¡æ¯
 extern ApplicationTypeDef Appli_state;
 static uint16_t legalUsbDev[5] = {0x16C0, 0, 0, 0, 0};
 static uint16_t legalUsbPid[5] = {0x05E2, 0, 0, 0, 0};
 /*****************************************************************************/
-void saveConfigToDisk(void){//½«ÅäÖÃ´¢´æµ½UÅÌ
+void saveConfigToDisk(void){//å°†é…ç½®å‚¨å­˜åˆ°Uç›˜
 
 }
-void loadConfigFromDisk(void){//´ÓUÅÌÔØÈëÅäÖÃ
+void loadConfigFromDisk(void){//ä»Uç›˜è½½å…¥é…ç½®
 
 }
-void saveSchemeToDisk(void){//½«·½°¸´¢´æµ½UÅÌ
+void saveSchemeToDisk(void){//å°†æ–¹æ¡ˆå‚¨å­˜åˆ°Uç›˜
 	
 }
-void loadSchemeFromDisk(void){//´ÓUÅÌÔØÈë·½°¸
+void loadSchemeFromDisk(void){//ä»Uç›˜è½½å…¥æ–¹æ¡ˆ
 
 }
-uint8_t updateBootloadReq(void){//¸üĞÂBOOTLOADÇëÇó 1:¿ÉÒÔ¸üĞÂ  0£º²»ÄÜ¸üĞÂ
+uint8_t updateBootloadReq(void){//æ›´æ–°BOOTLOADè¯·æ±‚ 1:å¯ä»¥æ›´æ–°  0ï¼šä¸èƒ½æ›´æ–°
 	uint32_t TmpReadSize = 0x00;
 	uint32_t LastPGAddress;
 	uint8_t readflag = TRUE;
-	uint32_t bytesread;//Êµ¼ÊÎÄ¼ş¶ÁÈ¡×Ö½ÚÊı
+	uint32_t bytesread;//å®é™…æ–‡ä»¶è¯»å–å­—èŠ‚æ•°
 	uint32_t i;
-	//¾¯¸æĞÅÏ¢
+	//è­¦å‘Šä¿¡æ¯
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Please Standby,Do Not Power Off!!"));
 	vTaskDelay(800);
-	//¹ÒÔØUSB DISK FATÎÄ¼şÏµÍ³
+	//æŒ‚è½½USB DISK FATæ–‡ä»¶ç³»ç»Ÿ
 	retUsbH = f_mount(&USBH_fatfs, (const TCHAR*)FATFS_ROOT, 0);
-	if(retUsbH != FR_OK){//¹ÒÔØUÅÌÊ§°Ü
+	if(retUsbH != FR_OK){//æŒ‚è½½Uç›˜å¤±è´¥
 		printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Mount usb disk errror,exit update!"));
 		return false;
 	}
 	vTaskDelay(6000);
-	//´ò¿ªÎÄ¼ş
+	//æ‰“å¼€æ–‡ä»¶
 	retUsbH = f_open(&BootLoadFile, (const TCHAR*)(BOOTLOAD_FILENAME), FA_OPEN_EXISTING | FA_READ);//
-	if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°ÜÌø¹ı¹Ì¼ş¸üĞÂÖ±½ÓÔËĞĞ³ÌĞò
+	if(retUsbH != FR_OK){//è¯»å–å¤±è´¥è·³è¿‡å›ºä»¶æ›´æ–°ç›´æ¥è¿è¡Œç¨‹åº
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 		printf("BootLoader:Open %s fail,unmount usb disk,ECODE=0x%02XH\n", BOOTLOAD_FILENAME, retUsbH);
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Open file errror,exit update!"));
 		return false;
 	}
-	//¼ì²éÎÄ¼ş´óĞ¡
-	f_lseek(&BootLoadFile, 0);//¶ÁÈ¡Ö¸ÕëÒÆ¶¯µ½¿ªÍ·
-	if(f_size(&BootLoadFile) > BOOTLOADER_FLASH_SIZE){//MCU¹Ì¼ş´óÓÚFLSAHÈİÁ¿
+	//æ£€æŸ¥æ–‡ä»¶å¤§å°
+	f_lseek(&BootLoadFile, 0);//è¯»å–æŒ‡é’ˆç§»åŠ¨åˆ°å¼€å¤´
+	if(f_size(&BootLoadFile) > BOOTLOADER_FLASH_SIZE){//MCUå›ºä»¶å¤§äºFLSAHå®¹é‡
 		f_close(&BootLoadFile);
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 		printf("BootLoader:File %s is over length, close file and unmount disk!\n", BOOTLOAD_FILENAME);
@@ -67,7 +67,7 @@ uint8_t updateBootloadReq(void){//¸üĞÂBOOTLOADÇëÇó 1:¿ÉÒÔ¸üĞÂ  0£º²»ÄÜ¸üĞÂ
 		return false;
 	}
 	vTaskDelay(800);
-	//¼ÆËãĞÂ¹Ì¼şCRCÖµ
+	//è®¡ç®—æ–°å›ºä»¶CRCå€¼
 	newBootloadCrc32 = 0;
 	crc32Clear();
 	LastPGAddress = BOOTLOADER_FLASH_START_ADDRESS;
@@ -75,7 +75,7 @@ uint8_t updateBootloadReq(void){//¸üĞÂBOOTLOADÇëÇó 1:¿ÉÒÔ¸üĞÂ  0£º²»ÄÜ¸üĞÂ
 	while(readflag){
 		/* Read maximum 512 Kbyte from the selected file */
 		f_read(&BootLoadFile, CcmRamBuf, sizeof(CcmRamBuf), (void*)&bytesread);
-		newBootloadCrc32 = crc32Calculate(CcmRamBuf, bytesread);//CRC32 ¼ÆËãÊı×é
+		newBootloadCrc32 = crc32Calculate(CcmRamBuf, bytesread);//CRC32 è®¡ç®—æ•°ç»„
 		/* Temp variable */
 		TmpReadSize = bytesread;
 		/* The read data < "BUFFER_SIZE" Kbyte */
@@ -86,10 +86,10 @@ uint8_t updateBootloadReq(void){//¸üĞÂBOOTLOADÇëÇó 1:¿ÉÒÔ¸üĞÂ  0£º²»ÄÜ¸üĞÂ
 	}
 	f_close(&BootLoadFile);
 	f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
-	for(i = LastPGAddress;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){//²¹ÍêÊ£ÓàCRC
+	for(i = LastPGAddress;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){//è¡¥å®Œå‰©ä½™CRC
 		newBootloadCrc32 = crc32CalculateAdd(0xFF);
 	}
-	//ÓëÒÑÓĞµÄ¹Ì¼ş½øĞĞ¶Ô±È²¢¸ø³öÌáÊ¾
+	//ä¸å·²æœ‰çš„å›ºä»¶è¿›è¡Œå¯¹æ¯”å¹¶ç»™å‡ºæç¤º
 	if(BootloadCrc == newBootloadCrc32){
 		printf("BootLoader:old crc%08X: and new crc:%08X is same,skip update!\n", BootloadCrc , newBootloadCrc32);
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"File is same,skip update...");
@@ -110,20 +110,20 @@ uint8_t updateBootloadReq(void){//¸üĞÂBOOTLOADÇëÇó 1:¿ÉÒÔ¸üĞÂ  0£º²»ÄÜ¸üĞÂ
 		return true;
 	}
 }
-void confirmBootloadUpdate(void){//Ö´ĞĞBootload¸üĞÂ
+void confirmBootloadUpdate(void){//æ‰§è¡ŒBootloadæ›´æ–°
 	uint32_t i;
-	vTaskSuspendAll();//½ûÓÃÈÎÎñÇĞ»»
-	__disable_irq();//¹Ø±ÕÖĞ¶Ï
-	SysTick->CTRL = 0;//¹Ø¼ü´úÂë
-	HAL_FLASH_Unlock();//½âËµFLASHËø¶¨
+	vTaskSuspendAll();//ç¦ç”¨ä»»åŠ¡åˆ‡æ¢
+	__disable_irq();//å…³é—­ä¸­æ–­
+	SysTick->CTRL = 0;//å…³é”®ä»£ç 
+	HAL_FLASH_Unlock();//è§£è¯´FLASHé”å®š
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR);
-	if (FLASH_If_EraseBootload() != 0x00){//²Á³ıBOOTLOAD Ê§°Ü
+	if (FLASH_If_EraseBootload() != 0x00){//æ“¦é™¤BOOTLOAD å¤±è´¥
 		printf("BootLoader:Erase bootload fail, GameOver!!!!!\n");
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
 		return;
 	}
 	softDelayMs(800);
-	if(checkBlank(BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_SIZE)){//FLASH ²é¿Õ
+	if(checkBlank(BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_SIZE)){//FLASH æŸ¥ç©º
 		printf("Bootloader:Erase mcu booload sucess.\n");
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload sucessful..."));
 	}
@@ -136,14 +136,14 @@ void confirmBootloadUpdate(void){//Ö´ĞĞBootload¸üĞÂ
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start update new bootload..."));
 	for(i = 0; i < BOOTLOADER_FLASH_SIZE; i += 4){
 		if(FLASH_lf_WriteBootload((BOOTLOADER_FLASH_START_ADDRESS + i), *(uint32_t *) (CcmRamBuf + i)) != 0x00){
-			printf("BootLoader:write mcu bootload fail,GameOver!!!!!\n");//Ğ´ÈëFLASH´íÎó
+			printf("BootLoader:write mcu bootload fail,GameOver!!!!!\n");//å†™å…¥FLASHé”™è¯¯
 		}
 	}
 	HAL_FLASH_Lock();
 	printf("BootLoader:Update new bootload done...\n");
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"Update new bootload done...");
 	softDelayMs(800);
-	//¼ì²éÒÑĞ´ÈëµÄBootloadÊÇ·ñÕıÈ·
+	//æ£€æŸ¥å·²å†™å…¥çš„Bootloadæ˜¯å¦æ­£ç¡®
 	printf("BootLoader:Start checksum new bootload...\n");
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start checksum new bootload..."));
 	BootloadCrc = getOriginBootloadCrc();
@@ -162,7 +162,7 @@ void confirmBootloadUpdate(void){//Ö´ĞĞBootload¸üĞÂ
 	while(1);
 }
 
-void exitBootloadUpdate(void){//ÍË³öBootload¸üĞÂ
+void exitBootloadUpdate(void){//é€€å‡ºBootloadæ›´æ–°
 	f_close(&BootLoadFile);
 	f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 	vTaskDelay(300);
@@ -177,16 +177,16 @@ void exitBootloadUpdate(void){//ÍË³öBootload¸üĞÂ
 	
 }
 	
-void loadDeviceConfig(void){//´ÓEPROMÔØÈëÅäÖÃÎÄ¼ş
+void loadDeviceConfig(void){//ä»EPROMè½½å…¥é…ç½®æ–‡ä»¶
 	uint32_t crc32_eprom_cfg, crc32_cfg;
-	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//´ÓEPROMÔØÈëÉè±¸ÅäÖÃ
+	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//ä»EPROMè½½å…¥è®¾å¤‡é…ç½®
 	epromReadDword(CONFIG_EPROM_CFG_CRC, &crc32_eprom_cfg);
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	if(crc32_eprom_cfg != crc32_cfg){//Ğ£ÑéÂë´íÎóÊ¹ÓÃÄ¬ÈÏÅäÖÃ
+	if(crc32_eprom_cfg != crc32_cfg){//æ ¡éªŒç é”™è¯¯ä½¿ç”¨é»˜è®¤é…ç½®
 		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-		//´ó×åÄ£¿éÄ¬ÈÏ¹¦ÂÊ±í 1470
+		//å¤§æ—æ¨¡å—é»˜è®¤åŠŸç‡è¡¨ 1470
 		deviceConfig.calibrationPwr0[0] = 9;
 		deviceConfig.calibrationPwr0[1] = 28;
 		deviceConfig.calibrationPwr0[2] = 48;
@@ -197,7 +197,7 @@ void loadDeviceConfig(void){//´ÓEPROMÔØÈëÅäÖÃÎÄ¼ş
 		deviceConfig.calibrationPwr0[7] = 133;
 		deviceConfig.calibrationPwr0[8] = 144;
 		deviceConfig.calibrationPwr0[9] = 153;
-		//´ó×åÄ£¿éÄ¬ÈÏ¹¦ÂÊ±í 980
+		//å¤§æ—æ¨¡å—é»˜è®¤åŠŸç‡è¡¨ 980
 		deviceConfig.calibrationPwr1[0] = 9;
 		deviceConfig.calibrationPwr1[1] = 28;
 		deviceConfig.calibrationPwr1[2] = 48;
@@ -212,7 +212,7 @@ void loadDeviceConfig(void){//´ÓEPROMÔØÈëÅäÖÃÎÄ¼ş
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
-		//¼ª¹âÄ£¿éÄ¬ÈÏ¹¦ÂÊ±í 1940
+		//å‰å…‰æ¨¡å—é»˜è®¤åŠŸç‡è¡¨ 1940
 		deviceConfig.calibrationPwr0[0] = 6;
 		deviceConfig.calibrationPwr0[1] = 20;
 		deviceConfig.calibrationPwr0[2] = 32;
@@ -235,21 +235,21 @@ void loadDeviceConfig(void){//´ÓEPROMÔØÈëÅäÖÃÎÄ¼ş
 		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
 		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
 		deviceConfig.aimGain = CONFIG_AIM_DEFAULT_GAIN;
-		deviceConfig.normalOpenInterLock = 1;//Ä¬ÈÏ³£¿ªÁªËø 
+		deviceConfig.normalOpenInterLock = 1;//é»˜è®¤å¸¸å¼€è”é” 
 		saveDeviceConfig();
 	}
 	else{
 		printf("%s,%d,%s:load device config done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void saveDeviceConfig(void){//½«ÅäÖÃĞ´ÈëEPROM
+void saveDeviceConfig(void){//å°†é…ç½®å†™å…¥EPROM
 	uint32_t crc32_cfg;
-	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//Ğ´ÈëEPROM	
+	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//å†™å…¥EPROM	
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//Ğ´ÈëĞ£ÑéÖµ
+	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//å†™å…¥æ ¡éªŒå€¼
 	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
 }
-void optionKeyEnable(uint8_t enable){//Ñ¡Ïî½çÃæ°´¼üËø¶¨
+void optionKeyEnable(uint8_t enable){//é€‰é¡¹ç•Œé¢æŒ‰é”®é”å®š
 	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD, enable);
 	softDelayMs(1);
 	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_INC, enable);
@@ -272,11 +272,11 @@ void optionKeyEnable(uint8_t enable){//Ñ¡Ïî½çÃæ°´¼üËø¶¨
 	softDelayMs(1);
 	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_RESTORE, enable);
 }
-void standbyDebugInfoVisiable(int8_t enable){//Standbyµ÷ÊÔĞÅÏ¢¿É¼û
+void standbyDebugInfoVisiable(int8_t enable){//Standbyè°ƒè¯•ä¿¡æ¯å¯è§
 	SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 }
-void updateDebugInfo(void){//¸üĞÂStandbyµ÷ÊÔĞÅÏ¢
+void updateDebugInfo(void){//æ›´æ–°Standbyè°ƒè¯•ä¿¡æ¯
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "LT:%05d,HT:%05d,BT:%05d,MT:%05d,FPD:%05d,LPD:%05d", \
@@ -294,11 +294,11 @@ void updateDebugInfo(void){//¸üĞÂStandbyµ÷ÊÔĞÅÏ¢
 		default:break;	
 	}
 }
-void updateDiognosisTextBox(void){//¸üĞÂÕï¶ÏĞÅÏ¢ÎÄ±¾¿ò
+void updateDiognosisTextBox(void){//æ›´æ–°è¯Šæ–­ä¿¡æ¯æ–‡æœ¬æ¡†
 	uint8_t i;
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	//´ÓNVRAMÖĞ¸üĞÂÎÄ±¾¿ò
-	//¸üĞÂ¹¦ÂÊĞ£Õı±í
+	//ä»NVRAMä¸­æ›´æ–°æ–‡æœ¬æ¡†
+	//æ›´æ–°åŠŸç‡æ ¡æ­£è¡¨
 	for(i = 0;i < 10; i++){
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr0[i] / 10.0F);
@@ -341,7 +341,7 @@ void updateDiognosisTextBox(void){//¸üĞÂÕï¶ÏĞÅÏ¢ÎÄ±¾¿ò
 	}
 	
 }
-void updateDiognosisInfo(void){//¸üĞÂÕï¶ÏĞÅÏ¢
+void updateDiognosisInfo(void){//æ›´æ–°è¯Šæ–­ä¿¡æ¯
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "A0:%05d,A1:%05d,A2:%05d,A3:%05d,A4:%05d,A5:%05d,A6:%05d,A7:%05d", \
@@ -373,11 +373,11 @@ void updateDiognosisInfo(void){//¸üĞÂÕï¶ÏĞÅÏ¢
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "WFSW NC:%1d,WFSW NO:%1d", LD(SPCOIL_WFSWITCH_PLUG), LD(SPCOIL_WFSWITCH_ON));
+	sprintf(dispBuf, "WFSW NC:%1d,WFSW NO:%1d", LD(SPCOIL_WFSWITCH_PLUG), LD(SPCOIL_WFSWITCH_NO));
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO5, (uint8_t*)dispBuf);
 }
 
-void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
+void updateSchemeDetail(int16_t classify, int16_t index){//æ›´æ–°é€‰é¡¹ç•Œé¢æ–¹æ¡ˆåç§°
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	//uint8_t index;
@@ -398,7 +398,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 				strcpy(dispBuf, (char*)(sPhlebology[2].name));
 				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
 			}
-			//·½°¸3-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ3-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -443,7 +443,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
 			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);
 
-			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);//½ûÖ¹ĞŞ¸ÄÃû³Æ
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);//ç¦æ­¢ä¿®æ”¹åç§°
 			break;
 			
 		}
@@ -473,7 +473,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 				strcpy(dispBuf, (char*)(sProctology[5].name));
 				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
 			}	
-			//·½°¸6-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ6-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -523,7 +523,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 		}
 		case SCHEME_GYNECOLOGY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Gynecology");
-			if(index < 16){//·½°¸0-15
+			if(index < 16){//æ–¹æ¡ˆ0-15
 				if(strlen((char*)sGynecology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -657,7 +657,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sGynecology[21].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
 				}					
-				//·½°¸5-15½ûÖ¹Ñ¡Ôñ
+				//æ–¹æ¡ˆ5-15ç¦æ­¢é€‰æ‹©
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -841,7 +841,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sNeurosurgery[4].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
 			}
-			//·½°¸4-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ4-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -893,7 +893,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sNeurosurgery[2].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
 			}
-			//·½°¸4-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ4-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -975,7 +975,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sDermatology[7].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
 			}			
-			//·½°¸8-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ8-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -1053,7 +1053,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sLiposuction[6].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
 			}		
-			//·½°¸7-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ7-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -1103,7 +1103,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 		}
 		case SCHEME_DENTISTRY:{	
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Dentistry");
-			if(index < 16){//·½°¸0-15
+			if(index < 16){//æ–¹æ¡ˆ0-15
 				if(strlen((char*)sDentistry[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1168,7 +1168,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sDentistry[15].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
 				}	
-				//·½°¸0-15½ûÖ¹Ñ¡Ôñ
+				//æ–¹æ¡ˆ0-15ç¦æ­¢é€‰æ‹©
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -1244,7 +1244,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sDentistry[22].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
 				}
-				//·½°¸0-15½ûÖ¹Ñ¡Ôñ
+				//æ–¹æ¡ˆ0-15ç¦æ­¢é€‰æ‹©
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -1326,7 +1326,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sTherapy[7].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
 			}		
-			//·½°¸8-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ8-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -1378,7 +1378,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 					strcpy(dispBuf, (char*)(sTherapy[2].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
 			}	
-			//·½°¸8-15½ûÖ¹Ñ¡Ôñ
+			//æ–¹æ¡ˆ8-15ç¦æ­¢é€‰æ‹©
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
@@ -1626,7 +1626,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//¸üĞÂÑ¡Ïî½çÃæ·½°¸Ãû³Æ
 	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)"");
 }
 
-void updateInformationDisplay(void){//¸üĞÂĞÅÏ¢½çÃæÏÔÊ¾
+void updateInformationDisplay(void){//æ›´æ–°ä¿¡æ¯ç•Œé¢æ˜¾ç¤º
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	char *pMain, *pMonir;
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE);	
@@ -1657,39 +1657,39 @@ void updateInformationDisplay(void){//¸üĞÂĞÅÏ¢½çÃæÏÔÊ¾
 	sprintf(dispBuf, "UUID: %08X%08X%08X", UniqueId[0], UniqueId[1], UniqueId[2]);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);	
 }
-void returnStandbyDisplay(void){//·µ»ØSTANDBY½çÃæ
+void returnStandbyDisplay(void){//è¿”å›STANDBYç•Œé¢
 	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;	
 	SetScreen(NVRAM0[EM_DC_PAGE]);
 }
-void clearReleaseTimeEnergy(void){//Çå³ı·¢ÉäÊ±¼äÓëÄÜÁ¿ÏÔÊ¾
+void clearReleaseTimeEnergy(void){//æ¸…é™¤å‘å°„æ—¶é—´ä¸èƒ½é‡æ˜¾ç¤º
 	CLRD(EM_LASER_RELEASE_TIME);
 	CLRD(EM_LASER_TRIG_TIME);
 	CLRD(EM_LASER_RELEASE_ENERGY);
 	updateReleaseTimeEnergy();
 }
-void updateReleaseTimeEnergy(void){//Ë¢ĞÂ·¢ÉäÊ±¼äÄÜÁ¿
+void updateReleaseTimeEnergy(void){//åˆ·æ–°å‘å°„æ—¶é—´èƒ½é‡
 	uint8_t minute;
 	uint8_t seconds;
 	int32_t temp0, temp1, temp2, temp3, temp4, temp5;
 	char dispBuf1[CONFIG_DCHMI_DISKBUF_SIZE];
 	int32_t *p;
 	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	temp0 = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//¼¤¹â´ò¿ªÊ±¼äÃë
+	temp0 = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//æ¿€å…‰æ‰“å¼€æ—¶é—´ç§’
 	temp0 = temp0 / 50;
 	minute = temp0 / 60;
 	seconds = temp0 % 60;
 	sprintf(dispBuf1, "%3d:%02d", minute, seconds);//00:00
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME, (uint8_t*)dispBuf1);		
-	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){//Á¬ĞøÄ£Ê½ÄÜÁ¿¼ÆËã
-		temp2 = temp0 * NVRAM0[EM_LASER_POWER_TOTAL];//¼ÆËã·¢ÉäÄÜÁ¿
+	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){//è¿ç»­æ¨¡å¼èƒ½é‡è®¡ç®—
+		temp2 = temp0 * NVRAM0[EM_LASER_POWER_TOTAL];//è®¡ç®—å‘å°„èƒ½é‡
 	}
-	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){//Âö³åÄ£Ê½ÄÜÁ¿¼ÆËã
-		if(NVRAM0[EM_LASER_POSWIDTH] < 1000 || NVRAM0[EM_LASER_NEGWIDTH] < 1000){//²ÉÓÃ¼ÆËã·¨
+	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){//è„‰å†²æ¨¡å¼èƒ½é‡è®¡ç®—
+		if(NVRAM0[EM_LASER_POSWIDTH] < 1000 || NVRAM0[EM_LASER_NEGWIDTH] < 1000){//é‡‡ç”¨è®¡ç®—æ³•
 			temp3 = NVRAM0[EM_LASER_POSWIDTH];
 			temp4 = NVRAM0[EM_LASER_NEGWIDTH];
 			temp2 = temp0 * NVRAM0[EM_LASER_POWER_TOTAL] * temp3 / (temp3 + temp4);
 		}
-		else{//Ö»¼ÆËãÕıÂö¿íÄÜÁ¿
+		else{//åªè®¡ç®—æ­£è„‰å®½èƒ½é‡
 			temp3 = NVRAM0[EM_LASER_POSWIDTH];temp3 = temp3 / 1000;
 			temp4 = NVRAM0[EM_LASER_NEGWIDTH];temp4 = temp4 / 1000;
 			
@@ -1715,7 +1715,7 @@ void updateReleaseTimeEnergy(void){//Ë¢ĞÂ·¢ÉäÊ±¼äÄÜÁ¿
 	sprintf(dispBuf1, "%11.1f J", ((float)temp2 / 10));//00:00
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
 }
-void updateWarnMsgDisplay(uint8_t id){//¸üĞÂ¾¯ºÅÏÔÊ¾¿ò
+void updateWarnMsgDisplay(uint8_t id){//æ›´æ–°è­¦å·æ˜¾ç¤ºæ¡†
 	const char *pstr;
 	if((MsgId != id) || (NVRAM0[EM_DC_PAGE] != NVRAM1[EM_DC_PAGE])){
 		switch(id){
@@ -1799,7 +1799,7 @@ void updateWarnMsgDisplay(uint8_t id){//¸üĞÂ¾¯ºÅÏÔÊ¾¿ò
 
 
 
-void updateSchemeInfo(int16_t classify, int16_t index){//¸üĞÂSCHEME ÏêÏ¸²ÎÊı
+void updateSchemeInfo(int16_t classify, int16_t index){//æ›´æ–°SCHEME è¯¦ç»†å‚æ•°
 	char dispBuf1[CONFIG_DCHMI_DISKBUF_SIZE], dispBuf2[CONFIG_DCHMI_DISKBUF_SIZE];
 	int16_t mode, select;
 	int16_t	power_ch0, power_ch1, power_red, posWidth, negWidth;
@@ -1994,13 +1994,13 @@ void updateSchemeInfo(int16_t classify, int16_t index){//¸üĞÂSCHEME ÏêÏ¸²ÎÊı
 }
 
 
-void unselectSchemeNum(int16_t index){//·´Ñ¡·½°¸Ìõ
+void unselectSchemeNum(int16_t index){//åé€‰æ–¹æ¡ˆæ¡
 	if(index >= 16){
 		index = index - 16;
 	}
 	SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + index), 0x0);
 }
-void seletcSchemeNum(int16_t classify, int16_t index){//Ñ¡ÖĞ·½°¸Ìõ
+void seletcSchemeNum(int16_t classify, int16_t index){//é€‰ä¸­æ–¹æ¡ˆæ¡
 	if(index >= 16){
 		SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_KEY_SELECT_0 + index - 16), 0x1);
 	}
@@ -2009,7 +2009,7 @@ void seletcSchemeNum(int16_t classify, int16_t index){//Ñ¡ÖĞ·½°¸Ìõ
 	}
 	updateSchemeInfo(classify, index);
 }
-void unselectSchemeAll(void){//·´Ñ¡µÚÒ»Ò³È«²¿·½°¸Ìõ
+void unselectSchemeAll(void){//åé€‰ç¬¬ä¸€é¡µå…¨éƒ¨æ–¹æ¡ˆæ¡
 	BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_0, 0x0);
 	BatchSetButtonValue(GDDC_PAGE_SCHEME_KEY_SELECT_1, 0x0);
@@ -2041,16 +2041,16 @@ void readyKeyTouchEnable(int8_t enable){
 void readyKeyValue(int8_t value){
 	SetButtonValue(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_KEY_STANDBY, value);
 }
-void standbyKeyTouchEnable(int8_t enable){//Standby key´¥Ãş
+void standbyKeyTouchEnable(int8_t enable){//Standby keyè§¦æ‘¸
 	if(enable != standbyKeyTouchEnableStatus){	
 		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);	
 		standbyKeyTouchEnableStatus = enable;
 	}
 }
-void standbyKeyValue(uint8_t value){//ÉèÖÃStandby¼üÖµ	
+void standbyKeyValue(uint8_t value){//è®¾ç½®Standbyé”®å€¼	
 	SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, value);
 }
-void updateExtralDisplay(void){//¸üĞÂ¶îÍâÏÔÊ¾
+void updateExtralDisplay(void){//æ›´æ–°é¢å¤–æ˜¾ç¤º
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	float freq, averagePower, dutyCycle, totalPower;
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
@@ -2072,7 +2072,7 @@ void updateExtralDisplay(void){//¸üĞÂ¶îÍâÏÔÊ¾
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE, (uint8_t*)dispBuf);		
 		averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_TOTAL]) / 10.0F;
 	}
-	//Æ½¾ù¹¦ÂÊÏÔÊ¾
+	//å¹³å‡åŠŸç‡æ˜¾ç¤º
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	switch(NVRAM0[EM_LASER_CHANNEL_SELECT]){
 		case LASER_CHANNEL_CH0:{
@@ -2103,14 +2103,14 @@ void updateExtralDisplay(void){//¸üĞÂ¶îÍâÏÔÊ¾
 	}
 	sprintf(dispBuf, "%3.1f W", averagePower);
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER, (uint8_t*)dispBuf);		
-	//×Ü¹¦ÂÊÏÔÊ¾
+	//æ€»åŠŸç‡æ˜¾ç¤º
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	totalPower = (float)NVRAM0[EM_LASER_POWER_TOTAL] / 10.0F;
 	sprintf(dispBuf, "%3.1f W", totalPower);
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_TOTAL_POWER, (uint8_t*)dispBuf);
 }
 
-void updatePosWidthDisplay(void){//¸üĞÂÕıÂö¿íÏÔÊ¾
+void updatePosWidthDisplay(void){//æ›´æ–°æ­£è„‰å®½æ˜¾ç¤º
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	if(NVRAM0[EM_LASER_POSWIDTH] < 1000){
 		sprintf(dispBuf, "%d ms", NVRAM0[EM_LASER_POSWIDTH]);
@@ -2120,7 +2120,7 @@ void updatePosWidthDisplay(void){//¸üĞÂÕıÂö¿íÏÔÊ¾
 	}		
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH, (uint8_t*)dispBuf);		
 }
-void updateNegWidthDisplay(void){//¸üĞÂ¸ºÂö¿íÏÔÊ¾
+void updateNegWidthDisplay(void){//æ›´æ–°è´Ÿè„‰å®½æ˜¾ç¤º
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	if(NVRAM0[EM_LASER_NEGWIDTH] < 1000){
 		sprintf(dispBuf, "%d ms", NVRAM0[EM_LASER_NEGWIDTH]);
@@ -2131,7 +2131,7 @@ void updateNegWidthDisplay(void){//¸üĞÂ¸ºÂö¿íÏÔÊ¾
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH, (uint8_t*)dispBuf);
 }
 
-void updateStandbyDisplay(void){//¸üĞÂ·½°¸ÏÔÊ¾
+void updateStandbyDisplay(void){//æ›´æ–°æ–¹æ¡ˆæ˜¾ç¤º
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	float barValue;
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -2312,7 +2312,7 @@ void updateStandbyDisplay(void){//¸üĞÂ·½°¸ÏÔÊ¾
 	updateExtralDisplay();
 }
 
-void updateOptionDisplay(void){//¸üĞÂÑ¡ÏîÏÔÊ¾	
+void updateOptionDisplay(void){//æ›´æ–°é€‰é¡¹æ˜¾ç¤º	
 	if(LD(MR_FOOSWITCH_HAND_SWITCH)){
 		SetButtonValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON, 0x01);
 	}
@@ -2326,14 +2326,14 @@ void updateOptionDisplay(void){//¸üĞÂÑ¡ÏîÏÔÊ¾
 		SetButtonValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_TONE, 0x00);
 	}
 	BatchBegin(GDDC_PAGE_OPTION);
-	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//¸üĞÂBEEMÒôÁ¿½ø¶ÈÌõ
-	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);//¸üĞÂLCDÁÁ¶È
+	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//æ›´æ–°BEEMéŸ³é‡è¿›åº¦æ¡
+	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);//æ›´æ–°LCDäº®åº¦
 	BatchEnd();
 	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME ,NVRAM0[DM_BEEM_VOLUME], 1, 0);
 	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG ,NVRAM0[DM_LCD_BRG], 1, 0);
 }
 
-void updateReadyDisplay(void){//¸üĞÂREADYÏÔÊ¾
+void updateReadyDisplay(void){//æ›´æ–°READYæ˜¾ç¤º
 	float displayPower;
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -2389,7 +2389,7 @@ void updateReadyDisplay(void){//¸üĞÂREADYÏÔÊ¾
 	updateAcousticDisplay();
 }
 
-void updateAcousticDisplay(void){//¸üĞÂÌáÊ¾ÒôÉèÖÃ
+void updateAcousticDisplay(void){//æ›´æ–°æç¤ºéŸ³è®¾ç½®
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	float ftmp;
 	int16_t cycle = 0;
@@ -2429,14 +2429,14 @@ void updateAcousticDisplay(void){//¸üĞÂÌáÊ¾ÒôÉèÖÃ
 		sprintf(dispBuf, "N/A");
 	}
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY, (uint8_t*)dispBuf);
-	//µ÷ÊÔĞÅÏ¢
+	//è°ƒè¯•ä¿¡æ¯
 	printf("%s,%d,%s:acoustic time = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME]);
 	printf("%s,%d,%s:acoustic energy = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY]);
 	printf("%s,%d,%s:acoustic cycle = %d\n", __FILE__, __LINE__, __func__, cycle);	
 }
 
-void dcHmiLoopInit(void){//³õÊ¼»¯Ä£¿é
-	//PID²ÎÊı³õÊ¼»¯
+void dcHmiLoopInit(void){//åˆå§‹åŒ–æ¨¡å—
+	//PIDå‚æ•°åˆå§‹åŒ–
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 	LaserTecIncPids.kp = 0.08;
 	LaserTecIncPids.ki = 0.005;
@@ -2450,10 +2450,10 @@ void dcHmiLoopInit(void){//³õÊ¼»¯Ä£¿é
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
 	hmiUartInit();
-	schemeInit(0);//²»»Ö¸´×Ô¶¨Òå·½°¸
+	schemeInit(0);//ä¸æ¢å¤è‡ªå®šä¹‰æ–¹æ¡ˆ
 	loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
 	NVRAM0[EM_HMI_OPERA_STEP] = 0;
-	//¼ì²éVOLUME´¢´æÖµÊÇ·ñºÏ¹æ
+	//æ£€æŸ¥VOLUMEå‚¨å­˜å€¼æ˜¯å¦åˆè§„
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = CONFIG_BEEM_MAX_VOLUME;
 	LIMS16(DM_BEEM_VOLUME, TMP_REG_0, TMP_REG_1);
@@ -2469,44 +2469,44 @@ void dcHmiLoopInit(void){//³õÊ¼»¯Ä£¿é
 	NVRAM0[EM_FAN_SET_SPEED] = 0;
 	NVRAM0[EM_FAN_GET_SPEED] = 0;
 	SSET(R_RFID_PASS);
-	//ÆÁ±Î±¨¾¯
+	//å±è”½æŠ¥è­¦
 	RRES(R_LASER_TEMP_HIGH);							
 	RRES(R_LASER_TEMP_LOW);								
 	RRES(R_MCU_TEMP_HIGH);										
 	RRES(R_MCU_TEMP_LOW);									
 	RRES(R_FAULT);
-	//½ÅÌ¤²åÈë
+	//è„šè¸æ’å…¥
 	//SSET(R_FOOTSWITCH_PLUG);
-	RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+	RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 	SET_SPK_TIM_ON;
 }
 
-static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
+static void temperatureLoop(void){//æ¸©åº¦è½®è¯¢è½®è¯¢
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-	TNTUC(EM_LASER_TEMP, SPREG_ADC_0);//CODE×ª»»ÎªNTC²âÁ¿ÎÂ¶ÈÎÂ¶È
-	TENV(EM_MCU_TEMP, SPREG_ADC_3);//CODE×ª»»ÎªMCUÎÂ¶È
+	TNTUC(EM_LASER_TEMP, SPREG_ADC_0);//CODEè½¬æ¢ä¸ºNTCæµ‹é‡æ¸©åº¦æ¸©åº¦
+	TENV(EM_MCU_TEMP, SPREG_ADC_3);//CODEè½¬æ¢ä¸ºMCUæ¸©åº¦
 #endif
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 	TNTLC(EM_LASER_TEMP, SPREG_ADC_11);
 	TNTLC(EM_HT_TEMP, SPREG_ADC_12);
 	TNTLC(EM_MBAT_TEMP, SPREG_ADC_8);
-	TENV(EM_MCU_TEMP, SPREG_ADC_13);//CODE×ª»»ÎªMCUÎÂ¶È
+	TENV(EM_MCU_TEMP, SPREG_ADC_13);//CODEè½¬æ¢ä¸ºMCUæ¸©åº¦
 #endif	
-	//ÅĞ¶Ï¶ş¼«¹ÜÎÂ¶È
-	if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_HIGH_TEMP){//¼¤¹âÆ÷¹ıÈÈ
+	//åˆ¤æ–­äºŒæç®¡æ¸©åº¦
+	if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_HIGH_TEMP){//æ¿€å…‰å™¨è¿‡çƒ­
 		SSET(R_LASER_TEMP_HIGH);
 	}
-	if(NVRAM0[EM_LASER_TEMP] <= (CONFIG_DIODE_HIGH_TEMP - 50)){//¼¤¹âÆ÷»Ö¸´Õı³£ÎÂ¶È
+	if(NVRAM0[EM_LASER_TEMP] <= (CONFIG_DIODE_HIGH_TEMP - 50)){//æ¿€å…‰å™¨æ¢å¤æ­£å¸¸æ¸©åº¦
 		RRES(R_LASER_TEMP_HIGH);
 	}
-	if(NVRAM0[EM_LASER_TEMP] <= CONFIG_DIODE_LOW_TEMP){//¼¤¹âÆ÷µÍÎÂ±£»¤
+	if(NVRAM0[EM_LASER_TEMP] <= CONFIG_DIODE_LOW_TEMP){//æ¿€å…‰å™¨ä½æ¸©ä¿æŠ¤
 		SSET(R_LASER_TEMP_LOW);
 	}
-	if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_LOW_TEMP + 50){//¼¤¹âÆ÷»Ö¸´Õı³£ÎÂ¶È
+	if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_LOW_TEMP + 50){//æ¿€å…‰å™¨æ¢å¤æ­£å¸¸æ¸©åº¦
 		RRES(R_LASER_TEMP_LOW);
 	}
-	//ÅĞ¶Ï»·¾³ÎÂ¶È
-	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_HIGH_TEMP){//»·¾³ÎÂ¶È¹ıÈÈ
+	//åˆ¤æ–­ç¯å¢ƒæ¸©åº¦
+	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_HIGH_TEMP){//ç¯å¢ƒæ¸©åº¦è¿‡çƒ­
 		SSET(R_MCU_TEMP_HIGH);
 	}
 	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_HIGH_TEMP - 50){
@@ -2518,9 +2518,9 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_LOW_TEMP + 50){
 		RRES(R_MCU_TEMP_LOW);
 	}
-	//ÎÂ¿ØÖ´ĞĞ ¼¤¹âµÈ´ı·¢Éä¼°´íÎó×´Ì¬Æô¶¯ÎÂ¿Ø
+	//æ¸©æ§æ‰§è¡Œ æ¿€å…‰ç­‰å¾…å‘å°„åŠé”™è¯¯çŠ¶æ€å¯åŠ¨æ¸©æ§
 #if defined(MODEL_PVGLS_10W_1940_A1)
-	if(LDP(SPCOIL_PS500MS)){//2Ãë¼ä¸ô
+	if(LDP(SPCOIL_PS500MS)){//2ç§’é—´éš”
 		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
 		if(LaserTecOut >= 1023){
 			LaserTecOut = 1023;
@@ -2540,8 +2540,8 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 #endif
 	
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)	
-	if(LDP(SPCOIL_PS1000MS)){//2Ãë¼ä¸ô
-		//ÔËĞĞÎÂ¿ØPID³ÌĞò
+	if(LDP(SPCOIL_PS1000MS)){//2ç§’é—´éš”
+		//è¿è¡Œæ¸©æ§PIDç¨‹åº
 		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
 		if(LaserTecOut >= 100){
 			LaserTecOut = 100;
@@ -2562,17 +2562,17 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 		LaserTecOutCounter ++;
 	}
 #endif
-//ÎÂ¿ØÖ´ĞĞ ¼¤¹âµÈ´ı·¢Éä¼°´íÎó×´Ì¬Æô¶¯ÎÂ¿Ø
+//æ¸©æ§æ‰§è¡Œ æ¿€å…‰ç­‰å¾…å‘å°„åŠé”™è¯¯çŠ¶æ€å¯åŠ¨æ¸©æ§
 	if(LDP(SPCOIL_PS1000MS)){	
-		if(LD(R_LASER_TEMP_HIGH) || LD(R_LASER_TEMP_LOW) || LD(R_MCU_TEMP_HIGH) || LD(R_MCU_TEMP_LOW)){//¹ıÈÈ×´Ì¬ÎŞÌõ¼ş´ò¿ª·çÉÈ
+		if(LD(R_LASER_TEMP_HIGH) || LD(R_LASER_TEMP_LOW) || LD(R_MCU_TEMP_HIGH) || LD(R_MCU_TEMP_LOW)){//è¿‡çƒ­çŠ¶æ€æ— æ¡ä»¶æ‰“å¼€é£æ‰‡
 			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
 		else{	
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
 				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-					if(NVRAM0[EM_LASER_TEMP] <= 350){//¼¤¹âÆ÷ÎÂ¶ÈĞ¡ÓÚ35¶ÈÆôÓÃ¾²Òô·çÉÈ
-						if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//¹¦ÂÊĞ¡ÓÚ5W
+					if(NVRAM0[EM_LASER_TEMP] <= 350){//æ¿€å…‰å™¨æ¸©åº¦å°äº35åº¦å¯ç”¨é™éŸ³é£æ‰‡
+						if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//åŠŸç‡å°äº5W
 							NVRAM0[EM_FAN_SET_SPEED] = 45;
 						}
 						else if((NVRAM0[EM_LASER_POWER_CH0] > 50) && (NVRAM0[EM_LASER_POWER_CH0] < 100)){//5-10W
@@ -2585,13 +2585,13 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 							NVRAM0[EM_FAN_SET_SPEED] = 100;
 						}
 					}
-					else{//¼¤¹âÆ÷ÎÂ¶È´óÓÚ35¶È·çÉÈÂú×ª
+					else{//æ¿€å…‰å™¨æ¸©åº¦å¤§äº35åº¦é£æ‰‡æ»¡è½¬
 						NVRAM0[EM_FAN_SET_SPEED] = 100;
 					}
 				}
 				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
-					if(NVRAM0[EM_LASER_TEMP] <= 350){//¼¤¹âÆ÷ÎÂ¶ÈĞ¡ÓÚ35¶ÈÆôÓÃ¾²Òô·çÉÈ
-						if(NVRAM0[EM_LASER_POWER_CH1] <= 50){//¹¦ÂÊĞ¡ÓÚ5W
+					if(NVRAM0[EM_LASER_TEMP] <= 350){//æ¿€å…‰å™¨æ¸©åº¦å°äº35åº¦å¯ç”¨é™éŸ³é£æ‰‡
+						if(NVRAM0[EM_LASER_POWER_CH1] <= 50){//åŠŸç‡å°äº5W
 							NVRAM0[EM_FAN_SET_SPEED] = 35;
 						}
 						else if((NVRAM0[EM_LASER_POWER_CH1] > 50) && (NVRAM0[EM_LASER_POWER_CH1] < 100)){//5-10W
@@ -2604,7 +2604,7 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 							NVRAM0[EM_FAN_SET_SPEED] = 100;
 						}
 					}
-					else{//¼¤¹âÆ÷ÎÂ¶È´óÓÚ35¶È·çÉÈÂú×ª
+					else{//æ¿€å…‰å™¨æ¸©åº¦å¤§äº35åº¦é£æ‰‡æ»¡è½¬
 						NVRAM0[EM_FAN_SET_SPEED] = 100;
 					}
 				}
@@ -2653,10 +2653,10 @@ static void temperatureLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	}	
 }
 
-static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
+static void faultLoop(void){//æ•…éšœè½®è¯¢
 	uint8_t temp;
 	temp = 0;
-	if(LD(R_DISABLE_FIBER_PROBE)){//ÆÁ±Î¹âÏËÌ½²âÆ÷
+	if(LD(R_DISABLE_FIBER_PROBE)){//å±è”½å…‰çº¤æ¢æµ‹å™¨
 		SSET(R_FIBER_PROBE);
 	}
 	else{
@@ -2667,10 +2667,10 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 			RRES(R_FIBER_PROBE);
 		}
 	}
-	if(LD(R_DISABLE_RFID)){//ÆÁ±Î¹âÏËRFIDÌ½²â
+	if(LD(R_DISABLE_RFID)){//å±è”½å…‰çº¤RFIDæ¢æµ‹
 		SSET(R_RFID_PASS);
 	}
-	if(LD(R_DISABLE_ESTOP)){//ÆÁ±Î½ô¼±Í£Ö¹¿ª¹Ø
+	if(LD(R_DISABLE_ESTOP)){//å±è”½ç´§æ€¥åœæ­¢å¼€å…³
 		SSET(R_ESTOP);
 	}
 	else{
@@ -2685,7 +2685,7 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 		SSET(R_INTERLOCK);
 	}
 	else{
-		if(deviceConfig.normalOpenInterLock == 1){//³£¿ªÁ¬Ëø
+		if(deviceConfig.normalOpenInterLock == 1){//å¸¸å¼€è¿é”
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 			if(LD(X_INTERLOCK_NC)){
 				RRES(R_INTERLOCK);
@@ -2694,7 +2694,7 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 				SSET(R_INTERLOCK);
 			}
 		}
-		else{//³£±ÕÁ¬Ëø
+		else{//å¸¸é—­è¿é”
 			if(LD(X_INTERLOCK_NC)){
 				SSET(R_INTERLOCK);
 			}
@@ -2712,7 +2712,7 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 				RRES(R_INTERLOCK);
 			}
 		}
-		else{//³£±ÕÁ¬Ëø
+		else{//å¸¸é—­è¿é”
 			if(LD(X_INTERLOCK_NC)){
 				RRES(R_INTERLOCK);
 			}
@@ -2722,13 +2722,13 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 		}
 #endif	
 	}
-	if(LD(R_DISABLE_TEMPERATURE)){//ÆÁ±Î¸ßÎÂ±¨¾¯
+	if(LD(R_DISABLE_TEMPERATURE)){//å±è”½é«˜æ¸©æŠ¥è­¦
 		RRES(R_LASER_TEMP_HIGH);
 		RRES(R_LASER_TEMP_LOW);
 		RRES(R_MCU_TEMP_HIGH);
 		RRES(R_MCU_TEMP_LOW);
 	}
-	if(LD(R_DISABLE_FOOTSWITCH)){//ÆÁ±Î½ÅÌ¤²åÈëÌ½²â¡¢Ê¹ÄÜÆÁÄ»¼¤¹â·¢Éä¿ØÖÆ
+	if(LD(R_DISABLE_FOOTSWITCH)){//å±è”½è„šè¸æ’å…¥æ¢æµ‹ã€ä½¿èƒ½å±å¹•æ¿€å…‰å‘å°„æ§åˆ¶
 		SSET(R_FOOTSWITCH_PLUG);
 		if(LD(R_HMI_FOOTSWITCH_PRESS)){
 			SSET(R_FOOTSWITCH_PRESS);
@@ -2737,9 +2737,9 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 			RRES(R_FOOTSWITCH_PRESS);
 		}
 	}
-	else if(LD(SPCOIL_WFSWITCH_PLUG)){//ÎŞÏß½ÅÌ¤²åÈë¡¢ÆÁ±ÎÓĞÏß½ÅÌ¤
+	else if(LD(SPCOIL_WFSWITCH_PLUG)){//æ— çº¿è„šè¸æ’å…¥ã€å±è”½æœ‰çº¿è„šè¸
 		SSET(R_FOOTSWITCH_PLUG);
-		if(LD(SPCOIL_WFSWITCH_ON)){
+		if(LD(SPCOIL_WFSWITCH_NO)){
 			SSET(R_FOOTSWITCH_PRESS);
 		}
 		else{
@@ -2747,27 +2747,27 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 		}
 	}
 	else{
-		if(LD(X_FOOTSWITCH_NC)){//³£±Õ
+		if(LD(X_FOOTSWITCH_NC)){//å¸¸é—­
 			SSET(R_FOOTSWITCH_PLUG);
 		}
 		else{
 			RRES(R_FOOTSWITCH_PLUG);
 		}
-		if(LD(X_FOOTSWITCH_NO)){//³£¿ª
+		if(LD(X_FOOTSWITCH_NO)){//å¸¸å¼€
 			SSET(R_FOOTSWITCH_PRESS);
 		}
 		else{
 			RRES(R_FOOTSWITCH_PRESS);
 		}
 	}
-	temp |= LDB(R_ESTOP);//Õı³£1 
-	temp |=	LDB(R_INTERLOCK);//Õı³£1
-	temp |= LDB(R_FOOTSWITCH_PLUG);//Õı³£1
-	temp |= LDB(R_FIBER_PROBE);//Õı³£1
-	temp |= LDB(R_RFID_PASS);//Õı³£1
-	temp |= LD(R_LASER_TEMP_HIGH);//Õı³£0
-	temp |= LD(R_LASER_TEMP_LOW);//Õı³£0
-	temp |= LD(R_MCU_TEMP_LOW);//Õı³£0
+	temp |= LDB(R_ESTOP);//æ­£å¸¸1 
+	temp |=	LDB(R_INTERLOCK);//æ­£å¸¸1
+	temp |= LDB(R_FOOTSWITCH_PLUG);//æ­£å¸¸1
+	temp |= LDB(R_FIBER_PROBE);//æ­£å¸¸1
+	temp |= LDB(R_RFID_PASS);//æ­£å¸¸1
+	temp |= LD(R_LASER_TEMP_HIGH);//æ­£å¸¸0
+	temp |= LD(R_LASER_TEMP_LOW);//æ­£å¸¸0
+	temp |= LD(R_MCU_TEMP_LOW);//æ­£å¸¸0
 	if(temp){
 		SSET(R_FAULT);
 	}
@@ -2776,99 +2776,99 @@ static void faultLoop(void){//¹ÊÕÏÂÖÑ¯
 	}
 	//
 	if(LD(R_FAULT)){
-		RRES(Y_GREEN_LED);//¹Ø±ÕÂÌµÆ
-		RRES(Y_YELLOW_LED);//¹Ø±Õ»ÆµÆ
-		SSET(Y_RED_LED);//´ò¿ªºìµÆ
+		RRES(Y_GREEN_LED);//å…³é—­ç»¿ç¯
+		RRES(Y_YELLOW_LED);//å…³é—­é»„ç¯
+		SSET(Y_RED_LED);//æ‰“å¼€çº¢ç¯
 	}
 	else if(LaserFlag_Emiting){
-		SSET(Y_GREEN_LED);//¹Ø±ÕÂÌµÆ
-		RRES(Y_YELLOW_LED);//´ò¿ª»ÆµÆ
-		SSET(Y_RED_LED);//¹Ø±ÕºìµÆ
+		SSET(Y_GREEN_LED);//å…³é—­ç»¿ç¯
+		RRES(Y_YELLOW_LED);//æ‰“å¼€é»„ç¯
+		SSET(Y_RED_LED);//å…³é—­çº¢ç¯
 	}
 	else{
-		SSET(Y_GREEN_LED);//´ò¿ªÂÌµÆ
-		RRES(Y_YELLOW_LED);//¹Ø±Õ»ÆµÆ
-		RRES(Y_RED_LED);//¹Ø±ÕºìµÆ
+		SSET(Y_GREEN_LED);//æ‰“å¼€ç»¿ç¯
+		RRES(Y_YELLOW_LED);//å…³é—­é»„ç¯
+		RRES(Y_RED_LED);//å…³é—­çº¢ç¯
 	}
 }
 
-static void speakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
+static void speakerLoop(void){//èœ‚é¸£å™¨è½®è¯¢
 	int8_t laserStatus;
 	int32_t temp0;
 	if(LD(SPCOIL_BEEM_ENABLE)){
 		sPlcSpeakerVolume(NVRAM0[SPREG_BEEM_VOLUME]);
-		switch(NVRAM0[SPREG_BEEM_MODE]){//Ä£Ê½
+		switch(NVRAM0[SPREG_BEEM_MODE]){//æ¨¡å¼
 			case BEEM_MODE_0:{
 				if(LDB(SPCOIL_BEEM_BUSY)){
-					sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+					sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+					SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 				}
 				break;
 			}
-			case BEEM_MODE_1:{//Ä£Ê½1 Éù¹âÍ¬²½
+			case BEEM_MODE_1:{//æ¨¡å¼1 å£°å…‰åŒæ­¥
 				laserStatus = (GET_LASER_CH0 || GET_LASER_CH1);
 				if(laserStatus){//LT3763 PWM ON
-					if(LDB(SPCOIL_BEEM_BUSY)){//Èç¹ûPWMÎŞÊä³ö-> ÓĞÊä³ö
-						sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+					if(LDB(SPCOIL_BEEM_BUSY)){//å¦‚æœPWMæ— è¾“å‡º-> æœ‰è¾“å‡º
+						sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+						SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 					}
 				}
 				else{
 					if(LD(SPCOIL_BEEM_BUSY)){
-						sPlcSpeakerDisable();//Æô¶¯ÒôÆµ
-						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷	
+						sPlcSpeakerDisable();//å¯åŠ¨éŸ³é¢‘
+						RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨	
 					}
 				}
 				NVRAM0[SPREG_BEEM_COUNTER] = -1;
 				break;
 			}
-			case BEEM_MODE_2:{//Ä£Ê½2 ³¤¼ä¸ô ¼¤¹â·¢ÉäÒô		
+			case BEEM_MODE_2:{//æ¨¡å¼2 é•¿é—´éš” æ¿€å…‰å‘å°„éŸ³		
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
-					sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+					sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+					SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
-					sPlcSpeakerDisable();//Í£Ö¹ÒôÆµ
-					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+					sPlcSpeakerDisable();//åœæ­¢éŸ³é¢‘
+					RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
 					NVRAM0[SPREG_BEEM_COUNTER] = -1;
 				}
 				break;
 			}
-			case BEEM_MODE_3:{//Ä£Ê½3 µÎµÎÁ½ÏÂÒ»Í£ ±¨¾¯Òô
+			case BEEM_MODE_3:{//æ¨¡å¼3 æ»´æ»´ä¸¤ä¸‹ä¸€åœ æŠ¥è­¦éŸ³
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 15){//1
-					sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷			
+					sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+					SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨			
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 15 && NVRAM0[SPREG_BEEM_COUNTER] < 30){//0
-					sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+					sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+					RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 30 && NVRAM0[SPREG_BEEM_COUNTER] < 45){//1
-					sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+					sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+					SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 45 && NVRAM0[SPREG_BEEM_COUNTER] < 60){//0
-					sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+					sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+					RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 				}
-				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 200){//Í£1Ãë
+				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 200){//åœ1ç§’
 					NVRAM0[SPREG_BEEM_COUNTER] = -1;
 				}
 				break;
 			}
-			case BEEM_MODE_4:{//Ä£Ê½4 ³¤¼ä¸ô+ÌáÊ¾Òô ¼¤¹â·¢ÉäÒô		
+			case BEEM_MODE_4:{//æ¨¡å¼4 é•¿é—´éš”+æç¤ºéŸ³ æ¿€å…‰å‘å°„éŸ³		
 				if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
-					sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-					SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+					sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+					SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
-					sPlcSpeakerDisable();//Í£Ö¹ÒôÆµ
-					RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+					sPlcSpeakerDisable();//åœæ­¢éŸ³é¢‘
+					RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 				}
 				else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
-					//ÅĞ¶ÏÊÇ·ñÆô¶¯ÌáÊ¾Òô
+					//åˆ¤æ–­æ˜¯å¦å¯åŠ¨æç¤ºéŸ³
 					temp0 = (*((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]) + 25) / 50;
 					//temp0 = temp0 / 60;
 					if((temp0 % NVRAM0[EM_ACOUSTIC_TIME]) == 0){
@@ -2888,12 +2888,12 @@ static void speakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 			case BEEM_MODE_5:{
 				if(NVRAM0[EM_LASER_RELEASE_ENERGY] < 2500){//<250J
 					if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
-						sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+						sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+						SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
-						sPlcSpeakerDisable();//Í£Ö¹ÒôÆµ
-						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+						sPlcSpeakerDisable();//åœæ­¢éŸ³é¢‘
+						RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
 						NVRAM0[SPREG_BEEM_COUNTER] = -1;
@@ -2901,20 +2901,20 @@ static void speakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 				}
 				else if(NVRAM0[EM_LASER_RELEASE_ENERGY] >= 2500 && NVRAM0[EM_LASER_RELEASE_ENERGY] < 5000){//250-500J	
 					if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 15){//1
-						sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷			
+						sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+						SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨			
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 15 && NVRAM0[SPREG_BEEM_COUNTER] < 25){//0
-						sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+						sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+						RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 25 && NVRAM0[SPREG_BEEM_COUNTER] < 50){//1
-						sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+						sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+						SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 50 && NVRAM0[SPREG_BEEM_COUNTER] < 100){//0
-						sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+						sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+						RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 100){
 						NVRAM0[SPREG_BEEM_COUNTER] = -1;
@@ -2922,30 +2922,30 @@ static void speakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 				}
 				else if(NVRAM0[EM_LASER_RELEASE_ENERGY] > 5000){
 					if(NVRAM0[SPREG_BEEM_COUNTER] >= 0 && NVRAM0[SPREG_BEEM_COUNTER] < 14){//1
-						sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷			
+						sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+						SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨			
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 14 && NVRAM0[SPREG_BEEM_COUNTER] < 26){//0
-						sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+						sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+						RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 26 && NVRAM0[SPREG_BEEM_COUNTER] < 40){//1
-						sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+						sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+						SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 40 && NVRAM0[SPREG_BEEM_COUNTER] < 52){//0
-						sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+						sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+						RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 52 && NVRAM0[SPREG_BEEM_COUNTER] < 66){//1
-						sPlcSpeakerEnable();//Æô¶¯ÒôÆµ
-						SSET(SPCOIL_BEEM_BUSY);//Æô¶¯·äÃùÆ÷
+						sPlcSpeakerEnable();//å¯åŠ¨éŸ³é¢‘
+						SSET(SPCOIL_BEEM_BUSY);//å¯åŠ¨èœ‚é¸£å™¨
 					}
 					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 66 && NVRAM0[SPREG_BEEM_COUNTER] < 160){//0
-						sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-						RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+						sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+						RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 					}
-					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 160){//Í£1Ãë
+					else if(NVRAM0[SPREG_BEEM_COUNTER] >= 160){//åœ1ç§’
 						NVRAM0[SPREG_BEEM_COUNTER] = -1;
 					}	
 				}
@@ -2955,13 +2955,13 @@ static void speakerLoop(void){//·äÃùÆ÷ÂÖÑ¯
 		}
 	}
 	else{
-		sPlcSpeakerDisable();//¹Ø±ÕÒôÆµ
-		RRES(SPCOIL_BEEM_BUSY);//¹Ø±Õ·äÃùÆ÷
+		sPlcSpeakerDisable();//å…³é—­éŸ³é¢‘
+		RRES(SPCOIL_BEEM_BUSY);//å…³é—­èœ‚é¸£å™¨
 		NVRAM0[SPREG_BEEM_COUNTER]  = 0;
 	}
 }
 
-uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost){//ÅĞ¶ÏÊÇ·ñÊÇÔÊĞíµÄÎŞÏß½ÅÌ¤ÊÊÅäÆ÷
+uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost){//åˆ¤æ–­æ˜¯å¦æ˜¯å…è®¸çš„æ— çº¿è„šè¸é€‚é…å™¨
 	uint8_t i;
 	for(i = 0;i < 5;i ++){
 		if((phost->device.DevDesc.idVendor == legalUsbDev[i]) && phost->device.DevDesc.idProduct == legalUsbPid[i]){
@@ -2971,10 +2971,10 @@ uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost){//ÅĞ¶ÏÊÇ·ñÊÇÔÊĞíµÄÎŞÏß½ÅÌ¤ÊÊÅäÆ
 	return false;
 }
 
-void wfswLoop(USBH_HandleTypeDef *phost){//ÎŞÏß½ÅÌ¤ÂÖÑ¯
+void wfswLoop(USBH_HandleTypeDef *phost){//æ— çº¿è„šè¸è½®è¯¢
 	HID_KEYBD_Info_TypeDef *k_pinfo;
   char c;
-	if(Appli_state == APPLICATION_READY){//ÅĞ¶ÏÊÊÅäÆ÷ÊÇ·ñ²åÈë
+	if(Appli_state == APPLICATION_READY){//åˆ¤æ–­é€‚é…å™¨æ˜¯å¦æ’å…¥
 		if(isLegalUsbDev(phost)){		
 			if(LDB(SPCOIL_WFSWITCH_PLUG)){
 				printf("%s,%d,%s:wireless footswich plug......\n",__FILE__, __LINE__, __func__);
@@ -2983,13 +2983,13 @@ void wfswLoop(USBH_HandleTypeDef *phost){//ÎŞÏß½ÅÌ¤ÂÖÑ¯
 			k_pinfo = USBH_HID_GetKeybdInfo(phost); 	
 			if(k_pinfo != NULL){
 				c = USBH_HID_GetASCIICode(k_pinfo);
-				if(c == '1'){//¿­À¥½ÅÌ¤Ä¬ÈÏÎªÊı×Ö1
+				if(c == '1'){//å‡¯æ˜†è„šè¸é»˜è®¤ä¸ºæ•°å­—1
 					printf("%s,%d,%s:wireless footswich press......\n",__FILE__, __LINE__, __func__);
-					SSET(SPCOIL_WFSWITCH_ON);
+					SSET(SPCOIL_WFSWITCH_NO);
 				}
 				if(c == 0x0){
 					printf("%s,%d,%s:wireless footswich release......\n",__FILE__, __LINE__, __func__);		
-					RRES(SPCOIL_WFSWITCH_ON);
+					RRES(SPCOIL_WFSWITCH_NO);
 				}		
 			}
 		}
@@ -3002,33 +3002,33 @@ void wfswLoop(USBH_HandleTypeDef *phost){//ÎŞÏß½ÅÌ¤ÂÖÑ¯
 	else{
 		if(LD(SPCOIL_WFSWITCH_PLUG)){
 			RRES(SPCOIL_WFSWITCH_PLUG);
-			RRES(SPCOIL_WFSWITCH_ON);
+			RRES(SPCOIL_WFSWITCH_NO);
 			printf("%s,%d,%s:wireless footswich unplug......\n",__FILE__, __LINE__, __func__);
 		}	
 	}
 }
 
-void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
+void dcHmiLoop(void){//HMIè½®è®­ç¨‹åº
 	uint8_t tmp8;
 	wfswLoop(&hUsbHostFS);
 	speakerLoop();
-	temperatureLoop();//ÎÂ¿Ø³ÌĞò
+	temperatureLoop();//æ¸©æ§ç¨‹åº
 	faultLoop();
-	if(LD(R_DCHMI_RESET_DONE) && LD(R_DCHMI_RESTORE_DONE)){//HMI¸´Î»Íê³Éºó´¦Àí´®¿ÚÖ¸Áî
-		hmiCmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE);//´Ó»º³åÇøÖĞ»ñÈ¡Ò»ÌõÖ¸Áî         
-        if(hmiCmdSize > 0){//½ÓÊÕµ½Ö¸Áî¼°ÅĞ¶ÏÊÇ·ñÎª¿ª»úÌáÊ¾                                                            
-            ProcessMessage((PCTRL_MSG)hmiCmdBuffer, hmiCmdSize);//Ö¸Áî´¦Àí  
+	if(LD(R_DCHMI_RESET_DONE) && LD(R_DCHMI_RESTORE_DONE)){//HMIå¤ä½å®Œæˆåå¤„ç†ä¸²å£æŒ‡ä»¤
+		hmiCmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE);//ä»ç¼“å†²åŒºä¸­è·å–ä¸€æ¡æŒ‡ä»¤         
+        if(hmiCmdSize > 0){//æ¥æ”¶åˆ°æŒ‡ä»¤åŠåˆ¤æ–­æ˜¯å¦ä¸ºå¼€æœºæç¤º                                                            
+            ProcessMessage((PCTRL_MSG)hmiCmdBuffer, hmiCmdSize);//æŒ‡ä»¤å¤„ç†  
         }                                                                             
 	}
-	//×´Ì¬»ú
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//ÉÏµç²½Öè	
-		RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷		
+	//çŠ¶æ€æœº
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//ä¸Šç”µæ­¥éª¤	
+		RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨		
 		NVRAM0[DM_DC_OLD_PASSCODE2] = 0;
 		NVRAM0[DM_DC_OLD_PASSCODE3] = 0;
 	
 		NVRAM0[EM_DC_NEW_PASSCODE2] = 0;
 		NVRAM0[EM_DC_NEW_PASSCODE3] = 0;
-		//¼ì²é´¢´æÃÜÂëÊÇ·ñºÏ¹æ
+		//æ£€æŸ¥å‚¨å­˜å¯†ç æ˜¯å¦åˆè§„
 		NVRAM0[TMP_REG_0 + 0] = NVRAM0[DM_DC_OLD_PASSCODE0] & 0x00FF;
 		NVRAM0[TMP_REG_1 + 1] = (NVRAM0[DM_DC_OLD_PASSCODE0] >> 8) & 0x00FF;
 		NVRAM0[TMP_REG_2 + 2] = NVRAM0[DM_DC_OLD_PASSCODE1] & 0x00FF;
@@ -3044,25 +3044,25 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}	
 		SSET(R_DCHMI_RESET_DOING);
 		hmiCmdSize = 0;
-		queue_reset();//Çå¿ÕHMIÖ¸Áî½ÓÊÕ»º³åÇø	
+		queue_reset();//æ¸…ç©ºHMIæŒ‡ä»¤æ¥æ”¶ç¼“å†²åŒº	
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RESTORE_HMI){//µÈ´ıHMI¸´Î»
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RESTORE_HMI){//ç­‰å¾…HMIå¤ä½
 		T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_WAIT_HMI_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
 			printf("%s,%d,%s:hmi delay done......\n",__FILE__, __LINE__, __func__);
 			T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_WAIT_HMI_DELAY_TIME);
 			RRES(R_DCHMI_RESET_DOING);
 			SSET(R_DCHMI_RESET_DONE);	
-			//HMI´ÓÄÚÖÃFLASHÖĞ»Ö¸´ÉèÖÃ	
+			//HMIä»å†…ç½®FLASHä¸­æ¢å¤è®¾ç½®	
 			SSET(R_DCHMI_RESTORE_DOING);
 			FlashRestoreControl(FLASH_DATA_VERSION, FLASH_DATA_ADDR);
 			RRES(R_DCHMI_RESTORE_DOING);
 			SSET(R_DCHMI_RESTORE_DONE);
-			//ÉèÖÃHMIÒ³Ãæ
+			//è®¾ç½®HMIé¡µé¢
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_WAIT_ENTER_PASSCODE;
-			MsgId = 0xFF;//µ±Ç°ÏÔÊ¾µÄĞÅÏ¢ID
+			MsgId = 0xFF;//å½“å‰æ˜¾ç¤ºçš„ä¿¡æ¯ID
 		
 			SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, false);			
 			SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, true);
@@ -3073,7 +3073,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			//SetTextValue(GDDC_PAGE_PASSCODE, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
 			//SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
 
-			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//Çå¿Õ¾¯±¨ĞÅÏ¢À¸
+			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//æ¸…ç©ºè­¦æŠ¥ä¿¡æ¯æ 
 			
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE, false);
@@ -3110,7 +3110,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1940;	
 #endif
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			//´ò¿ª·äÃùÆ÷
+			//æ‰“å¼€èœ‚é¸£å™¨
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
 			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 			//SSET(SPCOIL_BEEM_ENABLE);
@@ -3120,13 +3120,13 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CHECK_FAIL_DISPLAY){//×Ô¼ì´íÎóÏÔÊ¾
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CHECK_FAIL_DISPLAY){//è‡ªæ£€é”™è¯¯æ˜¾ç¤º
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_WAIT_ENTER_PASSCODE){//µÈ´ı¿ª»úÃÜÂëÊäÈë
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_WAIT_ENTER_PASSCODE){//ç­‰å¾…å¼€æœºå¯†ç è¾“å…¥
 		T100MS(T100MS_ENTER_PASSCODE_DELAY, true, CONFIG_WAIT_PASSWORD_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_ENTER_PASSCODE_DELAY)){
-			RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+			RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 			T100MS(T100MS_ENTER_PASSCODE_DELAY, false, CONFIG_WAIT_PASSWORD_DELAY_TIME);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_PASSCODE_INPUT;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_PASSCODE;
@@ -3138,14 +3138,14 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		return;
 	}
 	
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_PASSCODE_INPUT){//ÊäÈë¿ª»úÃÜÂë
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_PASSCODE_INPUT){//è¾“å…¥å¼€æœºå¯†ç 
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_PASSCODE_NEW0){//µÈ´ıÊäÈëĞÂÃÜÂë		
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_PASSCODE_NEW0){//ç­‰å¾…è¾“å…¥æ–°å¯†ç 		
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_STANDBY){//´ı»ú×´Ì¬»ú
-		if(LD(R_ENGINEER_MODE)){//¹¤³ÌÄ£Ê½ÏÔÊ¾µ÷ÊÔĞÅÏ¢
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_STANDBY){//å¾…æœºçŠ¶æ€æœº
+		if(LD(R_ENGINEER_MODE)){//å·¥ç¨‹æ¨¡å¼æ˜¾ç¤ºè°ƒè¯•ä¿¡æ¯
 			if(LDP(SPCOIL_PS1000MS)){		
 				updateDebugInfo();
 			}
@@ -3154,13 +3154,13 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			NVRAM0[EM_LASER_POSWIDTH] = keyRuleAdd(NVRAM0[EM_LASER_POSWIDTH], CONFIG_MAX_LASER_POSWIDTH);
 			updatePosWidthDisplay();
 		}
-		if(LD(R_STANDBY_KEY_POSWIDTH_ADD_DOWN)){//ÕıÂö¿í¼Ó°´¼ü
+		if(LD(R_STANDBY_KEY_POSWIDTH_ADD_DOWN)){//æ­£è„‰å®½åŠ æŒ‰é”®
 			T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_POSWIDTH_ADD_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					NVRAM0[EM_LASER_POSWIDTH] = keyRuleAdd(NVRAM0[EM_LASER_POSWIDTH], CONFIG_MAX_LASER_POSWIDTH);
 					updatePosWidthDisplay();
-					if(NVRAM0[EM_LASER_POSWIDTH] >= CONFIG_MAX_LASER_POSWIDTH){//´ïµ½×î´óÖµºóÍ£Ö¹×Ô¼Ó
+					if(NVRAM0[EM_LASER_POSWIDTH] >= CONFIG_MAX_LASER_POSWIDTH){//è¾¾åˆ°æœ€å¤§å€¼ååœæ­¢è‡ªåŠ 
 						RRES(R_STANDBY_KEY_POSWIDTH_ADD_DOWN);
 						T10MS(T10MS_POSWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -3177,13 +3177,13 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			NVRAM0[EM_LASER_POSWIDTH] = keyRuleDec(NVRAM0[EM_LASER_POSWIDTH], CONFIG_MIN_LASER_POSWIDTH);
 			updatePosWidthDisplay();
 		}
-		if(LD(R_STANDBY_KEY_POSWIDTH_DEC_DOWN)){//ÕıÂö¿í¼õ°´¼ü
+		if(LD(R_STANDBY_KEY_POSWIDTH_DEC_DOWN)){//æ­£è„‰å®½å‡æŒ‰é”®
 			T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_POSWIDTH_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					NVRAM0[EM_LASER_POSWIDTH] = keyRuleDec(NVRAM0[EM_LASER_POSWIDTH], CONFIG_MIN_LASER_POSWIDTH);
 					updatePosWidthDisplay();
-					if(NVRAM0[EM_LASER_POSWIDTH] <= CONFIG_MIN_LASER_POSWIDTH){//´ïµ½×îĞ¡ÖµºóÍ£Ö¹×Ô¼õ
+					if(NVRAM0[EM_LASER_POSWIDTH] <= CONFIG_MIN_LASER_POSWIDTH){//è¾¾åˆ°æœ€å°å€¼ååœæ­¢è‡ªå‡
 						RRES(R_STANDBY_KEY_POSWIDTH_DEC_DOWN);
 						T10MS(T10MS_POSWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -3200,13 +3200,13 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			NVRAM0[EM_LASER_NEGWIDTH] = keyRuleAdd(NVRAM0[EM_LASER_NEGWIDTH], CONFIG_MAX_LASER_NEGWIDTH);
 			updateNegWidthDisplay();
 		}
-		if(LD(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN)){//¸ºÂö¿í¼Ó°´¼ü
+		if(LD(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN)){//è´Ÿè„‰å®½åŠ æŒ‰é”®
 			T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					NVRAM0[EM_LASER_NEGWIDTH] = keyRuleAdd(NVRAM0[EM_LASER_NEGWIDTH], CONFIG_MAX_LASER_NEGWIDTH);
 					updateNegWidthDisplay();
-					if(NVRAM0[EM_LASER_NEGWIDTH] >= CONFIG_MAX_LASER_NEGWIDTH){//´ïµ½×î´óÖµºóÍ£Ö¹×Ô¼Ó
+					if(NVRAM0[EM_LASER_NEGWIDTH] >= CONFIG_MAX_LASER_NEGWIDTH){//è¾¾åˆ°æœ€å¤§å€¼ååœæ­¢è‡ªåŠ 
 						RRES(R_STANDBY_KEY_NEGWIDTH_ADD_DOWN);
 						T10MS(T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}					
@@ -3223,13 +3223,13 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			NVRAM0[EM_LASER_NEGWIDTH] = keyRuleDec(NVRAM0[EM_LASER_NEGWIDTH], CONFIG_MIN_LASER_NEGWIDTH);
 			updateNegWidthDisplay();
 		}
-		if(LD(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN)){//¸ºÂö¿í¼õ°´¼ü
+		if(LD(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN)){//è´Ÿè„‰å®½å‡æŒ‰é”®
 			T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, true, CONFIG_KEY_REPEAT_DELAY_TIME);
 			if(LD(T_10MS_START * 16 + T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					NVRAM0[EM_LASER_NEGWIDTH] = keyRuleDec(NVRAM0[EM_LASER_NEGWIDTH], CONFIG_MIN_LASER_NEGWIDTH);
 					updateNegWidthDisplay();
-					if(NVRAM0[EM_LASER_NEGWIDTH] <= CONFIG_MIN_LASER_NEGWIDTH){//´ïµ½×îĞ¡ÖµºóÍ£Ö¹×Ô¼õ
+					if(NVRAM0[EM_LASER_NEGWIDTH] <= CONFIG_MIN_LASER_NEGWIDTH){//è¾¾åˆ°æœ€å°å€¼ååœæ­¢è‡ªå‡
 						RRES(R_STANDBY_KEY_NEGWIDTH_DEC_DOWN);
 						T10MS(T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 					}
@@ -3246,58 +3246,58 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		
 		if(LDP(SPCOIL_PS200MS)){
 			if(LD(R_FAULT)){
-				if(LD(R_LASER_TEMP_HIGH)){//¼¤¹âÆ÷¸ßÎÂ±£»¤
+				if(LD(R_LASER_TEMP_HIGH)){//æ¿€å…‰å™¨é«˜æ¸©ä¿æŠ¤
 					updateWarnMsgDisplay(MSG_DIODE_HTEMP);
 				}
-				else if(LD(R_LASER_TEMP_LOW)){//¼¤¹âÆ÷µÍÎÂNTC¿ªÂ·±£»¤
+				else if(LD(R_LASER_TEMP_LOW)){//æ¿€å…‰å™¨ä½æ¸©NTCå¼€è·¯ä¿æŠ¤
 					updateWarnMsgDisplay(MSG_DIODE_LTEMP);
 				}
-				else if(LD(R_MCU_TEMP_HIGH)){//»·¾³¸ßÎÂ±£»¤
+				else if(LD(R_MCU_TEMP_HIGH)){//ç¯å¢ƒé«˜æ¸©ä¿æŠ¤
 					updateWarnMsgDisplay(MSG_ENVI_HTEMP);
 				}
-				else if(LD(R_MCU_TEMP_LOW)){//»·¾³µÍÎÂ±£»¤
+				else if(LD(R_MCU_TEMP_LOW)){//ç¯å¢ƒä½æ¸©ä¿æŠ¤
 					updateWarnMsgDisplay(MSG_ENVI_LTEMP);
 				}
-				else if(LDB(R_ESTOP)){//¼±Í£°´ÏÂ
+				else if(LDB(R_ESTOP)){//æ€¥åœæŒ‰ä¸‹
 					updateWarnMsgDisplay(MSG_ESTOP_PRESS);		
 				}
-				else if(LDB(R_INTERLOCK)){//°²È«Á¬Ëø°Î³ö
+				else if(LDB(R_INTERLOCK)){//å®‰å…¨è¿é”æ‹”å‡º
 					updateWarnMsgDisplay(MSG_INTERLOCK_UNPLUG);
 				}
-				else if(LDB(R_FIBER_PROBE)){//¹âÏË°Î³ö
+				else if(LDB(R_FIBER_PROBE)){//å…‰çº¤æ‹”å‡º
 					updateWarnMsgDisplay(MSG_FIBER_UNPLUG);
 				}
-				else if(LDB(R_FOOTSWITCH_PLUG)){//½ÅÌ¤°Î³ö
+				else if(LDB(R_FOOTSWITCH_PLUG)){//è„šè¸æ‹”å‡º
 					updateWarnMsgDisplay(MSG_FOOTSWITCH_UNPLUG);
 				}
-				else if(LDB(R_RFID_PASS)){//¹âÏËID²»Æ¥Åä
+				else if(LDB(R_RFID_PASS)){//å…‰çº¤IDä¸åŒ¹é…
 					updateWarnMsgDisplay(MSG_FIBER_MISSMATE);
 				}
-				standbyKeyTouchEnable(false);//½ûÖ¹Standby´¥Ãş
-				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//ÉèÖÃÀ®°ÈÉùÒôÄ£Ê½
+				standbyKeyTouchEnable(false);//ç¦æ­¢Standbyè§¦æ‘¸
+				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//è®¾ç½®å–‡å­å£°éŸ³æ¨¡å¼
 				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-				SSET(SPCOIL_BEEM_ENABLE);//Æô¶¯À®°È
+				SSET(SPCOIL_BEEM_ENABLE);//å¯åŠ¨å–‡å­
 			}
-			else{//ÎŞ¹ÊÕÏÏÔÊ¾
+			else{//æ— æ•…éšœæ˜¾ç¤º
 				RRES(SPCOIL_BEEM_ENABLE);
 				updateWarnMsgDisplay(MSG_NO_ERROR);
 				standbyKeyTouchEnable(true);
 			}
 		}
-		if(LDB(R_FAULT) && LDP(SPCOIL_PS100MS)){//ÎŞ¹ÊÕÏÏÔÊ¾
+		if(LDB(R_FAULT) && LDP(SPCOIL_PS100MS)){//æ— æ•…éšœæ˜¾ç¤º
 			RRES(SPCOIL_BEEM_ENABLE);
 			updateWarnMsgDisplay(MSG_NO_ERROR);
 			standbyKeyTouchEnable(true);
 		}
-		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//µã»÷OPTION
-			RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//ç‚¹å‡»OPTION
+			RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 			if(LD(R_ENGINEER_MODE)){
-				SetControlVisiable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, true);//ÏÔÊ¾¿Ø¼ş
-				SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER ,true);//Ê¹ÄÜ¿Ø¼ş
+				SetControlVisiable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, true);//æ˜¾ç¤ºæ§ä»¶
+				SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER ,true);//ä½¿èƒ½æ§ä»¶
 			}
 			else{
-				SetControlVisiable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, false);//ÏÔÊ¾¿Ø¼ş
-				SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER ,false);//Ê¹ÄÜ¿Ø¼ş
+				SetControlVisiable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER, false);//æ˜¾ç¤ºæ§ä»¶
+				SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER ,false);//ä½¿èƒ½æ§ä»¶
 			}
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_OPTION;
 			updateOptionDisplay();
@@ -3305,7 +3305,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_STANDBY_KEY_ENTER_OPTION_DOWN);
 		}else
-		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//µã»÷READY
+		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//ç‚¹å‡»READY
 			CLRD(EM_LASER_RELEASE_TIME);
 			CLRD(EM_LASER_TRIG_TIME);
 			LaserTimer_Mode = (int8_t)NVRAM0[EM_LASER_PULSE_MODE];
@@ -3314,9 +3314,9 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			LaserTimer_TOvertime 		= NVRAM0[EM_LASER_POSWIDTH] + NVRAM0[EM_LASER_NEGWIDTH];	
 			printf("%s,%d,%s:set LaserTimer_TMate=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TMate);
 			printf("%s,%d,%s:set LaserTimer_TOvertime=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TOvertime);
-			//ACOUSTIC ³õÊ¼»¯
+			//ACOUSTIC åˆå§‹åŒ–
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
-				//ÄÜÁ¿´óÓÚÉèÖÃ¹¦ÂÊµÄÁ½±¶	
+				//èƒ½é‡å¤§äºè®¾ç½®åŠŸç‡çš„ä¸¤å€	
 				if(NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_PROCTOLOGY){
 					if((NVRAM0[DM_SCHEME_INDEX] == 0) || 
 						 (NVRAM0[DM_SCHEME_INDEX] == 1) ||
@@ -3330,19 +3330,19 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 				else{
 					SSET(R_ACOUSTIC_ENABLE);
 				}							   
-				NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CWÄ£Ê½Ã¿´Î¼Ó¼õÁ¿1Ãë
-				//NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_TOTAL] / 10;//CWÄ£Ê½Ã¿´Î¼Ó¼õÁ¿
-				NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_TOTAL];//CWÄ£Ê½Ã¿´Î¼Ó¼õÁ¿
-				NVRAM0[EM_ACOUSTIC_TIME] = 1;//³õÊ¼Îª1Ãë
+				NVRAM0[EM_ACOUSTIC_TIME_STEP] = 1;//CWæ¨¡å¼æ¯æ¬¡åŠ å‡é‡1ç§’
+				//NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_TOTAL] / 10;//CWæ¨¡å¼æ¯æ¬¡åŠ å‡é‡
+				NVRAM0[EM_ACOUSTIC_ENERGY_STEP] = NVRAM0[EM_LASER_POWER_TOTAL];//CWæ¨¡å¼æ¯æ¬¡åŠ å‡é‡
+				NVRAM0[EM_ACOUSTIC_TIME] = 1;//åˆå§‹ä¸º1ç§’
 				NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_TIME] * NVRAM0[EM_LASER_POWER_TOTAL];
-				NVRAM0[EM_ACOUSTIC_TIME_MIN] = 1;//×îĞ¡1Ãë
-				NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_STEP] * 50;//×î´ó100Ãë
+				NVRAM0[EM_ACOUSTIC_TIME_MIN] = 1;//æœ€å°1ç§’
+				NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_STEP] * 50;//æœ€å¤§100ç§’
 				NVRAM0[EM_ACOUSTIC_ENERGY_MIN] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * NVRAM0[EM_LASER_POWER_TOTAL];
 				NVRAM0[EM_ACOUSTIC_ENERGY_MAX] = NVRAM0[EM_LASER_POWER_TOTAL] * NVRAM0[EM_ACOUSTIC_TIME_MAX];
 			}	
 			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
-				//Âö³å´óÓÚ1ÃëÆôÓÃÌáÊ¾Òô
-				if((NVRAM0[EM_LASER_POSWIDTH] >= 1000) && (NVRAM0[EM_LASER_NEGWIDTH] >= 1000)){//ÖÜÆÚ´óÓÚ2000mS
+				//è„‰å†²å¤§äº1ç§’å¯ç”¨æç¤ºéŸ³
+				if((NVRAM0[EM_LASER_POSWIDTH] >= 1000) && (NVRAM0[EM_LASER_NEGWIDTH] >= 1000)){//å‘¨æœŸå¤§äº2000mS
 					SSET(R_ACOUSTIC_ENABLE);
 					NVRAM0[EM_ACOUSTIC_TIME_STEP] = (NVRAM0[EM_LASER_POSWIDTH] / 1000) + (NVRAM0[EM_LASER_NEGWIDTH] / 1000);
 					NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_TIME_STEP];
@@ -3351,7 +3351,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 					NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
 					
 					NVRAM0[EM_ACOUSTIC_TIME_MIN] = NVRAM0[EM_ACOUSTIC_TIME_STEP];					
-					NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * 10;//×î´ó100ÖÜÆÚ
+					NVRAM0[EM_ACOUSTIC_TIME_MAX] = NVRAM0[EM_ACOUSTIC_TIME_MIN] * 10;//æœ€å¤§100å‘¨æœŸ
 					NVRAM0[EM_ACOUSTIC_ENERGY_MIN] = NVRAM0[EM_ACOUSTIC_ENERGY_STEP];
 					NVRAM0[EM_ACOUSTIC_ENERGY_MAX] = NVRAM0[EM_LASER_POWER_TOTAL] * NVRAM0[EM_ACOUSTIC_TIME_MAX];
 				}
@@ -3359,7 +3359,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 					RRES(R_ACOUSTIC_ENABLE);
 				}
 			}
-			//µ÷ÊÔĞÅÏ¢
+			//è°ƒè¯•ä¿¡æ¯
 			if(LD(R_ACOUSTIC_ENABLE)){
 				printf("%s,%d,%s:acoustic enable!\n", __FILE__, __LINE__, __func__);
 			}
@@ -3374,7 +3374,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			printf("%s,%d,%s:acoustic energy min = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MIN]);
 			printf("%s,%d,%s:acoustic energy max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MAX]);
 			
-			//Ğ£ÕıÊä³ö¹¦ÂÊ
+			//æ ¡æ­£è¾“å‡ºåŠŸç‡
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
 				UPDAC0();
@@ -3391,13 +3391,13 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 			}
-			//´ò¿ªÖ¸Ê¾¼¤¹â
+			//æ‰“å¼€æŒ‡ç¤ºæ¿€å…‰
 			setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);
-			//Ò³ÃæÇĞ»»
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//ÇĞ»»´ı»úÒ³Ãæ
+			//é¡µé¢åˆ‡æ¢
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//åˆ‡æ¢å¾…æœºé¡µé¢
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			readyPageTouchEnable(0);
 			readyKeyValue(1);
@@ -3405,7 +3405,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_NEXT_DOWN)){
 			goNextScheme();
-			loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);//ÇĞ»»·½°¸				
+			loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);//åˆ‡æ¢æ–¹æ¡ˆ				
 			updateStandbyDisplay();
 			RRES(R_STANDBY_KEY_SCHEME_NEXT_DOWN);
 		}
@@ -3417,16 +3417,16 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_PARA){//µÈ´ı·äÃùÆ÷
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_PARA){//ç­‰å¾…èœ‚é¸£å™¨
 		NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_DONE;	
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_DONE){//2ÃëÄÚ½ÅÌ¤ÎŞ·¨Ê¹ÓÃ
-		T100MS(T100MS_READY_BEEM_DELAY, true, CONFIG_STANDBY_BEEM_DELAY_TIME);//Æô¶¯¼ÆÊ±Æ÷ÑÓÊ±2000mS ´ò¿ª¼ÆÊ±Æ÷		
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_DONE){//2ç§’å†…è„šè¸æ— æ³•ä½¿ç”¨
+		T100MS(T100MS_READY_BEEM_DELAY, true, CONFIG_STANDBY_BEEM_DELAY_TIME);//å¯åŠ¨è®¡æ—¶å™¨å»¶æ—¶2000mS æ‰“å¼€è®¡æ—¶å™¨		
 		if(LD(T_100MS_START * 16 + T100MS_READY_BEEM_DELAY) && LDB(R_FOOTSWITCH_PRESS)){
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);
 			readyPageTouchEnable(1);
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//ÇĞ»»´ı»úÒ³Ãæ
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//åˆ‡æ¢å¾…æœºé¡µé¢
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			if(LD(R_ACOUSTIC_ENABLE)){
 				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD, true);
@@ -3443,8 +3443,8 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 		}
 		else{
-			if(LD(R_STANDBY_KEY_STNADBY_UP)){//REDAY µ¯Æğ
-				RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+			if(LD(R_STANDBY_KEY_STNADBY_UP)){//REDAY å¼¹èµ·
+				RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 				T100MS(T100MS_READY_BEEM_DELAY, false, 3);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 			}
@@ -3457,14 +3457,14 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 					printf("%s,%d,%s:set Beem freq:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_FREQ]);
 					printf("%s,%d,%s:set Beem on\n", __FILE__, __LINE__, __func__);
 					if(NVRAM0[EM_DC_PAGE] != GDDC_PAGE_WEAR_SAFETY){
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_WEAR_SAFETY;//ÇĞ»»´ı»úÒ³Ãæ
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_WEAR_SAFETY;//åˆ‡æ¢å¾…æœºé¡µé¢
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 					}
 				}
 				if(LDN(R_FOOTSWITCH_PRESS)){
 					RRES(SPCOIL_BEEM_ENABLE);
 					if(NVRAM0[EM_DC_PAGE] != GDDC_PAGE_READY){
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//ÇĞ»»´ı»úÒ³Ãæ
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//åˆ‡æ¢å¾…æœºé¡µé¢
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 					}
 				}
@@ -3473,8 +3473,8 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_WAIT_TRIGGER){//µÈ´ı´¥·¢¼¤¹â	
-		if(LD(R_ENGINEER_MODE)){//¹¤³ÌÄ£Ê½ÏÔÊ¾µ÷ÊÔĞÅÏ¢	
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_WAIT_TRIGGER){//ç­‰å¾…è§¦å‘æ¿€å…‰	
+		if(LD(R_ENGINEER_MODE)){//å·¥ç¨‹æ¨¡å¼æ˜¾ç¤ºè°ƒè¯•ä¿¡æ¯	
 			if(LDP(SPCOIL_PS1000MS)){		
 				updateDebugInfo();
 			}
@@ -3488,7 +3488,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){			
 					addAcousticEnergy();
-					if(NVRAM0[EM_ACOUSTIC_ENERGY] >= NVRAM0[EM_ACOUSTIC_ENERGY_MAX]){//´ïµ½×î´óÖµºóÍ£Ö¹×Ô¼Ó
+					if(NVRAM0[EM_ACOUSTIC_ENERGY] >= NVRAM0[EM_ACOUSTIC_ENERGY_MAX]){//è¾¾åˆ°æœ€å¤§å€¼ååœæ­¢è‡ªåŠ 
 						NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_ENERGY_MAX];
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
 						T10MS(T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
@@ -3511,7 +3511,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					decAcousticEnergy();
-					if(NVRAM0[EM_ACOUSTIC_ENERGY] <= NVRAM0[EM_ACOUSTIC_ENERGY_MIN]){//´ïµ½×î´óÖµºóÍ£Ö¹×Ô¼Ó
+					if(NVRAM0[EM_ACOUSTIC_ENERGY] <= NVRAM0[EM_ACOUSTIC_ENERGY_MIN]){//è¾¾åˆ°æœ€å¤§å€¼ååœæ­¢è‡ªåŠ 
 						NVRAM0[EM_ACOUSTIC_ENERGY] = NVRAM0[EM_ACOUSTIC_ENERGY_MIN];
 						RRES(R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN);
 						T10MS(T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
@@ -3534,7 +3534,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY)){
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					addAcousticTime();
-					if(NVRAM0[EM_ACOUSTIC_TIME] >= NVRAM0[EM_ACOUSTIC_TIME_MAX]){//´ïµ½×î´óÖµºóÍ£Ö¹×Ô¼Ó
+					if(NVRAM0[EM_ACOUSTIC_TIME] >= NVRAM0[EM_ACOUSTIC_TIME_MAX]){//è¾¾åˆ°æœ€å¤§å€¼ååœæ­¢è‡ªåŠ 
 						NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_TIME_MAX];
 						RRES(R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN);
 						T10MS(T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
@@ -3557,7 +3557,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			if(LD(T_10MS_START * 16 + T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY)){	
 				if(LDP(SPCOIL_PS100MS) || LDN(SPCOIL_PS100MS)){
 					decAcousticTime();
-					if(NVRAM0[EM_ACOUSTIC_TIME] <= NVRAM0[EM_ACOUSTIC_TIME_MIN]){//´ïµ½×î´óÖµºóÍ£Ö¹×Ô¼Ó
+					if(NVRAM0[EM_ACOUSTIC_TIME] <= NVRAM0[EM_ACOUSTIC_TIME_MIN]){//è¾¾åˆ°æœ€å¤§å€¼ååœæ­¢è‡ªåŠ 
 						NVRAM0[EM_ACOUSTIC_TIME] = NVRAM0[EM_ACOUSTIC_TIME_MIN];
 						RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN);
 						T10MS(T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
@@ -3571,92 +3571,92 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			T10MS(T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY, false, CONFIG_KEY_REPEAT_DELAY_TIME);
 			RRES(R_READY_KEY_ACOUSTIC_TIME_DEC_UP);
 		}
-		if(LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//»Øµ½µÈ´ı×´Ì¬
-			EDLAR();//Í£Ö¹·¢Éä
+		if(LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//å›åˆ°ç­‰å¾…çŠ¶æ€
+			EDLAR();//åœæ­¢å‘å°„
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;
 			UPDAC0();UPDAC1();
-			//¹â±Èºì¼¤¹â
+			//å…‰æ¯”çº¢æ¿€å…‰
 			setRedLaserPwm(0);
-			T100MS(T100MS_READY_BEEM_DELAY, false, 3);//Í£Ö¹2Ãë¼ÆÊ±Æ÷
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//ÇĞ»»´ı»úÒ³Ãæ
-			SetScreen(NVRAM0[EM_DC_PAGE]);//ÇĞ»»´ı»úÒ³Ãæ
+			T100MS(T100MS_READY_BEEM_DELAY, false, 3);//åœæ­¢2ç§’è®¡æ—¶å™¨
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//åˆ‡æ¢å¾…æœºé¡µé¢
+			SetScreen(NVRAM0[EM_DC_PAGE]);//åˆ‡æ¢å¾…æœºé¡µé¢
 			updateStandbyDisplay();
 			standbyKeyValue(false);
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){
 				RRES(R_STANDBY_KEY_STNADBY_UP);
 			}
-			updateWarnMsgDisplay(MSG_NO_ERROR);//ÏÔÊ¾¾¯¸æĞÅÏ¢
+			updateWarnMsgDisplay(MSG_NO_ERROR);//æ˜¾ç¤ºè­¦å‘Šä¿¡æ¯
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			return;
 		}
-		if(LD(MR_FOOSWITCH_HAND_SWITCH)){//ÉÏÉıÑØ´¥·¢
-			if(LDP(R_FOOTSWITCH_PRESS)){//·¢Éä¼¤¹â
+		if(LD(MR_FOOSWITCH_HAND_SWITCH)){//ä¸Šå‡æ²¿è§¦å‘
+			if(LDP(R_FOOTSWITCH_PRESS)){//å‘å°„æ¿€å…‰
 				sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
 				sPlcSpeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				SSET(SPCOIL_BEEM_ENABLE);//Æô¶¯À®°È
+				SSET(SPCOIL_BEEM_ENABLE);//å¯åŠ¨å–‡å­
 			}
 		}
-		else{//µçÆ½´¥·¢
-			if(LD(R_FOOTSWITCH_PRESS)){//·¢Éä¼¤¹â	
+		else{//ç”µå¹³è§¦å‘
+			if(LD(R_FOOTSWITCH_PRESS)){//å‘å°„æ¿€å…‰	
 				sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 				NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;					
 				sPlcSpeakerFreq(NVRAM0[SPREG_BEEM_FREQ]);
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				SSET(SPCOIL_BEEM_ENABLE);//Æô¶¯À®°È
+				SSET(SPCOIL_BEEM_ENABLE);//å¯åŠ¨å–‡å­
 			}	
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_EMITING){//·¢¼¤¹âÖĞREADYÒ³Ãæ
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LASER_EMITING){//å‘æ¿€å…‰ä¸­READYé¡µé¢
 		if(LDP(SPCOIL_PS10MS)){
 			ADLS1(EM_LASER_TRIG_TIME);
 		}
 		if(LDP(SPCOIL_PS10MS) && LaserFlag_Emiting){
 			ADLS1(EM_LASER_RELEASE_TIME);
 		}
-		if(LDP(SPCOIL_PS100MS)){//Ã¿¸ô1SË¢ĞÂÀÛ¼ÆÊ±¼äºÍÄÜÁ¿
-			updateReleaseTimeEnergy();//¸üĞÂÀÛ¼Æ·¢ÉäÊ±¼äºÍÄÜÁ¿
+		if(LDP(SPCOIL_PS100MS)){//æ¯éš”1Såˆ·æ–°ç´¯è®¡æ—¶é—´å’Œèƒ½é‡
+			updateReleaseTimeEnergy();//æ›´æ–°ç´¯è®¡å‘å°„æ—¶é—´å’Œèƒ½é‡
 		}
-		if(LD(R_ENGINEER_MODE)){//¹¤³ÌÄ£Ê½ÏÔÊ¾µ÷ÊÔĞÅÏ¢	
+		if(LD(R_ENGINEER_MODE)){//å·¥ç¨‹æ¨¡å¼æ˜¾ç¤ºè°ƒè¯•ä¿¡æ¯	
 			if(LDP(SPCOIL_PS1000MS)){		
 				updateDebugInfo();
 			}
 		}		
-		if(LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//»Øµ½µÈ´ı×´Ì¬
-			EDLAR();//Í£Ö¹·¢Éä
+		if(LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//å›åˆ°ç­‰å¾…çŠ¶æ€
+			EDLAR();//åœæ­¢å‘å°„
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;
 			UPDAC0();UPDAC1();
 			setRedLaserPwm(0);
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//ÇĞ»»´ı»úÒ³Ãæ
-			SetScreen(NVRAM0[EM_DC_PAGE]);//ÇĞ»»´ı»úÒ³Ãæ
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//åˆ‡æ¢å¾…æœºé¡µé¢
+			SetScreen(NVRAM0[EM_DC_PAGE]);//åˆ‡æ¢å¾…æœºé¡µé¢
 			updateStandbyDisplay();
 			standbyKeyValue(0);
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){
 				RRES(R_STANDBY_KEY_STNADBY_UP);
 			}
-			updateWarnMsgDisplay(MSG_NO_ERROR);//ÏÔÊ¾¾¯¸æĞÅÏ¢
+			updateWarnMsgDisplay(MSG_NO_ERROR);//æ˜¾ç¤ºè­¦å‘Šä¿¡æ¯
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			return;
 		}
-		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//ÉÏÉıÑØ´¥·¢
-			if(LDP(R_FOOTSWITCH_PRESS)){//¹Ø±Õ¼¤¹â
+		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//ä¸Šå‡æ²¿è§¦å‘
+			if(LDP(R_FOOTSWITCH_PRESS)){//å…³é—­æ¿€å…‰
 				EDLAR();
-				RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+				RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 				readyPageTouchEnable(1);
 				printf("%s,%d,%s:hand switch mode,footswitch press,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
 			}
 		}
 		else{
-			if(LDB(R_FOOTSWITCH_PRESS)){//¹Ø±Õ¼¤¹â
+			if(LDB(R_FOOTSWITCH_PRESS)){//å…³é—­æ¿€å…‰
 				EDLAR(); 
-				RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+				RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 				readyPageTouchEnable(1);
 				printf("%s,%d,%s:foot switch mode,footswitch unpress,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
@@ -3664,9 +3664,9 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_ERROR){//Ready¼ì²âµ½½ÅÌ¤²ÈÏÂ
-		if(LDB(R_FOOTSWITCH_PRESS)){//¼ì²âµ½½ÅÌ¤×´Ì¬»Ö¸´Õı³£
-			RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_ERROR){//Readyæ£€æµ‹åˆ°è„šè¸è¸©ä¸‹
+		if(LDB(R_FOOTSWITCH_PRESS)){//æ£€æµ‹åˆ°è„šè¸çŠ¶æ€æ¢å¤æ­£å¸¸
+			RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 			standbyKeyValue(false);
 			standbyKeyTouchEnable(true);
 			updateWarnMsgDisplay(MSG_NO_ERROR);
@@ -3677,13 +3677,13 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_OPTION){//Ñ¡Ïî½çÃæ
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_OPTION){//é€‰é¡¹ç•Œé¢
 		if(LD(R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN)){
 			if(NVRAM0[DM_BEEM_VOLUME] < CONFIG_BEEM_MAX_VOLUME){
 				NVRAM0[DM_BEEM_VOLUME] += 1;
 				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
-				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//¸üĞÂ½ø¶ÈÌõ
+				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//æ›´æ–°è¿›åº¦æ¡
 			}
 			RRES(R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN);
 		}
@@ -3692,7 +3692,7 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 				NVRAM0[DM_BEEM_VOLUME] -= 1;
 				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
-				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//¸üĞÂ½ø¶ÈÌõ
+				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//æ›´æ–°è¿›åº¦æ¡
 			}
 			RRES(R_OPTION_KEY_BEEM_VOLUME_DEC_DOWN);
 		}
@@ -3721,16 +3721,16 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_OPTION_KEY_ENTER_INFORMATION_DOWN);
 		}
-		if(LD(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN)){//½øÈëÕï¶Ï×´Ì¬
+		if(LD(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN)){//è¿›å…¥è¯Šæ–­çŠ¶æ€
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiognosisTextBox();//¸üĞÂÎÄ±¾ÊäÈëÖµ
+			updateDiognosisTextBox();//æ›´æ–°æ–‡æœ¬è¾“å…¥å€¼
 			RRES(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN);
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_INFORMATION){//ĞÅÏ¢½çÃæ
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_INFORMATION){//ä¿¡æ¯ç•Œé¢
 		if(LD(R_INFORMATION_KEY_OK_DOWN)){
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_OPTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
@@ -3739,8 +3739,8 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME){//·½°¸½çÃæµÚÒ»Ò³
-		RRES(SPCOIL_BEEM_ENABLE);//¹Ø±Õ·äÃùÆ÷
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME){//æ–¹æ¡ˆç•Œé¢ç¬¬ä¸€é¡µ
+		RRES(SPCOIL_BEEM_ENABLE);//å…³é—­èœ‚é¸£å™¨
 		if(LD(R_SCHEME_KEY_SCHEME_SELECT_0_DOWN)){
 			unselectSchemeNum(NVRAM0[EM_SCHEME_NUM_TMP]);
 			if(NVRAM0[EM_SCHEME_NUM_TMP] != 0 && NVRAM0[EM_SCHEME_NUM_TMP] < 16){
@@ -3932,18 +3932,18 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);	
 			RRES(R_SCHEME_KEY_SCHEME_SELECT_15_DOWN);
 		}
-		if(LD(R_SCHEME_KEY_RENAME_DOWN)){//¸ÄÃû
+		if(LD(R_SCHEME_KEY_RENAME_DOWN)){//æ”¹å
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
-			//½«EM_SCHEME_NUM_TMPÖ¸ÏòµÄÃû³Æ¸üĞÂRENAMEÊäÈë¿ò
+			//å°†EM_SCHEME_NUM_TMPæŒ‡å‘çš„åç§°æ›´æ–°RENAMEè¾“å…¥æ¡†
 			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM1 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_SCHEME_KEY_RENAME_DOWN);
 		}
 		return;
 	}	
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RENAME){//·½°¸¸ÄÃû
-		if(LD(R_RENAME_TEXTDISPLAY_READ_DONE)){//¸üÃûÍê±Ï					
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RENAME){//æ–¹æ¡ˆæ”¹å
+		if(LD(R_RENAME_TEXTDISPLAY_READ_DONE)){//æ›´åå®Œæ¯•					
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;
 			SetScreen(NVRAM0[EM_DC_PAGE]);
@@ -3957,8 +3957,8 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS){//Õï¶Ï½çÃæ
-		if(LD(R_DIAGNOSIS_OK_DOWN)){//·µ»ØOption
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS){//è¯Šæ–­ç•Œé¢
+		if(LD(R_DIAGNOSIS_OK_DOWN)){//è¿”å›Option
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_OPTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
 			SetScreen(NVRAM0[EM_DC_PAGE]);
@@ -3966,27 +3966,27 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 		}
 		else if(LD(R_CLEAR_EPROM)){//
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
-			__set_PRIMASK(0);//¹Ø±ÕÖĞ¶Ï
-			sPlcNvramClear();//Çå¿ÕNVRAM
-			sPlcFdramClear();//Çå¿ÕFDRAM
-			sPlcDeviceConfigClear();//Çå¿Õconfig
+			__set_PRIMASK(0);//å…³é—­ä¸­æ–­
+			sPlcNvramClear();//æ¸…ç©ºNVRAM
+			sPlcFdramClear();//æ¸…ç©ºFDRAM
+			sPlcDeviceConfigClear();//æ¸…ç©ºconfig
 			resetGddcHmi();
-			softDelayMs(4000);//µÈ´ı4Ãë
+			softDelayMs(4000);//ç­‰å¾…4ç§’
 			REBOOT();	
 		}
-		else if(LD(R_SAVE_EPROM)){//´¢´æÅäÖÆµ½EPROM
+		else if(LD(R_SAVE_EPROM)){//å‚¨å­˜é…åˆ¶åˆ°EPROM
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
-			__set_PRIMASK(0);//¹Ø±ÕÖĞ¶Ï
-			sPlcNvramSave();//¸üĞÂNVRAM
-			sPlcFdramSave();//¸üĞÂFDRAM
-			saveDeviceConfig();//¸üĞÂÅäÖÆ
+			__set_PRIMASK(0);//å…³é—­ä¸­æ–­
+			sPlcNvramSave();//æ›´æ–°NVRAM
+			sPlcFdramSave();//æ›´æ–°FDRAM
+			saveDeviceConfig();//æ›´æ–°é…åˆ¶
 			resetGddcHmi();
-			softDelayMs(4000);//µÈ´ı4Ãë
+			softDelayMs(4000);//ç­‰å¾…4ç§’
 			REBOOT();	
 		}
-		else if(LD(R_CLEAR_CRC)){//Çå³ı¹Ì¼şCRC
+		else if(LD(R_CLEAR_CRC)){//æ¸…é™¤å›ºä»¶CRC
 			tmp8 = 0;
-			__set_PRIMASK(0);//¹Ø±ÕÖĞ¶Ï
+			__set_PRIMASK(0);//å…³é—­ä¸­æ–­
 			epromWriteByte((CONFIG_EPROM_LCD_FW_CRC + 0), &tmp8);
 			epromWriteByte((CONFIG_EPROM_LCD_FW_CRC + 1), &tmp8);
 			epromWriteByte((CONFIG_EPROM_LCD_FW_CRC + 2), &tmp8);
@@ -3997,10 +3997,10 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 2), &tmp8);
 			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 3), &tmp8);
 			resetGddcHmi();
-			softDelayMs(4000);//µÈ´ı4Ãë
+			softDelayMs(4000);//ç­‰å¾…4ç§’
 			REBOOT();	
 		}
-		else if(LD(R_UPDATE_BOOTLOAD_REQ)){//¸üĞÂBoot loadÇëÇó
+		else if(LD(R_UPDATE_BOOTLOAD_REQ)){//æ›´æ–°Boot loadè¯·æ±‚
 			SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, true);
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
@@ -4023,12 +4023,12 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 			}
 			RRES(R_UPDATE_BOOTLOAD_REQ);
 		}
-		else if(LD(R_UPDATE_BOOTLOAD_YES)){//Ö´ĞĞBootload¸üĞÂ	
+		else if(LD(R_UPDATE_BOOTLOAD_YES)){//æ‰§è¡ŒBootloadæ›´æ–°	
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 			confirmBootloadUpdate();
 		}
-		else if(LD(R_UPDATE_BOOTLOAD_NO)){//´íÎóBootload¸üĞÂĞòÁĞ
+		else if(LD(R_UPDATE_BOOTLOAD_NO)){//é”™è¯¯Bootloadæ›´æ–°åºåˆ—
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 			
@@ -4050,79 +4050,79 @@ void dcHmiLoop(void){//HMIÂÖÑµ³ÌĞò
 /*****************************************************************************/
 }
 
-//ÏûÏ¢´¦ÀíÁ÷³Ì
-//msg ´ı´¦ÀíÏûÏ¢
-//size ÏûÏ¢³¤¶È
+//æ¶ˆæ¯å¤„ç†æµç¨‹
+//msg å¾…å¤„ç†æ¶ˆæ¯
+//size æ¶ˆæ¯é•¿åº¦
 static void ProcessMessage( PCTRL_MSG msg, uint16_t size ){
-	uint8_t cmd_type = msg->cmd_type;                                                     //Ö¸ÁîÀàĞÍ
-    uint8_t ctrl_msg = msg->ctrl_msg;                                                     //ÏûÏ¢µÄÀàĞÍ
-    uint8_t control_type = msg->control_type;                                             //¿Ø¼şÀàĞÍ
-    uint16_t screen_id = PTR2U16(&msg->screen_id);                                        //»­ÃæID
-    uint16_t control_id = PTR2U16(&msg->control_id);                                      //¿Ø¼şID
-    uint32_t value = PTR2U32(msg->param);                                                 //ÊıÖµ
+	uint8_t cmd_type = msg->cmd_type;                                                     //æŒ‡ä»¤ç±»å‹
+    uint8_t ctrl_msg = msg->ctrl_msg;                                                     //æ¶ˆæ¯çš„ç±»å‹
+    uint8_t control_type = msg->control_type;                                             //æ§ä»¶ç±»å‹
+    uint16_t screen_id = PTR2U16(&msg->screen_id);                                        //ç”»é¢ID
+    uint16_t control_id = PTR2U16(&msg->control_id);                                      //æ§ä»¶ID
+    uint32_t value = PTR2U32(msg->param);                                                 //æ•°å€¼
     switch(cmd_type){  
-		case NOTIFY_TOUCH_PRESS:{//´¥ÃşÆÁ°´ÏÂ
+		case NOTIFY_TOUCH_PRESS:{//è§¦æ‘¸å±æŒ‰ä¸‹
 			break;
 		}
-		case NOTIFY_TOUCH_RELEASE:{//´¥ÃşÆÁËÉ¿ª
+		case NOTIFY_TOUCH_RELEASE:{//è§¦æ‘¸å±æ¾å¼€
 			NotifyTouchXY(hmiCmdBuffer[1],PTR2U16(hmiCmdBuffer + 2),PTR2U16(hmiCmdBuffer + 4)); 
 			break;
 		}			
-		case NOTIFY_WRITE_FLASH_OK:{//Ğ´FLASH³É¹¦
+		case NOTIFY_WRITE_FLASH_OK:{//å†™FLASHæˆåŠŸ
 			NotifyWriteFlash(1);                                                      
 			break;              
 		}			
-		case NOTIFY_WRITE_FLASH_FAILD:{//Ğ´FLASHÊ§°Ü
+		case NOTIFY_WRITE_FLASH_FAILD:{//å†™FLASHå¤±è´¥
 			NotifyWriteFlash(0);                        	                              
 			break;            
 		}			
-		case NOTIFY_READ_FLASH_OK:{//¶ÁÈ¡FLASH³É¹¦
-			NotifyReadFlash(1, hmiCmdBuffer + 2, size - 6);//È¥³ıÖ¡Í·Ö¡Î²
+		case NOTIFY_READ_FLASH_OK:{//è¯»å–FLASHæˆåŠŸ
+			NotifyReadFlash(1, hmiCmdBuffer + 2, size - 6);//å»é™¤å¸§å¤´å¸§å°¾
 			break;                                  
 		}			
-		case NOTIFY_READ_FLASH_FAILD:{//¶ÁÈ¡FLASHÊ§°Ü
+		case NOTIFY_READ_FLASH_FAILD:{//è¯»å–FLASHå¤±è´¥
 			NotifyReadFlash(0,0,0);                                                   
 			break;  
 		}			
-		case NOTIFY_READ_RTC:{//¶ÁÈ¡RTCÊ±¼ä
+		case NOTIFY_READ_RTC:{//è¯»å–RTCæ—¶é—´
 			NotifyReadRTC(hmiCmdBuffer[2], hmiCmdBuffer[3], hmiCmdBuffer[4], hmiCmdBuffer[5], hmiCmdBuffer[6], hmiCmdBuffer[7], hmiCmdBuffer[8]);
 			break;
 		}
 		case NOTIFY_CONTROL:{
-			if(ctrl_msg==MSG_GET_CURRENT_SCREEN){//»­ÃæID±ä»¯Í¨Öª
-                NotifyScreen(screen_id);//»­ÃæÇĞ»»µ÷¶¯µÄº¯Êı
+			if(ctrl_msg==MSG_GET_CURRENT_SCREEN){//ç”»é¢IDå˜åŒ–é€šçŸ¥
+                NotifyScreen(screen_id);//ç”»é¢åˆ‡æ¢è°ƒåŠ¨çš„å‡½æ•°
             }
             else{
 				switch(control_type){
-					case kCtrlButton:{//°´Å¥¿Ø¼ş
+					case kCtrlButton:{//æŒ‰é’®æ§ä»¶
 						NotifyButton(screen_id,control_id,msg->param[1]);                  
 						break;  
 					}
-					case kCtrlText:{//ÎÄ±¾¿Ø¼ş
+					case kCtrlText:{//æ–‡æœ¬æ§ä»¶
 						NotifyText(screen_id,control_id,msg->param);                       
 						break;
 					}						
-					case kCtrlProgress:{//½ø¶ÈÌõ¿Ø¼ş
+					case kCtrlProgress:{//è¿›åº¦æ¡æ§ä»¶
 						NotifyProgress(screen_id,control_id,value);                        
 						break;
 					}						
-					case kCtrlSlider:{//»¬¶¯Ìõ¿Ø¼ş
+					case kCtrlSlider:{//æ»‘åŠ¨æ¡æ§ä»¶
 						NotifySlider(screen_id,control_id,value);                          
 						break;
 					}						
-					case kCtrlMeter:{//ÒÇ±í¿Ø¼ş
+					case kCtrlMeter:{//ä»ªè¡¨æ§ä»¶
 						NotifyMeter(screen_id,control_id,value);                           
 						break;
 					}
-					case kCtrlMenu:{//²Ëµ¥¿Ø¼ş
+					case kCtrlMenu:{//èœå•æ§ä»¶
 						NotifyMenu(screen_id,control_id,msg->param[0],msg->param[1]);      
 						break;
 					}
-					case kCtrlSelector:{//Ñ¡Ôñ¿Ø¼ş
+					case kCtrlSelector:{//é€‰æ‹©æ§ä»¶
 						NotifySelector(screen_id,control_id,msg->param[0]);                
 						break;
 					}						
-					case kCtrlRTC:{//µ¹¼ÆÊ±¿Ø¼ş
+					case kCtrlRTC:{//å€’è®¡æ—¶æ§ä»¶
 						NotifyTimer(screen_id,control_id);
 						break;
 					}
@@ -4143,14 +4143,14 @@ static void ProcessMessage( PCTRL_MSG msg, uint16_t size ){
 
 
 static void NotifyScreen(uint16_t screen_id){
-    //TODO: Ìí¼ÓÓÃ»§´úÂë
+    //TODO: æ·»åŠ ç”¨æˆ·ä»£ç 
 
 }
 
-//´¥Ãş×ø±êÊÂ¼şÏìÓ¦
-//press 1°´ÏÂ´¥ÃşÆÁ£¬3ËÉ¿ª´¥ÃşÆÁ;x x×ø±ê;y y×ø±ê
+//è§¦æ‘¸åæ ‡äº‹ä»¶å“åº”
+//press 1æŒ‰ä¸‹è§¦æ‘¸å±ï¼Œ3æ¾å¼€è§¦æ‘¸å±;x xåæ ‡;y yåæ ‡
 static void NotifyTouchXY(uint8_t press,uint16_t x,uint16_t y){
-    //TODO: Ìí¼ÓÓÃ»§´úÂë
+    //TODO: æ·»åŠ ç”¨æˆ·ä»£ç 
 }
 
 
@@ -4159,45 +4159,45 @@ static void NotifyTouchXY(uint8_t press,uint16_t x,uint16_t y){
 
                                                                           
 /*!                                                                              
-*  \brief  »¬¶¯Ìõ¿Ø¼şÍ¨Öª                                                       
-*  \details  µ±»¬¶¯Ìõ¸Ä±ä(»òµ÷ÓÃGetControlValue)Ê±£¬Ö´ĞĞ´Ëº¯Êı                  
-*  \param screen_id »­ÃæID                                                      
-*  \param control_id ¿Ø¼şID                                                     
-*  \param value Öµ                                                              
+*  \brief  æ»‘åŠ¨æ¡æ§ä»¶é€šçŸ¥                                                       
+*  \details  å½“æ»‘åŠ¨æ¡æ”¹å˜(æˆ–è°ƒç”¨GetControlValue)æ—¶ï¼Œæ‰§è¡Œæ­¤å‡½æ•°                  
+*  \param screen_id ç”»é¢ID                                                      
+*  \param control_id æ§ä»¶ID                                                     
+*  \param value å€¼                                                              
 */                                                                              
 static void NotifySlider(uint16_t screen_id, uint16_t control_id, uint32_t value){                                                                                                                                  
 
 }
 
 /*! 
-*  \brief  ÒÇ±í¿Ø¼şÍ¨Öª
-*  \details  µ÷ÓÃGetControlValueÊ±£¬Ö´ĞĞ´Ëº¯Êı
-*  \param screen_id »­ÃæID
-*  \param control_id ¿Ø¼şID
-*  \param value Öµ
+*  \brief  ä»ªè¡¨æ§ä»¶é€šçŸ¥
+*  \details  è°ƒç”¨GetControlValueæ—¶ï¼Œæ‰§è¡Œæ­¤å‡½æ•°
+*  \param screen_id ç”»é¢ID
+*  \param control_id æ§ä»¶ID
+*  \param value å€¼
 */
 static void NotifyMeter(uint16_t screen_id, uint16_t control_id, uint32_t value){
-    //TODO: Ìí¼ÓÓÃ»§´úÂë
+    //TODO: æ·»åŠ ç”¨æˆ·ä»£ç 
 }
 
 /*! 
-*  \brief  ²Ëµ¥¿Ø¼şÍ¨Öª
-*  \details  µ±²Ëµ¥Ïî°´ÏÂ»òËÉ¿ªÊ±£¬Ö´ĞĞ´Ëº¯Êı
-*  \param screen_id »­ÃæID
-*  \param control_id ¿Ø¼şID
-*  \param item ²Ëµ¥ÏîË÷Òı
-*  \param state °´Å¥×´Ì¬£º0ËÉ¿ª£¬1°´ÏÂ
+*  \brief  èœå•æ§ä»¶é€šçŸ¥
+*  \details  å½“èœå•é¡¹æŒ‰ä¸‹æˆ–æ¾å¼€æ—¶ï¼Œæ‰§è¡Œæ­¤å‡½æ•°
+*  \param screen_id ç”»é¢ID
+*  \param control_id æ§ä»¶ID
+*  \param item èœå•é¡¹ç´¢å¼•
+*  \param state æŒ‰é’®çŠ¶æ€ï¼š0æ¾å¼€ï¼Œ1æŒ‰ä¸‹
 */
 static void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t item, uint8_t state){
 
 }
 
 /*! 
-*  \brief  Ñ¡Ôñ¿Ø¼şÍ¨Öª
-*  \details  µ±Ñ¡Ôñ¿Ø¼ş±ä»¯Ê±£¬Ö´ĞĞ´Ëº¯Êı
-*  \param screen_id »­ÃæID
-*  \param control_id ¿Ø¼şID
-*  \param item µ±Ç°Ñ¡Ïî
+*  \brief  é€‰æ‹©æ§ä»¶é€šçŸ¥
+*  \details  å½“é€‰æ‹©æ§ä»¶å˜åŒ–æ—¶ï¼Œæ‰§è¡Œæ­¤å‡½æ•°
+*  \param screen_id ç”»é¢ID
+*  \param control_id æ§ä»¶ID
+*  \param item å½“å‰é€‰é¡¹
 */
 static void NotifySelector(uint16_t screen_id, uint16_t control_id, uint8_t  item){
 
@@ -4205,54 +4205,54 @@ static void NotifySelector(uint16_t screen_id, uint16_t control_id, uint8_t  ite
 }
 
 /*! 
-*  \brief  ¶¨Ê±Æ÷³¬Ê±Í¨Öª´¦Àí
-*  \param screen_id »­ÃæID
-*  \param control_id ¿Ø¼şID
+*  \brief  å®šæ—¶å™¨è¶…æ—¶é€šçŸ¥å¤„ç†
+*  \param screen_id ç”»é¢ID
+*  \param control_id æ§ä»¶ID
 */
 static void NotifyTimer(uint16_t screen_id, uint16_t control_id){
 }
 
 /*! 
-*  \brief  ¶ÁÈ¡ÓÃ»§FLASH×´Ì¬·µ»Ø
-*  \param status 0Ê§°Ü£¬1³É¹¦
-*  \param _data ·µ»ØÊı¾İ
-*  \param length Êı¾İ³¤¶È
+*  \brief  è¯»å–ç”¨æˆ·FLASHçŠ¶æ€è¿”å›
+*  \param status 0å¤±è´¥ï¼Œ1æˆåŠŸ
+*  \param _data è¿”å›æ•°æ®
+*  \param length æ•°æ®é•¿åº¦
 */
 static void NotifyReadFlash(uint8_t status,uint8_t *_data,uint16_t length){
-    //TODO: Ìí¼ÓÓÃ»§´úÂë
+    //TODO: æ·»åŠ ç”¨æˆ·ä»£ç 
 }
 
 /*! 
-*  \brief  Ğ´ÓÃ»§FLASH×´Ì¬·µ»Ø
-*  \param status 0Ê§°Ü£¬1³É¹¦
+*  \brief  å†™ç”¨æˆ·FLASHçŠ¶æ€è¿”å›
+*  \param status 0å¤±è´¥ï¼Œ1æˆåŠŸ
 */
 static void NotifyWriteFlash(uint8_t status){
-    //TODO: Ìí¼ÓÓÃ»§´úÂë
+    //TODO: æ·»åŠ ç”¨æˆ·ä»£ç 
 }
 
 
 /*! 
-*  \brief  string ×ª int
-*  \param char *str  Êı×Ö×Ö·û´®
+*  \brief  string è½¬ int
+*  \param char *str  æ•°å­—å­—ç¬¦ä¸²
 */
 int str2int(const char *str){
     int temp = 0;
-    const char *ptr = str;                                                            //¼ÇÂ¼×Ö·û´®
+    const char *ptr = str;                                                            //è®°å½•å­—ç¬¦ä¸²
 
-    if(*str == '-' || *str == '+')                                                    //ÅĞ¶ÏµÚÒ»¸ö×Ö·ûÊÇ·ñÊÇÕı¸º
+    if(*str == '-' || *str == '+')                                                    //åˆ¤æ–­ç¬¬ä¸€ä¸ªå­—ç¬¦æ˜¯å¦æ˜¯æ­£è´Ÿ
     {                                                                            
-        str++;                                                                        //Æ«ÒÆÒ»Î»
+        str++;                                                                        //åç§»ä¸€ä½
     }                                                                            
     while(*str != 0)                                                             
     {                                                                            
-        if ((*str < '0') || (*str > '9'))                                             //¼ì²âÊÇ·ñÎªÊı×Ö×Ö·û 
+        if ((*str < '0') || (*str > '9'))                                             //æ£€æµ‹æ˜¯å¦ä¸ºæ•°å­—å­—ç¬¦ 
         {                                                                        
             break;                                                               
         }                                                                        
-        temp = temp * 10 + (*str - '0');                                              //×ª»»
-        str++;                                                                        //Æ«ÒÆÒ»Î»
+        temp = temp * 10 + (*str - '0');                                              //è½¬æ¢
+        str++;                                                                        //åç§»ä¸€ä½
     }                                                                            
-    if (*ptr == '-')                                                                  //Èç¹ûÎª¸ºÊı¾ÍÈ¡·´
+    if (*ptr == '-')                                                                  //å¦‚æœä¸ºè´Ÿæ•°å°±å–å
     {
         temp = -temp;
     }

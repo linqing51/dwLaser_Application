@@ -49,7 +49,7 @@ int fgetc(FILE *f) {
 //}
 
 
-//定义_sys_exit()以避免使用半主机模式
+//瀹氫箟_sys_exit()浠ラ伩鍏嶄娇鐢ㄥ崐涓绘満妯″紡
 void _sys_exit(int x){
 	x = x;
 }

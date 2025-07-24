@@ -13,7 +13,7 @@ void mainAppTask(void *argument){
 		}
 		dcHmiLoop();
 		sPlcProcessEnd();
-		//¼ì²â´®¿Ú·¢Éú´íÎóÖØĞÂÆô¶¯½ÓÊÕ
+		//æ£€æµ‹ä¸²å£å‘ç”Ÿé”™è¯¯é‡æ–°å¯åŠ¨æ¥æ”¶
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 		if(huart4.RxState == HAL_UART_STATE_READY){
 			HAL_UART_Receive_IT(&huart4, &dchmi_rxDat, 1);

@@ -1,4 +1,4 @@
-//Ô¤Éè·½°¸ÄÚÈİ
+//é¢„è®¾æ–¹æ¡ˆå†…å®¹
 #include "preScheme.h"
 
 
@@ -15,7 +15,7 @@ myScheme_t sLiposuction[32];//6
 myScheme_t sDentistry[32];//7
 myScheme_t sTherapy[32];//8
 /*****************************************************************************/
-void goNextScheme(void){//ÇĞ»»ÏÂÒ»¸ö·½°¸
+void goNextScheme(void){//åˆ‡æ¢ä¸‹ä¸€ä¸ªæ–¹æ¡ˆ
 	switch(NVRAM0[DM_SCHEME_CLASSIFY]){
 		case SCHEME_PHLEBOLOGY:{
 			if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_PHLEBOLOGY_SIZE - 1)){
@@ -81,12 +81,12 @@ void goNextScheme(void){//ÇĞ»»ÏÂÒ»¸ö·½°¸
 	}
 }
 
-void goLastScheme(void){//ÇĞ»»ÉÏÒ»¸ö·½°¸
+void goLastScheme(void){//åˆ‡æ¢ä¸Šä¸€ä¸ªæ–¹æ¡ˆ
 	if(NVRAM0[DM_SCHEME_INDEX] > 0){
 			DECS1(DM_SCHEME_INDEX);
 	}
 }
-void loadSelectScheme(int16_t classify, int16_t index){//½«·½°¸Ğ´ÈëEM	
+void loadSelectScheme(int16_t classify, int16_t index){//å°†æ–¹æ¡ˆå†™å…¥EM	
 	switch(classify){
 		case SCHEME_PHLEBOLOGY:{
 			if(NVRAM0[DM_SCHEME_INDEX] > (CONFIG_PHLEBOLOGY_SIZE-1)){
@@ -242,11 +242,11 @@ void loadSelectScheme(int16_t classify, int16_t index){//½«·½°¸Ğ´ÈëEM
 	printf("%s,%d,%s:scheme negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_NEGWIDTH]);
 }
 
-void schemeInit(uint8_t reDef){//ÖÎÁÆ·½°¸³õÊ¼»¯
+void schemeInit(uint8_t reDef){//æ²»ç–—æ–¹æ¡ˆåˆå§‹åŒ–
 	myScheme_t *p;
 	int16_t i;
 	for (i = 0;i < 32; i ++){
-		if(reDef == 1){//×Ô¶¨Òå·½°¸»Ö¸´Ä¬ÈÏÖµ
+		if(reDef == 1){//è‡ªå®šä¹‰æ–¹æ¡ˆæ¢å¤é»˜è®¤å€¼
 			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
@@ -261,7 +261,7 @@ void schemeInit(uint8_t reDef){//ÖÎÁÆ·½°¸³õÊ¼»¯
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1)  			&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_RED)  			&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH0_RED)		&&
-					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1_RED)){//×Ô¶¨Òå·½°¸²»ÕıÈ·»Ö¸´Ä¬ÈÏÖµ
+					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1_RED)){//è‡ªå®šä¹‰æ–¹æ¡ˆä¸æ­£ç¡®æ¢å¤é»˜è®¤å€¼
 				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
 				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
@@ -1433,21 +1433,21 @@ void schemeInit(uint8_t reDef){//ÖÎÁÆ·½°¸³õÊ¼»¯
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
 
-void goNextScheme(void){//ÇĞ»»ÏÂÒ»¸ö·½°¸
+void goNextScheme(void){//åˆ‡æ¢ä¸‹ä¸€ä¸ªæ–¹æ¡ˆ
 	if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_CUSTIOM_SIZE - 1)){
 		ADDS1(DM_SCHEME_INDEX);
 	}
 }
-void goLastScheme(void){//ÇĞ»»ÉÏÒ»¸ö·½°¸
+void goLastScheme(void){//åˆ‡æ¢ä¸Šä¸€ä¸ªæ–¹æ¡ˆ
 	if(NVRAM0[DM_SCHEME_INDEX] > 0){
 			DECS1(DM_SCHEME_INDEX);
 	}
 }
 
-void schemeInit(uint8_t reDef){//ÖÎÁÆ·½°¸³õÊ¼»¯
+void schemeInit(uint8_t reDef){//æ²»ç–—æ–¹æ¡ˆåˆå§‹åŒ–
 	int16_t i;
 	for (i = 0;i < 32; i ++){
-		if(reDef == 1){//×Ô¶¨Òå·½°¸»Ö¸´Ä¬ÈÏÖµ
+		if(reDef == 1){//è‡ªå®šä¹‰æ–¹æ¡ˆæ¢å¤é»˜è®¤å€¼
 			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
@@ -1462,7 +1462,7 @@ void schemeInit(uint8_t reDef){//ÖÎÁÆ·½°¸³õÊ¼»¯
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1)  			&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_RED)  			&&
 					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH0_RED)		&&
-					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1_RED)){//×Ô¶¨Òå·½°¸²»ÕıÈ·»Ö¸´Ä¬ÈÏÖµ
+					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1_RED)){//è‡ªå®šä¹‰æ–¹æ¡ˆä¸æ­£ç¡®æ¢å¤é»˜è®¤å€¼
 				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
 				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
 				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
@@ -1474,7 +1474,7 @@ void schemeInit(uint8_t reDef){//ÖÎÁÆ·½°¸³õÊ¼»¯
 			}
 		}
 	}
-	//»Ö¸´Ä¬ÈÏ·½°¸
+	//æ¢å¤é»˜è®¤æ–¹æ¡ˆ
 	i = 0;
 	sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "EVLA Thigh cw i");
 	FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
@@ -1578,7 +1578,7 @@ void schemeInit(uint8_t reDef){//ÖÎÁÆ·½°¸³õÊ¼»¯
 
 }
 
-void loadSelectScheme(int16_t classify, int16_t index){//½«·½°¸Ğ´ÈëEM		
+void loadSelectScheme(int16_t classify, int16_t index){//å°†æ–¹æ¡ˆå†™å…¥EM		
 	if(index > (CONFIG_CUSTIOM_SIZE - 1)){
 		index = (CONFIG_CUSTIOM_SIZE - 1);
 	}

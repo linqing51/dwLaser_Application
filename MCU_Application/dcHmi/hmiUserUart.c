@@ -42,10 +42,10 @@ void hmiUartInit(void){
 void hmiUartSendChar(uint8_t sdat){
 	HAL_StatusTypeDef ret;
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-	ret = HAL_UART_Transmit(&huart4, &sdat, 1, 1000);//∑¢ÀÕ“ª∏ˆ◊÷Ω⁄
+	ret = HAL_UART_Transmit(&huart4, &sdat, 1, 1000);//ÂèëÈÄÅ‰∏Ä‰∏™Â≠óËäÇ
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-	ret = HAL_UART_Transmit(&huart3, &sdat, 1, 1000);//∑¢ÀÕ“ª∏ˆ◊÷Ω⁄
+	ret = HAL_UART_Transmit(&huart3, &sdat, 1, 1000);//ÂèëÈÄÅ‰∏Ä‰∏™Â≠óËäÇ
 #endif
 	if(ret != HAL_OK){
 		printf("%s,%d,%s:hmi uart tx timeout!!!!\n",__FILE__, __LINE__, __func__);
@@ -54,14 +54,14 @@ void hmiUartSendChar(uint8_t sdat){
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-	if(huart->Instance == UART4){//¥•√˛∆¡¥Æø⁄
+	if(huart->Instance == UART4){//Ëß¶Êë∏Â±è‰∏≤Âè£
 		queue_push(dchmi_rxDat);
 		HAL_UART_Receive_IT(&huart4, &dchmi_rxDat, 1);
 	}	
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
-	if(huart->Instance == USART3){//¥•√˛∆¡¥Æø⁄
+	if(huart->Instance == USART3){//Ëß¶Êë∏Â±è‰∏≤Âè£
 		queue_push(dchmi_rxDat);
 		HAL_UART_Receive_IT(&huart3, &dchmi_rxDat, 1);
 	}	
@@ -70,13 +70,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 }
 void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart){
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-	if(huart->Instance == UART4){//¥•√˛∆¡¥Æø⁄
+	if(huart->Instance == UART4){//Ëß¶Êë∏Â±è‰∏≤Âè£
 		queue_push(dchmi_rxDat);
 		HAL_UART_Receive_IT(&huart4, &dchmi_rxDat, 1);
 	}	
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-	if(huart->Instance == USART3){//¥•√˛∆¡¥Æø⁄
+	if(huart->Instance == USART3){//Ëß¶Êë∏Â±è‰∏≤Âè£
 		queue_push(dchmi_rxDat);
 		HAL_UART_Receive_IT(&huart3, &dchmi_rxDat, 1);
 	}	

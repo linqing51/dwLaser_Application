@@ -46,15 +46,15 @@
 #include "sPlcTest.h"
 #endif
 /*****************************************************************************/
-#define BEEM_MODE_0														0x10//Á¬ĞøÄ£Ê½
-#define BEEM_MODE_1														0x11//Éù¹âÍ¬²½
-#define BEEM_MODE_2														0x12//¼¤¹â·¢Éä¹Ì¶¨¼ä¸ô
-#define BEEM_MODE_3														0x13//Òì³£±¨¾¯
-#define BEEM_MODE_4														0x14//¼¤¹â·¢Éä¹Ì¶¨¼ä¸ô+ÌáÊ¾Òô
+#define BEEM_MODE_0														0x10//è¿ç»­æ¨¡å¼
+#define BEEM_MODE_1														0x11//å£°å…‰åŒæ­¥
+#define BEEM_MODE_2														0x12//æ¿€å…‰å‘å°„å›ºå®šé—´éš”
+#define BEEM_MODE_3														0x13//å¼‚å¸¸æŠ¥è­¦
+#define BEEM_MODE_4														0x14//æ¿€å…‰å‘å°„å›ºå®šé—´éš”+æç¤ºéŸ³
 #define BEEM_MODE_5														0x15
 /*****************************************************************************/
-#define LASER_MODE_CW													0x01//Á¬ĞøÄ£Ê½
-#define LASER_MODE_MP													0x02//¶àÂö³åÄ£Ê½
+#define LASER_MODE_CW													0x01//è¿ç»­æ¨¡å¼
+#define LASER_MODE_MP													0x02//å¤šè„‰å†²æ¨¡å¼
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 /*****************************************************************************/
@@ -209,7 +209,7 @@ extern CRC_HandleTypeDef hcrc;
 extern DAC_HandleTypeDef hdac;
 extern TIM_HandleTypeDef htim2;//AIM PWM
 extern TIM_HandleTypeDef htim3;//LED PWM
-extern TIM_HandleTypeDef htim7;//DAC DMA ¼ÆÊ±Æ÷
+extern TIM_HandleTypeDef htim7;//DAC DMA è®¡æ—¶å™¨
 extern TIM_HandleTypeDef htim10;//Laser Timer
 extern TIM_HandleTypeDef htim12;//FAN PWM
 extern TIM_HandleTypeDef htim14;//sPlc Timer
@@ -235,15 +235,15 @@ extern TIM_HandleTypeDef htim14;//sPlc Timer
 extern RNG_HandleTypeDef hrng;
 #endif
 /*****************************************************************************/
-extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//µôµç±£³Ö¼Ä´æÆ÷ µ±Ç° °üº¬´æµµ¼Ä´æÆ÷
-extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//µôµç±£³Ö¼Ä´æÆ÷ ÉÏÒ»´Î
-extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//´æµµ¼Ä´æÆ÷
-extern uint16_t TimerCounter_10mS;//10ºÁÃë
-extern uint16_t TimerCounter_100mS;//100ºÁÃë
-extern uint16_t TimerCounter_200mS;//200ºÁÃë
-extern uint16_t TimerCounter_500mS;//500ºÁÃë
-extern uint16_t TimerCounter_1000mS;//1Ãë
-extern uint16_t TimerCounter_60000mS;//1·ÖÖÓ
+extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//æ‰ç”µä¿æŒå¯„å­˜å™¨ å½“å‰ åŒ…å«å­˜æ¡£å¯„å­˜å™¨
+extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//æ‰ç”µä¿æŒå¯„å­˜å™¨ ä¸Šä¸€æ¬¡
+extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//å­˜æ¡£å¯„å­˜å™¨
+extern uint16_t TimerCounter_10mS;//10æ¯«ç§’
+extern uint16_t TimerCounter_100mS;//100æ¯«ç§’
+extern uint16_t TimerCounter_200mS;//200æ¯«ç§’
+extern uint16_t TimerCounter_500mS;//500æ¯«ç§’
+extern uint16_t TimerCounter_1000mS;//1ç§’
+extern uint16_t TimerCounter_60000mS;//1åˆ†é’Ÿ
 extern uint8_t TD_10MS_SP;
 extern uint8_t TD_100MS_SP;
 extern uint8_t TD_200MS_SP;
@@ -262,13 +262,13 @@ extern int16_t LaserTimer_PMate;
 extern int16_t LaserTimer_POvertime;
 extern int16_t LaserTimer_ReleaseTime;
 extern int16_t LaserTimer_ReleaseCounter;
-extern int8_t  LaserFlag_Emiting;//¼¤¹â·¢ÉäÖĞ±êÖ¾
-extern int8_t LaserFlag_Emitover;//¼¤¹â·¢ÉäÍê±Ï±êÖ¾
+extern int8_t  LaserFlag_Emiting;//æ¿€å…‰å‘å°„ä¸­æ ‡å¿—
+extern int8_t LaserFlag_Emitover;//æ¿€å…‰å‘å°„å®Œæ¯•æ ‡å¿—
 /*****************************************************************************/
-extern void sPlcInit(void);//ÈíÂß¼­³õÊ¼»¯
-extern void sPlcProcessStart(void);//sPLCÂÖÑ¯ÆğÊ¼
-extern void sPlcProcessEnd(void);//sPLCÂÖÑ¯½áÊø
-extern void sPlcPortProcess(void);//sPLCÆ½Ì¨³ÌĞò
+extern void sPlcInit(void);//è½¯é€»è¾‘åˆå§‹åŒ–
+extern void sPlcProcessStart(void);//sPLCè½®è¯¢èµ·å§‹
+extern void sPlcProcessEnd(void);//sPLCè½®è¯¢ç»“æŸ
+extern void sPlcPortProcess(void);//sPLCå¹³å°ç¨‹åº
 extern void sPlcAssertCoilAddress(uint16_t adr);
 extern void sPlcAssertRegisterAddress(uint16_t adr);
 /*****************************************************************************/
@@ -278,133 +278,133 @@ extern void sPlcOutputInit(void);
 extern void sPlcOutputRefresh(void);
 extern void sPlcIsrDisable(void);
 extern void sPlcIsrEnable(void);
-extern void sPlcTimerInit(void);//Ó²¼şsTimer¼ÆÊ±Æ÷³õÊ¼»¯
-extern void sPlcTimerIsr(void);//Ó²¼şsTimer¼ÆÊ±Æ÷ÖĞ¶Ï 1mS
-extern void sPlcTimerDisalbe(void);//SPLC¹Ø±Õ¼ÆÊ±Æ÷
-extern void sPlcTimerEnable(void);//SPLC´ò¿ª¼ÆÊ±Æ÷
-extern void sPlcDacInit(void);//DAC³õÊ¼»¯
-extern void sPlcDacRefresh(void);//Ë¢ĞÂDAC
+extern void sPlcTimerInit(void);//ç¡¬ä»¶sTimerè®¡æ—¶å™¨åˆå§‹åŒ–
+extern void sPlcTimerIsr(void);//ç¡¬ä»¶sTimerè®¡æ—¶å™¨ä¸­æ–­ 1mS
+extern void sPlcTimerDisalbe(void);//SPLCå…³é—­è®¡æ—¶å™¨
+extern void sPlcTimerEnable(void);//SPLCæ‰“å¼€è®¡æ—¶å™¨
+extern void sPlcDacInit(void);//DACåˆå§‹åŒ–
+extern void sPlcDacRefresh(void);//åˆ·æ–°DAC
 extern void sPlcAdcInit(void);
 extern void sPlcAdcProcess(void);
-extern void sPlcSpeakerFreq(int16_t freq);//ÉèÖÃÀ®°ÈÆµÂÊ
-extern void sPlcSpeakerVolume(int16_t volume);//ÉèÖÃÀ®°ÈÒôÁ¿
-extern void sPlcSpeakerEnable(void);//´ò¿ªÀ®°ÈÊı¾İÁ÷
-extern void sPlcSpeakerDisable(void);//¹Ø±ÕÀ®°ÈÊı¾İÁ÷
-extern void sPlcSpeakerInit(void);//À®°È³õÊ¼»¯
+extern void sPlcSpeakerFreq(int16_t freq);//è®¾ç½®å–‡å­é¢‘ç‡
+extern void sPlcSpeakerVolume(int16_t volume);//è®¾ç½®å–‡å­éŸ³é‡
+extern void sPlcSpeakerEnable(void);//æ‰“å¼€å–‡å­æ•°æ®æµ
+extern void sPlcSpeakerDisable(void);//å…³é—­å–‡å­æ•°æ®æµ
+extern void sPlcSpeakerInit(void);//å–‡å­åˆå§‹åŒ–
 extern void sPlcLaserInit(void);
-extern void sPlcLaserTimerIsr(void);//ÖĞ¶Ï ¼¤¹â·¢Éä
-extern void sPlcLaserTimerTestBench(uint8_t st);//LASER¼¤¹â·¢Éä²âÊÔ
-extern void sPlcNvramUpdate(void);//¸üĞÂNVRAM->EPROM	
+extern void sPlcLaserTimerIsr(void);//ä¸­æ–­ æ¿€å…‰å‘å°„
+extern void sPlcLaserTimerTestBench(uint8_t st);//LASERæ¿€å…‰å‘å°„æµ‹è¯•
+extern void sPlcNvramUpdate(void);//æ›´æ–°NVRAM->EPROM	
 extern void sPlcNvramLoad(void);
 extern void sPlcNvramSave(void);
-extern void sPlcNvramClear(void);//Çå³ıNVRAMÊı¾İ
+extern void sPlcNvramClear(void);//æ¸…é™¤NVRAMæ•°æ®
 extern void sPlcFdramLoad(void);
 extern void sPlcFdramSave(void);
 extern void sPlcFdramClear(void);
 extern void sPlcDeviceConfigClear(void);
 extern void sPlcDeviceLogClear(void);
-extern void softDelayMs(uint16_t ms);//Èí¼şÑÓÊ±
-extern void mucReboot(void);//Èí¼ş¸´Î»
+extern void softDelayMs(uint16_t ms);//è½¯ä»¶å»¶æ—¶
+extern void mucReboot(void);//è½¯ä»¶å¤ä½
 extern void resetInit(void);
-extern void SystemClock_Reset(void);//¸´Î»ÏµÍ³Ê±ÖÓ
+extern void SystemClock_Reset(void);//å¤ä½ç³»ç»Ÿæ—¶é’Ÿ
 extern void UsbGpioReset(void);
-extern void setRedLaserPwm(int16_t pwm);//ÉèÖÃºì¼¤¹âÕ¼¿Õ±È
-extern void setPower_635(int16_t pwr);//ÉèÖÃºì¼¤¹â¹¦ÂÊ
-extern void setFanSpeed(int16_t speed);//ÉèÖÃ·çÉÈ×ªËÙ
-extern void morseCodeDiag(uint8_t diag);//Õï¶ÏÂë
+extern void setRedLaserPwm(int16_t pwm);//è®¾ç½®çº¢æ¿€å…‰å ç©ºæ¯”
+extern void setPower_635(int16_t pwr);//è®¾ç½®çº¢æ¿€å…‰åŠŸç‡
+extern void setFanSpeed(int16_t speed);//è®¾ç½®é£æ‰‡è½¬é€Ÿ
+extern void morseCodeDiag(uint8_t diag);//è¯Šæ–­ç 
 
-extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//ÔÚAT24CXXÖ¸¶¨µØÖ·¶Á³öÒ»¸öÊı¾İ
-extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö16Î»Êı
-extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö32Î»Êı
-extern HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//ÔÚAT24CXXÖ¸¶¨µØÖ·Ğ´Èë8Î»Êı¾İ
-extern HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë16Î»Êı
-extern HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
+extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//åœ¨AT24CXXæŒ‡å®šåœ°å€è¯»å‡ºä¸€ä¸ªæ•°æ®
+extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º16ä½æ•°
+extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º32ä½æ•°
+extern HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//åœ¨AT24CXXæŒ‡å®šåœ°å€å†™å…¥8ä½æ•°æ®
+extern HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥16ä½æ•°
+extern HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
 extern HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
 extern HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
 extern uint8_t sPlcEpromTest(void);
-extern uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash ²é¿Õ
-void clearEprom(clarmEpromCmd_t cmd);//Çå³ıEPROMÄÚÈİ
+extern uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash æŸ¥ç©º
+void clearEprom(clarmEpromCmd_t cmd);//æ¸…é™¤EPROMå†…å®¹
 void listEpromTable(void);
 
-extern uint32_t getOriginBootloadCrc(void);//¼ÆËãMCU Bootload CRC32
-extern uint32_t getOriginAppCrc(void);//¼ÆËãMCU App CRC32
-extern uint8_t updateBootloadReq(void);//¸üĞÂBOOTLOADÇëÇó
-extern void confirmBootloadUpdate(void);//Ö´ĞĞBootload¸üĞÂ
-extern void exitBootloadUpdate(void);//ÍË³öBootload¸üĞÂ
-void softDelayMs(uint16_t ms);//Èí¼şÑÓÊ±
+extern uint32_t getOriginBootloadCrc(void);//è®¡ç®—MCU Bootload CRC32
+extern uint32_t getOriginAppCrc(void);//è®¡ç®—MCU App CRC32
+extern uint8_t updateBootloadReq(void);//æ›´æ–°BOOTLOADè¯·æ±‚
+extern void confirmBootloadUpdate(void);//æ‰§è¡ŒBootloadæ›´æ–°
+extern void exitBootloadUpdate(void);//é€€å‡ºBootloadæ›´æ–°
+void softDelayMs(uint16_t ms);//è½¯ä»¶å»¶æ—¶
 /*****************************************************************************/
 extern arm_pid_instance_f32 laserTecPids;
 extern arm_pid_instance_f32 laserFanPids;
 /*****************************************************************************/
-extern void REBOOT(void) ;//¸´Î»
-//Î»Ö¸Áî
-extern void SSET(uint16_t A);//ÏßÈ¦ÖÃÎ»
-extern void RRES(uint16_t A);//ÏßÈ¦¸´Î»
-extern void FLIP(uint16_t A) ;//·­×ª
-extern uint8_t LD(uint16_t A) ;//ÔØÈë
-extern uint8_t LDB(uint16_t A) ;//·½ÏòÔØÈë
-extern uint8_t LDP(uint16_t A) ;//Âö³åÉÏÉıÑØ
-extern uint8_t LDN(uint16_t A) ;//Âö³åÏÂ½µÑØ
-//¼ÆÊ±Æ÷Ö¸Áî
-extern void T10MS(uint8_t A, uint8_t start, uint16_t value) ;//10mS¼ÆÊ±Æ÷Æô¶¯
-extern void T100MS(uint8_t A, uint8_t start, uint16_t value) ;//100mS¼ÆÊ±Æ÷Æô¶¯
-//ÔËËãÖ¸Áî
-extern void CLR(uint16_t A) ;//¼Ä´æÆ÷ÇåÁã
-extern void CLRD(uint16_t A) ;//32Î»¼Ä´æÆ÷ÇåÁã
-extern void MOV(uint16_t dist, uint16_t src) ;//16Î»¼Ä´æÆ÷´«Êä
-extern void MOVD(uint16_t dist, uint16_t src) ;//32Î»¼Ä´æÆ÷´«Êä
-extern void SWAP(uint16_t dist, uint16_t src) ;//½»»»AµÄ¸ßµÍ×Ö½Ú
-extern void ABS16(uint16_t dist, uint16_t src) ;//16Î»ÊıÇò¾ø¶ÔÖµ
-extern void ABS32(uint16_t dist, uint16_t src) ;//32Î»ÊıÇó¾ø¶ÔÖµ
-extern void SMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16Î»ÓĞ·ûºÅÊı×éÕÒ×îĞ¡Öµ
-extern void SMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16Î»ÓĞ·ûºÅÊı×éÕÒ×î´óÖµ
-extern void UMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16Î»ÎŞ·ûºÅÊı×éÕÒ×îĞ¡Öµ
-extern void UMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16Î»ÎŞ·ûºÅÊı×éÕÒ×î´óÖµ
-extern void SUM16(uint16_t index, uint16_t length, uint16_t sum) ;//16BITÊıÇóºÍ->32BIT
-extern void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->32·Ç±¥ºÍ³Ë·¨ D = Sa * Sb
-extern void MULTS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->16±¥ºÍ³Ë·¨ D = Sa * Sb
-extern void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->16·Ç±¥ºÍ³Ë·¨ D = Sa * Sb
-extern void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32Î»·Ç±¥ºÍ¼õ·¨ D = Sa - Sb
-extern void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16Î»±¥ºÍ¼õ·¨ D = Sa - Sb
-extern void SUB16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16Î»·Ç±¥ºÍ¼õ·¨ D = Sa - Sb
-extern void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32Î»·Ç±¥¼Ó·¨ D = Sa + Sb
-extern void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32Î»±¥ºÍ¼Ó·¨ D = Sa + Sb
-extern void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16Î»±¥ºÍ¼Ó·¨ D = Sa + Sb
-extern void ADD16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16Î»·Ç±¥ºÍ¼Ó·¨ D = Sa + Sb
-extern void ADD1(uint16_t Sa) ;//16Î»·Ç±¥ºÍ×Ô¼Ó
-extern void ADDS1(uint16_t Sa) ;//16Î»±¥ºÍ×Ô¼Ó
-extern void DEC1(uint16_t Sa) ;//16Î»·Ç±¥ºÍ×Ô¼õ
-extern void DECS1(uint16_t Sa) ;//16Î»±¥ºÍ×Ô¼õ
-extern void ADL1(uint16_t Sa) ;//32Î»·Ç±¥ºÍ×Ô¼Ó
-extern void ADLS1(uint16_t Sa) ;//32Î»±¥ºÍ×Ô¼Ó
-extern void DEL1(uint16_t Sa) ;//32Î»·Ç±¥ºÍ×Ô¼õ
-extern void DELS1(uint16_t Sa) ;//32Î»±¥ºÍ×Ô¼õ
-extern void TNTUC(uint16_t dist, uint16_t src);//CODE×ª»»Îª»·¾³ÎÂ¶È
-extern void TNTLC(uint16_t dist, uint16_t src);//CODE×ª»»Îª»·¾³ÎÂ¶È
-extern void TENV(uint16_t dist, uint16_t src);//CODE×ª»»ÎªNTC²âÁ¿ÎÂ¶ÈÎÂ¶È
-extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);//¿é¸´ÖÆ
-extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);//ÓĞ·ûºÅ16Î»ÊıÏŞÖÆ·ù¶ÈÖ¸Áî
-extern void UPDAC0(void);//Á¢¼´¸üĞÂDAC0
-extern void UPDAC1(void);//Á¢¼´¸üĞÂDAC1
+extern void REBOOT(void) ;//å¤ä½
+//ä½æŒ‡ä»¤
+extern void SSET(uint16_t A);//çº¿åœˆç½®ä½
+extern void RRES(uint16_t A);//çº¿åœˆå¤ä½
+extern void FLIP(uint16_t A) ;//ç¿»è½¬
+extern uint8_t LD(uint16_t A) ;//è½½å…¥
+extern uint8_t LDB(uint16_t A) ;//æ–¹å‘è½½å…¥
+extern uint8_t LDP(uint16_t A) ;//è„‰å†²ä¸Šå‡æ²¿
+extern uint8_t LDN(uint16_t A) ;//è„‰å†²ä¸‹é™æ²¿
+//è®¡æ—¶å™¨æŒ‡ä»¤
+extern void T10MS(uint8_t A, uint8_t start, uint16_t value) ;//10mSè®¡æ—¶å™¨å¯åŠ¨
+extern void T100MS(uint8_t A, uint8_t start, uint16_t value) ;//100mSè®¡æ—¶å™¨å¯åŠ¨
+//è¿ç®—æŒ‡ä»¤
+extern void CLR(uint16_t A) ;//å¯„å­˜å™¨æ¸…é›¶
+extern void CLRD(uint16_t A) ;//32ä½å¯„å­˜å™¨æ¸…é›¶
+extern void MOV(uint16_t dist, uint16_t src) ;//16ä½å¯„å­˜å™¨ä¼ è¾“
+extern void MOVD(uint16_t dist, uint16_t src) ;//32ä½å¯„å­˜å™¨ä¼ è¾“
+extern void SWAP(uint16_t dist, uint16_t src) ;//äº¤æ¢Açš„é«˜ä½å­—èŠ‚
+extern void ABS16(uint16_t dist, uint16_t src) ;//16ä½æ•°çƒç»å¯¹å€¼
+extern void ABS32(uint16_t dist, uint16_t src) ;//32ä½æ•°æ±‚ç»å¯¹å€¼
+extern void SMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16ä½æœ‰ç¬¦å·æ•°ç»„æ‰¾æœ€å°å€¼
+extern void SMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16ä½æœ‰ç¬¦å·æ•°ç»„æ‰¾æœ€å¤§å€¼
+extern void UMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16ä½æ— ç¬¦å·æ•°ç»„æ‰¾æœ€å°å€¼
+extern void UMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16ä½æ— ç¬¦å·æ•°ç»„æ‰¾æœ€å¤§å€¼
+extern void SUM16(uint16_t index, uint16_t length, uint16_t sum) ;//16BITæ•°æ±‚å’Œ->32BIT
+extern void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->32éé¥±å’Œä¹˜æ³• D = Sa * Sb
+extern void MULTS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->16é¥±å’Œä¹˜æ³• D = Sa * Sb
+extern void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->16éé¥±å’Œä¹˜æ³• D = Sa * Sb
+extern void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32ä½éé¥±å’Œå‡æ³• D = Sa - Sb
+extern void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16ä½é¥±å’Œå‡æ³• D = Sa - Sb
+extern void SUB16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16ä½éé¥±å’Œå‡æ³• D = Sa - Sb
+extern void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32ä½éé¥±åŠ æ³• D = Sa + Sb
+extern void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32ä½é¥±å’ŒåŠ æ³• D = Sa + Sb
+extern void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16ä½é¥±å’ŒåŠ æ³• D = Sa + Sb
+extern void ADD16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16ä½éé¥±å’ŒåŠ æ³• D = Sa + Sb
+extern void ADD1(uint16_t Sa) ;//16ä½éé¥±å’Œè‡ªåŠ 
+extern void ADDS1(uint16_t Sa) ;//16ä½é¥±å’Œè‡ªåŠ 
+extern void DEC1(uint16_t Sa) ;//16ä½éé¥±å’Œè‡ªå‡
+extern void DECS1(uint16_t Sa) ;//16ä½é¥±å’Œè‡ªå‡
+extern void ADL1(uint16_t Sa) ;//32ä½éé¥±å’Œè‡ªåŠ 
+extern void ADLS1(uint16_t Sa) ;//32ä½é¥±å’Œè‡ªåŠ 
+extern void DEL1(uint16_t Sa) ;//32ä½éé¥±å’Œè‡ªå‡
+extern void DELS1(uint16_t Sa) ;//32ä½é¥±å’Œè‡ªå‡
+extern void TNTUC(uint16_t dist, uint16_t src);//CODEè½¬æ¢ä¸ºç¯å¢ƒæ¸©åº¦
+extern void TNTLC(uint16_t dist, uint16_t src);//CODEè½¬æ¢ä¸ºç¯å¢ƒæ¸©åº¦
+extern void TENV(uint16_t dist, uint16_t src);//CODEè½¬æ¢ä¸ºNTCæµ‹é‡æ¸©åº¦æ¸©åº¦
+extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);//å—å¤åˆ¶
+extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);//æœ‰ç¬¦å·16ä½æ•°é™åˆ¶å¹…åº¦æŒ‡ä»¤
+extern void UPDAC0(void);//ç«‹å³æ›´æ–°DAC0
+extern void UPDAC1(void);//ç«‹å³æ›´æ–°DAC1
 extern void UPDAC2(void);
 extern void UPDAC3(void);
 extern void UPDAC4(void);
 extern void UPDAC5(void);
 extern void UPDAC6(void);
 extern void UPDAC7(void);
-extern void CLDAC(void);//Á¢¼´Çå¿ÕDAC0ºÍDAC1
-extern void IMDIO(void) ;//Á¢¼´¸üĞÂIOµã×´Ì¬º¬ÊäÈëÊä³ö
-extern void NVSAVE(void);//Ç¿ÖÆÁ¢¼´¸üĞÂNVRAM
-extern void NVFSAVE(void);//NVRAMÈ«²¿Ğ´ÈëEPROM
+extern void CLDAC(void);//ç«‹å³æ¸…ç©ºDAC0å’ŒDAC1
+extern void IMDIO(void) ;//ç«‹å³æ›´æ–°IOç‚¹çŠ¶æ€å«è¾“å…¥è¾“å‡º
+extern void NVSAVE(void);//å¼ºåˆ¶ç«‹å³æ›´æ–°NVRAM
+extern void NVFSAVE(void);//NVRAMå…¨éƒ¨å†™å…¥EPROM
 extern void NVLOAD(void);
 extern void FDSAV(void);
 extern void FDLAD(void);
 extern void FDSAV_ONE(int16_t cn);
 extern void FDLAD_ONE(int16_t cn);
 extern void PRTM(uint16_t adr, uint8_t len);
-extern void LINKS(void);//´Ó»ú½ÓÊÕ
-extern void LINKM(void);//Ö÷»ú·¢ËÍ
-extern void EDLAR(void);//Í£Ö¹·¢ÉäÂö³å
-extern void STLAR(void);//¿ªÊ¼·¢ÉäÂö³å
+extern void LINKS(void);//ä»æœºæ¥æ”¶
+extern void LINKM(void);//ä¸»æœºå‘é€
+extern void EDLAR(void);//åœæ­¢å‘å°„è„‰å†²
+extern void STLAR(void);//å¼€å§‹å‘å°„è„‰å†²
 /*****************************************************************************/
 #endif

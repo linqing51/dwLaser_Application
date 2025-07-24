@@ -3,30 +3,30 @@
 /*****************************************************************************/
 #include "sPlc.h"
 /*****************************************************************************/
-#define FSMSTEP_POWERUP															0//ÉÏµç
-//HMI³õÊ¼²Ù×÷	
-#define FSMSTEP_RESTORE_HMI													100//HMI »Ö¸´´¢´æÊı¾İ
-#define FSMSTEP_CHECK_FAIL_DISPLAY									200//Ê§°Ü×Ô¼ì
-//ÃÜÂëÊäÈë×´Ì¬
+#define FSMSTEP_POWERUP															0//ä¸Šç”µ
+//HMIåˆå§‹æ“ä½œ	
+#define FSMSTEP_RESTORE_HMI													100//HMI æ¢å¤å‚¨å­˜æ•°æ®
+#define FSMSTEP_CHECK_FAIL_DISPLAY									200//å¤±è´¥è‡ªæ£€
+//å¯†ç è¾“å…¥çŠ¶æ€
 #define FSMSTEP_WAIT_ENTER_PASSCODE									300
-#define FSMSTEP_PASSCODE_INPUT											301//ÃÜÂëÊäÈë×´Ì¬
-#define FSMSTEP_PASSCODE_NEW0												302//ÃÜÂë¸ü¸Ä×´Ì¬µÚÒ»´ÎÊäÈë
-#define FSMSTEP_PASSCODE_NEW1												303//ÃÜÂë¸ü¸Ä×´Ì¬µÚ¶ş´ÎÊäÈë
-//STNADBY×´Ì¬
-#define FSMSTEP_STANDBY															400//µÈ´ı×´Ì¬
-#define FSMSTEP_READY_LOAD_PARA											401//ÔØÈë²ÎÊı
-#define FSMSTEP_READY_LOAD_DONE											402//ÔØÈë²ÎÊıÍê±Ï
-#define FSMSTEP_LASER_WAIT_TRIGGER									403//¼¤¹â´¥·¢
-#define FSMSTEP_LASER_EMITING												404//¼¤¹â·¢ÉäÖĞ
-#define FSMSTEP_READY_ERROR													405//½ÅÌ¤²ÈÏÂ´íÎó
-//Ñ¡Ïî×´Ì¬
-#define FSMSTEP_OPTION															500//Ñ¡Ïî²Ëµ¥
+#define FSMSTEP_PASSCODE_INPUT											301//å¯†ç è¾“å…¥çŠ¶æ€
+#define FSMSTEP_PASSCODE_NEW0												302//å¯†ç æ›´æ”¹çŠ¶æ€ç¬¬ä¸€æ¬¡è¾“å…¥
+#define FSMSTEP_PASSCODE_NEW1												303//å¯†ç æ›´æ”¹çŠ¶æ€ç¬¬äºŒæ¬¡è¾“å…¥
+//STNADBYçŠ¶æ€
+#define FSMSTEP_STANDBY															400//ç­‰å¾…çŠ¶æ€
+#define FSMSTEP_READY_LOAD_PARA											401//è½½å…¥å‚æ•°
+#define FSMSTEP_READY_LOAD_DONE											402//è½½å…¥å‚æ•°å®Œæ¯•
+#define FSMSTEP_LASER_WAIT_TRIGGER									403//æ¿€å…‰è§¦å‘
+#define FSMSTEP_LASER_EMITING												404//æ¿€å…‰å‘å°„ä¸­
+#define FSMSTEP_READY_ERROR													405//è„šè¸è¸©ä¸‹é”™è¯¯
+//é€‰é¡¹çŠ¶æ€
+#define FSMSTEP_OPTION															500//é€‰é¡¹èœå•
 #define FSMSTEP_INFORMATION													600
-#define FSMSTEP_SCHEME															700//·½°¸²Ëµ¥µÚÒ³
+#define FSMSTEP_SCHEME															700//æ–¹æ¡ˆèœå•ç¬¬é¡µ
 
-#define FSMSTEP_DIAGNOSIS  													800//Õï¶Ï²Ëµ¥
+#define FSMSTEP_DIAGNOSIS  													800//è¯Šæ–­èœå•
 #define FSMSTEP_RENAME															900
-#define FSMSTEP_CORRECTION													1000//¹¦ÂÊĞ£Õı
+#define FSMSTEP_CORRECTION													1000//åŠŸç‡æ ¡æ­£
 /*****************************************************************************/
 #define FLASH_DATA_VERSION  												0XAABB0000
 #define FLASH_DATA_ADDR     												0X00000000
@@ -49,7 +49,7 @@
 #define	MSG_WAIT_TRIGGER														15
 #define	MSG_FIBER_MISSMATE													16
 /*****************************************************************************/
-void dcHmiLoop(void);//HMIÂÖÑµ³ÌĞò
+void dcHmiLoop(void);//HMIè½®è®­ç¨‹åº
 void dcHmiLoopInit(void);
 void updateStandbyDisplay(void);
 void standbyTouchEnable(int8_t enable);
@@ -75,10 +75,10 @@ void updateReleaseTimeEnergy(void);
 void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);
-void standbyKeyValue(uint8_t value);//ÉèÖÃStandby¼üÖµ
-void standbyKeyTouchEnable(int8_t enable);//Standby key´¥Ãş
+void standbyKeyValue(uint8_t value);//è®¾ç½®Standbyé”®å€¼
+void standbyKeyTouchEnable(int8_t enable);//Standby keyè§¦æ‘¸
 /*****************************************************************************/
-void updateExtralDisplay(void);//¸üĞÂ¶îÍâÏÔÊ¾
+void updateExtralDisplay(void);//æ›´æ–°é¢å¤–æ˜¾ç¤º
 void standbyDebugInfoVisiable(int8_t enable);
 void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/
