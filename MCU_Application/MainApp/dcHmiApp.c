@@ -279,7 +279,7 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 void updateDebugInfo(void){//更新Standby调试信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "LT:%05d,HT:%05d,BT:%05d,MT:%05d,FPD:%05d,LPD:%05d", \
+	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,BT:%05d,FPD:%05d,LPD:%05d", \
 	NVRAM0[EM_LASER_TEMP], NVRAM0[EM_HT_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_MBAT_TEMP] ,\
 	NVRAM0[SPREG_ADC_9], NVRAM0[SPREG_ADC_10]);
 	switch(NVRAM0[EM_DC_PAGE]){
@@ -2483,8 +2483,10 @@ void dcHmiLoopInit(void){//初始化模块
 
 static void temperatureLoop(void){//温度轮询轮询
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-	TNTUC(EM_LASER_TEMP, SPREG_ADC_0);//CODE转换为NTC测量温度温度
-	TENV(EM_MCU_TEMP, SPREG_ADC_3);//CODE转换为MCU温度
+	//CODE转换为NTC测量温度温度
+	TNTUC(EM_LASER_TEMP, SPREG_ADC_11);
+	TNTUC(EM_HT_TEMP, SPREG_ADC_12);
+	TENV(EM_MCU_TEMP, SPREG_ADC_13);
 #endif
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 	TNTLC(EM_LASER_TEMP, SPREG_ADC_11);
@@ -2568,7 +2570,7 @@ static void temperatureLoop(void){//温度轮询轮询
 			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
 		else{	
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) && !defined(MODEL_PVGLS_15W_1470_A1_V2)
 			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
 				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
@@ -2616,33 +2618,36 @@ static void temperatureLoop(void){//温度轮询轮询
 				NVRAM0[EM_FAN_SET_SPEED] = 35;
 			}
 #endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-			if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
+#if defined(MODEL_PVGLS_10W_1940_A1) || defined(MODEL_PVGLS_15W_1470_A1_V2)
+			if(NVRAM0[EM_HT_TEMP] < -100){
+				NVRAM0[EM_FAN_SET_SPEED] = 100;
+			}
+			else if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
 				NVRAM0[EM_FAN_SET_SPEED] = 0;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
-				NVRAM0[EM_FAN_SET_SPEED] = 30;
+				NVRAM0[EM_FAN_SET_SPEED] = 0;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
-				NVRAM0[EM_FAN_SET_SPEED] = 35;
+				NVRAM0[EM_FAN_SET_SPEED] = 20;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
-				NVRAM0[EM_FAN_SET_SPEED] = 40;
+				NVRAM0[EM_FAN_SET_SPEED] = 30;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
-				NVRAM0[EM_FAN_SET_SPEED] = 45;
+				NVRAM0[EM_FAN_SET_SPEED] = 40;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
-				NVRAM0[EM_FAN_SET_SPEED] = 65;
+				NVRAM0[EM_FAN_SET_SPEED] = 50;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
-				NVRAM0[EM_FAN_SET_SPEED] = 80;
+				NVRAM0[EM_FAN_SET_SPEED] = 60;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
-				NVRAM0[EM_FAN_SET_SPEED] = 86;
+				NVRAM0[EM_FAN_SET_SPEED] = 70;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
-				NVRAM0[EM_FAN_SET_SPEED] = 95;
+				NVRAM0[EM_FAN_SET_SPEED] = 80;
 			}
 			else if(NVRAM0[EM_HT_TEMP] >= 550){
 				NVRAM0[EM_FAN_SET_SPEED] = 100;

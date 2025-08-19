@@ -344,7 +344,7 @@
 
 
  
-#line 1 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -402,27 +402,27 @@
 
 
  
-#line 94 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 94 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
  
-#line 106 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 106 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
  
-#line 118 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
-
-
-
- 
+#line 118 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
  
 
-#line 1 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+
+
+ 
+
+#line 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -585,7 +585,7 @@ typedef enum
 
  
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1 "../Drivers/CMSIS/Include/core_cm4.h"
  
 
 
@@ -875,7 +875,7 @@ typedef unsigned     long long uintmax_t;
 
 
  
-#line 35 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 35 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -904,7 +904,7 @@ typedef unsigned     long long uintmax_t;
 
  
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\cmsis_version.h"
+#line 1 "../Drivers/CMSIS/Include/cmsis_version.h"
  
 
 
@@ -939,7 +939,7 @@ typedef unsigned     long long uintmax_t;
 
 
  
-#line 64 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 64 "../Drivers/CMSIS/Include/core_cm4.h"
 
  
 
@@ -952,11 +952,11 @@ typedef unsigned     long long uintmax_t;
 
 
  
-#line 87 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 87 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 161 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 161 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 1 "../Drivers/CMSIS/Include/cmsis_compiler.h"
  
 
 
@@ -984,12 +984,12 @@ typedef unsigned     long long uintmax_t;
 
 
 
-#line 29 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 29 "../Drivers/CMSIS/Include/cmsis_compiler.h"
 
 
 
  
-#line 1 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 1 "../Drivers/CMSIS/Include/cmsis_armcc.h"
  
 
 
@@ -1046,7 +1046,7 @@ typedef unsigned     long long uintmax_t;
 
 
  
-#line 111 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 111 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
  
 
@@ -1193,7 +1193,7 @@ __attribute__((section(".revsh_text"))) static __inline __asm int16_t __REVSH(in
 
 
  
-#line 277 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 277 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
 
 
@@ -1388,7 +1388,7 @@ __attribute__((section(".rrx_text"))) static __inline __asm uint32_t __RRX(uint3
  
 
 
-#line 525 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 525 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
    
 
@@ -1675,7 +1675,7 @@ static __inline void __set_FPSCR(uint32_t fpscr)
 
 
 
-#line 870 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 870 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
 
 
@@ -1694,23 +1694,18 @@ static __inline void __set_FPSCR(uint32_t fpscr)
  
 
 
-#line 35 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 35 "../Drivers/CMSIS/Include/cmsis_compiler.h"
 
 
 
 
  
-#line 280 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 280 "../Drivers/CMSIS/Include/cmsis_compiler.h"
 
 
 
 
-#line 163 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
-
-
-
-
-
+#line 163 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -1722,11 +1717,6 @@ static __inline void __set_FPSCR(uint32_t fpscr)
 
 
 
-
- 
-#line 212 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
-
- 
 
 
 
@@ -1734,7 +1724,17 @@ static __inline void __set_FPSCR(uint32_t fpscr)
 
 
  
-#line 228 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 212 "../Drivers/CMSIS/Include/core_cm4.h"
+
+ 
+
+
+
+
+
+
+ 
+#line 228 "../Drivers/CMSIS/Include/core_cm4.h"
 
  
 
@@ -3057,20 +3057,9 @@ typedef struct
  
 
  
-#line 1558 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1558 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 1567 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
-
-
-
-
-
-
-
-
-
- 
-
+#line 1567 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -3083,6 +3072,17 @@ typedef struct
  
 
 
+
+
+
+
+
+
+
+
+ 
+
+
  
 
 
@@ -3095,15 +3095,15 @@ typedef struct
 
  
 
-#line 1621 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1621 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 1631 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1631 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
 
  
-#line 1642 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1642 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -3422,7 +3422,7 @@ __declspec(noreturn) static __inline void __NVIC_SystemReset(void)
 
 
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 1 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
 
 
@@ -3456,9 +3456,9 @@ __declspec(noreturn) static __inline void __NVIC_SystemReset(void)
 
 
 
-#line 62 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 62 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
-#line 69 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 69 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
 
 
@@ -3493,7 +3493,7 @@ __declspec(noreturn) static __inline void __NVIC_SystemReset(void)
 
 
  
-#line 110 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 110 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
 
 
@@ -3659,7 +3659,7 @@ static __inline void ARM_MPU_Load(ARM_MPU_Region_t const* table, uint32_t cnt)
   ARM_MPU_OrderedMemcpy(&(((MPU_Type *) ((0xE000E000UL) + 0x0D90UL) )->RBAR), &(table->RBAR), cnt*rowWordSize);
 }
 
-#line 1961 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1961 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -3828,8 +3828,8 @@ static __inline int32_t ITM_CheckChar (void)
 
 
 
-#line 164 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
-#line 1 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\system_stm32f4xx.h"
+#line 164 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
+#line 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
 
 
 
@@ -3934,8 +3934,8 @@ extern void SystemCoreClockUpdate(void);
 
 
  
-#line 165 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
-#line 166 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 165 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
+#line 166 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -4580,7 +4580,7 @@ typedef struct
 
 
  
-#line 825 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 825 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -4593,15 +4593,15 @@ typedef struct
 
 
  
-#line 864 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 864 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 874 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 874 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 883 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 883 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 915 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 915 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -4619,7 +4619,7 @@ typedef struct
 
 
 
-#line 944 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 944 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -4631,9 +4631,9 @@ typedef struct
 
 
  
-#line 991 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 991 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 1038 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1038 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -4670,19 +4670,19 @@ typedef struct
 
 
  
-#line 1092 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1092 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1146 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1146 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1196 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1196 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1252 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1252 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1314 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1314 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -4715,16 +4715,16 @@ typedef struct
 
 
  
-#line 1385 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1385 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1435 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1435 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1485 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1485 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1524 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1524 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -4747,10 +4747,10 @@ typedef struct
 
 
  
-#line 1552 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1552 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1608 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -4758,10 +4758,10 @@ typedef struct
 
 
  
-#line 1649 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1649 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1657 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1657 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -4774,198 +4774,198 @@ typedef struct
  
  
  
-#line 1699 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1699 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 1727 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1727 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1777 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1777 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1790 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1790 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1803 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1803 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1817 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1817 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1831 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1831 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1876 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1876 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1887 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1887 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1894 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1894 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1901 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1901 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1930 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1930 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
  
-#line 1949 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1949 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1960 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1960 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1974 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1974 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1988 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1988 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2005 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2005 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2016 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2016 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2030 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2030 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2044 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2044 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2061 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2061 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2072 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2072 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2086 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2086 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2100 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2100 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2114 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2114 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2125 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2125 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2139 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2139 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2153 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2153 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2167 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2167 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2178 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2178 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2192 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2192 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2206 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2206 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
-#line 2215 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2215 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2304 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2304 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2393 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2393 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2482 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2482 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2571 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2571 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
-#line 2670 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2670 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2768 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2768 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2866 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2866 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2964 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2964 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3062 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3062 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3160 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3160 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3258 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3258 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3356 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3356 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3454 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3454 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3552 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3552 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3650 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3650 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3748 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3748 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3846 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3846 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3944 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3944 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4042 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4042 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4140 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4140 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4238 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4336 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4336 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4434 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4434 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4532 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4532 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4630 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4630 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4728 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4728 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4826 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4826 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4924 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4924 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5022 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5022 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5120 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5120 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5218 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5218 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5316 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5316 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -4999,9 +4999,9 @@ typedef struct
  
 
  
-#line 5358 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5358 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5365 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5365 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5009,11 +5009,11 @@ typedef struct
 
 
 
-#line 5379 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5379 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5395 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5395 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5402 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5402 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5021,12 +5021,12 @@ typedef struct
 
 
 
-#line 5416 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5416 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5423 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5423 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5431 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5431 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5059,13 +5059,13 @@ typedef struct
 
 
  
-#line 5469 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5469 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5477 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5477 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5485 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5485 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5078,7 +5078,7 @@ typedef struct
 
 
  
-#line 5503 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5503 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -5087,7 +5087,7 @@ typedef struct
  
  
  
-#line 5583 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5583 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5095,22 +5095,22 @@ typedef struct
 
 
  
-#line 5609 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5609 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5628 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5628 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5690 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5690 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5752 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5752 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5814 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5814 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5876 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5876 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5134,28 +5134,28 @@ typedef struct
  
  
  
-#line 5968 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5968 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5996 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5996 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6067 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6067 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6092 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6092 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6163 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6163 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6234 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6234 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6305 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6305 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6376 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6376 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -5163,24 +5163,26 @@ typedef struct
  
  
  
-#line 6394 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6394 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
-#line 6417 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6411 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6440 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6434 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6476 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6469 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6484 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6477 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6525 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6518 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6542 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6535 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
+ 
+#line 6545 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -5188,7 +5190,7 @@ typedef struct
  
  
  
-#line 6555 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6558 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5202,10 +5204,10 @@ typedef struct
 
 
 
-#line 6604 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6607 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6612 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6615 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5219,10 +5221,10 @@ typedef struct
 
 
 
-#line 6661 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6664 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6669 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6672 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5236,10 +5238,10 @@ typedef struct
 
 
 
-#line 6718 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6721 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6726 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6729 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5253,20 +5255,20 @@ typedef struct
 
 
 
-#line 6775 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6778 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6784 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6787 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6792 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6795 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6804 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6807 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6812 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6815 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6820 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6823 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6828 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6831 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5275,17 +5277,17 @@ typedef struct
 
 
  
-#line 6843 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6846 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6851 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6854 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6863 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6866 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6871 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6874 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6879 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6882 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6887 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6890 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5294,17 +5296,17 @@ typedef struct
 
 
  
-#line 6902 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6905 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6910 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6913 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6922 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6925 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6930 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6933 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6938 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6941 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6946 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6949 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5313,17 +5315,17 @@ typedef struct
 
 
  
-#line 6961 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6964 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6969 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6972 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6981 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6984 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6989 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6992 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6997 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7000 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7005 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7008 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5332,13 +5334,13 @@ typedef struct
 
 
  
-#line 7020 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7023 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7028 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7031 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7040 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7043 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7048 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7051 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5347,13 +5349,13 @@ typedef struct
 
 
  
-#line 7063 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7066 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7071 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7074 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7083 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7086 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7091 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7094 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5362,13 +5364,13 @@ typedef struct
 
 
  
-#line 7106 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7109 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7114 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7117 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7126 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7129 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7134 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7137 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5377,13 +5379,13 @@ typedef struct
 
 
  
-#line 7149 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7152 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7157 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7160 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7169 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7172 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7177 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7180 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5392,7 +5394,7 @@ typedef struct
 
 
  
-#line 7194 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7197 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5404,14 +5406,14 @@ typedef struct
 
 
 
-#line 7212 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7215 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7220 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7223 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7227 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7230 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7241 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5423,14 +5425,14 @@ typedef struct
 
 
 
-#line 7256 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7259 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7264 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7267 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7271 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7274 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7282 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7285 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5442,83 +5444,83 @@ typedef struct
 
 
 
-#line 7300 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7303 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7308 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7311 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7315 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7318 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7338 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7341 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7361 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7364 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7384 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7387 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7397 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7400 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7409 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7412 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7421 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7424 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7433 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7436 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7446 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7449 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7458 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7461 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7470 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7473 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7482 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7485 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7495 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7498 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7507 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7510 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7519 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7522 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7531 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7534 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7544 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7547 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7556 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7559 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7568 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7571 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7580 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7583 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7593 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7596 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7605 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7617 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7620 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7629 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7632 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7642 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7645 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7654 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7657 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7666 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7669 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7678 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7681 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7691 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7694 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7703 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7706 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7715 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7718 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7727 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7730 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5536,58 +5538,58 @@ typedef struct
  
  
  
-#line 7824 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7827 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7906 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7909 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7956 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7959 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7974 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7977 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8056 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8059 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8106 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8109 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8188 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8191 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8241 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8288 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8291 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8306 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8309 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8356 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8359 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 8373 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8376 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8471 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8474 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8553 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8556 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 8605 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 8662 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8665 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8704 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8707 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8762 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8765 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8804 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8807 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -5596,25 +5598,25 @@ typedef struct
  
  
  
-#line 8854 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8857 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8865 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8868 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 8881 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8884 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
-#line 8916 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8919 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
  
-#line 8928 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8931 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5622,13 +5624,13 @@ typedef struct
 
 
  
-#line 8977 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8980 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9003 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9006 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9014 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9017 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5647,7 +5649,7 @@ typedef struct
 
 
  
-#line 9038 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9041 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5655,7 +5657,7 @@ typedef struct
 
 
  
-#line 9051 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9054 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5665,18 +5667,18 @@ typedef struct
  
  
  
-#line 9075 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9078 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9082 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9085 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9101 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9104 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 9127 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9130 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5687,24 +5689,24 @@ typedef struct
  
  
  
-#line 9143 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9146 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9152 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9155 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9164 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9167 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9183 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9186 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
 
 
-#line 9194 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9197 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9205 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9208 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9218 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9221 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5712,9 +5714,9 @@ typedef struct
 
 
 
-#line 9232 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9235 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9240 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9243 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -5741,12 +5743,12 @@ typedef struct
 
 
  
-#line 9273 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9276 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9283 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9286 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9291 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9294 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5755,7 +5757,7 @@ typedef struct
 
 
  
-#line 9305 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9308 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5764,7 +5766,7 @@ typedef struct
 
 
  
-#line 9321 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9324 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5777,9 +5779,9 @@ typedef struct
 
 
 
-#line 9339 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9342 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9346 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9349 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5788,21 +5790,21 @@ typedef struct
 
 
  
-#line 9372 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9375 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9394 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9397 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9413 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9416 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
  
-#line 9458 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9461 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9466 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9469 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
@@ -5810,23 +5812,23 @@ typedef struct
 
 
  
-#line 9542 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9545 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9577 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9580 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 9630 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9633 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
  
 
 
-#line 9642 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9645 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5839,18 +5841,18 @@ typedef struct
 
 
  
-#line 9723 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9726 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9764 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9767 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9814 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9817 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9821 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9824 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9829 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9832 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5858,13 +5860,13 @@ typedef struct
 
 
  
-#line 9905 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9908 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9946 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9949 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9957 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9960 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -5872,21 +5874,21 @@ typedef struct
 
 
 
-#line 9970 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9973 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10002 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10005 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
 
  
-#line 10019 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10022 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10033 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10036 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 10040 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10043 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -5895,10 +5897,10 @@ typedef struct
  
  
  
-#line 10054 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10057 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10071 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10074 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -5911,22 +5913,22 @@ typedef struct
 
 
  
-#line 10124 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10127 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10168 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10171 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10241 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 10291 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10294 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10299 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10302 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5934,13 +5936,13 @@ typedef struct
 
 
  
-#line 10312 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10315 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10382 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10385 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10452 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10455 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5953,13 +5955,13 @@ typedef struct
 
 
  
-#line 10470 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10473 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10513 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10516 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10543 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10546 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -5967,19 +5969,19 @@ typedef struct
 
 
  
-#line 10571 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10574 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10619 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10622 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 10634 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10637 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10646 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10649 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6098,7 +6100,7 @@ typedef struct
 
 
  
-#line 10776 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10779 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6106,7 +6108,7 @@ typedef struct
 
 
 
-#line 10789 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10792 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6124,7 +6126,7 @@ typedef struct
 
 
 
-#line 10827 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10830 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6167,11 +6169,11 @@ typedef struct
 
 
  
-#line 10881 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10884 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 10889 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10892 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 10902 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10905 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6179,13 +6181,13 @@ typedef struct
 
 
  
-#line 10981 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10984 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11022 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11025 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11096 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11099 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6205,17 +6207,17 @@ typedef struct
 
 
  
-#line 11124 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11127 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11131 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11134 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11162 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11165 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11185 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11188 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11214 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11217 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6268,10 +6270,10 @@ typedef struct
 
 
 
-#line 11272 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11275 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11283 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11286 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -6292,98 +6294,98 @@ typedef struct
 
 
  
-#line 11315 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11318 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
-#line 11327 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11330 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11340 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11343 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11353 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11356 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11366 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11369 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11380 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11383 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11393 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11396 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11406 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11409 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11419 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11422 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11432 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11435 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11446 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11449 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11459 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11462 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11472 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11475 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11485 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11488 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11498 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11501 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11512 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11515 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11524 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11527 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11536 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11539 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11548 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11551 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11560 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11563 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11568 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11571 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -6391,7 +6393,7 @@ typedef struct
  
  
  
-#line 11590 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11593 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6410,22 +6412,22 @@ typedef struct
 
 
  
-#line 11617 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11620 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11624 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11627 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11649 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11652 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11657 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11660 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11664 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11667 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
-#line 11676 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11679 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6433,16 +6435,16 @@ typedef struct
 
 
 
-#line 11689 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11692 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11736 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11739 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11774 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11777 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11800 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11803 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6451,9 +6453,9 @@ typedef struct
 
 
 
-#line 11814 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11817 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11821 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11824 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6465,9 +6467,9 @@ typedef struct
 
 
 
-#line 11838 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11841 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11845 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11848 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6481,7 +6483,7 @@ typedef struct
 
 
 
-#line 11865 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11868 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6489,7 +6491,7 @@ typedef struct
 
 
 
-#line 11879 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11882 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6498,9 +6500,9 @@ typedef struct
 
 
 
-#line 11893 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11896 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11900 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11903 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6512,9 +6514,9 @@ typedef struct
 
 
 
-#line 11917 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11920 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11924 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11927 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6528,7 +6530,7 @@ typedef struct
 
 
 
-#line 11944 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11947 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6536,10 +6538,10 @@ typedef struct
 
 
 
-#line 11958 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11961 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12005 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12008 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6582,7 +6584,7 @@ typedef struct
 
 
  
-#line 12058 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12061 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6590,12 +6592,12 @@ typedef struct
 
 
 
-#line 12083 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12086 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12093 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12096 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12102 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12105 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6609,7 +6611,7 @@ typedef struct
 
 
 
-#line 12125 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12128 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -6618,7 +6620,7 @@ typedef struct
  
  
  
-#line 12163 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12166 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6626,13 +6628,13 @@ typedef struct
 
 
  
-#line 12176 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12179 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12223 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12226 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12246 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12249 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6645,10 +6647,10 @@ typedef struct
 
 
  
-#line 12294 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12297 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12307 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12310 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6660,18 +6662,18 @@ typedef struct
  
  
  
-#line 12328 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12331 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 12336 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12339 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
  
-#line 12352 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12355 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 12360 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12363 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6698,10 +6700,10 @@ typedef struct
  
  
  
-#line 12392 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12395 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12406 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12409 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6710,12 +6712,12 @@ typedef struct
 
 
  
-#line 12465 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12468 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
  
-#line 12484 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12487 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -6723,17 +6725,17 @@ typedef struct
  
  
  
-#line 12521 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12524 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 12532 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12535 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 12543 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12546 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12554 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12557 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6756,15 +6758,15 @@ typedef struct
 
 
  
-#line 12585 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12588 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12605 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12619 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12622 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12641 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12644 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6772,35 +6774,35 @@ typedef struct
 
 
  
-#line 12654 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12657 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
 
-#line 12671 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12674 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12693 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12696 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 12757 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12760 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12774 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12777 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
-#line 12790 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12793 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12816 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12819 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12832 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12835 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12844 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12847 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6808,15 +6810,15 @@ typedef struct
 
 
  
-#line 12887 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12890 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 12966 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12969 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13046 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13049 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13054 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13057 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6824,10 +6826,10 @@ typedef struct
 
 
  
-#line 13073 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13076 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13081 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13084 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6840,7 +6842,7 @@ typedef struct
 
 
  
-#line 13105 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13108 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6852,16 +6854,16 @@ typedef struct
 
 
 
-#line 13127 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13130 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13138 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13141 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13146 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13149 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13162 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13165 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13178 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13181 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6869,13 +6871,13 @@ typedef struct
 
 
  
-#line 13191 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13194 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13211 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13214 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13219 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13222 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6883,14 +6885,14 @@ typedef struct
 
 
  
-#line 13253 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13256 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13282 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13285 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13291 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13294 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13299 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13302 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6899,24 +6901,24 @@ typedef struct
 
 
  
-#line 13340 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13343 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13348 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13351 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13362 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13365 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13371 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13374 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13397 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13400 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
 
-#line 13416 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13419 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6930,30 +6932,30 @@ typedef struct
 
 
 
-#line 13448 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13451 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 13461 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13464 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13472 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13475 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13484 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13487 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13519 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13522 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13560 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13563 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13595 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13598 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 13607 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13610 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 13622 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13625 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -6971,17 +6973,17 @@ typedef struct
 
 
  
-#line 13645 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13648 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 13686 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13689 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13721 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13724 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
-#line 13729 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13732 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -6990,11 +6992,11 @@ typedef struct
 
 
  
-#line 13746 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13749 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
-#line 13759 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13762 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -7002,11 +7004,11 @@ typedef struct
 
 
 
-#line 13773 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13776 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13781 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13784 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13789 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13792 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -7039,10 +7041,10 @@ typedef struct
 
 
  
-#line 13837 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13840 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13848 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13851 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -7077,50 +7079,50 @@ typedef struct
 
 
  
-#line 13896 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13899 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13910 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13913 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13920 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13923 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13928 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13931 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13936 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13939 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
  
-#line 13948 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13951 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13958 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13961 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13966 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13969 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13974 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13977 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13982 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13985 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13992 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13995 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14002 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14005 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
 
  
-#line 14013 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14016 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -7128,16 +7130,16 @@ typedef struct
 
 
  
-#line 14076 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14079 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14088 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14091 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14096 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14099 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14110 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14113 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -7145,28 +7147,28 @@ typedef struct
 
 
  
-#line 14123 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14126 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14133 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14136 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14141 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14144 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14151 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14154 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14161 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14164 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
  
-#line 14175 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14178 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 14182 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14185 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
@@ -7178,7 +7180,7 @@ typedef struct
 
 
  
-#line 14199 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14202 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -7198,7 +7200,7 @@ typedef struct
 
 
  
-#line 14224 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14227 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -7230,7 +7232,7 @@ typedef struct
 
 
 
-#line 14262 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14265 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -7279,8 +7281,8 @@ typedef struct
 
 
 
-#line 129 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
-#line 176 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 129 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+#line 176 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -7334,22 +7336,22 @@ typedef enum
 
  
  
-#line 236 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 236 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 245 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 245 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 254 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 254 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 263 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 263 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 272 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 272 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 281 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 281 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -7379,7 +7381,7 @@ typedef enum
 #line 296 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
 
 
-#line 288 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 288 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -7565,7 +7567,7 @@ typedef enum
 
  
 
-#line 561 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 567 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7575,7 +7577,7 @@ typedef enum
 
  
 
-#line 578 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 584 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7585,20 +7587,22 @@ typedef enum
 
  
 
-#line 603 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 609 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 702 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 618 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 717 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
+
  
 
 
 
 
  
-#line 723 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 738 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -7616,6 +7620,7 @@ typedef enum
 
 
  
+
 
 
 
@@ -7633,16 +7638,16 @@ typedef enum
 
 
 
+#line 789 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 774 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
+#line 801 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 786 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 808 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 793 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7651,8 +7656,9 @@ typedef enum
 
 
 
+#line 824 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 809 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 839 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -7660,7 +7666,7 @@ typedef enum
 
 
  
-#line 837 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 867 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -7668,23 +7674,28 @@ typedef enum
 
 
  
-#line 853 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 883 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+
+#line 892 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+
 
-#line 862 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 873 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 985 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1002 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 907 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 1019 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 1035 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+
+
+
  
 
 
 
  
-#line 1026 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1060 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -7835,7 +7846,7 @@ typedef enum
  
 
 
-#line 1183 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1217 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7849,7 +7860,7 @@ typedef enum
  
 
  
-#line 1205 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1239 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
  
 
@@ -7902,7 +7913,7 @@ typedef enum
 
 
 
-#line 1266 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1300 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7919,7 +7930,7 @@ typedef enum
 
 
 
-#line 1288 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1322 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7950,7 +7961,7 @@ typedef enum
 
 
  
-#line 1329 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1363 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -7967,7 +7978,7 @@ typedef enum
 
 
 
-#line 1359 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1393 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7979,11 +7990,11 @@ typedef enum
 
 
 
-#line 1397 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1431 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1407 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1441 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1426 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1460 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -7994,7 +8005,7 @@ typedef enum
 
 
 
-#line 1453 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1487 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8069,7 +8080,7 @@ typedef enum
 
 
  
-#line 1537 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1571 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8079,11 +8090,11 @@ typedef enum
 
  
 
-#line 1554 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1588 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1566 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1600 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1607 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1641 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8107,9 +8118,9 @@ typedef enum
 
  
 
-#line 1657 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1691 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1671 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1705 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8155,7 +8166,7 @@ typedef enum
 
 
  
-#line 1722 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1756 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
  
 
@@ -8200,7 +8211,7 @@ typedef enum
 
 
  
-#line 1792 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1826 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8209,7 +8220,7 @@ typedef enum
 
 
  
-#line 1807 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1841 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8227,9 +8238,9 @@ typedef enum
 
 
 
-#line 1840 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1874 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1851 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1885 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8238,20 +8249,20 @@ typedef enum
 
  
 
-#line 1881 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1915 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1889 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1923 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
 
-#line 1905 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1939 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
-#line 1994 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2028 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8260,7 +8271,7 @@ typedef enum
 
 
  
-#line 2008 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2042 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8287,7 +8298,7 @@ typedef enum
 
 
  
-#line 2047 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2081 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8335,7 +8346,7 @@ typedef enum
 
 
  
-#line 2108 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2142 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8351,17 +8362,17 @@ typedef enum
 
 
  
-#line 2136 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2170 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2157 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2191 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2168 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2202 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2177 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2211 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2190 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2224 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2199 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2233 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8382,12 +8393,12 @@ typedef enum
 
 
  
-#line 2235 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2269 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2250 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2284 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
-#line 2283 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2317 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8396,16 +8407,16 @@ typedef enum
 
 
  
-#line 2451 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2485 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
-#line 2461 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2495 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
 
-#line 2477 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2511 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8423,7 +8434,7 @@ typedef enum
 
  
 
-#line 2500 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2534 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8433,7 +8444,7 @@ typedef enum
 
  
 
-#line 2528 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2562 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8499,7 +8510,7 @@ typedef enum
 
 
  
-#line 2606 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2640 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8509,9 +8520,9 @@ typedef enum
 
 
  
-#line 2656 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2690 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2670 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2704 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8528,42 +8539,42 @@ typedef enum
 
 
 
-#line 2950 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2984 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2964 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2998 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3181 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3215 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3200 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3234 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3207 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3241 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3228 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3262 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3376 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3410 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
  
 
 
 
-#line 3401 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3435 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3422 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3456 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3539 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3573 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3548 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3582 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3565 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3599 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3580 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3614 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
 
-#line 3609 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3643 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8581,25 +8592,25 @@ typedef enum
 
 
 
-#line 3635 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3669 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
-#line 3662 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3696 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
-#line 3673 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3708 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3682 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3717 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3715 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3750 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3733 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3768 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8612,13 +8623,13 @@ typedef enum
 
 
 
-#line 3751 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3786 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3774 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3809 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3814 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3849 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3900 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3935 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8636,13 +8647,13 @@ typedef enum
 
 
  
-#line 3925 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3961 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3953 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3989 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3960 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3996 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3975 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4011 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8663,19 +8674,19 @@ typedef enum
 
 
 
-#line 4003 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4039 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4025 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4061 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
  
 
 
 
 
-#line 4055 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4091 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4062 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4098 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4074 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4110 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8684,7 +8695,7 @@ typedef enum
 
  
 
-#line 4088 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4124 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8698,7 +8709,7 @@ typedef enum
 
 
  
-#line 4109 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4145 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8746,7 +8757,7 @@ typedef enum
 
 
 
-#line 4163 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4199 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8754,8 +8765,6 @@ typedef enum
 
 
  
-
-
 
 
 
@@ -8766,17 +8775,18 @@ typedef enum
 
 
 
-#line 4189 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4198 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4207 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4225 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 4234 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 4243 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
+#line 4276 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8792,7 +8802,7 @@ typedef enum
 
 
 
-#line 4240 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4303 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8806,7 +8816,7 @@ typedef enum
 
  
 
-#line 4260 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4323 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -8827,7 +8837,7 @@ typedef enum
 
 
  
-#line 4294 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4357 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -8847,7 +8857,7 @@ typedef enum
 
 
  
-#line 4321 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4384 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -10819,8 +10829,8 @@ typedef struct
  
  
 HAL_StatusTypeDef HAL_RCC_DeInit(void);
-HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct);
-HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency);
+HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef *RCC_OscInitStruct);
+HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency);
 
 
  
@@ -23187,7 +23197,7 @@ typedef struct
 
 
 
-#line 1848 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+#line 1849 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
 
 
 
@@ -23201,7 +23211,7 @@ typedef struct
 
 
 
-#line 1871 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+#line 1873 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
 
 
 
@@ -23320,7 +23330,7 @@ typedef struct
 
 
  
-#line 191 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h"
+#line 193 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h"
 
 
 
@@ -23485,7 +23495,7 @@ void TIMEx_DMACommutationHalfCplt(DMA_HandleTypeDef *hdma);
 
 
 
-#line 1879 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+#line 1881 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
 
  
 
@@ -25690,7 +25700,7 @@ void Error_Handler(void);
  
 
  
-#line 138 "../Core/Inc/main.h"
+#line 140 "../Core/Inc/main.h"
 
  
 
@@ -34820,6 +34830,10 @@ extern __declspec(__nothrow) void _membitmovewb(void *  , const void *  , int  ,
 
 
 
+
+
+
+
  
 
 
@@ -35022,7 +35036,8 @@ typedef enum
   USBH_URB_NOTREADY,
   USBH_URB_NYET,
   USBH_URB_ERROR,
-  USBH_URB_STALL
+  USBH_URB_STALL,
+  USBH_URB_NAK_WAIT
 } USBH_URBStateTypeDef;
 
 typedef enum
@@ -35062,7 +35077,7 @@ typedef struct
   volatile uint8_t                      is_connected;
   volatile uint8_t                      is_disconnected;
   volatile uint8_t                      is_ReEnumerated;
-  uint8_t                           PortEnabled;
+  volatile uint8_t                      PortEnabled;
   uint8_t                           current_interface;
   USBH_DevDescTypeDef               DevDesc;
   USBH_CfgDescTypeDef               CfgDesc;
@@ -35096,6 +35111,10 @@ typedef struct _USBH_HandleTypeDef
   uint32_t              ClassNumber;
   uint32_t              Pipes[16];
   volatile uint32_t         Timer;
+
+
+
+
   uint32_t              Timeout;
   uint8_t               id;
   void                 *pData;
@@ -35115,7 +35134,7 @@ typedef struct _USBH_HandleTypeDef
 } USBH_HandleTypeDef;
 
 
-#line 503 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+#line 512 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
 
 
 
@@ -35173,7 +35192,7 @@ typedef struct _USBH_HandleTypeDef
 
  
  
-#line 176 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
+#line 165 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
 
 
  
@@ -35416,6 +35435,8 @@ USBH_StatusTypeDef USBH_FreePipe(USBH_HandleTypeDef *phost,
 
 
 
+
+
  
 
 
@@ -35630,86 +35651,75 @@ USBH_DescHeader_t *USBH_GetNextDesc(uint8_t *pbuf, uint16_t *ptr);
 
 
  
+USBH_StatusTypeDef USBH_Init(USBH_HandleTypeDef *phost,
+                             void (*pUsrFunc)(USBH_HandleTypeDef *phost, uint8_t id), uint8_t id);
 
+USBH_StatusTypeDef USBH_DeInit(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_Start(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_Stop(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_Process(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_ReEnumerate(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_RegisterClass(USBH_HandleTypeDef *phost, USBH_ClassTypeDef *pclass);
+USBH_StatusTypeDef USBH_SelectInterface(USBH_HandleTypeDef *phost, uint8_t interface);
 
-USBH_StatusTypeDef  USBH_Init(USBH_HandleTypeDef *phost, void (*pUsrFunc)(USBH_HandleTypeDef *phost, uint8_t id), uint8_t id);
-USBH_StatusTypeDef  USBH_DeInit(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_RegisterClass(USBH_HandleTypeDef *phost, USBH_ClassTypeDef *pclass);
-USBH_StatusTypeDef  USBH_SelectInterface(USBH_HandleTypeDef *phost, uint8_t interface);
-uint8_t             USBH_FindInterface(USBH_HandleTypeDef *phost,
-                                       uint8_t Class,
-                                       uint8_t SubClass,
-                                       uint8_t Protocol);
-uint8_t             USBH_GetActiveClass(USBH_HandleTypeDef *phost);
-
-uint8_t             USBH_FindInterfaceIndex(USBH_HandleTypeDef *phost,
-                                            uint8_t interface_number,
-                                            uint8_t alt_settings);
-
-uint8_t              USBH_IsPortEnabled(USBH_HandleTypeDef *phost);
-
-USBH_StatusTypeDef  USBH_Start(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_Stop(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_Process(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_ReEnumerate(USBH_HandleTypeDef *phost);
+uint8_t            USBH_FindInterfaceIndex(USBH_HandleTypeDef *phost, uint8_t interface_number, uint8_t alt_settings);
+uint8_t            USBH_FindInterface(USBH_HandleTypeDef *phost, uint8_t Class, uint8_t SubClass, uint8_t Protocol);
+uint8_t            USBH_GetActiveClass(USBH_HandleTypeDef *phost);
+uint8_t            USBH_IsPortEnabled(USBH_HandleTypeDef *phost);
 
  
-USBH_StatusTypeDef   USBH_LL_Init(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_DeInit(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_Start(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_Stop(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost);
 
-USBH_StatusTypeDef   USBH_LL_Connect(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_Disconnect(USBH_HandleTypeDef *phost);
-USBH_SpeedTypeDef    USBH_LL_GetSpeed(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_ResetPort(USBH_HandleTypeDef *phost);
-uint32_t             USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost,
-                                             uint8_t pipe);
+USBH_StatusTypeDef USBH_LL_Connect(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Disconnect(USBH_HandleTypeDef *phost);
+USBH_SpeedTypeDef  USBH_LL_GetSpeed(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_ResetPort(USBH_HandleTypeDef *phost);
+uint32_t           USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost, uint8_t pipe);
 
-USBH_StatusTypeDef   USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost,
-                                        uint8_t state);
+USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state);
 
-USBH_StatusTypeDef   USBH_LL_OpenPipe(USBH_HandleTypeDef *phost,
-                                      uint8_t pipe,
-                                      uint8_t epnum,
-                                      uint8_t dev_address,
-                                      uint8_t speed,
-                                      uint8_t ep_type,
-                                      uint16_t mps);
+USBH_StatusTypeDef USBH_LL_OpenPipe(USBH_HandleTypeDef *phost,
+                                    uint8_t pipe,
+                                    uint8_t epnum,
+                                    uint8_t dev_address,
+                                    uint8_t speed,
+                                    uint8_t ep_type,
+                                    uint16_t mps);
 
-USBH_StatusTypeDef   USBH_LL_ClosePipe(USBH_HandleTypeDef *phost,
-                                       uint8_t pipe);
+USBH_StatusTypeDef USBH_LL_ActivatePipe(USBH_HandleTypeDef *phost, uint8_t pipe);
+USBH_StatusTypeDef USBH_LL_ClosePipe(USBH_HandleTypeDef *phost, uint8_t pipe);
 
-USBH_StatusTypeDef   USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
-                                       uint8_t pipe,
-                                       uint8_t direction,
-                                       uint8_t ep_type,
-                                       uint8_t token,
-                                       uint8_t *pbuff,
-                                       uint16_t length,
-                                       uint8_t do_ping);
+USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
+                                     uint8_t pipe,
+                                     uint8_t direction,
+                                     uint8_t ep_type,
+                                     uint8_t token,
+                                     uint8_t *pbuff,
+                                     uint16_t length,
+                                     uint8_t do_ping);
 
-USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost,
-                                         uint8_t pipe);
+USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, uint8_t pipe);
 
 
-USBH_StatusTypeDef  USBH_LL_NotifyURBChange(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_NotifyURBChange(USBH_HandleTypeDef *phost);
+void USBH_OS_PutMessage(USBH_HandleTypeDef *phost, USBH_OSEventTypeDef message, uint32_t timeout, uint32_t priority);
 
 
-USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost,
-                                     uint8_t pipe, uint8_t toggle);
+USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost, uint8_t pipe, uint8_t toggle);
 
 uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe);
 
-void                 USBH_LL_PortDisabled(USBH_HandleTypeDef *phost);
-void                 USBH_LL_PortEnabled(USBH_HandleTypeDef *phost);
+void USBH_LL_PortDisabled(USBH_HandleTypeDef *phost);
+void USBH_LL_PortEnabled(USBH_HandleTypeDef *phost);
 
  
 void USBH_LL_SetTimer(USBH_HandleTypeDef *phost, uint32_t time);
 void USBH_LL_IncTimer(USBH_HandleTypeDef *phost);
 
 void USBH_Delay(uint32_t Delay);
-
 
 
  
@@ -37353,15 +37363,12 @@ extern UART_HandleTypeDef huart4;
 
 extern UART_HandleTypeDef huart1;
 
-extern UART_HandleTypeDef huart2;
-
  
 
  
 
 void MX_UART4_Init(void);
 void MX_USART1_UART_Init(void);
-void MX_USART2_UART_Init(void);
 
  
 
@@ -37525,7 +37532,12678 @@ void MX_GPIO_Init(void);
 
  
  
+#line 1 "../../sPlc/sPlc.h"
 
+
+ 
+#line 5 "../../sPlc/sPlc.h"
+#line 6 "../../sPlc/sPlc.h"
+#line 1 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+
+#line 1 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\core_cm4.h"
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+#line 192 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\core_cm4.h"
+
+#line 1787 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\core_cm4.h"
+
+#line 264 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+#line 276 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+#line 279 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+#line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+#line 61 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+#line 75 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+
+
+
+
+
+   
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#line 112 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+extern __attribute__((__pcs__("aapcs"))) unsigned __ARM_dcmp4(double  , double  );
+extern __attribute__((__pcs__("aapcs"))) unsigned __ARM_fcmp4(float  , float  );
+    
+
+
+
+
+ 
+
+extern __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_fpclassifyf(float  );
+extern __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_fpclassify(double  );
+     
+     
+
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isfinitef(float __x)
+{
+    return (((*(unsigned *)&(__x)) >> 23) & 0xff) != 0xff;
+}
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isfinite(double __x)
+{
+    return (((*(1 + (unsigned *)&(__x))) >> 20) & 0x7ff) != 0x7ff;
+}
+     
+     
+
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isinff(float __x)
+{
+    return ((*(unsigned *)&(__x)) << 1) == 0xff000000;
+}
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isinf(double __x)
+{
+    return (((*(1 + (unsigned *)&(__x))) << 1) == 0xffe00000) && ((*(unsigned *)&(__x)) == 0);
+}
+     
+     
+
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_islessgreaterf(float __x, float __y)
+{
+    unsigned __f = __ARM_fcmp4(__x, __y) >> 28;
+    return (__f == 8) || (__f == 2);  
+}
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_islessgreater(double __x, double __y)
+{
+    unsigned __f = __ARM_dcmp4(__x, __y) >> 28;
+    return (__f == 8) || (__f == 2);  
+}
+    
+
+
+ 
+
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isnanf(float __x)
+{
+    return (0x7f800000 - ((*(unsigned *)&(__x)) & 0x7fffffff)) >> 31;
+}
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isnan(double __x)
+{
+    unsigned __xf = (*(1 + (unsigned *)&(__x))) | (((*(unsigned *)&(__x)) == 0) ? 0 : 1);
+    return (0x7ff00000 - (__xf & 0x7fffffff)) >> 31;
+}
+     
+     
+
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isnormalf(float __x)
+{
+    unsigned __xe = ((*(unsigned *)&(__x)) >> 23) & 0xff;
+    return (__xe != 0xff) && (__xe != 0);
+}
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_isnormal(double __x)
+{
+    unsigned __xe = ((*(1 + (unsigned *)&(__x))) >> 20) & 0x7ff;
+    return (__xe != 0x7ff) && (__xe != 0);
+}
+     
+     
+
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_signbitf(float __x)
+{
+    return (*(unsigned *)&(__x)) >> 31;
+}
+static inline __declspec(__nothrow) __attribute__((__pcs__("aapcs"))) int __ARM_signbit(double __x)
+{
+    return (*(1 + (unsigned *)&(__x))) >> 31;
+}
+     
+     
+
+
+
+
+
+
+
+
+#line 230 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+
+
+
+
+
+   
+  typedef float float_t;
+  typedef double double_t;
+#line 251 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+
+extern const int math_errhandling;
+#line 261 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+extern __declspec(__nothrow) double acos(double  );
+    
+    
+    
+extern __declspec(__nothrow) double asin(double  );
+    
+    
+    
+    
+
+extern __declspec(__nothrow) __attribute__((const)) double atan(double  );
+    
+    
+
+extern __declspec(__nothrow) double atan2(double  , double  );
+    
+    
+    
+    
+
+extern __declspec(__nothrow) double cos(double  );
+    
+    
+    
+    
+extern __declspec(__nothrow) double sin(double  );
+    
+    
+    
+    
+
+extern void __use_accurate_range_reduction(void);
+    
+    
+
+extern __declspec(__nothrow) double tan(double  );
+    
+    
+    
+    
+
+extern __declspec(__nothrow) double cosh(double  );
+    
+    
+    
+    
+extern __declspec(__nothrow) double sinh(double  );
+    
+    
+    
+    
+    
+
+extern __declspec(__nothrow) __attribute__((const)) double tanh(double  );
+    
+    
+
+extern __declspec(__nothrow) double exp(double  );
+    
+    
+    
+    
+    
+
+extern __declspec(__nothrow) double frexp(double  , int *  ) __attribute__((__nonnull__(2)));
+    
+    
+    
+    
+    
+    
+
+extern __declspec(__nothrow) double ldexp(double  , int  );
+    
+    
+    
+    
+extern __declspec(__nothrow) double log(double  );
+    
+    
+    
+    
+    
+extern __declspec(__nothrow) double log10(double  );
+    
+    
+    
+extern __declspec(__nothrow) double modf(double  , double *  ) __attribute__((__nonnull__(2)));
+    
+    
+    
+    
+
+extern __declspec(__nothrow) double pow(double  , double  );
+    
+    
+    
+    
+    
+    
+extern __declspec(__nothrow) double sqrt(double  );
+    
+    
+    
+
+
+
+
+    inline double _sqrt(double __x) { return sqrt(__x); }
+
+
+    inline float _sqrtf(float __x) { return __sqrtf(__x); }
+
+
+
+    
+
+
+
+ 
+
+extern __declspec(__nothrow) __attribute__((const)) double ceil(double  );
+    
+    
+extern __declspec(__nothrow) __attribute__((const)) double fabs(double  );
+    
+    
+
+extern __declspec(__nothrow) __attribute__((const)) double floor(double  );
+    
+    
+
+extern __declspec(__nothrow) double fmod(double  , double  );
+    
+    
+    
+    
+    
+
+    
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+extern __declspec(__nothrow) double acosh(double  );
+    
+
+ 
+extern __declspec(__nothrow) double asinh(double  );
+    
+
+ 
+extern __declspec(__nothrow) double atanh(double  );
+    
+
+ 
+extern __declspec(__nothrow) double cbrt(double  );
+    
+
+ 
+inline __declspec(__nothrow) __attribute__((const)) double copysign(double __x, double __y)
+    
+
+ 
+{
+    (*(1 + (unsigned *)&(__x))) = ((*(1 + (unsigned *)&(__x))) & 0x7fffffff) | ((*(1 + (unsigned *)&(__y))) & 0x80000000);
+    return __x;
+}
+inline __declspec(__nothrow) __attribute__((const)) float copysignf(float __x, float __y)
+    
+
+ 
+{
+    (*(unsigned *)&(__x)) = ((*(unsigned *)&(__x)) & 0x7fffffff) | ((*(unsigned *)&(__y)) & 0x80000000);
+    return __x;
+}
+extern __declspec(__nothrow) double erf(double  );
+    
+
+ 
+extern __declspec(__nothrow) double erfc(double  );
+    
+
+ 
+extern __declspec(__nothrow) double expm1(double  );
+    
+
+ 
+
+
+
+    
+
+ 
+
+
+
+
+
+
+#line 479 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+extern __declspec(__nothrow) double hypot(double  , double  );
+    
+
+
+
+
+ 
+extern __declspec(__nothrow) int ilogb(double  );
+    
+
+ 
+extern __declspec(__nothrow) int ilogbf(float  );
+    
+
+ 
+extern __declspec(__nothrow) int ilogbl(long double  );
+    
+
+ 
+
+
+
+
+
+
+
+    
+
+ 
+
+
+
+
+
+    
+
+
+
+ 
+
+
+
+
+
+    
+
+
+
+ 
+
+
+
+
+
+    
+
+ 
+
+
+
+
+
+    
+
+
+
+ 
+
+
+
+
+
+    
+
+
+
+ 
+
+
+
+
+
+    
+
+
+
+ 
+
+
+
+
+
+    
+
+ 
+
+
+
+
+
+    
+
+ 
+
+
+
+
+
+    
+
+
+ 
+
+extern __declspec(__nothrow) double lgamma (double  );
+    
+
+
+ 
+extern __declspec(__nothrow) double log1p(double  );
+    
+
+ 
+extern __declspec(__nothrow) double logb(double  );
+    
+
+ 
+extern __declspec(__nothrow) float logbf(float  );
+    
+
+ 
+extern __declspec(__nothrow) long double logbl(long double  );
+    
+
+ 
+extern __declspec(__nothrow) double nextafter(double  , double  );
+    
+
+
+ 
+extern __declspec(__nothrow) float nextafterf(float  , float  );
+    
+
+
+ 
+extern __declspec(__nothrow) long double nextafterl(long double  , long double  );
+    
+
+
+ 
+extern __declspec(__nothrow) double nexttoward(double  , long double  );
+    
+
+
+ 
+extern __declspec(__nothrow) float nexttowardf(float  , long double  );
+    
+
+
+ 
+extern __declspec(__nothrow) long double nexttowardl(long double  , long double  );
+    
+
+
+ 
+extern __declspec(__nothrow) double remainder(double  , double  );
+    
+
+ 
+extern __declspec(__nothrow) __attribute__((const)) double rint(double  );
+    
+
+ 
+extern __declspec(__nothrow) double scalbln(double  , long int  );
+    
+
+ 
+extern __declspec(__nothrow) float scalblnf(float  , long int  );
+    
+
+ 
+extern __declspec(__nothrow) long double scalblnl(long double  , long int  );
+    
+
+ 
+extern __declspec(__nothrow) double scalbn(double  , int  );
+    
+
+ 
+extern __declspec(__nothrow) float scalbnf(float  , int  );
+    
+
+ 
+extern __declspec(__nothrow) long double scalbnl(long double  , int  );
+    
+
+ 
+
+
+
+
+    
+
+ 
+
+
+
+ 
+extern __declspec(__nothrow) __attribute__((const)) float _fabsf(float);  
+inline __declspec(__nothrow) __attribute__((const)) float fabsf(float __f) { return _fabsf(__f); }
+extern __declspec(__nothrow) float sinf(float  );
+extern __declspec(__nothrow) float cosf(float  );
+extern __declspec(__nothrow) float tanf(float  );
+extern __declspec(__nothrow) float acosf(float  );
+extern __declspec(__nothrow) float asinf(float  );
+extern __declspec(__nothrow) float atanf(float  );
+extern __declspec(__nothrow) float atan2f(float  , float  );
+extern __declspec(__nothrow) float sinhf(float  );
+extern __declspec(__nothrow) float coshf(float  );
+extern __declspec(__nothrow) float tanhf(float  );
+extern __declspec(__nothrow) float expf(float  );
+extern __declspec(__nothrow) float logf(float  );
+extern __declspec(__nothrow) float log10f(float  );
+extern __declspec(__nothrow) float powf(float  , float  );
+extern __declspec(__nothrow) float sqrtf(float  );
+extern __declspec(__nothrow) float ldexpf(float  , int  );
+extern __declspec(__nothrow) float frexpf(float  , int *  ) __attribute__((__nonnull__(2)));
+extern __declspec(__nothrow) __attribute__((const)) float ceilf(float  );
+extern __declspec(__nothrow) __attribute__((const)) float floorf(float  );
+extern __declspec(__nothrow) float fmodf(float  , float  );
+extern __declspec(__nothrow) float modff(float  , float *  ) __attribute__((__nonnull__(2)));
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+__declspec(__nothrow) long double acosl(long double );
+__declspec(__nothrow) long double asinl(long double );
+__declspec(__nothrow) long double atanl(long double );
+__declspec(__nothrow) long double atan2l(long double , long double );
+__declspec(__nothrow) long double ceill(long double );
+__declspec(__nothrow) long double cosl(long double );
+__declspec(__nothrow) long double coshl(long double );
+__declspec(__nothrow) long double expl(long double );
+__declspec(__nothrow) long double fabsl(long double );
+__declspec(__nothrow) long double floorl(long double );
+__declspec(__nothrow) long double fmodl(long double , long double );
+__declspec(__nothrow) long double frexpl(long double , int* ) __attribute__((__nonnull__(2)));
+__declspec(__nothrow) long double ldexpl(long double , int );
+__declspec(__nothrow) long double logl(long double );
+__declspec(__nothrow) long double log10l(long double );
+__declspec(__nothrow) long double modfl(long double  , long double *  ) __attribute__((__nonnull__(2)));
+__declspec(__nothrow) long double powl(long double , long double );
+__declspec(__nothrow) long double sinl(long double );
+__declspec(__nothrow) long double sinhl(long double );
+__declspec(__nothrow) long double sqrtl(long double );
+__declspec(__nothrow) long double tanl(long double );
+__declspec(__nothrow) long double tanhl(long double );
+
+
+
+
+
+ 
+extern __declspec(__nothrow) float acoshf(float  );
+__declspec(__nothrow) long double acoshl(long double );
+extern __declspec(__nothrow) float asinhf(float  );
+__declspec(__nothrow) long double asinhl(long double );
+extern __declspec(__nothrow) float atanhf(float  );
+__declspec(__nothrow) long double atanhl(long double );
+__declspec(__nothrow) long double copysignl(long double , long double );
+extern __declspec(__nothrow) float cbrtf(float  );
+__declspec(__nothrow) long double cbrtl(long double );
+extern __declspec(__nothrow) float erff(float  );
+__declspec(__nothrow) long double erfl(long double );
+extern __declspec(__nothrow) float erfcf(float  );
+__declspec(__nothrow) long double erfcl(long double );
+extern __declspec(__nothrow) float expm1f(float  );
+__declspec(__nothrow) long double expm1l(long double );
+extern __declspec(__nothrow) float log1pf(float  );
+__declspec(__nothrow) long double log1pl(long double );
+extern __declspec(__nothrow) float hypotf(float  , float  );
+__declspec(__nothrow) long double hypotl(long double , long double );
+extern __declspec(__nothrow) float lgammaf(float  );
+__declspec(__nothrow) long double lgammal(long double );
+extern __declspec(__nothrow) float remainderf(float  , float  );
+__declspec(__nothrow) long double remainderl(long double , long double );
+extern __declspec(__nothrow) float rintf(float  );
+__declspec(__nothrow) long double rintl(long double );
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) double exp2(double  );  
+extern __declspec(__nothrow) float exp2f(float  );
+__declspec(__nothrow) long double exp2l(long double );
+extern __declspec(__nothrow) double fdim(double  , double  );
+extern __declspec(__nothrow) float fdimf(float  , float  );
+__declspec(__nothrow) long double fdiml(long double , long double );
+#line 803 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+extern __declspec(__nothrow) double fma(double  , double  , double  );
+extern __declspec(__nothrow) float fmaf(float  , float  , float  );
+
+inline __declspec(__nothrow) long double fmal(long double __x, long double __y, long double __z)     { return (long double)fma((double)__x, (double)__y, (double)__z); }
+
+
+extern __declspec(__nothrow) __attribute__((const)) double fmax(double  , double  );
+extern __declspec(__nothrow) __attribute__((const)) float fmaxf(float  , float  );
+__declspec(__nothrow) long double fmaxl(long double , long double );
+extern __declspec(__nothrow) __attribute__((const)) double fmin(double  , double  );
+extern __declspec(__nothrow) __attribute__((const)) float fminf(float  , float  );
+__declspec(__nothrow) long double fminl(long double , long double );
+extern __declspec(__nothrow) double log2(double  );  
+extern __declspec(__nothrow) float log2f(float  );
+__declspec(__nothrow) long double log2l(long double );
+extern __declspec(__nothrow) long lrint(double  );
+extern __declspec(__nothrow) long lrintf(float  );
+
+inline __declspec(__nothrow) long lrintl(long double __x)     { return lrint((double)__x); }
+
+
+extern __declspec(__nothrow) long long llrint(double  );
+extern __declspec(__nothrow) long long llrintf(float  );
+
+inline __declspec(__nothrow) long long llrintl(long double __x)     { return llrint((double)__x); }
+
+
+extern __declspec(__nothrow) long lround(double  );
+extern __declspec(__nothrow) long lroundf(float  );
+
+inline __declspec(__nothrow) long lroundl(long double __x)     { return lround((double)__x); }
+
+
+extern __declspec(__nothrow) long long llround(double  );
+extern __declspec(__nothrow) long long llroundf(float  );
+
+inline __declspec(__nothrow) long long llroundl(long double __x)     { return llround((double)__x); }
+
+
+extern __declspec(__nothrow) __attribute__((const)) double nan(const char * );
+extern __declspec(__nothrow) __attribute__((const)) float nanf(const char * );
+
+inline __declspec(__nothrow) __attribute__((const)) long double nanl(const char *__t)     { return (long double)nan(__t); }
+#line 856 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+extern __declspec(__nothrow) __attribute__((const)) double nearbyint(double  );
+extern __declspec(__nothrow) __attribute__((const)) float nearbyintf(float  );
+__declspec(__nothrow) long double nearbyintl(long double );
+extern  double remquo(double  , double  , int * );
+extern  float remquof(float  , float  , int * );
+
+inline long double remquol(long double __x, long double __y, int *__q)     { return (long double)remquo((double)__x, (double)__y, __q); }
+
+
+extern __declspec(__nothrow) __attribute__((const)) double round(double  );
+extern __declspec(__nothrow) __attribute__((const)) float roundf(float  );
+__declspec(__nothrow) long double roundl(long double );
+extern __declspec(__nothrow) double tgamma(double  );  
+extern __declspec(__nothrow) float tgammaf(float  );
+__declspec(__nothrow) long double tgammal(long double );
+extern __declspec(__nothrow) __attribute__((const)) double trunc(double  );
+extern __declspec(__nothrow) __attribute__((const)) float truncf(float  );
+__declspec(__nothrow) long double truncl(long double );
+
+
+
+
+
+
+#line 896 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+#line 1087 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+
+
+
+
+
+
+
+
+
+#line 1317 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
+
+
+
+
+
+ 
+#line 280 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+
+
+
+
+  
+
+ 
+
+#line 296 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+  
+
+ 
+
+#line 308 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+  
+
+ 
+   
+   
+
+
+  
+
+ 
+#line 328 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+  
+
+ 
+
+  typedef enum
+  {
+    ARM_MATH_SUCCESS = 0,                 
+    ARM_MATH_ARGUMENT_ERROR = -1,         
+    ARM_MATH_LENGTH_ERROR = -2,           
+    ARM_MATH_SIZE_MISMATCH = -3,          
+    ARM_MATH_NANINF = -4,                 
+    ARM_MATH_SINGULAR = -5,               
+    ARM_MATH_TEST_FAILURE = -6            
+  } arm_status;
+
+  
+
+ 
+  typedef int8_t q7_t;
+
+  
+
+ 
+  typedef int16_t q15_t;
+
+  
+
+ 
+  typedef int32_t q31_t;
+
+  
+
+ 
+  typedef int64_t q63_t;
+
+  
+
+ 
+  typedef float float32_t;
+
+  
+
+ 
+  typedef double float64_t;
+
+  
+
+ 
+#line 392 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+
+
+
+
+
+
+#line 410 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+   
+
+ 
+
+
+#line 429 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+  
+
+ 
+  static __inline q31_t clip_q63_to_q31(
+  q63_t x)
+  {
+    return ((q31_t) (x >> 32) != ((q31_t) x >> 31)) ?
+      ((0x7FFFFFFF ^ ((q31_t) (x >> 63)))) : (q31_t) x;
+  }
+
+  
+
+ 
+  static __inline q15_t clip_q63_to_q15(
+  q63_t x)
+  {
+    return ((q31_t) (x >> 32) != ((q31_t) x >> 31)) ?
+      ((0x7FFF ^ ((q15_t) (x >> 63)))) : (q15_t) (x >> 15);
+  }
+
+  
+
+ 
+  static __inline q7_t clip_q31_to_q7(
+  q31_t x)
+  {
+    return ((q31_t) (x >> 24) != ((q31_t) x >> 23)) ?
+      ((0x7F ^ ((q7_t) (x >> 31)))) : (q7_t) x;
+  }
+
+  
+
+ 
+  static __inline q15_t clip_q31_to_q15(
+  q31_t x)
+  {
+    return ((q31_t) (x >> 16) != ((q31_t) x >> 15)) ?
+      ((0x7FFF ^ ((q15_t) (x >> 31)))) : (q15_t) x;
+  }
+
+  
+
+ 
+
+  static __inline q63_t mult32x64(
+  q63_t x,
+  q31_t y)
+  {
+    return ((((q63_t) (x & 0x00000000FFFFFFFF) * y) >> 32) +
+            (((q63_t) (x >> 32) * y)));
+  }
+
+
+
+
+
+
+#line 511 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+  
+
+ 
+
+  static __inline uint32_t arm_recip_q31(
+  q31_t in,
+  q31_t * dst,
+  q31_t * pRecipTable)
+  {
+
+    uint32_t out, tempVal;
+    uint32_t index, i;
+    uint32_t signBits;
+
+    if(in > 0)
+    {
+      signBits = __clz(in) - 1;
+    }
+    else
+    {
+      signBits = __clz(-in) - 1;
+    }
+
+     
+    in = in << signBits;
+
+     
+    index = (uint32_t) (in >> 24u);
+    index = (index & 0x0000003F);
+
+     
+    out = pRecipTable[index];
+
+     
+     
+    for (i = 0u; i < 2u; i++)
+    {
+      tempVal = (q31_t) (((q63_t) in * out) >> 31u);
+      tempVal = 0x7FFFFFFF - tempVal;
+       
+      
+      out = (q31_t) clip_q63_to_q31(((q63_t) out * tempVal) >> 30u);
+    }
+
+     
+    *dst = out;
+
+     
+    return (signBits + 1u);
+
+  }
+
+  
+
+ 
+  static __inline uint32_t arm_recip_q15(
+  q15_t in,
+  q15_t * dst,
+  q15_t * pRecipTable)
+  {
+
+    uint32_t out = 0, tempVal = 0;
+    uint32_t index = 0, i = 0;
+    uint32_t signBits = 0;
+
+    if(in > 0)
+    {
+      signBits = __clz(in) - 17;
+    }
+    else
+    {
+      signBits = __clz(-in) - 17;
+    }
+
+     
+    in = in << signBits;
+
+     
+    index = in >> 8;
+    index = (index & 0x0000003F);
+
+     
+    out = pRecipTable[index];
+
+     
+     
+    for (i = 0; i < 2; i++)
+    {
+      tempVal = (q15_t) (((q31_t) in * out) >> 15);
+      tempVal = 0x7FFF - tempVal;
+       
+      out = (q15_t) (((q31_t) out * tempVal) >> 14);
+    }
+
+     
+    *dst = out;
+
+     
+    return (signBits + 1);
+
+  }
+
+
+  
+
+ 
+#line 657 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+
+  
+
+ 
+#line 1040 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numTaps;         
+    q7_t *pState;             
+    q7_t *pCoeffs;            
+  } arm_fir_instance_q7;
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numTaps;          
+    q15_t *pState;             
+    q15_t *pCoeffs;            
+  } arm_fir_instance_q15;
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numTaps;          
+    q31_t *pState;             
+    q31_t *pCoeffs;            
+  } arm_fir_instance_q31;
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numTaps;      
+    float32_t *pState;     
+    float32_t *pCoeffs;    
+  } arm_fir_instance_f32;
+
+
+  
+
+
+
+
+
+
+ 
+  void arm_fir_q7(
+  const arm_fir_instance_q7 * S,
+  q7_t * pSrc,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+
+ 
+  void arm_fir_init_q7(
+  arm_fir_instance_q7 * S,
+  uint16_t numTaps,
+  q7_t * pCoeffs,
+  q7_t * pState,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+ 
+  void arm_fir_q15(
+  const arm_fir_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+  void arm_fir_fast_q15(
+  const arm_fir_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_fir_init_q15(
+  arm_fir_instance_q15 * S,
+  uint16_t numTaps,
+  q15_t * pCoeffs,
+  q15_t * pState,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+  void arm_fir_q31(
+  const arm_fir_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+  void arm_fir_fast_q31(
+  const arm_fir_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+  void arm_fir_init_q31(
+  arm_fir_instance_q31 * S,
+  uint16_t numTaps,
+  q31_t * pCoeffs,
+  q31_t * pState,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+  void arm_fir_f32(
+  const arm_fir_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+  void arm_fir_init_f32(
+  arm_fir_instance_f32 * S,
+  uint16_t numTaps,
+  float32_t * pCoeffs,
+  float32_t * pState,
+  uint32_t blockSize);
+
+
+  
+
+ 
+  typedef struct
+  {
+    int8_t numStages;          
+    q15_t *pState;             
+    q15_t *pCoeffs;            
+    int8_t postShift;          
+
+  } arm_biquad_casd_df1_inst_q15;
+
+
+  
+
+ 
+  typedef struct
+  {
+    uint32_t numStages;       
+    q31_t *pState;            
+    q31_t *pCoeffs;           
+    uint8_t postShift;        
+
+  } arm_biquad_casd_df1_inst_q31;
+
+  
+
+ 
+  typedef struct
+  {
+    uint32_t numStages;          
+    float32_t *pState;           
+    float32_t *pCoeffs;          
+
+
+  } arm_biquad_casd_df1_inst_f32;
+
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_q15(
+  const arm_biquad_casd_df1_inst_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_init_q15(
+  arm_biquad_casd_df1_inst_q15 * S,
+  uint8_t numStages,
+  q15_t * pCoeffs,
+  q15_t * pState,
+  int8_t postShift);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_fast_q15(
+  const arm_biquad_casd_df1_inst_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_q31(
+  const arm_biquad_casd_df1_inst_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_fast_q31(
+  const arm_biquad_casd_df1_inst_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_init_q31(
+  arm_biquad_casd_df1_inst_q31 * S,
+  uint8_t numStages,
+  q31_t * pCoeffs,
+  q31_t * pState,
+  int8_t postShift);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_f32(
+  const arm_biquad_casd_df1_inst_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df1_init_f32(
+  arm_biquad_casd_df1_inst_f32 * S,
+  uint8_t numStages,
+  float32_t * pCoeffs,
+  float32_t * pState);
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numRows;      
+    uint16_t numCols;      
+    float32_t *pData;      
+  } arm_matrix_instance_f32;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numRows;      
+    uint16_t numCols;      
+    q15_t *pData;          
+
+  } arm_matrix_instance_q15;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numRows;      
+    uint16_t numCols;      
+    q31_t *pData;          
+
+  } arm_matrix_instance_q31;
+
+
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_add_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+  arm_matrix_instance_f32 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_add_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+  arm_matrix_instance_q15 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_add_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+  arm_matrix_instance_q31 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_cmplx_mult_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+  arm_matrix_instance_f32 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_cmplx_mult_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+  arm_matrix_instance_q15 * pDst,
+  q15_t * pScratch);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_cmplx_mult_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+  arm_matrix_instance_q31 * pDst);
+
+
+  
+
+
+
+
+
+ 
+
+  arm_status arm_mat_trans_f32(
+  const arm_matrix_instance_f32 * pSrc,
+  arm_matrix_instance_f32 * pDst);
+
+
+  
+
+
+
+
+
+ 
+
+  arm_status arm_mat_trans_q15(
+  const arm_matrix_instance_q15 * pSrc,
+  arm_matrix_instance_q15 * pDst);
+
+  
+
+
+
+
+
+ 
+
+  arm_status arm_mat_trans_q31(
+  const arm_matrix_instance_q31 * pSrc,
+  arm_matrix_instance_q31 * pDst);
+
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_mult_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+  arm_matrix_instance_f32 * pDst);
+
+  
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_mult_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+  arm_matrix_instance_q15 * pDst,
+  q15_t * pState);
+
+  
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_mult_fast_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+  arm_matrix_instance_q15 * pDst,
+  q15_t * pState);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_mult_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+  arm_matrix_instance_q31 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_mult_fast_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+  arm_matrix_instance_q31 * pDst);
+
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_sub_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+  arm_matrix_instance_f32 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_sub_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+  arm_matrix_instance_q15 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_sub_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+  arm_matrix_instance_q31 * pDst);
+
+  
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_scale_f32(
+  const arm_matrix_instance_f32 * pSrc,
+  float32_t scale,
+  arm_matrix_instance_f32 * pDst);
+
+  
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_scale_q15(
+  const arm_matrix_instance_q15 * pSrc,
+  q15_t scaleFract,
+  int32_t shift,
+  arm_matrix_instance_q15 * pDst);
+
+  
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_mat_scale_q31(
+  const arm_matrix_instance_q31 * pSrc,
+  q31_t scaleFract,
+  int32_t shift,
+  arm_matrix_instance_q31 * pDst);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_mat_init_q31(
+  arm_matrix_instance_q31 * S,
+  uint16_t nRows,
+  uint16_t nColumns,
+  q31_t * pData);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_mat_init_q15(
+  arm_matrix_instance_q15 * S,
+  uint16_t nRows,
+  uint16_t nColumns,
+  q15_t * pData);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_mat_init_f32(
+  arm_matrix_instance_f32 * S,
+  uint16_t nRows,
+  uint16_t nColumns,
+  float32_t * pData);
+
+
+
+  
+
+ 
+  typedef struct
+  {
+    q15_t A0;     
+
+
+
+
+    q31_t A1;            
+
+    q15_t state[3];        
+    q15_t Kp;            
+    q15_t Ki;            
+    q15_t Kd;            
+  } arm_pid_instance_q15;
+
+  
+
+ 
+  typedef struct
+  {
+    q31_t A0;             
+    q31_t A1;             
+    q31_t A2;             
+    q31_t state[3];       
+    q31_t Kp;             
+    q31_t Ki;             
+    q31_t Kd;             
+
+  } arm_pid_instance_q31;
+
+  
+
+ 
+  typedef struct
+  {
+    float32_t A0;           
+    float32_t A1;           
+    float32_t A2;           
+    float32_t state[3];     
+    float32_t Kp;                
+    float32_t Ki;                
+    float32_t Kd;                
+  } arm_pid_instance_f32;
+
+
+
+  
+
+
+
+
+ 
+  void arm_pid_init_f32(
+  arm_pid_instance_f32 * S,
+  int32_t resetStateFlag);
+
+  
+
+
+
+ 
+  void arm_pid_reset_f32(
+  arm_pid_instance_f32 * S);
+
+
+  
+
+
+
+
+ 
+  void arm_pid_init_q31(
+  arm_pid_instance_q31 * S,
+  int32_t resetStateFlag);
+
+
+  
+
+
+
+ 
+
+  void arm_pid_reset_q31(
+  arm_pid_instance_q31 * S);
+
+  
+
+
+
+
+ 
+  void arm_pid_init_q15(
+  arm_pid_instance_q15 * S,
+  int32_t resetStateFlag);
+
+  
+
+
+
+ 
+  void arm_pid_reset_q15(
+  arm_pid_instance_q15 * S);
+
+
+  
+
+ 
+  typedef struct
+  {
+    uint32_t nValues;            
+    float32_t x1;                
+    float32_t xSpacing;          
+    float32_t *pYData;           
+  } arm_linear_interp_instance_f32;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numRows;    
+    uint16_t numCols;    
+    float32_t *pData;    
+  } arm_bilinear_interp_instance_f32;
+
+   
+
+ 
+
+  typedef struct
+  {
+    uint16_t numRows;    
+    uint16_t numCols;    
+    q31_t *pData;        
+  } arm_bilinear_interp_instance_q31;
+
+   
+
+ 
+
+  typedef struct
+  {
+    uint16_t numRows;    
+    uint16_t numCols;    
+    q15_t *pData;        
+  } arm_bilinear_interp_instance_q15;
+
+   
+
+ 
+
+  typedef struct
+  {
+    uint16_t numRows;    
+    uint16_t numCols;    
+    q7_t *pData;                 
+  } arm_bilinear_interp_instance_q7;
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_mult_q7(
+  q7_t * pSrcA,
+  q7_t * pSrcB,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_mult_q15(
+  q15_t * pSrcA,
+  q15_t * pSrcB,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_mult_q31(
+  q31_t * pSrcA,
+  q31_t * pSrcB,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_mult_f32(
+  float32_t * pSrcA,
+  float32_t * pSrcB,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+
+
+
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t fftLen;                  
+    uint8_t ifftFlag;                 
+    uint8_t bitReverseFlag;           
+    q15_t *pTwiddle;                      
+    uint16_t *pBitRevTable;           
+    uint16_t twidCoefModifier;        
+    uint16_t bitRevFactor;            
+  } arm_cfft_radix2_instance_q15;
+
+  arm_status arm_cfft_radix2_init_q15(
+  arm_cfft_radix2_instance_q15 * S,
+  uint16_t fftLen,
+  uint8_t ifftFlag,
+  uint8_t bitReverseFlag);
+
+  void arm_cfft_radix2_q15(
+  const arm_cfft_radix2_instance_q15 * S,
+  q15_t * pSrc);
+
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t fftLen;                  
+    uint8_t ifftFlag;                 
+    uint8_t bitReverseFlag;           
+    q15_t *pTwiddle;                  
+    uint16_t *pBitRevTable;           
+    uint16_t twidCoefModifier;        
+    uint16_t bitRevFactor;            
+  } arm_cfft_radix4_instance_q15;
+
+  arm_status arm_cfft_radix4_init_q15(
+  arm_cfft_radix4_instance_q15 * S,
+  uint16_t fftLen,
+  uint8_t ifftFlag,
+  uint8_t bitReverseFlag);
+
+  void arm_cfft_radix4_q15(
+  const arm_cfft_radix4_instance_q15 * S,
+  q15_t * pSrc);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t fftLen;                  
+    uint8_t ifftFlag;                 
+    uint8_t bitReverseFlag;           
+    q31_t *pTwiddle;                      
+    uint16_t *pBitRevTable;           
+    uint16_t twidCoefModifier;        
+    uint16_t bitRevFactor;            
+  } arm_cfft_radix2_instance_q31;
+
+  arm_status arm_cfft_radix2_init_q31(
+  arm_cfft_radix2_instance_q31 * S,
+  uint16_t fftLen,
+  uint8_t ifftFlag,
+  uint8_t bitReverseFlag);
+
+  void arm_cfft_radix2_q31(
+  const arm_cfft_radix2_instance_q31 * S,
+  q31_t * pSrc);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t fftLen;                  
+    uint8_t ifftFlag;                 
+    uint8_t bitReverseFlag;           
+    q31_t *pTwiddle;                  
+    uint16_t *pBitRevTable;           
+    uint16_t twidCoefModifier;        
+    uint16_t bitRevFactor;            
+  } arm_cfft_radix4_instance_q31;
+
+  void arm_cfft_radix4_q31(
+  const arm_cfft_radix4_instance_q31 * S,
+  q31_t * pSrc);
+
+  arm_status arm_cfft_radix4_init_q31(
+  arm_cfft_radix4_instance_q31 * S,
+  uint16_t fftLen,
+  uint8_t ifftFlag,
+  uint8_t bitReverseFlag);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t fftLen;                    
+    uint8_t ifftFlag;                   
+    uint8_t bitReverseFlag;             
+    float32_t *pTwiddle;                
+    uint16_t *pBitRevTable;             
+    uint16_t twidCoefModifier;          
+    uint16_t bitRevFactor;              
+    float32_t onebyfftLen;                  
+  } arm_cfft_radix2_instance_f32;
+
+ 
+  arm_status arm_cfft_radix2_init_f32(
+  arm_cfft_radix2_instance_f32 * S,
+  uint16_t fftLen,
+  uint8_t ifftFlag,
+  uint8_t bitReverseFlag);
+
+ 
+  void arm_cfft_radix2_f32(
+  const arm_cfft_radix2_instance_f32 * S,
+  float32_t * pSrc);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t fftLen;                    
+    uint8_t ifftFlag;                   
+    uint8_t bitReverseFlag;             
+    float32_t *pTwiddle;                
+    uint16_t *pBitRevTable;             
+    uint16_t twidCoefModifier;          
+    uint16_t bitRevFactor;              
+    float32_t onebyfftLen;                  
+  } arm_cfft_radix4_instance_f32;
+
+ 
+  arm_status arm_cfft_radix4_init_f32(
+  arm_cfft_radix4_instance_f32 * S,
+  uint16_t fftLen,
+  uint8_t ifftFlag,
+  uint8_t bitReverseFlag);
+
+ 
+  void arm_cfft_radix4_f32(
+  const arm_cfft_radix4_instance_f32 * S,
+  float32_t * pSrc);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t fftLen;                    
+    const float32_t *pTwiddle;          
+    const uint16_t *pBitRevTable;       
+    uint16_t bitRevLength;              
+  } arm_cfft_instance_f32;
+
+  void arm_cfft_f32(
+  const arm_cfft_instance_f32 * S,
+  float32_t * p1,
+  uint8_t ifftFlag,
+  uint8_t bitReverseFlag);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint32_t fftLenReal;                       
+    uint32_t fftLenBy2;                        
+    uint8_t ifftFlagR;                         
+    uint8_t bitReverseFlagR;                       
+    uint32_t twidCoefRModifier;                
+    q15_t *pTwiddleAReal;                      
+    q15_t *pTwiddleBReal;                      
+    arm_cfft_radix4_instance_q15 *pCfft;           
+  } arm_rfft_instance_q15;
+
+  arm_status arm_rfft_init_q15(
+  arm_rfft_instance_q15 * S,
+  arm_cfft_radix4_instance_q15 * S_CFFT,
+  uint32_t fftLenReal,
+  uint32_t ifftFlagR,
+  uint32_t bitReverseFlag);
+
+  void arm_rfft_q15(
+  const arm_rfft_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint32_t fftLenReal;                         
+    uint32_t fftLenBy2;                          
+    uint8_t ifftFlagR;                           
+    uint8_t bitReverseFlagR;                         
+    uint32_t twidCoefRModifier;                  
+    q31_t *pTwiddleAReal;                        
+    q31_t *pTwiddleBReal;                        
+    arm_cfft_radix4_instance_q31 *pCfft;         
+  } arm_rfft_instance_q31;
+
+  arm_status arm_rfft_init_q31(
+  arm_rfft_instance_q31 * S,
+  arm_cfft_radix4_instance_q31 * S_CFFT,
+  uint32_t fftLenReal,
+  uint32_t ifftFlagR,
+  uint32_t bitReverseFlag);
+
+  void arm_rfft_q31(
+  const arm_rfft_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint32_t fftLenReal;                         
+    uint16_t fftLenBy2;                          
+    uint8_t ifftFlagR;                           
+    uint8_t bitReverseFlagR;                     
+    uint32_t twidCoefRModifier;                      
+    float32_t *pTwiddleAReal;                    
+    float32_t *pTwiddleBReal;                    
+    arm_cfft_radix4_instance_f32 *pCfft;         
+  } arm_rfft_instance_f32;
+
+  arm_status arm_rfft_init_f32(
+  arm_rfft_instance_f32 * S,
+  arm_cfft_radix4_instance_f32 * S_CFFT,
+  uint32_t fftLenReal,
+  uint32_t ifftFlagR,
+  uint32_t bitReverseFlag);
+
+  void arm_rfft_f32(
+  const arm_rfft_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst);
+
+  
+
+ 
+
+typedef struct
+  {
+    arm_cfft_instance_f32 Sint;       
+    uint16_t fftLenRFFT;                         
+	float32_t * pTwiddleRFFT;					 
+  } arm_rfft_fast_instance_f32 ;
+
+arm_status arm_rfft_fast_init_f32 (
+	arm_rfft_fast_instance_f32 * S,
+	uint16_t fftLen);
+
+void arm_rfft_fast_f32(
+  arm_rfft_fast_instance_f32 * S,
+  float32_t * p, float32_t * pOut,
+  uint8_t ifftFlag);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t N;                          
+    uint16_t Nby2;                       
+    float32_t normalize;                 
+    float32_t *pTwiddle;                 
+    float32_t *pCosFactor;               
+    arm_rfft_instance_f32 *pRfft;         
+    arm_cfft_radix4_instance_f32 *pCfft;  
+  } arm_dct4_instance_f32;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_dct4_init_f32(
+  arm_dct4_instance_f32 * S,
+  arm_rfft_instance_f32 * S_RFFT,
+  arm_cfft_radix4_instance_f32 * S_CFFT,
+  uint16_t N,
+  uint16_t Nby2,
+  float32_t normalize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_dct4_f32(
+  const arm_dct4_instance_f32 * S,
+  float32_t * pState,
+  float32_t * pInlineBuffer);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t N;                          
+    uint16_t Nby2;                       
+    q31_t normalize;                     
+    q31_t *pTwiddle;                     
+    q31_t *pCosFactor;                   
+    arm_rfft_instance_q31 *pRfft;         
+    arm_cfft_radix4_instance_q31 *pCfft;  
+  } arm_dct4_instance_q31;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_dct4_init_q31(
+  arm_dct4_instance_q31 * S,
+  arm_rfft_instance_q31 * S_RFFT,
+  arm_cfft_radix4_instance_q31 * S_CFFT,
+  uint16_t N,
+  uint16_t Nby2,
+  q31_t normalize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_dct4_q31(
+  const arm_dct4_instance_q31 * S,
+  q31_t * pState,
+  q31_t * pInlineBuffer);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t N;                          
+    uint16_t Nby2;                       
+    q15_t normalize;                     
+    q15_t *pTwiddle;                     
+    q15_t *pCosFactor;                   
+    arm_rfft_instance_q15 *pRfft;         
+    arm_cfft_radix4_instance_q15 *pCfft;  
+  } arm_dct4_instance_q15;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_dct4_init_q15(
+  arm_dct4_instance_q15 * S,
+  arm_rfft_instance_q15 * S_RFFT,
+  arm_cfft_radix4_instance_q15 * S_CFFT,
+  uint16_t N,
+  uint16_t Nby2,
+  q15_t normalize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_dct4_q15(
+  const arm_dct4_instance_q15 * S,
+  q15_t * pState,
+  q15_t * pInlineBuffer);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_add_f32(
+  float32_t * pSrcA,
+  float32_t * pSrcB,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_add_q7(
+  q7_t * pSrcA,
+  q7_t * pSrcB,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_add_q15(
+  q15_t * pSrcA,
+  q15_t * pSrcB,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_add_q31(
+  q31_t * pSrcA,
+  q31_t * pSrcB,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_sub_f32(
+  float32_t * pSrcA,
+  float32_t * pSrcB,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_sub_q7(
+  q7_t * pSrcA,
+  q7_t * pSrcB,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_sub_q15(
+  q15_t * pSrcA,
+  q15_t * pSrcB,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_sub_q31(
+  q31_t * pSrcA,
+  q31_t * pSrcB,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_scale_f32(
+  float32_t * pSrc,
+  float32_t scale,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_scale_q7(
+  q7_t * pSrc,
+  q7_t scaleFract,
+  int8_t shift,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_scale_q15(
+  q15_t * pSrc,
+  q15_t scaleFract,
+  int8_t shift,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_scale_q31(
+  q31_t * pSrc,
+  q31_t scaleFract,
+  int8_t shift,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_abs_q7(
+  q7_t * pSrc,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_abs_f32(
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_abs_q15(
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_abs_q31(
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_dot_prod_f32(
+  float32_t * pSrcA,
+  float32_t * pSrcB,
+  uint32_t blockSize,
+  float32_t * result);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_dot_prod_q7(
+  q7_t * pSrcA,
+  q7_t * pSrcB,
+  uint32_t blockSize,
+  q31_t * result);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_dot_prod_q15(
+  q15_t * pSrcA,
+  q15_t * pSrcB,
+  uint32_t blockSize,
+  q63_t * result);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_dot_prod_q31(
+  q31_t * pSrcA,
+  q31_t * pSrcB,
+  uint32_t blockSize,
+  q63_t * result);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_shift_q7(
+  q7_t * pSrc,
+  int8_t shiftBits,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_shift_q15(
+  q15_t * pSrc,
+  int8_t shiftBits,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_shift_q31(
+  q31_t * pSrc,
+  int8_t shiftBits,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_offset_f32(
+  float32_t * pSrc,
+  float32_t offset,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_offset_q7(
+  q7_t * pSrc,
+  q7_t offset,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_offset_q15(
+  q15_t * pSrc,
+  q15_t offset,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_offset_q31(
+  q31_t * pSrc,
+  q31_t offset,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_negate_f32(
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_negate_q7(
+  q7_t * pSrc,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_negate_q15(
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+
+  void arm_negate_q31(
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+  
+
+
+
+
+
+ 
+  void arm_copy_f32(
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_copy_q7(
+  q7_t * pSrc,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_copy_q15(
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_copy_q31(
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+  
+
+
+
+
+
+ 
+  void arm_fill_f32(
+  float32_t value,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_fill_q7(
+  q7_t value,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_fill_q15(
+  q15_t value,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_fill_q31(
+  q31_t value,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_f32(
+  float32_t * pSrcA,
+  uint32_t srcALen,
+  float32_t * pSrcB,
+  uint32_t srcBLen,
+  float32_t * pDst);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+
+  void arm_conv_opt_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst,
+  q15_t * pScratch1,
+  q15_t * pScratch2);
+
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_fast_q15(
+			  q15_t * pSrcA,
+			 uint32_t srcALen,
+			  q15_t * pSrcB,
+			 uint32_t srcBLen,
+			 q15_t * pDst);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_fast_opt_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst,
+  q15_t * pScratch1,
+  q15_t * pScratch2);
+
+
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_q31(
+  q31_t * pSrcA,
+  uint32_t srcALen,
+  q31_t * pSrcB,
+  uint32_t srcBLen,
+  q31_t * pDst);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_fast_q31(
+  q31_t * pSrcA,
+  uint32_t srcALen,
+  q31_t * pSrcB,
+  uint32_t srcBLen,
+  q31_t * pDst);
+
+
+    
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_opt_q7(
+  q7_t * pSrcA,
+  uint32_t srcALen,
+  q7_t * pSrcB,
+  uint32_t srcBLen,
+  q7_t * pDst,
+  q15_t * pScratch1,
+  q15_t * pScratch2);
+
+
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_conv_q7(
+  q7_t * pSrcA,
+  uint32_t srcALen,
+  q7_t * pSrcB,
+  uint32_t srcBLen,
+  q7_t * pDst);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_f32(
+  float32_t * pSrcA,
+  uint32_t srcALen,
+  float32_t * pSrcB,
+  uint32_t srcBLen,
+  float32_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints);
+
+    
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_opt_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints,
+  q15_t * pScratch1,
+  q15_t * pScratch2);
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_fast_q15(
+				        q15_t * pSrcA,
+				       uint32_t srcALen,
+				        q15_t * pSrcB,
+				       uint32_t srcBLen,
+				       q15_t * pDst,
+				       uint32_t firstIndex,
+				       uint32_t numPoints);
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_fast_opt_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints,
+  q15_t * pScratch1,
+  q15_t * pScratch2);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_q31(
+  q31_t * pSrcA,
+  uint32_t srcALen,
+  q31_t * pSrcB,
+  uint32_t srcBLen,
+  q31_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_fast_q31(
+  q31_t * pSrcA,
+  uint32_t srcALen,
+  q31_t * pSrcB,
+  uint32_t srcBLen,
+  q31_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints);
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_opt_q7(
+  q7_t * pSrcA,
+  uint32_t srcALen,
+  q7_t * pSrcB,
+  uint32_t srcBLen,
+  q7_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints,
+  q15_t * pScratch1,
+  q15_t * pScratch2);
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_conv_partial_q7(
+  q7_t * pSrcA,
+  uint32_t srcALen,
+  q7_t * pSrcB,
+  uint32_t srcBLen,
+  q7_t * pDst,
+  uint32_t firstIndex,
+  uint32_t numPoints);
+
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t M;                       
+    uint16_t numTaps;                
+    q15_t *pCoeffs;                   
+    q15_t *pState;                    
+  } arm_fir_decimate_instance_q15;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t M;                   
+    uint16_t numTaps;            
+    q31_t *pCoeffs;               
+    q31_t *pState;                
+
+  } arm_fir_decimate_instance_q31;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t M;                           
+    uint16_t numTaps;                    
+    float32_t *pCoeffs;                   
+    float32_t *pState;                    
+
+  } arm_fir_decimate_instance_f32;
+
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_decimate_f32(
+  const arm_fir_decimate_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_fir_decimate_init_f32(
+  arm_fir_decimate_instance_f32 * S,
+  uint16_t numTaps,
+  uint8_t M,
+  float32_t * pCoeffs,
+  float32_t * pState,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_decimate_q15(
+  const arm_fir_decimate_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_decimate_fast_q15(
+  const arm_fir_decimate_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_fir_decimate_init_q15(
+  arm_fir_decimate_instance_q15 * S,
+  uint16_t numTaps,
+  uint8_t M,
+  q15_t * pCoeffs,
+  q15_t * pState,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_decimate_q31(
+  const arm_fir_decimate_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_decimate_fast_q31(
+  arm_fir_decimate_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_fir_decimate_init_q31(
+  arm_fir_decimate_instance_q31 * S,
+  uint16_t numTaps,
+  uint8_t M,
+  q31_t * pCoeffs,
+  q31_t * pState,
+  uint32_t blockSize);
+
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t L;                       
+    uint16_t phaseLength;            
+    q15_t *pCoeffs;                  
+    q15_t *pState;                   
+  } arm_fir_interpolate_instance_q15;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t L;                       
+    uint16_t phaseLength;            
+    q31_t *pCoeffs;                   
+    q31_t *pState;                    
+  } arm_fir_interpolate_instance_q31;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t L;                      
+    uint16_t phaseLength;           
+    float32_t *pCoeffs;              
+    float32_t *pState;               
+  } arm_fir_interpolate_instance_f32;
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_interpolate_q15(
+  const arm_fir_interpolate_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_fir_interpolate_init_q15(
+  arm_fir_interpolate_instance_q15 * S,
+  uint8_t L,
+  uint16_t numTaps,
+  q15_t * pCoeffs,
+  q15_t * pState,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_interpolate_q31(
+  const arm_fir_interpolate_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_fir_interpolate_init_q31(
+  arm_fir_interpolate_instance_q31 * S,
+  uint8_t L,
+  uint16_t numTaps,
+  q31_t * pCoeffs,
+  q31_t * pState,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_interpolate_f32(
+  const arm_fir_interpolate_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  arm_status arm_fir_interpolate_init_f32(
+  arm_fir_interpolate_instance_f32 * S,
+  uint8_t L,
+  uint16_t numTaps,
+  float32_t * pCoeffs,
+  float32_t * pState,
+  uint32_t blockSize);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t numStages;        
+    q63_t *pState;            
+    q31_t *pCoeffs;           
+    uint8_t postShift;        
+
+  } arm_biquad_cas_df1_32x64_ins_q31;
+
+
+  
+
+
+
+
+
+ 
+
+  void arm_biquad_cas_df1_32x64_q31(
+  const arm_biquad_cas_df1_32x64_ins_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cas_df1_32x64_init_q31(
+  arm_biquad_cas_df1_32x64_ins_q31 * S,
+  uint8_t numStages,
+  q31_t * pCoeffs,
+  q63_t * pState,
+  uint8_t postShift);
+
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint8_t numStages;          
+    float32_t *pState;          
+    float32_t *pCoeffs;         
+  } arm_biquad_cascade_df2T_instance_f32;
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df2T_f32(
+  const arm_biquad_cascade_df2T_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_biquad_cascade_df2T_init_f32(
+  arm_biquad_cascade_df2T_instance_f32 * S,
+  uint8_t numStages,
+  float32_t * pCoeffs,
+  float32_t * pState);
+
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numStages;                           
+    q15_t *pState;                                
+    q15_t *pCoeffs;                               
+  } arm_fir_lattice_instance_q15;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numStages;                           
+    q31_t *pState;                                
+    q31_t *pCoeffs;                               
+  } arm_fir_lattice_instance_q31;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numStages;                   
+    float32_t *pState;                    
+    float32_t *pCoeffs;                   
+  } arm_fir_lattice_instance_f32;
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_lattice_init_q15(
+  arm_fir_lattice_instance_q15 * S,
+  uint16_t numStages,
+  q15_t * pCoeffs,
+  q15_t * pState);
+
+
+  
+
+
+
+
+
+
+ 
+  void arm_fir_lattice_q15(
+  const arm_fir_lattice_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_lattice_init_q31(
+  arm_fir_lattice_instance_q31 * S,
+  uint16_t numStages,
+  q31_t * pCoeffs,
+  q31_t * pState);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_lattice_q31(
+  const arm_fir_lattice_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_lattice_init_f32(
+  arm_fir_lattice_instance_f32 * S,
+  uint16_t numStages,
+  float32_t * pCoeffs,
+  float32_t * pState);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_fir_lattice_f32(
+  const arm_fir_lattice_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numStages;                          
+    q15_t *pState;                               
+    q15_t *pkCoeffs;                             
+    q15_t *pvCoeffs;                             
+  } arm_iir_lattice_instance_q15;
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numStages;                          
+    q31_t *pState;                               
+    q31_t *pkCoeffs;                             
+    q31_t *pvCoeffs;                             
+  } arm_iir_lattice_instance_q31;
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numStages;                          
+    float32_t *pState;                           
+    float32_t *pkCoeffs;                         
+    float32_t *pvCoeffs;                         
+  } arm_iir_lattice_instance_f32;
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_iir_lattice_f32(
+  const arm_iir_lattice_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_iir_lattice_init_f32(
+  arm_iir_lattice_instance_f32 * S,
+  uint16_t numStages,
+  float32_t * pkCoeffs,
+  float32_t * pvCoeffs,
+  float32_t * pState,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_iir_lattice_q31(
+  const arm_iir_lattice_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_iir_lattice_init_q31(
+  arm_iir_lattice_instance_q31 * S,
+  uint16_t numStages,
+  q31_t * pkCoeffs,
+  q31_t * pvCoeffs,
+  q31_t * pState,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_iir_lattice_q15(
+  const arm_iir_lattice_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_iir_lattice_init_q15(
+  arm_iir_lattice_instance_q15 * S,
+  uint16_t numStages,
+  q15_t * pkCoeffs,
+  q15_t * pvCoeffs,
+  q15_t * pState,
+  uint32_t blockSize);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;     
+    float32_t *pState;    
+    float32_t *pCoeffs;   
+    float32_t mu;         
+  } arm_lms_instance_f32;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_f32(
+  const arm_lms_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pRef,
+  float32_t * pOut,
+  float32_t * pErr,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_init_f32(
+  arm_lms_instance_f32 * S,
+  uint16_t numTaps,
+  float32_t * pCoeffs,
+  float32_t * pState,
+  float32_t mu,
+  uint32_t blockSize);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;     
+    q15_t *pState;        
+    q15_t *pCoeffs;       
+    q15_t mu;             
+    uint32_t postShift;   
+  } arm_lms_instance_q15;
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_init_q15(
+  arm_lms_instance_q15 * S,
+  uint16_t numTaps,
+  q15_t * pCoeffs,
+  q15_t * pState,
+  q15_t mu,
+  uint32_t blockSize,
+  uint32_t postShift);
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_q15(
+  const arm_lms_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pRef,
+  q15_t * pOut,
+  q15_t * pErr,
+  uint32_t blockSize);
+
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;     
+    q31_t *pState;        
+    q31_t *pCoeffs;       
+    q31_t mu;             
+    uint32_t postShift;   
+
+  } arm_lms_instance_q31;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_q31(
+  const arm_lms_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pRef,
+  q31_t * pOut,
+  q31_t * pErr,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_init_q31(
+  arm_lms_instance_q31 * S,
+  uint16_t numTaps,
+  q31_t * pCoeffs,
+  q31_t * pState,
+  q31_t mu,
+  uint32_t blockSize,
+  uint32_t postShift);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;      
+    float32_t *pState;     
+    float32_t *pCoeffs;    
+    float32_t mu;         
+    float32_t energy;     
+    float32_t x0;         
+  } arm_lms_norm_instance_f32;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_norm_f32(
+  arm_lms_norm_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pRef,
+  float32_t * pOut,
+  float32_t * pErr,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_norm_init_f32(
+  arm_lms_norm_instance_f32 * S,
+  uint16_t numTaps,
+  float32_t * pCoeffs,
+  float32_t * pState,
+  float32_t mu,
+  uint32_t blockSize);
+
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numTaps;      
+    q31_t *pState;         
+    q31_t *pCoeffs;        
+    q31_t mu;              
+    uint8_t postShift;     
+    q31_t *recipTable;     
+    q31_t energy;          
+    q31_t x0;              
+  } arm_lms_norm_instance_q31;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_norm_q31(
+  arm_lms_norm_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pRef,
+  q31_t * pOut,
+  q31_t * pErr,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_norm_init_q31(
+  arm_lms_norm_instance_q31 * S,
+  uint16_t numTaps,
+  q31_t * pCoeffs,
+  q31_t * pState,
+  q31_t mu,
+  uint32_t blockSize,
+  uint8_t postShift);
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;     
+    q15_t *pState;         
+    q15_t *pCoeffs;        
+    q15_t mu;             
+    uint8_t postShift;    
+    q15_t *recipTable;    
+    q15_t energy;         
+    q15_t x0;             
+  } arm_lms_norm_instance_q15;
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_norm_q15(
+  arm_lms_norm_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pRef,
+  q15_t * pOut,
+  q15_t * pErr,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_lms_norm_init_q15(
+  arm_lms_norm_instance_q15 * S,
+  uint16_t numTaps,
+  q15_t * pCoeffs,
+  q15_t * pState,
+  q15_t mu,
+  uint32_t blockSize,
+  uint8_t postShift);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_f32(
+  float32_t * pSrcA,
+  uint32_t srcALen,
+  float32_t * pSrcB,
+  uint32_t srcBLen,
+  float32_t * pDst);
+
+
+   
+
+
+
+
+
+
+
+
+ 
+  void arm_correlate_opt_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst,
+  q15_t * pScratch);
+
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_fast_q15(
+			       q15_t * pSrcA,
+			      uint32_t srcALen,
+			       q15_t * pSrcB,
+			      uint32_t srcBLen,
+			      q15_t * pDst);
+
+
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_fast_opt_q15(
+  q15_t * pSrcA,
+  uint32_t srcALen,
+  q15_t * pSrcB,
+  uint32_t srcBLen,
+  q15_t * pDst,
+  q15_t * pScratch);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_q31(
+  q31_t * pSrcA,
+  uint32_t srcALen,
+  q31_t * pSrcB,
+  uint32_t srcBLen,
+  q31_t * pDst);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_fast_q31(
+  q31_t * pSrcA,
+  uint32_t srcALen,
+  q31_t * pSrcB,
+  uint32_t srcBLen,
+  q31_t * pDst);
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_opt_q7(
+  q7_t * pSrcA,
+  uint32_t srcALen,
+  q7_t * pSrcB,
+  uint32_t srcBLen,
+  q7_t * pDst,
+  q15_t * pScratch1,
+  q15_t * pScratch2);
+
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_correlate_q7(
+  q7_t * pSrcA,
+  uint32_t srcALen,
+  q7_t * pSrcB,
+  uint32_t srcBLen,
+  q7_t * pDst);
+
+
+  
+
+ 
+  typedef struct
+  {
+    uint16_t numTaps;              
+    uint16_t stateIndex;           
+    float32_t *pState;             
+    float32_t *pCoeffs;            
+    uint16_t maxDelay;             
+    int32_t *pTapDelay;            
+  } arm_fir_sparse_instance_f32;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;              
+    uint16_t stateIndex;           
+    q31_t *pState;                 
+    q31_t *pCoeffs;                
+    uint16_t maxDelay;             
+    int32_t *pTapDelay;            
+  } arm_fir_sparse_instance_q31;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;              
+    uint16_t stateIndex;           
+    q15_t *pState;                 
+    q15_t *pCoeffs;                
+    uint16_t maxDelay;             
+    int32_t *pTapDelay;            
+  } arm_fir_sparse_instance_q15;
+
+  
+
+ 
+
+  typedef struct
+  {
+    uint16_t numTaps;              
+    uint16_t stateIndex;           
+    q7_t *pState;                  
+    q7_t *pCoeffs;                 
+    uint16_t maxDelay;             
+    int32_t *pTapDelay;            
+  } arm_fir_sparse_instance_q7;
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_f32(
+  arm_fir_sparse_instance_f32 * S,
+  float32_t * pSrc,
+  float32_t * pDst,
+  float32_t * pScratchIn,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_init_f32(
+  arm_fir_sparse_instance_f32 * S,
+  uint16_t numTaps,
+  float32_t * pCoeffs,
+  float32_t * pState,
+  int32_t * pTapDelay,
+  uint16_t maxDelay,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_q31(
+  arm_fir_sparse_instance_q31 * S,
+  q31_t * pSrc,
+  q31_t * pDst,
+  q31_t * pScratchIn,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_init_q31(
+  arm_fir_sparse_instance_q31 * S,
+  uint16_t numTaps,
+  q31_t * pCoeffs,
+  q31_t * pState,
+  int32_t * pTapDelay,
+  uint16_t maxDelay,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_q15(
+  arm_fir_sparse_instance_q15 * S,
+  q15_t * pSrc,
+  q15_t * pDst,
+  q15_t * pScratchIn,
+  q31_t * pScratchOut,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_init_q15(
+  arm_fir_sparse_instance_q15 * S,
+  uint16_t numTaps,
+  q15_t * pCoeffs,
+  q15_t * pState,
+  int32_t * pTapDelay,
+  uint16_t maxDelay,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_q7(
+  arm_fir_sparse_instance_q7 * S,
+  q7_t * pSrc,
+  q7_t * pDst,
+  q7_t * pScratchIn,
+  q31_t * pScratchOut,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  void arm_fir_sparse_init_q7(
+  arm_fir_sparse_instance_q7 * S,
+  uint16_t numTaps,
+  q7_t * pCoeffs,
+  q7_t * pState,
+  int32_t * pTapDelay,
+  uint16_t maxDelay,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+ 
+
+  void arm_sin_cos_f32(
+  float32_t theta,
+  float32_t * pSinVal,
+  float32_t * pCcosVal);
+
+  
+
+
+
+
+
+ 
+
+  void arm_sin_cos_q31(
+  q31_t theta,
+  q31_t * pSinVal,
+  q31_t * pCosVal);
+
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_conj_f32(
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_conj_q31(
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_conj_q15(
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t numSamples);
+
+
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_mag_squared_f32(
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_mag_squared_q31(
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_mag_squared_q15(
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t numSamples);
+
+
+ 
+
+ 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+
+ 
+
+  
+
+
+
+
+ 
+
+
+  static __inline float32_t arm_pid_f32(
+  arm_pid_instance_f32 * S,
+  float32_t in)
+  {
+    float32_t out;
+
+     
+    out = (S->A0 * in) +
+      (S->A1 * S->state[0]) + (S->A2 * S->state[1]) + (S->state[2]);
+
+     
+    S->state[1] = S->state[0];
+    S->state[0] = in;
+    S->state[2] = out;
+
+     
+    return (out);
+
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  static __inline q31_t arm_pid_q31(
+  arm_pid_instance_q31 * S,
+  q31_t in)
+  {
+    q63_t acc;
+    q31_t out;
+
+     
+    acc = (q63_t) S->A0 * in;
+
+     
+    acc += (q63_t) S->A1 * S->state[0];
+
+     
+    acc += (q63_t) S->A2 * S->state[1];
+
+     
+    out = (q31_t) (acc >> 31u);
+
+     
+    out += S->state[2];
+
+     
+    S->state[1] = S->state[0];
+    S->state[0] = in;
+    S->state[2] = out;
+
+     
+    return (out);
+
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  static __inline q15_t arm_pid_q15(
+  arm_pid_instance_q15 * S,
+  q15_t in)
+  {
+    q63_t acc;
+    q15_t out;
+
+
+    int32_t __packed *vstate;
+
+     
+
+     
+    acc = (q31_t) __smuad(S->A0, in);
+
+     
+    vstate = ((int32_t __packed *)(S->state));
+    acc = __smlald(S->A1, (q31_t) *vstate, acc);
+
+#line 5033 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+     
+    acc += (q31_t) S->state[2] << 15;
+
+     
+    out = (q15_t) (__ssat((acc >> 15), 16));
+
+     
+    S->state[1] = S->state[0];
+    S->state[0] = in;
+    S->state[2] = out;
+
+     
+    return (out);
+
+  }
+
+  
+
+ 
+
+
+  
+
+
+
+
+
+ 
+
+  arm_status arm_mat_inverse_f32(
+  const arm_matrix_instance_f32 * src,
+  arm_matrix_instance_f32 * dst);
+
+
+
+  
+
+ 
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+
+ 
+
+  
+
+
+
+
+
+
+
+ 
+
+  static __inline void arm_clarke_f32(
+  float32_t Ia,
+  float32_t Ib,
+  float32_t * pIalpha,
+  float32_t * pIbeta)
+  {
+     
+    *pIalpha = Ia;
+
+     
+    *pIbeta =
+      ((float32_t) 0.57735026919 * Ia + (float32_t) 1.15470053838 * Ib);
+
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  static __inline void arm_clarke_q31(
+  q31_t Ia,
+  q31_t Ib,
+  q31_t * pIalpha,
+  q31_t * pIbeta)
+  {
+    q31_t product1, product2;                     
+
+     
+    *pIalpha = Ia;
+
+     
+    product1 = (q31_t) (((q63_t) Ia * 0x24F34E8B) >> 30);
+
+     
+    product2 = (q31_t) (((q63_t) Ib * 0x49E69D16) >> 30);
+
+     
+    *pIbeta = __qadd(product1, product2);
+  }
+
+  
+
+ 
+
+  
+
+
+
+
+
+ 
+  void arm_q7_to_q31(
+  q7_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+
+
+
+  
+
+ 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+
+ 
+
+   
+
+
+
+
+
+
+ 
+
+
+  static __inline void arm_inv_clarke_f32(
+  float32_t Ialpha,
+  float32_t Ibeta,
+  float32_t * pIa,
+  float32_t * pIb)
+  {
+     
+    *pIa = Ialpha;
+
+     
+    *pIb = -0.5 * Ialpha + (float32_t) 0.8660254039 *Ibeta;
+
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  static __inline void arm_inv_clarke_q31(
+  q31_t Ialpha,
+  q31_t Ibeta,
+  q31_t * pIa,
+  q31_t * pIb)
+  {
+    q31_t product1, product2;                     
+
+     
+    *pIa = Ialpha;
+
+     
+    product1 = (q31_t) (((q63_t) (Ialpha) * (0x40000000)) >> 31);
+
+     
+    product2 = (q31_t) (((q63_t) (Ibeta) * (0x6ED9EBA1)) >> 31);
+
+     
+    *pIb = __qsub(product2, product1);
+
+  }
+
+  
+
+ 
+
+  
+
+
+
+
+
+ 
+  void arm_q7_to_q15(
+  q7_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+
+
+  
+
+ 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+
+ 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  static __inline void arm_park_f32(
+  float32_t Ialpha,
+  float32_t Ibeta,
+  float32_t * pId,
+  float32_t * pIq,
+  float32_t sinVal,
+  float32_t cosVal)
+  {
+     
+    *pId = Ialpha * cosVal + Ibeta * sinVal;
+
+     
+    *pIq = -Ialpha * sinVal + Ibeta * cosVal;
+
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  static __inline void arm_park_q31(
+  q31_t Ialpha,
+  q31_t Ibeta,
+  q31_t * pId,
+  q31_t * pIq,
+  q31_t sinVal,
+  q31_t cosVal)
+  {
+    q31_t product1, product2;                     
+    q31_t product3, product4;                     
+
+     
+    product1 = (q31_t) (((q63_t) (Ialpha) * (cosVal)) >> 31);
+
+     
+    product2 = (q31_t) (((q63_t) (Ibeta) * (sinVal)) >> 31);
+
+
+     
+    product3 = (q31_t) (((q63_t) (Ialpha) * (sinVal)) >> 31);
+
+     
+    product4 = (q31_t) (((q63_t) (Ibeta) * (cosVal)) >> 31);
+
+     
+    *pId = __qadd(product1, product2);
+
+     
+    *pIq = __qsub(product4, product3);
+  }
+
+  
+
+ 
+
+  
+
+
+
+
+
+ 
+  void arm_q7_to_float(
+  q7_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+ 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+
+ 
+
+   
+
+
+
+
+
+
+
+
+ 
+
+  static __inline void arm_inv_park_f32(
+  float32_t Id,
+  float32_t Iq,
+  float32_t * pIalpha,
+  float32_t * pIbeta,
+  float32_t sinVal,
+  float32_t cosVal)
+  {
+     
+    *pIalpha = Id * cosVal - Iq * sinVal;
+
+     
+    *pIbeta = Id * sinVal + Iq * cosVal;
+
+  }
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  static __inline void arm_inv_park_q31(
+  q31_t Id,
+  q31_t Iq,
+  q31_t * pIalpha,
+  q31_t * pIbeta,
+  q31_t sinVal,
+  q31_t cosVal)
+  {
+    q31_t product1, product2;                     
+    q31_t product3, product4;                     
+
+     
+    product1 = (q31_t) (((q63_t) (Id) * (cosVal)) >> 31);
+
+     
+    product2 = (q31_t) (((q63_t) (Iq) * (sinVal)) >> 31);
+
+
+     
+    product3 = (q31_t) (((q63_t) (Id) * (sinVal)) >> 31);
+
+     
+    product4 = (q31_t) (((q63_t) (Iq) * (cosVal)) >> 31);
+
+     
+    *pIalpha = __qsub(product1, product2);
+
+     
+    *pIbeta = __qadd(product4, product3);
+
+  }
+
+  
+
+ 
+
+
+  
+
+
+
+
+
+ 
+  void arm_q31_to_float(
+  q31_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+  
+
+ 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+
+ 
+
+  
+
+
+
+
+
+ 
+
+  static __inline float32_t arm_linear_interp_f32(
+  arm_linear_interp_instance_f32 * S,
+  float32_t x)
+  {
+
+    float32_t y;
+    float32_t x0, x1;                             
+    float32_t y0, y1;                             
+    float32_t xSpacing = S->xSpacing;             
+    int32_t i;                                    
+    float32_t *pYData = S->pYData;                
+
+     
+    i = (int32_t) ((x - S->x1) / xSpacing);
+
+    if(i < 0)
+    {
+       
+      y = pYData[0];
+    }
+    else if((uint32_t)i >= S->nValues)
+    {
+       
+      y = pYData[S->nValues - 1];
+    }
+    else
+    {
+       
+      x0 = S->x1 + i * xSpacing;
+      x1 = S->x1 + (i + 1) * xSpacing;
+
+       
+      y0 = pYData[i];
+      y1 = pYData[i + 1];
+
+       
+      y = y0 + (x - x0) * ((y1 - y0) / (x1 - x0));
+
+    }
+
+     
+    return (y);
+  }
+
+   
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  static __inline q31_t arm_linear_interp_q31(
+  q31_t * pYData,
+  q31_t x,
+  uint32_t nValues)
+  {
+    q31_t y;                                      
+    q31_t y0, y1;                                 
+    q31_t fract;                                  
+    int32_t index;                                
+
+     
+     
+     
+    index = ((x & 0xFFF00000) >> 20);
+
+    if(index >= (int32_t)(nValues - 1))
+    {
+      return (pYData[nValues - 1]);
+    }
+    else if(index < 0)
+    {
+      return (pYData[0]);
+    }
+    else
+    {
+
+       
+       
+      fract = (x & 0x000FFFFF) << 11;
+
+       
+      y0 = pYData[index];
+      y1 = pYData[index + 1u];
+
+       
+      y = ((q31_t) ((q63_t) y0 * (0x7FFFFFFF - fract) >> 32));
+
+       
+      y += ((q31_t) (((q63_t) y1 * fract) >> 32));
+
+       
+      return (y << 1u);
+
+    }
+
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  static __inline q15_t arm_linear_interp_q15(
+  q15_t * pYData,
+  q31_t x,
+  uint32_t nValues)
+  {
+    q63_t y;                                      
+    q15_t y0, y1;                                 
+    q31_t fract;                                  
+    int32_t index;                                
+
+     
+     
+     
+    index = ((x & 0xFFF00000) >> 20u);
+
+    if(index >= (int32_t)(nValues - 1))
+    {
+      return (pYData[nValues - 1]);
+    }
+    else if(index < 0)
+    {
+      return (pYData[0]);
+    }
+    else
+    {
+       
+       
+      fract = (x & 0x000FFFFF);
+
+       
+      y0 = pYData[index];
+      y1 = pYData[index + 1u];
+
+       
+      y = ((q63_t) y0 * (0xFFFFF - fract));
+
+       
+      y += ((q63_t) y1 * (fract));
+
+       
+      return (y >> 20);
+    }
+
+
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  static __inline q7_t arm_linear_interp_q7(
+  q7_t * pYData,
+  q31_t x,
+  uint32_t nValues)
+  {
+    q31_t y;                                      
+    q7_t y0, y1;                                  
+    q31_t fract;                                  
+    uint32_t index;                               
+
+     
+     
+     
+    if (x < 0)
+    {
+      return (pYData[0]);
+    }
+    index = (x >> 20) & 0xfff;
+
+
+    if(index >= (nValues - 1))
+    {
+      return (pYData[nValues - 1]);
+    }
+    else
+    {
+
+       
+       
+      fract = (x & 0x000FFFFF);
+
+       
+      y0 = pYData[index];
+      y1 = pYData[index + 1u];
+
+       
+      y = ((y0 * (0xFFFFF - fract)));
+
+       
+      y += (y1 * fract);
+
+       
+      return (y >> 20u);
+
+    }
+
+  }
+  
+
+ 
+
+  
+
+
+
+ 
+
+  float32_t arm_sin_f32(
+  float32_t x);
+
+  
+
+
+
+ 
+
+  q31_t arm_sin_q31(
+  q31_t x);
+
+  
+
+
+
+ 
+
+  q15_t arm_sin_q15(
+  q15_t x);
+
+  
+
+
+
+ 
+
+  float32_t arm_cos_f32(
+  float32_t x);
+
+  
+
+
+
+ 
+
+  q31_t arm_cos_q31(
+  q31_t x);
+
+  
+
+
+
+ 
+
+  q15_t arm_cos_q15(
+  q15_t x);
+
+
+  
+
+ 
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  
+
+
+ 
+
+  
+
+
+
+
+
+ 
+
+  static __inline arm_status arm_sqrt_f32(
+  float32_t in,
+  float32_t * pOut)
+  {
+    if(in > 0)
+    {
+
+
+
+      *pOut = __sqrtf(in);
+
+
+
+
+      return (ARM_MATH_SUCCESS);
+    }
+    else
+    {
+      *pOut = 0.0f;
+      return (ARM_MATH_ARGUMENT_ERROR);
+    }
+
+  }
+
+
+  
+
+
+
+
+
+ 
+  arm_status arm_sqrt_q31(
+  q31_t in,
+  q31_t * pOut);
+
+  
+
+
+
+
+
+ 
+  arm_status arm_sqrt_q15(
+  q15_t in,
+  q15_t * pOut);
+
+  
+
+ 
+
+
+
+
+
+
+  
+
+ 
+
+  static __inline void arm_circularWrite_f32(
+  int32_t * circBuffer,
+  int32_t L,
+  uint16_t * writeOffset,
+  int32_t bufferInc,
+  const int32_t * src,
+  int32_t srcInc,
+  uint32_t blockSize)
+  {
+    uint32_t i = 0u;
+    int32_t wOffset;
+
+    
+ 
+    wOffset = *writeOffset;
+
+     
+    i = blockSize;
+
+    while(i > 0u)
+    {
+       
+      circBuffer[wOffset] = *src;
+
+       
+      src += srcInc;
+
+       
+      wOffset += bufferInc;
+      if(wOffset >= L)
+        wOffset -= L;
+
+       
+      i--;
+    }
+
+     
+    *writeOffset = wOffset;
+  }
+
+
+
+  
+
+ 
+  static __inline void arm_circularRead_f32(
+  int32_t * circBuffer,
+  int32_t L,
+  int32_t * readOffset,
+  int32_t bufferInc,
+  int32_t * dst,
+  int32_t * dst_base,
+  int32_t dst_length,
+  int32_t dstInc,
+  uint32_t blockSize)
+  {
+    uint32_t i = 0u;
+    int32_t rOffset, dst_end;
+
+    
+ 
+    rOffset = *readOffset;
+    dst_end = (int32_t) (dst_base + dst_length);
+
+     
+    i = blockSize;
+
+    while(i > 0u)
+    {
+       
+      *dst = circBuffer[rOffset];
+
+       
+      dst += dstInc;
+
+      if(dst == (int32_t *) dst_end)
+      {
+        dst = dst_base;
+      }
+
+       
+      rOffset += bufferInc;
+
+      if(rOffset >= L)
+      {
+        rOffset -= L;
+      }
+
+       
+      i--;
+    }
+
+     
+    *readOffset = rOffset;
+  }
+
+  
+
+ 
+
+  static __inline void arm_circularWrite_q15(
+  q15_t * circBuffer,
+  int32_t L,
+  uint16_t * writeOffset,
+  int32_t bufferInc,
+  const q15_t * src,
+  int32_t srcInc,
+  uint32_t blockSize)
+  {
+    uint32_t i = 0u;
+    int32_t wOffset;
+
+    
+ 
+    wOffset = *writeOffset;
+
+     
+    i = blockSize;
+
+    while(i > 0u)
+    {
+       
+      circBuffer[wOffset] = *src;
+
+       
+      src += srcInc;
+
+       
+      wOffset += bufferInc;
+      if(wOffset >= L)
+        wOffset -= L;
+
+       
+      i--;
+    }
+
+     
+    *writeOffset = wOffset;
+  }
+
+
+
+  
+
+ 
+  static __inline void arm_circularRead_q15(
+  q15_t * circBuffer,
+  int32_t L,
+  int32_t * readOffset,
+  int32_t bufferInc,
+  q15_t * dst,
+  q15_t * dst_base,
+  int32_t dst_length,
+  int32_t dstInc,
+  uint32_t blockSize)
+  {
+    uint32_t i = 0;
+    int32_t rOffset, dst_end;
+
+    
+ 
+    rOffset = *readOffset;
+
+    dst_end = (int32_t) (dst_base + dst_length);
+
+     
+    i = blockSize;
+
+    while(i > 0u)
+    {
+       
+      *dst = circBuffer[rOffset];
+
+       
+      dst += dstInc;
+
+      if(dst == (q15_t *) dst_end)
+      {
+        dst = dst_base;
+      }
+
+       
+      rOffset += bufferInc;
+
+      if(rOffset >= L)
+      {
+        rOffset -= L;
+      }
+
+       
+      i--;
+    }
+
+     
+    *readOffset = rOffset;
+  }
+
+
+  
+
+ 
+
+  static __inline void arm_circularWrite_q7(
+  q7_t * circBuffer,
+  int32_t L,
+  uint16_t * writeOffset,
+  int32_t bufferInc,
+  const q7_t * src,
+  int32_t srcInc,
+  uint32_t blockSize)
+  {
+    uint32_t i = 0u;
+    int32_t wOffset;
+
+    
+ 
+    wOffset = *writeOffset;
+
+     
+    i = blockSize;
+
+    while(i > 0u)
+    {
+       
+      circBuffer[wOffset] = *src;
+
+       
+      src += srcInc;
+
+       
+      wOffset += bufferInc;
+      if(wOffset >= L)
+        wOffset -= L;
+
+       
+      i--;
+    }
+
+     
+    *writeOffset = wOffset;
+  }
+
+
+
+  
+
+ 
+  static __inline void arm_circularRead_q7(
+  q7_t * circBuffer,
+  int32_t L,
+  int32_t * readOffset,
+  int32_t bufferInc,
+  q7_t * dst,
+  q7_t * dst_base,
+  int32_t dst_length,
+  int32_t dstInc,
+  uint32_t blockSize)
+  {
+    uint32_t i = 0;
+    int32_t rOffset, dst_end;
+
+    
+ 
+    rOffset = *readOffset;
+
+    dst_end = (int32_t) (dst_base + dst_length);
+
+     
+    i = blockSize;
+
+    while(i > 0u)
+    {
+       
+      *dst = circBuffer[rOffset];
+
+       
+      dst += dstInc;
+
+      if(dst == (q7_t *) dst_end)
+      {
+        dst = dst_base;
+      }
+
+       
+      rOffset += bufferInc;
+
+      if(rOffset >= L)
+      {
+        rOffset -= L;
+      }
+
+       
+      i--;
+    }
+
+     
+    *readOffset = rOffset;
+  }
+
+
+  
+
+
+
+
+
+ 
+
+  void arm_power_q31(
+  q31_t * pSrc,
+  uint32_t blockSize,
+  q63_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_power_f32(
+  float32_t * pSrc,
+  uint32_t blockSize,
+  float32_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_power_q15(
+  q15_t * pSrc,
+  uint32_t blockSize,
+  q63_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_power_q7(
+  q7_t * pSrc,
+  uint32_t blockSize,
+  q31_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_mean_q7(
+  q7_t * pSrc,
+  uint32_t blockSize,
+  q7_t * pResult);
+
+  
+
+
+
+
+
+ 
+  void arm_mean_q15(
+  q15_t * pSrc,
+  uint32_t blockSize,
+  q15_t * pResult);
+
+  
+
+
+
+
+
+ 
+  void arm_mean_q31(
+  q31_t * pSrc,
+  uint32_t blockSize,
+  q31_t * pResult);
+
+  
+
+
+
+
+
+ 
+  void arm_mean_f32(
+  float32_t * pSrc,
+  uint32_t blockSize,
+  float32_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_var_f32(
+  float32_t * pSrc,
+  uint32_t blockSize,
+  float32_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_var_q31(
+  q31_t * pSrc,
+  uint32_t blockSize,
+  q31_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_var_q15(
+  q15_t * pSrc,
+  uint32_t blockSize,
+  q15_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_rms_f32(
+  float32_t * pSrc,
+  uint32_t blockSize,
+  float32_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_rms_q31(
+  q31_t * pSrc,
+  uint32_t blockSize,
+  q31_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_rms_q15(
+  q15_t * pSrc,
+  uint32_t blockSize,
+  q15_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_std_f32(
+  float32_t * pSrc,
+  uint32_t blockSize,
+  float32_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_std_q31(
+  q31_t * pSrc,
+  uint32_t blockSize,
+  q31_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_std_q15(
+  q15_t * pSrc,
+  uint32_t blockSize,
+  q15_t * pResult);
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_mag_f32(
+  float32_t * pSrc,
+  float32_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_mag_q31(
+  q31_t * pSrc,
+  q31_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+ 
+
+  void arm_cmplx_mag_q15(
+  q15_t * pSrc,
+  q15_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_dot_prod_q15(
+  q15_t * pSrcA,
+  q15_t * pSrcB,
+  uint32_t numSamples,
+  q31_t * realResult,
+  q31_t * imagResult);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_dot_prod_q31(
+  q31_t * pSrcA,
+  q31_t * pSrcB,
+  uint32_t numSamples,
+  q63_t * realResult,
+  q63_t * imagResult);
+
+  
+
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_dot_prod_f32(
+  float32_t * pSrcA,
+  float32_t * pSrcB,
+  uint32_t numSamples,
+  float32_t * realResult,
+  float32_t * imagResult);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_mult_real_q15(
+  q15_t * pSrcCmplx,
+  q15_t * pSrcReal,
+  q15_t * pCmplxDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_mult_real_q31(
+  q31_t * pSrcCmplx,
+  q31_t * pSrcReal,
+  q31_t * pCmplxDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_mult_real_f32(
+  float32_t * pSrcCmplx,
+  float32_t * pSrcReal,
+  float32_t * pCmplxDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_min_q7(
+  q7_t * pSrc,
+  uint32_t blockSize,
+  q7_t * result,
+  uint32_t * index);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_min_q15(
+  q15_t * pSrc,
+  uint32_t blockSize,
+  q15_t * pResult,
+  uint32_t * pIndex);
+
+  
+
+
+
+
+
+
+ 
+  void arm_min_q31(
+  q31_t * pSrc,
+  uint32_t blockSize,
+  q31_t * pResult,
+  uint32_t * pIndex);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_min_f32(
+  float32_t * pSrc,
+  uint32_t blockSize,
+  float32_t * pResult,
+  uint32_t * pIndex);
+
+
+
+
+
+
+
+
+ 
+
+  void arm_max_q7(
+  q7_t * pSrc,
+  uint32_t blockSize,
+  q7_t * pResult,
+  uint32_t * pIndex);
+
+
+
+
+
+
+
+
+ 
+
+  void arm_max_q15(
+  q15_t * pSrc,
+  uint32_t blockSize,
+  q15_t * pResult,
+  uint32_t * pIndex);
+
+
+
+
+
+
+
+
+ 
+
+  void arm_max_q31(
+  q31_t * pSrc,
+  uint32_t blockSize,
+  q31_t * pResult,
+  uint32_t * pIndex);
+
+
+
+
+
+
+
+
+ 
+
+  void arm_max_f32(
+  float32_t * pSrc,
+  uint32_t blockSize,
+  float32_t * pResult,
+  uint32_t * pIndex);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_mult_cmplx_q15(
+  q15_t * pSrcA,
+  q15_t * pSrcB,
+  q15_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_mult_cmplx_q31(
+  q31_t * pSrcA,
+  q31_t * pSrcB,
+  q31_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+
+ 
+
+  void arm_cmplx_mult_cmplx_f32(
+  float32_t * pSrcA,
+  float32_t * pSrcB,
+  float32_t * pDst,
+  uint32_t numSamples);
+
+  
+
+
+
+
+
+ 
+  void arm_float_to_q31(
+  float32_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_float_to_q15(
+  float32_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_float_to_q7(
+  float32_t * pSrc,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+ 
+  void arm_q31_to_q15(
+  q31_t * pSrc,
+  q15_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_q31_to_q7(
+  q31_t * pSrc,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+  
+
+
+
+
+
+ 
+  void arm_q15_to_float(
+  q15_t * pSrc,
+  float32_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+ 
+  void arm_q15_to_q31(
+  q15_t * pSrc,
+  q31_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+
+
+
+
+ 
+  void arm_q15_to_q7(
+  q15_t * pSrc,
+  q7_t * pDst,
+  uint32_t blockSize);
+
+
+  
+
+ 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+
+ 
+
+  
+
+
+
+
+
+
+ 
+
+
+  static __inline float32_t arm_bilinear_interp_f32(
+  const arm_bilinear_interp_instance_f32 * S,
+  float32_t X,
+  float32_t Y)
+  {
+    float32_t out;
+    float32_t f00, f01, f10, f11;
+    float32_t *pData = S->pData;
+    int32_t xIndex, yIndex, index;
+    float32_t xdiff, ydiff;
+    float32_t b1, b2, b3, b4;
+
+    xIndex = (int32_t) X;
+    yIndex = (int32_t) Y;
+
+     
+     
+    if(xIndex < 0 || xIndex > (S->numRows - 1) || yIndex < 0
+       || yIndex > (S->numCols - 1))
+    {
+      return (0);
+    }
+
+     
+    index = (xIndex - 1) + (yIndex - 1) * S->numCols;
+
+
+     
+    f00 = pData[index];
+    f01 = pData[index + 1];
+
+     
+    index = (xIndex - 1) + (yIndex) * S->numCols;
+
+
+     
+    f10 = pData[index];
+    f11 = pData[index + 1];
+
+     
+    b1 = f00;
+    b2 = f01 - f00;
+    b3 = f10 - f00;
+    b4 = f00 - f01 - f10 + f11;
+
+     
+    xdiff = X - xIndex;
+
+     
+    ydiff = Y - yIndex;
+
+     
+    out = b1 + b2 * xdiff + b3 * ydiff + b4 * xdiff * ydiff;
+
+     
+    return (out);
+
+  }
+
+  
+
+
+
+
+
+
+ 
+
+  static __inline q31_t arm_bilinear_interp_q31(
+  arm_bilinear_interp_instance_q31 * S,
+  q31_t X,
+  q31_t Y)
+  {
+    q31_t out;                                    
+    q31_t acc = 0;                                
+    q31_t xfract, yfract;                         
+    q31_t x1, x2, y1, y2;                         
+    int32_t rI, cI;                               
+    q31_t *pYData = S->pData;                     
+    uint32_t nCols = S->numCols;                  
+
+
+     
+     
+     
+    rI = ((X & 0xFFF00000) >> 20u);
+
+     
+     
+     
+    cI = ((Y & 0xFFF00000) >> 20u);
+
+     
+     
+    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    {
+      return (0);
+    }
+
+     
+     
+    xfract = (X & 0x000FFFFF) << 11u;
+
+     
+    x1 = pYData[(rI) + nCols * (cI)];
+    x2 = pYData[(rI) + nCols * (cI) + 1u];
+
+     
+     
+    yfract = (Y & 0x000FFFFF) << 11u;
+
+     
+    y1 = pYData[(rI) + nCols * (cI + 1)];
+    y2 = pYData[(rI) + nCols * (cI + 1) + 1u];
+
+     
+    out = ((q31_t) (((q63_t) x1 * (0x7FFFFFFF - xfract)) >> 32));
+    acc = ((q31_t) (((q63_t) out * (0x7FFFFFFF - yfract)) >> 32));
+
+     
+    out = ((q31_t) ((q63_t) x2 * (0x7FFFFFFF - yfract) >> 32));
+    acc += ((q31_t) ((q63_t) out * (xfract) >> 32));
+
+     
+    out = ((q31_t) ((q63_t) y1 * (0x7FFFFFFF - xfract) >> 32));
+    acc += ((q31_t) ((q63_t) out * (yfract) >> 32));
+
+     
+    out = ((q31_t) ((q63_t) y2 * (xfract) >> 32));
+    acc += ((q31_t) ((q63_t) out * (yfract) >> 32));
+
+     
+    return (acc << 2u);
+
+  }
+
+  
+
+
+
+
+
+ 
+
+  static __inline q15_t arm_bilinear_interp_q15(
+  arm_bilinear_interp_instance_q15 * S,
+  q31_t X,
+  q31_t Y)
+  {
+    q63_t acc = 0;                                
+    q31_t out;                                    
+    q15_t x1, x2, y1, y2;                         
+    q31_t xfract, yfract;                         
+    int32_t rI, cI;                               
+    q15_t *pYData = S->pData;                     
+    uint32_t nCols = S->numCols;                  
+
+     
+     
+     
+    rI = ((X & 0xFFF00000) >> 20);
+
+     
+     
+     
+    cI = ((Y & 0xFFF00000) >> 20);
+
+     
+     
+    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    {
+      return (0);
+    }
+
+     
+     
+    xfract = (X & 0x000FFFFF);
+
+     
+    x1 = pYData[(rI) + nCols * (cI)];
+    x2 = pYData[(rI) + nCols * (cI) + 1u];
+
+
+     
+     
+    yfract = (Y & 0x000FFFFF);
+
+     
+    y1 = pYData[(rI) + nCols * (cI + 1)];
+    y2 = pYData[(rI) + nCols * (cI + 1) + 1u];
+
+     
+
+     
+     
+    out = (q31_t) (((q63_t) x1 * (0xFFFFF - xfract)) >> 4u);
+    acc = ((q63_t) out * (0xFFFFF - yfract));
+
+     
+    out = (q31_t) (((q63_t) x2 * (0xFFFFF - yfract)) >> 4u);
+    acc += ((q63_t) out * (xfract));
+
+     
+    out = (q31_t) (((q63_t) y1 * (0xFFFFF - xfract)) >> 4u);
+    acc += ((q63_t) out * (yfract));
+
+     
+    out = (q31_t) (((q63_t) y2 * (xfract)) >> 4u);
+    acc += ((q63_t) out * (yfract));
+
+     
+     
+    return (acc >> 36);
+
+  }
+
+  
+
+
+
+
+
+ 
+
+  static __inline q7_t arm_bilinear_interp_q7(
+  arm_bilinear_interp_instance_q7 * S,
+  q31_t X,
+  q31_t Y)
+  {
+    q63_t acc = 0;                                
+    q31_t out;                                    
+    q31_t xfract, yfract;                         
+    q7_t x1, x2, y1, y2;                          
+    int32_t rI, cI;                               
+    q7_t *pYData = S->pData;                      
+    uint32_t nCols = S->numCols;                  
+
+     
+     
+     
+    rI = ((X & 0xFFF00000) >> 20);
+
+     
+     
+     
+    cI = ((Y & 0xFFF00000) >> 20);
+
+     
+     
+    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    {
+      return (0);
+    }
+
+     
+     
+    xfract = (X & 0x000FFFFF);
+
+     
+    x1 = pYData[(rI) + nCols * (cI)];
+    x2 = pYData[(rI) + nCols * (cI) + 1u];
+
+
+     
+     
+    yfract = (Y & 0x000FFFFF);
+
+     
+    y1 = pYData[(rI) + nCols * (cI + 1)];
+    y2 = pYData[(rI) + nCols * (cI + 1) + 1u];
+
+     
+    out = ((x1 * (0xFFFFF - xfract)));
+    acc = (((q63_t) out * (0xFFFFF - yfract)));
+
+     
+    out = ((x2 * (0xFFFFF - yfract)));
+    acc += (((q63_t) out * (xfract)));
+
+     
+    out = ((y1 * (0xFFFFF - xfract)));
+    acc += (((q63_t) out * (yfract)));
+
+     
+    out = ((y2 * (yfract)));
+    acc += (((q63_t) out * (xfract)));
+
+     
+    return (acc >> 40);
+
+  }
+
+  
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 7339 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#line 7 "../../sPlc/sPlc.h"
+#line 8 "../../sPlc/sPlc.h"
+ 
+#line 10 "../../sPlc/sPlc.h"
+#line 11 "../../sPlc/sPlc.h"
+#line 12 "../../sPlc/sPlc.h"
+#line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
+ 
+ 
+ 
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+#line 35 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
+
+
+
+
+
+
+#line 49 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
+
+ 
+#line 59 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+ 
+#line 81 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
+
+
+
+
+
+#line 133 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
+
+extern __declspec(__nothrow) __attribute__((const)) unsigned char **__rt_ctype_table(void);
+
+
+
+
+
+
+
+    extern int (isalnum)(int  );
+
+     
+
+
+
+
+
+    extern int (isalpha)(int  );
+
+     
+
+
+
+
+
+    extern int (iscntrl)(int  );
+
+     
+     
+
+ 
+
+
+
+
+    extern int (isdigit)(int  );
+
+     
+
+    extern int (isblank)(int  );
+     
+     
+     
+
+
+
+
+
+    extern int (isgraph)(int  );
+
+     
+
+
+
+
+
+    extern int (islower)(int  );
+
+     
+
+
+
+
+
+    extern int (isprint)(int  );
+
+     
+     
+
+
+
+
+
+    extern int (ispunct)(int  );
+
+     
+
+
+
+
+
+    extern int (isspace)(int  );
+
+     
+
+
+
+
+
+    extern int (isupper)(int  );
+
+     
+
+ 
+ 
+
+static inline int __isxdigit_helper(int __t) { return (__t ^ (__t << 2)); }
+
+
+
+
+    extern int (isxdigit)(int  );
+
+     
+
+
+
+extern int tolower(int  );
+     
+     
+
+extern int toupper(int  );
+     
+     
+
+
+
+
+
+
+
+#line 272 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
+
+
+
+ 
+
+#line 13 "../../sPlc/sPlc.h"
+#line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\LIMITS.H"
+ 
+ 
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+     
+
+     
+
+     
+
+     
+#line 30 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\LIMITS.H"
+       
+
+       
+
+
+
+
+
+
+#line 45 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\LIMITS.H"
+     
+     
+
+
+     
+
+     
+
+     
+
+     
+
+     
+
+     
+
+
+
+
+
+     
+
+
+
+
+
+     
+
+
+
+
+
+     
+
+
+       
+
+       
+
+       
+
+
+
+
+ 
+
+#line 14 "../../sPlc/sPlc.h"
+#line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdbool.h"
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+#line 25 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdbool.h"
+
+
+
+#line 15 "../../sPlc/sPlc.h"
+#line 16 "../../sPlc/sPlc.h"
+#line 17 "../../sPlc/sPlc.h"
+ 
+#line 1 "../../lib/libcrc.h"
+
+
+ 
+#line 5 "../../lib/libcrc.h"
+ 
+uint16_t crc16Calculate(uint8_t *buf, uint32_t len);
+uint16_t crc16CalculateAdd(uint8_t dat);
+void crc16Clear(void);
+void crc16SetCrcOld(uint16_t old);
+ 
+uint32_t crc32Calculate(uint8_t *buf, uint32_t len);
+uint32_t crc32CalculateAdd(uint8_t dat);
+void crc32Clear(void);
+void crc32SetCrcOld(uint32_t old);
+
+
+
+
+
+
+#line 19 "../../sPlc/sPlc.h"
+#line 1 "../../deviceInfo/deviceConfig.h"
+
+
+ 
+#line 5 "../../deviceInfo/deviceConfig.h"
+ 
+typedef struct{
+	uint16_t calibrationPwr0[10];
+	uint16_t calibrationPwr1[10];
+	char serialNumber[16];
+	int16_t mfg_year;
+	int16_t mfg_month;
+	int16_t mfg_day;
+	int8_t redLedDc;
+	int8_t greenLedDc;
+	int8_t blueLedDc;
+	int8_t aimGain;
+	int16_t fiberDetect;
+	char normalOpenInterLock;
+}deviceConfig_t;
+typedef struct{
+	uint32_t powerUpCycle;
+	uint32_t runTime;
+	int16_t laserMaxPhotoDiode;
+	int16_t mucMaxTemper;
+}deviceLogInfo_t;
+ 
+extern deviceConfig_t deviceConfig;
+extern deviceLogInfo_t deviceLogInfo;
+extern uint32_t	UniqueId[3];
+ 
+extern uint16_t cpuGetFlashSize(void);
+extern void readStm32UniqueID(void);
+
+
+
+
+#line 20 "../../sPlc/sPlc.h"
+#line 1 "../../sPlc/sPlcConfig.h"
+
+
+ 
+
+
+
+
+
+ 
+
+ 
+
+ 
+#line 21 "../../sPlc/sPlcConfig.h"
+ 
+#line 32 "../../sPlc/sPlcConfig.h"
+ 
+
+#line 41 "../../sPlc/sPlcConfig.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+#line 74 "../../sPlc/sPlcConfig.h"
+ 
+
+ 
+#line 92 "../../sPlc/sPlcConfig.h"
+ 				
+
+
+
+
+ 
+
+ 
+
+
+ 
+
+
+
+ 
+
+
+#line 118 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+
+
+
+
+#line 135 "../../sPlc/sPlcConfig.h"
+
+
+
+
+
+ 
+#line 152 "../../sPlc/sPlcConfig.h"
+
+#line 161 "../../sPlc/sPlcConfig.h"
+ 
+
+ 
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+#line 188 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+
+
+
+
+#line 210 "../../sPlc/sPlcConfig.h"
+
+#line 223 "../../sPlc/sPlcConfig.h"
+
+#line 232 "../../sPlc/sPlcConfig.h"
+ 
+#line 241 "../../sPlc/sPlcConfig.h"
+ 
+#line 250 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+
+
+ 
+#line 290 "../../sPlc/sPlcConfig.h"
+ 
+#line 311 "../../sPlc/sPlcConfig.h"
+ 
+#line 332 "../../sPlc/sPlcConfig.h"
+ 
+#line 353 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+#line 431 "../../sPlc/sPlcConfig.h"
+ 
+#line 438 "../../sPlc/sPlcConfig.h"
+ 
+
+
+ 
+
+
+ 
+#line 453 "../../sPlc/sPlcConfig.h"
+ 
+#line 470 "../../sPlc/sPlcConfig.h"
+
+#line 479 "../../sPlc/sPlcConfig.h"
+ 
+#line 500 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+ 
+
+#line 517 "../../sPlc/sPlcConfig.h"
+ 
+#line 525 "../../sPlc/sPlcConfig.h"
+ 
+#line 532 "../../sPlc/sPlcConfig.h"
+
+#line 541 "../../sPlc/sPlcConfig.h"
+ 				
+
+
+
+
+
+ 
+#line 554 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+ 
+#line 569 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#line 698 "../../sPlc/sPlcConfig.h"
+
+#line 731 "../../sPlc/sPlcConfig.h"
+ 
+#line 741 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+ 
+#line 755 "../../sPlc/sPlcConfig.h"
+ 
+#line 784 "../../sPlc/sPlcConfig.h"
+
+#line 796 "../../sPlc/sPlcConfig.h"
+ 
+#line 821 "../../sPlc/sPlcConfig.h"
+ 
+#line 832 "../../sPlc/sPlcConfig.h"
+ 
+#line 840 "../../sPlc/sPlcConfig.h"
+ 
+
+
+ 
+#line 878 "../../sPlc/sPlcConfig.h"
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+ 
+
+
+ 
+
+
+
+
+ 
+#line 910 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+
+
+#line 21 "../../sPlc/sPlc.h"
+#line 1 "../../sPlc/sPlcFun.h"
+
+
+ 
+#line 1 "../../sPlc/sPlc.h"
+#line 5 "../../sPlc/sPlcFun.h"
+
+
+
+
+
+#line 22 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/dcHmiApp.h"
+
+
+ 
+#line 5 "../../MainApp/dcHmiApp.h"
+ 
+
+
+
+
+
+
+
+
+
+
+#line 22 "../../MainApp/dcHmiApp.h"
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+#line 51 "../../MainApp/dcHmiApp.h"
+ 
+void dcHmiLoop(void);
+void dcHmiLoopInit(void);
+void updateStandbyDisplay(void);
+void standbyTouchEnable(int8_t enable);
+void updatePowerDisplay(void);
+void updatePosWidthDisplay(void);
+void updateNegWidthDisplay(void );
+void updateTimesDisplay(void);
+void updateGroupOffDisplay(void);
+void updateOptionDisplay(void);
+void updateInformationDisplay(void);
+void updateAcousticDisplay(void);
+uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost);
+void wfswLoop(USBH_HandleTypeDef *phost);
+ 
+void loadSelectScheme(int16_t classify, int16_t index);
+void updateSchemeDetail(int16_t classify, int16_t index);
+void unselectSchemeAll(void);
+void seletcSchemeNum(int16_t classify, int16_t index);
+void unselectSchemeNum(int16_t index);
+ 
+void clearReleaseTimeEnergy(void);
+void updateReleaseTimeEnergy(void);
+void updateSchemeInfo(int16_t classify, int16_t cn);
+void updateWarnMsgDisplay(uint8_t id);
+void returnStandbyDisplay(void);
+void standbyKeyValue(uint8_t value);
+void standbyKeyTouchEnable(int8_t enable);
+ 
+void updateExtralDisplay(void);
+void standbyDebugInfoVisiable(int8_t enable);
+void optionKeyEnable(uint8_t enable);
+ 
+void loadDeviceConfig(void);
+void saveDeviceConfig(void);
+ 
+
+
+
+
+
+
+
+#line 23 "../../sPlc/sPlc.h"
+#line 1 "../../deviceInfo/preScheme.h"
+
+
+ 
+#line 5 "../../deviceInfo/preScheme.h"
+ 
+typedef struct{
+	char *name;
+	int16_t channel;
+	int16_t pulse_mode;
+	int16_t power_ch0;
+	int16_t power_ch1;
+	int16_t power_red;
+	int16_t poswidth;
+	int16_t negwidth;
+}myScheme_t;
+ 
+extern myScheme_t sPhlebology[32];
+extern myScheme_t sProctology[32];
+extern myScheme_t sGynecology[32];
+extern myScheme_t sENT[32];
+extern myScheme_t sNeurosurgery[32];
+extern myScheme_t sDermatology[32];
+extern myScheme_t sLiposuction[32];
+extern myScheme_t sDentistry[32];
+extern myScheme_t sTherapy[32];
+ 
+void schemeInit(uint8_t reDef);
+void goNextScheme(void);
+void goLastScheme(void);
+
+
+
+#line 24 "../../sPlc/sPlc.h"
+#line 1 "../../dcHmi/hmiLib.h"
+
+
+ 
+#line 5 "../../dcHmi/hmiLib.h"
+#line 1 "../../dcHmi/hmiCmdQueue.h"
+
+
+
+
+
+
+ 
+
+
+
+ 
+#line 1 "../../dcHmi/hmiLib.h"
+#line 16 "../../dcHmi/hmiLib.h"
+
+
+
+
+
+#line 13 "../../dcHmi/hmiCmdQueue.h"
+ 
+typedef unsigned char qdata;
+typedef unsigned short qsize;
+
+
+
+ 
+extern void queue_reset(void);
+
+
+
+
+
+ 
+extern void queue_push(qdata _data);
+
+
+
+
+
+
+ 
+extern qsize queue_find_cmd(qdata *cmd,qsize buf_len);
+
+
+
+#line 6 "../../dcHmi/hmiLib.h"
+#line 1 "../../dcHmi/hmiDriver.h"
+
+
+ 
+#line 5 "../../dcHmi/hmiDriver.h"
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+uint16_t CheckCRC16(uint8_t *buffer,uint16_t n);
+
+
+
+
+ 
+void DelayMS(unsigned int n);
+
+
+
+ 
+void LockDeviceConfig(void);
+
+
+
+ 
+void UnlockDeviceConfig(void);
+
+
+
+
+
+
+ 
+void SetCommBps(uint8_t option);
+
+
+
+ 
+void SetHandShake(void);
+
+
+
+
+ 
+void SetFcolor(uint16_t color);
+
+
+
+
+ 
+void SetBcolor(uint16_t color);
+
+
+
+ 
+void GUI_CleanScreen(void);
+
+
+
+
+
+ 
+void SetTextSpace(uint8_t x_w, uint8_t y_w);
+
+
+
+
+
+
+ 
+void SetFont_Region(uint8_t enable,uint16_t width,uint16_t height );
+
+
+
+
+
+ 
+void SetFilterColor(uint16_t fillcolor_dwon, uint16_t fillcolor_up);
+
+
+
+
+
+
+
+
+ 
+void DisText(uint16_t x, uint16_t y,uint8_t back,uint8_t font,uint8_t *strings );
+
+
+
+
+
+
+
+
+ 
+void DisCursor(uint8_t enable,uint16_t x, uint16_t y,uint8_t width,uint8_t height );
+
+
+
+
+
+ 
+void DisFull_Image(uint16_t image_id,uint8_t masken);
+
+
+
+
+
+
+
+ 
+void DisArea_Image(uint16_t x,uint16_t y,uint16_t image_id,uint8_t masken);
+
+
+
+
+
+
+
+
+
+
+
+ 
+void DisCut_Image(uint16_t x,uint16_t y,uint16_t image_id,uint16_t image_x,uint16_t image_y,
+                  uint16_t image_l, uint16_t image_w,uint8_t masken);
+
+
+
+
+
+
+
+
+ 
+void DisFlashImage(uint16_t x,uint16_t y,uint16_t flashimage_id,uint8_t enable,uint8_t playnum);
+
+
+
+
+
+ 
+void GUI_Dot(uint16_t x,uint16_t y);
+
+
+
+
+
+
+
+ 
+void GUI_Line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
+
+
+
+
+
+
+ 
+void GUI_ConDots(uint8_t mode,uint16_t *dot,uint16_t dot_cnt);
+
+
+
+
+
+
+ 
+void GUI_Circle(uint16_t x0, uint16_t y0, uint16_t r);
+
+
+
+
+
+
+ 
+void GUI_CircleFill(uint16_t x0, uint16_t y0, uint16_t r);
+
+
+
+
+
+
+
+
+ 
+void GUI_Arc(uint16_t x,uint16_t y, uint16_t r,uint16_t sa, uint16_t ea);
+
+
+
+
+
+
+
+ 
+void GUI_Rectangle(uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
+
+
+
+
+
+
+
+ 
+void GUI_RectangleFill(uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
+
+
+
+
+
+
+
+ 
+void GUI_Ellipse (uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
+
+
+
+
+
+
+
+ 
+void GUI_EllipseFill (uint16_t x0, uint16_t y0, uint16_t x1,uint16_t y1 );
+
+
+
+
+
+
+
+ 
+void SetBackLight(uint8_t light_level);
+
+
+
+
+ 
+void SetBuzzer(uint8_t time);
+
+
+
+
+
+
+
+ 
+void SetTouchPaneOption(uint8_t enbale,uint8_t beep_on,uint8_t work_mode,uint8_t press_calibration);
+
+
+
+ 
+void    CalibrateTouchPane(void);
+
+
+
+ 
+void TestTouchPane(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+void WriteLayer(uint8_t layer);
+
+
+
+
+ 
+void DisplyLayer(uint8_t layer);
+
+
+
+
+ 
+void ClearLayer(uint8_t layer);
+
+
+
+
+
+
+ 
+void WriteUserFlash(uint32_t startAddress,uint16_t length,uint8_t *_data);
+
+
+
+
+
+ 
+void ReadUserFlash(uint32_t startAddress,uint16_t length);
+
+
+
+
+
+ 
+void CopyLayer(uint8_t src_layer,uint8_t dest_layer);
+
+
+
+
+ 
+void SetScreen(uint16_t screen_id);
+
+
+
+ 
+void GetScreen(uint16_t screen_id);
+
+
+
+
+
+
+
+
+
+ 
+void SetScreenUpdateEnable(uint8_t enable);
+
+
+
+
+
+
+ 
+void SetControlFocus(uint16_t screen_id,uint16_t control_id,uint8_t focus);
+
+
+
+
+
+
+ 
+void SetControlVisiable(uint16_t screen_id,uint16_t control_id,uint8_t visible);
+
+
+
+
+
+
+ 
+void SetControlEnable(uint16_t screen_id,uint16_t control_id,uint8_t enable);
+
+
+
+
+
+ 
+void GetControlValue(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+
+ 
+void SetButtonValue(uint16_t screen_id,uint16_t control_id,uint8_t value);
+
+
+
+
+
+
+ 
+void SetTextValue(uint16_t screen_id,uint16_t control_id,uint8_t *str);
+
+
+
+
+
+
+
+
+
+
+ 
+void SetTextInt32(uint16_t screen_id,uint16_t control_id,uint32_t value,uint8_t sign,uint8_t fill_zero);
+
+
+
+
+
+
+
+
+ 
+void SetTextFloat(uint16_t screen_id,uint16_t control_id,float value,uint8_t precision,uint8_t show_zeros);
+
+
+
+
+
+
+
+
+ 
+void SetProgressValue(uint16_t screen_id,uint16_t control_id,uint32_t value);
+
+
+
+
+
+
+ 
+void SetMeterValue(uint16_t screen_id,uint16_t control_id,uint32_t value);
+
+
+
+
+
+
+ 
+void Set_picMeterValue(uint16_t screen_id,uint16_t control_id,uint16_t value);
+
+
+
+
+
+
+ 
+
+void SetSliderValue(uint16_t screen_id,uint16_t control_id,uint32_t value);
+
+
+
+
+
+
+ 
+void SetSelectorValue(uint16_t screen_id,uint16_t control_id,uint8_t item);
+
+
+
+
+
+ 
+void AnimationStart(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+ 
+void AnimationStop(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+ 
+void AnimationPause(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+
+ 
+void AnimationPlayFrame(uint16_t screen_id,uint16_t control_id,uint8_t frame_id);
+
+
+
+
+
+ 
+void AnimationPlayPrev(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+ 
+void AnimationPlayNext(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+
+
+ 
+void GraphChannelAdd(uint16_t screen_id,uint16_t control_id,uint8_t channel,uint16_t color);
+
+
+
+
+
+
+ 
+void GraphChannelDel(uint16_t screen_id,uint16_t control_id,uint8_t channel);
+
+
+
+
+
+
+
+
+ 
+void GraphChannelDataAdd(uint16_t screen_id,uint16_t control_id,uint8_t channel,uint8_t *pData,uint16_t nDataLen);
+
+
+
+
+
+
+ 
+void GraphChannelDataClear(uint16_t screen_id,uint16_t control_id,uint8_t channel);
+
+
+
+
+
+
+
+
+
+ 
+void GraphSetViewport(uint16_t screen_id,uint16_t control_id,int16_t x_offset,uint16_t x_mul,int16_t y_offset,uint16_t y_mul);
+
+
+
+
+ 
+void BatchBegin(uint16_t screen_id);
+
+
+
+
+
+ 
+void BatchSetButtonValue(uint16_t control_id,uint8_t state);
+
+
+
+
+
+ 
+void BatchSetProgressValue(uint16_t control_id,uint32_t value);
+
+
+
+
+
+ 
+void BatchSetSliderValue(uint16_t control_id,uint32_t value);
+
+
+
+
+
+ 
+void BatchSetMeterValue(uint16_t control_id,uint32_t value);
+
+
+
+
+
+ 
+void BatchSetText(uint16_t control_id,uint8_t *strings);
+
+
+
+
+
+ 
+void BatchSetFrame(uint16_t control_id,uint16_t frame_id);
+
+
+
+
+
+
+
+ 
+void BatchSetVisible(uint16_t control_id,uint8_t visible);
+
+
+
+
+
+ 
+void BatchSetEnable(uint16_t control_id,uint8_t enable);
+
+
+
+
+
+ 
+void BatchEnd(void);
+
+
+
+
+
+
+ 
+void SeTimer(uint16_t screen_id,uint16_t control_id,uint32_t timeout);
+
+
+
+
+
+ 
+void StartTimer(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+ 
+void StopTimer(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+ 
+void PauseTimer(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+
+
+ 
+void SetControlBackColor(uint16_t screen_id,uint16_t control_id,uint16_t color);
+
+
+
+
+
+
+
+ 
+void SetControlForeColor(uint16_t screen_id,uint16_t control_id,uint16_t color);
+
+
+
+
+
+
+
+ 
+void ShowPopupMenu(uint16_t screen_id,uint16_t control_id,uint8_t show,uint16_t focus_control_id);
+
+
+
+
+
+
+
+
+
+ 
+void ShowKeyboard(uint8_t show,uint16_t x,uint16_t y,uint8_t type,uint8_t option,uint8_t max_len);
+
+
+
+
+
+
+ 
+void SetLanguage(uint8_t ui_lang,uint8_t sys_lang);
+
+
+
+
+
+
+
+ 
+void FlashBeginSaveControl(uint32_t version,uint32_t address);
+
+
+
+
+
+ 
+void FlashSaveControl(uint16_t screen_id,uint16_t control_id);
+
+
+
+ 
+void FlashEndSaveControl(void);
+
+
+
+
+
+ 
+void FlashRestoreControl(uint32_t version,uint32_t address);
+
+
+
+
+
+
+
+
+
+ 
+void HistoryGraph_SetValueInt8(uint16_t screen_id,uint16_t control_id,uint8_t *value,uint8_t channel);
+
+
+
+
+
+
+
+ 
+void HistoryGraph_SetValueInt16(uint16_t screen_id,uint16_t control_id,uint16_t *value,uint8_t channel);
+
+
+
+
+
+
+
+ 
+void HistoryGraph_SetValueInt32(uint16_t screen_id,uint16_t control_id,uint32_t *value,uint8_t channel);
+
+
+
+
+
+
+
+ 
+void HistoryGraph_SetValueFloat(uint16_t screen_id,uint16_t control_id,float *value,uint8_t channel);
+
+
+
+
+
+
+ 
+void HistoryGraph_EnableSampling(uint16_t screen_id,uint16_t control_id,uint8_t enable);
+
+
+
+
+
+
+
+ 
+void HistoryGraph_ShowChannel(uint16_t screen_id,uint16_t control_id,uint8_t channel,uint8_t show);
+
+
+
+
+
+
+
+ 
+void HistoryGraph_SetTimeLength(uint16_t screen_id,uint16_t control_id,uint16_t sample_count);
+
+
+
+
+
+ 
+void HistoryGraph_SetTimeFullScreen(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+
+
+
+ 
+void HistoryGraph_SetTimeZoom(uint16_t screen_id,uint16_t control_id,uint16_t zoom,uint16_t max_zoom,uint16_t min_zoom);
+
+
+#line 847 "../../dcHmi/hmiDriver.h"
+
+
+
+
+
+
+
+ 
+void Record_SetEvent(uint16_t screen_id,uint16_t control_id,uint16_t value,uint8_t *time);
+
+
+
+
+
+
+
+ 
+void Record_ResetEvent(uint16_t screen_id,uint16_t control_id,uint16_t value,uint8_t *time);
+
+
+
+
+
+
+ 
+void Record_Add(uint16_t screen_id,uint16_t control_id,uint8_t *record);
+
+
+
+
+
+ 
+void Record_Clear(uint16_t screen_id,uint16_t control_id);
+
+
+
+
+
+
+ 
+void Record_SetOffset(uint16_t screen_id,uint16_t control_id,uint16_t offset);
+
+
+
+
+
+ 
+void Record_GetCount(uint16_t screen_id,uint16_t control_id);
+
+
+void ReadRTC(void);
+
+
+
+
+ 
+void PlayMusic(uint8_t *buffer);
+
+ 
+void SetMusicVolume(uint8_t volume);
+void PlayMusicId(uint16_t id, uint8_t loop);
+void SuspendMusicId(void);
+void ResumeMusicId(void);
+void StopMusicId(void);
+ 
+void resetGddcHmi(void);
+#line 7 "../../dcHmi/hmiLib.h"
+#line 1 "../../dcHmi/hmiCmdProcess.h"
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+#line 14 "../../dcHmi/hmiCmdProcess.h"
+ 
+#line 28 "../../dcHmi/hmiCmdProcess.h"
+
+
+
+
+
+enum CtrlType
+{
+    kCtrlUnknown=0x0,
+    kCtrlButton=0x10,                     
+    kCtrlText,                            
+    kCtrlProgress,                        
+    kCtrlSlider,                          
+    kCtrlMeter,                            
+    kCtrlDropList,                        
+    kCtrlAnimation,                       
+    kCtrlRTC,                             
+    kCtrlGraph,                           
+    kCtrlTable,                           
+    kCtrlMenu,                            
+    kCtrlSelector,                        
+    kCtrlQRCode,                          
+};
+
+#pragma pack(push)
+#pragma pack(1)                           
+
+typedef struct
+{
+    uint8_t    cmd_head;                    
+
+    uint8_t    cmd_type;                    
+    uint8_t    ctrl_msg;                    
+    uint16_t   screen_id;                   
+    uint16_t   control_id;                  
+    uint8_t    control_type;                
+
+    uint8_t    param[256];                  
+
+    uint8_t  cmd_tail[4];                   
+}CTRL_MSG,*PCTRL_MSG;
+
+#pragma pack(pop)
+
+
+
+ 
+void NOTIFYHandShake(void);
+
+
+
+
+
+ 
+void ProcessMessage( PCTRL_MSG msg, uint16_t size );
+
+
+
+
+ 
+void NotifyScreen(uint16_t screen_id);
+
+
+
+
+
+ 
+void NotifyTouchXY(uint8_t press,uint16_t x,uint16_t y);
+
+
+
+
+
+
+
+ 
+void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state);
+
+
+
+
+
+
+
+
+ 
+void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str);
+
+
+
+
+
+
+    
+void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value);
+
+
+
+
+
+
+     
+void NotifySlider(uint16_t screen_id, uint16_t control_id, uint32_t value);
+
+
+
+
+
+
+ 
+void NotifyMeter(uint16_t screen_id, uint16_t control_id, uint32_t value);
+
+
+
+
+
+
+
+ 
+void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t  item, uint8_t  state);
+
+
+
+
+
+
+
+ 
+void NotifySelector(uint16_t screen_id, uint16_t control_id, uint8_t  item);
+
+
+
+
+ 
+void NotifyTimer(uint16_t screen_id, uint16_t control_id);
+
+
+
+
+
+ 
+void NotifyReadFlash(uint8_t status,uint8_t *_data,uint16_t length);
+
+
+
+
+ 
+void NotifyWriteFlash(uint8_t status);
+
+
+
+
+
+
+
+
+
+ 
+void NotifyReadRTC(uint8_t year,uint8_t month,uint8_t week,uint8_t day,uint8_t hour,uint8_t minute,uint8_t second);
+
+#line 8 "../../dcHmi/hmiLib.h"
+ 
+extern void hmiUartSendChar(uint8_t t);
+extern void hmiUartInit(void);
+extern void Uart0sr(void);
+
+
+
+
+
+
+
+
+
+#line 25 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/dcHmiRes.h"
+
+
+ 
+#line 20 "../../MainApp/dcHmiRes.h"
+ 
+
+#line 39 "../../MainApp/dcHmiRes.h"
+
+#line 55 "../../MainApp/dcHmiRes.h"
+ 
+#line 71 "../../MainApp/dcHmiRes.h"
+ 
+#line 118 "../../MainApp/dcHmiRes.h"
+ 
+#line 137 "../../MainApp/dcHmiRes.h"
+ 
+#line 152 "../../MainApp/dcHmiRes.h"
+ 
+
+
+ 
+#line 167 "../../MainApp/dcHmiRes.h"
+ 
+
+#line 209 "../../MainApp/dcHmiRes.h"
+ 
+#line 218 "../../MainApp/dcHmiRes.h"
+ 
+#line 225 "../../MainApp/dcHmiRes.h"
+
+#line 236 "../../MainApp/dcHmiRes.h"
+
+#line 247 "../../MainApp/dcHmiRes.h"
+
+#line 258 "../../MainApp/dcHmiRes.h"
+
+#line 279 "../../MainApp/dcHmiRes.h"
+
+#line 296 "../../MainApp/dcHmiRes.h"
+ 
+
+
+
+ 
+
+
+
+
+#line 26 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/MainAppLib.h"
+
+
+ 
+#line 5 "../../MainApp/MainAppLib.h"
+#line 6 "../../MainApp/MainAppLib.h"
+ 
+typedef struct{
+	float kp;
+	float ki;
+	float kd;
+	float ek0;
+	float ek1;
+	float ek2;
+}IncPid_t;
+ 
+void addAcousticTime(void);
+void decAcousticTime(void);
+void addAcousticEnergy(void);
+void decAcousticEnergy(void);
+uint8_t fanSpeedToPwm(uint8_t speed);
+uint8_t getLcdDuty(int16_t LcdBrg);
+int16_t keyRuleAdd(int16_t ps, int16_t max);
+int16_t keyRuleDec(int16_t ps, int16_t min);
+void loadScheme(void);
+void updateSchemeName(void);
+void updateCustomScheme(uint8_t index);
+int8_t checkScheme(int8_t cn);
+void defaultScheme(void);
+void restoreDefault(void);
+uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg);
+uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power);
+uint8_t saveSchemeToUdisk(void);
+uint8_t loadSchemeFromUdisk(void);
+int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb);
+ 
+
+
+
+
+#line 27 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/dcHmiLanguage.H"
+#line 4 "../../MainApp/dcHmiLanguage.H"
+ 
+extern const char WARN_MSG_NO_ERROR[];
+extern const char WARN_MSG_INTERLOCK_UNPLUG[];
+extern const char WARN_MSG_FOOTSWITCH_UNPLUG[];
+extern const char WARN_MSG_ESTOP_PRESS[];
+extern const char WARN_MSG_FIBER_UNPLUG[];
+extern const char WARN_MSG_OUT_ENERGY[];
+extern const char WARN_MSG_DIODE_HTEMP[];
+extern const char WARN_MSG_DIODE_LTEMP[];
+extern const char WARN_MSG_DIODE0_OVERCURRENT[];
+extern const char WARN_MSG_DIODE1_OVERCURRENT[];
+extern const char WARN_MSG_NTC_ERROR[];
+extern const char WARN_MSG_ENVI_HTEMP[];
+extern const char WARN_MSG_ENVI_LTEMP[];
+extern const char WARN_MSG_FOOT_DEPRESSED[];
+extern const char WARN_MSG_LASER_EMIT[];
+extern const char WARN_MSG_WAIT_TRIGGER[];
+extern const char WARN_MSG_FIBER_MISSMATE[];
+extern const char INFO_MSG_TYPE[];
+extern const char INFO_MSG_SN[];
+extern const char INFO_MSG_WAVELENGTH[];
+extern const char INFO_MSG_LASER_POWER[];
+extern const char INFO_MSG_VERSION[];
+extern const char INFO_MSG_MANUFACTURE_DATE[];
+ 
+
+
+
+
+
+
+
+
+#line 28 "../../sPlc/sPlc.h"
+#line 29 "../../sPlc/sPlc.h"
+ 
+#line 1 "../USB_HOST/Target/usbh_platform.h"
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 30 "../USB_HOST/Target/usbh_platform.h"
+
+ 
+
+ 
+
+void MX_DriverVbusFS(uint8_t state);
+
+
+
+
+
+
+
+#line 31 "../../sPlc/sPlc.h"
+#line 32 "../../sPlc/sPlc.h"
+#line 33 "../../sPlc/sPlc.h"
+#line 34 "../../sPlc/sPlc.h"
+#line 35 "../../sPlc/sPlc.h"
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 29 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+ 
+typedef enum
+{
+  AUDIO_INIT = 0,
+  AUDIO_IDLE,
+  AUDIO_CS_REQUESTS,
+  AUDIO_SET_DEFAULT_FEATURE_UNIT,
+  AUDIO_SET_INTERFACE,
+  AUDIO_SET_STREAMING_INTERFACE,
+  AUDIO_SET_CUR1,
+  AUDIO_GET_MIN,
+  AUDIO_GET_MAX,
+  AUDIO_GET_RES,
+  AUDIO_GET_CUR1,
+  AUDIO_SET_CUR2,
+  AUDIO_GET_CUR2,
+  AUDIO_SET_CUR3,
+  AUDIO_SET_INTERFACE0,
+  AUDIO_SET_INTERFACE1,
+  AUDIO_SET_INTERFACE2,
+  AUDIO_ISOC_OUT,
+  AUDIO_ISOC_IN,
+  AUDIO_ISOC_POLL,
+  AUDIO_ERROR,
+}
+AUDIO_StateTypeDef;
+
+typedef enum
+{
+  AUDIO_REQ_INIT = 1,
+  AUDIO_REQ_IDLE,
+  AUDIO_REQ_SET_DEFAULT_IN_INTERFACE,
+  AUDIO_REQ_SET_DEFAULT_OUT_INTERFACE,
+  AUDIO_REQ_SET_IN_INTERFACE,
+  AUDIO_REQ_SET_OUT_INTERFACE,
+  AUDIO_REQ_CS_REQUESTS,
+}
+AUDIO_ReqStateTypeDef;
+
+typedef enum
+{
+  AUDIO_REQ_SET_VOLUME = 1,
+  AUDIO_REQ_SET_MUTE,
+  AUDIO_REQ_GET_CURR_VOLUME,
+  AUDIO_REQ_GET_MIN_VOLUME,
+  AUDIO_REQ_GET_MAX_VOLUME,
+  AUDIO_REQ_GET_VOLUME,
+  AUDIO_REQ_GET_RESOLUTION,
+  AUDIO_REQ_CS_IDLE,
+}
+AUDIO_CSReqStateTypeDef;
+
+typedef enum
+{
+  AUDIO_PLAYBACK_INIT = 1,
+  AUDIO_PLAYBACK_SET_EP,
+  AUDIO_PLAYBACK_SET_EP_FREQ,
+  AUDIO_PLAYBACK_PLAY,
+  AUDIO_PLAYBACK_IDLE,
+}
+AUDIO_PlayStateTypeDef;
+
+typedef enum
+{
+  VOLUME_UP = 1,
+  VOLUME_DOWN = 2,
+}
+AUDIO_VolumeCtrlTypeDef;
+
+typedef enum
+{
+  AUDIO_CONTROL_INIT = 1,
+  AUDIO_CONTROL_CHANGE,
+  AUDIO_CONTROL_IDLE,
+  AUDIO_CONTROL_VOLUME_UP,
+  AUDIO_CONTROL_VOLUME_DOWN,
+}
+AUDIO_ControlStateTypeDef;
+
+
+typedef enum
+{
+  AUDIO_DATA_START_OUT = 1,
+  AUDIO_DATA_OUT,
+}
+AUDIO_ProcessingTypeDef;
+
+ 
+typedef struct
+{
+  uint8_t   Channels;
+  uint8_t   Bits;
+  uint32_t  SampleRate;
+}
+AUDIO_FormatTypeDef;
+
+typedef struct
+{
+  uint8_t              Ep;
+  uint16_t             EpSize;
+  uint8_t              AltSettings;
+  uint8_t              interface;
+  uint8_t              valid;
+  uint16_t             Poll;
+}
+AUDIO_STREAMING_IN_HandleTypeDef;
+
+typedef struct
+{
+  uint8_t              Ep;
+  uint16_t             EpSize;
+  uint8_t              AltSettings;
+  uint8_t              interface;
+  uint8_t              valid;
+  uint16_t             Poll;
+}
+AUDIO_STREAMING_OUT_HandleTypeDef;
+
+
+typedef struct
+{
+  uint8_t              mute;
+  uint32_t             volumeMin;
+  uint32_t             volumeMax;
+  uint32_t             volume;
+  uint32_t             resolution;
+}
+AUDIO_ControlAttributeTypeDef;
+
+typedef struct
+{
+
+  uint8_t              Ep;
+  uint16_t             EpSize;
+  uint8_t              interface;
+  uint8_t              AltSettings;
+  uint8_t              supported;
+
+  uint8_t              Pipe;
+  uint8_t              Poll;
+  uint32_t             timer;
+
+  uint8_t              asociated_as;
+  uint8_t              asociated_mixer;
+  uint8_t              asociated_selector;
+  uint8_t              asociated_feature;
+  uint8_t              asociated_terminal;
+  uint8_t              asociated_channels;
+
+  uint32_t             frequency;
+  uint8_t              *buf;
+  uint8_t              *cbuf;
+  uint32_t             partial_ptr;
+
+  uint32_t             global_ptr;
+  uint16_t             frame_length;
+  uint32_t             total_length;
+
+  AUDIO_ControlAttributeTypeDef attribute;
+}
+AUDIO_InterfaceStreamPropTypeDef;
+
+typedef struct
+{
+
+  uint8_t              Ep;
+  uint16_t             EpSize;
+  uint8_t              interface;
+  uint8_t              supported;
+
+  uint8_t              Pipe;
+  uint8_t              Poll;
+  uint32_t             timer;
+}
+AUDIO_InterfaceControlPropTypeDef;
+
+
+#line 237 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
+
+
+
+
+
+
+
+
+
+ 
+typedef struct
+{
+  uint8_t bLength;
+  uint8_t bDescriptorType;
+  uint8_t bDescriptorSubtype;
+  uint8_t bTerminalLink;
+  uint8_t bDelay;
+  uint8_t wFormatTag[2];
+}
+AUDIO_ASGeneralDescTypeDef;
+
+ 
+typedef struct
+{
+  uint8_t bLength;
+  uint8_t bDescriptorType;
+  uint8_t bDescriptorSubtype;
+  uint8_t bFormatType;
+  uint8_t bNrChannels;
+  uint8_t bSubframeSize;
+  uint8_t bBitResolution;
+  uint8_t bSamFreqType;
+  uint8_t tSamFreq[5U][3];
+}
+AUDIO_ASFormatTypeDescTypeDef;
+
+ 
+typedef struct
+{
+  AUDIO_ASGeneralDescTypeDef      *GeneralDesc;
+  AUDIO_ASFormatTypeDescTypeDef   *FormatTypeDesc;
+}
+AUDIO_ASDescTypeDef;
+
+ 
+
+typedef struct
+{
+  uint8_t  bLength;
+  uint8_t  bDescriptorType;
+  uint8_t  bDescriptorSubtype;
+  uint8_t  bcdADC[2];
+  uint8_t  wTotalLength[2];
+  uint8_t  bInCollection;
+  uint8_t  baInterfaceNr[5U];
+}
+AUDIO_HeaderDescTypeDef;
+
+ 
+typedef struct
+{
+  uint8_t  bLength;
+  uint8_t  bDescriptorType;
+  uint8_t  bDescriptorSubtype;
+  uint8_t  bTerminalID;
+  uint8_t  wTerminalType[2];
+  uint8_t  bAssocTerminal;
+  uint8_t  bNrChannels;
+  uint8_t  wChannelConfig[2];
+  uint8_t  iChannelNames;
+  uint8_t  iTerminal;
+}
+AUDIO_ITDescTypeDef;
+
+ 
+typedef struct
+{
+  uint8_t  bLength;
+  uint8_t  bDescriptorType;
+  uint8_t  bDescriptorSubtype;
+  uint8_t  bTerminalID;
+  uint8_t  wTerminalType[2];
+  uint8_t  bAssocTerminal;
+  uint8_t  bSourceID;
+  uint8_t  iTerminal;
+}
+AUDIO_OTDescTypeDef;
+
+ 
+typedef struct
+{
+  uint8_t  bLength;
+  uint8_t  bDescriptorType;
+  uint8_t  bDescriptorSubtype;
+  uint8_t  bUnitID;
+  uint8_t  bSourceID;
+  uint8_t  bControlSize;
+  uint8_t  bmaControls[5U][2];
+}
+AUDIO_FeatureDescTypeDef;
+
+
+ 
+typedef struct
+{
+  uint8_t  bLength;
+  uint8_t  bDescriptorType;
+  uint8_t  bDescriptorSubtype;
+  uint8_t  bUnitID;
+  uint8_t  bNrInPins;
+  uint8_t  bSourceID0;
+  uint8_t  bSourceID1;
+  uint8_t  bNrChannels;
+  uint8_t  bmChannelsConfig[2];
+  uint8_t iChannelsNames;
+  uint8_t bmaControls;
+  uint8_t iMixer;
+}
+AUDIO_MixerDescTypeDef;
+
+
+
+ 
+typedef struct
+{
+  uint8_t  bLength;
+  uint8_t  bDescriptorType;
+  uint8_t  bDescriptorSubtype;
+  uint8_t  bUnitID;
+  uint8_t  bNrInPins;
+  uint8_t  bSourceID0;
+  uint8_t  iSelector;
+}
+AUDIO_SelectorDescTypeDef;
+
+ 
+typedef struct
+{
+  AUDIO_HeaderDescTypeDef   *HeaderDesc;
+  AUDIO_ITDescTypeDef       *InputTerminalDesc [4U];
+  AUDIO_OTDescTypeDef       *OutputTerminalDesc[4U];
+  AUDIO_FeatureDescTypeDef  *FeatureUnitDesc   [4U];
+  AUDIO_MixerDescTypeDef    *MixerUnitDesc     [4U];
+  AUDIO_SelectorDescTypeDef *SelectorUnitDesc  [4U];
+}
+AUDIO_ACDescTypeDef;
+
+ 
+
+typedef struct
+{
+  AUDIO_ACDescTypeDef   cs_desc;  
+  AUDIO_ASDescTypeDef   as_desc[5U];
+
+  uint16_t ASNum;
+  uint16_t InputTerminalNum;
+  uint16_t OutputTerminalNum;
+  uint16_t FeatureUnitNum;
+  uint16_t SelectorUnitNum;
+  uint16_t MixerUnitNum;
+}
+AUDIO_ClassSpecificDescTypedef;
+
+
+typedef struct _AUDIO_Process
+{
+  AUDIO_ReqStateTypeDef              req_state;
+  AUDIO_CSReqStateTypeDef            cs_req_state;
+  AUDIO_PlayStateTypeDef             play_state;
+  AUDIO_ControlStateTypeDef          control_state;
+  AUDIO_ProcessingTypeDef            processing_state;
+
+  AUDIO_STREAMING_IN_HandleTypeDef   stream_in[5U];
+  AUDIO_STREAMING_OUT_HandleTypeDef  stream_out[5U];
+  AUDIO_ClassSpecificDescTypedef     class_desc;
+
+  AUDIO_InterfaceStreamPropTypeDef   headphone;
+  AUDIO_InterfaceStreamPropTypeDef   microphone;
+  AUDIO_InterfaceControlPropTypeDef  control;
+  uint16_t                            mem [8];
+  uint8_t                            temp_feature;
+  uint8_t                            temp_channels;
+}
+AUDIO_HandleTypeDef;
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+ 
+#line 451 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
+
+ 
+
+
+
+
+ 
+#line 469 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+#line 503 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
+
+
+
+ 
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+extern USBH_ClassTypeDef  AUDIO_Class;
+
+
+
+ 
+
+
+
+ 
+USBH_StatusTypeDef USBH_AUDIO_SetFrequency(USBH_HandleTypeDef *phost,
+                                           uint16_t SampleRate,
+                                           uint8_t NbrChannels,
+                                           uint8_t BitPerSample);
+
+USBH_StatusTypeDef USBH_AUDIO_Play(USBH_HandleTypeDef *phost, uint8_t *buf, uint32_t length);
+USBH_StatusTypeDef USBH_AUDIO_Stop(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_AUDIO_Suspend(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_AUDIO_Resume(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_AUDIO_SetVolume(USBH_HandleTypeDef *phost, AUDIO_VolumeCtrlTypeDef volume_ctl);
+USBH_StatusTypeDef USBH_AUDIO_ChangeOutBuffer(USBH_HandleTypeDef *phost, uint8_t *buf);
+int32_t            USBH_AUDIO_GetOutOffset(USBH_HandleTypeDef *phost);
+
+void        USBH_AUDIO_FrequencySet(USBH_HandleTypeDef *phost);
+
+
+void        USBH_AUDIO_BufferEmptyCallback(USBH_HandleTypeDef *phost);
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 36 "../../sPlc/sPlc.h"
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 29 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h"
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+#line 67 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h"
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+#line 91 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h"
+
+
+
+
+
+
+#line 108 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+ 
+typedef enum
+{
+  CDC_IDLE = 0U,
+  CDC_SEND_DATA,
+  CDC_SEND_DATA_WAIT,
+  CDC_RECEIVE_DATA,
+  CDC_RECEIVE_DATA_WAIT,
+}
+CDC_DataStateTypeDef;
+
+typedef enum
+{
+  CDC_IDLE_STATE = 0U,
+  CDC_SET_LINE_CODING_STATE,
+  CDC_GET_LAST_LINE_CODING_STATE,
+  CDC_TRANSFER_DATA,
+  CDC_ERROR_STATE,
+}
+CDC_StateTypeDef;
+
+
+ 
+typedef union _CDC_LineCodingStructure
+{
+  uint8_t Array[0x07U];
+
+  struct
+  {
+
+    uint32_t             dwDTERate;      
+    uint8_t              bCharFormat;   
+
+
+ 
+    uint8_t              bParityType;   
+
+
+
+
+ 
+    uint8_t                bDataBits;      
+  } b;
+}
+CDC_LineCodingTypeDef;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+typedef struct _FunctionalDescriptorHeader
+{
+  uint8_t     bLength;             
+  uint8_t     bDescriptorType;     
+  uint8_t     bDescriptorSubType;  
+  uint16_t    bcdCDC;             
+
+ 
+}
+CDC_HeaderFuncDesc_TypeDef;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+typedef struct _CallMgmtFunctionalDescriptor
+{
+  uint8_t    bLength;             
+  uint8_t    bDescriptorType;     
+  uint8_t    bDescriptorSubType;  
+  uint8_t    bmCapabilities;       
+  uint8_t    bDataInterface;       
+}
+CDC_CallMgmtFuncDesc_TypeDef;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+typedef struct _AbstractCntrlMgmtFunctionalDescriptor
+{
+  uint8_t    bLength;             
+  uint8_t    bDescriptorType;     
+  uint8_t    bDescriptorSubType; 
+ 
+  uint8_t    bmCapabilities;       
+}
+CDC_AbstCntrlMgmtFuncDesc_TypeDef;
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+typedef struct _UnionFunctionalDescriptor
+{
+  uint8_t    bLength;             
+  uint8_t    bDescriptorType;     
+  uint8_t    bDescriptorSubType;  
+  uint8_t    bMasterInterface;   
+ 
+  uint8_t    bSlaveInterface0;    
+}
+CDC_UnionFuncDesc_TypeDef;
+
+typedef struct _USBH_CDCInterfaceDesc
+{
+  CDC_HeaderFuncDesc_TypeDef           CDC_HeaderFuncDesc;
+  CDC_CallMgmtFuncDesc_TypeDef         CDC_CallMgmtFuncDesc;
+  CDC_AbstCntrlMgmtFuncDesc_TypeDef    CDC_AbstCntrlMgmtFuncDesc;
+  CDC_UnionFuncDesc_TypeDef            CDC_UnionFuncDesc;
+}
+CDC_InterfaceDesc_Typedef;
+
+
+ 
+typedef struct
+{
+  uint8_t              NotifPipe;
+  uint8_t              NotifEp;
+  uint8_t              buff[8];
+  uint16_t             NotifEpSize;
+}
+CDC_CommItfTypedef;
+
+typedef struct
+{
+  uint8_t              InPipe;
+  uint8_t              OutPipe;
+  uint8_t              OutEp;
+  uint8_t              InEp;
+  uint8_t              buff[8];
+  uint16_t             OutEpSize;
+  uint16_t             InEpSize;
+}
+CDC_DataItfTypedef;
+
+ 
+typedef struct _CDC_Process
+{
+  CDC_CommItfTypedef                CommItf;
+  CDC_DataItfTypedef                DataItf;
+  uint8_t                           *pTxData;
+  uint8_t                           *pRxData;
+  uint32_t                           TxDataLength;
+  uint32_t                           RxDataLength;
+  CDC_InterfaceDesc_Typedef         CDC_Desc;
+  CDC_LineCodingTypeDef             LineCoding;
+  CDC_LineCodingTypeDef             *pUserLineCoding;
+  CDC_StateTypeDef                  state;
+  CDC_DataStateTypeDef              data_tx_state;
+  CDC_DataStateTypeDef              data_rx_state;
+  uint8_t                           Rx_Poll;
+}
+CDC_HandleTypeDef;
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+extern USBH_ClassTypeDef  CDC_Class;
+
+
+
+
+ 
+
+
+
+ 
+
+USBH_StatusTypeDef  USBH_CDC_SetLineCoding(USBH_HandleTypeDef *phost,
+                                           CDC_LineCodingTypeDef *linecoding);
+
+USBH_StatusTypeDef  USBH_CDC_GetLineCoding(USBH_HandleTypeDef *phost,
+                                           CDC_LineCodingTypeDef *linecoding);
+
+USBH_StatusTypeDef  USBH_CDC_Transmit(USBH_HandleTypeDef *phost,
+                                      uint8_t *pbuff,
+                                      uint32_t length);
+
+USBH_StatusTypeDef  USBH_CDC_Receive(USBH_HandleTypeDef *phost,
+                                     uint8_t *pbuff,
+                                     uint32_t length);
+
+
+uint16_t            USBH_CDC_GetLastReceivedDataSize(USBH_HandleTypeDef *phost);
+
+USBH_StatusTypeDef  USBH_CDC_Stop(USBH_HandleTypeDef *phost);
+
+void USBH_CDC_LineCodingChanged(USBH_HandleTypeDef *phost);
+
+void USBH_CDC_TransmitCallback(USBH_HandleTypeDef *phost);
+
+void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef *phost);
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 37 "../../sPlc/sPlc.h"
+#line 38 "../../sPlc/sPlc.h"
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 29 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_mouse.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+#line 326 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 29 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_mouse.h"
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+typedef struct _HID_MOUSE_Info
+{
+  uint8_t x;
+  uint8_t y;
+  uint8_t buttons[3];
+}
+HID_MOUSE_Info_TypeDef;
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+USBH_StatusTypeDef USBH_HID_MouseInit(USBH_HandleTypeDef *phost);
+HID_MOUSE_Info_TypeDef *USBH_HID_GetMouseInfo(USBH_HandleTypeDef *phost);
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 30 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 29 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h"
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+#line 304 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h"
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 30 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h"
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+#line 275 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h"
+
+typedef struct
+{
+  uint8_t state;
+  uint8_t lctrl;
+  uint8_t lshift;
+  uint8_t lalt;
+  uint8_t lgui;
+  uint8_t rctrl;
+  uint8_t rshift;
+  uint8_t ralt;
+  uint8_t rgui;
+  uint8_t keys[6];
+}
+HID_KEYBD_Info_TypeDef;
+
+USBH_StatusTypeDef USBH_HID_KeybdInit(USBH_HandleTypeDef *phost);
+HID_KEYBD_Info_TypeDef *USBH_HID_GetKeybdInfo(USBH_HandleTypeDef *phost);
+uint8_t USBH_HID_GetASCIICode(HID_KEYBD_Info_TypeDef *info);
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 31 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 87 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+
+
+#line 99 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+
+
+ 
+typedef enum
+{
+  USBH_HID_INIT = 0,
+  USBH_HID_IDLE,
+  USBH_HID_SEND_DATA,
+  USBH_HID_BUSY,
+  USBH_HID_GET_DATA,
+  USBH_HID_SYNC,
+  USBH_HID_POLL,
+  USBH_HID_ERROR,
+}
+USBH_HID_StateTypeDef;
+
+typedef enum
+{
+  USBH_HID_REQ_INIT = 0,
+  USBH_HID_REQ_IDLE,
+  USBH_HID_REQ_GET_REPORT_DESC,
+  USBH_HID_REQ_GET_HID_DESC,
+  USBH_HID_REQ_SET_IDLE,
+  USBH_HID_REQ_SET_PROTOCOL,
+  USBH_HID_REQ_SET_REPORT,
+
+}
+HID_CtlStateTypeDef;
+
+typedef enum
+{
+  HID_MOUSE    = 0x01,
+  HID_KEYBOARD = 0x02,
+  HID_UNKNOWN = 0xFF,
+}
+HID_TypeTypeDef;
+
+
+typedef  struct  _HID_ReportData
+{
+  uint8_t   ReportID;
+  uint8_t   ReportType;
+  uint16_t  UsagePage;
+  uint32_t  Usage[10U];
+  uint32_t  NbrUsage;
+  uint32_t  UsageMin;
+  uint32_t  UsageMax;
+  int32_t   LogMin;
+  int32_t   LogMax;
+  int32_t   PhyMin;
+  int32_t   PhyMax;
+  int32_t   UnitExp;
+  uint32_t  Unit;
+  uint32_t  ReportSize;
+  uint32_t  ReportCnt;
+  uint32_t  Flag;
+  uint32_t  PhyUsage;
+  uint32_t  AppUsage;
+  uint32_t  LogUsage;
+}
+HID_ReportDataTypeDef;
+
+typedef  struct  _HID_ReportIDTypeDef
+{
+  uint8_t  Size;          
+  uint8_t  ReportID;      
+  uint8_t  Type;          
+} HID_ReportIDTypeDef;
+
+typedef struct  _HID_CollectionTypeDef
+{
+  uint32_t                       Usage;
+  uint8_t                        Type;
+  struct _HID_CollectionTypeDef  *NextPtr;
+} HID_CollectionTypeDef;
+
+
+typedef  struct  _HID_AppCollectionTypeDef
+{
+  uint32_t               Usage;
+  uint8_t                Type;
+  uint8_t                NbrReportFmt;
+  HID_ReportDataTypeDef  ReportData[10U];
+} HID_AppCollectionTypeDef;
+
+
+typedef struct _HIDDescriptor
+{
+  uint8_t   bLength;
+  uint8_t   bDescriptorType;
+  uint16_t  bcdHID;                
+  uint8_t   bCountryCode;         
+  uint8_t   bNumDescriptors;      
+  uint8_t   bReportDescriptorType;     
+  uint16_t  wItemLength;           
+}
+HID_DescTypeDef;
+
+
+typedef struct
+{
+  uint8_t  *buf;
+  uint16_t  head;
+  uint16_t tail;
+  uint16_t size;
+  uint8_t  lock;
+} FIFO_TypeDef;
+
+
+ 
+typedef struct _HID_Process
+{
+  uint8_t              OutPipe;
+  uint8_t              InPipe;
+  USBH_HID_StateTypeDef     state;
+  uint8_t              OutEp;
+  uint8_t              InEp;
+  HID_CtlStateTypeDef  ctl_state;
+  FIFO_TypeDef         fifo;
+  uint8_t              *pData;
+  uint16_t             length;
+  uint8_t              ep_addr;
+  uint16_t             poll;
+  uint32_t             timer;
+  uint8_t              DataReady;
+  HID_DescTypeDef      HID_Desc;
+  USBH_StatusTypeDef(* Init)(USBH_HandleTypeDef *phost);
+}
+HID_HandleTypeDef;
+
+
+
+ 
+
+
+
+ 
+
+#line 243 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+extern USBH_ClassTypeDef  HID_Class;
+
+
+
+ 
+
+
+
+ 
+
+USBH_StatusTypeDef USBH_HID_SetReport(USBH_HandleTypeDef *phost,
+                                      uint8_t reportType,
+                                      uint8_t reportId,
+                                      uint8_t *reportBuff,
+                                      uint8_t reportLen);
+
+USBH_StatusTypeDef USBH_HID_GetReport(USBH_HandleTypeDef *phost,
+                                      uint8_t reportType,
+                                      uint8_t reportId,
+                                      uint8_t *reportBuff,
+                                      uint8_t reportLen);
+
+USBH_StatusTypeDef USBH_HID_GetHIDReportDescriptor(USBH_HandleTypeDef *phost,
+                                                   uint16_t length);
+
+USBH_StatusTypeDef USBH_HID_GetHIDDescriptor(USBH_HandleTypeDef *phost,
+                                             uint16_t length);
+
+USBH_StatusTypeDef USBH_HID_SetIdle(USBH_HandleTypeDef *phost,
+                                    uint8_t duration,
+                                    uint8_t reportId);
+
+USBH_StatusTypeDef USBH_HID_SetProtocol(USBH_HandleTypeDef *phost,
+                                        uint8_t protocol);
+
+void USBH_HID_EventCallback(USBH_HandleTypeDef *phost);
+
+HID_TypeTypeDef USBH_HID_GetDeviceType(USBH_HandleTypeDef *phost);
+
+uint8_t USBH_HID_GetPollInterval(USBH_HandleTypeDef *phost);
+
+void USBH_HID_FifoInit(FIFO_TypeDef *f, uint8_t *buf, uint16_t size);
+
+uint16_t  USBH_HID_FifoRead(FIFO_TypeDef *f, void *buf, uint16_t  nbytes);
+
+uint16_t  USBH_HID_FifoWrite(FIFO_TypeDef *f, void *buf, uint16_t nbytes);
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 39 "../../sPlc/sPlc.h"
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 29 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+ 
+
+ 
+#line 80 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+ 
+#line 91 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+ 
+#line 105 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+ 
+
+ 
+#line 143 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+#line 171 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+ 
+
+
+
+
+
+
+
+ 
+
+typedef enum
+{
+  PTP_REQ_IDLE = 0,
+  PTP_REQ_SEND,
+  PTP_REQ_WAIT,
+  PTP_REQ_ERROR,
+}
+PTP_RequestStateTypeDef;
+
+typedef enum
+{
+  PTP_IDLE = 0,
+  PTP_OP_REQUEST_STATE,
+  PTP_OP_REQUEST_WAIT_STATE,
+  PTP_DATA_OUT_PHASE_STATE,
+  PTP_DATA_OUT_PHASE_WAIT_STATE,
+  PTP_DATA_IN_PHASE_STATE,
+  PTP_DATA_IN_PHASE_WAIT_STATE,
+  PTP_RESPONSE_STATE,
+  PTP_RESPONSE_WAIT_STATE,
+  PTP_ERROR,
+}
+PTP_ProcessStateTypeDef;
+
+ 
+typedef struct
+{
+  uint16_t Code;
+  uint32_t SessionID;
+  uint32_t Transaction_ID;
+   
+  uint32_t Param1;
+  uint32_t Param2;
+  uint32_t Param3;
+   
+  uint32_t Param4;
+  uint32_t Param5;
+   
+  uint8_t Nparam;
+}
+PTP_ContainerTypedef;
+
+#line 231 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+typedef struct
+{
+  uint32_t length;
+  uint16_t type;
+  uint16_t code;
+  uint32_t trans_id;
+  uint32_t param1;
+  uint32_t param2;
+  uint32_t param3;
+  uint32_t param4;
+  uint32_t param5;
+}
+PTP_RespContainerTypedef;
+
+
+typedef struct
+{
+  uint32_t length;
+  uint16_t type;
+  uint16_t code;
+  uint32_t trans_id;
+  uint32_t param1;
+  uint32_t param2;
+  uint32_t param3;
+  uint32_t param4;
+  uint32_t param5;
+}
+PTP_OpContainerTypedef;
+
+typedef struct
+{
+  uint32_t length;
+  uint16_t type;
+  uint16_t code;
+  uint32_t trans_id;
+  union
+  {
+    struct
+    {
+      uint32_t param1;
+      uint32_t param2;
+      uint32_t param3;
+      uint32_t param4;
+      uint32_t param5;
+    } params;
+    uint8_t  data[(1024U - ((2U * sizeof(uint32_t)) + (2U * sizeof(uint16_t))))];
+  } payload;
+}
+PTP_DataContainerTypedef;
+
+ 
+typedef struct
+{
+  uint32_t length;
+  uint16_t type;
+  uint16_t code;
+  uint32_t trans_id;
+  uint32_t param1;
+  uint32_t param2;
+  uint32_t param3;
+}
+PTP_EventContainerTypedef;
+
+ 
+typedef struct
+{
+  PTP_ProcessStateTypeDef      state;
+  PTP_RequestStateTypeDef      req_state;
+  PTP_OpContainerTypedef       op_container;
+  PTP_DataContainerTypedef     data_container;
+  PTP_RespContainerTypedef     resp_container;
+
+   
+  uint32_t  transaction_id;
+
+   
+  uint32_t  session_id;
+
+   
+  uint32_t  flags;
+
+   
+
+   
+  uint8_t *data_ptr;
+
+   
+  uint32_t  data_length;
+
+   
+  uint32_t  data_packet;
+
+   
+  uint32_t  iteration;
+
+   
+  uint32_t   data_packet_counter;
+
+   
+
+   
+  uint8_t *object_ptr;
+
+}
+PTP_HandleTypeDef;
+
+ 
+#line 345 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+ 
+#line 353 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+ 
+typedef struct
+{
+  uint16_t StandardVersion;
+  uint32_t VendorExtensionID;
+  uint16_t VendorExtensionVersion;
+  uint8_t  VendorExtensionDesc[255U];
+  uint16_t FunctionalMode;
+  uint32_t OperationsSupported_len;
+  uint16_t OperationsSupported[100U];
+  uint32_t EventsSupported_len;
+  uint16_t EventsSupported[100U];
+  uint32_t DevicePropertiesSupported_len;
+  uint16_t DevicePropertiesSupported[100U];
+  uint32_t CaptureFormats_len;
+  uint16_t CaptureFormats[100U];
+  uint32_t ImageFormats_len;
+  uint16_t ImageFormats[100U];
+  uint8_t  Manufacturer[255U];
+  uint8_t  Model[255U];
+  uint8_t  DeviceVersion[255U];
+  uint8_t  SerialNumber[255U];
+}
+PTP_DeviceInfoTypedef;
+
+
+ 
+typedef struct
+{
+  uint32_t n;
+  uint32_t Storage [5];
+}
+PTP_StorageIDsTypedef;
+
+ 
+
+#line 396 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+typedef struct
+{
+  uint16_t StorageType;
+  uint16_t FilesystemType;
+  uint16_t AccessCapability;
+  uint64_t MaxCapability;
+  uint64_t FreeSpaceInBytes;
+  uint32_t FreeSpaceInImages;
+  uint8_t  StorageDescription[255U];
+  uint8_t  VolumeLabel[255U];
+}
+PTP_StorageInfoTypedef;
+
+ 
+
+ 
+#line 450 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+ 
+#line 467 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+ 
+
+
+ 
+#line 528 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+ 
+#line 697 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+ 
+
+
+
+ 
+#line 711 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+typedef struct
+{
+  uint32_t n;
+  uint32_t Handler[0x255U];
+}
+PTP_ObjectHandlesTypedef;
+
+
+#line 738 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+typedef struct
+{
+  uint32_t StorageID;
+  uint16_t ObjectFormat;
+  uint16_t ProtectionStatus;
+  
+ 
+  uint64_t ObjectCompressedSize;
+  uint16_t ThumbFormat;
+  uint32_t ThumbCompressedSize;
+  uint32_t ThumbPixWidth;
+  uint32_t ThumbPixHeight;
+  uint32_t ImagePixWidth;
+  uint32_t ImagePixHeight;
+  uint32_t ImageBitDepth;
+  uint32_t ParentObject;
+  uint16_t AssociationType;
+  uint32_t AssociationDesc;
+  uint32_t SequenceNumber;
+  uint8_t  Filename[255U];
+  uint32_t CaptureDate;
+  uint32_t ModificationDate;
+  uint8_t  Keywords[255U];
+}
+PTP_ObjectInfoTypedef;
+
+ 
+
+typedef union  _PTP_PropertyValueTypedef
+{
+  char  str[255U];
+  uint8_t u8;
+  int8_t i8;
+  uint16_t u16;
+  int16_t i16;
+  uint32_t u32;
+  int32_t i32;
+  uint64_t u64;
+  int64_t i64;
+  struct array
+  {
+    uint32_t count;
+    union _PTP_PropertyValueTypedef *v;
+  } a;
+} PTP_PropertyValueTypedef;
+
+typedef struct
+{
+  PTP_PropertyValueTypedef MinimumValue;
+  PTP_PropertyValueTypedef MaximumValue;
+  PTP_PropertyValueTypedef StepSize;
+}
+PTP_PropDescRangeFormTypedef;
+
+ 
+
+typedef struct
+{
+  uint16_t NumberOfValues;
+  PTP_PropertyValueTypedef SupportedValue[100U];
+}
+PTP_PropDescEnumFormTypedef;
+
+ 
+
+
+
+
+
+typedef struct
+{
+  uint16_t    ObjectPropertyCode;
+  uint16_t    DataType;
+  uint8_t     GetSet;
+  PTP_PropertyValueTypedef FactoryDefaultValue;
+  uint32_t    GroupCode;
+  uint8_t     FormFlag;
+  union
+  {
+    PTP_PropDescEnumFormTypedef Enum;
+    PTP_PropDescRangeFormTypedef  Range;
+  } FORM;
+}
+PTP_ObjectPropDescTypeDef;
+
+ 
+typedef struct
+{
+  uint16_t   property;
+  uint16_t   datatype;
+  uint32_t   ObjectHandle;
+  PTP_PropertyValueTypedef propval;
+}
+MTP_PropertiesTypedef;
+
+
+ 
+
+
+
+
+
+ 
+#line 850 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+ 
+
+
+
+
+
+
+ 
+
+typedef struct
+{
+  uint16_t  DevicePropertyCode;
+  uint16_t  DataType;
+  uint8_t   GetSet;
+  PTP_PropertyValueTypedef FactoryDefaultValue;
+  PTP_PropertyValueTypedef CurrentValue;
+  uint8_t   FormFlag;
+  union
+  {
+    PTP_PropDescEnumFormTypedef  Enum;
+    PTP_PropDescRangeFormTypedef  Range;
+  } FORM;
+}
+PTP_DevicePropDescTypdef;
+
+ 
+
+#line 889 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+
+#line 902 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+
+ 
+
+#line 922 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp_ptp.h"
+
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+USBH_StatusTypeDef USBH_PTP_Init(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_PTP_Process(USBH_HandleTypeDef *phost);
+
+USBH_StatusTypeDef USBH_PTP_SendRequest(USBH_HandleTypeDef *phost, PTP_ContainerTypedef  *req);
+USBH_StatusTypeDef USBH_PTP_GetResponse(USBH_HandleTypeDef *phost, PTP_ContainerTypedef  *resp);
+
+USBH_StatusTypeDef USBH_PTP_OpenSession(USBH_HandleTypeDef *phost, uint32_t session);
+USBH_StatusTypeDef USBH_PTP_GetDeviceInfo(USBH_HandleTypeDef *phost, PTP_DeviceInfoTypedef *dev_info);
+USBH_StatusTypeDef USBH_PTP_GetStorageIds(USBH_HandleTypeDef *phost, PTP_StorageIDsTypedef *storage_ids);
+
+USBH_StatusTypeDef USBH_PTP_GetStorageInfo(USBH_HandleTypeDef *phost,
+                                           uint32_t storage_id,
+                                           PTP_StorageInfoTypedef *storage_info);
+
+USBH_StatusTypeDef USBH_PTP_GetNumObjects(USBH_HandleTypeDef *phost,
+                                          uint32_t storage_id,
+                                          uint32_t objectformatcode,
+                                          uint32_t associationOH,
+                                          uint32_t *numobs);
+
+USBH_StatusTypeDef USBH_PTP_GetObjectHandles(USBH_HandleTypeDef *phost,
+                                             uint32_t storage_id,
+                                             uint32_t objectformatcode,
+                                             uint32_t associationOH,
+                                             PTP_ObjectHandlesTypedef *objecthandles);
+
+USBH_StatusTypeDef USBH_PTP_GetObjectInfo(USBH_HandleTypeDef *phost,
+                                          uint32_t handle,
+                                          PTP_ObjectInfoTypedef *object_info);
+
+USBH_StatusTypeDef USBH_PTP_DeleteObject(USBH_HandleTypeDef *phost,
+                                         uint32_t handle,
+                                         uint32_t objectformatcode);
+
+USBH_StatusTypeDef USBH_PTP_GetObject(USBH_HandleTypeDef *phost,
+                                      uint32_t handle,
+                                      uint8_t *object);
+
+USBH_StatusTypeDef USBH_PTP_GetPartialObject(USBH_HandleTypeDef *phost,
+                                             uint32_t handle,
+                                             uint32_t offset,
+                                             uint32_t maxbytes, uint8_t *object,
+                                             uint32_t *len);
+
+USBH_StatusTypeDef USBH_PTP_GetObjectPropsSupported(USBH_HandleTypeDef *phost,
+                                                    uint16_t ofc,
+                                                    uint32_t *propnum,
+                                                    uint16_t *props);
+
+USBH_StatusTypeDef USBH_PTP_GetObjectPropDesc(USBH_HandleTypeDef *phost,
+                                              uint16_t opc,
+                                              uint16_t ofc,
+                                              PTP_ObjectPropDescTypeDef *opd);
+
+USBH_StatusTypeDef USBH_PTP_GetObjectPropList(USBH_HandleTypeDef *phost,
+                                              uint32_t handle,
+                                              MTP_PropertiesTypedef *pprops,
+                                              uint32_t *nrofprops);
+
+USBH_StatusTypeDef USBH_PTP_SendObject(USBH_HandleTypeDef *phost,
+                                       uint32_t handle,
+                                       uint8_t *object,
+                                       uint32_t size);
+
+USBH_StatusTypeDef USBH_PTP_GetDevicePropDesc(USBH_HandleTypeDef *phost,
+                                              uint16_t propcode,
+                                              PTP_DevicePropDescTypdef *devicepropertydesc);
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 29 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp.h"
+#line 30 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp.h"
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+ 
+typedef enum
+{
+  MTP_IDLE = 0,
+  MTP_GETDEVICEINFO,
+  MTP_OPENSESSION,
+  MTP_CLOSESESSION,
+  MTP_GETSTORAGEIDS,
+  MTP_GETSTORAGEINFO,
+}
+MTP_StateTypeDef;
+
+
+typedef enum
+{
+  MTP_EVENTS_INIT = 0,
+  MTP_EVENTS_GETDATA,
+}
+MTP_EventsStateTypeDef;
+
+
+typedef struct
+{
+  MTP_EventsStateTypeDef   state;
+  uint32_t timer;
+  uint16_t poll;
+  PTP_EventContainerTypedef  container;
+}
+MTP_EventHandleTypedef;
+
+typedef struct
+{
+
+  uint32_t        CurrentStorageId;
+  uint32_t        ObjectFormatCode;
+  uint32_t        CurrentObjectHandler;
+  uint8_t         ObjectHandlerNbr;
+  uint32_t        Objdepth;
+}
+MTP_ParamsTypedef;
+
+
+typedef struct
+{
+  PTP_DeviceInfoTypedef     devinfo;
+  PTP_StorageIDsTypedef     storids;
+  PTP_StorageInfoTypedef    storinfo[5];
+  PTP_ObjectHandlesTypedef  Handles;
+}
+MTP_InfoTypedef;
+
+ 
+typedef struct _MTP_Process
+{
+  MTP_InfoTypedef       info;
+  MTP_ParamsTypedef     params;
+
+  uint8_t               DataInPipe;
+  uint8_t               DataOutPipe;
+  uint8_t               NotificationPipe;
+
+  uint8_t               DataOutEp;
+  uint8_t               DataInEp;
+  uint8_t               NotificationEp;
+
+  uint16_t              DataOutEpSize;
+  uint16_t              DataInEpSize;
+  uint16_t              NotificationEpSize;
+  MTP_StateTypeDef      state;
+  MTP_EventHandleTypedef events;
+  PTP_HandleTypeDef     ptp;
+  uint32_t              current_storage_unit;
+  uint32_t              is_ready;
+}
+MTP_HandleTypeDef;
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+extern USBH_ClassTypeDef  MTP_Class;
+
+
+
+
+ 
+
+
+
+ 
+uint8_t            USBH_MTP_IsReady(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_MTP_SelectStorage(USBH_HandleTypeDef *phost, uint8_t storage_idx);
+USBH_StatusTypeDef USBH_MTP_GetNumStorage(USBH_HandleTypeDef *phost, uint8_t *storage_num);
+USBH_StatusTypeDef USBH_MTP_GetNumObjects(USBH_HandleTypeDef *phost,
+                                          uint32_t storage_idx,
+                                          uint32_t objectformatcode,
+                                          uint32_t associationOH,
+                                          uint32_t *numobs);
+USBH_StatusTypeDef USBH_MTP_GetStorageInfo(USBH_HandleTypeDef *phost,
+                                           uint8_t storage_idx,
+                                           PTP_StorageInfoTypedef *info);
+
+USBH_StatusTypeDef USBH_MTP_GetObjectHandles(USBH_HandleTypeDef *phost,
+                                             uint32_t storage_idx,
+                                             uint32_t objectformatcode,
+                                             uint32_t associationOH,
+                                             PTP_ObjectHandlesTypedef *objecthandles);
+
+USBH_StatusTypeDef USBH_MTP_GetObjectInfo(USBH_HandleTypeDef *phost,
+                                          uint32_t handle,
+                                          PTP_ObjectInfoTypedef *objectinfo);
+
+USBH_StatusTypeDef USBH_MTP_DeleteObject(USBH_HandleTypeDef *phost,
+                                         uint32_t handle,
+                                         uint32_t objectformatcode);
+
+USBH_StatusTypeDef USBH_MTP_GetObject(USBH_HandleTypeDef *phost,
+                                      uint32_t handle,
+                                      uint8_t *object);
+
+USBH_StatusTypeDef USBH_MTP_GetPartialObject(USBH_HandleTypeDef *phost,
+                                             uint32_t handle,
+                                             uint32_t offset,
+                                             uint32_t maxbytes,
+                                             uint8_t *object,
+                                             uint32_t *len);
+
+USBH_StatusTypeDef USBH_MTP_GetObjectPropsSupported(USBH_HandleTypeDef *phost,
+                                                    uint16_t ofc,
+                                                    uint32_t *propnum,
+                                                    uint16_t *props);
+
+USBH_StatusTypeDef USBH_MTP_GetObjectPropDesc(USBH_HandleTypeDef *phost,
+                                              uint16_t opc,
+                                              uint16_t ofc,
+                                              PTP_ObjectPropDescTypeDef *opd);
+
+USBH_StatusTypeDef USBH_MTP_GetObjectPropList(USBH_HandleTypeDef *phost,
+                                              uint32_t handle,
+                                              MTP_PropertiesTypedef *pprops,
+                                              uint32_t *nrofprops);
+
+USBH_StatusTypeDef USBH_MTP_SendObject(USBH_HandleTypeDef *phost,
+                                       uint32_t handle,
+                                       uint8_t *object,
+                                       uint32_t size);
+
+USBH_StatusTypeDef USBH_MTP_GetDevicePropDesc(USBH_HandleTypeDef *phost,
+                                              uint16_t propcode,
+                                              PTP_DevicePropDescTypdef *devicepropertydesc);
+
+void USBH_MTP_EventsCallback(USBH_HandleTypeDef *phost, uint32_t event, uint32_t param);
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+#line 40 "../../sPlc/sPlc.h"
+ 
+#line 42 "../../sPlc/sPlc.h"
+#line 43 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/flash_if.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+#line 56 "../../MainApp/flash_if.h"
+
+ 
+typedef  void (*pFunction)(void);
+
+#line 72 "../../MainApp/flash_if.h"
+
+
+ 
+#line 107 "../../MainApp/flash_if.h"
+ 
+ 
+void FLASH_If_FlashUnlock(void);
+FlagStatus FLASH_If_ReadOutProtectionStatus(void);
+uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data);
+uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data);
+uint32_t FLASH_If_EraseBootload(void);
+uint32_t FLASH_If_EraseApplication(void);
+
+
+
+
+
+
+ 
+#line 44 "../../sPlc/sPlc.h"
+ 
+
+
+
+ 
+#line 55 "../../sPlc/sPlc.h"
+ 
+
+
+ 
+
+ 
+
+
+ 
+#line 76 "../../sPlc/sPlc.h"
+ 
+#line 83 "../../sPlc/sPlc.h"
+
+
+
+
+
+#line 96 "../../sPlc/sPlc.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+extern uint16_t audioSineTable[]; 
+
+
+
+
+
+
+
+ 
+#line 179 "../../sPlc/sPlc.h"
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+typedef enum {
+	CLEAR_EPROM_ALL 														= 0x01,
+	CLEAR_EPROM_NVRAM														= 0x02,
+	CLEAR_EPROM_FDRAM														= 0x03,
+	CLEAR_EPROM_FIRMWARE_CRC										= 0x04,
+	CLEAR_EPROM_DEVICE_CONFIG										= 0x05,
+	CLEAR_EPROM_LOG_INFO												= 0x06
+}clarmEpromCmd_t;
+ 
+
+extern I2C_HandleTypeDef hi2c1;
+extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart4;
+extern USBH_HandleTypeDef hUsbHostFS;
+extern ADC_HandleTypeDef hadc1;
+extern DMA_HandleTypeDef hdma_adc1;
+extern CRC_HandleTypeDef hcrc;
+extern DAC_HandleTypeDef hdac;
+extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim7;
+extern TIM_HandleTypeDef htim10;
+extern TIM_HandleTypeDef htim12;
+extern TIM_HandleTypeDef htim14;
+extern RNG_HandleTypeDef hrng;
+
+ 
+#line 237 "../../sPlc/sPlc.h"
+ 
+extern int16_t NVRAM0[(1463 + 1)];
+extern int16_t NVRAM1[(1463 + 1)];
+extern int16_t FDRAM0[(2047 - 0 + 1)], FDRAM1[(2047 - 0 + 1)];
+extern uint16_t TimerCounter_10mS;
+extern uint16_t TimerCounter_100mS;
+extern uint16_t TimerCounter_200mS;
+extern uint16_t TimerCounter_500mS;
+extern uint16_t TimerCounter_1000mS;
+extern uint16_t TimerCounter_60000mS;
+extern uint8_t TD_10MS_SP;
+extern uint8_t TD_100MS_SP;
+extern uint8_t TD_200MS_SP;
+extern uint8_t TD_500MS_SP;
+extern uint8_t TD_1000MS_SP;
+extern uint8_t TD_60000MS_SP;
+extern uint32_t sPlcTick;
+extern uint32_t BootloadCrc, ApplicationCrc;
+ 
+extern int8_t LaserTimer_Mode;
+extern int16_t LaserTimer_TCounter;
+extern int16_t LaserTimer_TMate;
+extern int16_t LaserTimer_TOvertime;
+extern int16_t LaserTimer_PCounter;
+extern int16_t LaserTimer_PMate;
+extern int16_t LaserTimer_POvertime;
+extern int16_t LaserTimer_ReleaseTime;
+extern int16_t LaserTimer_ReleaseCounter;
+extern int8_t  LaserFlag_Emiting;
+extern int8_t LaserFlag_Emitover;
+ 
+extern void sPlcInit(void);
+extern void sPlcProcessStart(void);
+extern void sPlcProcessEnd(void);
+extern void sPlcPortProcess(void);
+extern void sPlcAssertCoilAddress(uint16_t adr);
+extern void sPlcAssertRegisterAddress(uint16_t adr);
+ 
+extern void sPlcInputInit(void);
+extern void sPlcInputRefresh(void);
+extern void sPlcOutputInit(void);
+extern void sPlcOutputRefresh(void);
+extern void sPlcIsrDisable(void);
+extern void sPlcIsrEnable(void);
+extern void sPlcTimerInit(void);
+extern void sPlcTimerIsr(void);
+extern void sPlcTimerDisalbe(void);
+extern void sPlcTimerEnable(void);
+extern void sPlcDacInit(void);
+extern void sPlcDacRefresh(void);
+extern void sPlcAdcInit(void);
+extern void sPlcAdcProcess(void);
+extern void sPlcSpeakerFreq(int16_t freq);
+extern void sPlcSpeakerVolume(int16_t volume);
+extern void sPlcSpeakerEnable(void);
+extern void sPlcSpeakerDisable(void);
+extern void sPlcSpeakerInit(void);
+extern void sPlcLaserInit(void);
+extern void sPlcLaserTimerIsr(void);
+extern void sPlcLaserTimerTestBench(uint8_t st);
+extern void sPlcNvramUpdate(void);
+extern void sPlcNvramLoad(void);
+extern void sPlcNvramSave(void);
+extern void sPlcNvramClear(void);
+extern void sPlcFdramLoad(void);
+extern void sPlcFdramSave(void);
+extern void sPlcFdramClear(void);
+extern void sPlcDeviceConfigClear(void);
+extern void sPlcDeviceLogClear(void);
+extern void softDelayMs(uint16_t ms);
+extern void mucReboot(void);
+extern void resetInit(void);
+extern void SystemClock_Reset(void);
+extern void UsbGpioReset(void);
+extern void setRedLaserPwm(int16_t pwm);
+extern void setPower_635(int16_t pwr);
+extern void setFanSpeed(int16_t speed);
+extern void morseCodeDiag(uint8_t diag);
+
+extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);
+extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);
+extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);
+extern HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);
+extern HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);
+extern HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);
+extern HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
+extern HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
+extern uint8_t sPlcEpromTest(void);
+extern uint8_t checkBlank(uint32_t adr, uint32_t size);
+void clearEprom(clarmEpromCmd_t cmd);
+void listEpromTable(void);
+
+extern uint32_t getOriginBootloadCrc(void);
+extern uint32_t getOriginAppCrc(void);
+extern uint8_t updateBootloadReq(void);
+extern void confirmBootloadUpdate(void);
+extern void exitBootloadUpdate(void);
+void softDelayMs(uint16_t ms);
+ 
+extern arm_pid_instance_f32 laserTecPids;
+extern arm_pid_instance_f32 laserFanPids;
+ 
+extern void REBOOT(void) ;
+
+extern void SSET(uint16_t A);
+extern void RRES(uint16_t A);
+extern void FLIP(uint16_t A) ;
+extern uint8_t LD(uint16_t A) ;
+extern uint8_t LDB(uint16_t A) ;
+extern uint8_t LDP(uint16_t A) ;
+extern uint8_t LDN(uint16_t A) ;
+
+extern void T10MS(uint8_t A, uint8_t start, uint16_t value) ;
+extern void T100MS(uint8_t A, uint8_t start, uint16_t value) ;
+
+extern void CLR(uint16_t A) ;
+extern void CLRD(uint16_t A) ;
+extern void MOV(uint16_t dist, uint16_t src) ;
+extern void MOVD(uint16_t dist, uint16_t src) ;
+extern void SWAP(uint16_t dist, uint16_t src) ;
+extern void ABS16(uint16_t dist, uint16_t src) ;
+extern void ABS32(uint16_t dist, uint16_t src) ;
+extern void SMIN16(uint16_t index, uint16_t length, uint16_t min) ;
+extern void SMAX16(uint16_t index, uint16_t length, uint16_t max) ;
+extern void UMIN16(uint16_t index, uint16_t length, uint16_t min) ;
+extern void UMAX16(uint16_t index, uint16_t length, uint16_t max) ;
+extern void SUM16(uint16_t index, uint16_t length, uint16_t sum) ;
+extern void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void MULTS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void SUB16(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void ADD16(uint16_t Sa, uint16_t Sb, uint16_t D) ;
+extern void ADD1(uint16_t Sa) ;
+extern void ADDS1(uint16_t Sa) ;
+extern void DEC1(uint16_t Sa) ;
+extern void DECS1(uint16_t Sa) ;
+extern void ADL1(uint16_t Sa) ;
+extern void ADLS1(uint16_t Sa) ;
+extern void DEL1(uint16_t Sa) ;
+extern void DELS1(uint16_t Sa) ;
+extern void TNTUC(uint16_t dist, uint16_t src);
+extern void TNTLC(uint16_t dist, uint16_t src);
+extern void TENV(uint16_t dist, uint16_t src);
+extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);
+extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);
+extern void UPDAC0(void);
+extern void UPDAC1(void);
+extern void UPDAC2(void);
+extern void UPDAC3(void);
+extern void UPDAC4(void);
+extern void UPDAC5(void);
+extern void UPDAC6(void);
+extern void UPDAC7(void);
+extern void CLDAC(void);
+extern void IMDIO(void) ;
+extern void NVSAVE(void);
+extern void NVFSAVE(void);
+extern void NVLOAD(void);
+extern void FDSAV(void);
+extern void FDLAD(void);
+extern void FDSAV_ONE(int16_t cn);
+extern void FDLAD_ONE(int16_t cn);
+extern void PRTM(uint16_t adr, uint8_t len);
+extern void LINKS(void);
+extern void LINKM(void);
+extern void EDLAR(void);
+extern void STLAR(void);
+ 
+#line 42 "../Core/Src/main.c"
  
 
  
@@ -37592,7 +50270,6 @@ int main(void)
   MX_TIM2_Init();
   MX_UART4_Init();
   MX_USART1_UART_Init();
-  MX_USART2_UART_Init();
   MX_CRC_Init();
   MX_RNG_Init();
   MX_TIM7_Init();
@@ -37606,9 +50283,7 @@ int main(void)
    
 
    
-  osKernelInitialize();
-
-   
+  osKernelInitialize();   
   MX_FREERTOS_Init();
 
    
@@ -37693,12 +50368,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
    
 
    
-  if (htim->Instance == ((TIM_TypeDef *) (0x40000000UL + 0x1C00UL)))
+  if (htim->Instance == ((TIM_TypeDef *) (0x40000000UL + 0x1000UL)))
   {
     HAL_IncTick();
   }
    
-
+	if(htim->Instance == ((TIM_TypeDef *) (0x40000000UL + 0x2000UL))) {
+		sPlcTimerIsr();
+	}
+	if(htim->Instance == ((TIM_TypeDef *) ((0x40000000UL + 0x00010000UL) + 0x4400UL))){
+		sPlcLaserTimerIsr();
+	}
    
 }
 
@@ -37716,4 +50396,3 @@ void Error_Handler(void)
   }
    
 }
-

@@ -24,7 +24,7 @@ const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-Dual"};
 #endif
 
 #if defined(MODEL_PVGLS_15W_1470_A1)
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-A1-Dual"};
+const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a15b0-A1-Dual"};
 #endif
 
 #if defined(MODEL_PVGLS_TRI_A0)

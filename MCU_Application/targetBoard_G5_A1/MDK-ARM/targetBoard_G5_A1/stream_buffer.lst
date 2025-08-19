@@ -40,7 +40,7 @@ N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5060044
+N#define __ARMCLIB_VERSION 5060037
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -382,7 +382,7 @@ N */
 N
 N#ifndef __string_h
 N#define __string_h
-N#define __ARMCLIB_VERSION 5060044
+N#define __ARMCLIB_VERSION 5060037
 N
 N#define _ARMABI __declspec(__nothrow)
 N
@@ -975,7 +975,7 @@ N */
 N
 N#ifndef __stddef_h
 N#define __stddef_h
-N#define __ARMCLIB_VERSION 5060044
+N#define __ARMCLIB_VERSION 5060037
 N
 N  #ifndef __STDDEF_DECLS
 N  #define __STDDEF_DECLS

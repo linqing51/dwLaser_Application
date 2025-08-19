@@ -38,7 +38,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#include "sPlc.h"
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -105,7 +105,6 @@ int main(void)
   MX_TIM2_Init();
   MX_UART4_Init();
   MX_USART1_UART_Init();
-  MX_USART2_UART_Init();
   MX_CRC_Init();
   MX_RNG_Init();
   MX_TIM7_Init();
@@ -119,9 +118,7 @@ int main(void)
   /* USER CODE END 2 */
 
   /* Init scheduler */
-  osKernelInitialize();
-
-  /* Call init function for freertos objects (in cmsis_os2.c) */
+  osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
   MX_FREERTOS_Init();
 
   /* Start scheduler */
@@ -195,7 +192,7 @@ void SystemClock_Config(void)
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM13 interrupt took place, inside
+  * @note   This function is called  when TIM6 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -206,12 +203,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM13)
+  if (htim->Instance == TIM6)
   {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+	if(htim->Instance == TIM14) {
+		sPlcTimerIsr();
+	}
+	if(htim->Instance == TIM10){
+		sPlcLaserTimerIsr();
+	}
   /* USER CODE END Callback 1 */
 }
 
@@ -229,8 +231,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

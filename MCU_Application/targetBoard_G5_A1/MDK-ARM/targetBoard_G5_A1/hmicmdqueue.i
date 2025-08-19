@@ -32,7 +32,7 @@
 
 
  
-#line 1 "..\\..\\sPlc\\sPlc.h"
+#line 1 "../../sPlc/sPlc.h"
 
 
  
@@ -6741,7 +6741,7 @@ __value_in_regs osEvent osMessageGet (osMessageQId queue_id, uint32_t millisec);
 
 
  
-#line 5 "..\\..\\sPlc\\sPlc.h"
+#line 5 "../../sPlc/sPlc.h"
 #line 1 "../Core/Inc/main.h"
  
 
@@ -7068,7 +7068,7 @@ __value_in_regs osEvent osMessageGet (osMessageQId queue_id, uint32_t millisec);
 
 
  
-#line 1 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -7126,27 +7126,27 @@ __value_in_regs osEvent osMessageGet (osMessageQId queue_id, uint32_t millisec);
 
 
  
-#line 94 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 94 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
  
-#line 106 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 106 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
  
-#line 118 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
-
-
-
- 
+#line 118 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
  
 
-#line 1 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+
+
+ 
+
+#line 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -7309,7 +7309,7 @@ typedef enum
 
  
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1 "../Drivers/CMSIS/Include/core_cm4.h"
  
 
 
@@ -7343,7 +7343,7 @@ typedef enum
 
 
 
-#line 35 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 35 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -7372,7 +7372,7 @@ typedef enum
 
  
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\cmsis_version.h"
+#line 1 "../Drivers/CMSIS/Include/cmsis_version.h"
  
 
 
@@ -7407,7 +7407,7 @@ typedef enum
 
 
  
-#line 64 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 64 "../Drivers/CMSIS/Include/core_cm4.h"
 
  
 
@@ -7420,11 +7420,11 @@ typedef enum
 
 
  
-#line 87 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 87 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 161 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 161 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 1 "../Drivers/CMSIS/Include/cmsis_compiler.h"
  
 
 
@@ -7452,12 +7452,12 @@ typedef enum
 
 
 
-#line 29 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 29 "../Drivers/CMSIS/Include/cmsis_compiler.h"
 
 
 
  
-#line 1 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 1 "../Drivers/CMSIS/Include/cmsis_armcc.h"
  
 
 
@@ -7514,7 +7514,7 @@ typedef enum
 
 
  
-#line 111 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 111 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
  
 
@@ -7661,7 +7661,7 @@ __attribute__((section(".revsh_text"))) static __inline __asm int16_t __REVSH(in
 
 
  
-#line 277 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 277 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
 
 
@@ -7856,7 +7856,7 @@ __attribute__((section(".rrx_text"))) static __inline __asm uint32_t __RRX(uint3
  
 
 
-#line 525 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 525 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
    
 
@@ -8143,7 +8143,7 @@ static __inline void __set_FPSCR(uint32_t fpscr)
 
 
 
-#line 870 "..\\Drivers\\CMSIS\\Include\\cmsis_armcc.h"
+#line 870 "../Drivers/CMSIS/Include/cmsis_armcc.h"
 
 
 
@@ -8162,23 +8162,18 @@ static __inline void __set_FPSCR(uint32_t fpscr)
  
 
 
-#line 35 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 35 "../Drivers/CMSIS/Include/cmsis_compiler.h"
 
 
 
 
  
-#line 280 "..\\Drivers\\CMSIS\\Include\\cmsis_compiler.h"
+#line 280 "../Drivers/CMSIS/Include/cmsis_compiler.h"
 
 
 
 
-#line 163 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
-
-
-
-
-
+#line 163 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -8190,11 +8185,6 @@ static __inline void __set_FPSCR(uint32_t fpscr)
 
 
 
-
- 
-#line 212 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
-
- 
 
 
 
@@ -8202,7 +8192,17 @@ static __inline void __set_FPSCR(uint32_t fpscr)
 
 
  
-#line 228 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 212 "../Drivers/CMSIS/Include/core_cm4.h"
+
+ 
+
+
+
+
+
+
+ 
+#line 228 "../Drivers/CMSIS/Include/core_cm4.h"
 
  
 
@@ -9525,20 +9525,9 @@ typedef struct
  
 
  
-#line 1558 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1558 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 1567 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
-
-
-
-
-
-
-
-
-
- 
-
+#line 1567 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -9551,6 +9540,17 @@ typedef struct
  
 
 
+
+
+
+
+
+
+
+
+ 
+
+
  
 
 
@@ -9563,15 +9563,15 @@ typedef struct
 
  
 
-#line 1621 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1621 "../Drivers/CMSIS/Include/core_cm4.h"
 
-#line 1631 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1631 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
 
  
-#line 1642 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1642 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -9890,7 +9890,7 @@ __declspec(noreturn) static __inline void __NVIC_SystemReset(void)
 
 
 
-#line 1 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 1 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
 
 
@@ -9924,9 +9924,9 @@ __declspec(noreturn) static __inline void __NVIC_SystemReset(void)
 
 
 
-#line 62 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 62 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
-#line 69 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 69 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
 
 
@@ -9961,7 +9961,7 @@ __declspec(noreturn) static __inline void __NVIC_SystemReset(void)
 
 
  
-#line 110 "..\\Drivers\\CMSIS\\Include\\mpu_armv7.h"
+#line 110 "../Drivers/CMSIS/Include/mpu_armv7.h"
 
 
 
@@ -10127,7 +10127,7 @@ static __inline void ARM_MPU_Load(ARM_MPU_Region_t const* table, uint32_t cnt)
   ARM_MPU_OrderedMemcpy(&(((MPU_Type *) ((0xE000E000UL) + 0x0D90UL) )->RBAR), &(table->RBAR), cnt*rowWordSize);
 }
 
-#line 1961 "..\\Drivers\\CMSIS\\Include\\core_cm4.h"
+#line 1961 "../Drivers/CMSIS/Include/core_cm4.h"
 
 
 
@@ -10296,8 +10296,8 @@ static __inline int32_t ITM_CheckChar (void)
 
 
 
-#line 164 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
-#line 1 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\system_stm32f4xx.h"
+#line 164 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
+#line 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
 
 
 
@@ -10402,8 +10402,8 @@ extern void SystemCoreClockUpdate(void);
 
 
  
-#line 165 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
-#line 166 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 165 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
+#line 166 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11048,7 +11048,7 @@ typedef struct
 
 
  
-#line 825 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 825 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11061,15 +11061,15 @@ typedef struct
 
 
  
-#line 864 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 864 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 874 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 874 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 883 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 883 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 915 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 915 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11087,7 +11087,7 @@ typedef struct
 
 
 
-#line 944 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 944 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11099,9 +11099,9 @@ typedef struct
 
 
  
-#line 991 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 991 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 1038 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1038 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11138,19 +11138,19 @@ typedef struct
 
 
  
-#line 1092 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1092 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1146 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1146 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1196 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1196 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1252 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1252 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1314 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1314 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11183,16 +11183,16 @@ typedef struct
 
 
  
-#line 1385 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1385 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1435 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1435 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1485 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1485 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1524 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1524 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11215,10 +11215,10 @@ typedef struct
 
 
  
-#line 1552 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1552 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1608 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11226,10 +11226,10 @@ typedef struct
 
 
  
-#line 1649 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1649 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1657 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1657 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11242,198 +11242,198 @@ typedef struct
  
  
  
-#line 1699 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1699 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 1727 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1727 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1777 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1777 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1790 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1790 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1803 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1803 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1817 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1817 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1831 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1831 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1876 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1876 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1887 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1887 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1894 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1894 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 1901 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1901 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1930 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1930 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
  
-#line 1949 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1949 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1960 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1960 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1974 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1974 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 1988 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 1988 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2005 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2005 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2016 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2016 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2030 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2030 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2044 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2044 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2061 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2061 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2072 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2072 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2086 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2086 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2100 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2100 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2114 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2114 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2125 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2125 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2139 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2139 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2153 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2153 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2167 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2167 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2178 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2178 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2192 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2192 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2206 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2206 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
-#line 2215 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2215 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2304 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2304 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2393 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2393 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2482 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2482 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2571 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2571 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
-#line 2670 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2670 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2768 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2768 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2866 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2866 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 2964 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 2964 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3062 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3062 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3160 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3160 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3258 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3258 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3356 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3356 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3454 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3454 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3552 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3552 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3650 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3650 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3748 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3748 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3846 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3846 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 3944 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 3944 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4042 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4042 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4140 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4140 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4238 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4336 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4336 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4434 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4434 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4532 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4532 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4630 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4630 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4728 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4728 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4826 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4826 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 4924 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 4924 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5022 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5022 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5120 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5120 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5218 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5218 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5316 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5316 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -11467,9 +11467,9 @@ typedef struct
  
 
  
-#line 5358 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5358 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5365 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5365 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11477,11 +11477,11 @@ typedef struct
 
 
 
-#line 5379 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5379 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5395 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5395 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5402 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5402 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11489,12 +11489,12 @@ typedef struct
 
 
 
-#line 5416 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5416 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 5423 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5423 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5431 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5431 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11527,13 +11527,13 @@ typedef struct
 
 
  
-#line 5469 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5469 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5477 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5477 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5485 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5485 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11546,7 +11546,7 @@ typedef struct
 
 
  
-#line 5503 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5503 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -11555,7 +11555,7 @@ typedef struct
  
  
  
-#line 5583 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5583 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11563,22 +11563,22 @@ typedef struct
 
 
  
-#line 5609 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5609 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5628 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5628 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5690 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5690 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5752 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5752 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5814 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5814 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5876 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5876 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -11602,28 +11602,28 @@ typedef struct
  
  
  
-#line 5968 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5968 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 5996 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 5996 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6067 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6067 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6092 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6092 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6163 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6163 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6234 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6234 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6305 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6305 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6376 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6376 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -11631,24 +11631,26 @@ typedef struct
  
  
  
-#line 6394 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6394 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
-#line 6417 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6411 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6440 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6434 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6476 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6469 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6484 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6477 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6525 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6518 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6542 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6535 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
+ 
+#line 6545 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -11656,7 +11658,7 @@ typedef struct
  
  
  
-#line 6555 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6558 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11670,10 +11672,10 @@ typedef struct
 
 
 
-#line 6604 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6607 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6612 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6615 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11687,10 +11689,10 @@ typedef struct
 
 
 
-#line 6661 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6664 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6669 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6672 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11704,10 +11706,10 @@ typedef struct
 
 
 
-#line 6718 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6721 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6726 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6729 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11721,20 +11723,20 @@ typedef struct
 
 
 
-#line 6775 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6778 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 6784 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6787 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6792 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6795 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6804 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6807 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6812 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6815 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6820 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6823 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6828 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6831 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11743,17 +11745,17 @@ typedef struct
 
 
  
-#line 6843 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6846 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6851 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6854 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6863 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6866 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6871 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6874 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6879 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6882 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6887 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6890 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11762,17 +11764,17 @@ typedef struct
 
 
  
-#line 6902 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6905 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6910 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6913 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6922 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6925 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6930 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6933 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6938 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6941 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6946 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6949 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11781,17 +11783,17 @@ typedef struct
 
 
  
-#line 6961 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6964 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6969 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6972 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6981 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6984 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6989 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 6992 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 6997 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7000 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7005 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7008 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11800,13 +11802,13 @@ typedef struct
 
 
  
-#line 7020 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7023 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7028 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7031 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7040 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7043 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7048 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7051 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11815,13 +11817,13 @@ typedef struct
 
 
  
-#line 7063 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7066 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7071 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7074 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7083 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7086 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7091 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7094 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11830,13 +11832,13 @@ typedef struct
 
 
  
-#line 7106 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7109 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7114 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7117 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7126 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7129 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7134 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7137 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11845,13 +11847,13 @@ typedef struct
 
 
  
-#line 7149 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7152 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7157 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7160 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7169 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7172 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7177 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7180 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11860,7 +11862,7 @@ typedef struct
 
 
  
-#line 7194 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7197 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11872,14 +11874,14 @@ typedef struct
 
 
 
-#line 7212 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7215 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7220 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7223 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7227 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7230 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7241 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11891,14 +11893,14 @@ typedef struct
 
 
 
-#line 7256 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7259 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7264 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7267 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7271 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7274 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7282 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7285 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -11910,83 +11912,83 @@ typedef struct
 
 
 
-#line 7300 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7303 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7308 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7311 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7315 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7318 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7338 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7341 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7361 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7364 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7384 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7387 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7397 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7400 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7409 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7412 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7421 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7424 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7433 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7436 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7446 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7449 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7458 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7461 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7470 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7473 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7482 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7485 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7495 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7498 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7507 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7510 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7519 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7522 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7531 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7534 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7544 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7547 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7556 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7559 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7568 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7571 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7580 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7583 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7593 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7596 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7605 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7617 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7620 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7629 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7632 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7642 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7645 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7654 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7657 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7666 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7669 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7678 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7681 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7691 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7694 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7703 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7706 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7715 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7718 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 7727 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7730 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12004,58 +12006,58 @@ typedef struct
  
  
  
-#line 7824 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7827 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7906 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7909 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7956 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7959 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 7974 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 7977 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8056 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8059 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8106 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8109 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8188 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8191 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8241 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8288 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8291 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8306 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8309 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8356 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8359 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 8373 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8376 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8471 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8474 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8553 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8556 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 8605 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 8662 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8665 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8704 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8707 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8762 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8765 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8804 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8807 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -12064,25 +12066,25 @@ typedef struct
  
  
  
-#line 8854 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8857 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 8865 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8868 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 8881 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8884 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
-#line 8916 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8919 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
  
-#line 8928 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8931 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12090,13 +12092,13 @@ typedef struct
 
 
  
-#line 8977 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 8980 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9003 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9006 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9014 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9017 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12115,7 +12117,7 @@ typedef struct
 
 
  
-#line 9038 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9041 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12123,7 +12125,7 @@ typedef struct
 
 
  
-#line 9051 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9054 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12133,18 +12135,18 @@ typedef struct
  
  
  
-#line 9075 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9078 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9082 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9085 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9101 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9104 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 9127 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9130 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12155,24 +12157,24 @@ typedef struct
  
  
  
-#line 9143 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9146 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9152 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9155 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9164 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9167 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9183 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9186 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
 
 
-#line 9194 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9197 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9205 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9208 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9218 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9221 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12180,9 +12182,9 @@ typedef struct
 
 
 
-#line 9232 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9235 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9240 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9243 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -12209,12 +12211,12 @@ typedef struct
 
 
  
-#line 9273 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9276 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9283 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9286 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9291 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9294 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12223,7 +12225,7 @@ typedef struct
 
 
  
-#line 9305 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9308 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12232,7 +12234,7 @@ typedef struct
 
 
  
-#line 9321 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9324 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12245,9 +12247,9 @@ typedef struct
 
 
 
-#line 9339 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9342 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9346 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9349 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12256,21 +12258,21 @@ typedef struct
 
 
  
-#line 9372 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9375 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9394 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9397 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9413 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9416 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
  
-#line 9458 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9461 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9466 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9469 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
@@ -12278,23 +12280,23 @@ typedef struct
 
 
  
-#line 9542 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9545 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9577 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9580 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 9630 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9633 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
  
 
 
-#line 9642 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9645 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12307,18 +12309,18 @@ typedef struct
 
 
  
-#line 9723 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9726 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9764 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9767 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9814 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9817 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 9821 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9824 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9829 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9832 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12326,13 +12328,13 @@ typedef struct
 
 
  
-#line 9905 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9908 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9946 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9949 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 9957 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9960 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12340,21 +12342,21 @@ typedef struct
 
 
 
-#line 9970 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 9973 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10002 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10005 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
 
  
-#line 10019 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10022 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10033 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10036 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 10040 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10043 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -12363,10 +12365,10 @@ typedef struct
  
  
  
-#line 10054 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10057 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10071 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10074 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -12379,22 +12381,22 @@ typedef struct
 
 
  
-#line 10124 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10127 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10168 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10171 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10238 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10241 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 10291 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10294 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10299 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10302 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12402,13 +12404,13 @@ typedef struct
 
 
  
-#line 10312 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10315 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10382 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10385 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10452 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10455 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12421,13 +12423,13 @@ typedef struct
 
 
  
-#line 10470 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10473 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10513 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10516 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10543 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10546 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12435,19 +12437,19 @@ typedef struct
 
 
  
-#line 10571 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10574 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10619 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10622 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
  
-#line 10634 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10637 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 10646 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10649 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12566,7 +12568,7 @@ typedef struct
 
 
  
-#line 10776 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10779 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12574,7 +12576,7 @@ typedef struct
 
 
 
-#line 10789 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10792 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12592,7 +12594,7 @@ typedef struct
 
 
 
-#line 10827 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10830 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12635,11 +12637,11 @@ typedef struct
 
 
  
-#line 10881 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10884 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 10889 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10892 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 10902 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10905 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12647,13 +12649,13 @@ typedef struct
 
 
  
-#line 10981 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 10984 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11022 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11025 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11096 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11099 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12673,17 +12675,17 @@ typedef struct
 
 
  
-#line 11124 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11127 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11131 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11134 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11162 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11165 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11185 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11188 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11214 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11217 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12736,10 +12738,10 @@ typedef struct
 
 
 
-#line 11272 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11275 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11283 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11286 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -12760,98 +12762,98 @@ typedef struct
 
 
  
-#line 11315 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11318 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
-#line 11327 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11330 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11340 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11343 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11353 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11356 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11366 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11369 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11380 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11383 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11393 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11396 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11406 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11409 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11419 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11422 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11432 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11435 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11446 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11449 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11459 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11462 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11472 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11475 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11485 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11488 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11498 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11501 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11512 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11515 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11524 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11527 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11536 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11539 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11548 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11551 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
  
-#line 11560 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11563 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11568 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11571 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -12859,7 +12861,7 @@ typedef struct
  
  
  
-#line 11590 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11593 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12878,22 +12880,22 @@ typedef struct
 
 
  
-#line 11617 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11620 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11624 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11627 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11649 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11652 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11657 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11660 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11664 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11667 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
-#line 11676 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11679 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12901,16 +12903,16 @@ typedef struct
 
 
 
-#line 11689 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11692 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11736 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11739 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11774 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11777 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 11800 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11803 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12919,9 +12921,9 @@ typedef struct
 
 
 
-#line 11814 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11817 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11821 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11824 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12933,9 +12935,9 @@ typedef struct
 
 
 
-#line 11838 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11841 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11845 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11848 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12949,7 +12951,7 @@ typedef struct
 
 
 
-#line 11865 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11868 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12957,7 +12959,7 @@ typedef struct
 
 
 
-#line 11879 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11882 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -12966,9 +12968,9 @@ typedef struct
 
 
 
-#line 11893 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11896 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11900 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11903 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12980,9 +12982,9 @@ typedef struct
 
 
 
-#line 11917 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11920 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 11924 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11927 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -12996,7 +12998,7 @@ typedef struct
 
 
 
-#line 11944 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11947 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13004,10 +13006,10 @@ typedef struct
 
 
 
-#line 11958 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 11961 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12005 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12008 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13050,7 +13052,7 @@ typedef struct
 
 
  
-#line 12058 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12061 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13058,12 +13060,12 @@ typedef struct
 
 
 
-#line 12083 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12086 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12093 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12096 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12102 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12105 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13077,7 +13079,7 @@ typedef struct
 
 
 
-#line 12125 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12128 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -13086,7 +13088,7 @@ typedef struct
  
  
  
-#line 12163 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12166 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13094,13 +13096,13 @@ typedef struct
 
 
  
-#line 12176 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12179 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12223 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12226 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12246 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12249 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13113,10 +13115,10 @@ typedef struct
 
 
  
-#line 12294 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12297 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12307 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12310 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13128,18 +13130,18 @@ typedef struct
  
  
  
-#line 12328 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12331 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 12336 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12339 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
 
 
  
-#line 12352 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12355 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 12360 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12363 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13166,10 +13168,10 @@ typedef struct
  
  
  
-#line 12392 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12395 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12406 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12409 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13178,12 +13180,12 @@ typedef struct
 
 
  
-#line 12465 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12468 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
  
-#line 12484 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12487 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
@@ -13191,17 +13193,17 @@ typedef struct
  
  
  
-#line 12521 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12524 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 12532 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12535 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 12543 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12546 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12554 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12557 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13224,15 +13226,15 @@ typedef struct
 
 
  
-#line 12585 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12588 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12605 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12608 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12619 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12622 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12641 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12644 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13240,35 +13242,35 @@ typedef struct
 
 
  
-#line 12654 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12657 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
 
-#line 12671 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12674 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12693 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12696 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 12757 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12760 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12774 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12777 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
-#line 12790 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12793 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12816 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12819 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 12832 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12835 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 12844 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12847 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13276,15 +13278,15 @@ typedef struct
 
 
  
-#line 12887 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12890 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 12966 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 12969 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13046 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13049 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13054 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13057 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13292,10 +13294,10 @@ typedef struct
 
 
  
-#line 13073 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13076 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13081 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13084 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13308,7 +13310,7 @@ typedef struct
 
 
  
-#line 13105 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13108 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13320,16 +13322,16 @@ typedef struct
 
 
 
-#line 13127 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13130 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13138 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13141 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13146 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13149 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13162 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13165 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13178 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13181 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13337,13 +13339,13 @@ typedef struct
 
 
  
-#line 13191 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13194 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13211 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13214 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13219 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13222 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13351,14 +13353,14 @@ typedef struct
 
 
  
-#line 13253 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13256 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13282 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13285 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13291 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13294 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13299 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13302 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13367,24 +13369,24 @@ typedef struct
 
 
  
-#line 13340 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13343 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13348 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13351 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13362 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13365 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13371 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13374 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13397 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13400 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
 
-#line 13416 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13419 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13398,30 +13400,30 @@ typedef struct
 
 
 
-#line 13448 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13451 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 13461 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13464 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13472 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13475 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13484 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13487 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13519 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13522 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13560 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13563 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13595 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13598 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 13607 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13610 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 13622 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13625 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13439,17 +13441,17 @@ typedef struct
 
 
  
-#line 13645 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13648 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
-#line 13686 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13689 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13721 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13724 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
-#line 13729 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13732 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13458,11 +13460,11 @@ typedef struct
 
 
  
-#line 13746 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13749 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
  
-#line 13759 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13762 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13470,11 +13472,11 @@ typedef struct
 
 
 
-#line 13773 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13776 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13781 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13784 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
-#line 13789 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13792 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -13507,10 +13509,10 @@ typedef struct
 
 
  
-#line 13837 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13840 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13848 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13851 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13545,50 +13547,50 @@ typedef struct
 
 
  
-#line 13896 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13899 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13910 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13913 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13920 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13923 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13928 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13931 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13936 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13939 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
  
-#line 13948 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13951 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13958 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13961 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13966 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13969 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13974 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13977 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13982 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13985 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 13992 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 13995 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14002 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14005 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
 
  
-#line 14013 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14016 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13596,16 +13598,16 @@ typedef struct
 
 
  
-#line 14076 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14079 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14088 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14091 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14096 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14099 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14110 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14113 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13613,28 +13615,28 @@ typedef struct
 
 
  
-#line 14123 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14126 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14133 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14136 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14141 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14144 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14151 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14154 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
-#line 14161 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14164 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
 
 
  
-#line 14175 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14178 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
-#line 14182 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14185 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
  
 
 
@@ -13646,7 +13648,7 @@ typedef struct
 
 
  
-#line 14199 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14202 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
  
 
@@ -13666,7 +13668,7 @@ typedef struct
 
 
  
-#line 14224 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14227 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
  
@@ -13698,7 +13700,7 @@ typedef struct
 
 
 
-#line 14262 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f405xx.h"
+#line 14265 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
 
 
 
@@ -13747,8 +13749,8 @@ typedef struct
 
 
 
-#line 129 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
-#line 176 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 129 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+#line 176 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -13802,22 +13804,22 @@ typedef enum
 
  
  
-#line 236 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 236 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 245 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 245 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 254 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 254 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 263 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 263 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 272 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 272 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
  
-#line 281 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 281 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -13847,7 +13849,7 @@ typedef enum
 #line 296 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
 
 
-#line 288 "..\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include\\stm32f4xx.h"
+#line 288 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
 
 
 
@@ -14033,7 +14035,7 @@ typedef enum
 
  
 
-#line 561 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 567 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14043,7 +14045,7 @@ typedef enum
 
  
 
-#line 578 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 584 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14053,20 +14055,22 @@ typedef enum
 
  
 
-#line 603 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 609 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 702 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 618 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 717 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
+
  
 
 
 
 
  
-#line 723 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 738 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14084,6 +14088,7 @@ typedef enum
 
 
  
+
 
 
 
@@ -14101,16 +14106,16 @@ typedef enum
 
 
 
+#line 789 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 774 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
+#line 801 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 786 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 808 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 793 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14119,8 +14124,9 @@ typedef enum
 
 
 
+#line 824 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 809 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 839 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14128,7 +14134,7 @@ typedef enum
 
 
  
-#line 837 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 867 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14136,23 +14142,28 @@ typedef enum
 
 
  
-#line 853 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 883 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+
+#line 892 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+
 
-#line 862 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 873 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 985 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1002 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 907 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 1019 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 1035 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+
+
+
  
 
 
 
  
-#line 1026 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1060 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14303,7 +14314,7 @@ typedef enum
  
 
 
-#line 1183 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1217 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14317,7 +14328,7 @@ typedef enum
  
 
  
-#line 1205 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1239 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
  
 
@@ -14370,7 +14381,7 @@ typedef enum
 
 
 
-#line 1266 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1300 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14387,7 +14398,7 @@ typedef enum
 
 
 
-#line 1288 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1322 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14418,7 +14429,7 @@ typedef enum
 
 
  
-#line 1329 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1363 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14435,7 +14446,7 @@ typedef enum
 
 
 
-#line 1359 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1393 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14447,11 +14458,11 @@ typedef enum
 
 
 
-#line 1397 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1431 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1407 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1441 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1426 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1460 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14462,7 +14473,7 @@ typedef enum
 
 
 
-#line 1453 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1487 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14537,7 +14548,7 @@ typedef enum
 
 
  
-#line 1537 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1571 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14547,11 +14558,11 @@ typedef enum
 
  
 
-#line 1554 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1588 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1566 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1600 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1607 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1641 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14575,9 +14586,9 @@ typedef enum
 
  
 
-#line 1657 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1691 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1671 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1705 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14623,7 +14634,7 @@ typedef enum
 
 
  
-#line 1722 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1756 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
  
 
@@ -14668,7 +14679,7 @@ typedef enum
 
 
  
-#line 1792 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1826 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14677,7 +14688,7 @@ typedef enum
 
 
  
-#line 1807 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1841 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14695,9 +14706,9 @@ typedef enum
 
 
 
-#line 1840 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1874 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1851 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1885 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14706,20 +14717,20 @@ typedef enum
 
  
 
-#line 1881 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1915 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 1889 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1923 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
 
-#line 1905 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 1939 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
-#line 1994 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2028 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14728,7 +14739,7 @@ typedef enum
 
 
  
-#line 2008 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2042 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14755,7 +14766,7 @@ typedef enum
 
 
  
-#line 2047 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2081 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14803,7 +14814,7 @@ typedef enum
 
 
  
-#line 2108 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2142 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14819,17 +14830,17 @@ typedef enum
 
 
  
-#line 2136 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2170 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2157 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2191 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2168 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2202 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2177 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2211 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2190 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2224 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2199 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2233 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14850,12 +14861,12 @@ typedef enum
 
 
  
-#line 2235 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2269 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2250 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2284 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
-#line 2283 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2317 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14864,16 +14875,16 @@ typedef enum
 
 
  
-#line 2451 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2485 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
-#line 2461 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2495 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
 
-#line 2477 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2511 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14891,7 +14902,7 @@ typedef enum
 
  
 
-#line 2500 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2534 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14901,7 +14912,7 @@ typedef enum
 
  
 
-#line 2528 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2562 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14967,7 +14978,7 @@ typedef enum
 
 
  
-#line 2606 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2640 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -14977,9 +14988,9 @@ typedef enum
 
 
  
-#line 2656 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2690 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2670 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2704 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -14996,42 +15007,42 @@ typedef enum
 
 
 
-#line 2950 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2984 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 2964 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 2998 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3181 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3215 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3200 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3234 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3207 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3241 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3228 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3262 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3376 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3410 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
  
 
 
 
-#line 3401 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3435 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3422 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3456 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3539 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3573 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3548 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3582 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3565 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3599 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3580 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3614 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
 
-#line 3609 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3643 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -15049,25 +15060,25 @@ typedef enum
 
 
 
-#line 3635 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3669 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
-#line 3662 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3696 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
 
-#line 3673 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3708 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3682 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3717 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3715 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3750 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3733 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3768 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -15080,13 +15091,13 @@ typedef enum
 
 
 
-#line 3751 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3786 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3774 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3809 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3814 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3849 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3900 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3935 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -15104,13 +15115,13 @@ typedef enum
 
 
  
-#line 3925 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3961 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3953 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3989 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3960 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 3996 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 3975 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4011 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -15131,19 +15142,19 @@ typedef enum
 
 
 
-#line 4003 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4039 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4025 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4061 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
  
 
 
 
 
-#line 4055 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4091 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4062 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4098 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4074 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4110 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -15152,7 +15163,7 @@ typedef enum
 
  
 
-#line 4088 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4124 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -15166,7 +15177,7 @@ typedef enum
 
 
  
-#line 4109 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4145 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -15214,7 +15225,7 @@ typedef enum
 
 
 
-#line 4163 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4199 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -15222,8 +15233,6 @@ typedef enum
 
 
  
-
-
 
 
 
@@ -15234,17 +15243,18 @@ typedef enum
 
 
 
-#line 4189 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4198 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
-#line 4207 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4225 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 4234 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
+#line 4243 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
 
+#line 4276 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -15260,7 +15270,7 @@ typedef enum
 
 
 
-#line 4240 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4303 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -15274,7 +15284,7 @@ typedef enum
 
  
 
-#line 4260 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4323 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
 
@@ -15295,7 +15305,7 @@ typedef enum
 
 
  
-#line 4294 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4357 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -15315,7 +15325,7 @@ typedef enum
 
 
  
-#line 4321 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+#line 4384 "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
 
 
  
@@ -17210,8 +17220,8 @@ typedef struct
  
  
 HAL_StatusTypeDef HAL_RCC_DeInit(void);
-HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct);
-HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency);
+HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef *RCC_OscInitStruct);
+HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency);
 
 
  
@@ -29578,7 +29588,7 @@ typedef struct
 
 
 
-#line 1848 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+#line 1849 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
 
 
 
@@ -29592,7 +29602,7 @@ typedef struct
 
 
 
-#line 1871 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+#line 1873 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
 
 
 
@@ -29711,7 +29721,7 @@ typedef struct
 
 
  
-#line 191 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h"
+#line 193 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h"
 
 
 
@@ -29876,7 +29886,7 @@ void TIMEx_DMACommutationHalfCplt(DMA_HandleTypeDef *hdma);
 
 
 
-#line 1879 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+#line 1881 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
 
  
 
@@ -32081,7 +32091,7 @@ void Error_Handler(void);
  
 
  
-#line 138 "../Core/Inc/main.h"
+#line 140 "../Core/Inc/main.h"
 
  
 
@@ -32091,7 +32101,7 @@ void Error_Handler(void);
 
 
 
-#line 6 "..\\..\\sPlc\\sPlc.h"
+#line 6 "../../sPlc/sPlc.h"
 #line 1 "C:\\Keil_v5\\ARM\\CMSIS\\Include\\arm_math.h"
 
 
@@ -33605,16 +33615,16 @@ extern __declspec(__nothrow) long long llroundf(float  );
 inline __declspec(__nothrow) long long llroundl(long double __x)     { return llround((double)__x); }
 
 
-extern __declspec(__nothrow) __attribute__((const)) double nan(const char *  );
-extern __declspec(__nothrow) __attribute__((const)) float nanf(const char *  );
+extern __declspec(__nothrow) __attribute__((const)) double nan(const char * );
+extern __declspec(__nothrow) __attribute__((const)) float nanf(const char * );
 
 inline __declspec(__nothrow) __attribute__((const)) long double nanl(const char *__t)     { return (long double)nan(__t); }
 #line 856 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\math.h"
 extern __declspec(__nothrow) __attribute__((const)) double nearbyint(double  );
 extern __declspec(__nothrow) __attribute__((const)) float nearbyintf(float  );
 __declspec(__nothrow) long double nearbyintl(long double );
-extern  double remquo(double  , double  , int *  );
-extern  float remquof(float  , float  , int *  );
+extern  double remquo(double  , double  , int * );
+extern  float remquof(float  , float  , int * );
 
 inline long double remquol(long double __x, long double __y, int *__q)     { return (long double)remquo((double)__x, (double)__y, __q); }
 
@@ -40180,7 +40190,7 @@ void arm_rfft_fast_f32(
 
 
  
-#line 7 "..\\..\\sPlc\\sPlc.h"
+#line 7 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
 
 
@@ -42171,6 +42181,10 @@ extern __declspec(__nothrow) int __C_library_version_number(void);
 
 
 
+
+
+
+
  
 
 
@@ -42373,7 +42387,8 @@ typedef enum
   USBH_URB_NOTREADY,
   USBH_URB_NYET,
   USBH_URB_ERROR,
-  USBH_URB_STALL
+  USBH_URB_STALL,
+  USBH_URB_NAK_WAIT
 } USBH_URBStateTypeDef;
 
 typedef enum
@@ -42413,7 +42428,7 @@ typedef struct
   volatile uint8_t                      is_connected;
   volatile uint8_t                      is_disconnected;
   volatile uint8_t                      is_ReEnumerated;
-  uint8_t                           PortEnabled;
+  volatile uint8_t                      PortEnabled;
   uint8_t                           current_interface;
   USBH_DevDescTypeDef               DevDesc;
   USBH_CfgDescTypeDef               CfgDesc;
@@ -42447,6 +42462,10 @@ typedef struct _USBH_HandleTypeDef
   uint32_t              ClassNumber;
   uint32_t              Pipes[16];
   volatile uint32_t         Timer;
+
+
+
+
   uint32_t              Timeout;
   uint8_t               id;
   void                 *pData;
@@ -42466,7 +42485,7 @@ typedef struct _USBH_HandleTypeDef
 } USBH_HandleTypeDef;
 
 
-#line 503 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+#line 512 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
 
 
 
@@ -42524,7 +42543,7 @@ typedef struct _USBH_HandleTypeDef
 
  
  
-#line 176 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
+#line 165 "../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
 
 
  
@@ -42767,6 +42786,8 @@ USBH_StatusTypeDef USBH_FreePipe(USBH_HandleTypeDef *phost,
 
 
 
+
+
  
 
 
@@ -42981,79 +43002,69 @@ USBH_DescHeader_t *USBH_GetNextDesc(uint8_t *pbuf, uint16_t *ptr);
 
 
  
+USBH_StatusTypeDef USBH_Init(USBH_HandleTypeDef *phost,
+                             void (*pUsrFunc)(USBH_HandleTypeDef *phost, uint8_t id), uint8_t id);
 
+USBH_StatusTypeDef USBH_DeInit(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_Start(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_Stop(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_Process(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_ReEnumerate(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_RegisterClass(USBH_HandleTypeDef *phost, USBH_ClassTypeDef *pclass);
+USBH_StatusTypeDef USBH_SelectInterface(USBH_HandleTypeDef *phost, uint8_t interface);
 
-USBH_StatusTypeDef  USBH_Init(USBH_HandleTypeDef *phost, void (*pUsrFunc)(USBH_HandleTypeDef *phost, uint8_t id), uint8_t id);
-USBH_StatusTypeDef  USBH_DeInit(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_RegisterClass(USBH_HandleTypeDef *phost, USBH_ClassTypeDef *pclass);
-USBH_StatusTypeDef  USBH_SelectInterface(USBH_HandleTypeDef *phost, uint8_t interface);
-uint8_t             USBH_FindInterface(USBH_HandleTypeDef *phost,
-                                       uint8_t Class,
-                                       uint8_t SubClass,
-                                       uint8_t Protocol);
-uint8_t             USBH_GetActiveClass(USBH_HandleTypeDef *phost);
-
-uint8_t             USBH_FindInterfaceIndex(USBH_HandleTypeDef *phost,
-                                            uint8_t interface_number,
-                                            uint8_t alt_settings);
-
-uint8_t              USBH_IsPortEnabled(USBH_HandleTypeDef *phost);
-
-USBH_StatusTypeDef  USBH_Start(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_Stop(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_Process(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef  USBH_ReEnumerate(USBH_HandleTypeDef *phost);
+uint8_t            USBH_FindInterfaceIndex(USBH_HandleTypeDef *phost, uint8_t interface_number, uint8_t alt_settings);
+uint8_t            USBH_FindInterface(USBH_HandleTypeDef *phost, uint8_t Class, uint8_t SubClass, uint8_t Protocol);
+uint8_t            USBH_GetActiveClass(USBH_HandleTypeDef *phost);
+uint8_t            USBH_IsPortEnabled(USBH_HandleTypeDef *phost);
 
  
-USBH_StatusTypeDef   USBH_LL_Init(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_DeInit(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_Start(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_Stop(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost);
 
-USBH_StatusTypeDef   USBH_LL_Connect(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_Disconnect(USBH_HandleTypeDef *phost);
-USBH_SpeedTypeDef    USBH_LL_GetSpeed(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef   USBH_LL_ResetPort(USBH_HandleTypeDef *phost);
-uint32_t             USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost,
-                                             uint8_t pipe);
+USBH_StatusTypeDef USBH_LL_Connect(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_Disconnect(USBH_HandleTypeDef *phost);
+USBH_SpeedTypeDef  USBH_LL_GetSpeed(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_ResetPort(USBH_HandleTypeDef *phost);
+uint32_t           USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost, uint8_t pipe);
 
-USBH_StatusTypeDef   USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost,
-                                        uint8_t state);
+USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state);
 
-USBH_StatusTypeDef   USBH_LL_OpenPipe(USBH_HandleTypeDef *phost,
-                                      uint8_t pipe,
-                                      uint8_t epnum,
-                                      uint8_t dev_address,
-                                      uint8_t speed,
-                                      uint8_t ep_type,
-                                      uint16_t mps);
+USBH_StatusTypeDef USBH_LL_OpenPipe(USBH_HandleTypeDef *phost,
+                                    uint8_t pipe,
+                                    uint8_t epnum,
+                                    uint8_t dev_address,
+                                    uint8_t speed,
+                                    uint8_t ep_type,
+                                    uint16_t mps);
 
-USBH_StatusTypeDef   USBH_LL_ClosePipe(USBH_HandleTypeDef *phost,
-                                       uint8_t pipe);
+USBH_StatusTypeDef USBH_LL_ActivatePipe(USBH_HandleTypeDef *phost, uint8_t pipe);
+USBH_StatusTypeDef USBH_LL_ClosePipe(USBH_HandleTypeDef *phost, uint8_t pipe);
 
-USBH_StatusTypeDef   USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
-                                       uint8_t pipe,
-                                       uint8_t direction,
-                                       uint8_t ep_type,
-                                       uint8_t token,
-                                       uint8_t *pbuff,
-                                       uint16_t length,
-                                       uint8_t do_ping);
+USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
+                                     uint8_t pipe,
+                                     uint8_t direction,
+                                     uint8_t ep_type,
+                                     uint8_t token,
+                                     uint8_t *pbuff,
+                                     uint16_t length,
+                                     uint8_t do_ping);
 
-USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost,
-                                         uint8_t pipe);
+USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, uint8_t pipe);
 
 
-USBH_StatusTypeDef  USBH_LL_NotifyURBChange(USBH_HandleTypeDef *phost);
+USBH_StatusTypeDef USBH_LL_NotifyURBChange(USBH_HandleTypeDef *phost);
+void USBH_OS_PutMessage(USBH_HandleTypeDef *phost, USBH_OSEventTypeDef message, uint32_t timeout, uint32_t priority);
 
 
-USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost,
-                                     uint8_t pipe, uint8_t toggle);
+USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost, uint8_t pipe, uint8_t toggle);
 
 uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe);
 
-void                 USBH_LL_PortDisabled(USBH_HandleTypeDef *phost);
-void                 USBH_LL_PortEnabled(USBH_HandleTypeDef *phost);
+void USBH_LL_PortDisabled(USBH_HandleTypeDef *phost);
+void USBH_LL_PortEnabled(USBH_HandleTypeDef *phost);
 
  
 void USBH_LL_SetTimer(USBH_HandleTypeDef *phost, uint32_t time);
@@ -43062,7 +43073,6 @@ void USBH_LL_IncTimer(USBH_HandleTypeDef *phost);
 void USBH_Delay(uint32_t Delay);
 
 
-
  
 
 
@@ -43084,11 +43094,11 @@ void USBH_Delay(uint32_t Delay);
 
 
 
-#line 8 "..\\..\\sPlc\\sPlc.h"
+#line 8 "../../sPlc/sPlc.h"
  
-#line 10 "..\\..\\sPlc\\sPlc.h"
-#line 11 "..\\..\\sPlc\\sPlc.h"
-#line 12 "..\\..\\sPlc\\sPlc.h"
+#line 10 "../../sPlc/sPlc.h"
+#line 11 "../../sPlc/sPlc.h"
+#line 12 "../../sPlc/sPlc.h"
 #line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\ctype.h"
  
  
@@ -43273,7 +43283,7 @@ extern int toupper(int  );
 
  
 
-#line 13 "..\\..\\sPlc\\sPlc.h"
+#line 13 "../../sPlc/sPlc.h"
 #line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\LIMITS.H"
  
  
@@ -43354,7 +43364,7 @@ extern int toupper(int  );
 
  
 
-#line 14 "..\\..\\sPlc\\sPlc.h"
+#line 14 "../../sPlc/sPlc.h"
 #line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdbool.h"
  
 
@@ -43373,15 +43383,15 @@ extern int toupper(int  );
 
 
 
-#line 15 "..\\..\\sPlc\\sPlc.h"
-#line 16 "..\\..\\sPlc\\sPlc.h"
-#line 17 "..\\..\\sPlc\\sPlc.h"
+#line 15 "../../sPlc/sPlc.h"
+#line 16 "../../sPlc/sPlc.h"
+#line 17 "../../sPlc/sPlc.h"
  
-#line 1 "..\\..\\lib\\libcrc.h"
+#line 1 "../../lib/libcrc.h"
 
 
  
-#line 5 "..\\..\\lib\\libcrc.h"
+#line 5 "../../lib/libcrc.h"
  
 uint16_t crc16Calculate(uint8_t *buf, uint32_t len);
 uint16_t crc16CalculateAdd(uint8_t dat);
@@ -43398,12 +43408,12 @@ void crc32SetCrcOld(uint32_t old);
 
 
 
-#line 19 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\deviceInfo\\deviceConfig.h"
+#line 19 "../../sPlc/sPlc.h"
+#line 1 "../../deviceInfo/deviceConfig.h"
 
 
  
-#line 5 "..\\..\\deviceInfo\\deviceConfig.h"
+#line 5 "../../deviceInfo/deviceConfig.h"
  
 typedef struct{
 	uint16_t calibrationPwr0[10];
@@ -43436,8 +43446,8 @@ extern void readStm32UniqueID(void);
 
 
 
-#line 20 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\sPlc\\sPlcConfig.h"
+#line 20 "../../sPlc/sPlc.h"
+#line 1 "../../sPlc/sPlcConfig.h"
 
 
  
@@ -43445,45 +43455,46 @@ extern void readStm32UniqueID(void);
 
 
 
- 
 
  
 
  
-#line 20 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 31 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-#line 40 "..\\..\\sPlc\\sPlcConfig.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
  
+#line 21 "../../sPlc/sPlcConfig.h"
+ 
+#line 32 "../../sPlc/sPlcConfig.h"
+ 
+
+#line 41 "../../sPlc/sPlcConfig.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
  
-#line 73 "..\\..\\sPlc\\sPlcConfig.h"
+
+
+
+ 
+#line 74 "../../sPlc/sPlcConfig.h"
  
 
  
-#line 91 "..\\..\\sPlc\\sPlcConfig.h"
+#line 92 "../../sPlc/sPlcConfig.h"
  				
 
 
@@ -43501,7 +43512,7 @@ extern void readStm32UniqueID(void);
  
 
 
-#line 117 "..\\..\\sPlc\\sPlcConfig.h"
+#line 118 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43512,23 +43523,19 @@ extern void readStm32UniqueID(void);
 
 
 
-#line 134 "..\\..\\sPlc\\sPlcConfig.h"
+#line 135 "../../sPlc/sPlcConfig.h"
 
 
 
 
 
  
-#line 158 "..\\..\\sPlc\\sPlcConfig.h"
+#line 152 "../../sPlc/sPlcConfig.h"
+
+#line 161 "../../sPlc/sPlcConfig.h"
  
 
  
-
- 
-
-
-
-
 
  
 
@@ -43537,26 +43544,13 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 185 "..\\..\\sPlc\\sPlcConfig.h"
+
+
+
+
+
  
-
-
-
-
-
-
-
-
-
-#line 207 "..\\..\\sPlc\\sPlcConfig.h"
-
-#line 220 "..\\..\\sPlc\\sPlcConfig.h"
-
-#line 229 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 238 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 247 "..\\..\\sPlc\\sPlcConfig.h"
+#line 188 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43567,121 +43561,16 @@ extern void readStm32UniqueID(void);
 
 
 
+#line 210 "../../sPlc/sPlcConfig.h"
 
+#line 223 "../../sPlc/sPlcConfig.h"
 
-
+#line 232 "../../sPlc/sPlcConfig.h"
  
-
-
+#line 241 "../../sPlc/sPlcConfig.h"
  
-
-
+#line 250 "../../sPlc/sPlcConfig.h"
  
-#line 287 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 308 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 329 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 350 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
- 
-
-
-
- 
-
-
-
- 
-#line 428 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 435 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
- 
-
-
- 
-#line 450 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 467 "..\\..\\sPlc\\sPlcConfig.h"
-
-#line 476 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 497 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
-
-
- 
-
-#line 514 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
-#line 523 "..\\..\\sPlc\\sPlcConfig.h"
 
 
 
@@ -43697,11 +43586,117 @@ extern void readStm32UniqueID(void);
  
 
 
+ 
+
+
+ 
+#line 290 "../../sPlc/sPlcConfig.h"
+ 
+#line 311 "../../sPlc/sPlcConfig.h"
+ 
+#line 332 "../../sPlc/sPlcConfig.h"
+ 
+#line 353 "../../sPlc/sPlcConfig.h"
+ 
 
 
 
 
-#line 550 "..\\..\\sPlc\\sPlcConfig.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+#line 431 "../../sPlc/sPlcConfig.h"
+ 
+#line 438 "../../sPlc/sPlcConfig.h"
+ 
+
+
+ 
+
+
+ 
+#line 453 "../../sPlc/sPlcConfig.h"
+ 
+#line 470 "../../sPlc/sPlcConfig.h"
+
+#line 479 "../../sPlc/sPlcConfig.h"
+ 
+#line 500 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+ 
+
+#line 517 "../../sPlc/sPlcConfig.h"
+ 
+#line 525 "../../sPlc/sPlcConfig.h"
+ 
+#line 532 "../../sPlc/sPlcConfig.h"
+
+#line 541 "../../sPlc/sPlcConfig.h"
  				
 
 
@@ -43709,61 +43704,13 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 563 "..\\..\\sPlc\\sPlcConfig.h"
+#line 554 "../../sPlc/sPlcConfig.h"
  
 
 
 
  
-#line 578 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#line 569 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43813,82 +43760,6 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 707 "..\\..\\sPlc\\sPlcConfig.h"
-
-#line 740 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 750 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
-
-
-
- 
-#line 764 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 793 "..\\..\\sPlc\\sPlcConfig.h"
-
-#line 805 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 830 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 841 "..\\..\\sPlc\\sPlcConfig.h"
- 
-#line 849 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
- 
-#line 887 "..\\..\\sPlc\\sPlcConfig.h"
-
-
-
- 
-
-
- 
-
-
-
- 
- 
-
-
- 
-
-
-
-
- 
-#line 919 "..\\..\\sPlc\\sPlcConfig.h"
- 
-
-
-
-
-
-
-
-#line 21 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\sPlc\\sPlcFun.h"
-
-
- 
-#line 1 "..\\..\\sPlc\\sPlc.h"
-#line 5 "..\\..\\sPlc\\sPlcFun.h"
-
-
-
-
-
-#line 22 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\MainApp\\dcHmiApp.h"
-
-
- 
-#line 5 "..\\..\\MainApp\\dcHmiApp.h"
- 
 
 
 
@@ -43899,7 +43770,35 @@ extern void readStm32UniqueID(void);
 
 
 
-#line 22 "..\\..\\MainApp\\dcHmiApp.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -43909,10 +43808,106 @@ extern void readStm32UniqueID(void);
 
 
  
+#line 698 "../../sPlc/sPlcConfig.h"
+
+#line 731 "../../sPlc/sPlcConfig.h"
+ 
+#line 741 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
 
 
  
-#line 51 "..\\..\\MainApp\\dcHmiApp.h"
+#line 755 "../../sPlc/sPlcConfig.h"
+ 
+#line 784 "../../sPlc/sPlcConfig.h"
+
+#line 796 "../../sPlc/sPlcConfig.h"
+ 
+#line 821 "../../sPlc/sPlcConfig.h"
+ 
+#line 832 "../../sPlc/sPlcConfig.h"
+ 
+#line 840 "../../sPlc/sPlcConfig.h"
+ 
+
+
+ 
+#line 878 "../../sPlc/sPlcConfig.h"
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+ 
+
+
+ 
+
+
+
+
+ 
+#line 910 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+
+
+
+#line 21 "../../sPlc/sPlc.h"
+#line 1 "../../sPlc/sPlcFun.h"
+
+
+ 
+#line 1 "../../sPlc/sPlc.h"
+#line 5 "../../sPlc/sPlcFun.h"
+
+
+
+
+
+#line 22 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/dcHmiApp.h"
+
+
+ 
+#line 5 "../../MainApp/dcHmiApp.h"
+ 
+
+
+
+
+
+
+
+
+
+
+#line 22 "../../MainApp/dcHmiApp.h"
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+#line 51 "../../MainApp/dcHmiApp.h"
  
 void dcHmiLoop(void);
 void dcHmiLoopInit(void);
@@ -43957,12 +43952,12 @@ void saveDeviceConfig(void);
 
 
 
-#line 23 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\deviceInfo\\preScheme.h"
+#line 23 "../../sPlc/sPlc.h"
+#line 1 "../../deviceInfo/preScheme.h"
 
 
  
-#line 5 "..\\..\\deviceInfo\\preScheme.h"
+#line 5 "../../deviceInfo/preScheme.h"
  
 typedef struct{
 	char *name;
@@ -43991,58 +43986,55 @@ void goLastScheme(void);
 
 
 
-#line 24 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\dcHmi\\hmiLib.h"
-#line 16 "..\\..\\dcHmi\\hmiLib.h"
+#line 24 "../../sPlc/sPlc.h"
+#line 1 "../../dcHmi/hmiLib.h"
+#line 16 "../../dcHmi/hmiLib.h"
 
 
 
 
 
-#line 25 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\MainApp\\dcHmiRes.h"
-
-
- 
-#line 20 "..\\..\\MainApp\\dcHmiRes.h"
- 
-
-#line 38 "..\\..\\MainApp\\dcHmiRes.h"
-
-#line 54 "..\\..\\MainApp\\dcHmiRes.h"
- 
-#line 70 "..\\..\\MainApp\\dcHmiRes.h"
- 
-#line 116 "..\\..\\MainApp\\dcHmiRes.h"
- 
-#line 135 "..\\..\\MainApp\\dcHmiRes.h"
- 
-#line 150 "..\\..\\MainApp\\dcHmiRes.h"
- 
+#line 25 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/dcHmiRes.h"
 
 
  
-#line 165 "..\\..\\MainApp\\dcHmiRes.h"
+#line 20 "../../MainApp/dcHmiRes.h"
  
 
-#line 207 "..\\..\\MainApp\\dcHmiRes.h"
+#line 39 "../../MainApp/dcHmiRes.h"
+
+#line 55 "../../MainApp/dcHmiRes.h"
  
-#line 216 "..\\..\\MainApp\\dcHmiRes.h"
+#line 71 "../../MainApp/dcHmiRes.h"
+ 
+#line 118 "../../MainApp/dcHmiRes.h"
+ 
+#line 137 "../../MainApp/dcHmiRes.h"
+ 
+#line 152 "../../MainApp/dcHmiRes.h"
  
 
 
+ 
+#line 167 "../../MainApp/dcHmiRes.h"
+ 
 
+#line 209 "../../MainApp/dcHmiRes.h"
+ 
+#line 218 "../../MainApp/dcHmiRes.h"
+ 
+#line 225 "../../MainApp/dcHmiRes.h"
 
+#line 236 "../../MainApp/dcHmiRes.h"
 
-#line 232 "..\\..\\MainApp\\dcHmiRes.h"
+#line 247 "../../MainApp/dcHmiRes.h"
 
-#line 243 "..\\..\\MainApp\\dcHmiRes.h"
+#line 258 "../../MainApp/dcHmiRes.h"
 
-#line 254 "..\\..\\MainApp\\dcHmiRes.h"
+#line 279 "../../MainApp/dcHmiRes.h"
 
-#line 275 "..\\..\\MainApp\\dcHmiRes.h"
-
-#line 292 "..\\..\\MainApp\\dcHmiRes.h"
+#line 296 "../../MainApp/dcHmiRes.h"
  
 
 
@@ -44052,13 +44044,13 @@ void goLastScheme(void);
 
 
 
-#line 26 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\MainApp\\MainAppLib.h"
+#line 26 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/MainAppLib.h"
 
 
  
-#line 5 "..\\..\\MainApp\\MainAppLib.h"
-#line 6 "..\\..\\MainApp\\MainAppLib.h"
+#line 5 "../../MainApp/MainAppLib.h"
+#line 6 "../../MainApp/MainAppLib.h"
  
 typedef struct{
 	float kp;
@@ -44093,9 +44085,9 @@ int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb);
 
 
 
-#line 27 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\MainApp\\dcHmiLanguage.H"
-#line 4 "..\\..\\MainApp\\dcHmiLanguage.H"
+#line 27 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/dcHmiLanguage.H"
+#line 4 "../../MainApp/dcHmiLanguage.H"
  
 extern const char WARN_MSG_NO_ERROR[];
 extern const char WARN_MSG_INTERLOCK_UNPLUG[];
@@ -44129,8 +44121,8 @@ extern const char INFO_MSG_MANUFACTURE_DATE[];
 
 
 
-#line 28 "..\\..\\sPlc\\sPlc.h"
-#line 29 "..\\..\\sPlc\\sPlc.h"
+#line 28 "../../sPlc/sPlc.h"
+#line 29 "../../sPlc/sPlc.h"
  
 #line 1 "../USB_HOST/Target/usbh_platform.h"
  
@@ -44266,8 +44258,8 @@ void MX_DriverVbusFS(uint8_t state);
 
 
 
-#line 31 "..\\..\\sPlc\\sPlc.h"
-#line 32 "..\\..\\sPlc\\sPlc.h"
+#line 31 "../../sPlc/sPlc.h"
+#line 32 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
 
 
@@ -44907,9 +44899,9 @@ USBH_StatusTypeDef USBH_MSC_Write(USBH_HandleTypeDef *phost, uint8_t lun,
 
 
 
-#line 33 "..\\..\\sPlc\\sPlc.h"
-#line 34 "..\\..\\sPlc\\sPlc.h"
-#line 35 "..\\..\\sPlc\\sPlc.h"
+#line 33 "../../sPlc/sPlc.h"
+#line 34 "../../sPlc/sPlc.h"
+#line 35 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
 
 
@@ -45462,7 +45454,7 @@ void        USBH_AUDIO_BufferEmptyCallback(USBH_HandleTypeDef *phost);
 
  
 
-#line 36 "..\\..\\sPlc\\sPlc.h"
+#line 36 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h"
 
 
@@ -45888,8 +45880,8 @@ void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef *phost);
 
  
 
-#line 37 "..\\..\\sPlc\\sPlc.h"
-#line 38 "..\\..\\sPlc\\sPlc.h"
+#line 37 "../../sPlc/sPlc.h"
+#line 38 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
 
 
@@ -46507,7 +46499,7 @@ uint16_t  USBH_HID_FifoWrite(FIFO_TypeDef *f, void *buf, uint16_t nbytes);
 
  
 
-#line 39 "..\\..\\sPlc\\sPlc.h"
+#line 39 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp.h"
 
 
@@ -47382,7 +47374,7 @@ void USBH_MTP_EventsCallback(USBH_HandleTypeDef *phost, uint32_t event, uint32_t
 
  
 
-#line 40 "..\\..\\sPlc\\sPlc.h"
+#line 40 "../../sPlc/sPlc.h"
  
 #line 1 "../Middlewares/Third_Party/FatFs/src/ff.h"
 
@@ -48013,7 +48005,7 @@ int ff_del_syncobj (osMutexId_t sobj);
 
 
 
-#line 42 "..\\..\\sPlc\\sPlc.h"
+#line 42 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
 
 
@@ -48175,8 +48167,8 @@ uint8_t FATFS_GetAttachedDriversNbr(void);
 
  
 
-#line 43 "..\\..\\sPlc\\sPlc.h"
-#line 1 "..\\..\\MainApp\\flash_if.h"
+#line 43 "../../sPlc/sPlc.h"
+#line 1 "../../MainApp/flash_if.h"
 
 
 
@@ -48231,16 +48223,16 @@ uint8_t FATFS_GetAttachedDriversNbr(void);
 
 
  
-#line 56 "..\\..\\MainApp\\flash_if.h"
+#line 56 "../../MainApp/flash_if.h"
 
  
 typedef  void (*pFunction)(void);
 
-#line 72 "..\\..\\MainApp\\flash_if.h"
+#line 72 "../../MainApp/flash_if.h"
 
 
  
-#line 107 "..\\..\\MainApp\\flash_if.h"
+#line 107 "../../MainApp/flash_if.h"
  
  
 void FLASH_If_FlashUnlock(void);
@@ -48256,13 +48248,13 @@ uint32_t FLASH_If_EraseApplication(void);
 
 
  
-#line 44 "..\\..\\sPlc\\sPlc.h"
+#line 44 "../../sPlc/sPlc.h"
  
 
 
 
  
-#line 55 "..\\..\\sPlc\\sPlc.h"
+#line 55 "../../sPlc/sPlc.h"
  
 
 
@@ -48272,21 +48264,15 @@ uint32_t FLASH_If_EraseApplication(void);
 
 
  
-#line 76 "..\\..\\sPlc\\sPlc.h"
+#line 76 "../../sPlc/sPlc.h"
  
-#line 83 "..\\..\\sPlc\\sPlc.h"
+#line 83 "../../sPlc/sPlc.h"
 
 
 
 
 
-#line 96 "..\\..\\sPlc\\sPlc.h"
-
-
-
-
-
-
+#line 96 "../../sPlc/sPlc.h"
 
 
 
@@ -48298,13 +48284,21 @@ uint32_t FLASH_If_EraseApplication(void);
 
 
 
-extern uint16_t audioSineTable[];
+
+
+
+
+
+extern uint16_t audioSineTable[]; 
+
+
+
 
 
 
 
  
-#line 171 "..\\..\\sPlc\\sPlc.h"
+#line 179 "../../sPlc/sPlc.h"
  
 
 
@@ -48345,7 +48339,7 @@ extern TIM_HandleTypeDef htim14;
 extern RNG_HandleTypeDef hrng;
 
  
-#line 228 "..\\..\\sPlc\\sPlc.h"
+#line 237 "../../sPlc/sPlc.h"
  
 extern int16_t NVRAM0[(1463 + 1)];
 extern int16_t NVRAM1[(1463 + 1)];
@@ -48491,7 +48485,8 @@ extern void ADL1(uint16_t Sa) ;
 extern void ADLS1(uint16_t Sa) ;
 extern void DEL1(uint16_t Sa) ;
 extern void DELS1(uint16_t Sa) ;
-extern void TNTC(uint16_t dist, uint16_t src);
+extern void TNTUC(uint16_t dist, uint16_t src);
+extern void TNTLC(uint16_t dist, uint16_t src);
 extern void TENV(uint16_t dist, uint16_t src);
 extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);
 extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);
@@ -48499,6 +48494,10 @@ extern void UPDAC0(void);
 extern void UPDAC1(void);
 extern void UPDAC2(void);
 extern void UPDAC3(void);
+extern void UPDAC4(void);
+extern void UPDAC5(void);
+extern void UPDAC6(void);
+extern void UPDAC7(void);
 extern void CLDAC(void);
 extern void IMDIO(void) ;
 extern void NVSAVE(void);

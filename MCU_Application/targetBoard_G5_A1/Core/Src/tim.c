@@ -221,10 +221,10 @@ void MX_TIM12_Init(void)
 
   /* USER CODE END TIM12_Init 1 */
   htim12.Instance = TIM12;
-  htim12.Init.Prescaler = 46;
+  htim12.Init.Prescaler = 35;
   htim12.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim12.Init.Period = 100;
-  htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV2;
+  htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim12.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim12) != HAL_OK)
   {
@@ -394,7 +394,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
     PC7     ------> TIM3_CH2
     PC8     ------> TIM3_CH3
     */
-    GPIO_InitStruct.Pin = GREEN_LED_PWM_Pin|RED_LED_PWM_Pin|BLUE_LED_PWM_Pin;
+    GPIO_InitStruct.Pin = BLUE_LED_PWM_Pin|RED_LED_PWM_Pin|GREEN_LED_PWM_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

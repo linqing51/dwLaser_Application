@@ -10,7 +10,7 @@
       <TargetName>targetBoard_G5_A1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -82,7 +82,7 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>F:\GitHub\dwLaser_Application\MCU_Application\targetBoard_G5_A1\MDK-ARM\convert.bat</UserProg1Name>
+            <UserProg1Name>D:\GitHub\dwLaser_Application\MCU_Application\targetBoard_G5_A1\MDK-ARM\convert.bat</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -315,7 +315,7 @@
           <Cads>
             <interw>1</interw>
             <Optim>2</Optim>
-            <oTime>1</oTime>
+            <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
             <Strict>0</Strict>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,ARM_MATH_CM4,STM32F405xx,USER_VECT_TAB_ADDRESS,MODEL_PVGLS_15W_1470_A1</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\Drivers\CMSIS\Include;..\..\lib;..\..\sPlc;..\..\sPlcPort;..\..\dcHmi;..\..\MainApp;..\..\deviceInfo;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../../lib;../../sPlc;../../sPlcPort;../../dcHmi;../../MainApp;../../deviceInfo;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -586,6 +586,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\lib\libcrc.c</FilePath>
             </File>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\..\lib\arm_cortexM4lf_math.lib</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -742,9 +747,6 @@
               <FilePath>..\..\deviceInfo\preScheme.c</FilePath>
             </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>FreeRTOS_CLI</GroupName>
         </Group>
         <Group>
           <GroupName>Drivers/STM32F4xx_HAL_Driver</GroupName>

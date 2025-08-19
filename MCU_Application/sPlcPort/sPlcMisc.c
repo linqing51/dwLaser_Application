@@ -106,7 +106,6 @@ void resetInit(void){//复位后初始化
 	HAL_TIM_Base_MspDeInit(&htim14);	
 	HAL_I2C_MspDeInit(&hi2c1);
 	HAL_UART_MspDeInit(&huart1);
-	HAL_UART_MspDeInit(&huart2);
 	HAL_UART_MspDeInit(&huart4);
 	HAL_ADC_MspDeInit(&hadc1);
 	HAL_DAC_MspInit(&hdac);

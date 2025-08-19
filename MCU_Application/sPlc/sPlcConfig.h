@@ -5,6 +5,7 @@
 //#define MODEL_PVGLS_TRI_A0
 //#define MODEL_PVGLS_TRI_COMBINE_A0
 //#define MODEL_PVGLS_15W_1470_A1
+#define MODEL_PVGLS_15W_1470_A1_V2
 /****************************************************************************/
 //#define MODEL_PVGLS_10W_1940_A1
 /****************************************************************************/
@@ -139,7 +140,7 @@
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-#define CONFIG_SPLC_ADC_CHANNEL												6//ADC采集通道
+#define CONFIG_SPLC_ADC_CHANNEL												7//ADC采集通道
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
 #define CONFIG_SPLC_ADC_CHANNEL												10//ADC采集通道
@@ -149,13 +150,7 @@
 #define CONFIG_AMBIENT_TEMP             							25// Ambient temp in deg C
 #define CONFIG_VREF_CAL                         			*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-#define CONFIG_VREF_ADC																SPREG_ADC_4
-#endif
-
-#if defined(MODEL_PVGLS_10W_1940_A1)
 #define CONFIG_VREF_ADC																SPREG_ADC_14
-#endif
 #define CONFIG_ADC_AVG_SLOPE													2.5F
 #define CONFIG_ADC_V25																760.0F//0.76V@25D
 #define CONFIG_NTC_RS																	4700L//NTC分压电阻
@@ -253,7 +248,7 @@
 #define CONFIG_GREEN_LED_DEFAULT_DC										90
 #endif
 /*****************************************************************************/
-#define CONFIG_AIM_DEFAULT_GAIN												30
+#define CONFIG_AIM_DEFAULT_GAIN												60
 //定义蜂鸣器音量/频率
 #define CONFIG_BEEM_MAX_VOLUME													100//蜂鸣器最大音量
 #define CONFIG_BEEM_MAX_LIMIT													0.7F//

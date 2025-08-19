@@ -393,7 +393,7 @@ N#endif
 N
 N/* Includes ------------------------------------------------------------------*/
 N#include "stm32f4xx.h"
-L 1 "..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h" 1
+L 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" 1
 N/**
 N  ******************************************************************************
 N  * @file    stm32f4xx.h
@@ -504,11 +504,11 @@ S/*#define USE_HAL_DRIVER */
 N#endif /* USE_HAL_DRIVER */
 N
 N/**
-N  * @brief CMSIS version number V2.6.10
+N  * @brief CMSIS version number V2.6.11
 N  */
 N#define __STM32F4xx_CMSIS_VERSION_MAIN   (0x02U) /*!< [31:24] main version */
 N#define __STM32F4xx_CMSIS_VERSION_SUB1   (0x06U) /*!< [23:16] sub1 version */
-N#define __STM32F4xx_CMSIS_VERSION_SUB2   (0x0AU) /*!< [15:8]  sub2 version */
+N#define __STM32F4xx_CMSIS_VERSION_SUB2   (0x0BU) /*!< [15:8]  sub2 version */
 N#define __STM32F4xx_CMSIS_VERSION_RC     (0x00U) /*!< [7:0]  release candidate */
 N#define __STM32F4xx_CMSIS_VERSION        ((__STM32F4xx_CMSIS_VERSION_MAIN << 24)\
 N                                         |(__STM32F4xx_CMSIS_VERSION_SUB1 << 16)\
@@ -527,7 +527,7 @@ N
 N#if defined(STM32F405xx)
 X#if 1L
 N#include "stm32f405xx.h"
-L 1 "..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h" 1
+L 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h" 1
 N/**
 N  ******************************************************************************
 N  * @file    stm32f405xx.h
@@ -691,7 +691,7 @@ N  * @}
 N  */
 N
 N#include "core_cm4.h"             /* Cortex-M4 processor and core peripherals */
-L 1 "..\Drivers\CMSIS\Include\core_cm4.h" 1
+L 1 "../Drivers/CMSIS/Include/core_cm4.h" 1
 N/**************************************************************************//**
 N * @file     core_cm4.h
 N * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File
@@ -740,7 +740,7 @@ N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5060044
+N#define __ARMCLIB_VERSION 5060037
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -1058,7 +1058,7 @@ N
 N#endif /* __stdint_h */
 N
 N/* end of stdint.h */
-L 35 "..\Drivers\CMSIS\Include\core_cm4.h" 2
+L 35 "../Drivers/CMSIS/Include/core_cm4.h" 2
 N
 N#ifdef __cplusplus
 S extern "C" {
@@ -1088,7 +1088,7 @@ N  @{
 N */
 N
 N#include "cmsis_version.h"
-L 1 "..\Drivers\CMSIS\Include\cmsis_version.h" 1
+L 1 "../Drivers/CMSIS/Include/cmsis_version.h" 1
 N/**************************************************************************//**
 N * @file     cmsis_version.h
 N * @brief    CMSIS Core(M) Version definitions
@@ -1131,7 +1131,7 @@ N#define __CM_CMSIS_VERSION       ((__CM_CMSIS_VERSION_MAIN << 16U) | \
 N                                   __CM_CMSIS_VERSION_SUB           )       /*!< CMSIS Core(M) version number */
 X#define __CM_CMSIS_VERSION       ((__CM_CMSIS_VERSION_MAIN << 16U) |                                    __CM_CMSIS_VERSION_SUB           )        
 N#endif
-L 64 "..\Drivers\CMSIS\Include\core_cm4.h" 2
+L 64 "../Drivers/CMSIS/Include/core_cm4.h" 2
 N
 N/* CMSIS CM4 definitions */
 N#define __CM4_CMSIS_VERSION_MAIN  (__CM_CMSIS_VERSION_MAIN)              /*!< \deprecated [31:16] CMSIS HAL main version */
@@ -1235,7 +1235,7 @@ S
 N#endif
 N
 N#include "cmsis_compiler.h"               /* CMSIS compiler specific defines */
-L 1 "..\Drivers\CMSIS\Include\cmsis_compiler.h" 1
+L 1 "../Drivers/CMSIS/Include/cmsis_compiler.h" 1
 N/**************************************************************************//**
 N * @file     cmsis_compiler.h
 N * @brief    CMSIS compiler generic header file
@@ -1271,7 +1271,7 @@ N */
 N#if   defined ( __CC_ARM )
 X#if   1L
 N  #include "cmsis_armcc.h"
-L 1 "..\Drivers\CMSIS\Include\cmsis_armcc.h" 1
+L 1 "../Drivers/CMSIS/Include/cmsis_armcc.h" 1
 N/**************************************************************************//**
 N * @file     cmsis_armcc.h
 N * @brief    CMSIS compiler ARMCC (Arm Compiler 5) header file
@@ -1301,7 +1301,7 @@ N#define __CMSIS_ARMCC_H
 N
 N
 N#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 400677)
-X#if 1L && (5060960 < 400677)
+X#if 1L && (5060750 < 400677)
 S  #error "Please use Arm Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -1578,7 +1578,7 @@ N  \param [in]    ptr  Pointer to data
 N  \return             value of type uint8_t at (*ptr)
 N */
 N#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 5060020)
-X#if 1L && (5060960 < 5060020)
+X#if 1L && (5060750 < 5060020)
 S  #define __LDREXB(ptr)                                                        ((uint8_t ) __ldrex(ptr))
 N#else
 N  #define __LDREXB(ptr)          _Pragma("push") _Pragma("diag_suppress 3731") ((uint8_t ) __ldrex(ptr))  _Pragma("pop")
@@ -1592,7 +1592,7 @@ N  \param [in]    ptr  Pointer to data
 N  \return        value of type uint16_t at (*ptr)
 N */
 N#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 5060020)
-X#if 1L && (5060960 < 5060020)
+X#if 1L && (5060750 < 5060020)
 S  #define __LDREXH(ptr)                                                        ((uint16_t) __ldrex(ptr))
 N#else
 N  #define __LDREXH(ptr)          _Pragma("push") _Pragma("diag_suppress 3731") ((uint16_t) __ldrex(ptr))  _Pragma("pop")
@@ -1606,7 +1606,7 @@ N  \param [in]    ptr  Pointer to data
 N  \return        value of type uint32_t at (*ptr)
 N */
 N#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 5060020)
-X#if 1L && (5060960 < 5060020)
+X#if 1L && (5060750 < 5060020)
 S  #define __LDREXW(ptr)                                                        ((uint32_t ) __ldrex(ptr))
 N#else
 N  #define __LDREXW(ptr)          _Pragma("push") _Pragma("diag_suppress 3731") ((uint32_t ) __ldrex(ptr))  _Pragma("pop")
@@ -1622,7 +1622,7 @@ N  \return          0  Function succeeded
 N  \return          1  Function failed
 N */
 N#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 5060020)
-X#if 1L && (5060960 < 5060020)
+X#if 1L && (5060750 < 5060020)
 S  #define __STREXB(value, ptr)                                                 __strex(value, ptr)
 N#else
 N  #define __STREXB(value, ptr)   _Pragma("push") _Pragma("diag_suppress 3731") __strex(value, ptr)        _Pragma("pop")
@@ -1638,7 +1638,7 @@ N  \return          0  Function succeeded
 N  \return          1  Function failed
 N */
 N#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 5060020)
-X#if 1L && (5060960 < 5060020)
+X#if 1L && (5060750 < 5060020)
 S  #define __STREXH(value, ptr)                                                 __strex(value, ptr)
 N#else
 N  #define __STREXH(value, ptr)   _Pragma("push") _Pragma("diag_suppress 3731") __strex(value, ptr)        _Pragma("pop")
@@ -1654,7 +1654,7 @@ N  \return          0  Function succeeded
 N  \return          1  Function failed
 N */
 N#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 5060020)
-X#if 1L && (5060960 < 5060020)
+X#if 1L && (5060750 < 5060020)
 S  #define __STREXW(value, ptr)                                                 __strex(value, ptr)
 N#else
 N  #define __STREXW(value, ptr)   _Pragma("push") _Pragma("diag_suppress 3731") __strex(value, ptr)        _Pragma("pop")
@@ -2223,7 +2223,7 @@ N/*@} end of group CMSIS_SIMD_intrinsics */
 N
 N
 N#endif /* __CMSIS_ARMCC_H */
-L 35 "..\Drivers\CMSIS\Include\cmsis_compiler.h" 2
+L 35 "../Drivers/CMSIS/Include/cmsis_compiler.h" 2
 N
 N
 N/*
@@ -2473,7 +2473,7 @@ N
 N
 N#endif /* __CMSIS_COMPILER_H */
 N
-L 163 "..\Drivers\CMSIS\Include\core_cm4.h" 2
+L 163 "../Drivers/CMSIS/Include/core_cm4.h" 2
 N
 N
 N#ifdef __cplusplus
@@ -4439,7 +4439,7 @@ N#if defined (__MPU_PRESENT) && (__MPU_PRESENT == 1U)
 X#if 1L && (1U == 1U)
 N
 N#include "mpu_armv7.h"
-L 1 "..\Drivers\CMSIS\Include\mpu_armv7.h" 1
+L 1 "../Drivers/CMSIS/Include/mpu_armv7.h" 1
 N/******************************************************************************
 N * @file     mpu_armv7.h
 N * @brief    CMSIS MPU API for Armv7-M MPU
@@ -4750,7 +4750,7 @@ X  ARM_MPU_OrderedMemcpy(&(((MPU_Type *) ((0xE000E000UL) + 0x0D90UL) )->RBAR), &
 N}
 N
 N#endif
-L 1961 "..\Drivers\CMSIS\Include\core_cm4.h" 2
+L 1961 "../Drivers/CMSIS/Include/core_cm4.h" 2
 N
 N#endif
 N
@@ -4943,9 +4943,9 @@ N
 N#endif /* __CORE_CM4_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
-L 164 "..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h" 2
+L 164 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h" 2
 N#include "system_stm32f4xx.h"
-L 1 "..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h" 1
+L 1 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h" 1
 N/**
 N  ******************************************************************************
 N  * @file    system_stm32f4xx.h
@@ -5050,7 +5050,7 @@ N
 N/**
 N  * @}
 N  */
-L 165 "..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h" 2
+L 165 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h" 2
 N#include <stdint.h>
 N
 N/** @addtogroup Peripheral_registers_structures
@@ -10710,9 +10710,9 @@ N/********************  Bits definition for DMA_SxCR register  *****************
 N#define DMA_SxCR_CHSEL_Pos       (25U)
 N#define DMA_SxCR_CHSEL_Msk       (0x7UL << DMA_SxCR_CHSEL_Pos)                  /*!< 0x0E000000 */
 N#define DMA_SxCR_CHSEL           DMA_SxCR_CHSEL_Msk
-N#define DMA_SxCR_CHSEL_0         0x02000000U
-N#define DMA_SxCR_CHSEL_1         0x04000000U
-N#define DMA_SxCR_CHSEL_2         0x08000000U
+N#define DMA_SxCR_CHSEL_0         (0x1UL << DMA_SxCR_CHSEL_Pos)                  /*!< 0x02000000 */
+N#define DMA_SxCR_CHSEL_1         (0x2UL << DMA_SxCR_CHSEL_Pos)                  /*!< 0x04000000 */
+N#define DMA_SxCR_CHSEL_2         (0x4UL << DMA_SxCR_CHSEL_Pos)                  /*!< 0x08000000 */
 N#define DMA_SxCR_MBURST_Pos      (23U)
 N#define DMA_SxCR_MBURST_Msk      (0x3UL << DMA_SxCR_MBURST_Pos)                 /*!< 0x01800000 */
 N#define DMA_SxCR_MBURST          DMA_SxCR_MBURST_Msk
@@ -11593,68 +11593,61 @@ N#define FLASH_ACR_LATENCY_7WS          0x00000007U
 N
 N
 N#define FLASH_ACR_PRFTEN_Pos           (8U)
-N#define FLASH_ACR_PRFTEN_Msk           (0x1UL << FLASH_ACR_PRFTEN_Pos)          /*!< 0x00000100 */
+N#define FLASH_ACR_PRFTEN_Msk           (0x1UL << FLASH_ACR_PRFTEN_Pos)              /*!< 0x00000100 */
 N#define FLASH_ACR_PRFTEN               FLASH_ACR_PRFTEN_Msk
 N#define FLASH_ACR_ICEN_Pos             (9U)
-N#define FLASH_ACR_ICEN_Msk             (0x1UL << FLASH_ACR_ICEN_Pos)            /*!< 0x00000200 */
+N#define FLASH_ACR_ICEN_Msk             (0x1UL << FLASH_ACR_ICEN_Pos)                /*!< 0x00000200 */
 N#define FLASH_ACR_ICEN                 FLASH_ACR_ICEN_Msk
 N#define FLASH_ACR_DCEN_Pos             (10U)
-N#define FLASH_ACR_DCEN_Msk             (0x1UL << FLASH_ACR_DCEN_Pos)            /*!< 0x00000400 */
+N#define FLASH_ACR_DCEN_Msk             (0x1UL << FLASH_ACR_DCEN_Pos)                /*!< 0x00000400 */
 N#define FLASH_ACR_DCEN                 FLASH_ACR_DCEN_Msk
 N#define FLASH_ACR_ICRST_Pos            (11U)
-N#define FLASH_ACR_ICRST_Msk            (0x1UL << FLASH_ACR_ICRST_Pos)           /*!< 0x00000800 */
+N#define FLASH_ACR_ICRST_Msk            (0x1UL << FLASH_ACR_ICRST_Pos)               /*!< 0x00000800 */
 N#define FLASH_ACR_ICRST                FLASH_ACR_ICRST_Msk
 N#define FLASH_ACR_DCRST_Pos            (12U)
-N#define FLASH_ACR_DCRST_Msk            (0x1UL << FLASH_ACR_DCRST_Pos)           /*!< 0x00001000 */
+N#define FLASH_ACR_DCRST_Msk            (0x1UL << FLASH_ACR_DCRST_Pos)               /*!< 0x00001000 */
 N#define FLASH_ACR_DCRST                FLASH_ACR_DCRST_Msk
-N#define FLASH_ACR_BYTE0_ADDRESS_Pos    (10U)
-N#define FLASH_ACR_BYTE0_ADDRESS_Msk    (0x10008FUL << FLASH_ACR_BYTE0_ADDRESS_Pos) /*!< 0x40023C00 */
-N#define FLASH_ACR_BYTE0_ADDRESS        FLASH_ACR_BYTE0_ADDRESS_Msk
-N#define FLASH_ACR_BYTE2_ADDRESS_Pos    (0U)
-N#define FLASH_ACR_BYTE2_ADDRESS_Msk    (0x40023C03UL << FLASH_ACR_BYTE2_ADDRESS_Pos) /*!< 0x40023C03 */
-N#define FLASH_ACR_BYTE2_ADDRESS        FLASH_ACR_BYTE2_ADDRESS_Msk
 N
 N/*******************  Bits definition for FLASH_SR register  ******************/
 N#define FLASH_SR_EOP_Pos               (0U)
-N#define FLASH_SR_EOP_Msk               (0x1UL << FLASH_SR_EOP_Pos)              /*!< 0x00000001 */
+N#define FLASH_SR_EOP_Msk               (0x1UL << FLASH_SR_EOP_Pos)                   /*!< 0x00000001 */
 N#define FLASH_SR_EOP                   FLASH_SR_EOP_Msk
-N#define FLASH_SR_SOP_Pos               (1U)
-N#define FLASH_SR_SOP_Msk               (0x1UL << FLASH_SR_SOP_Pos)              /*!< 0x00000002 */
-N#define FLASH_SR_SOP                   FLASH_SR_SOP_Msk
+N#define FLASH_SR_OPERR_Pos             (1U)
+N#define FLASH_SR_OPERR_Msk             (0x1UL << FLASH_SR_OPERR_Pos)               /*!< 0x00000002 */
+N#define FLASH_SR_OPERR                 FLASH_SR_OPERR_Msk
 N#define FLASH_SR_WRPERR_Pos            (4U)
-N#define FLASH_SR_WRPERR_Msk            (0x1UL << FLASH_SR_WRPERR_Pos)           /*!< 0x00000010 */
+N#define FLASH_SR_WRPERR_Msk            (0x1UL << FLASH_SR_WRPERR_Pos)                /*!< 0x00000010 */
 N#define FLASH_SR_WRPERR                FLASH_SR_WRPERR_Msk
 N#define FLASH_SR_PGAERR_Pos            (5U)
-N#define FLASH_SR_PGAERR_Msk            (0x1UL << FLASH_SR_PGAERR_Pos)           /*!< 0x00000020 */
+N#define FLASH_SR_PGAERR_Msk            (0x1UL << FLASH_SR_PGAERR_Pos)                /*!< 0x00000020 */
 N#define FLASH_SR_PGAERR                FLASH_SR_PGAERR_Msk
 N#define FLASH_SR_PGPERR_Pos            (6U)
-N#define FLASH_SR_PGPERR_Msk            (0x1UL << FLASH_SR_PGPERR_Pos)           /*!< 0x00000040 */
+N#define FLASH_SR_PGPERR_Msk            (0x1UL << FLASH_SR_PGPERR_Pos)                /*!< 0x00000040 */
 N#define FLASH_SR_PGPERR                FLASH_SR_PGPERR_Msk
 N#define FLASH_SR_PGSERR_Pos            (7U)
-N#define FLASH_SR_PGSERR_Msk            (0x1UL << FLASH_SR_PGSERR_Pos)           /*!< 0x00000080 */
+N#define FLASH_SR_PGSERR_Msk            (0x1UL << FLASH_SR_PGSERR_Pos)                /*!< 0x00000080 */
 N#define FLASH_SR_PGSERR                FLASH_SR_PGSERR_Msk
 N#define FLASH_SR_BSY_Pos               (16U)
-N#define FLASH_SR_BSY_Msk               (0x1UL << FLASH_SR_BSY_Pos)              /*!< 0x00010000 */
+N#define FLASH_SR_BSY_Msk               (0x1UL << FLASH_SR_BSY_Pos)                   /*!< 0x00010000 */
 N#define FLASH_SR_BSY                   FLASH_SR_BSY_Msk
 N
 N/*******************  Bits definition for FLASH_CR register  ******************/
 N#define FLASH_CR_PG_Pos                (0U)
-N#define FLASH_CR_PG_Msk                (0x1UL << FLASH_CR_PG_Pos)               /*!< 0x00000001 */
+N#define FLASH_CR_PG_Msk                (0x1UL << FLASH_CR_PG_Pos)                    /*!< 0x00000001 */
 N#define FLASH_CR_PG                    FLASH_CR_PG_Msk
 N#define FLASH_CR_SER_Pos               (1U)
-N#define FLASH_CR_SER_Msk               (0x1UL << FLASH_CR_SER_Pos)              /*!< 0x00000002 */
+N#define FLASH_CR_SER_Msk               (0x1UL << FLASH_CR_SER_Pos)                   /*!< 0x00000002 */
 N#define FLASH_CR_SER                   FLASH_CR_SER_Msk
 N#define FLASH_CR_MER_Pos               (2U)
-N#define FLASH_CR_MER_Msk               (0x1UL << FLASH_CR_MER_Pos)              /*!< 0x00000004 */
+N#define FLASH_CR_MER_Msk               (0x1UL << FLASH_CR_MER_Pos)                   /*!< 0x00000004 */
 N#define FLASH_CR_MER                   FLASH_CR_MER_Msk
 N#define FLASH_CR_SNB_Pos               (3U)
-N#define FLASH_CR_SNB_Msk               (0x1FUL << FLASH_CR_SNB_Pos)             /*!< 0x000000F8 */
+N#define FLASH_CR_SNB_Msk               (0x0FUL << FLASH_CR_SNB_Pos)             /*!< 0x00000078 */
 N#define FLASH_CR_SNB                   FLASH_CR_SNB_Msk
 N#define FLASH_CR_SNB_0                 (0x01UL << FLASH_CR_SNB_Pos)             /*!< 0x00000008 */
 N#define FLASH_CR_SNB_1                 (0x02UL << FLASH_CR_SNB_Pos)             /*!< 0x00000010 */
 N#define FLASH_CR_SNB_2                 (0x04UL << FLASH_CR_SNB_Pos)             /*!< 0x00000020 */
 N#define FLASH_CR_SNB_3                 (0x08UL << FLASH_CR_SNB_Pos)             /*!< 0x00000040 */
-N#define FLASH_CR_SNB_4                 (0x10UL << FLASH_CR_SNB_Pos)             /*!< 0x00000080 */
 N#define FLASH_CR_PSIZE_Pos             (8U)
 N#define FLASH_CR_PSIZE_Msk             (0x3UL << FLASH_CR_PSIZE_Pos)            /*!< 0x00000300 */
 N#define FLASH_CR_PSIZE                 FLASH_CR_PSIZE_Msk
@@ -11738,6 +11731,16 @@ N#define FLASH_OPTCR1_nWRP_8            (0x100UL << FLASH_OPTCR1_nWRP_Pos)      
 N#define FLASH_OPTCR1_nWRP_9            (0x200UL << FLASH_OPTCR1_nWRP_Pos)       /*!< 0x02000000 */
 N#define FLASH_OPTCR1_nWRP_10           (0x400UL << FLASH_OPTCR1_nWRP_Pos)       /*!< 0x04000000 */
 N#define FLASH_OPTCR1_nWRP_11           (0x800UL << FLASH_OPTCR1_nWRP_Pos)       /*!< 0x08000000 */
+N/* Legacy defines */
+N#define FLASH_SR_SOP_Pos    FLASH_SR_OPERR_Pos
+N#define FLASH_SR_SOP_Msk    FLASH_SR_OPERR_Msk
+N#define FLASH_SR_SOP        FLASH_SR_OPERR
+N#define FLASH_ACR_BYTE0_ADDRESS_Pos    (10U)
+N#define FLASH_ACR_BYTE0_ADDRESS_Msk    (0x10008FUL << FLASH_ACR_BYTE0_ADDRESS_Pos)  /*!< 0x40023C00 */
+N#define FLASH_ACR_BYTE0_ADDRESS        FLASH_ACR_BYTE0_ADDRESS_Msk
+N#define FLASH_ACR_BYTE2_ADDRESS_Pos    (0U)
+N#define FLASH_ACR_BYTE2_ADDRESS_Msk    (0x40023C03UL << FLASH_ACR_BYTE2_ADDRESS_Pos) /*!< 0x40023C03 */
+N#define FLASH_ACR_BYTE2_ADDRESS        FLASH_ACR_BYTE2_ADDRESS_Msk
 N
 N/******************************************************************************/
 N/*                                                                            */
@@ -14753,25 +14756,25 @@ N#define RCC_APB2RSTR_USART6RST_Pos         (5U)
 N#define RCC_APB2RSTR_USART6RST_Msk         (0x1UL << RCC_APB2RSTR_USART6RST_Pos) /*!< 0x00000020 */
 N#define RCC_APB2RSTR_USART6RST             RCC_APB2RSTR_USART6RST_Msk
 N#define RCC_APB2RSTR_ADCRST_Pos            (8U)
-N#define RCC_APB2RSTR_ADCRST_Msk            (0x1UL << RCC_APB2RSTR_ADCRST_Pos)   /*!< 0x00000100 */
+N#define RCC_APB2RSTR_ADCRST_Msk            (0x1UL << RCC_APB2RSTR_ADCRST_Pos)    /*!< 0x00000100 */
 N#define RCC_APB2RSTR_ADCRST                RCC_APB2RSTR_ADCRST_Msk
 N#define RCC_APB2RSTR_SDIORST_Pos           (11U)
-N#define RCC_APB2RSTR_SDIORST_Msk           (0x1UL << RCC_APB2RSTR_SDIORST_Pos)  /*!< 0x00000800 */
+N#define RCC_APB2RSTR_SDIORST_Msk           (0x1UL << RCC_APB2RSTR_SDIORST_Pos)   /*!< 0x00000800 */
 N#define RCC_APB2RSTR_SDIORST               RCC_APB2RSTR_SDIORST_Msk
 N#define RCC_APB2RSTR_SPI1RST_Pos           (12U)
-N#define RCC_APB2RSTR_SPI1RST_Msk           (0x1UL << RCC_APB2RSTR_SPI1RST_Pos)  /*!< 0x00001000 */
+N#define RCC_APB2RSTR_SPI1RST_Msk           (0x1UL << RCC_APB2RSTR_SPI1RST_Pos)   /*!< 0x00001000 */
 N#define RCC_APB2RSTR_SPI1RST               RCC_APB2RSTR_SPI1RST_Msk
 N#define RCC_APB2RSTR_SYSCFGRST_Pos         (14U)
 N#define RCC_APB2RSTR_SYSCFGRST_Msk         (0x1UL << RCC_APB2RSTR_SYSCFGRST_Pos) /*!< 0x00004000 */
 N#define RCC_APB2RSTR_SYSCFGRST             RCC_APB2RSTR_SYSCFGRST_Msk
 N#define RCC_APB2RSTR_TIM9RST_Pos           (16U)
-N#define RCC_APB2RSTR_TIM9RST_Msk           (0x1UL << RCC_APB2RSTR_TIM9RST_Pos)  /*!< 0x00010000 */
+N#define RCC_APB2RSTR_TIM9RST_Msk           (0x1UL << RCC_APB2RSTR_TIM9RST_Pos)   /*!< 0x00010000 */
 N#define RCC_APB2RSTR_TIM9RST               RCC_APB2RSTR_TIM9RST_Msk
 N#define RCC_APB2RSTR_TIM10RST_Pos          (17U)
-N#define RCC_APB2RSTR_TIM10RST_Msk          (0x1UL << RCC_APB2RSTR_TIM10RST_Pos) /*!< 0x00020000 */
+N#define RCC_APB2RSTR_TIM10RST_Msk          (0x1UL << RCC_APB2RSTR_TIM10RST_Pos)  /*!< 0x00020000 */
 N#define RCC_APB2RSTR_TIM10RST              RCC_APB2RSTR_TIM10RST_Msk
 N#define RCC_APB2RSTR_TIM11RST_Pos          (18U)
-N#define RCC_APB2RSTR_TIM11RST_Msk          (0x1UL << RCC_APB2RSTR_TIM11RST_Pos) /*!< 0x00040000 */
+N#define RCC_APB2RSTR_TIM11RST_Msk          (0x1UL << RCC_APB2RSTR_TIM11RST_Pos)  /*!< 0x00040000 */
 N#define RCC_APB2RSTR_TIM11RST              RCC_APB2RSTR_TIM11RST_Msk
 N
 N/* Old SPI1RST bit definition, maintained for legacy purpose */
@@ -14821,7 +14824,7 @@ N#define RCC_AHB1ENR_DMA2EN_Pos             (22U)
 N#define RCC_AHB1ENR_DMA2EN_Msk             (0x1UL << RCC_AHB1ENR_DMA2EN_Pos)    /*!< 0x00400000 */
 N#define RCC_AHB1ENR_DMA2EN                 RCC_AHB1ENR_DMA2EN_Msk
 N#define RCC_AHB1ENR_OTGHSEN_Pos            (29U)
-N#define RCC_AHB1ENR_OTGHSEN_Msk            (0x1UL << RCC_AHB1ENR_OTGHSEN_Pos)   /*!< 0x20000000 */
+N#define RCC_AHB1ENR_OTGHSEN_Msk            (0x1UL << RCC_AHB1ENR_OTGHSEN_Pos)     /*!< 0x20000000 */
 N#define RCC_AHB1ENR_OTGHSEN                RCC_AHB1ENR_OTGHSEN_Msk
 N#define RCC_AHB1ENR_OTGHSULPIEN_Pos        (30U)
 N#define RCC_AHB1ENR_OTGHSULPIEN_Msk        (0x1UL << RCC_AHB1ENR_OTGHSULPIEN_Pos) /*!< 0x40000000 */
@@ -14990,7 +14993,7 @@ N#define RCC_AHB1LPENR_GPIOILPEN_Pos        (8U)
 N#define RCC_AHB1LPENR_GPIOILPEN_Msk        (0x1UL << RCC_AHB1LPENR_GPIOILPEN_Pos) /*!< 0x00000100 */
 N#define RCC_AHB1LPENR_GPIOILPEN            RCC_AHB1LPENR_GPIOILPEN_Msk
 N#define RCC_AHB1LPENR_CRCLPEN_Pos          (12U)
-N#define RCC_AHB1LPENR_CRCLPEN_Msk          (0x1UL << RCC_AHB1LPENR_CRCLPEN_Pos) /*!< 0x00001000 */
+N#define RCC_AHB1LPENR_CRCLPEN_Msk          (0x1UL << RCC_AHB1LPENR_CRCLPEN_Pos)   /*!< 0x00001000 */
 N#define RCC_AHB1LPENR_CRCLPEN              RCC_AHB1LPENR_CRCLPEN_Msk
 N#define RCC_AHB1LPENR_FLITFLPEN_Pos        (15U)
 N#define RCC_AHB1LPENR_FLITFLPEN_Msk        (0x1UL << RCC_AHB1LPENR_FLITFLPEN_Pos) /*!< 0x00008000 */
@@ -15005,14 +15008,14 @@ N#define RCC_AHB1LPENR_BKPSRAMLPEN_Pos      (18U)
 N#define RCC_AHB1LPENR_BKPSRAMLPEN_Msk      (0x1UL << RCC_AHB1LPENR_BKPSRAMLPEN_Pos) /*!< 0x00040000 */
 N#define RCC_AHB1LPENR_BKPSRAMLPEN          RCC_AHB1LPENR_BKPSRAMLPEN_Msk
 N#define RCC_AHB1LPENR_DMA1LPEN_Pos         (21U)
-N#define RCC_AHB1LPENR_DMA1LPEN_Msk         (0x1UL << RCC_AHB1LPENR_DMA1LPEN_Pos) /*!< 0x00200000 */
+N#define RCC_AHB1LPENR_DMA1LPEN_Msk         (0x1UL << RCC_AHB1LPENR_DMA1LPEN_Pos)  /*!< 0x00200000 */
 N#define RCC_AHB1LPENR_DMA1LPEN             RCC_AHB1LPENR_DMA1LPEN_Msk
 N#define RCC_AHB1LPENR_DMA2LPEN_Pos         (22U)
-N#define RCC_AHB1LPENR_DMA2LPEN_Msk         (0x1UL << RCC_AHB1LPENR_DMA2LPEN_Pos) /*!< 0x00400000 */
+N#define RCC_AHB1LPENR_DMA2LPEN_Msk         (0x1UL << RCC_AHB1LPENR_DMA2LPEN_Pos)  /*!< 0x00400000 */
 N#define RCC_AHB1LPENR_DMA2LPEN             RCC_AHB1LPENR_DMA2LPEN_Msk
 N
 N#define RCC_AHB1LPENR_OTGHSLPEN_Pos        (29U)
-N#define RCC_AHB1LPENR_OTGHSLPEN_Msk        (0x1UL << RCC_AHB1LPENR_OTGHSLPEN_Pos) /*!< 0x20000000 */
+N#define RCC_AHB1LPENR_OTGHSLPEN_Msk        (0x1UL << RCC_AHB1LPENR_OTGHSLPEN_Pos)     /*!< 0x20000000 */
 N#define RCC_AHB1LPENR_OTGHSLPEN            RCC_AHB1LPENR_OTGHSLPEN_Msk
 N#define RCC_AHB1LPENR_OTGHSULPILPEN_Pos    (30U)
 N#define RCC_AHB1LPENR_OTGHSULPILPEN_Msk    (0x1UL << RCC_AHB1LPENR_OTGHSULPILPEN_Pos) /*!< 0x40000000 */
@@ -15020,7 +15023,7 @@ N#define RCC_AHB1LPENR_OTGHSULPILPEN        RCC_AHB1LPENR_OTGHSULPILPEN_Msk
 N
 N/********************  Bit definition for RCC_AHB2LPENR register  *************/
 N#define RCC_AHB2LPENR_RNGLPEN_Pos          (6U)
-N#define RCC_AHB2LPENR_RNGLPEN_Msk          (0x1UL << RCC_AHB2LPENR_RNGLPEN_Pos) /*!< 0x00000040 */
+N#define RCC_AHB2LPENR_RNGLPEN_Msk          (0x1UL << RCC_AHB2LPENR_RNGLPEN_Pos)   /*!< 0x00000040 */
 N#define RCC_AHB2LPENR_RNGLPEN              RCC_AHB2LPENR_RNGLPEN_Msk
 N#define RCC_AHB2LPENR_OTGFSLPEN_Pos        (7U)
 N#define RCC_AHB2LPENR_OTGFSLPEN_Msk        (0x1UL << RCC_AHB2LPENR_OTGFSLPEN_Pos) /*!< 0x00000080 */
@@ -15081,13 +15084,13 @@ N#define RCC_APB1LPENR_UART5LPEN_Pos        (20U)
 N#define RCC_APB1LPENR_UART5LPEN_Msk        (0x1UL << RCC_APB1LPENR_UART5LPEN_Pos) /*!< 0x00100000 */
 N#define RCC_APB1LPENR_UART5LPEN            RCC_APB1LPENR_UART5LPEN_Msk
 N#define RCC_APB1LPENR_I2C1LPEN_Pos         (21U)
-N#define RCC_APB1LPENR_I2C1LPEN_Msk         (0x1UL << RCC_APB1LPENR_I2C1LPEN_Pos) /*!< 0x00200000 */
+N#define RCC_APB1LPENR_I2C1LPEN_Msk         (0x1UL << RCC_APB1LPENR_I2C1LPEN_Pos)  /*!< 0x00200000 */
 N#define RCC_APB1LPENR_I2C1LPEN             RCC_APB1LPENR_I2C1LPEN_Msk
 N#define RCC_APB1LPENR_I2C2LPEN_Pos         (22U)
-N#define RCC_APB1LPENR_I2C2LPEN_Msk         (0x1UL << RCC_APB1LPENR_I2C2LPEN_Pos) /*!< 0x00400000 */
+N#define RCC_APB1LPENR_I2C2LPEN_Msk         (0x1UL << RCC_APB1LPENR_I2C2LPEN_Pos)  /*!< 0x00400000 */
 N#define RCC_APB1LPENR_I2C2LPEN             RCC_APB1LPENR_I2C2LPEN_Msk
 N#define RCC_APB1LPENR_I2C3LPEN_Pos         (23U)
-N#define RCC_APB1LPENR_I2C3LPEN_Msk         (0x1UL << RCC_APB1LPENR_I2C3LPEN_Pos) /*!< 0x00800000 */
+N#define RCC_APB1LPENR_I2C3LPEN_Msk         (0x1UL << RCC_APB1LPENR_I2C3LPEN_Pos)  /*!< 0x00800000 */
 N#define RCC_APB1LPENR_I2C3LPEN             RCC_APB1LPENR_I2C3LPEN_Msk
 N#define RCC_APB1LPENR_CAN1LPEN_Pos         (25U)
 N#define RCC_APB1LPENR_CAN1LPEN_Msk         (0x1UL << RCC_APB1LPENR_CAN1LPEN_Pos) /*!< 0x02000000 */
@@ -17204,8 +17207,8 @@ N#define TIM_CCER_CC4NP            TIM_CCER_CC4NP_Msk                           
 N
 N/*******************  Bit definition for TIM_CNT register  ********************/
 N#define TIM_CNT_CNT_Pos           (0U)
-N#define TIM_CNT_CNT_Msk           (0xFFFFFFFFUL << TIM_CNT_CNT_Pos)                 /*!< 0xFFFFFFFF */
-N#define TIM_CNT_CNT               TIM_CNT_CNT_Msk                                  /*!<Counter Value            */
+N#define TIM_CNT_CNT_Msk           (0xFFFFFFFFUL << TIM_CNT_CNT_Pos)             /*!< 0xFFFFFFFF */
+N#define TIM_CNT_CNT               TIM_CNT_CNT_Msk                              /*!<Counter Value            */
 N
 N/*******************  Bit definition for TIM_PSC register  ********************/
 N#define TIM_PSC_PSC_Pos           (0U)
@@ -18009,9 +18012,9 @@ N#define USB_OTG_DIEPMSK_INEPNEM                  USB_OTG_DIEPMSK_INEPNEM_Msk   
 N#define USB_OTG_DIEPMSK_TXFURM_Pos               (8U)
 N#define USB_OTG_DIEPMSK_TXFURM_Msk               (0x1UL << USB_OTG_DIEPMSK_TXFURM_Pos) /*!< 0x00000100 */
 N#define USB_OTG_DIEPMSK_TXFURM                   USB_OTG_DIEPMSK_TXFURM_Msk    /*!< FIFO underrun mask                                */
-N#define USB_OTG_DIEPMSK_BIM_Pos                  (9U)
-N#define USB_OTG_DIEPMSK_BIM_Msk                  (0x1UL << USB_OTG_DIEPMSK_BIM_Pos) /*!< 0x00000200 */
-N#define USB_OTG_DIEPMSK_BIM                      USB_OTG_DIEPMSK_BIM_Msk       /*!< BNA interrupt mask                                */
+N#define USB_OTG_DIEPMSK_NAKM_Pos                 (13U)
+N#define USB_OTG_DIEPMSK_NAKM_Msk                 (0x1UL << USB_OTG_DIEPMSK_NAKM_Pos) /*!< 0x00002000 */
+N#define USB_OTG_DIEPMSK_NAKM                     USB_OTG_DIEPMSK_NAKM_Msk       /*!< NAK interrupt mask                                */
 N
 N/********************  Bit definition for USB_OTG_HPTXSTS register  ********************/
 N#define USB_OTG_HPTXSTS_PTXFSAVL_Pos             (0U)
@@ -18419,36 +18422,36 @@ N
 N/********************  Bit definition for USB_OTG_CID register  ********************/
 N#define USB_OTG_CID_PRODUCT_ID_Pos               (0U)
 N#define USB_OTG_CID_PRODUCT_ID_Msk               (0xFFFFFFFFUL << USB_OTG_CID_PRODUCT_ID_Pos) /*!< 0xFFFFFFFF */
-N#define USB_OTG_CID_PRODUCT_ID                   USB_OTG_CID_PRODUCT_ID_Msk    /*!< Product ID field */
+N#define USB_OTG_CID_PRODUCT_ID                   USB_OTG_CID_PRODUCT_ID_Msk       /*!< Product ID field */
 N
 N/********************  Bit definition for USB_OTG_DIEPEACHMSK1 register  ********************/
 N#define USB_OTG_DIEPEACHMSK1_XFRCM_Pos           (0U)
 N#define USB_OTG_DIEPEACHMSK1_XFRCM_Msk           (0x1UL << USB_OTG_DIEPEACHMSK1_XFRCM_Pos) /*!< 0x00000001 */
-N#define USB_OTG_DIEPEACHMSK1_XFRCM               USB_OTG_DIEPEACHMSK1_XFRCM_Msk /*!< Transfer completed interrupt mask                 */
+N#define USB_OTG_DIEPEACHMSK1_XFRCM               USB_OTG_DIEPEACHMSK1_XFRCM_Msk     /*!< Transfer completed interrupt mask                 */
 N#define USB_OTG_DIEPEACHMSK1_EPDM_Pos            (1U)
 N#define USB_OTG_DIEPEACHMSK1_EPDM_Msk            (0x1UL << USB_OTG_DIEPEACHMSK1_EPDM_Pos) /*!< 0x00000002 */
-N#define USB_OTG_DIEPEACHMSK1_EPDM                USB_OTG_DIEPEACHMSK1_EPDM_Msk /*!< Endpoint disabled interrupt mask                  */
+N#define USB_OTG_DIEPEACHMSK1_EPDM                USB_OTG_DIEPEACHMSK1_EPDM_Msk      /*!< Endpoint disabled interrupt mask                  */
 N#define USB_OTG_DIEPEACHMSK1_TOM_Pos             (3U)
 N#define USB_OTG_DIEPEACHMSK1_TOM_Msk             (0x1UL << USB_OTG_DIEPEACHMSK1_TOM_Pos) /*!< 0x00000008 */
-N#define USB_OTG_DIEPEACHMSK1_TOM                 USB_OTG_DIEPEACHMSK1_TOM_Msk  /*!< Timeout condition mask (nonisochronous endpoints) */
+N#define USB_OTG_DIEPEACHMSK1_TOM                 USB_OTG_DIEPEACHMSK1_TOM_Msk       /*!< Timeout condition mask (nonisochronous endpoints) */
 N#define USB_OTG_DIEPEACHMSK1_ITTXFEMSK_Pos       (4U)
 N#define USB_OTG_DIEPEACHMSK1_ITTXFEMSK_Msk       (0x1UL << USB_OTG_DIEPEACHMSK1_ITTXFEMSK_Pos) /*!< 0x00000010 */
 N#define USB_OTG_DIEPEACHMSK1_ITTXFEMSK           USB_OTG_DIEPEACHMSK1_ITTXFEMSK_Msk /*!< IN token received when TxFIFO empty mask          */
 N#define USB_OTG_DIEPEACHMSK1_INEPNMM_Pos         (5U)
 N#define USB_OTG_DIEPEACHMSK1_INEPNMM_Msk         (0x1UL << USB_OTG_DIEPEACHMSK1_INEPNMM_Pos) /*!< 0x00000020 */
-N#define USB_OTG_DIEPEACHMSK1_INEPNMM             USB_OTG_DIEPEACHMSK1_INEPNMM_Msk /*!< IN token received with EP mismatch mask           */
+N#define USB_OTG_DIEPEACHMSK1_INEPNMM             USB_OTG_DIEPEACHMSK1_INEPNMM_Msk   /*!< IN token received with EP mismatch mask           */
 N#define USB_OTG_DIEPEACHMSK1_INEPNEM_Pos         (6U)
 N#define USB_OTG_DIEPEACHMSK1_INEPNEM_Msk         (0x1UL << USB_OTG_DIEPEACHMSK1_INEPNEM_Pos) /*!< 0x00000040 */
-N#define USB_OTG_DIEPEACHMSK1_INEPNEM             USB_OTG_DIEPEACHMSK1_INEPNEM_Msk /*!< IN endpoint NAK effective mask                    */
+N#define USB_OTG_DIEPEACHMSK1_INEPNEM             USB_OTG_DIEPEACHMSK1_INEPNEM_Msk   /*!< IN endpoint NAK effective mask                    */
 N#define USB_OTG_DIEPEACHMSK1_TXFURM_Pos          (8U)
 N#define USB_OTG_DIEPEACHMSK1_TXFURM_Msk          (0x1UL << USB_OTG_DIEPEACHMSK1_TXFURM_Pos) /*!< 0x00000100 */
-N#define USB_OTG_DIEPEACHMSK1_TXFURM              USB_OTG_DIEPEACHMSK1_TXFURM_Msk /*!< FIFO underrun mask                                */
+N#define USB_OTG_DIEPEACHMSK1_TXFURM              USB_OTG_DIEPEACHMSK1_TXFURM_Msk    /*!< FIFO underrun mask                                */
 N#define USB_OTG_DIEPEACHMSK1_BIM_Pos             (9U)
 N#define USB_OTG_DIEPEACHMSK1_BIM_Msk             (0x1UL << USB_OTG_DIEPEACHMSK1_BIM_Pos) /*!< 0x00000200 */
-N#define USB_OTG_DIEPEACHMSK1_BIM                 USB_OTG_DIEPEACHMSK1_BIM_Msk  /*!< BNA interrupt mask                                */
+N#define USB_OTG_DIEPEACHMSK1_BIM                 USB_OTG_DIEPEACHMSK1_BIM_Msk       /*!< BNA interrupt mask                                */
 N#define USB_OTG_DIEPEACHMSK1_NAKM_Pos            (13U)
 N#define USB_OTG_DIEPEACHMSK1_NAKM_Msk            (0x1UL << USB_OTG_DIEPEACHMSK1_NAKM_Pos) /*!< 0x00002000 */
-N#define USB_OTG_DIEPEACHMSK1_NAKM                USB_OTG_DIEPEACHMSK1_NAKM_Msk /*!< NAK interrupt mask                                */
+N#define USB_OTG_DIEPEACHMSK1_NAKM                USB_OTG_DIEPEACHMSK1_NAKM_Msk      /*!< NAK interrupt mask                                */
 N
 N/********************  Bit definition for USB_OTG_HPRT register  ********************/
 N#define USB_OTG_HPRT_PCSTS_Pos                   (0U)
@@ -18505,37 +18508,37 @@ N
 N/********************  Bit definition for USB_OTG_DOEPEACHMSK1 register  ********************/
 N#define USB_OTG_DOEPEACHMSK1_XFRCM_Pos           (0U)
 N#define USB_OTG_DOEPEACHMSK1_XFRCM_Msk           (0x1UL << USB_OTG_DOEPEACHMSK1_XFRCM_Pos) /*!< 0x00000001 */
-N#define USB_OTG_DOEPEACHMSK1_XFRCM               USB_OTG_DOEPEACHMSK1_XFRCM_Msk /*!< Transfer completed interrupt mask         */
+N#define USB_OTG_DOEPEACHMSK1_XFRCM               USB_OTG_DOEPEACHMSK1_XFRCM_Msk      /*!< Transfer completed interrupt mask         */
 N#define USB_OTG_DOEPEACHMSK1_EPDM_Pos            (1U)
 N#define USB_OTG_DOEPEACHMSK1_EPDM_Msk            (0x1UL << USB_OTG_DOEPEACHMSK1_EPDM_Pos) /*!< 0x00000002 */
-N#define USB_OTG_DOEPEACHMSK1_EPDM                USB_OTG_DOEPEACHMSK1_EPDM_Msk /*!< Endpoint disabled interrupt mask          */
+N#define USB_OTG_DOEPEACHMSK1_EPDM                USB_OTG_DOEPEACHMSK1_EPDM_Msk       /*!< Endpoint disabled interrupt mask          */
 N#define USB_OTG_DOEPEACHMSK1_TOM_Pos             (3U)
 N#define USB_OTG_DOEPEACHMSK1_TOM_Msk             (0x1UL << USB_OTG_DOEPEACHMSK1_TOM_Pos) /*!< 0x00000008 */
-N#define USB_OTG_DOEPEACHMSK1_TOM                 USB_OTG_DOEPEACHMSK1_TOM_Msk  /*!< Timeout condition mask                    */
+N#define USB_OTG_DOEPEACHMSK1_TOM                 USB_OTG_DOEPEACHMSK1_TOM_Msk        /*!< Timeout condition mask                    */
 N#define USB_OTG_DOEPEACHMSK1_ITTXFEMSK_Pos       (4U)
 N#define USB_OTG_DOEPEACHMSK1_ITTXFEMSK_Msk       (0x1UL << USB_OTG_DOEPEACHMSK1_ITTXFEMSK_Pos) /*!< 0x00000010 */
-N#define USB_OTG_DOEPEACHMSK1_ITTXFEMSK           USB_OTG_DOEPEACHMSK1_ITTXFEMSK_Msk /*!< IN token received when TxFIFO empty mask  */
+N#define USB_OTG_DOEPEACHMSK1_ITTXFEMSK           USB_OTG_DOEPEACHMSK1_ITTXFEMSK_Msk  /*!< IN token received when TxFIFO empty mask  */
 N#define USB_OTG_DOEPEACHMSK1_INEPNMM_Pos         (5U)
 N#define USB_OTG_DOEPEACHMSK1_INEPNMM_Msk         (0x1UL << USB_OTG_DOEPEACHMSK1_INEPNMM_Pos) /*!< 0x00000020 */
-N#define USB_OTG_DOEPEACHMSK1_INEPNMM             USB_OTG_DOEPEACHMSK1_INEPNMM_Msk /*!< IN token received with EP mismatch mask   */
+N#define USB_OTG_DOEPEACHMSK1_INEPNMM             USB_OTG_DOEPEACHMSK1_INEPNMM_Msk    /*!< IN token received with EP mismatch mask   */
 N#define USB_OTG_DOEPEACHMSK1_INEPNEM_Pos         (6U)
 N#define USB_OTG_DOEPEACHMSK1_INEPNEM_Msk         (0x1UL << USB_OTG_DOEPEACHMSK1_INEPNEM_Pos) /*!< 0x00000040 */
-N#define USB_OTG_DOEPEACHMSK1_INEPNEM             USB_OTG_DOEPEACHMSK1_INEPNEM_Msk /*!< IN endpoint NAK effective mask            */
+N#define USB_OTG_DOEPEACHMSK1_INEPNEM             USB_OTG_DOEPEACHMSK1_INEPNEM_Msk /*!< IN endpoint NAK effective mask               */
 N#define USB_OTG_DOEPEACHMSK1_TXFURM_Pos          (8U)
 N#define USB_OTG_DOEPEACHMSK1_TXFURM_Msk          (0x1UL << USB_OTG_DOEPEACHMSK1_TXFURM_Pos) /*!< 0x00000100 */
-N#define USB_OTG_DOEPEACHMSK1_TXFURM              USB_OTG_DOEPEACHMSK1_TXFURM_Msk /*!< OUT packet error mask                     */
+N#define USB_OTG_DOEPEACHMSK1_TXFURM              USB_OTG_DOEPEACHMSK1_TXFURM_Msk  /*!< OUT packet error mask                        */
 N#define USB_OTG_DOEPEACHMSK1_BIM_Pos             (9U)
 N#define USB_OTG_DOEPEACHMSK1_BIM_Msk             (0x1UL << USB_OTG_DOEPEACHMSK1_BIM_Pos) /*!< 0x00000200 */
-N#define USB_OTG_DOEPEACHMSK1_BIM                 USB_OTG_DOEPEACHMSK1_BIM_Msk  /*!< BNA interrupt mask                        */
+N#define USB_OTG_DOEPEACHMSK1_BIM                 USB_OTG_DOEPEACHMSK1_BIM_Msk     /*!< BNA interrupt mask                           */
 N#define USB_OTG_DOEPEACHMSK1_BERRM_Pos           (12U)
 N#define USB_OTG_DOEPEACHMSK1_BERRM_Msk           (0x1UL << USB_OTG_DOEPEACHMSK1_BERRM_Pos) /*!< 0x00001000 */
-N#define USB_OTG_DOEPEACHMSK1_BERRM               USB_OTG_DOEPEACHMSK1_BERRM_Msk /*!< Bubble error interrupt mask               */
+N#define USB_OTG_DOEPEACHMSK1_BERRM               USB_OTG_DOEPEACHMSK1_BERRM_Msk   /*!< Bubble error interrupt mask                  */
 N#define USB_OTG_DOEPEACHMSK1_NAKM_Pos            (13U)
 N#define USB_OTG_DOEPEACHMSK1_NAKM_Msk            (0x1UL << USB_OTG_DOEPEACHMSK1_NAKM_Pos) /*!< 0x00002000 */
-N#define USB_OTG_DOEPEACHMSK1_NAKM                USB_OTG_DOEPEACHMSK1_NAKM_Msk /*!< NAK interrupt mask                        */
+N#define USB_OTG_DOEPEACHMSK1_NAKM                USB_OTG_DOEPEACHMSK1_NAKM_Msk    /*!< NAK interrupt mask                           */
 N#define USB_OTG_DOEPEACHMSK1_NYETM_Pos           (14U)
 N#define USB_OTG_DOEPEACHMSK1_NYETM_Msk           (0x1UL << USB_OTG_DOEPEACHMSK1_NYETM_Pos) /*!< 0x00004000 */
-N#define USB_OTG_DOEPEACHMSK1_NYETM               USB_OTG_DOEPEACHMSK1_NYETM_Msk /*!< NYET interrupt mask                       */
+N#define USB_OTG_DOEPEACHMSK1_NYETM               USB_OTG_DOEPEACHMSK1_NYETM_Msk   /*!< NYET interrupt mask                          */
 N
 N/********************  Bit definition for USB_OTG_HPTXFSIZ register  ********************/
 N#define USB_OTG_HPTXFSIZ_PTXSA_Pos               (0U)
@@ -18547,52 +18550,52 @@ N#define USB_OTG_HPTXFSIZ_PTXFD                   USB_OTG_HPTXFSIZ_PTXFD_Msk    
 N
 N/********************  Bit definition for USB_OTG_DIEPCTL register  ********************/
 N#define USB_OTG_DIEPCTL_MPSIZ_Pos                (0U)
-N#define USB_OTG_DIEPCTL_MPSIZ_Msk                (0x7FFUL << USB_OTG_DIEPCTL_MPSIZ_Pos) /*!< 0x000007FF */
-N#define USB_OTG_DIEPCTL_MPSIZ                    USB_OTG_DIEPCTL_MPSIZ_Msk     /*!< Maximum packet size              */
+N#define USB_OTG_DIEPCTL_MPSIZ_Msk                (0x7FFUL << USB_OTG_DIEPCTL_MPSIZ_Pos)        /*!< 0x000007FF */
+N#define USB_OTG_DIEPCTL_MPSIZ                    USB_OTG_DIEPCTL_MPSIZ_Msk                     /*!< Maximum packet size              */
 N#define USB_OTG_DIEPCTL_USBAEP_Pos               (15U)
-N#define USB_OTG_DIEPCTL_USBAEP_Msk               (0x1UL << USB_OTG_DIEPCTL_USBAEP_Pos) /*!< 0x00008000 */
-N#define USB_OTG_DIEPCTL_USBAEP                   USB_OTG_DIEPCTL_USBAEP_Msk    /*!< USB active endpoint              */
+N#define USB_OTG_DIEPCTL_USBAEP_Msk               (0x1UL << USB_OTG_DIEPCTL_USBAEP_Pos)         /*!< 0x00008000 */
+N#define USB_OTG_DIEPCTL_USBAEP                   USB_OTG_DIEPCTL_USBAEP_Msk                    /*!< USB active endpoint              */
 N#define USB_OTG_DIEPCTL_EONUM_DPID_Pos           (16U)
-N#define USB_OTG_DIEPCTL_EONUM_DPID_Msk           (0x1UL << USB_OTG_DIEPCTL_EONUM_DPID_Pos) /*!< 0x00010000 */
-N#define USB_OTG_DIEPCTL_EONUM_DPID               USB_OTG_DIEPCTL_EONUM_DPID_Msk /*!< Even/odd frame                   */
+N#define USB_OTG_DIEPCTL_EONUM_DPID_Msk           (0x1UL << USB_OTG_DIEPCTL_EONUM_DPID_Pos)     /*!< 0x00010000 */
+N#define USB_OTG_DIEPCTL_EONUM_DPID               USB_OTG_DIEPCTL_EONUM_DPID_Msk                /*!< Even/odd frame                   */
 N#define USB_OTG_DIEPCTL_NAKSTS_Pos               (17U)
-N#define USB_OTG_DIEPCTL_NAKSTS_Msk               (0x1UL << USB_OTG_DIEPCTL_NAKSTS_Pos) /*!< 0x00020000 */
-N#define USB_OTG_DIEPCTL_NAKSTS                   USB_OTG_DIEPCTL_NAKSTS_Msk    /*!< NAK status                       */
+N#define USB_OTG_DIEPCTL_NAKSTS_Msk               (0x1UL << USB_OTG_DIEPCTL_NAKSTS_Pos)         /*!< 0x00020000 */
+N#define USB_OTG_DIEPCTL_NAKSTS                   USB_OTG_DIEPCTL_NAKSTS_Msk                    /*!< NAK status                       */
 N
 N#define USB_OTG_DIEPCTL_EPTYP_Pos                (18U)
-N#define USB_OTG_DIEPCTL_EPTYP_Msk                (0x3UL << USB_OTG_DIEPCTL_EPTYP_Pos) /*!< 0x000C0000 */
-N#define USB_OTG_DIEPCTL_EPTYP                    USB_OTG_DIEPCTL_EPTYP_Msk     /*!< Endpoint type                    */
-N#define USB_OTG_DIEPCTL_EPTYP_0                  (0x1UL << USB_OTG_DIEPCTL_EPTYP_Pos) /*!< 0x00040000 */
-N#define USB_OTG_DIEPCTL_EPTYP_1                  (0x2UL << USB_OTG_DIEPCTL_EPTYP_Pos) /*!< 0x00080000 */
+N#define USB_OTG_DIEPCTL_EPTYP_Msk                (0x3UL << USB_OTG_DIEPCTL_EPTYP_Pos)          /*!< 0x000C0000 */
+N#define USB_OTG_DIEPCTL_EPTYP                    USB_OTG_DIEPCTL_EPTYP_Msk                     /*!< Endpoint type                    */
+N#define USB_OTG_DIEPCTL_EPTYP_0                  (0x1UL << USB_OTG_DIEPCTL_EPTYP_Pos)          /*!< 0x00040000 */
+N#define USB_OTG_DIEPCTL_EPTYP_1                  (0x2UL << USB_OTG_DIEPCTL_EPTYP_Pos)          /*!< 0x00080000 */
 N#define USB_OTG_DIEPCTL_STALL_Pos                (21U)
-N#define USB_OTG_DIEPCTL_STALL_Msk                (0x1UL << USB_OTG_DIEPCTL_STALL_Pos) /*!< 0x00200000 */
-N#define USB_OTG_DIEPCTL_STALL                    USB_OTG_DIEPCTL_STALL_Msk     /*!< STALL handshake                  */
+N#define USB_OTG_DIEPCTL_STALL_Msk                (0x1UL << USB_OTG_DIEPCTL_STALL_Pos)          /*!< 0x00200000 */
+N#define USB_OTG_DIEPCTL_STALL                    USB_OTG_DIEPCTL_STALL_Msk                     /*!< STALL handshake                  */
 N
 N#define USB_OTG_DIEPCTL_TXFNUM_Pos               (22U)
-N#define USB_OTG_DIEPCTL_TXFNUM_Msk               (0xFUL << USB_OTG_DIEPCTL_TXFNUM_Pos) /*!< 0x03C00000 */
-N#define USB_OTG_DIEPCTL_TXFNUM                   USB_OTG_DIEPCTL_TXFNUM_Msk    /*!< TxFIFO number                    */
-N#define USB_OTG_DIEPCTL_TXFNUM_0                 (0x1UL << USB_OTG_DIEPCTL_TXFNUM_Pos) /*!< 0x00400000 */
-N#define USB_OTG_DIEPCTL_TXFNUM_1                 (0x2UL << USB_OTG_DIEPCTL_TXFNUM_Pos) /*!< 0x00800000 */
-N#define USB_OTG_DIEPCTL_TXFNUM_2                 (0x4UL << USB_OTG_DIEPCTL_TXFNUM_Pos) /*!< 0x01000000 */
-N#define USB_OTG_DIEPCTL_TXFNUM_3                 (0x8UL << USB_OTG_DIEPCTL_TXFNUM_Pos) /*!< 0x02000000 */
+N#define USB_OTG_DIEPCTL_TXFNUM_Msk               (0xFUL << USB_OTG_DIEPCTL_TXFNUM_Pos)         /*!< 0x03C00000 */
+N#define USB_OTG_DIEPCTL_TXFNUM                   USB_OTG_DIEPCTL_TXFNUM_Msk                    /*!< TxFIFO number                    */
+N#define USB_OTG_DIEPCTL_TXFNUM_0                 (0x1UL << USB_OTG_DIEPCTL_TXFNUM_Pos)         /*!< 0x00400000 */
+N#define USB_OTG_DIEPCTL_TXFNUM_1                 (0x2UL << USB_OTG_DIEPCTL_TXFNUM_Pos)         /*!< 0x00800000 */
+N#define USB_OTG_DIEPCTL_TXFNUM_2                 (0x4UL << USB_OTG_DIEPCTL_TXFNUM_Pos)         /*!< 0x01000000 */
+N#define USB_OTG_DIEPCTL_TXFNUM_3                 (0x8UL << USB_OTG_DIEPCTL_TXFNUM_Pos)         /*!< 0x02000000 */
 N#define USB_OTG_DIEPCTL_CNAK_Pos                 (26U)
-N#define USB_OTG_DIEPCTL_CNAK_Msk                 (0x1UL << USB_OTG_DIEPCTL_CNAK_Pos) /*!< 0x04000000 */
-N#define USB_OTG_DIEPCTL_CNAK                     USB_OTG_DIEPCTL_CNAK_Msk      /*!< Clear NAK                        */
+N#define USB_OTG_DIEPCTL_CNAK_Msk                 (0x1UL << USB_OTG_DIEPCTL_CNAK_Pos)           /*!< 0x04000000 */
+N#define USB_OTG_DIEPCTL_CNAK                     USB_OTG_DIEPCTL_CNAK_Msk                      /*!< Clear NAK                        */
 N#define USB_OTG_DIEPCTL_SNAK_Pos                 (27U)
-N#define USB_OTG_DIEPCTL_SNAK_Msk                 (0x1UL << USB_OTG_DIEPCTL_SNAK_Pos) /*!< 0x08000000 */
-N#define USB_OTG_DIEPCTL_SNAK                     USB_OTG_DIEPCTL_SNAK_Msk      /*!< Set NAK */
+N#define USB_OTG_DIEPCTL_SNAK_Msk                 (0x1UL << USB_OTG_DIEPCTL_SNAK_Pos)           /*!< 0x08000000 */
+N#define USB_OTG_DIEPCTL_SNAK                     USB_OTG_DIEPCTL_SNAK_Msk                      /*!< Set NAK */
 N#define USB_OTG_DIEPCTL_SD0PID_SEVNFRM_Pos       (28U)
 N#define USB_OTG_DIEPCTL_SD0PID_SEVNFRM_Msk       (0x1UL << USB_OTG_DIEPCTL_SD0PID_SEVNFRM_Pos) /*!< 0x10000000 */
-N#define USB_OTG_DIEPCTL_SD0PID_SEVNFRM           USB_OTG_DIEPCTL_SD0PID_SEVNFRM_Msk /*!< Set DATA0 PID                    */
+N#define USB_OTG_DIEPCTL_SD0PID_SEVNFRM           USB_OTG_DIEPCTL_SD0PID_SEVNFRM_Msk            /*!< Set DATA0 PID                    */
 N#define USB_OTG_DIEPCTL_SODDFRM_Pos              (29U)
-N#define USB_OTG_DIEPCTL_SODDFRM_Msk              (0x1UL << USB_OTG_DIEPCTL_SODDFRM_Pos) /*!< 0x20000000 */
-N#define USB_OTG_DIEPCTL_SODDFRM                  USB_OTG_DIEPCTL_SODDFRM_Msk   /*!< Set odd frame                    */
+N#define USB_OTG_DIEPCTL_SODDFRM_Msk              (0x1UL << USB_OTG_DIEPCTL_SODDFRM_Pos)        /*!< 0x20000000 */
+N#define USB_OTG_DIEPCTL_SODDFRM                  USB_OTG_DIEPCTL_SODDFRM_Msk                   /*!< Set odd frame                    */
 N#define USB_OTG_DIEPCTL_EPDIS_Pos                (30U)
-N#define USB_OTG_DIEPCTL_EPDIS_Msk                (0x1UL << USB_OTG_DIEPCTL_EPDIS_Pos) /*!< 0x40000000 */
-N#define USB_OTG_DIEPCTL_EPDIS                    USB_OTG_DIEPCTL_EPDIS_Msk     /*!< Endpoint disable                 */
+N#define USB_OTG_DIEPCTL_EPDIS_Msk                (0x1UL << USB_OTG_DIEPCTL_EPDIS_Pos)          /*!< 0x40000000 */
+N#define USB_OTG_DIEPCTL_EPDIS                    USB_OTG_DIEPCTL_EPDIS_Msk                     /*!< Endpoint disable                 */
 N#define USB_OTG_DIEPCTL_EPENA_Pos                (31U)
-N#define USB_OTG_DIEPCTL_EPENA_Msk                (0x1UL << USB_OTG_DIEPCTL_EPENA_Pos) /*!< 0x80000000 */
-N#define USB_OTG_DIEPCTL_EPENA                    USB_OTG_DIEPCTL_EPENA_Msk     /*!< Endpoint enable                  */
+N#define USB_OTG_DIEPCTL_EPENA_Msk                (0x1UL << USB_OTG_DIEPCTL_EPENA_Pos)          /*!< 0x80000000 */
+N#define USB_OTG_DIEPCTL_EPENA                    USB_OTG_DIEPCTL_EPENA_Msk                     /*!< Endpoint enable                  */
 N
 N/********************  Bit definition for USB_OTG_HCCHAR register  ********************/
 N#define USB_OTG_HCCHAR_MPSIZ_Pos                 (0U)
@@ -18670,23 +18673,23 @@ N#define USB_OTG_HCSPLT_HUBADDR_5                 (0x20UL << USB_OTG_HCSPLT_HUBA
 N#define USB_OTG_HCSPLT_HUBADDR_6                 (0x40UL << USB_OTG_HCSPLT_HUBADDR_Pos) /*!< 0x00002000 */
 N
 N#define USB_OTG_HCSPLT_XACTPOS_Pos               (14U)
-N#define USB_OTG_HCSPLT_XACTPOS_Msk               (0x3UL << USB_OTG_HCSPLT_XACTPOS_Pos) /*!< 0x0000C000 */
+N#define USB_OTG_HCSPLT_XACTPOS_Msk               (0x3UL << USB_OTG_HCSPLT_XACTPOS_Pos)   /*!< 0x0000C000 */
 N#define USB_OTG_HCSPLT_XACTPOS                   USB_OTG_HCSPLT_XACTPOS_Msk    /*!< XACTPOS */
-N#define USB_OTG_HCSPLT_XACTPOS_0                 (0x1UL << USB_OTG_HCSPLT_XACTPOS_Pos) /*!< 0x00004000 */
-N#define USB_OTG_HCSPLT_XACTPOS_1                 (0x2UL << USB_OTG_HCSPLT_XACTPOS_Pos) /*!< 0x00008000 */
+N#define USB_OTG_HCSPLT_XACTPOS_0                 (0x1UL << USB_OTG_HCSPLT_XACTPOS_Pos)   /*!< 0x00004000 */
+N#define USB_OTG_HCSPLT_XACTPOS_1                 (0x2UL << USB_OTG_HCSPLT_XACTPOS_Pos)   /*!< 0x00008000 */
 N#define USB_OTG_HCSPLT_COMPLSPLT_Pos             (16U)
 N#define USB_OTG_HCSPLT_COMPLSPLT_Msk             (0x1UL << USB_OTG_HCSPLT_COMPLSPLT_Pos) /*!< 0x00010000 */
 N#define USB_OTG_HCSPLT_COMPLSPLT                 USB_OTG_HCSPLT_COMPLSPLT_Msk  /*!< Do complete split */
 N#define USB_OTG_HCSPLT_SPLITEN_Pos               (31U)
-N#define USB_OTG_HCSPLT_SPLITEN_Msk               (0x1UL << USB_OTG_HCSPLT_SPLITEN_Pos) /*!< 0x80000000 */
+N#define USB_OTG_HCSPLT_SPLITEN_Msk               (0x1UL << USB_OTG_HCSPLT_SPLITEN_Pos)   /*!< 0x80000000 */
 N#define USB_OTG_HCSPLT_SPLITEN                   USB_OTG_HCSPLT_SPLITEN_Msk    /*!< Split enable */
 N
 N/********************  Bit definition for USB_OTG_HCINT register  ********************/
 N#define USB_OTG_HCINT_XFRC_Pos                   (0U)
-N#define USB_OTG_HCINT_XFRC_Msk                   (0x1UL << USB_OTG_HCINT_XFRC_Pos) /*!< 0x00000001 */
+N#define USB_OTG_HCINT_XFRC_Msk                   (0x1UL << USB_OTG_HCINT_XFRC_Pos)  /*!< 0x00000001 */
 N#define USB_OTG_HCINT_XFRC                       USB_OTG_HCINT_XFRC_Msk        /*!< Transfer completed */
 N#define USB_OTG_HCINT_CHH_Pos                    (1U)
-N#define USB_OTG_HCINT_CHH_Msk                    (0x1UL << USB_OTG_HCINT_CHH_Pos) /*!< 0x00000002 */
+N#define USB_OTG_HCINT_CHH_Msk                    (0x1UL << USB_OTG_HCINT_CHH_Pos)    /*!< 0x00000002 */
 N#define USB_OTG_HCINT_CHH                        USB_OTG_HCINT_CHH_Msk         /*!< Channel halted */
 N#define USB_OTG_HCINT_AHBERR_Pos                 (2U)
 N#define USB_OTG_HCINT_AHBERR_Msk                 (0x1UL << USB_OTG_HCINT_AHBERR_Pos) /*!< 0x00000004 */
@@ -19499,10 +19502,10 @@ N
 N#define RCC_MAX_FREQUENCY           168000000U         /*!< Max frequency of family in Hz*/
 N#define RCC_MAX_FREQUENCY_SCALE1    RCC_MAX_FREQUENCY  /*!< Maximum frequency for system clock at power scale1, in Hz */
 N#define RCC_MAX_FREQUENCY_SCALE2    144000000U         /*!< Maximum frequency for system clock at power scale2, in Hz */
-N#define RCC_PLLVCO_OUTPUT_MIN       100000000U       /*!< Frequency min for PLLVCO output, in Hz */
-N#define RCC_PLLVCO_INPUT_MIN           950000U       /*!< Frequency min for PLLVCO input, in Hz  */
-N#define RCC_PLLVCO_INPUT_MAX          2100000U       /*!< Frequency max for PLLVCO input, in Hz  */
-N#define RCC_PLLVCO_OUTPUT_MAX       432000000U       /*!< Frequency max for PLLVCO output, in Hz */
+N#define RCC_PLLVCO_OUTPUT_MIN       100000000U         /*!< Frequency min for PLLVCO output, in Hz */
+N#define RCC_PLLVCO_INPUT_MIN           950000U         /*!< Frequency min for PLLVCO input, in Hz  */
+N#define RCC_PLLVCO_INPUT_MAX          2100000U         /*!< Frequency max for PLLVCO input, in Hz  */
+N#define RCC_PLLVCO_OUTPUT_MAX       432000000U         /*!< Frequency max for PLLVCO output, in Hz */
 N
 N#define RCC_PLLN_MIN_VALUE                 50U
 N#define RCC_PLLN_MAX_VALUE                432U
@@ -19552,7 +19555,7 @@ S}
 N#endif /* __cplusplus */
 N
 N#endif /* __STM32F405xx_H */
-L 129 "..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h" 2
+L 129 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" 2
 N#elif defined(STM32F415xx)
 S#include "stm32f415xx.h"
 S#elif defined(STM32F407xx)
@@ -20027,7 +20030,7 @@ S
 N#endif /* __STM32F4xx_HAL_H */
 N
 N
-L 288 "..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h" 2
+L 288 "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" 2
 N#endif /* USE_HAL_DRIVER */
 N
 N#ifdef __cplusplus
@@ -20538,7 +20541,10 @@ N#define TYPEPROGRAMDATA_WORD          FLASH_TYPEPROGRAMDATA_WORD
 N#define TYPEPROGRAMDATA_FASTBYTE      FLASH_TYPEPROGRAMDATA_FASTBYTE
 N#define TYPEPROGRAMDATA_FASTHALFWORD  FLASH_TYPEPROGRAMDATA_FASTHALFWORD
 N#define TYPEPROGRAMDATA_FASTWORD      FLASH_TYPEPROGRAMDATA_FASTWORD
-N#define PAGESIZE                      FLASH_PAGE_SIZE
+N#if !defined(STM32F2) && !defined(STM32F4) && !defined(STM32F7) && !defined(STM32H7) && !defined(STM32H5) 
+X#if !0L && !1L && !0L && !0L && !0L 
+S#define PAGESIZE                      FLASH_PAGE_SIZE
+N#endif /* STM32F2 && STM32F4 && STM32F7 &&  STM32H7 && STM32H5 */
 N#define TYPEPROGRAM_FASTBYTE          FLASH_TYPEPROGRAM_BYTE
 N#define TYPEPROGRAM_FASTHALFWORD      FLASH_TYPEPROGRAM_HALFWORD
 N#define TYPEPROGRAM_FASTWORD          FLASH_TYPEPROGRAM_WORD
@@ -20604,6 +20610,11 @@ S#define FLASH_FLAG_STRBER_BANK2R      FLASH_FLAG_STRBERR_BANK2
 S#define FLASH_FLAG_WDW                FLASH_FLAG_WBNE
 S#define OB_WRP_SECTOR_All             OB_WRP_SECTOR_ALL
 N#endif /* STM32H7 */
+N#if defined(STM32H7RS)
+X#if 0L
+S#define FLASH_OPTKEY1                 FLASH_OPT_KEY1
+S#define FLASH_OPTKEY2                 FLASH_OPT_KEY2
+N#endif /* STM32H7RS */
 N#if defined(STM32U5)
 X#if 0L
 S#define OB_USER_nRST_STOP             OB_USER_NRST_STOP
@@ -20672,6 +20683,16 @@ S#define HAL_SYSCFG_DisableIOAnalogSwitchBooster   HAL_SYSCFG_DisableIOSwitchBoo
 S#define HAL_SYSCFG_EnableIOAnalogSwitchVDD        HAL_SYSCFG_EnableIOSwitchVDD
 S#define HAL_SYSCFG_DisableIOAnalogSwitchVDD       HAL_SYSCFG_DisableIOSwitchVDD
 N#endif /* STM32G4 */
+N
+N#if defined(STM32U5)
+X#if 0L
+S
+S#define HAL_SYSCFG_EnableIOAnalogSwitchBooster                 HAL_SYSCFG_EnableIOAnalogBooster
+S#define HAL_SYSCFG_DisableIOAnalogSwitchBooster                HAL_SYSCFG_DisableIOAnalogBooster
+S#define HAL_SYSCFG_EnableIOAnalogSwitchVoltageSelection        HAL_SYSCFG_EnableIOAnalogVoltageSelection
+S#define HAL_SYSCFG_DisableIOAnalogSwitchVoltageSelection       HAL_SYSCFG_DisableIOAnalogVoltageSelection
+S
+N#endif /* STM32U5 */
 N
 N#if defined(STM32H5)
 X#if 0L
@@ -20892,6 +20913,22 @@ X#if 0L
 S#define GPIO_AF0_S2DSTOP                          GPIO_AF0_SRDSTOP
 S#define GPIO_AF11_LPGPIO                          GPIO_AF11_LPGPIO1
 N#endif /* STM32U5 */
+N
+N#if defined(STM32WBA)
+X#if 0L
+S#define GPIO_AF11_RF_ANTSW0    GPIO_AF11_RF
+S#define GPIO_AF11_RF_ANTSW1    GPIO_AF11_RF
+S#define GPIO_AF11_RF_ANTSW2    GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO1       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO2       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO3       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO4       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO5       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO6       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO7       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO8       GPIO_AF11_RF
+S#define GPIO_AF11_RF_IO9       GPIO_AF11_RF
+N#endif /* STM32WBA */
 N/**
 N  * @}
 N  */
@@ -20948,6 +20985,11 @@ N#define __HAL_HRTIM_SetClockPrescaler __HAL_HRTIM_SETCLOCKPRESCALER
 N#define __HAL_HRTIM_GetClockPrescaler __HAL_HRTIM_GETCLOCKPRESCALER
 N#define __HAL_HRTIM_SetCompare        __HAL_HRTIM_SETCOMPARE
 N#define __HAL_HRTIM_GetCompare        __HAL_HRTIM_GETCOMPARE
+N
+N#if defined(STM32F3) || defined(STM32G4) || defined(STM32H7)
+X#if 0L || 0L || 0L
+S#define HRTIMInterruptResquests  HRTIMInterruptRequests
+N#endif /* STM32F3 || STM32G4 || STM32H7 */
 N
 N#if defined(STM32G4)
 X#if 0L
@@ -21089,8 +21131,8 @@ S#define HRTIM_CALIBRATIONRATE_7300             0x00000000U
 S#define HRTIM_CALIBRATIONRATE_910              (HRTIM_DLLCR_CALRTE_0)
 S#define HRTIM_CALIBRATIONRATE_114              (HRTIM_DLLCR_CALRTE_1)
 S#define HRTIM_CALIBRATIONRATE_14               (HRTIM_DLLCR_CALRTE_1 | HRTIM_DLLCR_CALRTE_0)
-S
 N#endif /* STM32F3 */
+N
 N/**
 N  * @}
 N  */
@@ -21348,11 +21390,11 @@ N#define RTC_TAMPERPIN_PC13 RTC_TAMPERPIN_DEFAULT
 N#define RTC_TAMPERPIN_PA0  RTC_TAMPERPIN_POS1
 N#define RTC_TAMPERPIN_PI8  RTC_TAMPERPIN_POS1
 N
-N#if defined(STM32H5) || defined(STM32H7RS)
-X#if 0L || 0L
+N#if defined(STM32H5) || defined(STM32H7RS) || defined(STM32N6)
+X#if 0L || 0L || 0L
 S#define TAMP_SECRETDEVICE_ERASE_NONE        TAMP_DEVICESECRETS_ERASE_NONE
 S#define TAMP_SECRETDEVICE_ERASE_BKP_SRAM    TAMP_DEVICESECRETS_ERASE_BKPSRAM
-N#endif /* STM32H5 || STM32H7RS */
+N#endif /* STM32H5 || STM32H7RS || STM32N6 */
 N
 N#if defined(STM32WBA)
 X#if 0L
@@ -21365,17 +21407,17 @@ S#define TAMP_SECRETDEVICE_ERASE_PKA_SRAM        TAMP_DEVICESECRETS_ERASE_PKA_SR
 S#define TAMP_SECRETDEVICE_ERASE_ALL             TAMP_DEVICESECRETS_ERASE_ALL
 N#endif /* STM32WBA */
 N
-N#if defined(STM32H5) || defined(STM32WBA) || defined(STM32H7RS)
-X#if 0L || 0L || 0L
+N#if defined(STM32H5) || defined(STM32WBA) || defined(STM32H7RS) || defined(STM32N6)
+X#if 0L || 0L || 0L || 0L
 S#define TAMP_SECRETDEVICE_ERASE_DISABLE     TAMP_DEVICESECRETS_ERASE_NONE
 S#define TAMP_SECRETDEVICE_ERASE_ENABLE      TAMP_SECRETDEVICE_ERASE_ALL
-N#endif /* STM32H5 || STM32WBA || STM32H7RS */
+N#endif /* STM32H5 || STM32WBA || STM32H7RS ||  STM32N6 */
 N
-N#if defined(STM32F7)
-X#if 0L
+N#if defined(STM32F7) || defined(STM32WB)
+X#if 0L || 0L
 S#define RTC_TAMPCR_TAMPXE          RTC_TAMPER_ENABLE_BITS_MASK
 S#define RTC_TAMPCR_TAMPXIE         RTC_TAMPER_IT_ENABLE_BITS_MASK
-N#endif /* STM32F7 */
+N#endif /* STM32F7 || STM32WB */
 N
 N#if defined(STM32H7)
 X#if 0L
@@ -21383,13 +21425,13 @@ S#define RTC_TAMPCR_TAMPXE          RTC_TAMPER_X
 S#define RTC_TAMPCR_TAMPXIE         RTC_TAMPER_X_INTERRUPT
 N#endif /* STM32H7 */
 N
-N#if defined(STM32F7) || defined(STM32H7) || defined(STM32L0)
-X#if 0L || 0L || 0L
+N#if defined(STM32F7) || defined(STM32H7) || defined(STM32L0) || defined(STM32WB)
+X#if 0L || 0L || 0L || 0L
 S#define RTC_TAMPER1_INTERRUPT      RTC_IT_TAMP1
 S#define RTC_TAMPER2_INTERRUPT      RTC_IT_TAMP2
 S#define RTC_TAMPER3_INTERRUPT      RTC_IT_TAMP3
 S#define RTC_ALL_TAMPER_INTERRUPT   RTC_IT_TAMP
-N#endif /* STM32F7 || STM32H7 || STM32L0 */
+N#endif /* STM32F7 || STM32H7 || STM32L0 || STM32WB */
 N
 N/**
 N  * @}
@@ -21560,8 +21602,8 @@ S#define TIM_TIM3_TI1_COMP2_OUT        TIM_TIM3_TI1_COMP2
 S#define TIM_TIM3_TI1_COMP1COMP2_OUT   TIM_TIM3_TI1_COMP1_COMP2
 N#endif
 N
-N#if defined(STM32U5)
-X#if 0L
+N#if defined(STM32U5) || defined(STM32MP2)
+X#if 0L || 0L
 S#define OCREF_CLEAR_SELECT_Pos       OCREF_CLEAR_SELECT_POS
 S#define OCREF_CLEAR_SELECT_Msk       OCREF_CLEAR_SELECT_MSK
 N#endif
@@ -22125,13 +22167,13 @@ N
 N/** @defgroup HAL_RTC_Aliased_Functions HAL RTC Aliased Functions maintained for legacy purpose
 N  * @{
 N  */
-N#if defined(STM32H5) || defined(STM32WBA) || defined(STM32H7RS)
-X#if 0L || 0L || 0L
+N#if defined(STM32H5) || defined(STM32WBA) || defined(STM32H7RS) || defined(STM32N6)
+X#if 0L || 0L || 0L || 0L
 S#define HAL_RTCEx_SetBoothardwareKey            HAL_RTCEx_LockBootHardwareKey
 S#define HAL_RTCEx_BKUPBlock_Enable              HAL_RTCEx_BKUPBlock
 S#define HAL_RTCEx_BKUPBlock_Disable             HAL_RTCEx_BKUPUnblock
 S#define HAL_RTCEx_Erase_SecretDev_Conf          HAL_RTCEx_ConfigEraseDeviceSecrets
-N#endif /* STM32H5 || STM32WBA || STM32H7RS */
+N#endif /* STM32H5 || STM32WBA || STM32H7RS || STM32N6 */
 N
 N/**
 N  * @}
@@ -23854,9 +23896,10 @@ X#if 0L
 S#define RCC_SYSCLKSOURCE_STATUS_PLLR   RCC_SYSCLKSOURCE_STATUS_PLLCLK
 N#endif
 N
-N#if   defined(STM32L4) || defined(STM32WB) || defined(STM32G0) || defined(STM32G4) || defined(STM32L5) || \
-N      defined(STM32WL) || defined(STM32C0) || defined(STM32H7RS) || defined(STM32U0)
-X#if   0L || 0L || 0L || 0L || 0L ||       0L || 0L || 0L || 0L
+N#if defined(STM32L4) || defined(STM32WB) || defined(STM32G0) || defined(STM32G4) || defined(STM32L5) || \
+N      defined(STM32WL) || defined(STM32C0) || defined(STM32N6) || defined(STM32H7RS) || \
+N      defined(STM32U0)
+X#if 0L || 0L || 0L || 0L || 0L ||       0L || 0L || 0L || 0L ||       0L
 S#define RCC_RTCCLKSOURCE_NO_CLK     RCC_RTCCLKSOURCE_NONE
 N#else
 N#define RCC_RTCCLKSOURCE_NONE       RCC_RTCCLKSOURCE_NO_CLK
@@ -24110,8 +24153,9 @@ N  * @{
 N  */
 N#if defined (STM32G0) || defined (STM32L5) || defined (STM32L412xx) || defined (STM32L422xx) || \
 N    defined (STM32L4P5xx)|| defined (STM32L4Q5xx) || defined (STM32G4) || defined (STM32WL) || defined (STM32U5) || \
-N    defined (STM32WBA) || defined (STM32H5) || defined (STM32C0) || defined (STM32H7RS) ||  defined (STM32U0)
-X#if 0L || 0L || 0L || 0L ||     0L|| 0L || 0L || 0L || 0L ||     0L || 0L || 0L || 0L ||  0L
+N    defined (STM32WBA) || defined (STM32H5) || \
+N    defined (STM32C0) || defined (STM32N6) || defined (STM32H7RS) || defined (STM32U0) || defined (STM32U3)
+X#if 0L || 0L || 0L || 0L ||     0L|| 0L || 0L || 0L || 0L ||     0L || 0L ||     0L || 0L || 0L || 0L || 0L
 N#else
 N#define __HAL_RTC_CLEAR_FLAG                      __HAL_RTC_EXTI_CLEAR_FLAG
 N#endif
@@ -24420,6 +24464,34 @@ N#define HAL_PCD_DeActiveRemoteWakeup                       HAL_PCD_DeActivateRe
 N
 N#define HAL_PCD_SetTxFiFo                                  HAL_PCDEx_SetTxFiFo
 N#define HAL_PCD_SetRxFiFo                                  HAL_PCDEx_SetRxFiFo
+N#if defined(STM32U5)
+X#if 0L
+S#define USB_OTG_GOTGCTL_BSESVLD                            USB_OTG_GOTGCTL_BSVLD
+S#define USB_OTG_GAHBCFG_GINT                               USB_OTG_GAHBCFG_GINTMSK
+S#define USB_OTG_GUSBCFG_PHYLPCS                            USB_OTG_GUSBCFG_PHYLPC
+S#define USB_OTG_GRSTCTL_HSRST                              USB_OTG_GRSTCTL_PSRST
+S#define USB_OTG_GINTSTS_BOUTNAKEFF                         USB_OTG_GINTSTS_GONAKEFF
+S#define USB_OTG_GINTSTS_WKUINT                             USB_OTG_GINTSTS_WKUPINT
+S#define USB_OTG_GINTMSK_PXFRM_IISOOXFRM                    USB_OTG_GINTMSK_IPXFRM_IISOOXFRM
+S#define USB_OTG_GRXSTSP_EPNUM                              USB_OTG_GRXSTSP_EPNUM_CHNUM
+S#define USB_OTG_GLPMCFG_L1ResumeOK                         USB_OTG_GLPMCFG_L1RSMOK
+S#define USB_OTG_HPTXFSIZ_PTXFD                             USB_OTG_HPTXFSIZ_PTXFSIZ
+S#define USB_OTG_HCCHAR_MC                                  USB_OTG_HCCHAR_MCNT
+S#define USB_OTG_HCCHAR_MC_0                                USB_OTG_HCCHAR_MCNT_0
+S#define USB_OTG_HCCHAR_MC_1                                USB_OTG_HCCHAR_MCNT_1
+S#define USB_OTG_HCINTMSK_AHBERR                            USB_OTG_HCINTMSK_AHBERRM
+S#define USB_OTG_HCTSIZ_DOPING                              USB_OTG_HCTSIZ_DOPNG
+S#define USB_OTG_DOEPMSK_OPEM                               USB_OTG_DOEPMSK_OUTPKTERRM
+S#define USB_OTG_DIEPCTL_SODDFRM                            USB_OTG_DIEPCTL_SD1PID_SODDFRM
+S#define USB_OTG_DIEPTSIZ_MULCNT                            USB_OTG_DIEPTSIZ_MCNT
+S#define USB_OTG_DOEPCTL_SODDFRM                            USB_OTG_DOEPCTL_SD1PID_SODDFRM
+S#define USB_OTG_DOEPCTL_DPID                               USB_OTG_DOEPCTL_DPID_EONUM
+S#define USB_OTG_DOEPTSIZ_STUPCNT                           USB_OTG_DOEPTSIZ_RXDPID
+S#define USB_OTG_DOEPTSIZ_STUPCNT_0                         USB_OTG_DOEPTSIZ_RXDPID_0
+S#define USB_OTG_DOEPTSIZ_STUPCNT_1                         USB_OTG_DOEPTSIZ_RXDPID_1
+S#define USB_OTG_PCGCCTL_STOPCLK                            USB_OTG_PCGCCTL_STPPCLK
+S#define USB_OTG_PCGCCTL_GATECLK                            USB_OTG_PCGCCTL_GATEHCLK
+N#endif
 N/**
 N  * @}
 N  */
@@ -24595,7 +24667,7 @@ N */
 N
 N#ifndef __stddef_h
 N#define __stddef_h
-N#define __ARMCLIB_VERSION 5060044
+N#define __ARMCLIB_VERSION 5060037
 N
 N  #ifndef __STDDEF_DECLS
 N  #define __STDDEF_DECLS
@@ -24784,7 +24856,7 @@ X  #define __HAL_UNLOCK(__HANDLE__)                                             
 N#endif /* USE_RTOS */
 N
 N#if defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050) /* ARM Compiler V6 */
-X#if 1L && (5060960 >= 6010050)  
+X#if 1L && (5060750 >= 6010050)  
 S  #ifndef __weak
 S    #define __weak  __attribute__((weak))
 S  #endif
@@ -24804,7 +24876,7 @@ N
 N
 N/* Macro to get variable aligned on 4-bytes, for __ICCARM__ the directive "#pragma data_alignment=4" must be used instead */
 N#if defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050) /* ARM Compiler V6 */
-X#if 1L && (5060960 >= 6010050)  
+X#if 1L && (5060750 >= 6010050)  
 S  #ifndef __ALIGN_BEGIN
 S    #define __ALIGN_BEGIN
 S  #endif
@@ -24838,7 +24910,7 @@ N/**
 N  * @brief  __RAM_FUNC definition
 N  */ 
 N#if defined ( __CC_ARM   ) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
-X#if 1L || (1L && (5060960 >= 6010050))
+X#if 1L || (1L && (5060750 >= 6010050))
 N/* ARM Compiler V4/V5 and V6
 N   --------------------------
 N   RAM functions are defined using the toolchain options. 
@@ -24871,7 +24943,7 @@ N/**
 N  * @brief  __NOINLINE definition
 N  */ 
 N#if defined ( __CC_ARM   ) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || defined   (  __GNUC__  )
-X#if 1L || (1L && (5060960 >= 6010050)) || 0L
+X#if 1L || (1L && (5060750 >= 6010050)) || 0L
 N/* ARM V4/V5 and V6 & GNU Compiler
 N   -------------------------------
 N*/
@@ -33703,8 +33775,8 @@ N  * @{
 N  */
 N/* Initialization and de-initialization functions  ******************************/
 NHAL_StatusTypeDef HAL_RCC_DeInit(void);
-NHAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct);
-NHAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency);
+NHAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef *RCC_OscInitStruct);
+NHAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency);
 N/**
 N  * @}
 N  */
@@ -50756,13 +50828,14 @@ N   ((__CHANNEL__) == TIM_CHANNEL_3) ? ((__HANDLE__)->ChannelState[2] = (__CHANN
 N   ((__HANDLE__)->ChannelState[3] = (__CHANNEL_STATE__)))
 X#define TIM_CHANNEL_STATE_SET(__HANDLE__, __CHANNEL__, __CHANNEL_STATE__)   (((__CHANNEL__) == TIM_CHANNEL_1) ? ((__HANDLE__)->ChannelState[0] = (__CHANNEL_STATE__)) :   ((__CHANNEL__) == TIM_CHANNEL_2) ? ((__HANDLE__)->ChannelState[1] = (__CHANNEL_STATE__)) :   ((__CHANNEL__) == TIM_CHANNEL_3) ? ((__HANDLE__)->ChannelState[2] = (__CHANNEL_STATE__)) :   ((__HANDLE__)->ChannelState[3] = (__CHANNEL_STATE__)))
 N
-N#define TIM_CHANNEL_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__) do { \
-N                                                                       (__HANDLE__)->ChannelState[0]  = (__CHANNEL_STATE__);  \
-N                                                                       (__HANDLE__)->ChannelState[1]  = (__CHANNEL_STATE__);  \
-N                                                                       (__HANDLE__)->ChannelState[2]  = (__CHANNEL_STATE__);  \
-N                                                                       (__HANDLE__)->ChannelState[3]  = (__CHANNEL_STATE__);  \
-N                                                                     } while(0)
-X#define TIM_CHANNEL_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__) do {                                                                        (__HANDLE__)->ChannelState[0]  = (__CHANNEL_STATE__);                                                                         (__HANDLE__)->ChannelState[1]  = (__CHANNEL_STATE__);                                                                         (__HANDLE__)->ChannelState[2]  = (__CHANNEL_STATE__);                                                                         (__HANDLE__)->ChannelState[3]  = (__CHANNEL_STATE__);                                                                       } while(0)
+N#define TIM_CHANNEL_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__)\
+N  do {\
+N    (__HANDLE__)->ChannelState[0]  = (__CHANNEL_STATE__);\
+N    (__HANDLE__)->ChannelState[1]  = (__CHANNEL_STATE__);\
+N    (__HANDLE__)->ChannelState[2]  = (__CHANNEL_STATE__);\
+N    (__HANDLE__)->ChannelState[3]  = (__CHANNEL_STATE__);\
+N  } while(0)
+X#define TIM_CHANNEL_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__)  do {    (__HANDLE__)->ChannelState[0]  = (__CHANNEL_STATE__);    (__HANDLE__)->ChannelState[1]  = (__CHANNEL_STATE__);    (__HANDLE__)->ChannelState[2]  = (__CHANNEL_STATE__);    (__HANDLE__)->ChannelState[3]  = (__CHANNEL_STATE__);  } while(0)
 N
 N#define TIM_CHANNEL_N_STATE_GET(__HANDLE__, __CHANNEL__)\
 N  (((__CHANNEL__) == TIM_CHANNEL_1) ? (__HANDLE__)->ChannelNState[0] :\
@@ -50778,17 +50851,18 @@ N   ((__CHANNEL__) == TIM_CHANNEL_3) ? ((__HANDLE__)->ChannelNState[2] = (__CHAN
 N   ((__HANDLE__)->ChannelNState[3] = (__CHANNEL_STATE__)))
 X#define TIM_CHANNEL_N_STATE_SET(__HANDLE__, __CHANNEL__, __CHANNEL_STATE__)   (((__CHANNEL__) == TIM_CHANNEL_1) ? ((__HANDLE__)->ChannelNState[0] = (__CHANNEL_STATE__)) :   ((__CHANNEL__) == TIM_CHANNEL_2) ? ((__HANDLE__)->ChannelNState[1] = (__CHANNEL_STATE__)) :   ((__CHANNEL__) == TIM_CHANNEL_3) ? ((__HANDLE__)->ChannelNState[2] = (__CHANNEL_STATE__)) :   ((__HANDLE__)->ChannelNState[3] = (__CHANNEL_STATE__)))
 N
-N#define TIM_CHANNEL_N_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__) do { \
-N                                                                         (__HANDLE__)->ChannelNState[0] = \
-N                                                                         (__CHANNEL_STATE__);  \
-N                                                                         (__HANDLE__)->ChannelNState[1] = \
-N                                                                         (__CHANNEL_STATE__);  \
-N                                                                         (__HANDLE__)->ChannelNState[2] = \
-N                                                                         (__CHANNEL_STATE__);  \
-N                                                                         (__HANDLE__)->ChannelNState[3] = \
-N                                                                         (__CHANNEL_STATE__);  \
-N                                                                       } while(0)
-X#define TIM_CHANNEL_N_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__) do {                                                                          (__HANDLE__)->ChannelNState[0] =                                                                          (__CHANNEL_STATE__);                                                                           (__HANDLE__)->ChannelNState[1] =                                                                          (__CHANNEL_STATE__);                                                                           (__HANDLE__)->ChannelNState[2] =                                                                          (__CHANNEL_STATE__);                                                                           (__HANDLE__)->ChannelNState[3] =                                                                          (__CHANNEL_STATE__);                                                                         } while(0)
+N#define TIM_CHANNEL_N_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__)\
+N  do {\
+N    (__HANDLE__)->ChannelNState[0] = \
+N    (__CHANNEL_STATE__);  \
+N    (__HANDLE__)->ChannelNState[1] = \
+N    (__CHANNEL_STATE__);  \
+N    (__HANDLE__)->ChannelNState[2] = \
+N    (__CHANNEL_STATE__);  \
+N    (__HANDLE__)->ChannelNState[3] = \
+N    (__CHANNEL_STATE__);  \
+N  } while(0)
+X#define TIM_CHANNEL_N_STATE_SET_ALL(__HANDLE__,  __CHANNEL_STATE__)  do {    (__HANDLE__)->ChannelNState[0] =     (__CHANNEL_STATE__);      (__HANDLE__)->ChannelNState[1] =     (__CHANNEL_STATE__);      (__HANDLE__)->ChannelNState[2] =     (__CHANNEL_STATE__);      (__HANDLE__)->ChannelNState[3] =     (__CHANNEL_STATE__);    } while(0)
 N
 N/**
 N  * @}
@@ -50950,6 +51024,7 @@ N#if defined(LPTIM_OR_TIM1_ITR2_RMP) && defined(LPTIM_OR_TIM5_ITR1_RMP) && defin
 X#if 0L && 0L && 0L
 S#define IS_TIM_REMAP(INSTANCE, TIM_REMAP)                                 \
 S  ((((INSTANCE) == TIM2)  && (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)      || \
+S                              ((TIM_REMAP) == TIM_TIM2_ETH_PTP)        || \
 S                              ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)      || \
 S                              ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)))    || \
 S   (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_GPIO)           || \
@@ -50964,11 +51039,12 @@ S   (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_TIM3_TRGO)      || \
 S                              ((TIM_REMAP) == TIM_TIM5_LPTIM)))        || \
 S   (((INSTANCE) == TIM9)  && (((TIM_REMAP) == TIM_TIM9_TIM3_TRGO)      || \
 S                              ((TIM_REMAP) == TIM_TIM9_LPTIM))))
-X#define IS_TIM_REMAP(INSTANCE, TIM_REMAP)                                   ((((INSTANCE) == TIM2)  && (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)      ||                               ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)))    ||    (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_GPIO)           ||                               ((TIM_REMAP) == TIM_TIM5_LSI)            ||                               ((TIM_REMAP) == TIM_TIM5_LSE)            ||                               ((TIM_REMAP) == TIM_TIM5_RTC)))          ||    (((INSTANCE) == TIM11) && (((TIM_REMAP) == TIM_TIM11_GPIO)          ||                               ((TIM_REMAP) == TIM_TIM11_HSE)))         ||    (((INSTANCE) == TIM1)  && (((TIM_REMAP) == TIM_TIM1_TIM3_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM1_LPTIM)))        ||    (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_TIM3_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM5_LPTIM)))        ||    (((INSTANCE) == TIM9)  && (((TIM_REMAP) == TIM_TIM9_TIM3_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM9_LPTIM))))
+X#define IS_TIM_REMAP(INSTANCE, TIM_REMAP)                                   ((((INSTANCE) == TIM2)  && (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM2_ETH_PTP)        ||                               ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)      ||                               ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)))    ||    (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_GPIO)           ||                               ((TIM_REMAP) == TIM_TIM5_LSI)            ||                               ((TIM_REMAP) == TIM_TIM5_LSE)            ||                               ((TIM_REMAP) == TIM_TIM5_RTC)))          ||    (((INSTANCE) == TIM11) && (((TIM_REMAP) == TIM_TIM11_GPIO)          ||                               ((TIM_REMAP) == TIM_TIM11_HSE)))         ||    (((INSTANCE) == TIM1)  && (((TIM_REMAP) == TIM_TIM1_TIM3_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM1_LPTIM)))        ||    (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_TIM3_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM5_LPTIM)))        ||    (((INSTANCE) == TIM9)  && (((TIM_REMAP) == TIM_TIM9_TIM3_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM9_LPTIM))))
 N#elif defined(TIM8)
 X#elif 1L
 N#define IS_TIM_REMAP(INSTANCE, TIM_REMAP)                                 \
 N  ((((INSTANCE) == TIM2)  && (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)      || \
+N                              ((TIM_REMAP) == TIM_TIM2_ETH_PTP)        || \
 N                              ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)      || \
 N                              ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)))    || \
 N   (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_GPIO)           || \
@@ -50977,7 +51053,7 @@ N                              ((TIM_REMAP) == TIM_TIM5_LSE)            || \
 N                              ((TIM_REMAP) == TIM_TIM5_RTC)))          || \
 N   (((INSTANCE) == TIM11) && (((TIM_REMAP) == TIM_TIM11_GPIO)          || \
 N                              ((TIM_REMAP) == TIM_TIM11_HSE))))
-X#define IS_TIM_REMAP(INSTANCE, TIM_REMAP)                                   ((((INSTANCE) == TIM2)  && (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)      ||                               ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)))    ||    (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_GPIO)           ||                               ((TIM_REMAP) == TIM_TIM5_LSI)            ||                               ((TIM_REMAP) == TIM_TIM5_LSE)            ||                               ((TIM_REMAP) == TIM_TIM5_RTC)))          ||    (((INSTANCE) == TIM11) && (((TIM_REMAP) == TIM_TIM11_GPIO)          ||                               ((TIM_REMAP) == TIM_TIM11_HSE))))
+X#define IS_TIM_REMAP(INSTANCE, TIM_REMAP)                                   ((((INSTANCE) == TIM2)  && (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)      ||                               ((TIM_REMAP) == TIM_TIM2_ETH_PTP)        ||                               ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)      ||                               ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)))    ||    (((INSTANCE) == TIM5)  && (((TIM_REMAP) == TIM_TIM5_GPIO)           ||                               ((TIM_REMAP) == TIM_TIM5_LSI)            ||                               ((TIM_REMAP) == TIM_TIM5_LSE)            ||                               ((TIM_REMAP) == TIM_TIM5_RTC)))          ||    (((INSTANCE) == TIM11) && (((TIM_REMAP) == TIM_TIM11_GPIO)          ||                               ((TIM_REMAP) == TIM_TIM11_HSE))))
 N#else
 S#define IS_TIM_REMAP(INSTANCE, TIM_REMAP)                                 \
 S  ((((INSTANCE) == TIM2)  && (((TIM_REMAP) == TIM_TIM2_ETH_PTP)        || \
@@ -51166,7 +51242,7 @@ N#endif
 N
 N
 N#endif /* STM32F4xx_HAL_TIM_EX_H */
-L 1879 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h" 2
+L 1881 "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h" 2
 N
 N/* Exported functions --------------------------------------------------------*/
 N/** @addtogroup TIM_Exported_Functions TIM Exported Functions
