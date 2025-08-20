@@ -85,6 +85,7 @@
 .\targetboard_g5_a1\splcmisc.o: ../../MainApp/dcHmiRes.h
 .\targetboard_g5_a1\splcmisc.o: ../../MainApp/MainAppLib.h
 .\targetboard_g5_a1\splcmisc.o: ../../MainApp/dcHmiLanguage.H
+.\targetboard_g5_a1\splcmisc.o: ../../lib/FuzzyPID_Relay.h
 .\targetboard_g5_a1\splcmisc.o: ../USB_HOST/Target/usbh_platform.h
 .\targetboard_g5_a1\splcmisc.o: ../USB_HOST/App/usb_host.h
 .\targetboard_g5_a1\splcmisc.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

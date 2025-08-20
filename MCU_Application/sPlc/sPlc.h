@@ -26,6 +26,7 @@
 #include "MainAppLib.h"
 #include "dcHmiLanguage.H"
 #include "deviceConfig.h"
+#include "FuzzyPID_Relay.h"
 /*****************************************************************************/
 #include "usbh_platform.h"
 #include "usbh_core.h"

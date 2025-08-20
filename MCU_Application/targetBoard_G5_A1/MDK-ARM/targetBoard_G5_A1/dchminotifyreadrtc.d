@@ -87,6 +87,7 @@
 .\targetboard_g5_a1\dchminotifyreadrtc.o: ../../MainApp/dcHmiRes.h
 .\targetboard_g5_a1\dchminotifyreadrtc.o: ../../MainApp/MainAppLib.h
 .\targetboard_g5_a1\dchminotifyreadrtc.o: ../../MainApp/dcHmiLanguage.H
+.\targetboard_g5_a1\dchminotifyreadrtc.o: ../../lib/FuzzyPID_Relay.h
 .\targetboard_g5_a1\dchminotifyreadrtc.o: ../USB_HOST/Target/usbh_platform.h
 .\targetboard_g5_a1\dchminotifyreadrtc.o: ../USB_HOST/App/usb_host.h
 .\targetboard_g5_a1\dchminotifyreadrtc.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

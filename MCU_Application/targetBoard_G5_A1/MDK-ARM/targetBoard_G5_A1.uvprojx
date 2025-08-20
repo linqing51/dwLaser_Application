@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>2</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -590,6 +590,11 @@
               <FileName>arm_cortexM4lf_math.lib</FileName>
               <FileType>4</FileType>
               <FilePath>..\..\lib\arm_cortexM4lf_math.lib</FilePath>
+            </File>
+            <File>
+              <FileName>FuzzyPID_Relay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\FuzzyPID_Relay.c</FilePath>
             </File>
           </Files>
         </Group>

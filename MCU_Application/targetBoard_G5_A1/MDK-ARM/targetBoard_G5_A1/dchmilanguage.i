@@ -43423,18 +43423,17 @@ extern void readStm32UniqueID(void);
 
 
 
-
  
 
  
 
  
-#line 21 "../../sPlc/sPlcConfig.h"
+#line 20 "../../sPlc/sPlcConfig.h"
  
-#line 32 "../../sPlc/sPlcConfig.h"
+#line 31 "../../sPlc/sPlcConfig.h"
  
 
-#line 41 "../../sPlc/sPlcConfig.h"
+#line 40 "../../sPlc/sPlcConfig.h"
 
 
 
@@ -43450,19 +43449,19 @@ extern void readStm32UniqueID(void);
 
 
 
-
-
-
- 
 
 
 
  
-#line 74 "../../sPlc/sPlcConfig.h"
+
+
+
+ 
+#line 73 "../../sPlc/sPlcConfig.h"
  
 
  
-#line 92 "../../sPlc/sPlcConfig.h"
+#line 91 "../../sPlc/sPlcConfig.h"
  				
 
 
@@ -43480,7 +43479,7 @@ extern void readStm32UniqueID(void);
  
 
 
-#line 118 "../../sPlc/sPlcConfig.h"
+#line 117 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43491,25 +43490,19 @@ extern void readStm32UniqueID(void);
 
 
 
-#line 135 "../../sPlc/sPlcConfig.h"
+#line 134 "../../sPlc/sPlcConfig.h"
 
 
 
 
 
  
-#line 152 "../../sPlc/sPlcConfig.h"
+#line 151 "../../sPlc/sPlcConfig.h"
 
-#line 161 "../../sPlc/sPlcConfig.h"
+#line 160 "../../sPlc/sPlcConfig.h"
  
 
  
-
- 
-
-
-
-
 
  
 
@@ -43518,7 +43511,9 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 188 "../../sPlc/sPlcConfig.h"
+#line 178 "../../sPlc/sPlcConfig.h"
+ 
+#line 189 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43529,15 +43524,15 @@ extern void readStm32UniqueID(void);
 
 
 
-#line 210 "../../sPlc/sPlcConfig.h"
+#line 211 "../../sPlc/sPlcConfig.h"
 
-#line 223 "../../sPlc/sPlcConfig.h"
+#line 224 "../../sPlc/sPlcConfig.h"
 
-#line 232 "../../sPlc/sPlcConfig.h"
+#line 233 "../../sPlc/sPlcConfig.h"
  
-#line 241 "../../sPlc/sPlcConfig.h"
+#line 242 "../../sPlc/sPlcConfig.h"
  
-#line 250 "../../sPlc/sPlcConfig.h"
+#line 251 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43558,13 +43553,13 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 290 "../../sPlc/sPlcConfig.h"
+#line 291 "../../sPlc/sPlcConfig.h"
  
-#line 311 "../../sPlc/sPlcConfig.h"
+#line 312 "../../sPlc/sPlcConfig.h"
  
-#line 332 "../../sPlc/sPlcConfig.h"
+#line 333 "../../sPlc/sPlcConfig.h"
  
-#line 353 "../../sPlc/sPlcConfig.h"
+#line 354 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43634,37 +43629,37 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 431 "../../sPlc/sPlcConfig.h"
+#line 432 "../../sPlc/sPlcConfig.h"
  
-#line 438 "../../sPlc/sPlcConfig.h"
- 
-
-
+#line 439 "../../sPlc/sPlcConfig.h"
  
 
 
  
-#line 453 "../../sPlc/sPlcConfig.h"
- 
-#line 470 "../../sPlc/sPlcConfig.h"
-
-#line 479 "../../sPlc/sPlcConfig.h"
- 
-#line 500 "../../sPlc/sPlcConfig.h"
- 
-
-
 
 
  
-
-#line 517 "../../sPlc/sPlcConfig.h"
+#line 454 "../../sPlc/sPlcConfig.h"
  
-#line 525 "../../sPlc/sPlcConfig.h"
- 
-#line 532 "../../sPlc/sPlcConfig.h"
+#line 471 "../../sPlc/sPlcConfig.h"
 
-#line 541 "../../sPlc/sPlcConfig.h"
+#line 480 "../../sPlc/sPlcConfig.h"
+ 
+#line 501 "../../sPlc/sPlcConfig.h"
+ 
+
+
+
+
+ 
+
+#line 518 "../../sPlc/sPlcConfig.h"
+ 
+#line 526 "../../sPlc/sPlcConfig.h"
+ 
+#line 533 "../../sPlc/sPlcConfig.h"
+
+#line 542 "../../sPlc/sPlcConfig.h"
  				
 
 
@@ -43672,61 +43667,13 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 554 "../../sPlc/sPlcConfig.h"
+#line 555 "../../sPlc/sPlcConfig.h"
  
 
 
 
  
-#line 569 "../../sPlc/sPlcConfig.h"
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#line 570 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43776,11 +43723,59 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 698 "../../sPlc/sPlcConfig.h"
 
-#line 731 "../../sPlc/sPlcConfig.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
-#line 741 "../../sPlc/sPlcConfig.h"
+#line 699 "../../sPlc/sPlcConfig.h"
+
+#line 732 "../../sPlc/sPlcConfig.h"
+ 
+#line 742 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -43788,33 +43783,25 @@ extern void readStm32UniqueID(void);
 
 
  
-#line 755 "../../sPlc/sPlcConfig.h"
+#line 756 "../../sPlc/sPlcConfig.h"
  
-#line 784 "../../sPlc/sPlcConfig.h"
+#line 785 "../../sPlc/sPlcConfig.h"
 
-#line 796 "../../sPlc/sPlcConfig.h"
+#line 797 "../../sPlc/sPlcConfig.h"
  
-#line 821 "../../sPlc/sPlcConfig.h"
+#line 822 "../../sPlc/sPlcConfig.h"
  
-#line 832 "../../sPlc/sPlcConfig.h"
+#line 833 "../../sPlc/sPlcConfig.h"
  
-#line 840 "../../sPlc/sPlcConfig.h"
- 
-
-
- 
-#line 878 "../../sPlc/sPlcConfig.h"
-
-
-
+#line 841 "../../sPlc/sPlcConfig.h"
  
 
 
  
+#line 879 "../../sPlc/sPlcConfig.h"
 
 
 
- 
  
 
 
@@ -43822,9 +43809,17 @@ extern void readStm32UniqueID(void);
 
 
 
+ 
+ 
+
 
  
-#line 910 "../../sPlc/sPlcConfig.h"
+
+
+
+
+ 
+#line 911 "../../sPlc/sPlcConfig.h"
  
 
 
@@ -45163,6 +45158,38 @@ int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb);
 
 #line 28 "../../sPlc/sPlc.h"
 #line 29 "../../sPlc/sPlc.h"
+#line 1 "../../lib/FuzzyPID_Relay.h"
+ 
+
+
+
+ 
+#line 9 "../../lib/FuzzyPID_Relay.h"
+
+typedef struct {
+    float Kp;           
+    float Ki;           
+    float Kd;           
+    float prev_error;   
+    float integral;     
+    float output;       
+    float hysteresis;   
+    int relay_state;    
+} FuzzyPIDController;
+
+
+void FuzzyPID_Init(FuzzyPIDController* pid, float Kp, float Ki, float Kd, float hysteresis);
+
+
+float FuzzyPID_Calculate(FuzzyPIDController* pid, float setpoint, float current_temp);
+
+
+int FuzzyPID_GetRelayState(FuzzyPIDController* pid, float output);
+
+
+void FuzzyPID_Reset(FuzzyPIDController* pid);
+
+#line 30 "../../sPlc/sPlc.h"
  
 #line 1 "../USB_HOST/Target/usbh_platform.h"
  
@@ -45298,8 +45325,8 @@ void MX_DriverVbusFS(uint8_t state);
 
 
 
-#line 31 "../../sPlc/sPlc.h"
 #line 32 "../../sPlc/sPlc.h"
+#line 33 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
 
 
@@ -45939,9 +45966,9 @@ USBH_StatusTypeDef USBH_MSC_Write(USBH_HandleTypeDef *phost, uint8_t lun,
 
 
 
-#line 33 "../../sPlc/sPlc.h"
 #line 34 "../../sPlc/sPlc.h"
 #line 35 "../../sPlc/sPlc.h"
+#line 36 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h"
 
 
@@ -46494,7 +46521,7 @@ void        USBH_AUDIO_BufferEmptyCallback(USBH_HandleTypeDef *phost);
 
  
 
-#line 36 "../../sPlc/sPlc.h"
+#line 37 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h"
 
 
@@ -46920,8 +46947,8 @@ void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef *phost);
 
  
 
-#line 37 "../../sPlc/sPlc.h"
 #line 38 "../../sPlc/sPlc.h"
+#line 39 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h"
 
 
@@ -47539,7 +47566,7 @@ uint16_t  USBH_HID_FifoWrite(FIFO_TypeDef *f, void *buf, uint16_t nbytes);
 
  
 
-#line 39 "../../sPlc/sPlc.h"
+#line 40 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp.h"
 
 
@@ -48414,7 +48441,7 @@ void USBH_MTP_EventsCallback(USBH_HandleTypeDef *phost, uint32_t event, uint32_t
 
  
 
-#line 40 "../../sPlc/sPlc.h"
+#line 41 "../../sPlc/sPlc.h"
  
 #line 1 "../Middlewares/Third_Party/FatFs/src/ff.h"
 
@@ -49045,7 +49072,7 @@ int ff_del_syncobj (osMutexId_t sobj);
 
 
 
-#line 42 "../../sPlc/sPlc.h"
+#line 43 "../../sPlc/sPlc.h"
 #line 1 "../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
 
 
@@ -49207,7 +49234,7 @@ uint8_t FATFS_GetAttachedDriversNbr(void);
 
  
 
-#line 43 "../../sPlc/sPlc.h"
+#line 44 "../../sPlc/sPlc.h"
 #line 1 "../../MainApp/flash_if.h"
 
 
@@ -49288,13 +49315,13 @@ uint32_t FLASH_If_EraseApplication(void);
 
 
  
-#line 44 "../../sPlc/sPlc.h"
+#line 45 "../../sPlc/sPlc.h"
  
 
 
 
  
-#line 55 "../../sPlc/sPlc.h"
+#line 56 "../../sPlc/sPlc.h"
  
 
 
@@ -49304,15 +49331,15 @@ uint32_t FLASH_If_EraseApplication(void);
 
 
  
-#line 76 "../../sPlc/sPlc.h"
+#line 77 "../../sPlc/sPlc.h"
  
-#line 83 "../../sPlc/sPlc.h"
+#line 84 "../../sPlc/sPlc.h"
 
 
 
 
 
-#line 96 "../../sPlc/sPlc.h"
+#line 97 "../../sPlc/sPlc.h"
 
 
 
@@ -49338,7 +49365,7 @@ extern uint16_t audioSineTable[];
 
 
  
-#line 179 "../../sPlc/sPlc.h"
+#line 180 "../../sPlc/sPlc.h"
  
 
 
@@ -49379,7 +49406,7 @@ extern TIM_HandleTypeDef htim14;
 extern RNG_HandleTypeDef hrng;
 
  
-#line 237 "../../sPlc/sPlc.h"
+#line 238 "../../sPlc/sPlc.h"
  
 extern int16_t NVRAM0[(1463 + 1)];
 extern int16_t NVRAM1[(1463 + 1)];

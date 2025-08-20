@@ -7,7 +7,7 @@ static uint8_t MsgId = 0xFF;//当前显示的信息ID
 uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
 uint32_t newBootloadCrc32;
 IncPid_t LaserTecIncPids;
-IncPid_t LaserFanIncPids;
+FuzzyPIDController LaserFuzzyPids;
 int16_t LaserTecOut;
 int16_t LaserFanOut;
 int16_t LaserTecOutCounter;
@@ -2441,6 +2441,7 @@ void dcHmiLoopInit(void){//初始化模块
 	LaserTecIncPids.kp = 0.08;
 	LaserTecIncPids.ki = 0.005;
 	LaserTecIncPids.kd = 0.15;
+	FuzzyPID_Init(&LaserFuzzyPids, 3.0f, 0.8f, 2.0f, 5.0f);  // 滞回宽度5%
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
 	LaserTecIncPids.kp = 1.1;
@@ -2482,6 +2483,7 @@ void dcHmiLoopInit(void){//初始化模块
 }
 
 static void temperatureLoop(void){//温度轮询轮询
+	float pidOutPut;
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 	//CODE转换为NTC测量温度温度
 	TNTUC(EM_LASER_TEMP, SPREG_ADC_11);
@@ -2542,7 +2544,8 @@ static void temperatureLoop(void){//温度轮询轮询
 #endif
 	
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)	
-	if(LDP(SPCOIL_PS1000MS)){//2秒间隔
+#if CONFIG_USING_INCPID == 1
+	if(LDP(SPCOIL_PS500MS)){//1秒间隔
 		//运行温控PID程序
 		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
 		if(LaserTecOut >= 100){
@@ -2562,7 +2565,20 @@ static void temperatureLoop(void){//温度轮询轮询
 			RRES(Y_TEC);
 		}
 		LaserTecOutCounter ++;
+	}		
+#endif
+		
+#if CONFIG_USING_FUZZY_PID == 1
+	if(LDP(SPCOIL_PS500MS)){//1秒间隔	
+		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((CONFIG_DIODE_SET_TEMP) / 10), (float)(NVRAM0[EM_LASER_TEMP] / 10));
+		if(FuzzyPID_GetRelayState(&LaserFuzzyPids, pidOutPut)){// 获取继电器状态
+			SSET(Y_TEC);
+		}
+		else{
+			RRES(Y_TEC);
+		}
 	}
+#endif
 #endif
 //温控执行 激光等待发射及错误状态启动温控
 	if(LDP(SPCOIL_PS1000MS)){	
@@ -2570,89 +2586,89 @@ static void temperatureLoop(void){//温度轮询轮询
 			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
 		else{	
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) && !defined(MODEL_PVGLS_15W_1470_A1_V2)
-			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
-				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
-						if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//功率小于5W
-							NVRAM0[EM_FAN_SET_SPEED] = 45;
+			if(NVRAM0[EM_HT_TEMP] < -100){
+				
+				if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//1470发射时
+						if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
+							if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//功率小于5W
+								NVRAM0[EM_FAN_SET_SPEED] = 45;
+							}
+							else if((NVRAM0[EM_LASER_POWER_CH0] > 50) && (NVRAM0[EM_LASER_POWER_CH0] < 100)){//5-10W
+								NVRAM0[EM_FAN_SET_SPEED] = 65;
+							}
+							else if((NVRAM0[EM_LASER_POWER_CH0] >= 100) && (NVRAM0[EM_LASER_POWER_CH0] < 130)){//10-13W
+								NVRAM0[EM_FAN_SET_SPEED] = 75;
+							}
+							else if(NVRAM0[EM_LASER_POWER_CH0] >= 130){//13-15W
+								NVRAM0[EM_FAN_SET_SPEED] = 100;
+							}
 						}
-						else if((NVRAM0[EM_LASER_POWER_CH0] > 50) && (NVRAM0[EM_LASER_POWER_CH0] < 100)){//5-10W
-							NVRAM0[EM_FAN_SET_SPEED] = 65;
-						}
-						else if((NVRAM0[EM_LASER_POWER_CH0] >= 100) && (NVRAM0[EM_LASER_POWER_CH0] < 130)){//10-13W
-							NVRAM0[EM_FAN_SET_SPEED] = 75;
-						}
-						else if(NVRAM0[EM_LASER_POWER_CH0] >= 130){//13-15W
+						else{//激光器温度大于35度风扇满转
 							NVRAM0[EM_FAN_SET_SPEED] = 100;
 						}
 					}
-					else{//激光器温度大于35度风扇满转
-						NVRAM0[EM_FAN_SET_SPEED] = 100;
-					}
-				}
-				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
-					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
-						if(NVRAM0[EM_LASER_POWER_CH1] <= 50){//功率小于5W
-							NVRAM0[EM_FAN_SET_SPEED] = 35;
+					
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//980发射时
+						if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
+							if(NVRAM0[EM_LASER_POWER_CH1] <= 50){//功率小于5W
+								NVRAM0[EM_FAN_SET_SPEED] = 35;
+							}
+							else if((NVRAM0[EM_LASER_POWER_CH1] > 50) && (NVRAM0[EM_LASER_POWER_CH1] < 100)){//5-10W
+								NVRAM0[EM_FAN_SET_SPEED] = 55;
+							}
+							else if((NVRAM0[EM_LASER_POWER_CH1] >= 100) && (NVRAM0[EM_LASER_POWER_CH1] < 130)){//10-13W
+								NVRAM0[EM_FAN_SET_SPEED] = 65;
+							}
+							else if(NVRAM0[EM_LASER_POWER_CH1] >= 130){//13-15W
+								NVRAM0[EM_FAN_SET_SPEED] = 100;
+							}
 						}
-						else if((NVRAM0[EM_LASER_POWER_CH1] > 50) && (NVRAM0[EM_LASER_POWER_CH1] < 100)){//5-10W
-							NVRAM0[EM_FAN_SET_SPEED] = 55;
-						}
-						else if((NVRAM0[EM_LASER_POWER_CH1] >= 100) && (NVRAM0[EM_LASER_POWER_CH1] < 130)){//10-13W
-							NVRAM0[EM_FAN_SET_SPEED] = 65;
-						}
-						else if(NVRAM0[EM_LASER_POWER_CH1] >= 130){//13-15W
+						else{//激光器温度大于35度风扇满转
 							NVRAM0[EM_FAN_SET_SPEED] = 100;
 						}
 					}
-					else{//激光器温度大于35度风扇满转
-						NVRAM0[EM_FAN_SET_SPEED] = 100;
+					
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//红激光发射时
+						NVRAM0[EM_FAN_SET_SPEED] = 30;
 					}
 				}
-				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){
-					NVRAM0[EM_FAN_SET_SPEED] = 40;
+				else{
+					NVRAM0[EM_FAN_SET_SPEED] = 20;
 				}
 			}
 			else{
-				NVRAM0[EM_FAN_SET_SPEED] = 35;
+				if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
+					NVRAM0[EM_FAN_SET_SPEED] = 0;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
+					NVRAM0[EM_FAN_SET_SPEED] = 0;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
+					NVRAM0[EM_FAN_SET_SPEED] = 20;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
+					NVRAM0[EM_FAN_SET_SPEED] = 30;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
+					NVRAM0[EM_FAN_SET_SPEED] = 40;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
+					NVRAM0[EM_FAN_SET_SPEED] = 50;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
+					NVRAM0[EM_FAN_SET_SPEED] = 60;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
+					NVRAM0[EM_FAN_SET_SPEED] = 70;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
+					NVRAM0[EM_FAN_SET_SPEED] = 80;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 550){
+					NVRAM0[EM_FAN_SET_SPEED] = 100;
+				}
 			}
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1) || defined(MODEL_PVGLS_15W_1470_A1_V2)
-			if(NVRAM0[EM_HT_TEMP] < -100){
-				NVRAM0[EM_FAN_SET_SPEED] = 100;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
-				NVRAM0[EM_FAN_SET_SPEED] = 0;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
-				NVRAM0[EM_FAN_SET_SPEED] = 0;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
-				NVRAM0[EM_FAN_SET_SPEED] = 20;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
-				NVRAM0[EM_FAN_SET_SPEED] = 30;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
-				NVRAM0[EM_FAN_SET_SPEED] = 40;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
-				NVRAM0[EM_FAN_SET_SPEED] = 50;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
-				NVRAM0[EM_FAN_SET_SPEED] = 60;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
-				NVRAM0[EM_FAN_SET_SPEED] = 70;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
-				NVRAM0[EM_FAN_SET_SPEED] = 80;
-			}
-			else if(NVRAM0[EM_HT_TEMP] >= 550){
-				NVRAM0[EM_FAN_SET_SPEED] = 100;
-			}
-#endif
 		}
 		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
 	}	

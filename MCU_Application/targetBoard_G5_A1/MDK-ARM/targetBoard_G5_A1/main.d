@@ -105,6 +105,7 @@
 .\targetboard_g5_a1\main.o: ../../MainApp/dcHmiRes.h
 .\targetboard_g5_a1\main.o: ../../MainApp/MainAppLib.h
 .\targetboard_g5_a1\main.o: ../../MainApp/dcHmiLanguage.H
+.\targetboard_g5_a1\main.o: ../../lib/FuzzyPID_Relay.h
 .\targetboard_g5_a1\main.o: ../USB_HOST/Target/usbh_platform.h
 .\targetboard_g5_a1\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc/usbh_audio.h
 .\targetboard_g5_a1\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h

@@ -76666,7 +76666,6 @@ N//#define MODEL_PVGLS_15W_1470_A0
 N//#define MODEL_PVGLS_TRI_A0
 N//#define MODEL_PVGLS_TRI_COMBINE_A0
 N//#define MODEL_PVGLS_15W_1470_A1
-N#define MODEL_PVGLS_15W_1470_A1_V2
 N/****************************************************************************/
 N//#define MODEL_PVGLS_10W_1940_A1
 N/****************************************************************************/
@@ -76834,6 +76833,8 @@ N#define CONFIG_KEY_REPEAT_DELAY_TIME									80
 N#define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 N#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 N/*****************************************************************************/
+N#define CONFIG_USING_INC_PID													0//增量式PID
+N#define CONFIG_USING_FUZZY_PID												1//模糊式PID
 N#define CONFIG_DIODE_SET_TEMP													250//
 N#define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 N#define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
@@ -77618,6 +77619,7 @@ S#include "dcHmiRes.h"
 S#include "MainAppLib.h"
 S#include "dcHmiLanguage.H"
 S#include "deviceConfig.h"
+S#include "FuzzyPID_Relay.h"
 S/*****************************************************************************/
 S#include "usbh_platform.h"
 S#include "usbh_core.h"
@@ -79723,6 +79725,42 @@ N
 N
 L 28 "../../sPlc/sPlc.h" 2
 N#include "deviceConfig.h"
+N#include "FuzzyPID_Relay.h"
+L 1 "../../lib/FuzzyPID_Relay.h" 1
+N/*****************************************************************************/
+N/**
+N * 模糊PID温度控制器 - 继电器控制版本
+N * 针对半导体制冷器优化，模块化设计
+N */
+N#ifndef FUZZY_PID_CONTROLLER_H
+N#define FUZZY_PID_CONTROLLER_H
+N#include "sPlc.h"
+N// 控制器状态结构体
+Ntypedef struct {
+N    float Kp;           // 比例系数
+N    float Ki;           // 积分系数  
+N    float Kd;           // 微分系数
+N    float prev_error;   // 上一次误差
+N    float integral;     // 积分项
+N    float output;       // 输出值(0-100%)
+N    float hysteresis;   // 继电器滞回宽度
+N    int relay_state;    // 继电器当前状态(0=关,1=开)
+N} FuzzyPIDController;
+N
+N// 初始化函数
+Nvoid FuzzyPID_Init(FuzzyPIDController* pid, float Kp, float Ki, float Kd, float hysteresis);
+N
+N// 模糊PID计算函数
+Nfloat FuzzyPID_Calculate(FuzzyPIDController* pid, float setpoint, float current_temp);
+N
+N// 获取继电器控制状态
+Nint FuzzyPID_GetRelayState(FuzzyPIDController* pid, float output);
+N
+N// 重置控制器
+Nvoid FuzzyPID_Reset(FuzzyPIDController* pid);
+N
+N#endif
+L 30 "../../sPlc/sPlc.h" 2
 N/*****************************************************************************/
 N#include "usbh_platform.h"
 L 1 "../USB_HOST/Target/usbh_platform.h" 1
@@ -79860,7 +79898,7 @@ N#endif
 N
 N#endif /* __USBH_PLATFORM_H__ */
 N
-L 31 "../../sPlc/sPlc.h" 2
+L 32 "../../sPlc/sPlc.h" 2
 N#include "usbh_core.h"
 N#include "usbh_msc.h"
 L 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h" 1
@@ -80530,7 +80568,7 @@ N  */
 N
 N
 N
-L 33 "../../sPlc/sPlc.h" 2
+L 34 "../../sPlc/sPlc.h" 2
 N#include "usb_host.h"
 N#include "usbh_core.h"
 N#include "usbh_audio.h"
@@ -81130,7 +81168,7 @@ N/**
 N  * @}
 N  */
 N
-L 36 "../../sPlc/sPlc.h" 2
+L 37 "../../sPlc/sPlc.h" 2
 N#include "usbh_cdc.h"
 L 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc/usbh_cdc.h" 1
 N/**
@@ -81580,7 +81618,7 @@ N/**
 N  * @}
 N  */
 N
-L 37 "../../sPlc/sPlc.h" 2
+L 38 "../../sPlc/sPlc.h" 2
 N#include "usbh_msc.h"
 N#include "usbh_hid.h"
 L 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h" 1
@@ -83037,7 +83075,7 @@ N/**
 N  * @}
 N  */
 N
-L 39 "../../sPlc/sPlc.h" 2
+L 40 "../../sPlc/sPlc.h" 2
 N#include "usbh_mtp.h"
 L 1 "../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc/usbh_mtp.h" 1
 N/**
@@ -84363,7 +84401,7 @@ N/**
 N  * @}
 N  */
 N
-L 40 "../../sPlc/sPlc.h" 2
+L 41 "../../sPlc/sPlc.h" 2
 N/*****************************************************************************/
 N#include "ff.h"
 L 1 "../Middlewares/Third_Party/FatFs/src/ff.h" 1
@@ -85075,7 +85113,7 @@ S}
 N#endif
 N
 N#endif /* _FATFS */
-L 42 "../../sPlc/sPlc.h" 2
+L 43 "../../sPlc/sPlc.h" 2
 N#include "ff_gen_drv.h"
 L 1 "../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h" 1
 N/**
@@ -85245,7 +85283,7 @@ N#endif /* __FF_GEN_DRV_H */
 N
 N/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 N
-L 43 "../../sPlc/sPlc.h" 2
+L 44 "../../sPlc/sPlc.h" 2
 N#include "flash_if.h"
 L 1 "../../MainApp/flash_if.h" 1
 N/**
@@ -85369,7 +85407,7 @@ N
 N#endif  /* __FLASH_IF_H */
 N
 N/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-L 44 "../../sPlc/sPlc.h" 2
+L 45 "../../sPlc/sPlc.h" 2
 N/*****************************************************************************/
 N#if CONFIG_SPLC_FUNTEST == 1
 X#if 0 == 1
@@ -85847,7 +85885,7 @@ Nuint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写�
 Xuint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(0x10000000UL)));
 Nuint32_t newBootloadCrc32;
 NIncPid_t LaserTecIncPids;
-NIncPid_t LaserFanIncPids;
+NFuzzyPIDController LaserFuzzyPids;
 Nint16_t LaserTecOut;
 Nint16_t LaserFanOut;
 Nint16_t LaserTecOutCounter;
@@ -89517,6 +89555,7 @@ X#if 0L || 1L
 N	LaserTecIncPids.kp = 0.08;
 N	LaserTecIncPids.ki = 0.005;
 N	LaserTecIncPids.kd = 0.15;
+N	FuzzyPID_Init(&LaserFuzzyPids, 3.0f, 0.8f, 2.0f, 5.0f);  // 滞回宽度5%
 N#endif
 N#if defined(MODEL_PVGLS_10W_1940_A1)
 X#if 0L
@@ -89580,6 +89619,7 @@ X	HAL_TIM_Base_Start(&htim7);HAL_DAC_Start_DMA(&hdac, 0x00000000U, (uint32_t *)a
 N}
 N
 Nstatic void temperatureLoop(void){//温度轮询轮询
+N	float pidOutPut;
 N#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 X#if 0L || 1L
 N	//CODE转换为NTC测量温度温度
@@ -89663,32 +89703,46 @@ N#endif
 N	
 N#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)	
 X#if 0L || 1L	
-N	if(LDP(SPCOIL_PS1000MS)){//2秒间隔
-X	if(LDP((1384 * 16 + 7))){
-N		//运行温控PID程序
-N		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
-X		LaserTecOut += IncPidCalc(&LaserTecIncPids, 250, NVRAM0[(576 + 71)]); 	
-N		if(LaserTecOut >= 100){
-N			LaserTecOut = 100;
-N		}
-N		if(LaserTecOut < 0){
-N			LaserTecOut = 0;
-N		}
-N		//printf("%s,%d,%s:laser tec out:%d\n",__FILE__, __LINE__, __func__, LaserTecOut);
-N		LaserTecOutCounter = 0;
-N		if(LaserTecOut > 0){
+N#if CONFIG_USING_INCPID == 1
+S	if(LDP(SPCOIL_PS500MS)){//1秒间隔
+S		//运行温控PID程序
+S		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
+S		if(LaserTecOut >= 100){
+S			LaserTecOut = 100;
+S		}
+S		if(LaserTecOut < 0){
+S			LaserTecOut = 0;
+S		}
+S		//printf("%s,%d,%s:laser tec out:%d\n",__FILE__, __LINE__, __func__, LaserTecOut);
+S		LaserTecOutCounter = 0;
+S		if(LaserTecOut > 0){
+S			SSET(Y_TEC);
+S		}
+S	}
+S	if(LDP(SPCOIL_PS10MS)){
+S		if(LaserTecOutCounter >= LaserTecOut){
+S			RRES(Y_TEC);
+S		}
+S		LaserTecOutCounter ++;
+S	}		
+N#endif
+N		
+N#if CONFIG_USING_FUZZY_PID == 1
+X#if 1 == 1
+N	if(LDP(SPCOIL_PS500MS)){//1秒间隔	
+X	if(LDP((1384 * 16 + 6))){
+N		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((CONFIG_DIODE_SET_TEMP) / 10), (float)(NVRAM0[EM_LASER_TEMP] / 10));
+X		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((250) / 10), (float)(NVRAM0[(576 + 71)] / 10));
+N		if(FuzzyPID_GetRelayState(&LaserFuzzyPids, pidOutPut)){// 获取继电器状态
 N			SSET(Y_TEC);
 X			SSET((1312 * 16 + 6));
 N		}
-N	}
-N	if(LDP(SPCOIL_PS10MS)){
-X	if(LDP((1384 * 16 + 2))){
-N		if(LaserTecOutCounter >= LaserTecOut){
+N		else{
 N			RRES(Y_TEC);
 X			RRES((1312 * 16 + 6));
 N		}
-N		LaserTecOutCounter ++;
 N	}
+N#endif
 N#endif
 N//温控执行 激光等待发射及错误状态启动温控
 N	if(LDP(SPCOIL_PS1000MS)){	
@@ -89699,113 +89753,136 @@ N			NVRAM0[EM_FAN_SET_SPEED] = 100;
 X			NVRAM0[(576 + 75)] = 100;
 N		}
 N		else{	
-N#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) && !defined(MODEL_PVGLS_15W_1470_A1_V2)
-X#if 0L || 1L && !1L
-S			if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
-S				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-S					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
-S						if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//功率小于5W
-S							NVRAM0[EM_FAN_SET_SPEED] = 45;
-S						}
-S						else if((NVRAM0[EM_LASER_POWER_CH0] > 50) && (NVRAM0[EM_LASER_POWER_CH0] < 100)){//5-10W
-S							NVRAM0[EM_FAN_SET_SPEED] = 65;
-S						}
-S						else if((NVRAM0[EM_LASER_POWER_CH0] >= 100) && (NVRAM0[EM_LASER_POWER_CH0] < 130)){//10-13W
-S							NVRAM0[EM_FAN_SET_SPEED] = 75;
-S						}
-S						else if(NVRAM0[EM_LASER_POWER_CH0] >= 130){//13-15W
-S							NVRAM0[EM_FAN_SET_SPEED] = 100;
-S						}
-S					}
-S					else{//激光器温度大于35度风扇满转
-S						NVRAM0[EM_FAN_SET_SPEED] = 100;
-S					}
-S				}
-S				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
-S					if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
-S						if(NVRAM0[EM_LASER_POWER_CH1] <= 50){//功率小于5W
-S							NVRAM0[EM_FAN_SET_SPEED] = 35;
-S						}
-S						else if((NVRAM0[EM_LASER_POWER_CH1] > 50) && (NVRAM0[EM_LASER_POWER_CH1] < 100)){//5-10W
-S							NVRAM0[EM_FAN_SET_SPEED] = 55;
-S						}
-S						else if((NVRAM0[EM_LASER_POWER_CH1] >= 100) && (NVRAM0[EM_LASER_POWER_CH1] < 130)){//10-13W
-S							NVRAM0[EM_FAN_SET_SPEED] = 65;
-S						}
-S						else if(NVRAM0[EM_LASER_POWER_CH1] >= 130){//13-15W
-S							NVRAM0[EM_FAN_SET_SPEED] = 100;
-S						}
-S					}
-S					else{//激光器温度大于35度风扇满转
-S						NVRAM0[EM_FAN_SET_SPEED] = 100;
-S					}
-S				}
-S				if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){
-S					NVRAM0[EM_FAN_SET_SPEED] = 40;
-S				}
-S			}
-S			else{
-S				NVRAM0[EM_FAN_SET_SPEED] = 35;
-S			}
-N#endif
-N#if defined(MODEL_PVGLS_10W_1940_A1) || defined(MODEL_PVGLS_15W_1470_A1_V2)
-X#if 0L || 1L
 N			if(NVRAM0[EM_HT_TEMP] < -100){
 X			if(NVRAM0[(576 + 72)] < -100){
-N				NVRAM0[EM_FAN_SET_SPEED] = 100;
-X				NVRAM0[(576 + 75)] = 100;
+N				
+N				if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
+X				if(NVRAM0[(576 + 86)] ==  404){
+N					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//1470发射时
+X					if(NVRAM0[(576 + 55)] == 0x01){
+N						if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
+X						if(NVRAM0[(576 + 71)] <= 350){
+N							if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//功率小于5W
+X							if(NVRAM0[(576 + 57)] <= 50){
+N								NVRAM0[EM_FAN_SET_SPEED] = 45;
+X								NVRAM0[(576 + 75)] = 45;
+N							}
+N							else if((NVRAM0[EM_LASER_POWER_CH0] > 50) && (NVRAM0[EM_LASER_POWER_CH0] < 100)){//5-10W
+X							else if((NVRAM0[(576 + 57)] > 50) && (NVRAM0[(576 + 57)] < 100)){
+N								NVRAM0[EM_FAN_SET_SPEED] = 65;
+X								NVRAM0[(576 + 75)] = 65;
+N							}
+N							else if((NVRAM0[EM_LASER_POWER_CH0] >= 100) && (NVRAM0[EM_LASER_POWER_CH0] < 130)){//10-13W
+X							else if((NVRAM0[(576 + 57)] >= 100) && (NVRAM0[(576 + 57)] < 130)){
+N								NVRAM0[EM_FAN_SET_SPEED] = 75;
+X								NVRAM0[(576 + 75)] = 75;
+N							}
+N							else if(NVRAM0[EM_LASER_POWER_CH0] >= 130){//13-15W
+X							else if(NVRAM0[(576 + 57)] >= 130){
+N								NVRAM0[EM_FAN_SET_SPEED] = 100;
+X								NVRAM0[(576 + 75)] = 100;
+N							}
+N						}
+N						else{//激光器温度大于35度风扇满转
+N							NVRAM0[EM_FAN_SET_SPEED] = 100;
+X							NVRAM0[(576 + 75)] = 100;
+N						}
+N					}
+N					
+N					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//980发射时
+X					if(NVRAM0[(576 + 55)] == 0x02){
+N						if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
+X						if(NVRAM0[(576 + 71)] <= 350){
+N							if(NVRAM0[EM_LASER_POWER_CH1] <= 50){//功率小于5W
+X							if(NVRAM0[(576 + 58)] <= 50){
+N								NVRAM0[EM_FAN_SET_SPEED] = 35;
+X								NVRAM0[(576 + 75)] = 35;
+N							}
+N							else if((NVRAM0[EM_LASER_POWER_CH1] > 50) && (NVRAM0[EM_LASER_POWER_CH1] < 100)){//5-10W
+X							else if((NVRAM0[(576 + 58)] > 50) && (NVRAM0[(576 + 58)] < 100)){
+N								NVRAM0[EM_FAN_SET_SPEED] = 55;
+X								NVRAM0[(576 + 75)] = 55;
+N							}
+N							else if((NVRAM0[EM_LASER_POWER_CH1] >= 100) && (NVRAM0[EM_LASER_POWER_CH1] < 130)){//10-13W
+X							else if((NVRAM0[(576 + 58)] >= 100) && (NVRAM0[(576 + 58)] < 130)){
+N								NVRAM0[EM_FAN_SET_SPEED] = 65;
+X								NVRAM0[(576 + 75)] = 65;
+N							}
+N							else if(NVRAM0[EM_LASER_POWER_CH1] >= 130){//13-15W
+X							else if(NVRAM0[(576 + 58)] >= 130){
+N								NVRAM0[EM_FAN_SET_SPEED] = 100;
+X								NVRAM0[(576 + 75)] = 100;
+N							}
+N						}
+N						else{//激光器温度大于35度风扇满转
+N							NVRAM0[EM_FAN_SET_SPEED] = 100;
+X							NVRAM0[(576 + 75)] = 100;
+N						}
+N					}
+N					
+N					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//红激光发射时
+X					if(NVRAM0[(576 + 55)] == 0x05){
+N						NVRAM0[EM_FAN_SET_SPEED] = 30;
+X						NVRAM0[(576 + 75)] = 30;
+N					}
+N				}
+N				else{
+N					NVRAM0[EM_FAN_SET_SPEED] = 20;
+X					NVRAM0[(576 + 75)] = 20;
+N				}
 N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
-X			else if(NVRAM0[(576 + 72)] >= -100 &&  NVRAM0[(576 + 72)] < 150){
-N				NVRAM0[EM_FAN_SET_SPEED] = 0;
-X				NVRAM0[(576 + 75)] = 0;
+N			else{
+N				if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
+X				if(NVRAM0[(576 + 72)] >= -100 &&  NVRAM0[(576 + 72)] < 150){
+N					NVRAM0[EM_FAN_SET_SPEED] = 0;
+X					NVRAM0[(576 + 75)] = 0;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
+X				else if(NVRAM0[(576 + 72)] >= 150 && NVRAM0[(576 + 72)] < 200){
+N					NVRAM0[EM_FAN_SET_SPEED] = 0;
+X					NVRAM0[(576 + 75)] = 0;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
+X				else if(NVRAM0[(576 + 72)] >= 200 && NVRAM0[(576 + 72)] < 250){
+N					NVRAM0[EM_FAN_SET_SPEED] = 20;
+X					NVRAM0[(576 + 75)] = 20;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
+X				else if(NVRAM0[(576 + 72)] >= 250 && NVRAM0[(576 + 72)] < 300){
+N					NVRAM0[EM_FAN_SET_SPEED] = 30;
+X					NVRAM0[(576 + 75)] = 30;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
+X				else if(NVRAM0[(576 + 72)] >= 300 && NVRAM0[(576 + 72)] < 350){
+N					NVRAM0[EM_FAN_SET_SPEED] = 40;
+X					NVRAM0[(576 + 75)] = 40;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
+X				else if(NVRAM0[(576 + 72)] >= 350 && NVRAM0[(576 + 72)] < 400){
+N					NVRAM0[EM_FAN_SET_SPEED] = 50;
+X					NVRAM0[(576 + 75)] = 50;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
+X				else if(NVRAM0[(576 + 72)] >= 400 && NVRAM0[(576 + 72)] < 450){
+N					NVRAM0[EM_FAN_SET_SPEED] = 60;
+X					NVRAM0[(576 + 75)] = 60;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
+X				else if(NVRAM0[(576 + 72)] >= 450 && NVRAM0[(576 + 72)] < 500){
+N					NVRAM0[EM_FAN_SET_SPEED] = 70;
+X					NVRAM0[(576 + 75)] = 70;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
+X				else if(NVRAM0[(576 + 72)] >= 500 && NVRAM0[(576 + 72)]< 550){
+N					NVRAM0[EM_FAN_SET_SPEED] = 80;
+X					NVRAM0[(576 + 75)] = 80;
+N				}
+N				else if(NVRAM0[EM_HT_TEMP] >= 550){
+X				else if(NVRAM0[(576 + 72)] >= 550){
+N					NVRAM0[EM_FAN_SET_SPEED] = 100;
+X					NVRAM0[(576 + 75)] = 100;
+N				}
 N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
-X			else if(NVRAM0[(576 + 72)] >= 150 && NVRAM0[(576 + 72)] < 200){
-N				NVRAM0[EM_FAN_SET_SPEED] = 0;
-X				NVRAM0[(576 + 75)] = 0;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
-X			else if(NVRAM0[(576 + 72)] >= 200 && NVRAM0[(576 + 72)] < 250){
-N				NVRAM0[EM_FAN_SET_SPEED] = 20;
-X				NVRAM0[(576 + 75)] = 20;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
-X			else if(NVRAM0[(576 + 72)] >= 250 && NVRAM0[(576 + 72)] < 300){
-N				NVRAM0[EM_FAN_SET_SPEED] = 30;
-X				NVRAM0[(576 + 75)] = 30;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
-X			else if(NVRAM0[(576 + 72)] >= 300 && NVRAM0[(576 + 72)] < 350){
-N				NVRAM0[EM_FAN_SET_SPEED] = 40;
-X				NVRAM0[(576 + 75)] = 40;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
-X			else if(NVRAM0[(576 + 72)] >= 350 && NVRAM0[(576 + 72)] < 400){
-N				NVRAM0[EM_FAN_SET_SPEED] = 50;
-X				NVRAM0[(576 + 75)] = 50;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
-X			else if(NVRAM0[(576 + 72)] >= 400 && NVRAM0[(576 + 72)] < 450){
-N				NVRAM0[EM_FAN_SET_SPEED] = 60;
-X				NVRAM0[(576 + 75)] = 60;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
-X			else if(NVRAM0[(576 + 72)] >= 450 && NVRAM0[(576 + 72)] < 500){
-N				NVRAM0[EM_FAN_SET_SPEED] = 70;
-X				NVRAM0[(576 + 75)] = 70;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
-X			else if(NVRAM0[(576 + 72)] >= 500 && NVRAM0[(576 + 72)]< 550){
-N				NVRAM0[EM_FAN_SET_SPEED] = 80;
-X				NVRAM0[(576 + 75)] = 80;
-N			}
-N			else if(NVRAM0[EM_HT_TEMP] >= 550){
-X			else if(NVRAM0[(576 + 72)] >= 550){
-N				NVRAM0[EM_FAN_SET_SPEED] = 100;
-X				NVRAM0[(576 + 75)] = 100;
-N			}
-N#endif
 N		}
 N		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
 X		setFanSpeed(NVRAM0[(576 + 75)]);
@@ -90284,7 +90361,7 @@ N		if(isLegalUsbDev(phost)){
 N			if(LDB(SPCOIL_WFSWITCH_PLUG)){
 X			if(LDB((1384 * 16 + 40))){
 N				printf("%s,%d,%s:wireless footswich plug......\n",__FILE__, __LINE__, __func__);
-X				printf("%s,%d,%s:wireless footswich plug......\n","..\\..\\MainApp\\dcHmiApp.c", 2985, __func__);
+X				printf("%s,%d,%s:wireless footswich plug......\n","..\\..\\MainApp\\dcHmiApp.c", 3001, __func__);
 N				SSET(SPCOIL_WFSWITCH_PLUG);
 X				SSET((1384 * 16 + 40));
 N			}
@@ -90294,13 +90371,13 @@ X			if(k_pinfo != 0){
 N				c = USBH_HID_GetASCIICode(k_pinfo);
 N				if(c == '1'){//凯昆脚踏默认为数字1
 N					printf("%s,%d,%s:wireless footswich press......\n",__FILE__, __LINE__, __func__);
-X					printf("%s,%d,%s:wireless footswich press......\n","..\\..\\MainApp\\dcHmiApp.c", 2992, __func__);
+X					printf("%s,%d,%s:wireless footswich press......\n","..\\..\\MainApp\\dcHmiApp.c", 3008, __func__);
 N					SSET(SPCOIL_WFSWITCH_NO);
 X					SSET((1384 * 16 + 41));
 N				}
 N				if(c == 0x0){
 N					printf("%s,%d,%s:wireless footswich release......\n",__FILE__, __LINE__, __func__);		
-X					printf("%s,%d,%s:wireless footswich release......\n","..\\..\\MainApp\\dcHmiApp.c", 2996, __func__);		
+X					printf("%s,%d,%s:wireless footswich release......\n","..\\..\\MainApp\\dcHmiApp.c", 3012, __func__);		
 N					RRES(SPCOIL_WFSWITCH_NO);
 X					RRES((1384 * 16 + 41));
 N				}		
@@ -90321,7 +90398,7 @@ X			RRES((1384 * 16 + 40));
 N			RRES(SPCOIL_WFSWITCH_NO);
 X			RRES((1384 * 16 + 41));
 N			printf("%s,%d,%s:wireless footswich unplug......\n",__FILE__, __LINE__, __func__);
-X			printf("%s,%d,%s:wireless footswich unplug......\n","..\\..\\MainApp\\dcHmiApp.c", 3011, __func__);
+X			printf("%s,%d,%s:wireless footswich unplug......\n","..\\..\\MainApp\\dcHmiApp.c", 3027, __func__);
 N		}	
 N	}
 N}
@@ -90395,7 +90472,7 @@ X		T100MS(0, 1, 10);
 N		if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
 X		if(LD(1096 * 16 + 0)){
 N			printf("%s,%d,%s:hmi delay done......\n",__FILE__, __LINE__, __func__);
-X			printf("%s,%d,%s:hmi delay done......\n","..\\..\\MainApp\\dcHmiApp.c", 3059, __func__);
+X			printf("%s,%d,%s:hmi delay done......\n","..\\..\\MainApp\\dcHmiApp.c", 3075, __func__);
 N			T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_WAIT_HMI_DELAY_TIME);
 X			T100MS(0, 0, 10);
 N			RRES(R_DCHMI_RESET_DOING);
@@ -90812,15 +90889,15 @@ X			CLRD((576 + 104));
 N			LaserTimer_Mode = (int8_t)NVRAM0[EM_LASER_PULSE_MODE];
 X			LaserTimer_Mode = (int8_t)NVRAM0[(576 + 56)];
 N			printf("%s,%d,%s:set laser mode=%d\n",__FILE__, __LINE__, __func__, LaserTimer_Mode);
-X			printf("%s,%d,%s:set laser mode=%d\n","..\\..\\MainApp\\dcHmiApp.c", 3317, __func__, LaserTimer_Mode);
+X			printf("%s,%d,%s:set laser mode=%d\n","..\\..\\MainApp\\dcHmiApp.c", 3333, __func__, LaserTimer_Mode);
 N			LaserTimer_TMate 				= NVRAM0[EM_LASER_POSWIDTH];
 X			LaserTimer_TMate 				= NVRAM0[(576 + 62)];
 N			LaserTimer_TOvertime 		= NVRAM0[EM_LASER_POSWIDTH] + NVRAM0[EM_LASER_NEGWIDTH];	
 X			LaserTimer_TOvertime 		= NVRAM0[(576 + 62)] + NVRAM0[(576 + 63)];	
 N			printf("%s,%d,%s:set LaserTimer_TMate=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TMate);
-X			printf("%s,%d,%s:set LaserTimer_TMate=%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3320, __func__, LaserTimer_TMate);
+X			printf("%s,%d,%s:set LaserTimer_TMate=%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3336, __func__, LaserTimer_TMate);
 N			printf("%s,%d,%s:set LaserTimer_TOvertime=%d\n", __FILE__, __LINE__, __func__, LaserTimer_TOvertime);
-X			printf("%s,%d,%s:set LaserTimer_TOvertime=%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3321, __func__, LaserTimer_TOvertime);
+X			printf("%s,%d,%s:set LaserTimer_TOvertime=%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3337, __func__, LaserTimer_TOvertime);
 N			//ACOUSTIC 初始化
 N			if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){
 X			if(NVRAM0[(576 + 56)] == 0x01){
@@ -90898,25 +90975,25 @@ N			//调试信息
 N			if(LD(R_ACOUSTIC_ENABLE)){
 X			if(LD((544 * 16 + 23))){
 N				printf("%s,%d,%s:acoustic enable!\n", __FILE__, __LINE__, __func__);
-X				printf("%s,%d,%s:acoustic enable!\n", "..\\..\\MainApp\\dcHmiApp.c", 3369, __func__);
+X				printf("%s,%d,%s:acoustic enable!\n", "..\\..\\MainApp\\dcHmiApp.c", 3385, __func__);
 N			}
 N			else{
 N				printf("%s,%d,%s:acoustic disable!\n", __FILE__, __LINE__, __func__);
-X				printf("%s,%d,%s:acoustic disable!\n", "..\\..\\MainApp\\dcHmiApp.c", 3372, __func__);
+X				printf("%s,%d,%s:acoustic disable!\n", "..\\..\\MainApp\\dcHmiApp.c", 3388, __func__);
 N			}
 N			printf("%s,%d,%s:acoustic time step = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_STEP]);
-X			printf("%s,%d,%s:acoustic time step = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3374, __func__, NVRAM0[(576 + 80)]);
+X			printf("%s,%d,%s:acoustic time step = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3390, __func__, NVRAM0[(576 + 80)]);
 N			printf("%s,%d,%s:acoustic time min = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_MIN]);
-X			printf("%s,%d,%s:acoustic time min = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3375, __func__, NVRAM0[(576 + 84)]);
+X			printf("%s,%d,%s:acoustic time min = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3391, __func__, NVRAM0[(576 + 84)]);
 N			printf("%s,%d,%s:acoustic time max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME_MAX]);
-X			printf("%s,%d,%s:acoustic time max = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3376, __func__, NVRAM0[(576 + 83)]);
+X			printf("%s,%d,%s:acoustic time max = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3392, __func__, NVRAM0[(576 + 83)]);
 N			
 N			printf("%s,%d,%s:acoustic energy step = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_STEP]);
-X			printf("%s,%d,%s:acoustic energy step = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3378, __func__, NVRAM0[(576 + 79)]);
+X			printf("%s,%d,%s:acoustic energy step = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3394, __func__, NVRAM0[(576 + 79)]);
 N			printf("%s,%d,%s:acoustic energy min = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MIN]);
-X			printf("%s,%d,%s:acoustic energy min = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3379, __func__, NVRAM0[(576 + 82)]);
+X			printf("%s,%d,%s:acoustic energy min = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3395, __func__, NVRAM0[(576 + 82)]);
 N			printf("%s,%d,%s:acoustic energy max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MAX]);
-X			printf("%s,%d,%s:acoustic energy max = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3380, __func__, NVRAM0[(576 + 81)]);
+X			printf("%s,%d,%s:acoustic energy max = %d\n", "..\\..\\MainApp\\dcHmiApp.c", 3396, __func__, NVRAM0[(576 + 81)]);
 N			
 N			//校正输出功率
 N			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
@@ -91044,11 +91121,11 @@ X					NVRAM0[(1320 + 60)] = NVRAM0[(32 + 2)];
 N					SSET(SPCOIL_BEEM_ENABLE);
 X					SSET((1384 * 16 + 32));
 N					printf("%s,%d,%s:set Beem mode:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_MODE]);
-X					printf("%s,%d,%s:set Beem mode:%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3461, __func__, NVRAM0[(1320 + 62)]);
+X					printf("%s,%d,%s:set Beem mode:%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3477, __func__, NVRAM0[(1320 + 62)]);
 N					printf("%s,%d,%s:set Beem freq:%d\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_BEEM_FREQ]);
-X					printf("%s,%d,%s:set Beem freq:%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3462, __func__, NVRAM0[(1320 + 61)]);
+X					printf("%s,%d,%s:set Beem freq:%d\n", "..\\..\\MainApp\\dcHmiApp.c", 3478, __func__, NVRAM0[(1320 + 61)]);
 N					printf("%s,%d,%s:set Beem on\n", __FILE__, __LINE__, __func__);
-X					printf("%s,%d,%s:set Beem on\n", "..\\..\\MainApp\\dcHmiApp.c", 3463, __func__);
+X					printf("%s,%d,%s:set Beem on\n", "..\\..\\MainApp\\dcHmiApp.c", 3479, __func__);
 N					if(NVRAM0[EM_DC_PAGE] != GDDC_PAGE_WEAR_SAFETY){
 X					if(NVRAM0[(576 + 90)] != 16){
 N						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_WEAR_SAFETY;//切换待机页面
@@ -91351,7 +91428,7 @@ N				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 X				NVRAM0[(576 + 86)] = 403;
 N				readyPageTouchEnable(1);
 N				printf("%s,%d,%s:hand switch mode,footswitch press,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
-X				printf("%s,%d,%s:hand switch mode,footswitch press,stop Laser emit req!!!\n", "..\\..\\MainApp\\dcHmiApp.c", 3658, __func__);
+X				printf("%s,%d,%s:hand switch mode,footswitch press,stop Laser emit req!!!\n", "..\\..\\MainApp\\dcHmiApp.c", 3674, __func__);
 N			}
 N		}
 N		else{
@@ -91364,7 +91441,7 @@ N				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 X				NVRAM0[(576 + 86)] = 403;
 N				readyPageTouchEnable(1);
 N				printf("%s,%d,%s:foot switch mode,footswitch unpress,stop Laser emit req!!!\n", __FILE__, __LINE__, __func__);
-X				printf("%s,%d,%s:foot switch mode,footswitch unpress,stop Laser emit req!!!\n", "..\\..\\MainApp\\dcHmiApp.c", 3667, __func__);
+X				printf("%s,%d,%s:foot switch mode,footswitch unpress,stop Laser emit req!!!\n", "..\\..\\MainApp\\dcHmiApp.c", 3683, __func__);
 N			}
 N		}
 N		return;

@@ -83,6 +83,7 @@
 .\targetboard_g5_a1\hmidriver.o: ../../MainApp/dcHmiRes.h
 .\targetboard_g5_a1\hmidriver.o: ../../MainApp/MainAppLib.h
 .\targetboard_g5_a1\hmidriver.o: ../../MainApp/dcHmiLanguage.H
+.\targetboard_g5_a1\hmidriver.o: ../../lib/FuzzyPID_Relay.h
 .\targetboard_g5_a1\hmidriver.o: ../USB_HOST/Target/usbh_platform.h
 .\targetboard_g5_a1\hmidriver.o: ../USB_HOST/App/usb_host.h
 .\targetboard_g5_a1\hmidriver.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

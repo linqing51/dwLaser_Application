@@ -5,7 +5,6 @@
 //#define MODEL_PVGLS_TRI_A0
 //#define MODEL_PVGLS_TRI_COMBINE_A0
 //#define MODEL_PVGLS_15W_1470_A1
-#define MODEL_PVGLS_15W_1470_A1_V2
 /****************************************************************************/
 //#define MODEL_PVGLS_10W_1940_A1
 /****************************************************************************/
@@ -169,6 +168,8 @@
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
+#define CONFIG_USING_INC_PID													0//增量式PID
+#define CONFIG_USING_FUZZY_PID												1//模糊式PID
 #define CONFIG_DIODE_SET_TEMP													250//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
@@ -184,7 +185,7 @@
 #define CONFIG_HMI_DEFAULT_PASSWORD1									0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD2									0x3030//默认密码
 #define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
-#define CONFIG_SCHEME_NAME_SIZE											((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
+#define CONFIG_SCHEME_NAME_SIZE												((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
 /*****************************************************************************/
 #define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
 #define CONFIG_MAX_LASER_DAC_CH1											0xFFF//
