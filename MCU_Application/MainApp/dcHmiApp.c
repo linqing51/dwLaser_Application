@@ -2544,8 +2544,8 @@ static void temperatureLoop(void){//温度轮询轮询
 #endif
 	
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)	
-#if CONFIG_USING_INCPID == 1
-	if(LDP(SPCOIL_PS500MS)){//1秒间隔
+#if CONFIG_USING_INC_PID == 1
+	if(LDP(SPCOIL_PS1000MS)){//1秒间隔
 		//运行温控PID程序
 		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
 		if(LaserTecOut >= 100){

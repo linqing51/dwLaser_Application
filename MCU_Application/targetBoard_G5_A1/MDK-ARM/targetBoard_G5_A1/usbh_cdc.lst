@@ -65988,8 +65988,8 @@ N
 N  if ((interface == 0xFFU) || (interface >= USBH_MAX_NUM_INTERFACES)) /* No Valid Interface */
 X  if ((interface == 0xFFU) || (interface >= 10U))  
 N  {
+W "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.c" 163 5 the format string ends before this argument
 N    USBH_DbgLog("Cannot Find the interface for Communication Interface Class.", phost->pActiveClass->Name);
-X    do { printf("DEBUG : "); printf("Cannot Find the interface for Communication Interface Class.", phost->pActiveClass->Name); printf("\n"); } while (0);
 N    return USBH_FAIL;
 N  }
 N
@@ -66042,8 +66042,8 @@ N
 N  if ((interface == 0xFFU) || (interface >= USBH_MAX_NUM_INTERFACES)) /* No Valid Interface */
 X  if ((interface == 0xFFU) || (interface >= 10U))  
 N  {
+W "../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.c" 208 5 the format string ends before this argument
 N    USBH_DbgLog("Cannot Find the interface for Data Interface Class.", phost->pActiveClass->Name);
-X    do { printf("DEBUG : "); printf("Cannot Find the interface for Data Interface Class.", phost->pActiveClass->Name); printf("\n"); } while (0);
 N    return USBH_FAIL;
 N  }
 N
@@ -66683,6 +66683,18 @@ N
 N/**
 N  * @}
 N  */
+N
+N
+N/**
+N  * @}
+N  */
+N
+N
+N/**
+N  * @}
+N  */
+N
+*/
 N
 N
 N/**

@@ -51928,20 +51928,32 @@ static void temperatureLoop(void){
 	
 #line 2545 "..\\..\\MainApp\\dcHmiApp.c"
 	
-#line 2570 "..\\..\\MainApp\\dcHmiApp.c"
-		
 
-	if(LDP((1384 * 16 + 6))){
-		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((250) / 10), (float)(NVRAM0[(576 + 71)] / 10));
-		if(FuzzyPID_GetRelayState(&LaserFuzzyPids, pidOutPut)){
+
+	if(LDP((1384 * 16 + 7))){
+		
+		LaserTecOut += IncPidCalc(&LaserTecIncPids, 250, NVRAM0[(576 + 71)]); 	
+		if(LaserTecOut >= 100){
+			LaserTecOut = 100;
+		}
+		if(LaserTecOut < 0){
+			LaserTecOut = 0;
+		}
+		
+		LaserTecOutCounter = 0;
+		if(LaserTecOut > 0){
 			SSET((1312 * 16 + 6));
 		}
-		else{
+	}
+	if(LDP((1384 * 16 + 2))){
+		if(LaserTecOutCounter >= LaserTecOut){
 			RRES((1312 * 16 + 6));
 		}
-	}
+		LaserTecOutCounter ++;
+	}		
 
-
+		
+#line 2583 "..\\..\\MainApp\\dcHmiApp.c"
 
 	if(LDP((1384 * 16 + 7))){	
 		if(LD((544 * 16 + 4)) || LD((544 * 16 + 5)) || LD((544 * 16 + 6)) || LD((544 * 16 + 7))){

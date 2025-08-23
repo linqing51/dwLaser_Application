@@ -49692,6 +49692,23 @@ void sPlcInputRefresh(void){
 	}
 #line 122 "..\\..\\sPlcPort\\sPlcIoIn.c"
 	
+
+	if(NVRAM0[(1320 + 20)] <= deviceConfig.fiberDetect){
+		if(inputFilter[4] < 8){
+			inputFilter[4] ++;
+		}
+		else{
+			NVRAM0[1304] |= (int16_t)(1 << 4);
+		}
+	}
+	else{
+		if(inputFilter[4] > (8 * -1)){
+			inputFilter[4] --;
+		}
+		else{
+			NVRAM0[1304] &= ~(uint16_t)(1 << 4);
+		}
+	}	
 #line 159 "..\\..\\sPlcPort\\sPlcIoIn.c"
 }
 

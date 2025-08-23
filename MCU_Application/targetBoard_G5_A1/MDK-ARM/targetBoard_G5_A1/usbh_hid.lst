@@ -67421,6 +67421,7 @@ N  *         for HID class.
 N  * @param  phost: Host handle
 N  * @retval USBH Status
 N  */
+Nextern uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost);
 Nstatic USBH_StatusTypeDef USBH_HID_ClassRequest(USBH_HandleTypeDef *phost)
 N{
 N
@@ -67491,12 +67492,21 @@ N        phost->pUser(phost, HOST_USER_CLASS_ACTIVE);
 X        phost->pUser(phost, 0x02U);
 N        status = USBH_OK;
 N      }
-N      else if (classReqStatus == USBH_NOT_SUPPORTED)
-N      {
-N        USBH_ErrLog("Control error: HID: Device Set protocol request failed");
-X        do { printf("ERROR: "); printf("Control error: HID: Device Set protocol request failed"); printf("\n"); } while (0);
-N        status = USBH_FAIL;
-N      }
+N      else if (classReqStatus == USBH_NOT_SUPPORTED){
+N				if(isLegalUsbDev(phost)){
+N					/* all requests performed */
+N					USBH_UsrLog("Find KACON HRF-M9G USB HID Device,skip set protocol\n");
+X					do { printf("Find KACON HRF-M9G USB HID Device,skip set protocol\n"); printf("\n"); } while (0);
+N					phost->pUser(phost, HOST_USER_CLASS_ACTIVE);
+X					phost->pUser(phost, 0x02U);
+N					status = USBH_OK;
+N				}
+N				else{
+N					USBH_ErrLog("Control error: HID: Device Set protocol request failed");
+X					do { printf("ERROR: "); printf("Control error: HID: Device Set protocol request failed"); printf("\n"); } while (0);
+N					status = USBH_FAIL;
+N				}
+N			}
 N      else
 N      {
 N        /* .. */

@@ -79100,8 +79100,8 @@ N#define CONFIG_KEY_REPEAT_DELAY_TIME									80
 N#define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 N#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 N/*****************************************************************************/
-N#define CONFIG_USING_INC_PID													0//增量式PID
-N#define CONFIG_USING_FUZZY_PID												1//模糊式PID
+N#define CONFIG_USING_INC_PID													1//增量式PID
+N#define CONFIG_USING_FUZZY_PID												0//模糊式PID
 N#define CONFIG_DIODE_SET_TEMP													250//
 N#define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 N#define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
@@ -79117,7 +79117,7 @@ N#define CONFIG_HMI_DEFAULT_PASSWORD0									0x3030//默认密码
 N#define CONFIG_HMI_DEFAULT_PASSWORD1									0x3030//默认密码
 N#define CONFIG_HMI_DEFAULT_PASSWORD2									0x3030//默认密码
 N#define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
-N#define CONFIG_SCHEME_NAME_SIZE											((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
+N#define CONFIG_SCHEME_NAME_SIZE												((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
 N/*****************************************************************************/
 N#define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
 N#define CONFIG_MAX_LASER_DAC_CH1											0xFFF//

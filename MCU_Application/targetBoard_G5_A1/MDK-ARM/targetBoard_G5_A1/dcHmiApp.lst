@@ -76833,8 +76833,8 @@ N#define CONFIG_KEY_REPEAT_DELAY_TIME									80
 N#define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 N#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 N/*****************************************************************************/
-N#define CONFIG_USING_INC_PID													0//增量式PID
-N#define CONFIG_USING_FUZZY_PID												1//模糊式PID
+N#define CONFIG_USING_INC_PID													1//增量式PID
+N#define CONFIG_USING_FUZZY_PID												0//模糊式PID
 N#define CONFIG_DIODE_SET_TEMP													250//
 N#define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 N#define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
@@ -76850,7 +76850,7 @@ N#define CONFIG_HMI_DEFAULT_PASSWORD0									0x3030//默认密码
 N#define CONFIG_HMI_DEFAULT_PASSWORD1									0x3030//默认密码
 N#define CONFIG_HMI_DEFAULT_PASSWORD2									0x3030//默认密码
 N#define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
-N#define CONFIG_SCHEME_NAME_SIZE											((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
+N#define CONFIG_SCHEME_NAME_SIZE												((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME -1) * 2)//
 N/*****************************************************************************/
 N#define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
 N#define CONFIG_MAX_LASER_DAC_CH1											0xFFF//
@@ -89703,45 +89703,47 @@ N#endif
 N	
 N#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)	
 X#if 0L || 1L	
-N#if CONFIG_USING_INCPID == 1
-S	if(LDP(SPCOIL_PS500MS)){//1秒间隔
-S		//运行温控PID程序
-S		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
-S		if(LaserTecOut >= 100){
-S			LaserTecOut = 100;
-S		}
-S		if(LaserTecOut < 0){
-S			LaserTecOut = 0;
-S		}
-S		//printf("%s,%d,%s:laser tec out:%d\n",__FILE__, __LINE__, __func__, LaserTecOut);
-S		LaserTecOutCounter = 0;
-S		if(LaserTecOut > 0){
-S			SSET(Y_TEC);
-S		}
-S	}
-S	if(LDP(SPCOIL_PS10MS)){
-S		if(LaserTecOutCounter >= LaserTecOut){
-S			RRES(Y_TEC);
-S		}
-S		LaserTecOutCounter ++;
-S	}		
-N#endif
-N		
-N#if CONFIG_USING_FUZZY_PID == 1
+N#if CONFIG_USING_INC_PID == 1
 X#if 1 == 1
-N	if(LDP(SPCOIL_PS500MS)){//1秒间隔	
-X	if(LDP((1384 * 16 + 6))){
-N		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((CONFIG_DIODE_SET_TEMP) / 10), (float)(NVRAM0[EM_LASER_TEMP] / 10));
-X		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((250) / 10), (float)(NVRAM0[(576 + 71)] / 10));
-N		if(FuzzyPID_GetRelayState(&LaserFuzzyPids, pidOutPut)){// 获取继电器状态
+N	if(LDP(SPCOIL_PS1000MS)){//1秒间隔
+X	if(LDP((1384 * 16 + 7))){
+N		//运行温控PID程序
+N		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
+X		LaserTecOut += IncPidCalc(&LaserTecIncPids, 250, NVRAM0[(576 + 71)]); 	
+N		if(LaserTecOut >= 100){
+N			LaserTecOut = 100;
+N		}
+N		if(LaserTecOut < 0){
+N			LaserTecOut = 0;
+N		}
+N		//printf("%s,%d,%s:laser tec out:%d\n",__FILE__, __LINE__, __func__, LaserTecOut);
+N		LaserTecOutCounter = 0;
+N		if(LaserTecOut > 0){
 N			SSET(Y_TEC);
 X			SSET((1312 * 16 + 6));
 N		}
-N		else{
+N	}
+N	if(LDP(SPCOIL_PS10MS)){
+X	if(LDP((1384 * 16 + 2))){
+N		if(LaserTecOutCounter >= LaserTecOut){
 N			RRES(Y_TEC);
 X			RRES((1312 * 16 + 6));
 N		}
-N	}
+N		LaserTecOutCounter ++;
+N	}		
+N#endif
+N		
+N#if CONFIG_USING_FUZZY_PID == 1
+X#if 0 == 1
+S	if(LDP(SPCOIL_PS500MS)){//1秒间隔	
+S		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((CONFIG_DIODE_SET_TEMP) / 10), (float)(NVRAM0[EM_LASER_TEMP] / 10));
+S		if(FuzzyPID_GetRelayState(&LaserFuzzyPids, pidOutPut)){// 获取继电器状态
+S			SSET(Y_TEC);
+S		}
+S		else{
+S			RRES(Y_TEC);
+S		}
+S	}
 N#endif
 N#endif
 N//温控执行 激光等待发射及错误状态启动温控
@@ -89887,6 +89889,7 @@ N		}
 N		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
 X		setFanSpeed(NVRAM0[(576 + 75)]);
 N	}	
+W "..\..\MainApp\dcHmiApp.c" 2486 8 variable "pidOutPut"  was declared but never referenced
 N}
 N
 Nstatic void faultLoop(void){//故障轮询
