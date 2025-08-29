@@ -228,7 +228,7 @@ static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
   {
     sector = FLASH_SECTOR_10;
   }
-#ifdef STM32F405xx
+#if defined(STM32F405xx) || defined(STM32F407xx)
 	else
   {
     sector = FLASH_SECTOR_11;

@@ -1,6 +1,5 @@
 #include "sPlc.h"
-extern TIM_HandleTypeDef htim12;//FAN PWM
-extern TIM_HandleTypeDef htim2;//FAN PWM
+#include "boardConfig.h"
 /*****************************************************************************/
 void sPlcOutputInit(void){//IO输出初始化
 	NVRAM0[Y_START] = 0x0;

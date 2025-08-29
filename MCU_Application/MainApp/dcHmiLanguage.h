@@ -1,6 +1,7 @@
 #ifndef __DCHMILANGUAGE_H__
 #define __DCHMILANGUAGE_H__
 #include "sPlc.h"
+#include "appConfig.h"
 /*****************************************************************************/
 extern const char WARN_MSG_NO_ERROR[];
 extern const char WARN_MSG_INTERLOCK_UNPLUG[];//安全连锁没插

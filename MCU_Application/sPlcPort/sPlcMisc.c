@@ -1,4 +1,5 @@
 #include "sPlc.h"
+#include "boardConfig.h"
 #include "usbh_core.h"
 /*****************************************************************************/
 static int16_t FanSpeed = -1;
@@ -9,8 +10,6 @@ void softDelayMs(uint16_t ms){//软件延时
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	}
 }
-
-
 
 void FanTimerInit(void) {
   TIM_OC_InitTypeDef sConfigOC = {0};

@@ -1,6 +1,5 @@
 #include "sPlcFun.h"
-//
-extern CRC_HandleTypeDef hcrc;
+#include "boardConfig.h"
 /*****************************************************************************/
 void REBOOT(void) {//软件复位	
 	__set_FAULTMASK(1);

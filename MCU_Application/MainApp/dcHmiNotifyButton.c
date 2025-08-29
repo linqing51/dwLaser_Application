@@ -300,7 +300,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
 					dispBuf[4] = 0x0;
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(APP_CONFIG_WAVE_1470_650)
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
 					
@@ -310,7 +310,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);					
 #endif				
-#if defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0)
+#if defined(APP_CONFIG_WAVE_1470_980_650)
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
 
@@ -320,7 +320,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);					
 #endif
-#if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
+#if defined(APP_CONFIG_WAVE_1940_650)
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
 					
@@ -883,7 +883,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_ENTER_SCHEME:{//按键SCHEME
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(APP_CONFIG_WAVE_1470_650)
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 						
@@ -895,11 +895,11 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						//updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 						//seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);							
 #endif
-#if defined(MODEL_PVGLS_TRI_A0)				
+#if defined(APP_CONFIG_WAVE_1470_980_650)				
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_TRI;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
-#if defined(MODEL_PVGLS_10W_1940_A1)		
+#if defined(APP_CONFIG_WAVE_1940_650)		
 					memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));						
 					NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;											
 					NVRAM0[EM_SCHEME_NUM_TMP] = NVRAM0[DM_SCHEME_INDEX];
@@ -1307,15 +1307,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_SCHEME_KEY_CANCEL:{
 					if(state){
-#if defined(MODEL_PVGLS_TRI_A0)						
+#if defined(APP_CONFIG_WAVE_1470_980_650)						
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_TRI;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(APP_CONFIG_WAVE_1470_650)
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
-#if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)			
+#if defined(APP_CONFIG_WAVE_1940_650)		
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;

@@ -1,16 +1,16 @@
 #include "dcHmiLanguage.h"
 /*****************************************************************************/
-const char WARN_MSG_NO_ERROR[]	        		 		= {""};			
-const char WARN_MSG_INTERLOCK_UNPLUG[]		 	 	= {"Door interlock disconnected"};//安全连锁没插													
+const char WARN_MSG_NO_ERROR[]	        		= {""};			
+const char WARN_MSG_INTERLOCK_UNPLUG[]		 	= {"Door interlock disconnected"};//安全连锁没插													
 const char WARN_MSG_FOOTSWITCH_UNPLUG[]			= {"Footswitch not connected"};//脚踏没插
-const char WARN_MSG_ESTOP_PRESS[]            	= {"ESTOP Press"};//急停按下
+const char WARN_MSG_ESTOP_PRESS[]           = {"ESTOP Press"};//急停按下
 const char WARN_MSG_FIBER_UNPLUG[] 					= {"No fiber connected"};//光纤没插或者RFID不识别													
 const char WARN_MSG_OUT_ENERGY[] 				 		= {"Energy out of tolerance"};//功率偏差超20%，预留功能，可以以后实现
-const char WARN_MSG_DIODE_HTEMP[] 				 		= {"Laser overheating"};//温度过高
-const char WARN_MSG_DIODE_LTEMP[] 				 		= {"Laser NTC open or lowheating"};//温度过低
+const char WARN_MSG_DIODE_HTEMP[] 				 	= {"Laser overheating"};//温度过高
+const char WARN_MSG_DIODE_LTEMP[] 				 	= {"Laser NTC open or lowheating"};//温度过低
 const char WARN_MSG_DIODE0_OVERCURRENT[] 		= {"Laser current exceeds set value"};//电流超过限定值，保护激光器
 const char WARN_MSG_DIODE1_OVERCURRENT[] 		= {"Laser current exceeds set value"};//电流超过限定值，保护激光器
-const char WARN_MSG_NTC_ERROR[] 					 		= {"Thermistor Error"};//热敏电阻故障									
+const char WARN_MSG_NTC_ERROR[] 					 	= {"Thermistor Error"};//热敏电阻故障									
 const char WARN_MSG_ENVI_HTEMP[] 				 		= {"Envi High Temperature"};//环境温度过高
 const char WARN_MSG_ENVI_LTEMP[] 				 		= {"Envi Low Temperature"};//环境温度过高													
 const char WARN_MSG_FOOT_DEPRESSED[] 			 	= {"Foot/finger switch is depressed"};//脚踏按下去没弹起来
@@ -19,47 +19,41 @@ const char WARN_MSG_WAIT_TRIGGER[] 				 	= {"Wait Laser Trigger"};//等待激光
 const char WARN_MSG_FIBER_MISSMATE[] 			 	= {"Fiber not mate"};
 const char INFO_MSG_SN[] 						 				= {"SN: "};
 /*****************************************************************************/
-#if defined(MODEL_PVGLS_15W_1470_A0)
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-Dual"};
-#endif
-
-#if defined(MODEL_PVGLS_15W_1470_A1)
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a15b0-A1-Dual"};
-#endif
-
-#if defined(MODEL_PVGLS_TRI_A0)
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-Triple"};
-#endif
-
-#if defined(MODEL_PVGLS_10W_1940_A1)
-const char INFO_MSG_VERSION[] 					 			= {"App Version: 3.1a14b0-A1-Dual"};
-#endif
+const char INFO_MSG_VERSION[] 					 		= {"HW:"HW_VERSION" SW:"SW_VERSION""};
 /*****************************************************************************/
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS 1470/15"};
-const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15W+0.5W"};
-const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+635nm"};
+#if defined(APP_CONFIG_WAVE_1470_650)
+const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1470/15"};
+const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15W+0.5W"};
+const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+635nm"};
 #endif
 
 const char INFO_MSG_MANUFACTURE_DATE[] 			= {"MANUFACTURE DATE: "};
 
 #if defined(MODEL_PVGLS_7W_1940_A0)
-const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS 1940/7"};
-const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 7W"};
-const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1940nm"};
+const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1940/7"};
+const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 7W"};
+const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1940nm"};
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
-const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS 1940/10"};
-const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 10W"};
-const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1940nm"};
+const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1940/10"};
+const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 10W"};
+const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1940nm"};
 #endif
 
 #if defined(MODEL_PVGLS_TRI_A0)
-const char INFO_MSG_TYPE[] 						 				= {"TYPE: PVGLS - TRI"};
-const char INFO_MSG_LASER_POWER[] 				 		= {"LASER_POWER: 15w+15w+0.5w"};
-const char INFO_MSG_WAVELENGTH[] 				 			= {"WAVE LENGTH: 1470nm+980nm+635nm"};
+const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
+const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+15w+0.5w"};
+const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
 #endif
+
+#if defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
+const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+30w+0.5w"};
+const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
+#endif
+
+
 
 /*****************************************************************************/
 

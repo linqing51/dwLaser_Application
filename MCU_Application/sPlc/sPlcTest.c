@@ -1,4 +1,4 @@
-#include "sPlcTest.h"
+include "sPlcTest.h"
 //指令测试程序
 #if CONFIG_SPLC_FUNTEST == 1
 static void sPlcTest_XTAB(void){

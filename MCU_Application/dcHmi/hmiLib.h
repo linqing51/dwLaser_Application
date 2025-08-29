@@ -5,13 +5,12 @@
 #include "hmiCmdQueue.h"
 #include "hmiDriver.h"
 #include "hmiCmdProcess.h"
+#include "boardConfig.h"
+#include "appConfig.h"
 /*****************************************************************************/
 extern void hmiUartSendChar(uint8_t t);
 extern void hmiUartInit(void);
-extern void Uart0sr(void);
-
-
-
+extern void hmiUartErrorReset(void);
 #endif
 
 

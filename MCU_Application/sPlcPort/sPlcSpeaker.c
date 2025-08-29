@@ -1,4 +1,5 @@
 #include "sPlc.h"
+#include "boardConfig.h"
 /*****************************************************************************/
 static int8_t LoudspeakerEnable = -1;//喇叭使能状态
 static int8_t LoudspeakerVolume = -1;//喇叭音量
@@ -7,7 +8,7 @@ void sPlcSpeakerInit(void){//喇叭初始化
 	RRES(SPCOIL_BEEM_ENABLE);
 	sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 	sPlcSpeakerDisable();
-	sPlcSpeakerFreq(CONFIG_SPLC_DEFAULT_SPK_FREQ);
+	sPlcSpeakerFreq(CONFIG_DEFAULT_SPK_FREQ);
 	printf("%s,%d,%s:speaker dma init......\n",__FILE__, __LINE__, __func__);
 }
 
@@ -36,11 +37,11 @@ static float32_t linearToLog(int16_t volume);
 void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
 	float32_t f1;
 	SET_SPK_TIM_OFF;
-	if(freq > CONFIG_SPLC_MAX_SPK_FREQ){
-		freq = CONFIG_SPLC_MAX_SPK_FREQ;
+	if(freq > CONFIG_MAX_SPK_FREQ){
+		freq = CONFIG_MAX_SPK_FREQ;
 	}
-	if(freq < CONFIG_SPLC_MIN_SPL_FREQ){
-		freq = CONFIG_SPLC_MIN_SPL_FREQ;
+	if(freq < CONFIG_MIN_SPL_FREQ){
+		freq = CONFIG_MIN_SPL_FREQ;
 	}
 	f1 = HAL_RCC_GetPCLK1Freq() / sizeof(audioSineTable) * 2 / freq;
 	htim7.Instance = TIM7;
@@ -97,11 +98,100 @@ static float32_t linearToLog(int16_t volume){//线性音量转化为对数音量
 	}
 	return vol;
 }
-
 #endif
 
-#if defined(MODEL_PVGLS_10W_1940_A1)
+#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
+	uint16_t tmp, i, wdat;
+	SET_MCP41010_CS(GPIO_PIN_SET);//CS = 1
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_MCP41010_CS(GPIO_PIN_RESET);//CS = 0
+	wdat = 0x1100;
+	wdat += dat;
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	for(i = 0;i < 16;i ++){
+		tmp = (uint8_t)(wdat >> (15 - i)) & 0x01;
+		SET_MCP41010_SDI((GPIO_PinState)tmp);//dat -> SDI
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_MCP41010_SCK(GPIO_PIN_SET);//SCK -> 1
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_MCP41010_SCK(GPIO_PIN_RESET);//SCK -> 0
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	}
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_MCP41010_CS(GPIO_PIN_SET);
+}
 
+static void setSpeakerFreq(uint16_t frequency){
+	TIM_OC_InitTypeDef sConfigOC = {0};
+  // 计算自动重载值(ARR)和预分频器值(PSC)
+  uint32_t SystemCoreClock = HAL_RCC_GetPCLK1Freq();
+  uint32_t psc = 84 - 1; // 预分频器值，将42MHz时钟分频为1MHz
+  uint32_t arr = (SystemCoreClock / (psc + 1)) / frequency - 1;
+
+  // TIM8初始化
+  htim8.Instance = TIM8;
+  htim8.Init.Prescaler = psc;
+  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim8.Init.Period = arr;
+  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim8) != HAL_OK){
+		printf("reSet TIM8 base clk fail!!!\n");
+    Error_Handler();
+  }
+  // 配置PWM模式 (使用CH1)
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = arr / 2; // 50%占空比
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim8, &sConfigOC, TIM_CHANNEL_1) != HAL_OK){
+		printf("reSet TIM8 CH1 out freq fail!!!\n");
+    Error_Handler();
+  }
+}
+
+inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
+	if(freq > CONFIG_BEEM_MAX_FREQ){
+		freq = CONFIG_BEEM_MAX_FREQ;
+	}
+	if(freq < CONFIG_BEEM_MIN_FREQ){
+		freq = CONFIG_BEEM_MIN_FREQ;
+	}
+	setSpeakerFreq(freq);
+}
+
+inline void sPlcSpeakerVolume(int16_t volume){//设置喇叭音量
+	float ftmp;
+	if(LoudspeakerVolume != volume){
+		ftmp = volume * 255 / 100;
+		if(ftmp > 0xFF){
+			ftmp = 0xFF;
+		}
+		if(ftmp < 0){
+			ftmp = 0;
+		}
+		writeMcp41010((int16_t)ftmp);
+	}
+}
+#endif
+
+#if defined(MODEL_PVGLS_10W_1940_A1) 
 static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	uint16_t tmp, i, wdat;
 	SET_MCP41010_CS(GPIO_PIN_SET);//CS = 1
@@ -189,5 +279,4 @@ inline void sPlcSpeakerVolume(int16_t volume){//设置喇叭音量
 		writeMcp41010((int16_t)ftmp);
 	}
 }
-
 #endif

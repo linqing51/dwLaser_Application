@@ -81,7 +81,7 @@
 #define USBH_MAX_SIZE_CONFIGURATION      256U
 
 /*----------   -----------*/
-#define USBH_MAX_DATA_BUFFER      1024U
+#define USBH_MAX_DATA_BUFFER      512U
 
 /*----------   -----------*/
 #define USBH_DEBUG_LEVEL      3U
@@ -97,7 +97,7 @@
 #if (USBH_USE_OS == 1)
   #include "cmsis_os.h"
   #define USBH_PROCESS_PRIO          osPriorityNormal
-  #define USBH_PROCESS_STACK_SIZE    ((uint16_t)512)
+  #define USBH_PROCESS_STACK_SIZE    ((uint16_t)128)
 #endif /* (USBH_USE_OS == 1) */
 
 /**

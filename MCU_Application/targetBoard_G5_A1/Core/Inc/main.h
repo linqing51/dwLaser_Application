@@ -93,8 +93,8 @@ void Error_Handler(void);
 #define NFC_RST_GPIO_Port GPIOB
 #define NFC_STA_Pin GPIO_PIN_10
 #define NFC_STA_GPIO_Port GPIOB
-#define LAS_TEC_Pin GPIO_PIN_11
-#define LAS_TEC_GPIO_Port GPIOB
+#define TEC_PWM_Pin GPIO_PIN_11
+#define TEC_PWM_GPIO_Port GPIOB
 #define TICK_LED_Pin GPIO_PIN_12
 #define TICK_LED_GPIO_Port GPIOB
 #define SPK_EN_Pin GPIO_PIN_13

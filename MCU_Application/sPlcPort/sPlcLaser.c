@@ -1,5 +1,6 @@
 //TIM11->计时
 #include "sPlc.h"
+#include "boardConfig.h"
 /*****************************************************************************/
 int8_t LaserOn_635;
 int8_t LaserTimer_Mode;
@@ -136,7 +137,7 @@ void STLAR(void){//开始发射脉冲
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//激光发射固定间隔
 		}
 	}
-	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_SPLC_DEFAULT_SPK_FREQ;
+	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_DEFAULT_SPK_FREQ;
 	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
 	NVRAM0[SPREG_BEEM_COUNTER]= 0;
 	LaserTimer_TCounter = 0X0;
@@ -144,13 +145,13 @@ void STLAR(void){//开始发射脉冲
 	LaserTimer_ReleaseCounter = 0x0;
 	LaserFlag_Emiting = false;
 	LaserFlag_Emitover = false;
-	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
-	HAL_TIM_Base_Start_IT(&htim10);//打开计时器
+	__HAL_TIM_SET_COUNTER(&CONFIG_LASER_TIM_HANDLE, 0x0);//清零计数值
+	HAL_TIM_Base_Start_IT(&CONFIG_LASER_TIM_HANDLE);//打开计时器
 }
 void EDLAR(void){//停止发射脉冲
 	printf("%s,%d,%s:laser stop!\n",__FILE__, __LINE__, __func__);
-	__HAL_TIM_SET_COUNTER(&htim10, 0x0);//清零计数值
-	HAL_TIM_Base_Stop_IT(&htim10);//停止计时器
+	__HAL_TIM_SET_COUNTER(&CONFIG_LASER_TIM_HANDLE, 0x0);//清零计数值
+	HAL_TIM_Base_Stop_IT(&CONFIG_LASER_TIM_HANDLE);//停止计时器
 	laserStop();//关闭DAC输出
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;

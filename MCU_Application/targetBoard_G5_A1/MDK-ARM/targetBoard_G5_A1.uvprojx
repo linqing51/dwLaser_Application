@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>D:\GitHub\dwLaser_Application\MCU_Application\targetBoard_G5_A1\MDK-ARM\convert.bat</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -314,8 +314,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>2</Optim>
-            <oTime>1</oTime>
+            <Optim>1</Optim>
+            <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
             <Strict>0</Strict>
@@ -736,6 +736,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\MainAppLib.c</FilePath>
             </File>
+            <File>
+              <FileName>preScheme.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preScheme.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -745,11 +750,6 @@
               <FileName>deviceConfig.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\deviceInfo\deviceConfig.c</FilePath>
-            </File>
-            <File>
-              <FileName>preScheme.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\deviceInfo\preScheme.c</FilePath>
             </File>
           </Files>
         </Group>

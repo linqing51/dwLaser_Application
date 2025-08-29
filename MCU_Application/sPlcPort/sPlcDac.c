@@ -1,5 +1,57 @@
 #include "sPlc.h"
+#include "boardConfig.h"
 /*****************************************************************************/
+#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+static void writeDac7311(uint16_t dat){
+	uint8_t tmp, i;
+	SET_EDAC7_CS(GPIO_PIN_RESET);//CS = 0
+	dat = dat << 2;
+	dat &= 0x3FFC;
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	for(i = 0;i < 16;i ++){
+		tmp = (uint8_t)(dat >> (15 - i)) & 0x01;
+		SET_EDAC7_SDI((GPIO_PinState)tmp);//dat -> SDI
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC7_SCK(GPIO_PIN_SET);//SCK -> 1
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_EDAC7_SCK(GPIO_PIN_RESET);//SCK -> 0
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	}
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_EDAC7_CS(GPIO_PIN_SET);
+}
+
+void sPlcDacInit(void){//DAC初始化
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // 开启DAC输出
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_2); // 开启DAC输出
+	writeDac7311(0);
+}
+void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
+	uint16_t temp;
+	temp = NVRAM0[SPREG_DAC_0] & 0x0FFF;
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+}
+void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
+	uint16_t temp;
+	temp = NVRAM0[SPREG_DAC_1] & 0x0FFF;
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+}
+
+void UPDAC7(void){//立即从SPREG_DAC_0中更新DAC0
+	uint16_t temp;
+	temp = NVRAM0[SPREG_DAC_7] & 0x0FFF;
+	writeDac7311(temp);
+}
+void CLDAC(void){//立即清空全部DAC
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // 设置DAC输出值	
+	writeDac7311(0);
+}
+
+#endif
+
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 static void writeMcp4821_0(uint16_t dat){//MCP4821 SPI写入
 	uint8_t tmp, i;
@@ -61,7 +113,6 @@ static void writeMcp4821_2(uint16_t dat){//MCP4821 SPI写入
 	SET_EDAC2_CS(GPIO_PIN_SET);
 }
 
-
 void sPlcDacInit(void){//DAC初始化
 	SET_EDAC0_CS(GPIO_PIN_SET);SET_EDAC1_CS(GPIO_PIN_SET);SET_EDAC2_CS(GPIO_PIN_SET);SET_EDAC3_CS(GPIO_PIN_SET);//SPI CS=1
 	SET_EDAC0_SCK(GPIO_PIN_RESET);SET_EDAC1_SCK(GPIO_PIN_RESET);SET_EDAC2_SCK(GPIO_PIN_RESET);SET_EDAC3_SCK(GPIO_PIN_RESET); //SPI CLK = 0
@@ -70,6 +121,9 @@ void sPlcDacInit(void){//DAC初始化
 	writeMcp4821_0(0);
 	writeMcp4821_1(0);
 	writeMcp4821_2(0);
+#if defined(MODEL_PVGLS_G5_TRI_A1) || defined(MODEL_PVGLS_G9_TRI_A1)
+
+#endif
 	printf("%s,%d,%s:init dac vref=2048mV\n",__FILE__, __LINE__, __func__);
 	printf("%s,%d,%s:init dac done!\n",__FILE__, __LINE__, __func__);
 }
@@ -98,8 +152,7 @@ void CLDAC(void){//立即清空全部DAC
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
-
-static void hgc5615(uint16_t dat){//HGC5616 模拟SPI写入
+static void writeHGC5615(uint16_t dat){//HGC5616 模拟SPI写入
 	uint16_t tmp, i, wdat;
 	dat = dat & 0x3FF;
 	SET_HGC5615_CS(GPIO_PIN_SET);//CS = 1
@@ -137,14 +190,11 @@ static void hgc5615(uint16_t dat){//HGC5616 模拟SPI写入
 	SET_HGC5615_CS(GPIO_PIN_SET);
 }
 
-
-
-
 void sPlcDacInit(void){//DAC初始化
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // 开启DAC输出
-	hgc5615(0);
+	writeHGC5615(0);
 }
 void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
@@ -160,18 +210,15 @@ void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
 void UPDAC7(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_7] & 0x0FFF;
-	hgc5615(temp);
+	writeHGC5615(temp);
 }
 void CLDAC(void){//立即清空全部DAC
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // 设置DAC输出值	
-	hgc5615(0);
+	writeHGC5615(0);
 }
 #endif
 
-#if defined(MODEL_PVGLS_7W_1940_A0)
-
-#endif
 
 
 

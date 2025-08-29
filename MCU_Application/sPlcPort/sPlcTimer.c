@@ -1,9 +1,10 @@
 #include "sPlc.h"
+#include "boardConfig.h"
 /*****************************************************************************/
 uint32_t sPlcTick;
 /*****************************************************************************/
 void sPlcTimerInit(void){//硬件sTimer计时器初始化
-	HAL_TIM_Base_Start_IT(&htim14);
+	HAL_TIM_Base_Start_IT(&CONFIG_SPLC_TIM_HANDLE);
 	TD_10MS_SP = 0;
 	TD_100MS_SP = 0;
 	TD_200MS_SP = 0;
@@ -19,10 +20,10 @@ void sPlcTimerInit(void){//硬件sTimer计时器初始化
 	printf("%s,%d,%s:splc timer init......\n",__FILE__, __LINE__, __func__);
 }
 void sPlcTimerDisable(void) {//SPLC关闭计时器
-	HAL_TIM_Base_Stop_IT(&htim14);
+	HAL_TIM_Base_Stop_IT(&CONFIG_SPLC_TIM_HANDLE);
 }
 void sPlcTimerEnable(void) {//SPLC打开计时器
-	HAL_TIM_Base_Start_IT(&htim14);
+	HAL_TIM_Base_Start_IT(&CONFIG_SPLC_TIM_HANDLE);
 }
 void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	uint16_t i;

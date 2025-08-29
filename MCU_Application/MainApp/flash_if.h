@@ -58,19 +58,24 @@
 typedef  void (*pFunction)(void);
 
 #define BOOTLOADER_FLASH_START_ADDRESS    		ADDR_FLASH_SECTOR_0//引导程序起始地址
-#define BOOTLOADER_FLASH_END_ADDRESS			(ADDR_FLASH_SECTOR_4 - 1)//引导程序起始地址
-#define BOOTLOADER_FLASH_SIZE					(BOOTLOADER_FLASH_END_ADDRESS - BOOTLOADER_FLASH_START_ADDRESS + 1)//引导程序区容量
+#define BOOTLOADER_FLASH_END_ADDRESS					(ADDR_FLASH_SECTOR_4 - 1)//引导程序起始地址
+#define BOOTLOADER_FLASH_SIZE									(BOOTLOADER_FLASH_END_ADDRESS - BOOTLOADER_FLASH_START_ADDRESS + 1)//引导程序区容量
 #ifdef STM32F413xx
-#define APPLICATION_FLASH_START_ADDRESS        	ADDR_FLASH_SECTOR_5//应用程序起始地址
-#define APPLICATION_FLASH_END_ADDRESS  			(ADDR_FLASH_SECTOR_15 + 131072 - 1)//应用程序结束地址
-#define APPLICATION_FLASH_SIZE   				(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//应用程序区容量
+#define APPLICATION_FLASH_START_ADDRESS       ADDR_FLASH_SECTOR_5//应用程序起始地址
+#define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_15 + 131072 - 1)//应用程序结束地址
+#define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//应用程序区容量
 #endif
 #ifdef STM32F405xx
-#define APPLICATION_FLASH_START_ADDRESS        	ADDR_FLASH_SECTOR_4//应用程序起始地址
-#define APPLICATION_FLASH_END_ADDRESS  			(ADDR_FLASH_SECTOR_11 + 131072 - 1)//应用程序结束地址
-#define APPLICATION_FLASH_SIZE   				(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//应用程序区容量
-
+#define APPLICATION_FLASH_START_ADDRESS       ADDR_FLASH_SECTOR_4//应用程序起始地址
+#define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_11 + 131072 - 1)//应用程序结束地址
+#define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//应用程序区容量
 #endif
+#ifdef STM32F407xx
+#define APPLICATION_FLASH_START_ADDRESS       ADDR_FLASH_SECTOR_4//应用程序起始地址
+#define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_11 + 131072 - 1)//应用程序结束地址
+#define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//应用程序区容量
+#endif
+
 /* Base address of the Flash sectors Bank 1 */
 #ifdef STM32F413xx
 #define ADDR_FLASH_SECTOR_0     				((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
@@ -104,6 +109,23 @@ typedef  void (*pFunction)(void);
 #define ADDR_FLASH_SECTOR_10    				((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
 #define ADDR_FLASH_SECTOR_11    				((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
 #endif
+
+#ifdef STM32F407xx
+#define ADDR_FLASH_SECTOR_0     				((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_1     				((uint32_t)0x08004000) /* Base @ of Sector 1, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_2     				((uint32_t)0x08008000) /* Base @ of Sector 2, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_3     				((uint32_t)0x0800C000) /* Base @ of Sector 3, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_4     				((uint32_t)0x08010000) /* Base @ of Sector 4, 64 Kbytes */
+#define ADDR_FLASH_SECTOR_5     				((uint32_t)0x08020000) /* Base @ of Sector 5, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_6     				((uint32_t)0x08040000) /* Base @ of Sector 6, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_7     				((uint32_t)0x08060000) /* Base @ of Sector 7, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_8     				((uint32_t)0x08080000) /* Base @ of Sector 8, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_9     				((uint32_t)0x080A0000) /* Base @ of Sector 9, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_10    				((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_11    				((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
+#endif
+
+
 /* Exported macros -----------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void FLASH_If_FlashUnlock(void);

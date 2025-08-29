@@ -1,4 +1,5 @@
 #include "sPlc.h"
+#include "boardConfig.h"
 //避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
 /*****************************************************************************/
 #pragma pack(push, 4)
@@ -276,7 +277,6 @@ void sPlcInit(void){//软逻辑初始化
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
 	sPlcEpromTest();
 #endif
-	loadDeviceConfig();//载入硬件配置
 	sPlcNvramLoad();//上电恢复NVRAM
 	sPlcFdramLoad();//上电恢复FDRAM
 	BootloadCrc = getOriginBootloadCrc();
@@ -296,24 +296,6 @@ void sPlcInit(void){//软逻辑初始化
 	SET_GREEN_LED_OFF;	
 	SET_BLUE_LED_OFF;
 	RRES(Y_TICK_LED);
-	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
-		SET_GREEN_LED_DC(10);
-	}
-	else{
-		SET_GREEN_LED_DC(deviceConfig.greenLedDc);
-	}
-	if(deviceConfig.redLedDc <= 0 || (deviceConfig.redLedDc > CONFIG_RED_LED_MAX_DC)){
-		SET_RED_LED_DC(10);
-	}
-	else{
-		SET_RED_LED_DC(deviceConfig.redLedDc);
-	}
-	if(deviceConfig.blueLedDc <= 0 || (deviceConfig.blueLedDc > CONFIG_BLUE_LED_MAX_DC)){
-		SET_BLUE_LED_DC(10);
-	}
-	else{
-		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
-	}
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	if(TD_10MS_SP >= 1){
@@ -351,9 +333,9 @@ void sPlcProcessStart(void){//sPLC轮询起始
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
-//	if(LDP(SPCOIL_PS500MS)){
-//		FLIP(Y_TICK_LED);
-//	}
+	if(LDP(SPCOIL_PS500MS)){
+		FLIP(Y_TICK_LED);
+	}
 	sPlcOutputRefresh();//更新Y口输出
 	sPlcNvramUpdate();//更新NVRAM
 	RRES(SPCOIL_START_UP);
