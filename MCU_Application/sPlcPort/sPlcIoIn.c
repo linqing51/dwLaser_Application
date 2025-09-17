@@ -84,7 +84,7 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 #endif
-#if defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL)
 	if(temp == 1){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
@@ -121,25 +121,6 @@ void sPlcInputRefresh(void){//获取输入IO
 	}
 #endif
 	//X4 光纤探测
-#if defined(MODEL_PVGLS_15W_1470_A0) ||  defined(MODEL_PVGLS_15W_1470_A1)
-	if(NVRAM0[SPREG_ADC_9] <= deviceConfig.fiberDetect){
-		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[4] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 4);
-		}
-	}
-	else{
-		if(inputFilter[4] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[4] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
-		}
-	}	
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
 	if(NVRAM0[SPREG_ADC_9] <= deviceConfig.fiberDetect){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
@@ -156,6 +137,23 @@ void sPlcInputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
 		}
 	}
-#endif
+	//X5 电源开关
+	temp = GET_PWR_KEY;
+	if(temp == 0){
+		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
+			inputFilter[5] ++;
+		}
+		else{
+			NVRAM0[X_START] |= (int16_t)(1 << 5);
+		}
+	}
+	else{
+		if(inputFilter[5] > (CONFIG_INPUT_FILTER_TIME * -1)){
+			inputFilter[5] --;
+		}
+		else{
+			NVRAM0[X_START] &= ~(uint16_t)(1 << 5);
+		}
+	}
 }
 

@@ -7,173 +7,43 @@
 /*****************************************************************************/
 #pragma import(__use_no_semihosting_swi)
 /*****************************************************************************/
-#if defined(MODEL_PVGLS_15W_1470_A0) | defined(MODEL_PVGLS_15W_1470_A1)
-#define SET_EDAC0_CS(b)													HAL_GPIO_WritePin(EDAC0_CS_GPIO_Port, EDAC0_CS_Pin, b)
-#define SET_EDAC1_CS(b)													HAL_GPIO_WritePin(EDAC1_CS_GPIO_Port, EDAC1_CS_Pin, b)
-#define SET_EDAC2_CS(b)													HAL_GPIO_WritePin(EDAC2_CS_GPIO_Port, EDAC2_CS_Pin, b)
-#define SET_EDAC3_CS(b)													HAL_GPIO_WritePin(EDAC3_CS_GPIO_Port, EDAC3_CS_Pin, b)
-#define SET_EDAC0_SCK(b)												HAL_GPIO_WritePin(EDAC0_SCK_GPIO_Port, EDAC0_SCK_Pin, b)
-#define SET_EDAC1_SCK(b)												HAL_GPIO_WritePin(EDAC1_SCK_GPIO_Port, EDAC1_SCK_Pin, b)
-#define SET_EDAC2_SCK(b)												HAL_GPIO_WritePin(EDAC2_SCK_GPIO_Port, EDAC2_SCK_Pin, b)
-#define SET_EDAC3_SCK(b)												HAL_GPIO_WritePin(EDAC3_SCK_GPIO_Port, EDAC3_SCK_Pin, b)
-#define SET_EDAC0_SDI(b)												HAL_GPIO_WritePin(EDAC0_SDI_GPIO_Port, EDAC0_SDI_Pin, b)
-#define SET_EDAC1_SDI(b)												HAL_GPIO_WritePin(EDAC1_SDI_GPIO_Port, EDAC1_SDI_Pin, b)
-#define SET_EDAC2_SDI(b)												HAL_GPIO_WritePin(EDAC2_SDI_GPIO_Port, EDAC2_SDI_Pin, b)
-#define SET_EDAC3_SDI(b)												HAL_GPIO_WritePin(EDAC3_SDI_GPIO_Port, EDAC3_SDI_Pin, b)
-#define GET_ESTOP_NC														HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
-#define GET_INTERLOCK_NC												HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
-#define GET_FSWITCH_NO													HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
-#define GET_FSWITCH_NC													HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
+#define BT_STATE_IDLE														0//ç©ºé—²
+#define BT_STATE_LOAD_FWINFO										1//EPROMè½½å…¥å›ºä»¶ä¿¡æ¯
+#define BT_STATE_USBHOST_INIT										2//FATFS åˆå§‹åŒ–
+#define BT_STATE_WAIT_UDISK											3//ç­‰å¾…USB DISKå°±ç»ª
+#define BT_STATE_READ_CFG												4//è¯»å–é…ç½®æ–‡ä»¶
+#define BT_STATE_UPDATE_MCU_BOT									5//æ›´æ–°BOOTLOAD
+#define BT_STATE_UPDATE_MCU_APP									6//æ›´æ–°å•ç‰‡æœºåº”ç”¨å›ºä»¶
+#define BT_STATE_UPDATE_LCD_APP									7//æ›´æ–°å±å¹•åº”ç”¨å›ºä»¶
+#define BT_STATE_UPDATE_BOTH_APP								8//æ›´æ–°å•ç‰‡æœºå’Œå±å›ºä»¶
+#define BT_STATE_UPDATE_EPROM										9//æ›´æ–°UDISK->EPROM
+#define BT_STATE_UPDATE_FORCE_BOTH_APP					10//å¼ºåˆ¶æ›´æ–°
+#define BT_STATE_DUMP_EPROM											11//å‚¨å­˜å…¨éƒ¨EPROMåˆ°UDISK
+#define BT_STATE_CLEAT_ALL											12//æ¸…é™¤FLASHå’ŒEPROMå…¨éƒ¨
+#define BT_STATE_RESET													90//é‡å¯
+#define BT_STATE_RUN_APP												99//è·³è½¬åˆ°APPåº”ç”¨ç¨‹åº
 
-#define SET_RED_LED_ON													HAL_GPIO_WritePin(RED_LED_PWM_GPIO_Port, GPIO_PIN_7, GPIO_PIN_SET)
-#define SET_RED_LED_OFF													HAL_GPIO_WritePin(RED_LED_PWM_GPIO_Port, GPIO_PIN_7, GPIO_PIN_RESET)
-#define FLIP_RED_LED											 			HAL_GPIO_TogglePin(RED_LED_PWM_GPIO_Port, GPIO_PIN_7)
-
-#define SET_GREEN_LED_ON												HAL_GPIO_WritePin(GREEN_LED_PWM_GPIO_Port, GREEN_LED_PWM_Pin, GPIO_PIN_SET)
-#define SET_GREEN_LED_OFF												HAL_GPIO_WritePin(GREEN_LED_PWM_GPIO_Port, GREEN_LED_PWM_Pin, GPIO_PIN_RESET)
-#define FLIP_GREEN_LED  												HAL_GPIO_TogglePin(GREEN_LED_PWM_GPIO_Port, GREEN_LED_PWM_Pin)
-
-#define SET_BLUE_LED_ON													HAL_GPIO_WritePin(BLUE_LED_PWM_GPIO_Port, BLUE_LED_PWM_Pin, GPIO_PIN_SET)
-#define SET_BLUE_LED_OFF												HAL_GPIO_WritePin(BLUE_LED_PWM_GPIO_Port, BLUE_LED_PWM_Pin, GPIO_PIN_RESET)
-#define FLIP_BLUE_LED  													HAL_GPIO_TogglePin(BLUE_LED_PWM_GPIO_Port, BLUE_LED_PWM_Pin)
-
-#define SET_ERR_LED_ON													HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_SET)
-#define SET_ERR_LED_OFF													HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_RESET)
-#define GET_ERR_LED															HAL_GPIO_ReadPin(ERR_LED_GPIO_Port, ERR_LED_Pin)
-#define FLIP_ERR_LED														HAL_GPIO_TogglePin(ERR_LED_GPIO_Port, ERR_LED_Pin)
-#define SET_TICK_LED_ON													HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_SET)
-#define SET_TICK_LED_OFF												HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
-#define GET_TICK_LED														HAL_GPIO_ReadPin(TICK_LED_GPIO_Port, TICK_LED_Pin)
-#define FLIP_TICK_LED														HAL_GPIO_TogglePin(TICK_LED_GPIO_Port, TICK_LED_Pin)
-#define SET_LASER_CH0_ON												HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH0_OFF												HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH1_ON												HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH1_OFF												HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH2_ON												HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH2_OFF												HAL_GPIO_WritePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH3_ON												HAL_GPIO_WritePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH3_OFF												HAL_GPIO_WritePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin, GPIO_PIN_RESET)
-#define FLIP_LASER_CH0													HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
-#define FLIP_LASER_CH1													HAL_GPIO_TogglePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
-#define FLIP_LASER_CH2													HAL_GPIO_TogglePin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
-#define FLIP_LASER_CH3													HAL_GPIO_TogglePin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin)
-#define GET_LASER_CH0														HAL_GPIO_ReadPin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
-#define GET_LASER_CH1														HAL_GPIO_ReadPin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
-#define GET_LASER_CH2														HAL_GPIO_ReadPin(LAS_PWM2_GPIO_Port, LAS_PWM2_Pin)
-#define GET_LASER_CH3														HAL_GPIO_ReadPin(LAS_PWM3_GPIO_Port, LAS_PWM3_Pin)
-#define SET_SPEAKER_ON													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
-#define SET_SPEAKER_OFF													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
-#define SET_AIM_ON										   				HAL_GPIO_WritePin(LAS_AIM_GPIO_Port, LAS_AIM_Pin, GPIO_PIN_SET)
-#define SET_AIM_OFF															HAL_GPIO_WritePin(LAS_AIM_GPIO_Port, LAS_AIM_Pin, GPIO_PIN_RESET)
-#define SET_FAN_ON															HAL_GPIO_WritePin(LAS_FAN_GPIO_Port, LAS_FAN_Pin, GPIO_PIN_SET)
-#define SET_FAN_OFF															HAL_GPIO_WritePin(LAS_FAN_GPIO_Port, LAS_FAN_Pin, GPIO_PIN_RESET)
-#define SET_TEC_ON															HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_SET)
-#define SET_TEC_OFF															HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_RESET)
-
-#define EEPROM_I2C_BUS													hi2c1
-#define GDDC_UART_HANDLE												huart4
-#define GDDC_UART_IRQ														UART4_IRQn
-#define DEBUG_UART_HANDLE												huart1
-#endif
-
-#if defined(MODEL_PVGLS_10W_1940_A1)
-#define GET_ESTOP_NC														HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
-#define GET_INTERLOCK_NC												HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
-#define GET_FSWITCH_NO													HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
-#define GET_FSWITCH_NC													HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
-
-#define SET_RED_LED_ON													HAL_GPIO_WritePin(RED_LED_PWM_GPIO_Port, GPIO_PIN_7, GPIO_PIN_SET)
-#define SET_RED_LED_OFF													HAL_GPIO_WritePin(RED_LED_PWM_GPIO_Port, GPIO_PIN_7, GPIO_PIN_RESET)
-#define FLIP_RED_LED											 			HAL_GPIO_TogglePin(RED_LED_PWM_GPIO_Port, GPIO_PIN_7)
-
-#define SET_GREEN_LED_ON												HAL_GPIO_WritePin(GREEN_LED_PWM_GPIO_Port, GREEN_LED_PWM_Pin, GPIO_PIN_SET)
-#define SET_GREEN_LED_OFF												HAL_GPIO_WritePin(GREEN_LED_PWM_GPIO_Port, GREEN_LED_PWM_Pin, GPIO_PIN_RESET)
-#define FLIP_GREEN_LED  												HAL_GPIO_TogglePin(GREEN_LED_PWM_GPIO_Port, GREEN_LED_PWM_Pin)
-
-#define SET_BLUE_LED_ON													HAL_GPIO_WritePin(BLUE_LED_PWM_GPIO_Port, BLUE_LED_PWM_Pin, GPIO_PIN_SET)
-#define SET_BLUE_LED_OFF												HAL_GPIO_WritePin(BLUE_LED_PWM_GPIO_Port, BLUE_LED_PWM_Pin, GPIO_PIN_RESET)
-#define FLIP_BLUE_LED  													HAL_GPIO_TogglePin(BLUE_LED_PWM_GPIO_Port, BLUE_LED_PWM_Pin)
-
-#define SET_ERR_LED_ON													HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_SET)
-#define SET_ERR_LED_OFF													HAL_GPIO_WritePin(ERR_LED_GPIO_Port, ERR_LED_Pin, GPIO_PIN_RESET)
-#define GET_ERR_LED															HAL_GPIO_ReadPin(ERR_LED_GPIO_Port, ERR_LED_Pin)
-#define FLIP_ERR_LED														HAL_GPIO_TogglePin(ERR_LED_GPIO_Port, ERR_LED_Pin)
-#define SET_TICK_LED_ON													HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_SET)
-#define SET_TICK_LED_OFF												HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
-#define GET_TICK_LED														HAL_GPIO_ReadPin(TICK_LED_GPIO_Port, TICK_LED_Pin)
-#define FLIP_TICK_LED														HAL_GPIO_TogglePin(TICK_LED_GPIO_Port, TICK_LED_Pin)
-#define SET_LASER_CH0_ON												HAL_GPIO_WritePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH0_OFF												HAL_GPIO_WritePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH1_ON												HAL_GPIO_WritePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH1_OFF												HAL_GPIO_WritePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH2_ON												
-#define SET_LASER_CH2_OFF												
-#define SET_LASER_CH3_ON												
-#define SET_LASER_CH3_OFF
-#define SET_LASER_CH4_ON												
-#define SET_LASER_CH4_OFF
-#define SET_TEC_ON															HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_SET)
-#define SET_TEC_OFF															HAL_GPIO_WritePin(LAS_TEC_GPIO_Port, LAS_TEC_Pin, GPIO_PIN_RESET)
-#define FLIP_LASER_CH0													HAL_GPIO_TogglePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define FLIP_LASER_CH1													HAL_GPIO_TogglePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define FLIP_LASER_CH2													HAL_GPIO_TogglePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define FLIP_LASER_CH3													HAL_GPIO_TogglePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define FLIP_LASER_CH4													HAL_GPIO_TogglePin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define GET_LASER_CH0														HAL_GPIO_ReadPin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define GET_LASER_CH1														HAL_GPIO_ReadPin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define GET_LASER_CH2														HAL_GPIO_ReadPin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define GET_LASER_CH3														HAL_GPIO_ReadPin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define GET_LASER_CH4														HAL_GPIO_ReadPin(LAS_PWM_GPIO_Port, LAS_PWM_Pin)
-#define SET_SPEAKER_ON													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
-#define SET_SPEAKER_OFF													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
-#define SET_AIM_ON										   				HAL_GPIO_WritePin(LAS_AIM_PWM_GPIO_Port, LAS_AIM_PWM_Pin, GPIO_PIN_SET)
-#define SET_AIM_OFF															HAL_GPIO_WritePin(LAS_AIM_PWM_GPIO_Port, LAS_AIM_PWM_Pin, GPIO_PIN_RESET)
-#define SET_FAN_ON															HAL_GPIO_WritePin(LAS_FAN_PWM_GPIO_Port, LAS_FAN_PWM_Pin, GPIO_PIN_SET)
-#define SET_FAN_OFF															HAL_GPIO_WritePin(LAS_FAN_PWM_GPIO_Port, LAS_FAN_PWM_Pin, GPIO_PIN_RESET)
-
-#define EEPROM_I2C_BUS													hi2c2
-#define GDDC_UART_HANDLE												huart3
-#define GDDC_UART_IRQ														UART3_IRQn 
-#define DEBUG_UART_HANDLE												huart1
-#endif
-/*****************************************************************************/
-#define BT_STATE_IDLE														0//¿ÕÏĞ
-#define BT_STATE_LOAD_FWINFO										1//EPROMÔØÈë¹Ì¼şĞÅÏ¢
-#define BT_STATE_USBHOST_INIT										2//FATFS ³õÊ¼»¯
-#define BT_STATE_WAIT_UDISK											3//µÈ´ıUSB DISK¾ÍĞ÷
-#define BT_STATE_READ_CFG												4//¶ÁÈ¡ÅäÖÃÎÄ¼ş
-#define BT_STATE_UPDATE_MCU_BOT									5//¸üĞÂBOOTLOAD
-#define BT_STATE_UPDATE_MCU_APP									6//¸üĞÂµ¥Æ¬»úÓ¦ÓÃ¹Ì¼ş
-#define BT_STATE_UPDATE_LCD_APP									7//¸üĞÂÆÁÄ»Ó¦ÓÃ¹Ì¼ş
-#define BT_STATE_UPDATE_BOTH_APP								8//¸üĞÂµ¥Æ¬»úºÍÆÁ¹Ì¼ş
-#define BT_STATE_UPDATE_EPROM										9//¸üĞÂUDISK->EPROM
-#define BT_STATE_UPDATE_FORCE_BOTH_APP					10//Ç¿ÖÆ¸üĞÂ
-#define BT_STATE_DUMP_EPROM											11//´¢´æÈ«²¿EPROMµ½UDISK
-#define BT_STATE_CLEAT_ALL											12//Çå³ıFLASHºÍEPROMÈ«²¿
-#define BT_STATE_RESET													90//ÖØÆô
-#define BT_STATE_RUN_APP												99//Ìø×ªµ½APPÓ¦ÓÃ³ÌĞò
-
-#define BT_FAIL_READ_CFG												'0'//´ÓUÅÌ¶ÁÈ¡CFGÊ§°Ü
-#define BT_FAIL_READ_LMCU_APP										'1'//´ÓUÅÌ¶ÁÈ¡MCU APPÊ§°Ü
-#define BT_FAIL_READ_LCD_APP										'2'//´ÓUÅÌ¶ÁÈ¡LCD APPÊ§°Ü
-#define BT_FAIL_READ_EPROM_BIN									'3'//´ÓUÅÌ¶ÁÈ¡EPROM BINÊ§°Ü
-#define BT_FAIL_WRITE_EPROM_BIN									'4'//ÏòUÅÌĞ´ÈëEPROM BINÊ§°Ü
-#define BT_FAIL_ERASE_MCU_APP										'5'//²Á³ıFLASHÊ§°Ü
-#define BT_FAIL_READ_EPROM											'6'//¶ÁÈ¡EPROMÊ§°Ü
-#define BT_FAIL_WRITE_EPROM											'7'//Ğ´ÈëEPROMÊ§°Ü
-#define BT_FAIL_LMCU_APP_CHECK									'8'//ld_mcu.bin CRC¼ì²é´íÎó
-#define BT_FAIL_LMCU_BOT_CHECK									'9'//ld_bot.bin CRC¼ì²é´íÎó
-#define BT_FAIL_LCD_APP_CHECK										'A'//ld_lcd.bin CRC¼ì²é´íÎó
-#define BT_FAIL_CHECKSUM_MCU_APP_FLASH					'B'//Ğ£Ñé mcu app ´íÎó
-#define BT_FAIL_WRITE_MCU_APP_FLASH							'C'//Ğ´mcu app flash´íÎó
-#define BT_FAIL_LCD_NOT_RESPOND									'D'//LCD´®¿ÚÍ¨ĞÅ³¬Ê±»ò´íÎó
-#define BT_FAIL_LCD_DOWNLOAD										'E'//LCDÏÂÔØÊ§°Ü
-#define BT_FAIL_VECTOR_TABLE_INVALID						'F'//APP ÏòÁ¿±í´íÎó
-#define BT_FAIL_CHECK_BLANK											'G'//FLASH²é¿Õ´íÎó
-#define BT_DONE_CLEAR_ALL												'H'//FLASHºÍEPROMÇå³ıÍê³É
-#define BT_DONE_UPDATE_EPROM										'I'//¸üĞÂEPROMÍê³É
-#define BT_DONE_DUMP_EPROM											'J'//ÏÂÔØEPROMÍê³É
-#define BT_FAIL_LCD_RESPOND_ERROR								'K'//LCD ÏìÓ¦´íÎó
+#define BT_FAIL_READ_CFG												'0'//ä»Uç›˜è¯»å–CFGå¤±è´¥
+#define BT_FAIL_READ_LMCU_APP										'1'//ä»Uç›˜è¯»å–MCU APPå¤±è´¥
+#define BT_FAIL_READ_LCD_APP										'2'//ä»Uç›˜è¯»å–LCD APPå¤±è´¥
+#define BT_FAIL_READ_EPROM_BIN									'3'//ä»Uç›˜è¯»å–EPROM BINå¤±è´¥
+#define BT_FAIL_WRITE_EPROM_BIN									'4'//å‘Uç›˜å†™å…¥EPROM BINå¤±è´¥
+#define BT_FAIL_ERASE_MCU_APP										'5'//æ“¦é™¤FLASHå¤±è´¥
+#define BT_FAIL_READ_EPROM											'6'//è¯»å–EPROMå¤±è´¥
+#define BT_FAIL_WRITE_EPROM											'7'//å†™å…¥EPROMå¤±è´¥
+#define BT_FAIL_LMCU_APP_CHECK									'8'//ld_mcu.bin CRCæ£€æŸ¥é”™è¯¯
+#define BT_FAIL_LMCU_BOT_CHECK									'9'//ld_bot.bin CRCæ£€æŸ¥é”™è¯¯
+#define BT_FAIL_LCD_APP_CHECK										'A'//ld_lcd.bin CRCæ£€æŸ¥é”™è¯¯
+#define BT_FAIL_CHECKSUM_MCU_APP_FLASH					'B'//æ ¡éªŒ mcu app é”™è¯¯
+#define BT_FAIL_WRITE_MCU_APP_FLASH							'C'//å†™mcu app flashé”™è¯¯
+#define BT_FAIL_LCD_NOT_RESPOND									'D'//LCDä¸²å£é€šä¿¡è¶…æ—¶æˆ–é”™è¯¯
+#define BT_FAIL_LCD_DOWNLOAD										'E'//LCDä¸‹è½½å¤±è´¥
+#define BT_FAIL_VECTOR_TABLE_INVALID						'F'//APP å‘é‡è¡¨é”™è¯¯
+#define BT_FAIL_CHECK_BLANK											'G'//FLASHæŸ¥ç©ºé”™è¯¯
+#define BT_DONE_CLEAR_ALL												'H'//FLASHå’ŒEPROMæ¸…é™¤å®Œæˆ
+#define BT_DONE_UPDATE_EPROM										'I'//æ›´æ–°EPROMå®Œæˆ
+#define BT_DONE_DUMP_EPROM											'J'//ä¸‹è½½EPROMå®Œæˆ
+#define BT_FAIL_LCD_RESPOND_ERROR								'K'//LCD å“åº”é”™è¯¯
 /*****************************************************************************/
 #define GDDC_RX_BUF_SIZE												128
 #define GDDC_TX_BUF_SIZE												(2048 + 4)
@@ -182,10 +52,7 @@
 #define GDDC_CHR 																2
 #define GDDC_RX_TIMEOUT													0xFFFF
 #define GDDC_TX_TIMEOUT													0xFFFF
-#define GDDC_RETRY_TIMES												10//·¢ËÍÖØÊÔ´ÎÊı
-/*****************************************************************************/
-//#define BOOTLOAD_MAIN_ADDRESS										0x0800FE00UL
-//#define BOOTLAOD_MINOR_ADDRESS									0x0800FE01UL
+#define GDDC_RETRY_TIMES												10//å‘é€é‡è¯•æ¬¡æ•°
 /*****************************************************************************/
 typedef enum {
 	CLEAR_EPROM_ALL 														= 0x01,
@@ -197,52 +64,37 @@ typedef enum {
 	CLEAR_EPROM_LOG_INFO												= 0x07
 }clarmEpromCmd_t;
 /*****************************************************************************/
-extern UART_HandleTypeDef DEBUG_UART_HANDLE;//µ÷ÊÔ
-extern UART_HandleTypeDef GDDC_UART_HANDLE;
-extern TIM_HandleTypeDef htim2;//FAN PWM
-extern TIM_HandleTypeDef htim7;//DAC DMA ¼ÆÊ±Æ÷
-extern TIM_HandleTypeDef htim10;//Laser Timer
-extern TIM_HandleTypeDef htim12;//FAN PWM
-extern TIM_HandleTypeDef htim14;//sPlc Timer
-extern I2C_HandleTypeDef EEPROM_I2C_BUS;
-extern USBH_HandleTypeDef hUsbHostFS;
-extern DAC_HandleTypeDef hdac;
-/*****************************************************************************/
-uint32_t crcEpromMcu, crcEpromLcd;//EPROMÖĞ´¢´æµÄCRC¼ÇÂ¼Öµ
+uint32_t crcEpromMcu, crcEpromLcd;//EPROMä¸­å‚¨å­˜çš„CRCè®°å½•å€¼
 uint32_t TmpReadSize = 0x00;
 uint32_t RamAddress = 0x00;
 static __IO uint32_t LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
-uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//ÎÄ¼ş¶ÁĞ´»º³å
+uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//æ–‡ä»¶è¯»å†™ç¼“å†²
 /*****************************************************************************/
-const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   			= '1';
-const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '6';
+const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   		= '2';
+const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '0';
 /*****************************************************************************/
 uint8_t cmdShakeHandOp[] = {0xEE,0x04,0xFF,0xFC,0xFF,0xFF};
 uint8_t cmdShakeHandRespondOp[] = {0xEE,0x55,0xFF,0xFC,0xFF,0xFF};
-	//¸´Î»´ó²ÊÖ¸Áî¼¯
+	//å¤ä½å¤§å½©æŒ‡ä»¤é›†
 uint8_t cmdResetOp[] = {0x61,0x78,0x72,0x63, 0x65,0x6b,0x67,0x64, 0x79,0x68,0x74,0x73, 0x75,0x6e,0x71,0x77, 0x70,0x6a,0x62,0x76, 0x69,0x66,0x6f,0x6d, 0x7a,0x6c};
-	//¸ñÊ½»¯ÎÄ¼şÏµÍ³
+	//æ ¼å¼åŒ–æ–‡ä»¶ç³»ç»Ÿ
 uint8_t cmdFormatOp[] = {0xee,0xab,0xba,0xaa,0xbb,0x36,0x3f,0xff,0xfc,0xff,0xff};         
 uint8_t cmdResetHmiOp[] = {0xEE,0x07,0x35,0x5A,0x53,0xA5,0xFF,0xFC,0xFF,0xFF};
-uint8_t gddcRxBuf[GDDC_RX_BUF_SIZE];//ÆÁÄ»´®¿Ú½ÓÊÕ»º³åÇø
-uint8_t gddcTxBuf[GDDC_TX_BUF_SIZE];//ÆÁÄ»´®¿Ú·¢ËÍ»º³åÇø
-uint16_t gddcRxIndex, gddcTxIndex;//·¢ËÍ½ÓÊÕÖ¸Õë
-/*****************************************************************************/
-struct __FILE { int handle; /* Add whatever you need here */ };
-FILE __stdout;
-FILE __stdin;
+uint8_t gddcRxBuf[GDDC_RX_BUF_SIZE];//å±å¹•ä¸²å£æ¥æ”¶ç¼“å†²åŒº
+uint8_t gddcTxBuf[GDDC_TX_BUF_SIZE];//å±å¹•ä¸²å£å‘é€ç¼“å†²åŒº
+uint16_t gddcRxIndex, gddcTxIndex;//å‘é€æ¥æ”¶æŒ‡é’ˆ
 /*****************************************************************************/
 FRESULT retUsbH;
 FATFS	USBH_fatfs;
-FIL LogFile;//FATFS File Object ¼ÇÂ¼ĞÅÏ¢
-FIL CfgFile;//FATFS File Object ÏÂÔØÍê³ÉĞÅÏ¢
-FIL McuFile;//FATFS File Object µ¥Æ¬»ú¹Ì¼ş
-FIL LcdFile;//FATFS File Object ÆÁÄ»¹Ì¼ş
-FIL BotFile;//FATFS File Object BOOTLOAD¹Ì¼ş
+FIL LogFile;//FATFS File Object è®°å½•ä¿¡æ¯
+FIL CfgFile;//FATFS File Object ä¸‹è½½å®Œæˆä¿¡æ¯
+FIL McuFile;//FATFS File Object å•ç‰‡æœºå›ºä»¶
+FIL LcdFile;//FATFS File Object å±å¹•å›ºä»¶
+FIL BotFile;//FATFS File Object BOOTLOADå›ºä»¶
 FIL SepromFile;//FATFS File Object EPROM->UDISK
 FIL LepromFile;//FATFS File Object UDISK->EPROM
-DIR	FileDir;//FATFS ÎÄ¼şÄ¿Â¼
-FILINFO FileInfo;//FATFS ÎÄ¼şĞÅÏ¢
+DIR	FileDir;//FATFS æ–‡ä»¶ç›®å½•
+FILINFO FileInfo;//FATFS æ–‡ä»¶ä¿¡æ¯
 /*****************************************************************************/
 static uint8_t bootLoadState;
 static uint8_t forceUpdateMcu, forceUpdateLcd;
@@ -252,32 +104,29 @@ uint32_t JumpAddress;
 pFunction Jump_To_Application;
 /*****************************************************************************/
 void resetInit(void);
-static void bootLoadFailHandler(uint8_t ftype);//Òıµ¼¹ÊÕÏ³ÌĞò
-static void prepareUpdateLcd(void);//LCDÔ¶³ÌÉı¼¶×¼±¸
+static void bootLoadFailHandler(uint8_t ftype);//å¼•å¯¼æ•…éšœç¨‹åº
+static void prepareUpdateLcd(void);//LCDè¿œç¨‹å‡çº§å‡†å¤‡
 static uint32_t getOriginAppCrc(void);
 static uint32_t getNewMcuAppCrc(void);
-static uint32_t getNewLcdAppCrc(char* filePath);//»ñÈ¡ÎÄ¼şĞ£ÑéÂë¡¡CRC32
+static uint32_t getNewLcdAppCrc(char* filePath);//è·å–æ–‡ä»¶æ ¡éªŒç ã€€CRC32
 static uint32_t updateMcuApp(void);
-static uint32_t updateLcdApp(char* filePath);//¸üĞÂLCD APP
+static uint32_t updateLcdApp(char* filePath);//æ›´æ–°LCD APP
 static void DBGU_Printk(uint8_t *buffer);
 static void DBGU_Printk_num(uint8_t *buffer, uint16_t datanum);
-static void dp_display_text(uint8_t *text);
 static void dp_display_text_num(uint8_t *text,uint16_t datanum);	
-static void dp_display_value(uint32_t value,int descriptive);
-static void dp_display_array(uint8_t *value,int bytes, int descriptive);	
 static void clearFlash(void);
 static void updateEprom(void);
 static void dumpEprom(void);
-static HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//ÔÚAT24CXXÖ¸¶¨µØÖ·¶Á³öÒ»¸öÊı¾İ
-static HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö16Î»Êı
-static HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö32Î»Êı
-static HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//ÔÚAT24CXXÖ¸¶¨µØÖ·Ğ´Èë8Î»Êı¾İ
-static HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë16Î»Êı
-static HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//ÔÚAT24CXXÀïÃæµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
+static HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//åœ¨AT24CXXæŒ‡å®šåœ°å€è¯»å‡ºä¸€ä¸ªæ•°æ®
+static HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º16ä½æ•°
+static HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º32ä½æ•°
+static HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//åœ¨AT24CXXæŒ‡å®šåœ°å€å†™å…¥8ä½æ•°æ®
+static HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥16ä½æ•°
+static HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//åœ¨AT24CXXé‡Œé¢çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
 static HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
 static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
-static uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash ²é¿Õ
-static void clearEprom(clarmEpromCmd_t cmd);//Çå³ıEPROMÄÚÈİ
+static uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash æŸ¥ç©º
+static void clearEprom(clarmEpromCmd_t cmd);//æ¸…é™¤EPROMå†…å®¹
 static void listEpromTable(void);
 static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len);
 static FRESULT crcLcdFile(char* scanPath);
@@ -293,25 +142,34 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 	return true;
 }
 
-void bootLoadInit(void){//Òıµ¼³ÌĞò³õÊ¼»¯
+void bootLoadInit(void){//å¼•å¯¼ç¨‹åºåˆå§‹åŒ–
 	forceUpdateMcu = 0;
 	forceUpdateLcd = 0;
-	SET_SPEAKER_OFF;//¹Ø±Õ·äÃùÆ÷
-	SET_AIM_OFF;//¹Ø±ÕÖ¸Ê¾¼¤¹â
-	SET_FAN_OFF;//´ò¿ª¼¤¹âÆ÷ÀäÈ´·çÉÈ
-	SET_TEC_OFF;//¹Ø±ÕÖÆÀä
-	//¹Ø±ÕËùÓĞ¼¤¹â
+	SET_SPK_AP_OFF;//å…³é—­èœ‚é¸£å™¨
+	printf("Bootloader:OUTPUT->SKP_EN       = LOW\n");
+	SET_AIM_TIM_OFF;//å…³é—­æŒ‡ç¤ºæ¿€å…‰
+	printf("Bootloader:OUTPUT->AIM_PWM      = LOW\n");
+	SET_FAN_OFF;//æ‰“å¼€æ¿€å…‰å™¨å†·å´é£æ‰‡
+	printf("Bootloader:OUTPUT->LAS_FAN      = LOW\n");
+	SET_TEC_OFF;//å…³é—­åˆ¶å†·
+	printf("Bootloader:OUTPUT->LAS_TEC      = LOW\n");
+	//å…³é—­æ‰€æœ‰æ¿€å…‰
+	SET_RED_LED_DC(50);										
+	SET_GREEN_LED_DC(50);										
+	SET_BLUE_LED_DC(50);										
+	
 	SET_LASER_CH0_OFF;
 	SET_LASER_CH1_OFF;
 	SET_LASER_CH2_OFF;
 	SET_LASER_CH3_OFF;
-	//¹Ø±ÕËùÓĞLED
+	//å…³é—­æ‰€æœ‰LED
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
 	SET_TICK_LED_OFF;
 	SET_ERR_LED_OFF;
-	//R-G-YÁ÷Ë®
+#if !defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || !defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+	//R-G-Yæµæ°´
 	//R
 	SET_RED_LED_ON;
 	SET_GREEN_LED_OFF;
@@ -331,6 +189,7 @@ void bootLoadInit(void){//Òıµ¼³ÌĞò³õÊ¼»¯
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_ON;
 	SET_BLUE_LED_OFF;
+#endif
 	overTime = HAL_GetTick() + CONFIG_JUMP_DELAY;
 	releaseTime0 = 0;
 	releaseTime1 = 0;
@@ -338,94 +197,56 @@ void bootLoadInit(void){//Òıµ¼³ÌĞò³õÊ¼»¯
 	printf("\r\n");
 	printf("\r\n");
 	printf("\r\n");   
-	//ÏÔÊ¾ÊäÈëIO×´Ì¬
+	//æ˜¾ç¤ºè¾“å…¥IOçŠ¶æ€
 	if(GET_ESTOP_NC == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->ESTOP_NC      = Open!\n");
+		printf("Bootloader:INPUT->ESTOP_NC      = HIGH\n");
 	}
 	else{//TTL=L
-		printf("Bootloader:INPUT->ESTOP_NC      = Close!\n");
+		printf("Bootloader:INPUT->ESTOP_NC      = LOW\n");
 	}
-#ifdef MODEL_PVGLS_15W_1470_A1
-	if(GET_FSWITCH_NC == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->FSWITCH_NC    = Close!\n");
-	}
-	else{//TTL=L
-		printf("Bootloader:INPUT->FSWITCH_NC    = Open!\n");
-	}
-#endif
-#ifdef MODEL_PVGLS_15W_1470_A0
-	if(GET_FSWITCH_NC == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->FSWITCH_NC    = Open!\n");
-	}
-	else{//TTL=L
-		printf("Bootloader:INPUT->FSWITCH_NC    = Close!\n");
-	}
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-	if(GET_FSWITCH_NC == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->FSWITCH_NC    = Close!\n");
-	}
-	else{//TTL=L
-		printf("Bootloader:INPUT->FSWITCH_NC    = Open!\n");
-	}
-#endif
 
+	if(GET_FSWITCH_NC == GPIO_PIN_SET){//TTL=H
+		printf("Bootloader:INPUT->FSWITCH_NC    = HIGH\n");
+	}
+	else{//TTL=L
+		printf("Bootloader:INPUT->FSWITCH_NC    = LOW\n");
+	}
 	if(GET_FSWITCH_NO == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->FSWITCH_NO    = Open!\n");
+		printf("Bootloader:INPUT->FSWITCH_NO    = HIGH\n");
 	}
 	else{//TTL=L
-		printf("Bootloader:INPUT->FSWITCH_NO    = Close!\n");
+		printf("Bootloader:INPUT->FSWITCH_NO    = LOW\n");
 	}
-
-#ifdef MODEL_PVGLS_15W_1470
 	if(GET_INTERLOCK_NC == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->INTERLOCK     = Open!\n");
+		printf("Bootloader:INPUT->INTERLOCK     = HIGH\n");
 	}
 	else{
-		printf("Bootloader:INPUT->INTERLOCK     = Close!\n");
-	}
-#endif
-#ifdef MODEL_PVGLS_15W_1470_A1
-	if(GET_INTERLOCK_NC == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->INTERLOCK     = Close!\n");
-	}
-	else{
-		printf("Bootloader:INPUT->INTERLOCK     = Open!\n");
-	}
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-	if(GET_INTERLOCK_NC == GPIO_PIN_SET){//TTL=H
-		printf("Bootloader:INPUT->INTERLOCK     = Open!\n");
-	}
-	else{
-		printf("Bootloader:INPUT->INTERLOCK     = Close!\n");
-	}
-#endif	
-	
-	//ÏÔÊ¾Êä³öIO×´Ì¬
+		printf("Bootloader:INPUT->INTERLOCK     = LOW\n");
+	}	
+	//æ˜¾ç¤ºè¾“å‡ºIOçŠ¶æ€
 	if(GET_LASER_CH0 == GPIO_PIN_SET){//LPA_PWM0
-		printf("Bootloader:OUTPUT->LAS_PWM0     = High!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM0     = HIGH\n");
 	}
 	else{
-		printf("Bootloader:OUTPUT->LAS_PWM0     = Low!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM0     = LOW\n");
 	}
 	if(GET_LASER_CH1 == GPIO_PIN_SET){//LPA_PWM1
-		printf("Bootloader:OUTPUT->LAS_PWM1     = High!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM1     = HIGH\n");
 	}
 	else{
-		printf("Bootloader:OUTPUT->LAS_PWM1     = Low!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM1     = LOW\n");
 	}
 	if(GET_LASER_CH2 == GPIO_PIN_SET){//LPB_PWM2
-		printf("Bootloader:OUTPUT->LAS_PWM2     = High!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM2     = HIGH\n");
 	}
 	else{
-		printf("Bootloader:OUTPUT->LAS_PWM2     = Low!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM2     = LOW\n");
 	}
 	if(GET_LASER_CH3 == GPIO_PIN_SET){//LPB_PWM3
-		printf("Bootloader:OUTPUT->LAS_PWM3     = High!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM3     = HIGH\n");
 	}
 	else{
-		printf("Bootloader:OUTPUT->LAS_PWM3     = Low!\n");
+		printf("Bootloader:OUTPUT->LAS_PWM3     = LOW\n");
 	}
 	
 	printf("Bootloader:OUTPUT->AIM_PWM      = Low!\n");
@@ -434,15 +255,16 @@ void bootLoadInit(void){//Òıµ¼³ÌĞò³õÊ¼»¯
 	HAL_Delay(10);
 	
 }
-void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
+void bootLoadProcess(void){//bootload æ‰§è¡Œç¨‹åº
 	HAL_StatusTypeDef ret;
 	uint8_t fileBuff[256];
-	uint32_t brByte;//Êµ¼Ê¶ÁÈ¡µÄ×Ö½ÚÊı
+	uint32_t brByte;//å®é™…è¯»å–çš„å­—èŠ‚æ•°
 	crcFlash = 0;
 	crcUdisk = 0;
+	SET_USB_FS_SEL_OFF;
 	switch(bootLoadState){
-		case BT_STATE_IDLE:{//¿ª»úµÈ´ıUÅÌÊ¶±ğ     
-			SET_AIM_OFF;
+		case BT_STATE_IDLE:{//å¼€æœºç­‰å¾…Uç›˜è¯†åˆ«     
+			SET_AIM_TIM_OFF;
 			SET_FAN_OFF;		
 			SET_RED_LED_OFF;
 			SET_GREEN_LED_OFF;
@@ -452,7 +274,7 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 			listEpromTable();
 			readStm32UniqueID();
 			crcEpromMcu = 0xFFFFFFFF;
-			ret = epromReadDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);//´ÓEPROMÔØÈëÉè±¸ÅäÖÃ
+			ret = epromReadDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);//ä»EPROMè½½å…¥è®¾å¤‡é…ç½®
 			if(ret == HAL_OK){
 				printf("Bootloader:Read eprom MCU FW CRC32:0x%08X\n", crcEpromMcu);
 			}
@@ -460,7 +282,7 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 				printf("Bootloader:Read eprom MCU FW CRC32 fail!\n");
 			}
 			crcEpromLcd = 0xFFFFFFFF;
-			ret = epromReadDword(CONFIG_EPROM_LCD_FW_CRC, &crcEpromLcd);//´ÓEPROMÔØÈëÉè±¸ÅäÖÃ
+			ret = epromReadDword(CONFIG_EPROM_LCD_FW_CRC, &crcEpromLcd);//ä»EPROMè½½å…¥è®¾å¤‡é…ç½®
 			if(ret == HAL_OK){
 				printf("Bootloader:Read eprom LCD FW CRC32:0x%08X\n", crcEpromLcd);
 			}
@@ -473,20 +295,28 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 			printf("Bootloader:Build->%s:%s\n", __DATE__, __TIME__);
 			printf("Bootloader:Bootload Start  :0x%08X,End:0x%08X,Size:0x%08X\n", BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_END_ADDRESS ,BOOTLOADER_FLASH_SIZE);
 			printf("Bootloader:Applicent Start :0x%08X,End:0x%08X,Size:0x%08X\n", APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_END_ADDRESS, APPLICATION_FLASH_SIZE);
-#ifdef MODEL_PVGLS_15W_1470_A0
-			if(	(GET_INTERLOCK_NC == GPIO_PIN_SET) &&//°²È«Á¬ËøÎ´²åÈë
-				(GET_FSWITCH_NC == GPIO_PIN_RESET) &&//½ÅÌ¤²åÈë
-				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//½ÅÌ¤²ÈÏÂ		
+
+#if defined(MODEL_PVGLS_15W_1470_A0)
+			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//å®‰å…¨è¿é”æœªæ’å…¥
+				(GET_FSWITCH_NC == GPIO_PIN_RESET) &&//è„šè¸æ’å…¥
+				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//è„šè¸è¸©ä¸‹		
 #endif
-#ifdef MODEL_PVGLS_15W_1470_A1
-			if(	(GET_INTERLOCK_NC == GPIO_PIN_RESET) &&//°²È«Á¬Ëø²åÈë
-				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//½ÅÌ¤²åÈë
-				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//½ÅÌ¤²ÈÏÂ	
+					
+#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//å®‰å…¨è¿é”æœªæ’å…¥
+				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//è„šè¸æ’å…¥
+				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//è„šè¸è¸©ä¸‹					
+#endif					
+
+#if defined(MODEL_PVGLS_15W_1470_A1)
+			if((GET_INTERLOCK_NC == GPIO_PIN_RESET) &&//å®‰å…¨è¿é”æ’å…¥
+				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//è„šè¸æ’å…¥
+				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//è„šè¸è¸©ä¸‹	
 #endif
 #if defined(MODEL_PVGLS_10W_1940_A1)
-			if(	(GET_INTERLOCK_NC == GPIO_PIN_SET) &&//°²È«Á¬Ëø²åÈë
-				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//½ÅÌ¤²åÈë
-				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//½ÅÌ¤²ÈÏÂ	
+			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//å®‰å…¨è¿é”æ’å…¥
+				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//è„šè¸æ’å…¥
+				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//è„šè¸è¸©ä¸‹	
 #endif
 				SET_FAN_ON;
 				SET_RED_LED_ON;
@@ -504,27 +334,27 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 				SET_RED_LED_OFF;
 				SET_GREEN_LED_OFF;
 				SET_BLUE_LED_OFF;
-				bootLoadState = BT_STATE_USBHOST_INIT;//½øÈëUSB¸üĞÂAPPÁ÷³Ì
+				bootLoadState = BT_STATE_USBHOST_INIT;//è¿›å…¥USBæ›´æ–°APPæµç¨‹
 			}
-			else{//°²È«Á¬Ëø²åÈë
-				bootLoadState = BT_STATE_RUN_APP;//½øÈëÔËĞĞAPPÁ÷³Ì
+			else{//å®‰å…¨è¿é”æ’å…¥
+				bootLoadState = BT_STATE_RUN_APP;//è¿›å…¥è¿è¡ŒAPPæµç¨‹
 			}
 			break;
 		}
-		case BT_STATE_USBHOST_INIT:{//ÔÚUSB HOSTÉÏ¹ÒÔØFATFS
+		case BT_STATE_USBHOST_INIT:{//åœ¨USB HOSTä¸ŠæŒ‚è½½FATFS
 			retUsbH = f_mount(&USBH_fatfs, FATFS_ROOT, 0);
-			if(retUsbH != FR_OK){//¹ÒÔØUÅÌÊ§°Ü
+			if(retUsbH != FR_OK){//æŒ‚è½½Uç›˜å¤±è´¥
 				printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
-				bootLoadState = BT_STATE_RUN_APP;//Ìø×ªµ½APP
+				bootLoadState = BT_STATE_RUN_APP;//è·³è½¬åˆ°APP
 			}
-			else{//¹ÒÔØUÅÌ³É¹¦
+			else{//æŒ‚è½½Uç›˜æˆåŠŸ
 				printf("Bootloader:Mount Fatfs sucess!\n");
 				bootLoadState = BT_STATE_WAIT_UDISK;
 			}
 			break;
 		}
-		case BT_STATE_WAIT_UDISK:{//µÈ´ıUSB DISK¾ÍĞ÷
-			//ÏÔÊ¾µ¹¼ÆÊ±
+		case BT_STATE_WAIT_UDISK:{//ç­‰å¾…USB DISKå°±ç»ª
+			//æ˜¾ç¤ºå€’è®¡æ—¶
 			releaseTime0 = (overTime - (int32_t)HAL_GetTick()) / 1000;
 			if(releaseTime0 != releaseTime1){
 				printf("Bootloader:Wait usb disk init:%d Second!\n", releaseTime0);
@@ -536,25 +366,25 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 			break;
 		}
 		case BT_STATE_READ_CFG:{
-			//¼ì²éUÅÌÊÇ·ñ´æÔÚFlash DownÎÄ¼ş
+			//æ£€æŸ¥Uç›˜æ˜¯å¦å­˜åœ¨Flash Downæ–‡ä»¶
 			SET_RED_LED_ON;
-			retUsbH = f_open(&CfgFile, CFG_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);//¶ÁÈ¡Íê³ÉĞÅÏ¢ÎÄ¼ş
+			retUsbH = f_open(&CfgFile, CFG_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);//è¯»å–å®Œæˆä¿¡æ¯æ–‡ä»¶
 			SET_RED_LED_OFF;
-			if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°ÜÌø¹ı¹Ì¼ş¸üĞÂÖ±½ÓÔËĞĞ³ÌĞò
+			if(retUsbH != FR_OK){//è¯»å–å¤±è´¥è·³è¿‡å›ºä»¶æ›´æ–°ç›´æ¥è¿è¡Œç¨‹åº
 				printf("BootLoader:Open %s fail,ECODE=0x%02XH\n", CFG_FIRMWARE_FILENAME, retUsbH);
-				bootLoadState = BT_STATE_RUN_APP;//Ìø×ªµ½¸üĞÂMCU APP¹Ì¼ş
+				bootLoadState = BT_STATE_RUN_APP;//è·³è½¬åˆ°æ›´æ–°MCU APPå›ºä»¶
 			}
-			else{//¶ÁÈ¡³É¹¦¼ì²éÎÄ¼şÄÚÈİ
+			else{//è¯»å–æˆåŠŸæ£€æŸ¥æ–‡ä»¶å†…å®¹
 				printf("BootLoader:Open %s sucess,ECODE=0x%02XH\n", CFG_FIRMWARE_FILENAME, retUsbH);
-				f_lseek(&CfgFile, 0);//¶ÁÈ¡Ö¸ÕëÒÆ¶¯µ½¿ªÍ·
+				f_lseek(&CfgFile, 0);//è¯»å–æŒ‡é’ˆç§»åŠ¨åˆ°å¼€å¤´
 				SET_RED_LED_ON;
 				retUsbH = f_read(&CfgFile, fileBuff, 5, &brByte);
 				SET_RED_LED_OFF;
-				if((retUsbH != FR_OK) || (brByte < 5)){//¶ÁÈ¡ÎÄ¼ş¿ªÍ·4¸ö×Ö½Ú
-					bootLoadFailHandler(BT_FAIL_READ_CFG);//¶ÁÈ¡CFG´íÎó
+				if((retUsbH != FR_OK) || (brByte < 5)){//è¯»å–æ–‡ä»¶å¼€å¤´4ä¸ªå­—èŠ‚
+					bootLoadFailHandler(BT_FAIL_READ_CFG);//è¯»å–CFGé”™è¯¯
 				}
-				if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '1'){//U01 ¸üĞÂ MCUÓ¦ÓÃ
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '1'){//U01 æ›´æ–° MCUåº”ç”¨
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start upgrade mcu application!\n");
 						bootLoadState = BT_STATE_UPDATE_MCU_APP;
 					}
@@ -562,8 +392,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 						bootLoadState = BT_STATE_RUN_APP;
 					}
 				}
-				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '2'){//U02 ¸üĞÂ ´¥ÃşÆÁ
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '2'){//U02 æ›´æ–° è§¦æ‘¸å±
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start upgrade lcd application!\n");
 						bootLoadState = BT_STATE_UPDATE_LCD_APP;
 					}
@@ -571,8 +401,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 						bootLoadState = BT_STATE_RUN_APP;
 					}
 				}
-				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '3'){//U03 ¸üĞÂ Ó¦ÓÃ&´¥ÃşÆÁ
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä				
+				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '3'){//U03 æ›´æ–° åº”ç”¨&è§¦æ‘¸å±
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…				
 						printf("Bootloader:Start upgrade mcu application & lcd application!\n");
 						bootLoadState = BT_STATE_UPDATE_BOTH_APP;
 					}
@@ -581,8 +411,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 						bootLoadState = BT_STATE_RUN_APP;
 					}
 				}
-				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '4'){//U04 ¸üĞÂ EPROM
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '4'){//U04 æ›´æ–° EPROM
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start update eprom!\n");
 						bootLoadState = BT_STATE_UPDATE_EPROM;
 					}
@@ -591,8 +421,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 						bootLoadState = BT_STATE_RUN_APP;
 					}
 				}	
-				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '5'){//U05 Ç¿ÖÆ¸üĞÂMCU
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '5'){//U05 å¼ºåˆ¶æ›´æ–°MCU
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start force update mcu!\n");
 						forceUpdateMcu = 1;
 						bootLoadState = BT_STATE_UPDATE_MCU_APP;
@@ -603,8 +433,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 					}
 				}
 				
-				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '6'){//U06 Ç¿ÖÆ¸üĞÂLCD
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '6'){//U06 å¼ºåˆ¶æ›´æ–°LCD
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start force update lcd!\n");
 						forceUpdateLcd = 1;
 						bootLoadState = BT_STATE_UPDATE_LCD_APP;
@@ -615,8 +445,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 					}
 				}
 
-				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '7'){//U07 Ç¿ÖÆ¸üĞÂMCU & LCD
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				else if(fileBuff[0] == 'U' && fileBuff[1] == '0' && fileBuff[2] == '7'){//U07 å¼ºåˆ¶æ›´æ–°MCU & LCD
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start force update mcu & lcd!\n");
 						forceUpdateMcu = 1;
 						forceUpdateLcd = 1;
@@ -627,8 +457,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 						bootLoadState = BT_STATE_RUN_APP;
 					}
 				}
-				else if(fileBuff[0] == 'D' && fileBuff[1] == '0' && fileBuff[2] == '1'){//D1 ¶ÁÈ¡EPROM
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				else if(fileBuff[0] == 'D' && fileBuff[1] == '0' && fileBuff[2] == '1'){//D1 è¯»å–EPROM
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start dump eprom to udisk!\n");
 						bootLoadState = BT_STATE_DUMP_EPROM;
 					}
@@ -637,8 +467,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 						bootLoadState = BT_STATE_RUN_APP;
 					}
 				}
-				else if(fileBuff[0] == 'C' && fileBuff[1] == '0' && fileBuff[2] == '1'){//U01 Çå³ıËùÓĞ
-					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//Éè±¸Æ¥Åä
+				else if(fileBuff[0] == 'C' && fileBuff[1] == '0' && fileBuff[2] == '1'){//U01 æ¸…é™¤æ‰€æœ‰
+					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//è®¾å¤‡åŒ¹é…
 						printf("Bootloader:Start clear flash and eprom!\n");
 						bootLoadState = BT_STATE_CLEAT_ALL;
 					}
@@ -647,80 +477,80 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 						bootLoadState = BT_STATE_RUN_APP;
 					}
 				}
-				else{//ÆäËüÎŞĞè¸üĞÂÌø×ªµ½Ö´ĞĞAPP
+				else{//å…¶å®ƒæ— éœ€æ›´æ–°è·³è½¬åˆ°æ‰§è¡ŒAPP
 					bootLoadState = BT_STATE_RUN_APP;
 				}
 				f_close(&CfgFile);
 			}
 			break;
 		}
-		case BT_STATE_UPDATE_MCU_APP:{//¸üĞÂld_mcu.bin
-			crcFlash = getOriginAppCrc();//¼ÆËãFLASHÖĞAPP¹Ì¼şCRC32
-			crcUdisk = getNewMcuAppCrc();//¼ÆËãUÅÌÖĞMCU APP¹Ì¼şCRC32
+		case BT_STATE_UPDATE_MCU_APP:{//æ›´æ–°ld_mcu.bin
+			crcFlash = getOriginAppCrc();//è®¡ç®—FLASHä¸­APPå›ºä»¶CRC32
+			crcUdisk = getNewMcuAppCrc();//è®¡ç®—Uç›˜ä¸­MCU APPå›ºä»¶CRC32
 			printf("Bootloader:MCU crcFlash:%08XH,crcUdisk:%08XH!\n", crcFlash, crcUdisk);
-			if((crcUdisk == crcEpromMcu) && (crcFlash == crcEpromMcu) && (forceUpdateMcu == 0)){//Ğ£ÑéÂëÏàÍ¬Ìø¹ı¸üĞÂ
+			if((crcUdisk == crcEpromMcu) && (crcFlash == crcEpromMcu) && (forceUpdateMcu == 0)){//æ ¡éªŒç ç›¸åŒè·³è¿‡æ›´æ–°
 				printf("Bootloader:Check mcu app crc same,skip!\n");
 				bootLoadState = BT_STATE_RUN_APP;
 				break;
 			}
-			crcUdisk = updateMcuApp();//Ğ´ÈëUDISK FILE
-			crcFlash = getOriginAppCrc();//Ğ£ÑéMCU FLASH
-			crcEpromMcu = crcFlash;//CRCÖµĞ´ÈëEPROM
+			crcUdisk = updateMcuApp();//å†™å…¥UDISK FILE
+			crcFlash = getOriginAppCrc();//æ ¡éªŒMCU FLASH
+			crcEpromMcu = crcFlash;//CRCå€¼å†™å…¥EPROM
 			if(crcUdisk != crcFlash){
 				bootLoadFailHandler(BT_FAIL_CHECKSUM_MCU_APP_FLASH);
 			}
 			else{
 				printf("Bootloader:Checksum mcu app sucess.\n");
-				clearEprom(CLEAR_EPROM_NVRAM);//Çå³ıNVRAMµôµç´¢´æÇø
+				clearEprom(CLEAR_EPROM_NVRAM);//æ¸…é™¤NVRAMæ‰ç”µå‚¨å­˜åŒº
 				clearEprom(CLEAR_EPROM_MCU_FIRMWARE_CRC);
 				epromWriteDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);
 				printf("Bootloader:Update new crc32 sucess,0x08%XH\n", crcFlash);
 			}
-			bootLoadState = BT_STATE_RESET;//¸üĞÂAPP
+			bootLoadState = BT_STATE_RESET;//æ›´æ–°APP
 			break;
 		}
-		case BT_STATE_UPDATE_LCD_APP:{//¸üĞÂLCDÓ¦ÓÃ³ÌĞò			
+		case BT_STATE_UPDATE_LCD_APP:{//æ›´æ–°LCDåº”ç”¨ç¨‹åº			
 			crcUdisk = 0;
 			strcpy((char*)fileBuff, "/private");
-			crcLcdFile((char*)fileBuff);//É¨ÃèÎÄ¼ş
+			crcLcdFile((char*)fileBuff);//æ‰«ææ–‡ä»¶
 			printf("Bootloader:LCD crcLcd:%08XH,crcUdisk:%08XH!\n", crcEpromLcd, crcUdisk);
-			if((crcUdisk == crcEpromLcd) && (forceUpdateLcd == 0)){//Ğ£ÑéÂëÏàÍ¬Ìø¹ı¸üĞÂ
+			if((crcUdisk == crcEpromLcd) && (forceUpdateLcd == 0)){//æ ¡éªŒç ç›¸åŒè·³è¿‡æ›´æ–°
 				printf("Bootloader:Check lcd app crc same,skip!\n");
 				bootLoadState = BT_STATE_RUN_APP;
 				break;
 			}
-			prepareUpdateLcd();//LCDÔ¶³ÌÉı¼¶×¼±¸
+			prepareUpdateLcd();//LCDè¿œç¨‹å‡çº§å‡†å¤‡
 			
 			crcUdisk = 0;
 			strcpy((char*)fileBuff, "/private");
 			updateLcdFile((char*)fileBuff);
 			
-			crcEpromLcd = crcUdisk;//¸üĞÂEPROMÖĞLCD APP CRCÖµ
+			crcEpromLcd = crcUdisk;//æ›´æ–°EPROMä¸­LCD APP CRCå€¼
 			clearEprom(CLEAR_EPROM_LCD_FIRMWARE_CRC);
 			epromWriteDword(CONFIG_EPROM_LCD_FW_CRC, &crcEpromLcd);
 			printf("Bootloader:Update lcd app new crc32 sucess,wait 60s lcd upgrade done\n");
-			//µÈ´ı60Ãë LCD FLASHĞ´ÈëÍê³ÉºóÖØÆô
-			//ÖØÆôHMI
+			//ç­‰å¾…60ç§’ LCD FLASHå†™å…¥å®Œæˆåé‡å¯
+			//é‡å¯HMI
 			dp_display_text_num(cmdResetHmiOp, strlen((char*)cmdResetHmiOp));	
 			HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);
-			bootLoadState = BT_STATE_RESET;//¸üĞÂAPP
+			bootLoadState = BT_STATE_RESET;//æ›´æ–°APP
 			break;
 		}
-		case BT_STATE_UPDATE_BOTH_APP:{//¸üĞÂÈ«²¿Ó¦ÓÃ³ÌĞò
-			//MCU ¸üĞÂ
-			crcFlash = getOriginAppCrc();//¼ÆËãFLASHÖĞAPP¹Ì¼şCRC32
-			crcUdisk = getNewMcuAppCrc();//¼ÆËãUÅÌÖĞMCU APP¹Ì¼şCRC32
+		case BT_STATE_UPDATE_BOTH_APP:{//æ›´æ–°å…¨éƒ¨åº”ç”¨ç¨‹åº
+			//MCU æ›´æ–°
+			crcFlash = getOriginAppCrc();//è®¡ç®—FLASHä¸­APPå›ºä»¶CRC32
+			crcUdisk = getNewMcuAppCrc();//è®¡ç®—Uç›˜ä¸­MCU APPå›ºä»¶CRC32
 			printf("Bootloader:MCU crcFlash:%08XH,crcUdisk:%08XH,crcEprom:%08XH\n", crcFlash, crcUdisk, crcEpromMcu);
-			if((crcUdisk == crcEpromMcu) && (crcFlash == crcEpromMcu) && (forceUpdateMcu == 0)){//Ğ£ÑéÂëÏàÍ¬Ìø¹ı¸üĞÂ
+			if((crcUdisk == crcEpromMcu) && (crcFlash == crcEpromMcu) && (forceUpdateMcu == 0)){//æ ¡éªŒç ç›¸åŒè·³è¿‡æ›´æ–°
 				printf("Bootloader:Check mcu app crc same,skip!\n");
 			}
-			else{//´ÓUÅÌ¸üĞÂ¹Ì¼ş
+			else{//ä»Uç›˜æ›´æ–°å›ºä»¶
 				crcUdisk = updateMcuApp();	
-				crcFlash = getOriginAppCrc();//Ğ£ÑéMCU FLASH
+				crcFlash = getOriginAppCrc();//æ ¡éªŒMCU FLASH
 				if(crcUdisk != crcFlash){
 					bootLoadFailHandler(BT_FAIL_CHECKSUM_MCU_APP_FLASH);
 				}
-				crcEpromMcu = crcFlash;//CRCÖµĞ´ÈëEPROM
+				crcEpromMcu = crcFlash;//CRCå€¼å†™å…¥EPROM
 				printf("Bootloader:Check mcu app sucess.\n");
 				clearEprom(CLEAR_EPROM_NVRAM);
 				clearEprom(CLEAR_EPROM_MCU_FIRMWARE_CRC);
@@ -728,34 +558,34 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 				printf("Bootloader:Update mcu app new crc32 sucess.\n");
 			}
 			
-			//LCD ¸üĞÂ
+			//LCD æ›´æ–°
 			crcUdisk = 0;
 			strcpy((char*)fileBuff, "/private");
-			crcLcdFile((char*)fileBuff);//É¨ÃèÎÄ¼ş
+			crcLcdFile((char*)fileBuff);//æ‰«ææ–‡ä»¶
 			printf("Bootloader:LCD crcLcd:%08XH,crcUdisk:%08XH!\n", crcEpromLcd, crcUdisk);
-			if(crcUdisk == crcEpromLcd && (forceUpdateLcd == 0)){//Ğ£ÑéÂëÏàÍ¬Ìø¹ı¸üĞÂ
+			if(crcUdisk == crcEpromLcd && (forceUpdateLcd == 0)){//æ ¡éªŒç ç›¸åŒè·³è¿‡æ›´æ–°
 				printf("Bootloader:Check lcd app crc same,skip!\n");
 				bootLoadState = BT_STATE_RUN_APP;
 				break;
 			}
-			prepareUpdateLcd();//LCDÔ¶³ÌÉı¼¶×¼±¸
+			prepareUpdateLcd();//LCDè¿œç¨‹å‡çº§å‡†å¤‡
 			
 			crcUdisk = 0;
 			strcpy((char*)fileBuff, "/private");
 			updateLcdFile((char*)fileBuff);
 			
-			crcEpromLcd = crcUdisk;//¸üĞÂEPROMÖĞLCD APP CRCÖµ
+			crcEpromLcd = crcUdisk;//æ›´æ–°EPROMä¸­LCD APP CRCå€¼
 			clearEprom(CLEAR_EPROM_LCD_FIRMWARE_CRC);
 			epromWriteDword(CONFIG_EPROM_LCD_FW_CRC, &crcEpromLcd);
 			printf("Bootloader:Update lcd app new crc32 sucess,wait 60s lcd upgrade done\n");
-			//µÈ´ı60Ãë LCD FLASHĞ´ÈëÍê³ÉºóÖØÆô
-			//ÖØÆôHMI
+			//ç­‰å¾…60ç§’ LCD FLASHå†™å…¥å®Œæˆåé‡å¯
+			//é‡å¯HMI
 			dp_display_text_num(cmdResetHmiOp, strlen((char*)cmdResetHmiOp));	
 			HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);
-			bootLoadState = BT_STATE_RESET;//¸üĞÂAPP
+			bootLoadState = BT_STATE_RESET;//æ›´æ–°APP
 			break;
 		}		
-		case BT_STATE_UPDATE_EPROM:{//¸üĞÂEPROM
+		case BT_STATE_UPDATE_EPROM:{//æ›´æ–°EPROM
 			updateEprom();
 			break;
 		}
@@ -763,20 +593,20 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 			dumpEprom();
 			break;
 		}
-		case BT_STATE_CLEAT_ALL:{//Çå³ıFLASHºÍEPROMÈ«²¿
+		case BT_STATE_CLEAT_ALL:{//æ¸…é™¤FLASHå’ŒEPROMå…¨éƒ¨
 			clearFlash();
 			clearEprom(CLEAR_EPROM_ALL);
 			bootLoadFailHandler(BT_DONE_CLEAR_ALL);
 			break;
 		}
-		case BT_STATE_RESET:{//¸´Î»
+		case BT_STATE_RESET:{//å¤ä½
 			printf("Bootloader:System Reset\n");
 			__set_FAULTMASK(1);
 			NVIC_SystemReset();/* Software reset */
 			break;
 		}
-		case BT_STATE_RUN_APP:{//ÔËĞĞÓ¦ÓÃ³ÌĞò
-			HAL_FLASH_Lock();//Ëø¶¨FLASH
+		case BT_STATE_RUN_APP:{//è¿è¡Œåº”ç”¨ç¨‹åº
+			HAL_FLASH_Lock();//é”å®šFLASH
 			/* Check Vector Table: Test if user code is programmed starting from* address "APPLICATION_ADDRESS" */
 			if((((*(__IO uint32_t *) APPLICATION_FLASH_START_ADDRESS) & 0xFF000000) == 0x20000000) || (((*(__IO uint32_t *) APPLICATION_FLASH_START_ADDRESS) & 0xFF000000) == 0x10000000)){
 				/* Jump to user application */
@@ -793,8 +623,8 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 				SET_BLUE_LED_OFF;
 				SET_FAN_OFF;
 				__disable_irq();
-				SysTick->CTRL = 0;//¹Ø¼ü´úÂë
-				//¹Ø±ÕÖĞ¶Ï                                    				
+				SysTick->CTRL = 0;//å…³é”®ä»£ç 
+				//å…³é—­ä¸­æ–­                                    				
 				HAL_NVIC_DisableIRQ(SysTick_IRQn); 
 				HAL_NVIC_DisableIRQ(OTG_FS_IRQn);
 				HAL_NVIC_ClearPendingIRQ(SysTick_IRQn);
@@ -807,26 +637,26 @@ void bootLoadProcess(void){//bootload Ö´ĞĞ³ÌĞò
 	}
 }
 
-static void bootLoadFailHandler(uint8_t ftype){//Òıµ¼´íÎó³ÌĞò
-	MX_DriverVbusFS(FALSE);//¹Ø±ÕUSB VBUS
+static void bootLoadFailHandler(uint8_t ftype){//å¼•å¯¼é”™è¯¯ç¨‹åº
+	MX_DriverVbusFS(FALSE);//å…³é—­USB VBUS
 	printf("Bootloader:SYS_ERR_LED->On!\n");
 	SET_RED_LED_ON;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
 	switch(ftype){
-		case BT_FAIL_READ_CFG:{//´ÓUÅÌ¶ÁÈ¡CFGÊ§°Ü
+		case BT_FAIL_READ_CFG:{//ä»Uç›˜è¯»å–CFGå¤±è´¥
 			printf("Bootloader:FailHandler,Read config file fail!.\n");
 			while(1);
 		}
-		case BT_FAIL_READ_LMCU_APP:{//´ÓUÅÌ¶ÁÈ¡MCU APPÊ§°Ü
+		case BT_FAIL_READ_LMCU_APP:{//ä»Uç›˜è¯»å–MCU APPå¤±è´¥
 			printf("Bootloader:FailHandler,Read mcu firmware fail!.\n");
 			while(1);
 		}
-		case BT_FAIL_READ_LCD_APP:{//´ÓUÅÌ¶ÁÈ¡LCD APPÊ§°Ü
+		case BT_FAIL_READ_LCD_APP:{//ä»Uç›˜è¯»å–LCD APPå¤±è´¥
 			printf("Bootloader:FailHandler,Read lcd firmware fail!.\n");
 			while(1);
 		}
-		case BT_FAIL_ERASE_MCU_APP:{//²Á³ıMCU APP FLASHÇøÓòÊ§°Ü
+		case BT_FAIL_ERASE_MCU_APP:{//æ“¦é™¤MCU APP FLASHåŒºåŸŸå¤±è´¥
 			printf("Bootloader:FailHandler,Erase mcu application fail\n");
 			while(1);
 		}
@@ -838,31 +668,31 @@ static void bootLoadFailHandler(uint8_t ftype){//Òıµ¼´íÎó³ÌĞò
 			printf("Bootloader:FailHandler,Write eprom file fail!\n");
 			while(1);
 		}
-		case BT_FAIL_LMCU_APP_CHECK:{//lmcu.bin ¼ì²é´íÎó
+		case BT_FAIL_LMCU_APP_CHECK:{//lmcu.bin æ£€æŸ¥é”™è¯¯
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LMCU_FIRMWARE_FILENAME);
 			while(1);
 		}
-		case BT_FAIL_LCD_APP_CHECK:{//llcd.bin ¼ì²é´íÎó
+		case BT_FAIL_LCD_APP_CHECK:{//llcd.bin æ£€æŸ¥é”™è¯¯
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LLCD_FIRMWARE_FILENAME);
 			while(1);
 		}
-		case BT_FAIL_CHECKSUM_MCU_APP_FLASH:{//Ğ£Ñé lmcu.bin ´íÎó
+		case BT_FAIL_CHECKSUM_MCU_APP_FLASH:{//æ ¡éªŒ lmcu.bin é”™è¯¯
 			printf("Bootloader:FailHandler,Verify %s fail!.\n", LMCU_FIRMWARE_FILENAME);
 			while(1);
 		}
-		case BT_FAIL_LCD_NOT_RESPOND:{//LCD ´®¿ÚÎŞÏìÓ¦»ò´íÎó
+		case BT_FAIL_LCD_NOT_RESPOND:{//LCD ä¸²å£æ— å“åº”æˆ–é”™è¯¯
 			printf("Bootloader:FailHandler,LCD is not responsed!.\n");
 			while(1);
 		}
-		case BT_FAIL_LCD_DOWNLOAD:{//LCD ÃüÁîÎŞÏìÓ¦
+		case BT_FAIL_LCD_DOWNLOAD:{//LCD å‘½ä»¤æ— å“åº”
 			printf("Bootloader:FailHandler,LCD download fail!.\n");
 			while(1);
 		}
-		case BT_FAIL_VECTOR_TABLE_INVALID:{//APPÎŞĞ§ÏòÁ¿±í
+		case BT_FAIL_VECTOR_TABLE_INVALID:{//APPæ— æ•ˆå‘é‡è¡¨
 			printf("Bootloader:FailHandler,App vector table invalid.\n");
 			while(1);
 		}
-		case BT_FAIL_CHECK_BLANK:{//FLASH ²é¿Õ´íÎó
+		case BT_FAIL_CHECK_BLANK:{//FLASH æŸ¥ç©ºé”™è¯¯
 			printf("Bootloader:FailHandler,Flash is not blank!.\n");
 			while(1);
 		}
@@ -884,24 +714,24 @@ static void bootLoadFailHandler(uint8_t ftype){//Òıµ¼´íÎó³ÌĞò
 		}
 	}
 }
-static void clearFlash(void){//Çå³ıMCU FLASH
+static void clearFlash(void){//æ¸…é™¤MCU FLASH
 	HAL_FLASH_Unlock();
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY|FLASH_FLAG_EOP|FLASH_FLAG_PGSERR|FLASH_FLAG_WRPERR);
-	if (FLASH_If_EraseApplication() != 0x00){//²Á³ıAPP FLASHÇøÓòÊ§°Ü
+	if (FLASH_If_EraseApplication() != 0x00){//æ“¦é™¤APP FLASHåŒºåŸŸå¤±è´¥
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
-	checkBlank(APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_SIZE);//FLASH ²é¿Õ
+	checkBlank(APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_SIZE);//FLASH æŸ¥ç©º
 }
-static uint32_t getNewMcuAppCrc(void){//»ñÈ¡´ı¸üĞÂMCU APP CRC32
+static uint32_t getNewMcuAppCrc(void){//è·å–å¾…æ›´æ–°MCU APP CRC32
 	uint32_t crc32;
 	uint32_t i;
 	uint8_t readflag = TRUE;
-	uint16_t bytesread;//Êµ¼ÊÎÄ¼ş¶ÁÈ¡×Ö½ÚÊı
+	uint16_t bytesread;//å®é™…æ–‡ä»¶è¯»å–å­—èŠ‚æ•°
 	retUsbH = f_open(&McuFile, LMCU_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);
-	if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°Ü
+	if(retUsbH != FR_OK){//è¯»å–å¤±è´¥
 		bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);			
 	}
-	if(f_size(&McuFile) > APPLICATION_FLASH_SIZE){//MCU¹Ì¼ş´óÓÚFLSAHÈİÁ¿
+	if(f_size(&McuFile) > APPLICATION_FLASH_SIZE){//MCUå›ºä»¶å¤§äºFLSAHå®¹é‡
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
 	crc32 = 0;
@@ -920,24 +750,24 @@ static uint32_t getNewMcuAppCrc(void){//»ñÈ¡´ı¸üĞÂMCU APP CRC32
 		}
 		LastPGAddress += TmpReadSize;
 	}
-	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//²¹ÍêÊ£ÓàCRC
+	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//è¡¥å®Œå‰©ä½™CRC
 		crc32 = crc32CalculateAdd(0xFF);
 	}
 	f_close(&McuFile);
 	
 	return crc32;
 }
-static uint32_t getNewLcdAppCrc(char* filePath){//»ñÈ¡´ı¸üĞÂLCD APP CRC16
+static uint32_t getNewLcdAppCrc(char* filePath){//è·å–å¾…æ›´æ–°LCD APP CRC16
 	uint32_t crc32;
 	uint8_t readflag = TRUE;
-	uint16_t bytesread;//Êµ¼ÊÎÄ¼ş¶ÁÈ¡×Ö½ÚÊı
+	uint16_t bytesread;//å®é™…æ–‡ä»¶è¯»å–å­—èŠ‚æ•°
 	SET_RED_LED_ON;
 	retUsbH = f_open(&LcdFile, filePath, FA_OPEN_EXISTING | FA_READ);
 	SET_RED_LED_OFF;
-	if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°Ü
+	if(retUsbH != FR_OK){//è¯»å–å¤±è´¥
 		bootLoadFailHandler(BT_FAIL_READ_LCD_APP);			
 	}
-	f_lseek(&LcdFile, 0);//¶ÁÈ¡Ö¸ÕëÒÆ¶¯µ½¿ªÍ·
+	f_lseek(&LcdFile, 0);//è¯»å–æŒ‡é’ˆç§»åŠ¨åˆ°å¼€å¤´
 	crc32 = 0;
 	crc32Clear();
 	while(readflag){
@@ -957,28 +787,28 @@ static uint32_t getNewLcdAppCrc(char* filePath){//»ñÈ¡´ı¸üĞÂLCD APP CRC16
 	f_close(&LcdFile);
 	return crc32;
 }
-static uint32_t updateMcuApp(void){//¸üĞÂMCU APP
+static uint32_t updateMcuApp(void){//æ›´æ–°MCU APP
 	uint32_t crc32;
 	uint32_t i;
 	uint32_t programcounter = 0x00;
 	uint8_t readflag = TRUE;
-	uint32_t bytesread;//Êµ¼ÊÎÄ¼ş¶ÁÈ¡×Ö½ÚÊı
+	uint32_t bytesread;//å®é™…æ–‡ä»¶è¯»å–å­—èŠ‚æ•°
 	retUsbH = f_open(&McuFile, LMCU_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);
-	if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°Ü
+	if(retUsbH != FR_OK){//è¯»å–å¤±è´¥
 		bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);			
 	}
 	printf("Bootloader:Open %s sucess,ECODE=0x%02XH.\n", LMCU_FIRMWARE_FILENAME, retUsbH);
-	if(f_size(&McuFile) > APPLICATION_FLASH_SIZE){//MCU¹Ì¼ş´óÓÚFLSAHÈİÁ¿
+	if(f_size(&McuFile) > APPLICATION_FLASH_SIZE){//MCUå›ºä»¶å¤§äºFLSAHå®¹é‡
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
 	HAL_FLASH_Unlock();
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY|FLASH_FLAG_EOP|FLASH_FLAG_PGSERR|FLASH_FLAG_WRPERR);
-	if (FLASH_If_EraseApplication() != 0x00){//²Á³ıAPP FLASHÇøÓòÊ§°Ü
+	if (FLASH_If_EraseApplication() != 0x00){//æ“¦é™¤APP FLASHåŒºåŸŸå¤±è´¥
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
-	checkBlank(APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_SIZE);//FLASH ²é¿Õ
+	checkBlank(APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_SIZE);//FLASH æŸ¥ç©º
 	printf("Bootloader:Erase mcu application sucess.\n");
-	RamAddress = (uint32_t)&RAM_Buf;//»ñÈ¡RAM»º´æÇøµØÖ·
+	RamAddress = (uint32_t)&RAM_Buf;//è·å–RAMç¼“å­˜åŒºåœ°å€
 	/* Erase address init */
 	LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 	/* While file still contain data */
@@ -1000,13 +830,13 @@ static uint32_t updateMcuApp(void){//¸üĞÂMCU APP
 		for(programcounter = 0; programcounter < TmpReadSize; programcounter += 4){
 			/* Write word into flash memory */
 			if(FLASH_If_Write((LastPGAddress + programcounter), *(uint32_t *) (RamAddress + programcounter)) != 0x00){
-				bootLoadFailHandler(BT_FAIL_WRITE_MCU_APP_FLASH);//Ğ´ÈëFLASH´íÎó
+				bootLoadFailHandler(BT_FAIL_WRITE_MCU_APP_FLASH);//å†™å…¥FLASHé”™è¯¯
 			}
 		}
 		/* Update last programmed address value */
 		LastPGAddress += TmpReadSize;
 	}
-	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//²¹ÍêÊ£ÓàCRC
+	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//è¡¥å®Œå‰©ä½™CRC
 		crc32 = crc32CalculateAdd(0xFF);
 	}
 	HAL_FLASH_Lock();
@@ -1015,60 +845,60 @@ static uint32_t updateMcuApp(void){//¸üĞÂMCU APP
 	return crc32;
 }
 
-static void prepareUpdateLcd(void){//LCDÔ¶³ÌÉı¼¶×¼±¸        
+static void prepareUpdateLcd(void){//LCDè¿œç¨‹å‡çº§å‡†å¤‡        
 	memset(gddcRxBuf, 0x0, sizeof(gddcRxBuf));
 	dp_display_text_num(cmdShakeHandOp, strlen((char*)cmdShakeHandOp));		
-	HAL_UART_Receive(&GDDC_UART_HANDLE, gddcRxBuf, 6, 1000);//²éÑ¯´®¿Ú½ÓÊÕÊı¾İ ³¬Ê±1000       
+	HAL_UART_Receive(&CONFIG_GDDC_UART, gddcRxBuf, 6, 1000);//æŸ¥è¯¢ä¸²å£æ¥æ”¶æ•°æ® è¶…æ—¶1000       
 	if(cmpByte(gddcRxBuf, cmdShakeHandRespondOp, sizeof(cmdShakeHandRespondOp))){
 		printf("Bootloader:DoneHandler,lcd shake hand respond!\n");
 	}
-	dp_display_text_num(cmdResetOp, strlen((char*)cmdResetOp));//ÇĞ»»³É´ó²ÊÖ¸Áî¼¯
+	dp_display_text_num(cmdResetOp, strlen((char*)cmdResetOp));//åˆ‡æ¢æˆå¤§å½©æŒ‡ä»¤é›†
 	HAL_Delay(10);
-	dp_display_text_num(cmdFormatOp, strlen((char*)cmdFormatOp));//¸ñÊ½»¯ÎÄ¼şÏµÍ³
+	dp_display_text_num(cmdFormatOp, strlen((char*)cmdFormatOp));//æ ¼å¼åŒ–æ–‡ä»¶ç³»ç»Ÿ
 	HAL_Delay(3000);
 }
-static uint32_t updateLcdApp(char* filePath){//¸üĞÂLCD APPµ¥¸öÎÄ¼ş
+static uint32_t updateLcdApp(char* filePath){//æ›´æ–°LCD APPå•ä¸ªæ–‡ä»¶
 	UART_HandleTypeDef *puart;
 	HAL_StatusTypeDef uRet;
 	uint32_t crc32, i;
 	uint8_t signName;  
-	uint8_t cmdResponse[] = {0xEE,0xFB,0x01,0xFF,0xFC,0xFF,0xFF};//ÆÁÄ»´ğÓ¦
+	uint8_t cmdResponse[] = {0xEE,0xFB,0x01,0xFF,0xFC,0xFF,0xFF};//å±å¹•ç­”åº”
 	uint32_t bufIndex;
-	uint32_t fileSize;//ÎÄ¼ş´óĞ¡
-	uint32_t blockSize = 2048;//ĞèÒª¶ÁÈ¡µÄÊı¾İ°ü´óĞ¡
-	uint32_t transferByte;//¶ÁÈ¡×Ö½ÚÊı
-	uint32_t actualByte;//Êµ¼Ê¶ÁÈ¡µÄ×Ö½ÚÊı
+	uint32_t fileSize;//æ–‡ä»¶å¤§å°
+	uint32_t blockSize = 2048;//éœ€è¦è¯»å–çš„æ•°æ®åŒ…å¤§å°
+	uint32_t transferByte;//è¯»å–å­—èŠ‚æ•°
+	uint32_t actualByte;//å®é™…è¯»å–çš„å­—èŠ‚æ•°
 	uint32_t fileIndex;
-	uint16_t checkSum;//Ğ£ÑéÂë
-	uint8_t lcdRetry;//´íÎóÖØ¸´´ÎÊı
+	uint16_t checkSum;//æ ¡éªŒç 
+	uint8_t lcdRetry;//é”™è¯¯é‡å¤æ¬¡æ•°
 	char* fileCmdPath;    
-	puart = &GDDC_UART_HANDLE;
+	puart = &CONFIG_GDDC_UART;
 	retUsbH = f_open(&LcdFile, filePath, FA_OPEN_EXISTING | FA_READ);
-	if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°Ü
+	if(retUsbH != FR_OK){//è¯»å–å¤±è´¥
 		bootLoadFailHandler(BT_FAIL_READ_LCD_APP);
 	}
-	f_lseek(&LcdFile, 0);//¶ÁÈ¡Ö¸ÕëÒÆ¶¯µ½¿ªÍ·
+	f_lseek(&LcdFile, 0);//è¯»å–æŒ‡é’ˆç§»åŠ¨åˆ°å¼€å¤´
 	printf("Bootloader:Open %s sucess,ECODE=0x%02XH.\n", filePath, retUsbH);
   fileSize =  f_size(&LcdFile);
 	gddcTxBuf[0] = 0xEE;
 	gddcTxBuf[1] = 0xFB;
-	//ÏÂÔØ°ü´óĞ¡
+	//ä¸‹è½½åŒ…å¤§å°
 	gddcTxBuf[2] = ((blockSize + 4) >> 8) & 0xFF;
 	gddcTxBuf[3] = ((blockSize + 4) >> 0) & 0xFF;
-	//²¨ÌØÂÊ²»¸Ä±ä
+	//æ³¢ç‰¹ç‡ä¸æ”¹å˜
 	gddcTxBuf[4] = 0;
 	gddcTxBuf[5] = 0;
-	//ÎÄ¼ş´óĞ¡
+	//æ–‡ä»¶å¤§å°
 	gddcTxBuf[6] = (fileSize >> 24) & 0xff;
 	gddcTxBuf[7] = (fileSize >> 16) & 0xff;
 	gddcTxBuf[8] = (fileSize >>  8) & 0xff;
 	gddcTxBuf[9] = (fileSize) & 0xff;
-	//ÎÄ¼şÃû
+	//æ–‡ä»¶å
 	gddcTxBuf[10] = 0x33;
 	gddcTxBuf[11] = 0x3A;
-	//ÏÂÔØÃüÁîÖĞµÄÂ·¾¶´ÓÊµ¼ÊÂ·¾¢µÄµÚÒ»¸ö¡®/¡¯¿ªÊ¼£¬ºöÂÔ¡®private¡¯
-  //Àı£ºÊµ¼ÊÂ·¾¢Îª private/bin/image.bin
-  //ÃüÁîÖĞµÄÂ·¾¶Îª 3:/bin/image.bin
+	//ä¸‹è½½å‘½ä»¤ä¸­çš„è·¯å¾„ä»å®é™…è·¯åŠ²çš„ç¬¬ä¸€ä¸ªâ€˜/â€™å¼€å§‹ï¼Œå¿½ç•¥â€˜privateâ€™
+  //ä¾‹ï¼šå®é™…è·¯åŠ²ä¸º private/bin/image.bin
+  //å‘½ä»¤ä¸­çš„è·¯å¾„ä¸º 3:/bin/image.bin
   fileCmdPath = strchr((filePath + 1),'/');                           
 	for(i = 0;i < strlen(fileCmdPath);i++){
 		if(fileCmdPath[i] == '/'){
@@ -1083,33 +913,33 @@ static uint32_t updateLcdApp(char* filePath){//¸üĞÂLCD APPµ¥¸öÎÄ¼ş
   gddcTxBuf[strlen(fileCmdPath) + 14] = 0xFF;
   gddcTxBuf[strlen(fileCmdPath) + 15] = 0xFF;
 
-  //·¢ËÍÏÂÔØÃüÁî
+  //å‘é€ä¸‹è½½å‘½ä»¤
 	printf("Bootloader->updateLcdApp:Send download command.\n");
 	lcdRetry = 0;
 	do{
 		lcdRetry++;
-		uRet = HAL_UART_Receive(puart, gddcRxBuf, sizeof(gddcRxBuf), 1);//Çå¿Õ½ÓÊÕ»º³åÇø
+		uRet = HAL_UART_Receive(puart, gddcRxBuf, sizeof(gddcRxBuf), 1);//æ¸…ç©ºæ¥æ”¶ç¼“å†²åŒº
 		memset(gddcRxBuf, 0x0, sizeof(gddcRxBuf));	
 		gddcRxIndex = 0;
-		dp_display_text_num(gddcTxBuf, (strlen(fileCmdPath) + 16));//¼ÆËãµÃµ½ÃüÁî³¤¶È
-		uRet = HAL_UART_Receive(puart, gddcRxBuf, 7, 5000);//´®¿Ú½ÓÊÕÊı¾İ ³¬Ê±10000mS
+		dp_display_text_num(gddcTxBuf, (strlen(fileCmdPath) + 16));//è®¡ç®—å¾—åˆ°å‘½ä»¤é•¿åº¦
+		uRet = HAL_UART_Receive(puart, gddcRxBuf, 7, 5000);//ä¸²å£æ¥æ”¶æ•°æ® è¶…æ—¶10000mS
 		HAL_Delay(10);
 		if(cmpByte(gddcRxBuf, cmdResponse, 7) == true){
 			break;
 		}
 		else{
 			HAL_Delay(10);
-			if(lcdRetry > GDDC_RETRY_TIMES){//·¢ËÍ´ÎÊı³¬Ê±
+			if(lcdRetry > GDDC_RETRY_TIMES){//å‘é€æ¬¡æ•°è¶…æ—¶
 				bootLoadFailHandler(BT_FAIL_LCD_DOWNLOAD);
 			}
 		}
 	}while(1);
-  //Ò»¸öÊı¾İ°ü¹Ì¶¨Îª2052×Ö½Ú
-  //¸ñÊ½:SN ~SN DATA CHECKSUM
-  //SNÎª°üĞòºÅ,1×Ö½Ú0~255Ñ­»·Ê¹ÓÃ
-  //~SNÎªÉÏÊöĞòºÅÈ¡·´
-  //DATA¹Ì¶¨Îª2048×Ö½Ú,²»¹»²¹0
-  //CHECKSUM,2×Ö½Ú,Ç°Ãæ2050×Ö½ÚÇóºÍºóÈ¡·´
+  //ä¸€ä¸ªæ•°æ®åŒ…å›ºå®šä¸º2052å­—èŠ‚
+  //æ ¼å¼:SN ~SN DATA CHECKSUM
+  //SNä¸ºåŒ…åºå·,1å­—èŠ‚0~255å¾ªç¯ä½¿ç”¨
+  //~SNä¸ºä¸Šè¿°åºå·å–å
+  //DATAå›ºå®šä¸º2048å­—èŠ‚,ä¸å¤Ÿè¡¥0
+  //CHECKSUM,2å­—èŠ‚,å‰é¢2050å­—èŠ‚æ±‚å’Œåå–å
 	signName = 0;
 	crc32 = 0;
 	crc32Clear();
@@ -1118,7 +948,7 @@ static uint32_t updateLcdApp(char* filePath){//¸üĞÂLCD APPµ¥¸öÎÄ¼ş
 		gddcTxBuf[0] = signName;
 		gddcTxBuf[1] = ~signName;
     transferByte = blockSize;
-		if(fileIndex + transferByte > fileSize){//¶ÁÈ¡2048¸ö×Ö½Úµ«²»³¬¹ıÎÄ¼ş´óĞ¡
+		if(fileIndex + transferByte > fileSize){//è¯»å–2048ä¸ªå­—èŠ‚ä½†ä¸è¶…è¿‡æ–‡ä»¶å¤§å°
 			transferByte = fileSize - fileIndex;
 		}
 		SET_RED_LED_ON;
@@ -1128,25 +958,25 @@ static uint32_t updateLcdApp(char* filePath){//¸üĞÂLCD APPµ¥¸öÎÄ¼ş
 		if(retUsbH != FR_OK){
 			bootLoadFailHandler(BT_FAIL_READ_LCD_APP);
     }
-    //¼ÆËãĞ£ÑéºÍ
+    //è®¡ç®—æ ¡éªŒå’Œ
 		checkSum = 0x0;
 		bufIndex = 0;
 		do{
 			checkSum += (uint16_t)gddcTxBuf[bufIndex];
 			bufIndex ++;
 		}while(bufIndex < 2050);
-		checkSum = (uint16_t)~(checkSum);//È¡·´Ìî³äÔÚ°üÄ©Î²
+		checkSum = (uint16_t)~(checkSum);//å–åå¡«å……åœ¨åŒ…æœ«å°¾
 		gddcTxBuf[2050] = (checkSum >> 8) & 0xFF;
 		gddcTxBuf[2051] = (checkSum >> 0) & 0xFF;   
 		lcdRetry = 0;
 		do{
 			lcdRetry ++;
-			//·¢ËÍÊı¾İ°ü£¬Ö±µ½³É¹¦»ò´ÎÊı³¬¹ıÏŞÖÆ	
+			//å‘é€æ•°æ®åŒ…ï¼Œç›´åˆ°æˆåŠŸæˆ–æ¬¡æ•°è¶…è¿‡é™åˆ¶	
 			printf("Bootloader->updateLcdApp:Send file block at 0x%08XH,", fileIndex);
-			HAL_UART_Receive(puart, gddcRxBuf, sizeof(gddcRxBuf), 1);//Çå¿Õ½ÓÊÕ»º³åÇø
+			HAL_UART_Receive(puart, gddcRxBuf, sizeof(gddcRxBuf), 1);//æ¸…ç©ºæ¥æ”¶ç¼“å†²åŒº
 			memset(gddcRxBuf, 0x0, sizeof(gddcRxBuf));
 			dp_display_text_num(gddcTxBuf, (blockSize + 4));//send data
-			uRet = HAL_UART_Receive(puart, gddcRxBuf, 2, 3000);//²éÑ¯´®¿Ú½ÓÊÕÊı¾İ ³¬Ê±3000            
+			uRet = HAL_UART_Receive(puart, gddcRxBuf, 2, 3000);//æŸ¥è¯¢ä¸²å£æ¥æ”¶æ•°æ® è¶…æ—¶3000            
 			if(uRet == HAL_OK){
 				if(gddcRxBuf[1] == (uint8_t)(~(signName + 1)) || gddcRxBuf[0] == (signName+1) && gddcRxBuf[1] == (uint8_t)(~(signName+1))){//wait ack
 					signName = signName + 1;
@@ -1154,10 +984,10 @@ static uint32_t updateLcdApp(char* filePath){//¸üĞÂLCD APPµ¥¸öÎÄ¼ş
 					break;
 				}
 			}
-			else{//³¬Ê±»òÎŞĞ§SN
+			else{//è¶…æ—¶æˆ–æ— æ•ˆSN
 				printf("timeout or invalid SN!\n");
 				HAL_Delay(100);
-				if(lcdRetry > GDDC_RETRY_TIMES){//·¢ËÍ´ÎÊı³¬Ê±
+				if(lcdRetry > GDDC_RETRY_TIMES){//å‘é€æ¬¡æ•°è¶…æ—¶
 					bootLoadFailHandler(BT_FAIL_LCD_DOWNLOAD);
 				}
 			}
@@ -1170,14 +1000,14 @@ static uint32_t updateLcdApp(char* filePath){//¸üĞÂLCD APPµ¥¸öÎÄ¼ş
 static void updateEprom(void){//UDISK->EPROM
 	HAL_StatusTypeDef ret;
 	uint32_t brByte;
-	retUsbH = f_open(&LepromFile, LOAD_EPROM_FILENAME, FA_OPEN_EXISTING | FA_READ);//¶ÁÈ¡Íê³ÉĞÅÏ¢ÎÄ¼ş
-	if(retUsbH != FR_OK){//¶ÁÈ¡Ê§°ÜÌø¹ı¹Ì¼ş¸üĞÂÖ±½ÓÔËĞĞ³ÌĞò
+	retUsbH = f_open(&LepromFile, LOAD_EPROM_FILENAME, FA_OPEN_EXISTING | FA_READ);//è¯»å–å®Œæˆä¿¡æ¯æ–‡ä»¶
+	if(retUsbH != FR_OK){//è¯»å–å¤±è´¥è·³è¿‡å›ºä»¶æ›´æ–°ç›´æ¥è¿è¡Œç¨‹åº
 		printf("BootLoader:Open %s fail,ECODE=0x%02XH\n", LOAD_EPROM_FILENAME, retUsbH);
 				bootLoadFailHandler(BT_FAIL_READ_EPROM_BIN);
 	}
-	else{//¶ÁÈ¡³É¹¦¼ì²éÎÄ¼şÄÚÈİ
+	else{//è¯»å–æˆåŠŸæ£€æŸ¥æ–‡ä»¶å†…å®¹
 		printf("BootLoader:Open %s sucess,ECODE=0x%02XH\n", LOAD_EPROM_FILENAME, retUsbH);
-		f_lseek(&LepromFile, 0);//¶ÁÈ¡Ö¸ÕëÒÆ¶¯µ½¿ªÍ·
+		f_lseek(&LepromFile, 0);//è¯»å–æŒ‡é’ˆç§»åŠ¨åˆ°å¼€å¤´
 		SET_RED_LED_ON;
 		retUsbH = f_read(&LepromFile, RAM_Buf, CONFIG_EPROM_SIZE, &brByte);
 		SET_RED_LED_OFF;
@@ -1185,72 +1015,54 @@ static void updateEprom(void){//UDISK->EPROM
 			bootLoadFailHandler(BT_FAIL_READ_EPROM_BIN);
 		}
 		f_close(&LepromFile);
-		ret = epromWrite(0, RAM_Buf, CONFIG_EPROM_SIZE);//Ğ´ÈëEPROM
+		ret = epromWrite(0, RAM_Buf, CONFIG_EPROM_SIZE);//å†™å…¥EPROM
 		if(ret != HAL_OK){
 			bootLoadFailHandler(BT_FAIL_WRITE_EPROM);
 		}
 		bootLoadFailHandler(BT_DONE_UPDATE_EPROM);
 	}
 }
-static void dumpEprom(void){//ÏÂÔØEPROMĞÅÏ¢µ½UÅÌ
+static void dumpEprom(void){//ä¸‹è½½EPROMä¿¡æ¯åˆ°Uç›˜
 	uint32_t wrByte;
 	epromRead(0x0, RAM_Buf, CONFIG_EPROM_SIZE);
 	retUsbH = f_open(&SepromFile, LOAD_EPROM_FILENAME, FA_CREATE_ALWAYS | FA_WRITE);
-	if(retUsbH != FR_OK){//´ò¿ªÊ§°Ü
+	if(retUsbH != FR_OK){//æ‰“å¼€å¤±è´¥
 		bootLoadFailHandler(BT_FAIL_WRITE_EPROM_BIN);
 	}
 	retUsbH = f_write(&SepromFile, RAM_Buf, CONFIG_EPROM_SIZE, &wrByte);
-	if(retUsbH != FR_OK){//Ğ´ÈëÊ§°Ü
+	if(retUsbH != FR_OK){//å†™å…¥å¤±è´¥
 		bootLoadFailHandler(BT_FAIL_WRITE_EPROM_BIN);
 	}
 	bootLoadFailHandler(BT_DONE_DUMP_EPROM);
 }
-static uint32_t getOriginAppCrc(void){//¼ÆËãMCU APP CRC32
+static uint32_t getOriginAppCrc(void){//è®¡ç®—MCU APP CRC32
 	uint8_t val;
 	uint32_t i;
 	uint32_t crc32;
 	crc32Clear();
 	for(i = APPLICATION_FLASH_START_ADDRESS;i < APPLICATION_FLASH_END_ADDRESS;i ++){
 		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32¼ÆËãÁ¬Ğø×Ö½Ú
+		crc32 = crc32CalculateAdd(val);//CRC32è®¡ç®—è¿ç»­å­—èŠ‚
 	}
 	return crc32;	
 }
 /*****************************************************************************/
-//´¥ÃşÆÁ³ÌĞò
+//è§¦æ‘¸å±ç¨‹åº
 static void DBGU_Printk(uint8_t *buffer){//arg pointer to a string ending by
 	while(*buffer != '\0'){
-		HAL_UART_Transmit(&GDDC_UART_HANDLE, buffer, 1, GDDC_TX_TIMEOUT);
+		HAL_UART_Transmit(&CONFIG_GDDC_UART, buffer, 1, GDDC_TX_TIMEOUT);
 		buffer ++;
     }
 }
 static void DBGU_Printk_num(uint8_t *buffer, uint16_t datanum){//arg pointer to a string ending by
-	HAL_UART_Transmit(&GDDC_UART_HANDLE, (const uint8_t*)buffer, datanum, GDDC_TX_TIMEOUT);
+	HAL_UART_Transmit(&CONFIG_GDDC_UART, (const uint8_t*)buffer, datanum, GDDC_TX_TIMEOUT);
 }
-static void dp_display_text(uint8_t *text){
-    /* User Specific Code   */
-    DBGU_Printk(text);
-}
+
 static void dp_display_text_num(uint8_t *text, uint16_t datanum){
     /* User Specific Code   */
     DBGU_Printk_num(text, datanum);
 }
-static void dp_display_value(uint32_t value, int descriptive){
-    /* User Specific Code   */
-    uint8_t print_buf[10];
-    if (descriptive == GDDC_HEX){
-        sprintf((char *)print_buf, "%lX", value);
-        DBGU_Printk(print_buf);
-    }
-    else if(descriptive == GDDC_DEC){
-        sprintf((char *)print_buf, "%ld", value);
-        DBGU_Printk(print_buf);
-    }
-    else if(descriptive == GDDC_CHR){
-        sprintf((char *)print_buf, "%c", (uint8_t)value);
-        DBGU_Printk(print_buf);
-    }
-}
+
 static void dp_display_array(uint8_t *value, int bytes, int descriptive){
     /* User Specific Code */
     uint8_t print_buf[10];
@@ -1272,35 +1084,14 @@ static void dp_display_array(uint8_t *value, int bytes, int descriptive){
 }
 
 /*****************************************************************************/
-int fputc(int ch,FILE *f){
-	uint8_t dat;
-	dat = (ch & 0xFF);
-	HAL_UART_Transmit(&DEBUG_UART_HANDLE, &dat, 1, 1000);
-	return ch;
-}
-
-int fgetc(FILE *f){
-	uint8_t dat;
-	HAL_UART_Receive(&DEBUG_UART_HANDLE, &dat, 1, 100);
-	return (dat);
-}
-
-void _sys_exit(int x){
-	x = x;
-}
-
-void _ttywrch(int ch){
-	ch = ch;
-}
-/*****************************************************************************/
-static void softDelayMs(uint16_t ms){//Èí¼şÑÓÊ±
+static void softDelayMs(uint16_t ms){//è½¯ä»¶å»¶æ—¶
 	uint32_t i;
 	for(i = 0;i < 1000;i ++){
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	}
 }
 
-static void UsbGpioReset(void){//Ä£ÄâUSB°Î²å¶¯×÷²¢¹Ø±ÕVBUS¹©µç
+static void UsbGpioReset(void){//æ¨¡æ‹ŸUSBæ‹”æ’åŠ¨ä½œå¹¶å…³é—­VBUSä¾›ç”µ
 	GPIO_InitTypeDef GPIO_InitStruct;
 	/* GPIO Ports Clock Enable */
 	__HAL_RCC_GPIOA_CLK_ENABLE();
@@ -1314,27 +1105,27 @@ static void UsbGpioReset(void){//Ä£ÄâUSB°Î²å¶¯×÷²¢¹Ø±ÕVBUS¹©µç
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);                                            
 	softDelayMs(100);
-	//ÏÈ°ÑPA12À­µÍÔÙÀ­¸ß£¬ÀûÓÃD+Ä£ÄâUSBµÄ°Î²å¶¯×÷   
+	//å…ˆæŠŠPA12æ‹‰ä½å†æ‹‰é«˜ï¼Œåˆ©ç”¨D+æ¨¡æ‹ŸUSBçš„æ‹”æ’åŠ¨ä½œ   
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
 	softDelayMs(100);
 	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
 	__HAL_RCC_GPIOA_CLK_DISABLE();
 	__HAL_RCC_GPIOG_CLK_ENABLE();
 	
-	HAL_GPIO_WritePin(OTG_FS_PSON_GPIO_Port, OTG_FS_PSON_Pin, GPIO_PIN_RESET);//¹Ø±ÕVBUS¹©µç
+	HAL_GPIO_WritePin(USB_FS_PSON_GPIO_Port, USB_FS_PSON_Pin, GPIO_PIN_RESET);//å…³é—­VBUSä¾›ç”µ
 	//GPIO_InitStruct.Pin = GPIO_PIN_8;
 	//GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	//GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 	//GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	//HAL_GPIO_Init(OTG_FS_PSON_GPIO_Port, &GPIO_InitStruct);
 	softDelayMs(300);
-	HAL_GPIO_DeInit(OTG_FS_PSON_GPIO_Port, OTG_FS_PSON_Pin);
+	HAL_GPIO_DeInit(USB_FS_PSON_GPIO_Port, USB_FS_PSON_Pin);
 	__HAL_RCC_GPIOG_CLK_DISABLE();	
-	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//¹Ø±ÕUSBÊ±ÖÓ
-	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//¹Ø±ÕUSB ÖĞ¶Ï
-	HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);//Çå³ş USB ÖĞ¶Ï±êÖ¾
+	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//å…³é—­USBæ—¶é’Ÿ
+	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//å…³é—­USB ä¸­æ–­
+	HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);//æ¸…æ¥š USB ä¸­æ–­æ ‡å¿—
 }
-static void SystemClock_Reset(void){//¸´Î»ÏµÍ³Ê±ÖÓ
+static void SystemClock_Reset(void){//å¤ä½ç³»ç»Ÿæ—¶é’Ÿ
 	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 	__HAL_RCC_BACKUPRESET_RELEASE();
@@ -1363,31 +1154,23 @@ static void SystemClock_Reset(void){//¸´Î»ÏµÍ³Ê±ÖÓ
 		Error_Handler();
 	}
 }
-void resetInit(void){//¸´Î»ºó³õÊ¼»¯
+void resetInit(void){//å¤ä½ååˆå§‹åŒ–
 	HAL_DeInit();
-	HAL_DAC_MspDeInit(&hdac);
-	HAL_TIM_Base_MspDeInit(&htim2);
-	HAL_TIM_Base_MspDeInit(&htim10);
-	HAL_TIM_Base_MspDeInit(&htim14);	
-	HAL_I2C_MspDeInit(&EEPROM_I2C_BUS);
-	HAL_UART_MspDeInit(&DEBUG_UART_HANDLE);
-	HAL_UART_MspDeInit(&GDDC_UART_HANDLE);
-	USBH_DeInit(&hUsbHostFS);
-	//¸´Î»RCCÊ±ÖÓ
+	//å¤ä½RCCæ—¶é’Ÿ
 	SystemClock_Reset();
 	UsbGpioReset();
 	__enable_irq();
 }
 /*****************************************************************************/
-static HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//ÔÚÖ¸¶¨µØÖ·¶Á³ö8Î»Êı¾İ
-//ReadAddr:¿ªÊ¼¶ÁÊıµÄµØÖ·  
-//·µ»ØÖµ  :Êı¾İ				  
+static HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//åœ¨æŒ‡å®šåœ°å€è¯»å‡º8ä½æ•°æ®
+//ReadAddr:å¼€å§‹è¯»æ•°çš„åœ°å€  
+//è¿”å›å€¼  :æ•°æ®				  
 	HAL_StatusTypeDef ret;
-	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}	
-	ret = HAL_I2C_Mem_Read(&EEPROM_I2C_BUS,
+	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS,
 	                       CONFIG_EPROM_READ_ADDR,
 	                       ReadAddr,
 	                       I2C_MEMADD_SIZE_16BIT,
@@ -1395,21 +1178,21 @@ static HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//ÔÚÖ¸¶
 	                       1,
 	                       CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&EEPROM_I2C_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-static HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//ÔÚÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö16Î»Êı
-//¸Ãº¯ÊıÓÃÓÚ¶Á³ö16bit»òÕß32bitµÄÊı¾İ.
-//ReadAddr   :¿ªÊ¼¶Á³öµÄµØÖ· 
-//·µ»ØÖµ     :Êı¾İ  	
+static HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//åœ¨æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º16ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºè¯»å‡º16bitæˆ–è€…32bitçš„æ•°æ®.
+//ReadAddr   :å¼€å§‹è¯»å‡ºçš„åœ°å€ 
+//è¿”å›å€¼     :æ•°æ®  	
 	HAL_StatusTypeDef ret;
-	if((ReadAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((ReadAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}	
-	ret = HAL_I2C_Mem_Read(&EEPROM_I2C_BUS, 
+	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, 
 						   CONFIG_EPROM_READ_ADDR,
 	                       ReadAddr,
 	                       I2C_MEMADD_SIZE_16BIT,
@@ -1417,21 +1200,21 @@ static HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//ÔÚÖ
 	                       2,
 	                       CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&EEPROM_I2C_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-static HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////ÔÚÖ¸¶¨µØÖ·¿ªÊ¼¶Á³ö32Î»Êı
-//¸Ãº¯ÊıÓÃÓÚ¶Á³ö32bitµÄÊı¾İ.
-//ReadAddr   :¿ªÊ¼¶Á³öµÄµØÖ· 
-//·µ»ØÖµ     :Êı¾İ  	
+static HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////åœ¨æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡º32ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºè¯»å‡º32bitçš„æ•°æ®.
+//ReadAddr   :å¼€å§‹è¯»å‡ºçš„åœ°å€ 
+//è¿”å›å€¼     :æ•°æ®  	
 	HAL_StatusTypeDef ret;
-	if((ReadAddr + 3) > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((ReadAddr + 3) > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}	
-	ret = HAL_I2C_Mem_Read(&EEPROM_I2C_BUS, 
+	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, 
 	                       CONFIG_EPROM_READ_ADDR,
 	                       ReadAddr,
 	                       I2C_MEMADD_SIZE_16BIT,
@@ -1439,20 +1222,20 @@ static HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////Ô
 	                       4,
 	                       CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&EEPROM_I2C_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-static HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//ÔÚÖ¸¶¨µØÖ·Ğ´Èë8Î»Êı¾İ
-//WriteAddr  :Ğ´ÈëÊı¾İµÄÄ¿µÄµØÖ·    
-//DataToWrite:ÒªĞ´ÈëµÄÊı¾İ
+static HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//åœ¨æŒ‡å®šåœ°å€å†™å…¥8ä½æ•°æ®
+//WriteAddr  :å†™å…¥æ•°æ®çš„ç›®çš„åœ°å€    
+//DataToWrite:è¦å†™å…¥çš„æ•°æ®
 	HAL_StatusTypeDef ret;
-	if(WriteAddr > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if(WriteAddr > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}
-	ret = HAL_I2C_Mem_Write(&EEPROM_I2C_BUS, 
+	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
 	                        CONFIG_EPROM_WRITE_ADDR,
 	                        WriteAddr, 
 	                        I2C_MEMADD_SIZE_16BIT, 
@@ -1460,21 +1243,21 @@ static HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//ÔÚÖ
 	                        1, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&EEPROM_I2C_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }
-static HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë16Î»Êı
-//¸Ãº¯ÊıÓÃÓÚĞ´Èë16bitµÄÊı¾İ.
-//WriteAddr  :¿ªÊ¼Ğ´ÈëµÄµØÖ·  
-//DataToWrite:Êı¾İÊı×éÊ×µØÖ·
+static HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥16ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºå†™å…¥16bitçš„æ•°æ®.
+//WriteAddr  :å¼€å§‹å†™å…¥çš„åœ°å€  
+//DataToWrite:æ•°æ®æ•°ç»„é¦–åœ°å€
 	HAL_StatusTypeDef ret;
-	if((WriteAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((WriteAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}
-	ret = HAL_I2C_Mem_Write(&EEPROM_I2C_BUS, 
+	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
 	                        CONFIG_EPROM_WRITE_ADDR, 
 	                        WriteAddr, 
 	                        I2C_MEMADD_SIZE_16BIT, 
@@ -1482,21 +1265,21 @@ static HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//Ô
 	                        2, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&EEPROM_I2C_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷	
+		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨	
 	}
 	return ret;
 }
-static HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´Èë32Î»Êı
-//¸Ãº¯ÊıÓÃÓÚĞ´Èë32bitµÄÊı¾İ.
-//WriteAddr  :¿ªÊ¼Ğ´ÈëµÄµØÖ·  
-//DataToWrite:Êı¾İÊı×éÊ×µØÖ·
+static HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥32ä½æ•°
+//è¯¥å‡½æ•°ç”¨äºå†™å…¥32bitçš„æ•°æ®.
+//WriteAddr  :å¼€å§‹å†™å…¥çš„åœ°å€  
+//DataToWrite:æ•°æ®æ•°ç»„é¦–åœ°å€
 	HAL_StatusTypeDef ret;
-	if((WriteAddr + 3) >= (CONFIG_EPROM_SIZE - 1)){//Ğ´µØÖ·³¬¹ıÈİÁ¿
+	if((WriteAddr + 3) >= (CONFIG_EPROM_SIZE - 1)){//å†™åœ°å€è¶…è¿‡å®¹é‡
 		ret = HAL_ERROR;
 		return ret;
 	}
-	ret = HAL_I2C_Mem_Write(&EEPROM_I2C_BUS, 
+	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
 	                        CONFIG_EPROM_WRITE_ADDR, 
 	                        WriteAddr, 
 	                        I2C_MEMADD_SIZE_16BIT, 
@@ -1504,19 +1287,19 @@ static HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//Ô
 	                        4, 
 	                        CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-		ret = HAL_I2C_Init(&EEPROM_I2C_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 	}
 	return ret;
 }   
-static HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼¶Á³öÖ¸¶¨¸öÊıµÄÊı¾İ
-//ReadAddr :¿ªÊ¼¶Á³öµÄµØÖ· ¶Ô24c02Îª0~255
-//pBuffer  :Êı¾İÊı×éÊ×µØÖ·
-//NumToRead:Òª¶Á³öÊı¾İµÄ¸öÊı
+static HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹è¯»å‡ºæŒ‡å®šä¸ªæ•°çš„æ•°æ®
+//ReadAddr :å¼€å§‹è¯»å‡ºçš„åœ°å€ å¯¹24c02ä¸º0~255
+//pBuffer  :æ•°æ®æ•°ç»„é¦–åœ°å€
+//NumToRead:è¦è¯»å‡ºæ•°æ®çš„ä¸ªæ•°
 	HAL_StatusTypeDef ret;
 	uint16_t rAddr, rBlock, rByte, doBlock;
 	uint8_t* rBuffer;
-	if((ReadAddr + NumToRead) > CONFIG_EPROM_SIZE){//¶ÁµØÖ·³¬¹ıÏŞÖÆ
+	if((ReadAddr + NumToRead) > CONFIG_EPROM_SIZE){//è¯»åœ°å€è¶…è¿‡é™åˆ¶
 		ret = HAL_ERROR;
 		return ret;
 	}
@@ -1525,31 +1308,31 @@ static HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t
 	rAddr = ReadAddr;
 	rBuffer = pBuffer;
 	for(doBlock = 0;doBlock < rBlock;doBlock ++){
-		ret = HAL_I2C_Mem_Read(&EEPROM_I2C_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);//ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&EEPROM_I2C_BUS);//Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 		rAddr += CONFIG_EPROM_PAGE_SIZE;
 		rBuffer += CONFIG_EPROM_PAGE_SIZE;
 	}
 	if(rByte != 0x0){
-		ret = HAL_I2C_Mem_Read(&EEPROM_I2C_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, rByte ,CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, rByte ,CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&EEPROM_I2C_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 	}
 	return ret;	
 }  
-static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite){//ÔÚµÄÖ¸¶¨µØÖ·¿ªÊ¼Ğ´ÈëÖ¸¶¨¸öÊıµÄÊı¾İ
-//WriteAddr :¿ªÊ¼Ğ´ÈëµÄµØÖ· ¶Ô24c02Îª0~255
-//pBuffer   :Êı¾İÊı×éÊ×µØÖ·
-//NumToWrite:ÒªĞ´ÈëÊı¾İµÄ¸öÊı
+static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite){//åœ¨çš„æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥æŒ‡å®šä¸ªæ•°çš„æ•°æ®
+//WriteAddr :å¼€å§‹å†™å…¥çš„åœ°å€ å¯¹24c02ä¸º0~255
+//pBuffer   :æ•°æ®æ•°ç»„é¦–åœ°å€
+//NumToWrite:è¦å†™å…¥æ•°æ®çš„ä¸ªæ•°
 	HAL_StatusTypeDef ret;
 	uint16_t wAddr, wBlock, wByte, doBlock;
 	uint8_t* wBuffer;
-	if((WriteAddr + NumToWrite) > CONFIG_EPROM_SIZE){//¶ÁµØÖ·³¬¹ıÏŞÖÆ
+	if((WriteAddr + NumToWrite) > CONFIG_EPROM_SIZE){//è¯»åœ°å€è¶…è¿‡é™åˆ¶
 		ret = HAL_ERROR;
 		return ret;
 	}
@@ -1558,10 +1341,10 @@ static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16
 	wAddr = WriteAddr;
 	wBuffer = pBuffer;
 	for(doBlock = 0;doBlock < wBlock;doBlock ++){
-		ret = HAL_I2C_Mem_Write(&EEPROM_I2C_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&EEPROM_I2C_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 		wAddr += CONFIG_EPROM_PAGE_SIZE;
 		wBuffer += CONFIG_EPROM_PAGE_SIZE;
@@ -1570,10 +1353,10 @@ static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16
 #endif
 	}
 	if(wByte != 0x0){		
-		ret = HAL_I2C_Mem_Write(&EEPROM_I2C_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, wByte, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, wByte, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&EEPROM_I2C_BUS);        //ÊÍ·ÅIO¿ÚÎªGPIO£¬¸´Î»¾ä±ú×´Ì¬±êÖ¾
-			ret = HAL_I2C_Init(&EEPROM_I2C_BUS);          //Õâ¾äÖØĞÂ³õÊ¼»¯I2C¿ØÖÆÆ÷
+			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //é‡Šæ”¾IOå£ä¸ºGPIOï¼Œå¤ä½å¥æŸ„çŠ¶æ€æ ‡å¿—
+			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //è¿™å¥é‡æ–°åˆå§‹åŒ–I2Cæ§åˆ¶å™¨
 		}
 	}
 #if CONFIG_EPROM_WRITE_DELAY > 0
@@ -1582,7 +1365,7 @@ static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16
 	return ret;
 }
 /*****************************************************************************/
-static void listEpromTable(void){//Êä³öEPROM·Ö²¼±í
+static void listEpromTable(void){//è¾“å‡ºEPROMåˆ†å¸ƒè¡¨
 	printf("MR EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
 	printf("DM EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
 	printf("FD EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
@@ -1596,7 +1379,7 @@ static void listEpromTable(void){//Êä³öEPROM·Ö²¼±í
 	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
 	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
 }
-static void clearEprom(clarmEpromCmd_t cmd){//Çå³ıEPROMÄÚÈİ
+static void clearEprom(clarmEpromCmd_t cmd){//æ¸…é™¤EPROMå†…å®¹
 	uint8_t var = 0;
 	uint32_t i;	
 	switch(cmd){
@@ -1659,7 +1442,7 @@ static void clearEprom(clarmEpromCmd_t cmd){//Çå³ıEPROMÄÚÈİ
 		default:break;
 	}
 }
-static uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash ²é¿Õ
+static uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash æŸ¥ç©º
 	uint8_t val;
 	uint32_t i;
 	for(i = 0;i < size;i ++){
@@ -1671,7 +1454,7 @@ static uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash ²é¿Õ
 	return true;
 }
 
-static FRESULT crcLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢¼ÆËãCRCÖµ
+static FRESULT crcLcdFile(char* scanPath){//æ‰«ææ–‡ä»¶å¤¹å†…å…¨éƒ¨æ–‡ä»¶å¹¶è®¡ç®—CRCå€¼
 	DIR memofsrcdir;
 	DIR *srcdir;
 	FILINFO menoffinfo;
@@ -1679,11 +1462,11 @@ static FRESULT crcLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢¼ÆËãCRCÖµ
 	char fileName[256];
 	char *fn;
 	finfo=&menoffinfo; 
-	srcdir=&memofsrcdir;  //Ô´Ä¿Â¼
+	srcdir=&memofsrcdir;  //æºç›®å½•
 	retUsbH = f_opendir(srcdir, (const TCHAR*)scanPath);
 	while(retUsbH == FR_OK){
 		retUsbH = f_readdir(srcdir, finfo);
-		if(retUsbH != FR_OK || finfo->fname[0] == 0){//ÎŞĞ§ÎÄ¼ş
+		if(retUsbH != FR_OK || finfo->fname[0] == 0){//æ— æ•ˆæ–‡ä»¶
 			break;
 		}
 		if(finfo->fname[0] == '.'){
@@ -1692,7 +1475,7 @@ static FRESULT crcLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢¼ÆËãCRCÖµ
 		fn = finfo->fname;
 		memset(fileName, 0x0, sizeof(fileName));
 		sprintf(fileName, "%s%c%s",scanPath , '/', fn);
-		if(finfo->fattrib & AM_DIR){//ÎÄ¼ş¼Ğ
+		if(finfo->fattrib & AM_DIR){//æ–‡ä»¶å¤¹
 			retUsbH = crcLcdFile(fileName);
 			if(retUsbH != FR_OK){
 				return retUsbH;
@@ -1700,7 +1483,7 @@ static FRESULT crcLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢¼ÆËãCRCÖµ
 		}
 		else{
 			printf("Bootloader:crc Lcd file:%s\n", fileName);
-			crcUdisk += getNewLcdAppCrc(fileName);//¼ÆËãUÅÌÖĞMCU APP¹Ì¼şCRC32
+			crcUdisk += getNewLcdAppCrc(fileName);//è®¡ç®—Uç›˜ä¸­MCU APPå›ºä»¶CRC32
 		}		
 	}
 	f_closedir(srcdir);
@@ -1708,7 +1491,7 @@ static FRESULT crcLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢¼ÆËãCRCÖµ
 }	
 
 
-static FRESULT updateLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢ÉÏ´«
+static FRESULT updateLcdFile(char* scanPath){//æ‰«ææ–‡ä»¶å¤¹å†…å…¨éƒ¨æ–‡ä»¶å¹¶ä¸Šä¼ 
 	DIR memofsrcdir;
 	DIR *srcdir;
 	FILINFO menoffinfo;
@@ -1716,11 +1499,11 @@ static FRESULT updateLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢ÉÏ´«
 	char fileName[256];
 	char *fn;
 	finfo=&menoffinfo; 
-	srcdir=&memofsrcdir;  //Ô´Ä¿Â¼
+	srcdir=&memofsrcdir;  //æºç›®å½•
 	retUsbH = f_opendir(srcdir, (const TCHAR*)scanPath);
 	while(retUsbH == FR_OK){
 		retUsbH = f_readdir(srcdir, finfo);
-		if(retUsbH != FR_OK || finfo->fname[0] == 0){//ÎŞĞ§ÎÄ¼ş
+		if(retUsbH != FR_OK || finfo->fname[0] == 0){//æ— æ•ˆæ–‡ä»¶
 			break;
 		}
 		if(finfo->fname[0] == '.'){
@@ -1729,7 +1512,7 @@ static FRESULT updateLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢ÉÏ´«
 		fn = finfo->fname;
 		memset(fileName, 0x0, sizeof(fileName));
 		sprintf(fileName, "%s%c%s",scanPath , '/', fn);
-		if(finfo->fattrib & AM_DIR){//ÎÄ¼ş¼Ğ
+		if(finfo->fattrib & AM_DIR){//æ–‡ä»¶å¤¹
 			retUsbH = updateLcdFile(fileName);
 			if(retUsbH != FR_OK){
 				return retUsbH;
@@ -1737,7 +1520,7 @@ static FRESULT updateLcdFile(char* scanPath){//É¨ÃèÎÄ¼ş¼ĞÄÚÈ«²¿ÎÄ¼ş²¢ÉÏ´«
 		}
 		else{
 			printf("Bootloader:crc Lcd file:%s\n", fileName);
-			crcUdisk += updateLcdApp(fileName);//¼ÆËãUÅÌÖĞMCU APP¹Ì¼şCRC32
+			crcUdisk += updateLcdApp(fileName);//è®¡ç®—Uç›˜ä¸­MCU APPå›ºä»¶CRC32
 		}		
 	}
 	f_closedir(srcdir);

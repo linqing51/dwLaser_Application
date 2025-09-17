@@ -24,7 +24,8 @@ extern const char INFO_MSG_TYPE[];
 extern const char INFO_MSG_SN[];
 extern const char INFO_MSG_WAVELENGTH[];
 extern const char INFO_MSG_LASER_POWER[];
-extern const char INFO_MSG_VERSION[];
+extern const char INFO_MSG_SW_VERSION[];
+extern const char INFO_MSG_HW_VERSION[];
 extern const char INFO_MSG_MANUFACTURE_DATE[];
 /*****************************************************************************/
 

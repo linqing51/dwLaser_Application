@@ -1,0 +1,12 @@
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/src/signal.c
+targetboard_g5_tri_a1\signal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+targetboard_g5_tri_a1\signal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rthw.h
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtthread.h
+targetboard_g5_tri_a1\signal.o: ../RT-Thread/rtconfig.h
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtdebug.h
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtdef.h
+targetboard_g5_tri_a1\signal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtservice.h
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtm.h
+targetboard_g5_tri_a1\signal.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtthread.h

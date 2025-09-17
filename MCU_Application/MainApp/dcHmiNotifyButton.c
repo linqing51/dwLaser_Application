@@ -313,12 +313,19 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #if defined(APP_CONFIG_WAVE_1470_980_650)
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
+					SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
+					
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
+					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);					
 
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
+					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
 					
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);					
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
+					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);					
 #endif
 #if defined(APP_CONFIG_WAVE_1940_650)
 					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
@@ -335,6 +342,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 #endif							
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
 					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(dispBuf));					
+										
 					SetScreen(NVRAM0[EM_DC_PAGE]);					
 					updateStandbyDisplay();
 					break;
@@ -831,7 +839,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						if (NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_CUSTIOM){
 							updateCustomScheme(NVRAM0[DM_SCHEME_INDEX]);//EM->FD
-							FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
+							if(NVRAM0[DM_SCHEME_INDEX] <= (CONFIG_HMI_SCHEME_NUM - 1)){
+								FDSAV_ONE(NVRAM0[DM_SCHEME_INDEX]);//FDRAM->EPROM
+							}
 						}
 					}
 					break;

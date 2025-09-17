@@ -3,7 +3,7 @@
 #define MAX_OUTPUT 100.0f
 #define MIN_OUTPUT 0.0f
 #define RELAY_ON_THRESHOLD 50.0f  // 继电器开启阈值
-
+/*****************************************************************************/
 // 初始化控制器
 void FuzzyPID_Init(FuzzyPIDController* pid, float Kp, float Ki, float Kd, float hysteresis) {
     pid->Kp = Kp;

@@ -25,17 +25,18 @@
 #define GDDC_PAGE_POWERUP_1940													3
 #define GDDC_PAGE_PASSCODE															4
 #define GDDC_PAGE_NEW_PASSCODE													5
-#define GDDC_PAGE_STANDBY																6
-#define GDDC_PAGE_READY																	7
-#define GDDC_PAGE_OPTION																8//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										9//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									10//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_DETAIL													11//方案分类页 自定义
-#define GDDC_PAGE_INFORMATION														12//信息页面
-#define GDDC_PAGE_DIAGNOSIS															13//诊断页面
-#define GDDC_PAGE_RENAME																14//SCHEME更名
-#define GDDC_PAGE_RESTORE																15//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														16//脚踏安全警告
+#define GDDC_PAGE_STANDBY_DUAL													6
+#define GDDC_PAGE_STANDBY_TRI														7
+#define GDDC_PAGE_READY																	9
+#define GDDC_PAGE_OPTION																10//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										11//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									12//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_DETAIL													13//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														14//信息页面
+#define GDDC_PAGE_DIAGNOSIS															15//诊断页面
+#define GDDC_PAGE_RENAME																16//SCHEME更名
+#define GDDC_PAGE_RESTORE																17//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														18//脚踏安全警告
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -99,8 +100,8 @@
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL			27//当前设定功率
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0			28//设定功率 1470 / 1940
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH1     29//设定功率 980
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED     30//设定功率 635
-#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM     31//设定功率 650
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED     30//设定功率 635(工作激光)
+#define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM     31//设定功率 650(指示激光)
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN							32//报警显示
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER			33//平均功率显示
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY					34//频率显示
@@ -111,8 +112,8 @@
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL				39//当前功率设定拖动条
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0			  40//功率设定拖动条 1470 /1940
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1        41//功率设定拖动条 980
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED 				42//功率设定拖动条 635
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM				43
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED 				42//功率设定拖动条 635(工作激光)
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM				43//功率设定拖动条 650(指示激光)
 #define GDDC_PAGE_STANDBY_ICON_MPKEY										44//脉冲模式背景图
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
@@ -212,9 +213,10 @@
 #define GDDC_PAGE_INFO_TEXTDISPLAY_SN										3
 #define GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH			4
 #define GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER			5
-#define GDDC_PAGE_INFO_TEXTDISPLAY_VERSION							6
-#define GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE			7
-#define GDDC_PAGE_INFO_TEXTDISPLAY_UUID									8
+#define GDDC_PAGE_INFO_TEXTDISPLAY_HARDWAR_VERSIONE			6
+#define GDDC_PAGE_INFO_TEXTDISPLAY_SOFTWARE_VERSION			7
+#define GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE			8
+#define GDDC_PAGE_INFO_TEXTDISPLAY_UUID									9
 /*****************************************************************************/
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO0						1
 #define GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO1						2

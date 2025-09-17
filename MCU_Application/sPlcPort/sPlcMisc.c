@@ -1,5 +1,6 @@
 #include "sPlc.h"
 #include "boardConfig.h"
+#include "appConfig.h"
 #include "usbh_core.h"
 /*****************************************************************************/
 static int16_t FanSpeed = -1;
@@ -10,24 +11,6 @@ void softDelayMs(uint16_t ms){//软件延时
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	}
 }
-
-void FanTimerInit(void) {
-  TIM_OC_InitTypeDef sConfigOC = {0};
-  htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;          // 不分频，时钟频率 = 84MHz
-  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 3359;//25KHZ PWM    
-  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  HAL_TIM_PWM_Init(&htim3);
-
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 1680;     // 初始占空比值 (CCR1)
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1);
-}
-
 
 void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -93,43 +76,6 @@ void SystemClock_Reset(void){//复位系统时钟
 }
 void resetInit(void){//复位后初始化
 	HAL_DeInit();
-
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-	HAL_CRC_MspDeInit(&hcrc);
-	HAL_RNG_MspDeInit(&hrng);
-	HAL_TIM_Base_MspDeInit(&htim2);
-	HAL_TIM_Base_MspDeInit(&htim3);
-	HAL_TIM_Base_MspDeInit(&htim7);
-	HAL_TIM_Base_MspDeInit(&htim10);
-	HAL_TIM_Base_MspDeInit(&htim12);
-	HAL_TIM_Base_MspDeInit(&htim14);	
-	HAL_I2C_MspDeInit(&hi2c1);
-	HAL_UART_MspDeInit(&huart1);
-	HAL_UART_MspDeInit(&huart4);
-	HAL_ADC_MspDeInit(&hadc1);
-	HAL_DAC_MspInit(&hdac);
-	USBH_DeInit(&hUsbHostFS);
-#endif
-
-#if defined(MODEL_PVGLS_10W_1940_A1)
-
-	HAL_CRC_MspDeInit(&hcrc);
-	HAL_RNG_MspDeInit(&hrng);
-	HAL_TIM_Base_MspDeInit(&htim2);
-	HAL_TIM_Base_MspDeInit(&htim3);
-	HAL_TIM_Base_MspDeInit(&htim4);
-	HAL_TIM_Base_MspDeInit(&htim10);
-	HAL_TIM_Base_MspDeInit(&htim14);	
-	HAL_I2C_MspDeInit(&hi2c2);
-	HAL_UART_MspDeInit(&huart1);
-	HAL_UART_MspDeInit(&huart3);
-	HAL_UART_MspDeInit(&huart5);
-	HAL_ADC_MspDeInit(&hadc1);
-	HAL_DAC_MspInit(&hdac);
-	USBH_DeInit(&hUsbHostFS);
-
-#endif
-
 	//复位RCC时钟
 	SystemClock_Reset();
 	UsbGpioReset();
@@ -147,20 +93,16 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 		if(speed < CONFIG_FAN_MIN_DC){
 			speed = CONFIG_FAN_MIN_DC;
 		}
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, speed);
+		__HAL_TIM_SET_COMPARE(&CONFIG_FAN_TIM_HANDLE, CONFIG_FAN_PWM_CHANNEL, speed);
 		if(speed != 0){
-			HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);//打开TIM
+			HAL_TIM_PWM_Start(&CONFIG_FAN_TIM_HANDLE, CONFIG_FAN_PWM_CHANNEL);//打开TIM
 		}
 		else{
-			HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_2);//关闭TIM
+			HAL_TIM_PWM_Stop(&CONFIG_FAN_TIM_HANDLE, CONFIG_FAN_PWM_CHANNEL);//关闭TIM
 		}
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-		
+
 		if(speed <= 0){
 			SET_FAN_OFF;
-			//
 		}
 		else if(speed >0 && speed < 100){
 			SET_FAN_ON;
@@ -170,8 +112,6 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 			SET_FAN_ON;
 			SET_FAN_TIM_PWM(100);
 		}
-
-#endif
 		FanSpeed = speed;
 		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
 	}
@@ -422,7 +362,99 @@ void morseCodeDiag(uint8_t diag){//蜂鸣器诊断声音 摩尔斯电码
 			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
 			break;
 		}
+		//
 		case 'M':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'N':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'O':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'P':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'Q':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'R':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'S':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'T':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'U':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'V':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'W':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'X':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'Y':{//━ ━
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
+			//-
+			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
+			break;
+		}
+		case 'Z':{//━ ━
 			//-
 			SET_RED_LED_ON;vTaskDelay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;vTaskDelay(CONFIG_MORSECODE_SPACE_TIME);
 			//-
@@ -457,6 +489,116 @@ uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
 	return crc32;	
 }
 
+void loadDeviceConfig(void){//从EPROM载入配置文件
+	uint32_t crc32_eprom_cfg, crc32_cfg;
+	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//从EPROM载入设备配置
+	epromReadDword(CONFIG_EPROM_CFG_CRC, &crc32_eprom_cfg);
+	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
+	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配置
+		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
+		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
+		
+#if defined(MODLE_M1470_640_10_15_02_D200_22_G5W_PK)//1470 V1
+		deviceConfig.calibrationPwr0[0] = 9;
+		deviceConfig.calibrationPwr0[1] = 28;
+		deviceConfig.calibrationPwr0[2] = 48;
+		deviceConfig.calibrationPwr0[3] = 68;
+		deviceConfig.calibrationPwr0[4] = 87;
+		deviceConfig.calibrationPwr0[5] = 105;
+		deviceConfig.calibrationPwr0[6] = 120;
+		deviceConfig.calibrationPwr0[7] = 133;
+		deviceConfig.calibrationPwr0[8] = 144;
+		deviceConfig.calibrationPwr0[9] = 153;
+		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;		
+#endif	
+#if defined(MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK) //1470-980 V1
+		deviceConfig.calibrationPwr0[0] = 9;
+		deviceConfig.calibrationPwr0[1] = 28;
+		deviceConfig.calibrationPwr0[2] = 48;
+		deviceConfig.calibrationPwr0[3] = 68;
+		deviceConfig.calibrationPwr0[4] = 87;
+		deviceConfig.calibrationPwr0[5] = 105;
+		deviceConfig.calibrationPwr0[6] = 120;
+		deviceConfig.calibrationPwr0[7] = 133;
+		deviceConfig.calibrationPwr0[8] = 144;
+		deviceConfig.calibrationPwr0[9] = 153;
+
+		deviceConfig.calibrationPwr1[0] = 9;
+		deviceConfig.calibrationPwr1[1] = 28;
+		deviceConfig.calibrationPwr1[2] = 48;
+		deviceConfig.calibrationPwr1[3] = 68;
+		deviceConfig.calibrationPwr1[4] = 87;
+		deviceConfig.calibrationPwr1[5] = 105;
+		deviceConfig.calibrationPwr1[6] = 120;
+		deviceConfig.calibrationPwr1[7] = 133;
+		deviceConfig.calibrationPwr1[8] = 144;
+		deviceConfig.calibrationPwr1[9] = 153;
+		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
+#endif
+
+#if defined(MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK)//1470-980-650 V2
+		deviceConfig.calibrationPwr0[0] = 9;
+		deviceConfig.calibrationPwr0[1] = 28;
+		deviceConfig.calibrationPwr0[2] = 48;
+		deviceConfig.calibrationPwr0[3] = 68;
+		deviceConfig.calibrationPwr0[4] = 87;
+		deviceConfig.calibrationPwr0[5] = 105;
+		deviceConfig.calibrationPwr0[6] = 120;
+		deviceConfig.calibrationPwr0[7] = 133;
+		deviceConfig.calibrationPwr0[8] = 144;
+		deviceConfig.calibrationPwr0[9] = 153;
+	
+		deviceConfig.calibrationPwr1[0] = 9;
+		deviceConfig.calibrationPwr1[1] = 28;
+		deviceConfig.calibrationPwr1[2] = 48;
+		deviceConfig.calibrationPwr1[3] = 68;
+		deviceConfig.calibrationPwr1[4] = 87;
+		deviceConfig.calibrationPwr1[5] = 105;
+		deviceConfig.calibrationPwr1[6] = 120;
+		deviceConfig.calibrationPwr1[7] = 133;
+		deviceConfig.calibrationPwr1[8] = 144;
+		deviceConfig.calibrationPwr1[9] = 153;
+		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
+#endif
+
+#if defined(MODLE_M12_1920_10_400S)
+		deviceConfig.calibrationPwr0[0] = 6;
+		deviceConfig.calibrationPwr0[1] = 20;
+		deviceConfig.calibrationPwr0[2] = 32;
+		deviceConfig.calibrationPwr0[3] = 45;
+		deviceConfig.calibrationPwr0[4] = 56;
+		deviceConfig.calibrationPwr0[5] = 66;
+		deviceConfig.calibrationPwr0[6] = 72;
+		deviceConfig.calibrationPwr0[7] = 81;
+		deviceConfig.calibrationPwr0[8] = 87;
+		deviceConfig.calibrationPwr0[9] = 100;
+		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
+#endif		
+
+		deviceConfig.mfg_year = 2025;
+		deviceConfig.mfg_month = 9;
+		deviceConfig.mfg_day = 14;
+			
+		sprintf(deviceConfig.serialNumber, "XXXX-XXXX");
+		deviceConfig.greenLedDc = CONFIG_GREEN_LED_DEFAULT_DC;
+		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
+		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
+		deviceConfig.aimGain = CONFIG_AIM_DEFAULT_GAIN;
+		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
+		deviceConfig.normalOpenInterLock = 1;//默认常开联锁 
+		saveDeviceConfig();
+	}
+	else{
+		printf("%s,%d,%s:load device config done...\n",__FILE__, __LINE__, __func__);
+	}
+}
+void saveDeviceConfig(void){//将配置写入EPROM
+	uint32_t crc32_cfg;
+	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM	
+	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
+	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
+	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
+}
 
 
 

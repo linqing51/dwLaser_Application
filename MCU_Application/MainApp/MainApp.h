@@ -2,6 +2,7 @@
 #define __MAINAPP_H__
 /*****************************************************************************/
 #include "sPlc.h"
+#include "dcHmiApp.h"
 /*****************************************************************************/
 extern uint8_t gddcHmiRxBuf[];
 extern __IO uint8_t adcBufferDone;//ADC 采集完毕

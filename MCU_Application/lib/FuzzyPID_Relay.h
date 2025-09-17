@@ -5,7 +5,10 @@
  */
 #ifndef FUZZY_PID_CONTROLLER_H
 #define FUZZY_PID_CONTROLLER_H
-#include "sPlc.h"
+/*****************************************************************************/
+#include "arm_math.h"
+#include "math.h"
+/*****************************************************************************/
 // 控制器状态结构体
 typedef struct {
     float Kp;           // 比例系数

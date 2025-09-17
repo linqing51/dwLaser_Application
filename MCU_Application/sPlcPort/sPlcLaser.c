@@ -1,6 +1,7 @@
 //TIM11->计时
 #include "sPlc.h"
 #include "boardConfig.h"
+#include "appConfig.h"
 /*****************************************************************************/
 int8_t LaserOn_635;
 int8_t LaserTimer_Mode;
@@ -240,6 +241,8 @@ void setRedLaserPwm(int16_t pwm){//设置红激光占空比
 	//printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
 
 }
+
+
 
 
 

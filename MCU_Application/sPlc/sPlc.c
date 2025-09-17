@@ -23,6 +23,9 @@ uint8_t TD_500MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
 /******************************************************************************/
+deviceConfig_t deviceConfig;
+deviceLogInfo_t deviceLogInfo;
+/*****************************************************************************/
 void sPlcIsrEnable(void){
 }
 void sPlcIsrDisable(void){

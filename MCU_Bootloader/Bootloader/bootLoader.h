@@ -17,10 +17,12 @@
 #include "ff.h"
 #include "ff_gen_drv.h"
 #include "flash_if.h"
-#include "usart.h"
-#include "..\..\MCU_Application\deviceInfo\deviceConfig.h"
+//#include "usart.h"
 /*****************************************************************************/
+#include "..\..\MCU_Application\lib\libcpu.h"
 #include "..\..\MCU_Application\sPlc\sPlcConfig.h"
+#include "..\..\MCU_Application\sPlc\BoardConfig.h"
+#include "..\..\MCU_Application\MainApp\AppConfig.h"
 /*****************************************************************************/
 void resetInit(void);
 void bootLoadInit(void);

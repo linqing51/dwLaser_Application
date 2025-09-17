@@ -438,6 +438,7 @@
 #define X_FOOTSWITCH_NO															(X_START * 16 + 2)//XIN2 脚踏常开
 #define X_FOOTSWITCH_NC															(X_START * 16 + 3)//XIN3 脚踏常闭
 #define X_FIBER_PROBE																(X_START * 16 + 4)//XIN5 光纤探测
+#define X_PWR_KEY																		(X_START * 16 + 5)//XIN6 电源开关
 /*****************************************************************************/
 #define Y_GREEN_LED																	(Y_START * 16 + 0)//YOUT0 绿灯开关
 #define Y_RED_LED																		(Y_START * 16 + 1)//YOUT1 红灯开关
@@ -446,6 +447,9 @@
 #define Y_ERR_LED																		(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
 #define Y_BEEM_LED																	(Y_START * 16 + 5)//YOUT5 板载错误LED指示灯
 #define Y_TEC																				(Y_START * 16 + 6)//YOUT6 TEC输出
+#define Y_VN5016_INPUT																		(Y_START * 16 + 7)//YOUT7 VN5016开通	
+#define Y_VN5016_CSDIS																		(Y_START * 16 + 8)//YOUT8 电源电流采集	
+#define Y_PWR_LED																		(Y_START * 16 + 9)//YOUT9 电源指示灯
 /*****************************************************************************/
 #define R_ESTOP																			(R_START * 16 + 0)//急停标志
 #define R_INTERLOCK																	(R_START * 16 + 1)//连锁标志

@@ -53,12 +53,41 @@ void sPlcOutputRefresh(void){//设置输出IO
 		SET_ERR_LED_OFF;
 	}
 	
-	//YOUT5 TEC
+	//YOUT5 BEEM LED
+	if(LDP(Y_BEEM_LED)){
+	}
+	if(LDN(Y_BEEM_LED)){
+	}
+	//YOUT6 TEC
 	if(LDP(Y_TEC)){
 		SET_TEC_ON;
 	}
 	if(LDN(Y_TEC)){
 		SET_TEC_OFF;
+	}
+		
+	//YOUT7 PWR ON
+	if(LDP(Y_VN5016_INPUT)){
+		SET_VN5016_INPUT_ON;
+	}
+	if(LDN(Y_VN5016_INPUT)){
+		SET_VN5016_INPUT_OFF;
+	}	
+	
+	//YOUT8 POWER DIS
+	if(LDP(Y_VN5016_CSDIS)){
+		SET_VN5016_CSDIS_ON;
+	}
+	if(LDN(Y_VN5016_CSDIS)){
+		SET_VN5016_CSDIS_OFF;
+	}	
+	
+	//YOUT9 POWER LED
+	if(LDP(Y_PWR_LED)){
+		SET_PWR_LED_ON;
+	}
+	if(LDN(Y_PWR_LED)){
+		SET_PWR_LED_OFF;
 	}
 }
 

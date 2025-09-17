@@ -1,11 +1,13 @@
 #ifndef __SPLC_H__
 #define __SPLC_H__
 /*****************************************************************************/
-#include "cmsis_os.h"
-#include "main.h"
+//stm32
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_tim.h" 
 #include "arm_math.h"
-#include "usbh_core.h"
 /*****************************************************************************/
+//cdev
+#include "math.h"
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h>
@@ -15,30 +17,23 @@
 #include "stdint.h"
 #include "string.h"
 /*****************************************************************************/
+//lib
 #include "sPlcConfig.h"
 #include "sPlcFun.h"
 #include "libcrc.h"
-#include "deviceConfig.h"
-#include "dcHmiApp.h"
-#include "preScheme.h"
-#include "hmiLib.h"
-#include "dcHmiRes.h"
-#include "MainAppLib.h"
-#include "dcHmiLanguage.H"
-#include "deviceConfig.h"
+#include "libdbg.h"
+#include "libcpu.h"
+#include "flash_if.h"
 #include "FuzzyPID_Relay.h"
 /*****************************************************************************/
+//usb
 #include "usbh_platform.h"
-#include "usbh_core.h"
 #include "usbh_msc.h"
 #include "usb_host.h"
 #include "usbh_core.h"
-#include "usbh_audio.h"
-#include "usbh_cdc.h"
-#include "usbh_msc.h"
 #include "usbh_hid.h"
-#include "usbh_mtp.h"
 /*****************************************************************************/
+//fatfs
 #include "ff.h"
 #include "ff_gen_drv.h"
 #include "flash_if.h"
@@ -65,6 +60,30 @@ typedef enum {
 	CLEAR_EPROM_DEVICE_CONFIG										= 0x05,
 	CLEAR_EPROM_LOG_INFO												= 0x06
 }clarmEpromCmd_t;
+typedef struct{
+	uint16_t calibrationPwr0[10];//通道0功率校正表
+	uint16_t calibrationPwr1[10];//通道1功率校正表
+	char serialNumber[16];//序列号
+	int16_t mfg_year;//生产年
+	int16_t mfg_month;//生产月
+	int16_t mfg_day;//生产日
+	int8_t redLedDc;//红灯亮度
+	int8_t greenLedDc;//绿灯亮度
+	int8_t blueLedDc;//蓝灯亮度
+	int8_t aimGain;//指示光增益
+	int16_t fiberDetect;//光纤探测阈值
+	char normalOpenInterLock;
+}deviceConfig_t;
+typedef struct{
+	uint32_t powerUpCycle;//开机次数
+	uint32_t runTime;//运行累计时间 单位分钟
+	int16_t laserMaxPhotoDiode;//激光器最大功率
+	int16_t mucMaxTemper;//处理器最高温度
+}deviceLogInfo_t;
+/*****************************************************************************/
+extern deviceConfig_t deviceConfig;
+extern deviceLogInfo_t deviceLogInfo;
+extern uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
@@ -143,7 +162,8 @@ extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
 extern void setPower_635(int16_t pwr);//设置红激光功率
 extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
-
+extern void saveDeviceConfig(void);//将配置写入EPROM
+extern void loadDeviceConfig(void);//从EPROM载入配置文件
 extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//在AT24CXX指定地址读出一个数据
 extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//在AT24CXX里面的指定地址开始读出16位数
 extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////在AT24CXX里面的指定地址开始读出32位数

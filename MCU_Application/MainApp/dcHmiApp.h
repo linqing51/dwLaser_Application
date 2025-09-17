@@ -5,7 +5,20 @@
 #include "boardConfig.h"
 #include "appConfig.h"
 /*****************************************************************************/
-#define FSMSTEP_POWERUP															0//上电
+#include "dcHmiApp.h"
+#include "preScheme.h"
+#include "dcHmiLanguage.h"
+#include "dcHmiNotifyButton.h"
+#include "dcHmiNotifyProgress.h"
+#include "dcHmiNotifyReadRTC.h"
+#include "dcHmiNotifyText.h"
+/*****************************************************************************/
+#include "hmiLib.h"
+#include "dcHmiRes.h"
+#include "MainAppLib.h"
+/*****************************************************************************/
+#define FSMSTEP_IDLE																0//待机
+#define FSMSTEP_POWERUP															10//上电
 //HMI初始操作	
 #define FSMSTEP_RESTORE_HMI													100//HMI 恢复储存数据
 #define FSMSTEP_CHECK_FAIL_DISPLAY									200//失败自检
@@ -84,9 +97,8 @@ void updateExtralDisplay(void);//更新额外显示
 void standbyDebugInfoVisiable(int8_t enable);
 void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/
-void loadDeviceConfig(void);
-void saveDeviceConfig(void);
-/*****************************************************************************/
+static void powerDown(void);//待机->休眠
+static void powerUp(void);//休眠->待机
 #endif
 
 

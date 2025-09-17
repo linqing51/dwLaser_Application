@@ -482,12 +482,6 @@ void FDSAV(void){//FDRAM->EPROM
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 	sPlcIsrDisable();
-	if(cn > (CONFIG_HMI_SCHEME_NUM - 1)){
-		cn = (CONFIG_HMI_SCHEME_NUM - 1);
-	}
-	if(cn < 0){
-		cn = 0;
-	}
 	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM0), 128);
 	printf("%s,%d,%s:save One FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 	sPlcIsrEnable();

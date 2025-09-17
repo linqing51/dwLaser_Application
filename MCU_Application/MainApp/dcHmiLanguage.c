@@ -19,7 +19,8 @@ const char WARN_MSG_WAIT_TRIGGER[] 				 	= {"Wait Laser Trigger"};//等待激光
 const char WARN_MSG_FIBER_MISSMATE[] 			 	= {"Fiber not mate"};
 const char INFO_MSG_SN[] 						 				= {"SN: "};
 /*****************************************************************************/
-const char INFO_MSG_VERSION[] 					 		= {"HW:"HW_VERSION" SW:"SW_VERSION""};
+const char INFO_MSG_HW_VERSION[] 					 	= {"HW:"HW_VERSION""};
+const char INFO_MSG_SW_VERSION[] 					 	= {"App:"SW_VERSION""};
 /*****************************************************************************/
 #if defined(APP_CONFIG_WAVE_1470_650)
 const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1470/15"};

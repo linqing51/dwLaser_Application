@@ -57,19 +57,24 @@
 /* Exported types ------------------------------------------------------------*/
 typedef  void (*pFunction)(void);
 
-#define BOOTLOADER_FLASH_START_ADDRESS    		ADDR_FLASH_SECTOR_0//Òıµ¼³ÌĞòÆğÊ¼µØÖ·
-#define BOOTLOADER_FLASH_END_ADDRESS			(ADDR_FLASH_SECTOR_4 - 1)//Òıµ¼³ÌĞòÆğÊ¼µØÖ·
-#define BOOTLOADER_FLASH_SIZE					(BOOTLOADER_FLASH_END_ADDRESS - BOOTLOADER_FLASH_START_ADDRESS + 1)//Òıµ¼³ÌĞòÇøÈİÁ¿
+#define BOOTLOADER_FLASH_START_ADDRESS    		ADDR_FLASH_SECTOR_0//å¼•å¯¼ç¨‹åºèµ·å§‹åœ°å€
+#define BOOTLOADER_FLASH_END_ADDRESS					(ADDR_FLASH_SECTOR_4 - 1)//å¼•å¯¼ç¨‹åºèµ·å§‹åœ°å€
+#define BOOTLOADER_FLASH_SIZE									(BOOTLOADER_FLASH_END_ADDRESS - BOOTLOADER_FLASH_START_ADDRESS + 1)//å¼•å¯¼ç¨‹åºåŒºå®¹é‡
 #ifdef STM32F413xx
-#define APPLICATION_FLASH_START_ADDRESS        	ADDR_FLASH_SECTOR_5//Ó¦ÓÃ³ÌĞòÆğÊ¼µØÖ·
-#define APPLICATION_FLASH_END_ADDRESS  			(ADDR_FLASH_SECTOR_15 + 131072 - 1)//Ó¦ÓÃ³ÌĞò½áÊøµØÖ·
-#define APPLICATION_FLASH_SIZE   				(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//Ó¦ÓÃ³ÌĞòÇøÈİÁ¿
+#define APPLICATION_FLASH_START_ADDRESS     	ADDR_FLASH_SECTOR_4//åº”ç”¨ç¨‹åºèµ·å§‹åœ°å€
+#define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_15 + 131072 - 1)//åº”ç”¨ç¨‹åºç»“æŸåœ°å€
+#define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//åº”ç”¨ç¨‹åºåŒºå®¹é‡
 #endif
 #ifdef STM32F405xx
-#define APPLICATION_FLASH_START_ADDRESS        	ADDR_FLASH_SECTOR_4//Ó¦ÓÃ³ÌĞòÆğÊ¼µØÖ·
-#define APPLICATION_FLASH_END_ADDRESS  			(ADDR_FLASH_SECTOR_11 + 131072 - 1)//Ó¦ÓÃ³ÌĞò½áÊøµØÖ·
-#define APPLICATION_FLASH_SIZE   				(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//Ó¦ÓÃ³ÌĞòÇøÈİÁ¿
+#define APPLICATION_FLASH_START_ADDRESS     	ADDR_FLASH_SECTOR_4//åº”ç”¨ç¨‹åºèµ·å§‹åœ°å€
+#define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_11 + 131072 - 1)//åº”ç”¨ç¨‹åºç»“æŸåœ°å€
+#define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//åº”ç”¨ç¨‹åºåŒºå®¹é‡
 
+#endif
+#ifdef STM32F407xx
+#define APPLICATION_FLASH_START_ADDRESS     	ADDR_FLASH_SECTOR_4//åº”ç”¨ç¨‹åºèµ·å§‹åœ°å€
+#define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_11 + 131072 - 1)//åº”ç”¨ç¨‹åºç»“æŸåœ°å€
+#define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//åº”ç”¨ç¨‹åºåŒºå®¹é‡
 #endif
 /* Base address of the Flash sectors Bank 1 */
 #ifdef STM32F413xx
@@ -90,7 +95,7 @@ typedef  void (*pFunction)(void);
 #define ADDR_FLASH_SECTOR_14     				((uint32_t)0x08140000) /* Base @ of Sector 14, 128 Kbytes */
 #define ADDR_FLASH_SECTOR_15     				((uint32_t)0x08160000) /* Base @ of Sector 15, 128 Kbytes */
 #endif
-#ifdef STM32F405xx
+#if defined(STM32F405xx) || defined(STM32F407xx) 
 #define ADDR_FLASH_SECTOR_0     				((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
 #define ADDR_FLASH_SECTOR_1     				((uint32_t)0x08004000) /* Base @ of Sector 1, 16 Kbytes */
 #define ADDR_FLASH_SECTOR_2     				((uint32_t)0x08008000) /* Base @ of Sector 2, 16 Kbytes */
@@ -104,13 +109,14 @@ typedef  void (*pFunction)(void);
 #define ADDR_FLASH_SECTOR_10    				((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
 #define ADDR_FLASH_SECTOR_11    				((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
 #endif
+
 /* Exported macros -----------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void FLASH_If_FlashUnlock(void);
 FlagStatus FLASH_If_ReadOutProtectionStatus(void);
 uint32_t FLASH_If_Write(uint32_t Address, uint32_t Data);
-uint32_t FLASH_If_EraseBootloader(void);//²Á³ıBOOTLOADER
-uint32_t FLASH_If_EraseApplication(void);//²Á³ıAPPLICATION
+uint32_t FLASH_If_EraseBootloader(void);//æ“¦é™¤BOOTLOADER
+uint32_t FLASH_If_EraseApplication(void);//æ“¦é™¤APPLICATION
 #ifdef __cplusplus
 }
 #endif

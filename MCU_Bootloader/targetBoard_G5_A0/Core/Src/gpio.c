@@ -89,6 +89,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(EDAC1_CS_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PA6 */
+  GPIO_InitStruct.Pin = GPIO_PIN_6;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pins : EDAC0_CS_Pin GREEN_LED_PWM_Pin RED_LED_PWM_Pin BLUE_LED_PWM_Pin */
   GPIO_InitStruct.Pin = EDAC0_CS_Pin|GREEN_LED_PWM_Pin|RED_LED_PWM_Pin|BLUE_LED_PWM_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;

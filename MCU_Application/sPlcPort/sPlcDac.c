@@ -38,7 +38,11 @@ void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
 	temp = NVRAM0[SPREG_DAC_1] & 0x0FFF;
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
 }
-
+void UPDAC2(void){}
+void UPDAC3(void){}
+void UPDAC4(void){}
+void UPDAC5(void){}
+void UPDAC6(void){}
 void UPDAC7(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_7] & 0x0FFF;

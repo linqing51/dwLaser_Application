@@ -100,37 +100,37 @@ const uint32_t crc32Tab[] = { /* CRC polynomial 0xedb88320 */
 static uint16_t oldcrc16;
 static uint32_t oldcrc32;
 
-uint16_t crc16Calculate(uint8_t *buf, uint32_t len){//CRC16 ¼ÆËãÊý×é
+uint16_t crc16Calculate(uint8_t *buf, uint32_t len){//CRC16 è®¡ç®—æ•°ç»„
     uint32_t i;  
     for (i = 0; i < len; i++){  
        oldcrc16 = (oldcrc16<<8) ^ crc16Tab[((oldcrc16>>8) ^ *buf++)&0x00FF];
     }  
 	return (oldcrc16 ^ 0xFFFF);  
 }
-uint16_t crc16CalculateAdd(uint8_t dat){//CRC16¼ÆËãÁ¬Ðø×Ö½Ú
+uint16_t crc16CalculateAdd(uint8_t dat){//CRC16è®¡ç®—è¿žç»­å­—èŠ‚
 	oldcrc16 = (oldcrc16<<8) ^ crc16Tab[((oldcrc16>>8) ^ dat++)&0x00FF];
 	return (oldcrc16 ^ 0xFFFF);
 }
-void crc16Clear(void){//CRC32Çå³þ¼ÆËãÖµ
+void crc16Clear(void){//CRC32æ¸…æ¥šè®¡ç®—å€¼
 	oldcrc16 = 0xFFFF;
 }
-void crc16SetCrcOld(uint16_t old){//CRC16ÉèÖÃ¼ÆËãÖµ
+void crc16SetCrcOld(uint16_t old){//CRC16è®¾ç½®è®¡ç®—å€¼
 	oldcrc16 = old;
 }
-uint32_t crc32Calculate(uint8_t *buf, uint32_t len){//CRC32 ¼ÆËãÊý×é
+uint32_t crc32Calculate(uint8_t *buf, uint32_t len){//CRC32 è®¡ç®—æ•°ç»„
     uint32_t i;  
     for (i = 0; i < len; i++){  
        oldcrc32 = crc32Tab[(oldcrc32 ^ buf[i]) & 0xff] ^ (oldcrc32 >> 8);  
     }  
 	return (oldcrc32 ^ 0xFFFFFFFF);  
 }
-uint32_t crc32CalculateAdd(uint8_t dat){//CRC32¼ÆËãÁ¬Ðø×Ö½Ú
+uint32_t crc32CalculateAdd(uint8_t dat){//CRC32è®¡ç®—è¿žç»­å­—èŠ‚
 	oldcrc32 = crc32Tab[(oldcrc32 ^ dat) & 0xff] ^ (oldcrc32 >> 8);
 	return (oldcrc32 ^ 0xFFFFFFFF);
 }
-void crc32Clear(void){//CRC32Çå³þ¼ÆËãÖµ
+void crc32Clear(void){//CRC32æ¸…æ¥šè®¡ç®—å€¼
 	oldcrc32 = 0xFFFFFFFF;
 }
-void crc32SetCrcOld(uint32_t old){//CRC32ÉèÖÃ¼ÆËãÖµ
+void crc32SetCrcOld(uint32_t old){//CRC32è®¾ç½®è®¡ç®—å€¼
 	oldcrc32 = old;
 }

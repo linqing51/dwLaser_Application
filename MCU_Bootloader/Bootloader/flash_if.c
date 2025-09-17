@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright © 2017 STMicroelectronics International N.V.
+  * <h2><center>&copy; Copyright ?2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without
@@ -118,7 +118,7 @@ uint32_t FLASH_If_EraseApplication(void){
 		return (0);
 	}
 }
-uint32_t FLASH_If_EraseBootloader(void){//²Á³ýBOOTLOAD
+uint32_t FLASH_If_EraseBootloader(void){//æ“¦é™¤BOOTLOAD
   /* Erase the user Flash area (area defined by APPLICATION_ADDRESS and
    * USER_FLASH_LAST_PAGE_ADDRESS) *** */
 	/* Get the 1st sector to erase */
@@ -210,13 +210,13 @@ static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
   {
     sector = FLASH_SECTOR_10;
   }
-#ifdef STM32F405xx
+#if defined(STM32F405xx) || defined(STM32F407xx)
 	else
   {
     sector = FLASH_SECTOR_11;
   }
 #endif
-#ifdef STM32F413xx
+#if defined(STM32F413xx)
   else if (Address < ADDR_FLASH_SECTOR_12 && Address >= ADDR_FLASH_SECTOR_11)
   {
     sector = FLASH_SECTOR_11;

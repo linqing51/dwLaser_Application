@@ -49,8 +49,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -75,8 +73,8 @@ void Error_Handler(void);
 #define TEC_PWM_GPIO_Port GPIOF
 #define AIM_PWM_Pin GPIO_PIN_6
 #define AIM_PWM_GPIO_Port GPIOF
-#define PWR_CUR_Pin GPIO_PIN_0
-#define PWR_CUR_GPIO_Port GPIOC
+#define VN5016_CUR_Pin GPIO_PIN_0
+#define VN5016_CUR_GPIO_Port GPIOC
 #define LD1_CUR_Pin GPIO_PIN_1
 #define LD1_CUR_GPIO_Port GPIOC
 #define LD0_CUR_Pin GPIO_PIN_2
@@ -149,10 +147,10 @@ void Error_Handler(void);
 #define PWR_LED_GPIO_Port GPIOD
 #define USB_FS_SEL_Pin GPIO_PIN_15
 #define USB_FS_SEL_GPIO_Port GPIOD
-#define PWR_DIS_Pin GPIO_PIN_2
-#define PWR_DIS_GPIO_Port GPIOG
-#define PWR_ON_Pin GPIO_PIN_3
-#define PWR_ON_GPIO_Port GPIOG
+#define VN5016_CSDIS_Pin GPIO_PIN_2
+#define VN5016_CSDIS_GPIO_Port GPIOG
+#define VN5016_INPUT_Pin GPIO_PIN_3
+#define VN5016_INPUT_GPIO_Port GPIOG
 #define INTERLOCK_NC_Pin GPIO_PIN_4
 #define INTERLOCK_NC_GPIO_Port GPIOG
 #define SPK_EN_Pin GPIO_PIN_5

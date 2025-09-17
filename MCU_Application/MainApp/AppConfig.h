@@ -1,21 +1,41 @@
 #ifndef __APPCONFIG_H__
 #define __APPCONFIG_H__
 /*****************************************************************************/
-#define SW_VERSION																		"3.1a16b0"
+#define SW_VERSION																		"3.1a17b2"
 #define HW_VERSION																		"LDR2P1_G5_A1_20250731_DUAL"
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 #define APP_CONFIG_WAVE_1940_650//APP为双波长 1940+650
+#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL)
 #define APP_CONFIG_WAVE_1470_650//APP为双波长 1470+650
+#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
 #if defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
-#define APP_CONFIG_WAVE_1470_980_650//APP为三波长 1470+650	
+#define APP_CONFIG_WAVE_1470_980_650//APP为三波长 1470+650
+#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_TRI
+#endif
+
+//激光器选这
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL)
+#define MODLE_M1470_640_10_15_02_D200_22_G5W_PK//1470+650 V1
+#endif
+
+#if defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0)
+#define MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK//1470+980+650 V1
+#endif 
+
+#if defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#define MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK//1470+980+650 V2
+#endif
+
+#if defined(MODEL_PVGLS_10W_1940_A1)
+#define MODLE_M12_1920_10_400S//吉光1940
 #endif
 
 #if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
-#define APP_CONFIG_WFSW_PORT													hUsbHostHS
+#define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #else
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #endif
@@ -163,11 +183,11 @@
 //定义指示灯亮度
 #if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
 #define CONFIG_BLUE_LED_MAX_DC												100
-#define CONFIG_BLUE_LED_DEFAULT_DC										10
+#define CONFIG_BLUE_LED_DEFAULT_DC										25
 #define CONFIG_RED_LED_MAX_DC													100	
 #define CONFIG_RED_LED_DEFAULT_DC											25
 #define CONFIG_GREEN_LED_MAX_DC												100
-#define CONFIG_GREEN_LED_DEFAULT_DC										10
+#define CONFIG_GREEN_LED_DEFAULT_DC										25
 #endif
 #ifdef MODEL_PVGLS_15W_1470_A0
 #define CONFIG_BLUE_LED_MAX_DC												100
@@ -300,6 +320,7 @@
 #define POWER_REAL_CH3_100P														4000
 #define CONFIG_DCHMI_DISKBUF_SIZE											256//显示缓冲区大小
 /*****************************************************************************/
+
 #endif
 
 

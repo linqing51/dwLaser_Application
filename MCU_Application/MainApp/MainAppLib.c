@@ -1,5 +1,5 @@
 #include "MainAppLib.h"
-/*****************************************************************************/
+/****************************************************************************/
 void addAcousticTime(void){//增加提示时间 +STEP
 	NVRAM0[EM_ACOUSTIC_TIME] += NVRAM0[EM_ACOUSTIC_TIME_STEP];
 	LIMS16(EM_ACOUSTIC_TIME, EM_ACOUSTIC_TIME_MIN, EM_ACOUSTIC_TIME_MAX);
@@ -265,6 +265,8 @@ int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb){//增量PID
 	t->ek1 = t->ek0;
 	return (int16_t)(fout);
 }	
+
+
 
 
 

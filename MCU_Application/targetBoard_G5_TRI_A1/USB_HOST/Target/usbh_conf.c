@@ -38,9 +38,6 @@
 HCD_HandleTypeDef hhcd_USB_OTG_FS;
 void Error_Handler(void);
 
-HCD_HandleTypeDef hhcd_USB_OTG_HS;
-void Error_Handler(void);
-
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -113,10 +110,6 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hcdHandle)
 
     /* Peripheral clock enable */
     __HAL_RCC_USB_OTG_HS_CLK_ENABLE();
-
-    /* Peripheral interrupt init */
-    HAL_NVIC_SetPriority(OTG_HS_IRQn, 5, 0);
-    HAL_NVIC_EnableIRQ(OTG_HS_IRQn);
   /* USER CODE BEGIN USB_OTG_HS_MspInit 1 */
 
   /* USER CODE END USB_OTG_HS_MspInit 1 */
@@ -159,9 +152,6 @@ void HAL_HCD_MspDeInit(HCD_HandleTypeDef* hcdHandle)
     PB15     ------> USB_OTG_HS_DP
     */
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_14|GPIO_PIN_15);
-
-    /* Peripheral interrupt Deinit*/
-    HAL_NVIC_DisableIRQ(OTG_HS_IRQn);
 
   /* USER CODE BEGIN USB_OTG_HS_MspDeInit 1 */
 
@@ -262,27 +252,6 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
   }
 
   USBH_LL_SetTimer(phost, HAL_HCD_GetCurrentFrame(&hhcd_USB_OTG_FS));
-  }
-  if (phost->id == HOST_HS) {
-  /* Link the driver to the stack. */
-  hhcd_USB_OTG_HS.pData = phost;
-  phost->pData = &hhcd_USB_OTG_HS;
-
-  hhcd_USB_OTG_HS.Instance = USB_OTG_HS;
-  hhcd_USB_OTG_HS.Init.Host_channels = 12;
-  hhcd_USB_OTG_HS.Init.speed = HCD_SPEED_FULL;
-  hhcd_USB_OTG_HS.Init.dma_enable = DISABLE;
-  hhcd_USB_OTG_HS.Init.phy_itface = USB_OTG_EMBEDDED_PHY;
-  hhcd_USB_OTG_HS.Init.Sof_enable = DISABLE;
-  hhcd_USB_OTG_HS.Init.low_power_enable = DISABLE;
-  hhcd_USB_OTG_HS.Init.vbus_sensing_enable = DISABLE;
-  hhcd_USB_OTG_HS.Init.use_external_vbus = DISABLE;
-  if (HAL_HCD_Init(&hhcd_USB_OTG_HS) != HAL_OK)
-  {
-    Error_Handler( );
-  }
-
-  USBH_LL_SetTimer(phost, HAL_HCD_GetCurrentFrame(&hhcd_USB_OTG_HS));
   }
   return USBH_OK;
 }
@@ -532,9 +501,10 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
   if (phost->id == HOST_FS) {
     MX_DriverVbusFS(state);
   }
-  if (phost->id == HOST_HS) {
-    MX_DriverVbusHS(state);
-  }
+
+  /* USER CODE BEGIN 0 */
+
+  /* USER CODE END 0*/
 
   HAL_Delay(200);
   return USBH_OK;

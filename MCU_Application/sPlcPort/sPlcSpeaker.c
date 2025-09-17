@@ -1,5 +1,6 @@
 #include "sPlc.h"
 #include "boardConfig.h"
+#include "appConfig.h"
 /*****************************************************************************/
 static int8_t LoudspeakerEnable = -1;//喇叭使能状态
 static int8_t LoudspeakerVolume = -1;//喇叭音量
@@ -137,29 +138,58 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	SET_MCP41010_CS(GPIO_PIN_SET);
 }
 
-static void setSpeakerFreq(uint16_t frequency){
-	TIM_OC_InitTypeDef sConfigOC = {0};
-  // 计算自动重载值(ARR)和预分频器值(PSC)
-  uint32_t SystemCoreClock = HAL_RCC_GetPCLK1Freq();
-  uint32_t psc = 84 - 1; // 预分频器值，将42MHz时钟分频为1MHz
-  uint32_t arr = (SystemCoreClock / (psc + 1)) / frequency - 1;
 
-  // TIM8初始化
-  htim8.Instance = TIM8;
-  htim8.Init.Prescaler = psc;
-  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim8.Init.Period = arr;
-  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_PWM_Init(&htim8) != HAL_OK){
+
+
+
+static void setSpeakerFreq(uint16_t frequency){
+  // TIM8时钟频率为168MHz (APB2时钟84MHz，定时器时钟=2*APB2时钟)
+  uint32_t timer_clock = 84000000;
+  
+  // 计算预分频器和自动重装载值
+  // 目标: (PSC + 1) * (ARR + 1) = timer_clock / frequency
+  uint32_t prescaler = 0;
+  uint32_t arr_value;
+  
+  // 确保频率在有效范围内
+  if (frequency == 0) frequency = 1;
+  if (frequency > timer_clock / 2) frequency = timer_clock / 2;
+  
+  // 计算最佳的PSC和ARR组合
+  // 先尝试不分频(PSC=0)
+  arr_value = (timer_clock / frequency) - 1;
+  
+  // 如果ARR超过最大值(65535)，增加预分频
+  if (arr_value > 65535)
+  {
+    prescaler = 167;  // 168分频
+    arr_value = (timer_clock / (prescaler + 1) / frequency) - 1;
+    
+    // 如果仍然超过最大值，进一步增加预分频
+    if (arr_value > 65535)
+    {
+      prescaler = 1023; // 1024分频
+      arr_value = (timer_clock / (prescaler + 1) / frequency) - 1;
+    }
+  }
+  
+  // 配置定时器参数
+  htim8.Init.Prescaler = prescaler;
+  htim8.Init.Period = arr_value;
+  // 重新初始化定时器
+  if (HAL_TIM_Base_Init(&htim8) != HAL_OK){
 		printf("reSet TIM8 base clk fail!!!\n");
     Error_Handler();
   }
-  // 配置PWM模式 (使用CH1)
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = arr / 2; // 50%占空比
+  // 配置50%占空比
+  TIM_OC_InitTypeDef sConfigOC = {0};
+	sConfigOC.OCMode = TIM_OCMODE_TOGGLE;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;	
+  sConfigOC.Pulse = arr_value / 2;  // 50%占空比
   if (HAL_TIM_PWM_ConfigChannel(&htim8, &sConfigOC, TIM_CHANNEL_1) != HAL_OK){
 		printf("reSet TIM8 CH1 out freq fail!!!\n");
     Error_Handler();
