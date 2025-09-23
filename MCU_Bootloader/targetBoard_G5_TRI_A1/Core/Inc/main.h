@@ -49,8 +49,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -131,8 +129,10 @@ void Error_Handler(void);
 #define DEV_I2C2_SDA_GPIO_Port GPIOB
 #define MPU_USB1_PSON_Pin GPIO_PIN_12
 #define MPU_USB1_PSON_GPIO_Port GPIOB
-#define USB_HS_PSON_Pin GPIO_PIN_13
-#define USB_HS_PSON_GPIO_Port GPIOB
+#define USB_INT_PSON_Pin GPIO_PIN_14
+#define USB_INT_PSON_GPIO_Port GPIOB
+#define USB_FS_SEL2_Pin GPIO_PIN_15
+#define USB_FS_SEL2_GPIO_Port GPIOB
 #define UART3_RXD_Pin GPIO_PIN_8
 #define UART3_RXD_GPIO_Port GPIOD
 #define UART3_RXDD9_Pin GPIO_PIN_9
@@ -149,10 +149,10 @@ void Error_Handler(void);
 #define PWR_LED_GPIO_Port GPIOD
 #define USB_FS_SEL_Pin GPIO_PIN_15
 #define USB_FS_SEL_GPIO_Port GPIOD
-#define PWR_DIS_Pin GPIO_PIN_2
-#define PWR_DIS_GPIO_Port GPIOG
-#define PWR_ON_Pin GPIO_PIN_3
-#define PWR_ON_GPIO_Port GPIOG
+#define VN5016_CSDIS_Pin GPIO_PIN_2
+#define VN5016_CSDIS_GPIO_Port GPIOG
+#define VN5016_INPUT_Pin GPIO_PIN_3
+#define VN5016_INPUT_GPIO_Port GPIOG
 #define INTERLOCK_NC_Pin GPIO_PIN_4
 #define INTERLOCK_NC_GPIO_Port GPIOG
 #define SPK_EN_Pin GPIO_PIN_5

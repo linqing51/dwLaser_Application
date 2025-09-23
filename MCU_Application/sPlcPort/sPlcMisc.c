@@ -6,10 +6,18 @@
 static int16_t FanSpeed = -1;
 /*****************************************************************************/
 void softDelayMs(uint16_t ms){//软件延时
-	uint32_t i;
-	for(i = 0;i < 1000;i ++){
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	}
+    // 168MHz主频下，每个循环约4个指令周期
+    // 计算每个毫秒需要的循环次数：(168,000,000 周期/秒) / (1000 毫秒/秒) / 4 周期/循环 = 42000
+    const uint32_t cycles_per_ms = 42000;
+    
+    // 使用volatile关键字防止编译器优化掉空循环
+    volatile uint32_t count;
+    
+    while (ms--)
+    {
+        count = cycles_per_ms;
+        while (count--);
+    }
 }
 
 void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
@@ -512,27 +520,28 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;		
 #endif	
 #if defined(MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK) //1470-980 V1
-		deviceConfig.calibrationPwr0[0] = 9;
-		deviceConfig.calibrationPwr0[1] = 28;
-		deviceConfig.calibrationPwr0[2] = 48;
-		deviceConfig.calibrationPwr0[3] = 68;
-		deviceConfig.calibrationPwr0[4] = 87;
-		deviceConfig.calibrationPwr0[5] = 105;
-		deviceConfig.calibrationPwr0[6] = 120;
-		deviceConfig.calibrationPwr0[7] = 133;
-		deviceConfig.calibrationPwr0[8] = 144;
-		deviceConfig.calibrationPwr0[9] = 153;
-
+		//1470nm
+		deviceConfig.calibrationPwr0[0] = 6;
+		deviceConfig.calibrationPwr0[1] = 21;
+		deviceConfig.calibrationPwr0[2] = 36;
+		deviceConfig.calibrationPwr0[3] = 52;
+		deviceConfig.calibrationPwr0[4] = 68;
+		deviceConfig.calibrationPwr0[5] = 85;
+		deviceConfig.calibrationPwr0[6] = 99;
+		deviceConfig.calibrationPwr0[7] = 113;
+		deviceConfig.calibrationPwr0[8] = 125;
+		deviceConfig.calibrationPwr0[9] = 150;
+		//980nm
 		deviceConfig.calibrationPwr1[0] = 9;
-		deviceConfig.calibrationPwr1[1] = 28;
-		deviceConfig.calibrationPwr1[2] = 48;
-		deviceConfig.calibrationPwr1[3] = 68;
-		deviceConfig.calibrationPwr1[4] = 87;
-		deviceConfig.calibrationPwr1[5] = 105;
-		deviceConfig.calibrationPwr1[6] = 120;
-		deviceConfig.calibrationPwr1[7] = 133;
-		deviceConfig.calibrationPwr1[8] = 144;
-		deviceConfig.calibrationPwr1[9] = 153;
+		deviceConfig.calibrationPwr1[1] = 27;
+		deviceConfig.calibrationPwr1[2] = 45;
+		deviceConfig.calibrationPwr1[3] = 62;
+		deviceConfig.calibrationPwr1[4] = 79;
+		deviceConfig.calibrationPwr1[5] = 96;
+		deviceConfig.calibrationPwr1[6] = 112;
+		deviceConfig.calibrationPwr1[7] = 127;
+		deviceConfig.calibrationPwr1[8] = 140;
+		deviceConfig.calibrationPwr1[9] = 150;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 #endif
 

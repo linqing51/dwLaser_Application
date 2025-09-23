@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    usb_otg_hs.h
+  * @file    i2c.h
   * @brief   This file contains all the function prototypes for
-  *          the usb_otg_hs.c file
+  *          the i2c.c file
   ******************************************************************************
   * @attention
   *
@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USB_OTG_HS_H__
-#define __USB_OTG_HS_H__
+#ifndef __I2C_H__
+#define __I2C_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,14 +32,16 @@ extern "C" {
 
 /* USER CODE END Includes */
 
-extern HCD_HandleTypeDef hhcd_USB_OTG_HS;
+extern I2C_HandleTypeDef hi2c1;
+
+extern I2C_HandleTypeDef hi2c2;
 
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
-void MX_USB_OTG_FS_HCD_Init(void);
-void MX_USB_OTG_HS_HCD_Init(void);
+void MX_I2C1_Init(void);
+void MX_I2C2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
@@ -49,5 +51,5 @@ void MX_USB_OTG_HS_HCD_Init(void);
 }
 #endif
 
-#endif /* __USB_OTG_HS_H__ */
+#endif /* __I2C_H__ */
 

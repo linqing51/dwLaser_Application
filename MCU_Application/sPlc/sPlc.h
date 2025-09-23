@@ -24,10 +24,10 @@
 #include "libdbg.h"
 #include "libcpu.h"
 #include "flash_if.h"
-#include "FuzzyPID_Relay.h"
+#include "pid_temp_control.h"
+#include "fuzzy_pid.h"
 /*****************************************************************************/
 //usb
-#include "usbh_platform.h"
 #include "usbh_msc.h"
 #include "usb_host.h"
 #include "usbh_core.h"

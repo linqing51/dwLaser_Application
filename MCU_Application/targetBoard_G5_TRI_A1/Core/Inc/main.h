@@ -129,8 +129,10 @@ void Error_Handler(void);
 #define DEV_I2C2_SDA_GPIO_Port GPIOB
 #define MPU_USB1_PSON_Pin GPIO_PIN_12
 #define MPU_USB1_PSON_GPIO_Port GPIOB
-#define USB_HS_PSON_Pin GPIO_PIN_13
-#define USB_HS_PSON_GPIO_Port GPIOB
+#define USB_INT_PSON_Pin GPIO_PIN_14
+#define USB_INT_PSON_GPIO_Port GPIOB
+#define USB_FS_SEL2_Pin GPIO_PIN_15
+#define USB_FS_SEL2_GPIO_Port GPIOB
 #define UART3_RXD_Pin GPIO_PIN_8
 #define UART3_RXD_GPIO_Port GPIOD
 #define UART3_RXDD9_Pin GPIO_PIN_9
@@ -169,8 +171,8 @@ void Error_Handler(void);
 #define RED_LED_GPIO_Port GPIOC
 #define GREEN_LED_Pin GPIO_PIN_9
 #define GREEN_LED_GPIO_Port GPIOC
-#define USB_FS_PSON_Pin GPIO_PIN_8
-#define USB_FS_PSON_GPIO_Port GPIOA
+#define USB_EXT_PSON_Pin GPIO_PIN_8
+#define USB_EXT_PSON_GPIO_Port GPIOA
 #define DBG_TX_Pin GPIO_PIN_9
 #define DBG_TX_GPIO_Port GPIOA
 #define DBG_RX_Pin GPIO_PIN_10

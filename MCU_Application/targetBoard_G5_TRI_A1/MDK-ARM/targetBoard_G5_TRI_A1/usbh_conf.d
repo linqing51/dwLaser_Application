@@ -64,5 +64,4 @@
 .\targetboard_g5_tri_a1\usbh_conf.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\usbh_conf.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\usbh_conf.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
-.\targetboard_g5_tri_a1\usbh_conf.o: ../USB_HOST/Target/usbh_platform.h
-.\targetboard_g5_tri_a1\usbh_conf.o: ../USB_HOST/App/usb_host.h
+.\targetboard_g5_tri_a1\usbh_conf.o: ../../sPlc/boardConfig.h

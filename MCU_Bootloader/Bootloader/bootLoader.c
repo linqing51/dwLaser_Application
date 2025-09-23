@@ -168,7 +168,7 @@ void bootLoadInit(void){//引导程序初始化
 	SET_BLUE_LED_OFF;
 	SET_TICK_LED_OFF;
 	SET_ERR_LED_OFF;
-#if !defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || !defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if !defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) && !defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
 	//R-G-Y流水
 	//R
 	SET_RED_LED_ON;
@@ -261,7 +261,6 @@ void bootLoadProcess(void){//bootload 执行程序
 	uint32_t brByte;//实际读取的字节数
 	crcFlash = 0;
 	crcUdisk = 0;
-	SET_USB_FS_SEL_OFF;
 	switch(bootLoadState){
 		case BT_STATE_IDLE:{//开机等待U盘识别     
 			SET_AIM_TIM_OFF;
@@ -318,6 +317,8 @@ void bootLoadProcess(void){//bootload 执行程序
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下	
 #endif
+				SET_VN5016_INPUT_ON;//打开24V 供电
+				printf("Bootloader:24V ON\n");
 				SET_FAN_ON;
 				SET_RED_LED_ON;
 				SET_GREEN_LED_OFF;
@@ -802,11 +803,14 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
 	HAL_FLASH_Unlock();
+	HAL_Delay(1000);
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY|FLASH_FLAG_EOP|FLASH_FLAG_PGSERR|FLASH_FLAG_WRPERR);
 	if (FLASH_If_EraseApplication() != 0x00){//擦除APP FLASH区域失败
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
+	HAL_Delay(1000);
 	checkBlank(APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_SIZE);//FLASH 查空
+	HAL_Delay(1000);
 	printf("Bootloader:Erase mcu application sucess.\n");
 	RamAddress = (uint32_t)&RAM_Buf;//获取RAM缓存区地址
 	/* Erase address init */
@@ -840,6 +844,7 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		crc32 = crc32CalculateAdd(0xFF);
 	}
 	HAL_FLASH_Lock();
+	HAL_Delay(1000);
 	printf("Bootloader:Write mcu app finish.\n");
 	f_close(&McuFile);
 	return crc32;

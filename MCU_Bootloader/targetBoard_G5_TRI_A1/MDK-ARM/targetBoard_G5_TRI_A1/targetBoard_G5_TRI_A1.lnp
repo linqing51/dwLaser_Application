@@ -1,6 +1,15 @@
 --cpu=Cortex-M4.fp.sp
 "targetboard_g5_tri_a1\startup_stm32f407xx.o"
 "targetboard_g5_tri_a1\main.o"
+"targetboard_g5_tri_a1\gpio.o"
+"targetboard_g5_tri_a1\adc.o"
+"targetboard_g5_tri_a1\crc.o"
+"targetboard_g5_tri_a1\dac.o"
+"targetboard_g5_tri_a1\i2c.o"
+"targetboard_g5_tri_a1\rng.o"
+"targetboard_g5_tri_a1\spi.o"
+"targetboard_g5_tri_a1\tim.o"
+"targetboard_g5_tri_a1\usart.o"
 "targetboard_g5_tri_a1\stm32f4xx_it.o"
 "targetboard_g5_tri_a1\stm32f4xx_hal_msp.o"
 "targetboard_g5_tri_a1\stm32f4xx_hal_timebase_tim.o"
@@ -58,4 +67,4 @@
 --library_type=microlib --strict --scatter "targetBoard_G5_TRI_A1\targetBoard_G5_TRI_A1.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
---list "targetBoard_G5_TRI_A1.map" -o targetBoard_G5_TRI_A1\targetBoard_G5_TRI_A1.axf
+--list ".\targetBoard_G5_TRI_A1\targetBoard_G5_TRI_A1.map" -o targetBoard_G5_TRI_A1\targetBoard_G5_TRI_A1.axf

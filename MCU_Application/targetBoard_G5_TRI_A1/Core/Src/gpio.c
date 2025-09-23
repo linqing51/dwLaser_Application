@@ -66,8 +66,8 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOF, TEC_PWM_Pin|EDAC7_SCK_Pin|EDAC7_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, EDAC7_SDI_Pin|MPU_USB1_PSON_Pin|USB_HS_PSON_Pin|ERR_LED_Pin
-                          |TICK_LED_Pin|BEEM_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, EDAC7_SDI_Pin|MPU_USB1_PSON_Pin|USB_INT_PSON_Pin|USB_FS_SEL2_Pin
+                          |ERR_LED_Pin|TICK_LED_Pin|BEEM_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, DEV_GPIO9_Pin|VN5016_CSDIS_Pin|VN5016_INPUT_Pin|SPK_EN_Pin
@@ -77,7 +77,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOD, PWR_LED_Pin|USB_FS_SEL_Pin|AHT_SDA_Pin|AHT_SCL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(USB_FS_PSON_GPIO_Port, USB_FS_PSON_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(USB_EXT_PSON_GPIO_Port, USB_EXT_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : NFC_RESET_Pin */
   GPIO_InitStruct.Pin = NFC_RESET_Pin;
@@ -151,12 +151,19 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MPU_USB1_PSON_Pin USB_HS_PSON_Pin ERR_LED_Pin TICK_LED_Pin
-                           BEEM_LED_Pin */
-  GPIO_InitStruct.Pin = MPU_USB1_PSON_Pin|USB_HS_PSON_Pin|ERR_LED_Pin|TICK_LED_Pin
-                          |BEEM_LED_Pin;
+  /*Configure GPIO pin : MPU_USB1_PSON_Pin */
+  GPIO_InitStruct.Pin = MPU_USB1_PSON_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(MPU_USB1_PSON_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : USB_INT_PSON_Pin USB_FS_SEL2_Pin ERR_LED_Pin TICK_LED_Pin
+                           BEEM_LED_Pin */
+  GPIO_InitStruct.Pin = USB_INT_PSON_Pin|USB_FS_SEL2_Pin|ERR_LED_Pin|TICK_LED_Pin
+                          |BEEM_LED_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -207,12 +214,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : USB_FS_PSON_Pin */
-  GPIO_InitStruct.Pin = USB_FS_PSON_Pin;
+  /*Configure GPIO pin : USB_EXT_PSON_Pin */
+  GPIO_InitStruct.Pin = USB_EXT_PSON_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(USB_FS_PSON_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(USB_EXT_PSON_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : AHT_SDA_Pin AHT_SCL_Pin */
   GPIO_InitStruct.Pin = AHT_SDA_Pin|AHT_SCL_Pin;

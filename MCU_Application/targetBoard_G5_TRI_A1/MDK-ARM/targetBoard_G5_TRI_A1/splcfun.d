@@ -99,12 +99,12 @@
 .\targetboard_g5_tri_a1\splcfun.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../lib/flash_if.h
-.\targetboard_g5_tri_a1\splcfun.o: ../../lib/FuzzyPID_Relay.h
-.\targetboard_g5_tri_a1\splcfun.o: ../USB_HOST/Target/usbh_platform.h
-.\targetboard_g5_tri_a1\splcfun.o: ../USB_HOST/App/usb_host.h
+.\targetboard_g5_tri_a1\splcfun.o: ../../lib/pid_temp_control.h
+.\targetboard_g5_tri_a1\splcfun.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h
+.\targetboard_g5_tri_a1\splcfun.o: ../USB_HOST/App/usb_host.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_mouse.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h

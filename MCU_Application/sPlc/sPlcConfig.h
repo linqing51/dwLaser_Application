@@ -11,7 +11,7 @@
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
-#define CONFIG_INPUT_FILTER_TIME											8//输入数字滤波扫描周期 1mS * N
+#define CONFIG_INPUT_FILTER_TIME											10//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
 #define CONFIG_SPLC_USING_SPWM												1//使能软件PWM功能
@@ -447,8 +447,8 @@
 #define Y_ERR_LED																		(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
 #define Y_BEEM_LED																	(Y_START * 16 + 5)//YOUT5 板载错误LED指示灯
 #define Y_TEC																				(Y_START * 16 + 6)//YOUT6 TEC输出
-#define Y_VN5016_INPUT																		(Y_START * 16 + 7)//YOUT7 VN5016开通	
-#define Y_VN5016_CSDIS																		(Y_START * 16 + 8)//YOUT8 电源电流采集	
+#define Y_VN5016_INPUT															(Y_START * 16 + 7)//YOUT7 VN5016开通	
+#define Y_VN5016_CSDIS															(Y_START * 16 + 8)//YOUT8 电源电流采集	
 #define Y_PWR_LED																		(Y_START * 16 + 9)//YOUT9 电源指示灯
 /*****************************************************************************/
 #define R_ESTOP																			(R_START * 16 + 0)//急停标志

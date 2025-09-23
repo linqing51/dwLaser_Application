@@ -84,7 +84,6 @@
 .\targetboard_g5_tri_a1\main.o: ../Core/Inc/tim.h
 .\targetboard_g5_tri_a1\main.o: ../Core/Inc/usart.h
 .\targetboard_g5_tri_a1\main.o: ../USB_HOST/App/usb_host.h
-.\targetboard_g5_tri_a1\main.o: ../Core/Inc/usb_otg_hs.h
 .\targetboard_g5_tri_a1\main.o: ../Core/Inc/gpio.h
 .\targetboard_g5_tri_a1\main.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\main.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
@@ -121,8 +120,8 @@
 .\targetboard_g5_tri_a1\main.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\main.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\main.o: ../../lib/flash_if.h
-.\targetboard_g5_tri_a1\main.o: ../../lib/FuzzyPID_Relay.h
-.\targetboard_g5_tri_a1\main.o: ../USB_HOST/Target/usbh_platform.h
+.\targetboard_g5_tri_a1\main.o: ../../lib/pid_temp_control.h
+.\targetboard_g5_tri_a1\main.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h
 .\targetboard_g5_tri_a1\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_mouse.h
 .\targetboard_g5_tri_a1\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h

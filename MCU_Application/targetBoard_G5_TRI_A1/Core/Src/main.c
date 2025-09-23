@@ -30,7 +30,6 @@
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
-#include "usb_otg_hs.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -119,7 +118,6 @@ int main(void)
   MX_TIM14_Init();
   MX_TIM7_Init();
   MX_FATFS_Init();
-  MX_USB_OTG_HS_HCD_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */

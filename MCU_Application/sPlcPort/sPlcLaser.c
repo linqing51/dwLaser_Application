@@ -179,16 +179,17 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 }
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
-		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_CH0){
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 			SET_LASER_CH0_ON;
 		}
-		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_CH1){
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
 			SET_LASER_CH1_ON;
 		}
-		if(NVRAM0[EM_LASER_CHANNEL_SELECT] & LASER_CHANNEL_RED){//打开红激光
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//打开红激光
 			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
 		}
 		LaserFlag_Emiting = true;
+		SET_BEEM_LED_ON;
 	}
 }
 static void laserStop(void){//按通道选择关闭激光
@@ -197,6 +198,7 @@ static void laserStop(void){//按通道选择关闭激光
 		SET_LASER_CH1_OFF;
 		setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
 		LaserFlag_Emiting = false;
+		SET_BEEM_LED_OFF;
 	}
 }
 void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射	

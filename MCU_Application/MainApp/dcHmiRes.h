@@ -27,16 +27,16 @@
 #define GDDC_PAGE_NEW_PASSCODE													5
 #define GDDC_PAGE_STANDBY_DUAL													6
 #define GDDC_PAGE_STANDBY_TRI														7
-#define GDDC_PAGE_READY																	9
-#define GDDC_PAGE_OPTION																10//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										11//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									12//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_DETAIL													13//方案分类页 自定义
-#define GDDC_PAGE_INFORMATION														14//信息页面
-#define GDDC_PAGE_DIAGNOSIS															15//诊断页面
-#define GDDC_PAGE_RENAME																16//SCHEME更名
-#define GDDC_PAGE_RESTORE																17//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														18//脚踏安全警告
+#define GDDC_PAGE_READY																	8
+#define GDDC_PAGE_OPTION																9//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										10//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									11//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_DETAIL													12//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														13//信息页面
+#define GDDC_PAGE_DIAGNOSIS															14//诊断页面
+#define GDDC_PAGE_RENAME																15//SCHEME更名
+#define GDDC_PAGE_RESTORE																16//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														17//脚踏安全警告
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2

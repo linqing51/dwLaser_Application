@@ -6,12 +6,8 @@ uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
 uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
 uint32_t newBootloadCrc32;
-IncPid_t LaserTecIncPids;
-FuzzyPIDController LaserFuzzyPids;
-int16_t LaserTecOut;
-int16_t LaserFanOut;
-int16_t LaserTecOutCounter;
-int16_t LaserFanOutCounter;
+int16_t LaserTecOutCounter, LaserTecOut;
+PID_Controller temp_controller;
 /*****************************************************************************/
 FRESULT retUsbH;
 FATFS	USBH_fatfs;
@@ -40,9 +36,14 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	uint32_t i;
 	//警告信息
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Please Standby,Do Not Power Off!!"));
-	vTaskDelay(800);
+	SET_USB_FS_SEL_OFF;
+	SET_USB_FS_SEL2_ON;//切换为外部USB
+	printf("Bootloader:switch ext usb\n");
+	SET_USB_INT_PSON_OFF;//关闭内部USB供电
+	printf("Bootloader:power off int usb power\n");
+	vTaskDelay(2000);
 	//挂载USB DISK FAT文件系统
-	retUsbH = f_mount(&USBH_fatfs, (const TCHAR*)FATFS_ROOT, 0);
+	retUsbH = f_mount(&USBH_fatfs, (const TCHAR*)FATFS_ROOT, 1);
 	if(retUsbH != FR_OK){//挂载U盘失败
 		printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Mount usb disk errror,exit update!"));
@@ -115,39 +116,41 @@ void confirmBootloadUpdate(void){//执行Bootload更新
 	vTaskSuspendAll();//禁用任务切换
 	__disable_irq();//关闭中断
 	SysTick->CTRL = 0;//关键代码
-	HAL_FLASH_Unlock();//解说FLASH锁定
+	HAL_FLASH_Unlock();//解锁FLASH锁定
+	softDelayMs(3000);
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR);
 	if (FLASH_If_EraseBootload() != 0x00){//擦除BOOTLOAD 失败
 		printf("BootLoader:Erase bootload fail, GameOver!!!!!\n");
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
 		return;
 	}
-	softDelayMs(800);
+	softDelayMs(1000);
 	if(checkBlank(BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_SIZE)){//FLASH 查空
-		printf("Bootloader:Erase mcu booload sucess.\n");
+		printf("Bootloader:Check mcu booload blank sucess.\n");
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload sucessful..."));
 	}
 	else{
-		printf("Bootloader:Erase mcu booload fail.\n");
+		printf("Bootloader:Check mcu booload blank not empty!\n");
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
 		return;
 	}
-	softDelayMs(20000);
+	softDelayMs(2000);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start update new bootload..."));
 	for(i = 0; i < BOOTLOADER_FLASH_SIZE; i += 4){
 		if(FLASH_lf_WriteBootload((BOOTLOADER_FLASH_START_ADDRESS + i), *(uint32_t *) (CcmRamBuf + i)) != 0x00){
-			printf("BootLoader:write mcu bootload fail,GameOver!!!!!\n");//写入FLASH错误
+			softDelayMs(100);
+			printf("BootLoader:Write mcu bootload fail,GameOver!!!!!\n");//写入FLASH错误
 		}
 	}
 	HAL_FLASH_Lock();
 	printf("BootLoader:Update new bootload done...\n");
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"Update new bootload done...");
-	softDelayMs(800);
+	softDelayMs(1000);
 	//检查已写入的Bootload是否正确
 	printf("BootLoader:Start checksum new bootload...\n");
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start checksum new bootload..."));
 	BootloadCrc = getOriginBootloadCrc();
-	softDelayMs(30000);
+	softDelayMs(1000);
 	if(BootloadCrc == newBootloadCrc32){
 		printf("BootLoader:Checksum bootload pass,flash crc:%08X, file crc:%08X\n", BootloadCrc , newBootloadCrc32);
 		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Checksum bootload pass,power cycle the system"));
@@ -158,6 +161,7 @@ void confirmBootloadUpdate(void){//执行Bootload更新
 		f_close(&BootLoadFile);
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 	}
+	softDelayMs(100);
 	REBOOT();
 	while(1);
 }
@@ -166,6 +170,10 @@ void exitBootloadUpdate(void){//退出Bootload更新
 	f_close(&BootLoadFile);
 	f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 	vTaskDelay(300);
+	//切换回内部USB
+	SET_USB_FS_SEL2_ON;//切换为内部USB
+	SET_USB_INT_PSON_ON;//打开内部USB供电
+	
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
@@ -2197,7 +2205,12 @@ void updateStandbyDisplay(void){//更新方案显示
 			barValue = 2;
 		}
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL, (uint32_t)barValue);
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, 0);
+#endif
+#if defined(APP_CONFIG_WAVE_1940_650)
+		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, 0);
+#endif
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, 1);
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, 0);
 	}
@@ -2209,19 +2222,19 @@ void updateStandbyDisplay(void){//更新方案显示
 			barValue = 2;
 		}
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL, (uint32_t)barValue);
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, 0);
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
 		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, 0);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);	
+		//SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, 0);
+		//SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
+		//SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);	
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, 0);
 #endif
 #if defined(APP_CONFIG_WAVE_1940_650)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, 0);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
+		//SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, 0);
+		//SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
+		//SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, 0);
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
 		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
@@ -2230,15 +2243,15 @@ void updateStandbyDisplay(void){//更新方案显示
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, 1);
 	}
 #if defined(APP_CONFIG_WAVE_1470_980_650)
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0, (uint8_t*)dispBuf);
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH1]) / 10));
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH1, (uint8_t*)dispBuf);	
-	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_635]) / 10));	
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED, (uint8_t*)dispBuf);		
+	//memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	//sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
+	//SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0, (uint8_t*)dispBuf);
+	//memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	//sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH1]) / 10));
+	//SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH1, (uint8_t*)dispBuf);	
+	//memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	//sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_635]) / 10));	
+	//SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED, (uint8_t*)dispBuf);		
 #endif
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%d%%\n", NVRAM0[DM_AIM_BRG] * 10);
@@ -2372,7 +2385,6 @@ void updateAcousticDisplay(void){//更新提示音设置
 
 void dcHmiLoopInit(void){//初始化模块
 	//PID参数初始化
-	SET_USB_FS_SEL_OFF;
 	loadDeviceConfig();//载入硬件配置
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);
@@ -2392,18 +2404,7 @@ void dcHmiLoopInit(void){//初始化模块
 	else{
 		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
 	}
-	
-#if defined(APP_CONFIG_WAVE_1470_650)
-	LaserTecIncPids.kp = 0.08;
-	LaserTecIncPids.ki = 0.005;
-	LaserTecIncPids.kd = 0.15;
-	FuzzyPID_Init(&LaserFuzzyPids, 3.0f, 0.8f, 2.0f, 5.0f);  // 滞回宽度5%
-#endif
-#if defined(APP_CONFIG_WAVE_1940_650)
-	LaserTecIncPids.kp = 1.1;
-	LaserTecIncPids.ki = 0.4;
-	LaserTecIncPids.kd = 0.4;
-#endif
+  PID_Init(&temp_controller, 25.0f, 0.9f, 3.0f, CONFIG_DIODE_SET_TEMP, 500); 
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
 	hmiUartInit();
@@ -2437,10 +2438,14 @@ void dcHmiLoopInit(void){//初始化模块
 	//SSET(R_FOOTSWITCH_PLUG);
 	RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 	SET_SPK_TIM_ON;
+	SET_BEEM_LED_OFF;
+	SET_USB_FS_SEL_OFF;//切换为MCU USB
+	SET_USB_FS_SEL2_ON;//切换为内部USB
+	SET_USB_INT_PSON_ON;//打开内部USB供电
+	
 }
 
 static void temperatureLoop(void){//温度轮询轮询
-	float pidOutPut;
 #if defined(APP_CONFIG_WAVE_1470_650) || defined(MODEL_PVGLS_15W_1470_A1)
 	//CODE转换为NTC测量温度温度
 	TNTUC(EM_LASER_TEMP, SPREG_ADC_11);
@@ -2453,7 +2458,6 @@ static void temperatureLoop(void){//温度轮询轮询
 	TNTLC(EM_MBAT_TEMP, SPREG_ADC_8);
 	TENV(EM_MCU_TEMP, SPREG_ADC_13);//CODE转换为MCU温度
 #endif	
-
 	//判断二极管温度
 	if(NVRAM0[EM_LASER_TEMP] >= CONFIG_DIODE_HIGH_TEMP){//激光器过热
 		SSET(R_LASER_TEMP_HIGH);
@@ -2481,42 +2485,27 @@ static void temperatureLoop(void){//温度轮询轮询
 		RRES(R_MCU_TEMP_LOW);
 	}
 	//温控执行 激光等待发射及错误状态启动温控
-#if defined(MODEL_PVGLS_10W_1940_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
-	if(LDP(SPCOIL_PS500MS)){//2秒间隔
-		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
-		if(LaserTecOut >= 1023){
-			LaserTecOut = 1023;
+	if(LDP(SPCOIL_PS100MS)){//2秒间隔
+		LaserTecOut = PID_Compute(&temp_controller, NVRAM0[EM_LASER_TEMP]);	
+		if(LaserTecOut >= 4095){
+			LaserTecOut = 4095;
 		}
 		if(LaserTecOut < 0){
 			LaserTecOut = 0;
 		}
 		NVRAM0[SPREG_DAC_7] = LaserTecOut;
 		if(LaserTecOut <= 0 ){
-			RRES(Y_TEC);
+			SET_LASER_CH7_OFF;
 		}
 		else{
-			SSET(Y_TEC);
+			SET_LASER_CH7_ON;
 		}
 		UPDAC7();
-	}
-#endif
-	
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)	
-#if CONFIG_USING_INC_PID == 1
-	if(LDP(SPCOIL_PS1000MS)){//1秒间隔
-		//运行温控PID程序
-		LaserTecOut += IncPidCalc(&LaserTecIncPids, CONFIG_DIODE_SET_TEMP, NVRAM0[EM_LASER_TEMP]); 	
-		if(LaserTecOut >= 100){
-			LaserTecOut = 100;
-		}
-		if(LaserTecOut < 0){
-			LaserTecOut = 0;
-		}
-		//printf("%s,%d,%s:laser tec out:%d\n",__FILE__, __LINE__, __func__, LaserTecOut);
+		LaserTecOut = LaserTecOut / 20;
 		LaserTecOutCounter = 0;
-		if(LaserTecOut > 0){
-			SSET(Y_TEC);
-		}
+	}	
+	if(LaserTecOutCounter == 0){
+		SSET(Y_TEC);
 	}
 	if(LDP(SPCOIL_PS10MS)){
 		if(LaserTecOutCounter >= LaserTecOut){
@@ -2524,28 +2513,13 @@ static void temperatureLoop(void){//温度轮询轮询
 		}
 		LaserTecOutCounter ++;
 	}		
-#endif
-		
-#if CONFIG_USING_FUZZY_PID == 1
-	if(LDP(SPCOIL_PS500MS)){//1秒间隔	
-		pidOutPut = FuzzyPID_Calculate(&LaserFuzzyPids, (float)((CONFIG_DIODE_SET_TEMP) / 10), (float)(NVRAM0[EM_LASER_TEMP] / 10));
-		if(FuzzyPID_GetRelayState(&LaserFuzzyPids, pidOutPut)){// 获取继电器状态
-			SSET(Y_TEC);
-		}
-		else{
-			RRES(Y_TEC);
-		}
-	}
-#endif
-#endif
 //温控执行 激光等待发射及错误状态启动温控
 	if(LDP(SPCOIL_PS1000MS)){	
 		if(LD(R_LASER_TEMP_HIGH) || LD(R_LASER_TEMP_LOW) || LD(R_MCU_TEMP_HIGH) || LD(R_MCU_TEMP_LOW)){//过热状态无条件打开风扇
 			NVRAM0[EM_FAN_SET_SPEED] = 100;
 		}
 		else{	
-			if(NVRAM0[EM_HT_TEMP] < -100){
-				
+			if(NVRAM0[EM_HT_TEMP] < -100){	
 				if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
 					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//1470发射时
 						if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
@@ -2597,31 +2571,31 @@ static void temperatureLoop(void){//温度轮询轮询
 			}
 			else{
 				if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
-					NVRAM0[EM_FAN_SET_SPEED] = 0;
+					NVRAM0[EM_FAN_SET_SPEED] = 35;
 				}
 				else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
-					NVRAM0[EM_FAN_SET_SPEED] = 0;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
-					NVRAM0[EM_FAN_SET_SPEED] = 20;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
-					NVRAM0[EM_FAN_SET_SPEED] = 30;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
 					NVRAM0[EM_FAN_SET_SPEED] = 40;
 				}
-				else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
+				else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
+					NVRAM0[EM_FAN_SET_SPEED] = 45;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
 					NVRAM0[EM_FAN_SET_SPEED] = 50;
 				}
+				else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
+					NVRAM0[EM_FAN_SET_SPEED] = 65;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
+					NVRAM0[EM_FAN_SET_SPEED] = 80;
+				}
 				else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
-					NVRAM0[EM_FAN_SET_SPEED] = 60;
+					NVRAM0[EM_FAN_SET_SPEED] = 85;
 				}
 				else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
-					NVRAM0[EM_FAN_SET_SPEED] = 70;
+					NVRAM0[EM_FAN_SET_SPEED] = 90;
 				}
 				else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
-					NVRAM0[EM_FAN_SET_SPEED] = 80;
+					NVRAM0[EM_FAN_SET_SPEED] = 95;
 				}
 				else if(NVRAM0[EM_HT_TEMP] >= 550){
 					NVRAM0[EM_FAN_SET_SPEED] = 100;
@@ -2996,7 +2970,8 @@ static void powerDown(void){//关机函数
 	UPDAC4();UPDAC5();UPDAC6();UPDAC7();	
 	printf("%s,%d,%s:shutdown laser power!\n",__FILE__, __LINE__, __func__);
 	EDLAR();//停止发射
-	printf("%s,%d,%s:shutdown beem!\n",__FILE__, __LINE__, __func__);
+	SET_AIM_TIM_OFF;//停止指示激光发射
+	printf("%s,%d,%s:shutdown aim!\n",__FILE__, __LINE__, __func__);
 	RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 	printf("%s,%d,%s:shutdown cool!\n",__FILE__, __LINE__, __func__);
 	RRES(Y_TEC);//关闭TEC

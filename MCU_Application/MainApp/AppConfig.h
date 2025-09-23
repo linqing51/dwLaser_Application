@@ -1,7 +1,7 @@
 #ifndef __APPCONFIG_H__
 #define __APPCONFIG_H__
 /*****************************************************************************/
-#define SW_VERSION																		"3.1a17b2"
+#define SW_VERSION																		"3.1a17b7"
 #define HW_VERSION																		"LDR2P1_G5_A1_20250731_DUAL"
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
@@ -27,7 +27,8 @@
 #endif 
 
 #if defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
-#define MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK//1470+980+650 V2
+#define MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK//1470+980+650 V1
+//#define MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK//1470+980+650 V2
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
@@ -39,7 +40,6 @@
 #else
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #endif
-
 /*****************************************************************************/
 #define LASER_CHANNEL_CH0															0x01//1470 1940
 #define LASER_CHANNEL_CH1															0x02//980
@@ -84,7 +84,8 @@
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL)
 #define CONFIG_THERAPY_SIZE														3
 #endif
-
+//方案配置
+/*****************************************************************************/
 #define CONFIG_CUSTIOM_SIZE														32
 /*****************************************************************************/
 #define CONFIG_MORSECODE_SPACE_TIME										3000
@@ -114,15 +115,13 @@
 #define CONFIG_DEFAULT_SPK_FREQ												1100//蜂鸣器默认频率
 #define CONFIG_ACOUSITC_SPK_FREQ											1400//蜂鸣器变声频率
 /*****************************************************************************/
-#define CONFIG_WAIT_HMI_DELAY_TIME										10
-#define CONFIG_WAIT_PASSWORD_DELAY_TIME								70
+#define CONFIG_WAIT_HMI_DELAY_TIME										40
+#define CONFIG_WAIT_PASSWORD_DELAY_TIME								90
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
-#define CONFIG_USING_INC_PID													1//增量式PID
-#define CONFIG_USING_FUZZY_PID												0//模糊式PID
-#define CONFIG_DIODE_SET_TEMP													250//
+#define CONFIG_DIODE_SET_TEMP													240//
 #define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
@@ -150,7 +149,7 @@
 
 #if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
 #define CONFIG_MAX_LASER_POWER_CH0										150//通道1470最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH1										30//通道980最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH1										150//通道980最大激光功率
 #define CONFIG_MIN_LASER_POWER_CH0										1//通道1470最小激光功率		
 #define CONFIG_MIN_LASER_POWER_CH1										1//通道980最小激光功率		
 #endif
@@ -216,12 +215,12 @@
 #define CONFIG_GREEN_LED_DEFAULT_DC										90
 #endif
 /*****************************************************************************/
-#define CONFIG_AIM_DEFAULT_GAIN												60
+#define CONFIG_AIM_DEFAULT_GAIN												95
 //定义蜂鸣器音量/频率
-#define CONFIG_BEEM_MAX_VOLUME													100//蜂鸣器最大音量
+#define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
 #define CONFIG_BEEM_MAX_LIMIT													0.7F//
-#define CONFIG_BEEM_MAX_FREQ														4500L//喇叭最高频率
-#define CONFIG_BEEM_MIN_FREQ														500//喇叭最低频率
+#define CONFIG_BEEM_MAX_FREQ													4500L//喇叭最高频率
+#define CONFIG_BEEM_MIN_FREQ													500//喇叭最低频率
 //定义屏幕亮度
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
