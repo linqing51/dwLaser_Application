@@ -907,7 +907,11 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			if(strlen((char*)sDermatology[7].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[7].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
-			}			
+			}	
+			if(strlen((char*)sDermatology[8].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sDermatology[8].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+			}	
 			//方案8-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
@@ -918,7 +922,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
-			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, true);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
@@ -937,7 +941,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
@@ -2571,26 +2575,26 @@ static void temperatureLoop(void){//温度轮询轮询
 			}
 			else{
 				if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
-					NVRAM0[EM_FAN_SET_SPEED] = 35;
+					NVRAM0[EM_FAN_SET_SPEED] = 25;
 				}
 				else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
-					NVRAM0[EM_FAN_SET_SPEED] = 40;
+					NVRAM0[EM_FAN_SET_SPEED] = 30;
 				}
 				else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
-					NVRAM0[EM_FAN_SET_SPEED] = 45;
+					NVRAM0[EM_FAN_SET_SPEED] = 35;
 				}
-				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
-					NVRAM0[EM_FAN_SET_SPEED] = 50;
+				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 450){
+					NVRAM0[EM_FAN_SET_SPEED] = 70;
 				}
-				else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
-					NVRAM0[EM_FAN_SET_SPEED] = 65;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
-					NVRAM0[EM_FAN_SET_SPEED] = 80;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
-					NVRAM0[EM_FAN_SET_SPEED] = 85;
-				}
+				//else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
+				//	NVRAM0[EM_FAN_SET_SPEED] = 70;
+				//}
+				//else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
+				//	NVRAM0[EM_FAN_SET_SPEED] = 70;
+				//}
+				//else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
+				//	NVRAM0[EM_FAN_SET_SPEED] = 85;
+				//}
 				else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
 					NVRAM0[EM_FAN_SET_SPEED] = 90;
 				}
