@@ -2583,18 +2583,15 @@ static void temperatureLoop(void){//温度轮询轮询
 				else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
 					NVRAM0[EM_FAN_SET_SPEED] = 35;
 				}
-				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 450){
-					NVRAM0[EM_FAN_SET_SPEED] = 70;
+				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
+					NVRAM0[EM_FAN_SET_SPEED] = 40;
 				}
-				//else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 350){
-				//	NVRAM0[EM_FAN_SET_SPEED] = 70;
-				//}
-				//else if(NVRAM0[EM_HT_TEMP] >= 350 && NVRAM0[EM_HT_TEMP] < 400){
-				//	NVRAM0[EM_FAN_SET_SPEED] = 70;
-				//}
-				//else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
-				//	NVRAM0[EM_FAN_SET_SPEED] = 85;
-				//}
+				else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 400){
+					NVRAM0[EM_FAN_SET_SPEED] = 60;
+				}
+				else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
+					NVRAM0[EM_FAN_SET_SPEED] = 85;
+				}
 				else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
 					NVRAM0[EM_FAN_SET_SPEED] = 90;
 				}
@@ -2977,6 +2974,8 @@ static void powerDown(void){//关机函数
 	SET_AIM_TIM_OFF;//停止指示激光发射
 	printf("%s,%d,%s:shutdown aim!\n",__FILE__, __LINE__, __func__);
 	RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
+	sPlcSpeakerDisable();//关闭SPK AP
+	SET_SPK_TIM_OFF;//关闭SPK TIM
 	printf("%s,%d,%s:shutdown cool!\n",__FILE__, __LINE__, __func__);
 	RRES(Y_TEC);//关闭TEC
 	printf("%s,%d,%s:shutdown rbg led!\n",__FILE__, __LINE__, __func__);

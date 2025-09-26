@@ -1,7 +1,7 @@
 #ifndef __APPCONFIG_H__
 #define __APPCONFIG_H__
 /*****************************************************************************/
-#define SW_VERSION																		"3.1a17b8"
+#define SW_VERSION																		"3.1a17b10"
 #define HW_VERSION																		"LDR2P1_G5_A1_20250731_DUAL"
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)

@@ -282,7 +282,7 @@ I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (../../MainApp/dcHmiApp.h)(0x68C8196A)
-I (../../MainApp/appConfig.h)(0x68D52C1B)
+I (../../MainApp/appConfig.h)(0x68D693EB)
 I (../../MainApp/preScheme.h)(0x68C26F99)
 I (../../MainApp/dcHmiLanguage.h)(0x68C643E0)
 I (../../MainApp/dcHmiNotifyButton.h)(0x65D8B643)
@@ -5058,7 +5058,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (../../MainApp/appConfig.h)(0x68D52C1B)
+I (../../MainApp/appConfig.h)(0x68D693EB)
 F (..\..\sPlcPort\sPlcMisc.c)(0x68CEAB77)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\splcmisc.o --omf_browse .\targetboard_g5_tri_a1\splcmisc.crf --depend .\targetboard_g5_tri_a1\splcmisc.d)
 I (../../sPlc/sPlc.h)(0x68CD6864)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x68B1B7D9)
@@ -5170,7 +5170,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (../../MainApp/appConfig.h)(0x68D52C1B)
+I (../../MainApp/appConfig.h)(0x68D693EB)
 F (..\..\sPlcPort\sPlcSpeaker.c)(0x68C974C5)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\splcspeaker.o --omf_browse .\targetboard_g5_tri_a1\splcspeaker.crf --depend .\targetboard_g5_tri_a1\splcspeaker.d)
 I (../../sPlc/sPlc.h)(0x68CD6864)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x68B1B7D9)
@@ -5282,7 +5282,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (../../MainApp/appConfig.h)(0x68D52C1B)
+I (../../MainApp/appConfig.h)(0x68D693EB)
 F (..\..\sPlcPort\sPlcTimer.c)(0x68B1BE50)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\splctimer.o --omf_browse .\targetboard_g5_tri_a1\splctimer.crf --depend .\targetboard_g5_tri_a1\splctimer.d)
 I (../../sPlc/sPlc.h)(0x68CD6864)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x68B1B7D9)
@@ -5509,7 +5509,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\dcHmi\hmiDriver.h)(0x687B7859)
 I (..\..\dcHmi\hmiCmdProcess.h)(0x687B7836)
-I (../../MainApp/appConfig.h)(0x68D52C1B)
+I (../../MainApp/appConfig.h)(0x68D693EB)
 F (..\..\dcHmi\hmiDriver.c)(0x68AF1AC5)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\hmidriver.o --omf_browse .\targetboard_g5_tri_a1\hmidriver.crf --depend .\targetboard_g5_tri_a1\hmidriver.d)
 I (..\..\dcHmi\hmiDriver.h)(0x687B7859)
 I (..\..\dcHmi\hmiLib.h)(0x68B056CC)
@@ -5625,7 +5625,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\dcHmi\hmiCmdQueue.h)(0x687B7848)
 I (..\..\dcHmi\hmiCmdProcess.h)(0x687B7836)
-I (../../MainApp/appConfig.h)(0x68D52C1B)
+I (../../MainApp/appConfig.h)(0x68D693EB)
 F (..\..\dcHmi\hmiUserUart.c)(0x68C6426C)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\hmiuseruart.o --omf_browse .\targetboard_g5_tri_a1\hmiuseruart.crf --depend .\targetboard_g5_tri_a1\hmiuseruart.d)
 I (..\..\dcHmi\hmiLib.h)(0x68B056CC)
 I (../../sPlc/sPlc.h)(0x68CD6864)
@@ -5741,7 +5741,7 @@ I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\dcHmi\hmiCmdQueue.h)(0x687B7848)
 I (..\..\dcHmi\hmiDriver.h)(0x687B7859)
 I (..\..\dcHmi\hmiCmdProcess.h)(0x687B7836)
-I (../../MainApp/appConfig.h)(0x68D52C1B)
+I (../../MainApp/appConfig.h)(0x68D693EB)
 F (..\..\MainApp\MainApp.c)(0x68C58DCF)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\mainapp.o --omf_browse .\targetboard_g5_tri_a1\mainapp.crf --depend .\targetboard_g5_tri_a1\mainapp.d)
 I (..\..\MainApp\MainApp.h)(0x68C288EE)
 I (../../sPlc/sPlc.h)(0x68CD6864)
@@ -5855,7 +5855,7 @@ I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\MainApp\dcHmiApp.h)(0x68C8196A)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\preScheme.h)(0x68C26F99)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
@@ -5868,7 +5868,7 @@ I (../../dcHmi/hmiDriver.h)(0x687B7859)
 I (../../dcHmi/hmiCmdProcess.h)(0x687B7836)
 I (..\..\MainApp\dcHmiRes.h)(0x68CAAB61)
 I (..\..\MainApp\MainAppLib.h)(0x68C27DD4)
-F (..\..\MainApp\dcHmiApp.c)(0x68D5585C)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\dchmiapp.o --omf_browse .\targetboard_g5_tri_a1\dchmiapp.crf --depend .\targetboard_g5_tri_a1\dchmiapp.d)
+F (..\..\MainApp\dcHmiApp.c)(0x68D622CD)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\dchmiapp.o --omf_browse .\targetboard_g5_tri_a1\dchmiapp.crf --depend .\targetboard_g5_tri_a1\dchmiapp.d)
 I (..\..\MainApp\dcHmiApp.h)(0x68C8196A)
 I (../../sPlc/sPlc.h)(0x68CD6864)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x68B1B7D9)
@@ -5980,7 +5980,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\preScheme.h)(0x68C26F99)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
@@ -6105,7 +6105,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 F (..\..\MainApp\dcHmiNotifyButton.c)(0x68C6718A)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\dchminotifybutton.o --omf_browse .\targetboard_g5_tri_a1\dchminotifybutton.crf --depend .\targetboard_g5_tri_a1\dchminotifybutton.d)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiApp.h)(0x68C8196A)
@@ -6219,7 +6219,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\preScheme.h)(0x68C26F99)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyProgress.h)(0x65D8B643)
@@ -6344,7 +6344,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\preScheme.h)(0x68C26F99)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
@@ -6469,7 +6469,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\preScheme.h)(0x68C26F99)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
@@ -6594,7 +6594,7 @@ I (../Middlewares/Third_Party/FatFs/src/integer.h)(0x68B1B7B9)
 I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\preScheme.h)(0x68C26F99)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
@@ -6606,7 +6606,7 @@ I (../../dcHmi/hmiDriver.h)(0x687B7859)
 I (../../dcHmi/hmiCmdProcess.h)(0x687B7836)
 I (..\..\MainApp\dcHmiRes.h)(0x68CAAB61)
 I (..\..\MainApp\MainAppLib.h)(0x68C27DD4)
-F (..\..\MainApp\MainAppLib.c)(0x68C27D3B)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\mainapplib.o --omf_browse .\targetboard_g5_tri_a1\mainapplib.crf --depend .\targetboard_g5_tri_a1\mainapplib.d)
+F (..\..\MainApp\MainAppLib.c)(0x68D693C4)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../../sPlc -I ../../sPlcPort -I ../../lib -I ../../MainApp -I ../../deviceInfo -I ../../dcHmi -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I ../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include -I ../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc-I.\RTE\_targetBoard_G5_TRI_A1-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DARM_MATH_CM4 -DSTM32F407xx -DUSER_VECT_TAB_ADDRESS -DGLOAL_LDR2P1_G5_A1_20250731_TRIP-o .\targetboard_g5_tri_a1\mainapplib.o --omf_browse .\targetboard_g5_tri_a1\mainapplib.crf --depend .\targetboard_g5_tri_a1\mainapplib.d)
 I (..\..\MainApp\MainAppLib.h)(0x68C27DD4)
 I (../../sPlc/sPlc.h)(0x68CD6864)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x68B1B7D9)
@@ -6720,7 +6720,7 @@ I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\MainApp\preScheme.h)(0x68C26F99)
 I (..\..\MainApp\dcHmiApp.h)(0x68C8196A)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiNotifyProgress.h)(0x65D8B643)
@@ -6844,7 +6844,7 @@ I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\MainApp\dcHmiApp.h)(0x68C8196A)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiNotifyProgress.h)(0x65D8B643)
@@ -6969,7 +6969,7 @@ I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\MainApp\dcHmiApp.h)(0x68C8196A)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiNotifyProgress.h)(0x65D8B643)
@@ -7094,7 +7094,7 @@ I (../FATFS/Target/ffconf.h)(0x68C82989)
 I (../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h)(0x68B1B7B9)
 I (../Middlewares/Third_Party/FatFs/src/diskio.h)(0x68B1B7B9)
 I (..\..\MainApp\dcHmiApp.h)(0x68C8196A)
-I (..\..\MainApp\appConfig.h)(0x68D52C1B)
+I (..\..\MainApp\appConfig.h)(0x68D693EB)
 I (..\..\MainApp\dcHmiLanguage.h)(0x68C643E0)
 I (..\..\MainApp\dcHmiNotifyButton.h)(0x65D8B643)
 I (..\..\MainApp\dcHmiNotifyProgress.h)(0x65D8B643)
