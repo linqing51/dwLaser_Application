@@ -3,7 +3,7 @@
 <title>Static Call Graph - [targetBoard_G5_TRI_A1\dwLaser_Bootloader.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image targetBoard_G5_TRI_A1\dwLaser_Bootloader.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Sep 20 21:22:42 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Oct 14 09:04:37 2025
 <BR><P>
 <H3>Maximum Stack Usage =       1528 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1446,8 +1446,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[117]"></a>MX_DriverVbusFS</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, usbh_platform.o(i.MX_DriverVbusFS))
-<BR><BR>[Calls]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<P><STRONG><a name="[117]"></a>MX_DriverVbusFS</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, usbh_platform.o(i.MX_DriverVbusFS))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = MX_DriverVbusFS
+</UL>
+<BR>[Calls]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[152]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_LL_DriverVBUS
 <LI><a href="#[187]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bootLoadFailHandler
@@ -1461,7 +1463,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[11b]"></a>MX_GPIO_Init</STRONG> (Thumb, 604 bytes, Stack size 64 bytes, gpio.o(i.MX_GPIO_Init))
+<P><STRONG><a name="[11b]"></a>MX_GPIO_Init</STRONG> (Thumb, 674 bytes, Stack size 64 bytes, gpio.o(i.MX_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = MX_GPIO_Init &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
@@ -2489,8 +2491,8 @@ Global Symbols
 
 <P><STRONG><a name="[208]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[188]"></a>bootLoadInit</STRONG> (Thumb, 400 bytes, Stack size 32 bytes, bootloader.o(i.bootLoadInit))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = bootLoadInit &rArr; __2printf
+<P><STRONG><a name="[188]"></a>bootLoadInit</STRONG> (Thumb, 496 bytes, Stack size 40 bytes, bootloader.o(i.bootLoadInit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = bootLoadInit &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_Stop
@@ -3878,7 +3880,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resetInit
 </UL>
 
-<P><STRONG><a name="[17e]"></a>UsbGpioReset</STRONG> (Thumb, 184 bytes, Stack size 48 bytes, bootloader.o(i.UsbGpioReset))
+<P><STRONG><a name="[17e]"></a>UsbGpioReset</STRONG> (Thumb, 212 bytes, Stack size 48 bytes, bootloader.o(i.UsbGpioReset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = UsbGpioReset &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[180]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_DisableIRQ

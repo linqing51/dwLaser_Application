@@ -46,6 +46,7 @@ void MX_DriverVbusFS(uint8_t state)
     /* Drive low Charge pump */
     data = GPIO_PIN_SET;
   }
+	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_3,(GPIO_PinState)data);
   /* USER CODE END PREPARE_GPIO_DATA_VBUS_FS */
   HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,(GPIO_PinState)data);
 }
