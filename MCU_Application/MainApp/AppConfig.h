@@ -1,24 +1,36 @@
 #ifndef __APPCONFIG_H__
 #define __APPCONFIG_H__
 /*****************************************************************************/
-#define SW_VERSION																		"3.1a17b10"
+#define SW_VERSION																		"3.1a18b3"
+
+#if defined(LDR2P1_G5_A1_20250731_DUAL)
 #define HW_VERSION																		"LDR2P1_G5_A1_20250731_DUAL"
+#endif
+#if defined(LDR2P1_G5_A1_20250910_DUAL)
+#define HW_VERSION																		"LDR2P1_G5_A1_20250910_DUAL"
+#endif
+#if defined(LDR2P1_G5_A1_20250731_TRIP)
+#define HW_VERSION																		"LDR2P1_G5_A1_20250731_TRIP"
+#endif
+#if defined(LDR2P1_G5_A1_20250910_TRIP)
+#define HW_VERSION																		"LDR2P1_G5_A1_20250910_TRIP"
+#endif
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 #define APP_CONFIG_WAVE_1940_650//APP为双波长 1940+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250910_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
 #define APP_CONFIG_WAVE_1470_650//APP为双波长 1470+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
-#if defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0) || defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP) || defined(GLOBAL_LDR2P1_G5_A1_20250910_TRIP)
+#if defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define APP_CONFIG_WAVE_1470_980_650//APP为三波长 1470+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_TRI
 #endif
 
 //激光器选这
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
 #define MODLE_M1470_640_10_15_02_D200_22_G5W_PK//1470+650 V1
 #endif
 
@@ -26,16 +38,20 @@
 #define MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK//1470+980+650 V1
 #endif 
 
-#if defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_TRIP)
 #define MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK//1470+980+650 V1
 //#define MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK//1470+980+650 V2
+#endif
+
+#if defined(LDR2P1_G5_A1_20250910_TRIP)
+#define MODLE_M1470_980_640_10_18_35_05_D200_22_G5W_PK
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
 #define MODLE_M12_1920_10_400S//吉光1940
 #endif
 
-#if defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #else
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
@@ -65,11 +81,11 @@
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												22
 #define CONFIG_ENT_SIZE																16
-#if defined(MODEL_PVGLS_TRI_A0) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(MODEL_PVGLS_TRI_A0) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined (LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_NEUROSURGERY_SIZE											5
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
 #define CONFIG_NEUROSURGERY_SIZE											3
 #endif
 
@@ -77,11 +93,11 @@
 #define CONFIG_LIPOSUCTION_SIZE												7
 #define CONFIG_DENTISRTY_SIZE													23
 
-#if defined(MODEL_PVGLS_TRI_A0) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(MODEL_PVGLS_TRI_A0) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_THERAPY_SIZE														8
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
 #define CONFIG_THERAPY_SIZE														3
 #endif
 //方案配置
@@ -115,7 +131,7 @@
 #define CONFIG_DEFAULT_SPK_FREQ												1100//蜂鸣器默认频率
 #define CONFIG_ACOUSITC_SPK_FREQ											1400//蜂鸣器变声频率
 /*****************************************************************************/
-#define CONFIG_WAIT_HMI_DELAY_TIME										40
+#define CONFIG_WAIT_HMI_DELAY_TIME										20
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								90
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
@@ -126,6 +142,7 @@
 #define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
 #define CONFIG_ENVI_LOW_TEMP													-200//处理器低温极限 -20.0C
+#define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线（10个点，精细调节）
 /*****************************************************************************/
 #define CONFIG_HMI_SCHEME_NUM													32//每分类方案数
 #define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码
@@ -147,9 +164,17 @@
 #define CONFIG_MIN_LASER_POWER_RED                    1//红激光最小功率
 #define CONFIG_MIN_LASER_POWER_AIM                    0//指示激光最小功率
 
-#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#define CONFIG_LASER_AIM_OFFSET												100
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
 #define CONFIG_MAX_LASER_POWER_CH0										150//通道1470最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH1										150//通道980最大激光功率
+#define CONFIG_MIN_LASER_POWER_CH0										1//通道1470最小激光功率		
+#define CONFIG_MIN_LASER_POWER_CH1										1//通道980最小激光功率		
+#endif
+
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#define CONFIG_MAX_LASER_POWER_CH0										150//通道1470最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH1										300//通道980最大激光功率
 #define CONFIG_MIN_LASER_POWER_CH0										1//通道1470最小激光功率		
 #define CONFIG_MIN_LASER_POWER_CH1										1//通道980最小激光功率		
 #endif
@@ -180,7 +205,8 @@
 #define CONFIG_STEP_LASER_ENERGY_INTERVAL							10
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//变音持续时间
 //定义指示灯亮度
-#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) ||defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_BLUE_LED_MAX_DC												100
 #define CONFIG_BLUE_LED_DEFAULT_DC										25
 #define CONFIG_RED_LED_MAX_DC													100	
@@ -215,7 +241,7 @@
 #define CONFIG_GREEN_LED_DEFAULT_DC										90
 #endif
 /*****************************************************************************/
-#define CONFIG_AIM_DEFAULT_GAIN												95
+#define CONFIG_AIM_DEFAULT_GAIN												60
 //定义蜂鸣器音量/频率
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
 #define CONFIG_BEEM_MAX_LIMIT													0.7F//

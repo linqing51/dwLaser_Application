@@ -1,18 +1,10 @@
 //适用于FRAM不适用于EEPROM
-#include "sPlc.h"
-#include "boardConfig.h"
+#include "sPlcEprom.h"
 /*****************************************************************************/
 extern I2C_HandleTypeDef hi2c1;
 extern I2C_HandleTypeDef hi2c2;
 extern CRC_HandleTypeDef hcrc;
 extern RNG_HandleTypeDef hrng;
-
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
-#define CONFIG_RPROM_BUS	hi2c1
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-#define CONFIG_RPROM_BUS hi2c2
-#endif
 /*****************************************************************************/
 static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 	uint16_t i;
@@ -25,22 +17,19 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 }
 HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地址读出8位数据
 //ReadAddr:开始读数的地址  
-//返回值  :数据				  
+//返回值  :数据  
 	HAL_StatusTypeDef ret;
 	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		ret = HAL_ERROR;
 		return ret;
 	}	
-	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS,
-	                       CONFIG_EPROM_READ_ADDR,
-	                       ReadAddr,
-	                       I2C_MEMADD_SIZE_16BIT,
-	                       (uint8_t*)(rdat),
-	                       1,
-	                       CONFIG_EPROM_TIMEOUT);
+	ret = HAL_I2C_Mem_Read(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_READ_ADDR, ReadAddr, I2C_MEMADD_SIZE_16BIT, (uint8_t*)(rdat), 1, CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器
+		if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+			ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+			I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+			ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+		}
 	}
 	return ret;
 }
@@ -53,16 +42,13 @@ HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//在指定�
 		ret = HAL_ERROR;
 		return ret;
 	}	
-	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, 
-						   CONFIG_EPROM_READ_ADDR,
-	                       ReadAddr,
-	                       I2C_MEMADD_SIZE_16BIT,
-	                       (uint8_t*)(rdat),
-	                       2,
-	                       CONFIG_EPROM_TIMEOUT);
+	ret = HAL_I2C_Mem_Read(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_READ_ADDR, ReadAddr, I2C_MEMADD_SIZE_16BIT, (uint8_t*)(rdat), 2, CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
+		if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) {//检测到超时（锁死）
+			ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+			I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+			ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+		}
 	}
 	return ret;
 }
@@ -75,16 +61,13 @@ HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////在指�
 		ret = HAL_ERROR;
 		return ret;
 	}	
-	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, 
-	                       CONFIG_EPROM_READ_ADDR,
-	                       ReadAddr,
-	                       I2C_MEMADD_SIZE_16BIT,
-	                       (uint8_t*)(rdat),
-	                       4,
-	                       CONFIG_EPROM_TIMEOUT);
+	ret = HAL_I2C_Mem_Read(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_READ_ADDR, ReadAddr, I2C_MEMADD_SIZE_16BIT, (uint8_t*)(rdat), 4, CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
+		if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+			ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+			I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+			ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+		}
 	}
 	return ret;
 }
@@ -96,16 +79,13 @@ HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//在指定�
 		ret = HAL_ERROR;
 		return ret;
 	}
-	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
-	                        CONFIG_EPROM_WRITE_ADDR,
-	                        WriteAddr, 
-	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(wdat), 
-	                        1, 
-	                        CONFIG_EPROM_TIMEOUT);
+	ret = HAL_I2C_Mem_Write(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_WRITE_ADDR, WriteAddr, I2C_MEMADD_SIZE_16BIT, (uint8_t*)(wdat), 1, CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器
+		if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+			ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+			I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+			ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+		}
 	}
 	return ret;
 }
@@ -118,16 +98,13 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//在的�
 		ret = HAL_ERROR;
 		return ret;
 	}
-	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
-	                        CONFIG_EPROM_WRITE_ADDR, 
-	                        WriteAddr, 
-	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(wdat), 
-	                        2, 
-	                        CONFIG_EPROM_TIMEOUT);
+	ret = HAL_I2C_Mem_Write(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_WRITE_ADDR, WriteAddr, I2C_MEMADD_SIZE_16BIT, (uint8_t*)(wdat), 2, CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器	
+			if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+				ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+				I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+				ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+			}
 	}
 	return ret;
 }
@@ -140,16 +117,13 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//在的�
 		ret = HAL_ERROR;
 		return ret;
 	}
-	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
-	                        CONFIG_EPROM_WRITE_ADDR, 
-	                        WriteAddr, 
-	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(wdat), 
-	                        4, 
-	                        CONFIG_EPROM_TIMEOUT);
+	ret = HAL_I2C_Mem_Write(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_WRITE_ADDR, WriteAddr, I2C_MEMADD_SIZE_16BIT, (uint8_t*)(wdat), 4, CONFIG_EPROM_TIMEOUT);
 	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
+			if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+				ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+				I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+				ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+			}
 	}
 	return ret;
 }   
@@ -169,19 +143,25 @@ HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToR
 	rAddr = ReadAddr;
 	rBuffer = pBuffer;
 	for(doBlock = 0;doBlock < rBlock;doBlock ++){
-		ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Read(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器
+			if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+				ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+				I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+				ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+			}
 		}
 		rAddr += CONFIG_EPROM_PAGE_SIZE;
 		rBuffer += CONFIG_EPROM_PAGE_SIZE;
 	}
 	if(rByte != 0x0){
-		ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, rByte ,CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Read(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, rByte ,CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
+			if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+				ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+				I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+				ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+			}
 		}
 	}
 	return ret;	
@@ -202,10 +182,13 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 	wAddr = WriteAddr;
 	wBuffer = pBuffer;
 	for(doBlock = 0;doBlock < wBlock;doBlock ++){
-		ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Write(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
+			if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+				ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+				I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+				ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+			}
 		}
 		wAddr += CONFIG_EPROM_PAGE_SIZE;
 		wBuffer += CONFIG_EPROM_PAGE_SIZE;
@@ -214,10 +197,13 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 #endif
 	}
 	if(wByte != 0x0){		
-		ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, wByte, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_I2C_Mem_Write(&CONFIG_EPROM_BUS_HANDLE, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, wByte, CONFIG_EPROM_TIMEOUT);
 		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
+			if(!I2C_WaitFlag(CONFIG_EPROM_BUS, I2C_SR1_TXE, 100)) { // 检测到超时（锁死）
+				ret = HAL_I2C_DeInit(&CONFIG_EPROM_BUS_HANDLE);//释放IO口为GPIO，复位句柄状态标志
+				I2C_ReleaseBus(CONFIG_EPROM_BUS, EPROM_SDA_GPIO_Port, EPROM_SDA_Pin, EPROM_SCL_GPIO_Port, EPROM_SCL_Pin); //释放总线
+				ret = HAL_I2C_Init(&CONFIG_EPROM_BUS_HANDLE);//这句重新初始化I2C控制器
+			}
 		}
 	}
 #if CONFIG_EPROM_WRITE_DELAY > 0
@@ -240,6 +226,7 @@ void listEpromTable(void){//输出EPROM分布表
 	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
 	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
 }
+
 void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
 	uint8_t var = 0;
 	uint32_t i;	
@@ -276,10 +263,13 @@ void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
 			}
 			break;
 		}
-		case CLEAR_EPROM_FIRMWARE_CRC:{
+		case CLEAR_EPROM_MCU_FIRMWARE_CRC:{
 			for(i = CONFIG_EPROM_MCU_FW_CRC;i <= (CONFIG_EPROM_MCU_FW_CRC + 3);i ++){
 				epromWriteByte(i, &var);
 			}
+			break;
+		}
+		case CLEAR_EPROM_LCD_FIRMWARE_CRC:{
 			for(i = CONFIG_EPROM_LCD_FW_CRC;i <= (CONFIG_EPROM_LCD_FW_CRC + 3);i ++){
 				epromWriteByte(i, &var);
 			}
@@ -300,6 +290,7 @@ void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
 		default:break;
 	}
 }
+
 uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash 查空
 	uint8_t val;
 	uint32_t i;
@@ -311,6 +302,7 @@ uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash 查空
 	}
 	return true;
 }
+
 uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 	uint32_t i, crcRead = 0, crcWrite = 0;	
 	uint16_t bk, remain;//写入地址
@@ -418,6 +410,52 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 	return res;
 }
 
+bool I2C_WaitFlag(I2C_TypeDef* I2Cx, uint32_t flag, uint32_t timeout) {// 等待I2C标志位的超时函数
+  uint32_t tickstart = HAL_GetTick();
+  while (!(I2Cx->SR1 & flag)) {
+    if ((HAL_GetTick() - tickstart) > timeout) {
+      return false; // 超时
+    }
+  }
+  return true;
+}
+
+void I2C_ReleaseBus(I2C_TypeDef* I2Cx, GPIO_TypeDef* SDA_GPIO, uint16_t SDA_Pin, GPIO_TypeDef* SCL_GPIO, uint16_t SCL_Pin) {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  
+  // 1. 禁用I2C外设
+  I2Cx->CR1 &= ~I2C_CR1_PE;
+  
+  // 2. 配置SDA/SCL为推挽输出，强制拉高
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP; // 推挽输出
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  
+  // 配置SDA
+  GPIO_InitStruct.Pin = SDA_Pin;
+  HAL_GPIO_Init(SDA_GPIO, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(SDA_GPIO, SDA_Pin, GPIO_PIN_SET); // 输出高电平
+  
+  // 配置SCL
+  GPIO_InitStruct.Pin = SCL_Pin;
+  HAL_GPIO_Init(SCL_GPIO, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(SCL_GPIO, SCL_Pin, GPIO_PIN_SET); // 输出高电平
+  
+  // 3. 延时10us，确保总线释放
+  HAL_Delay(1); 
+  
+  // 4. 恢复GPIO为I2C复用开漏模式
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD; // 复用开漏（I2C必需）
+  GPIO_InitStruct.Alternate = GPIO_AF4_I2C1; // 根据实际I2C外设选择AF功能（如I2C1对应AF4）
+  
+  // 恢复SDA
+  GPIO_InitStruct.Pin = SDA_Pin;
+  HAL_GPIO_Init(SDA_GPIO, &GPIO_InitStruct);
+  
+  // 恢复SCL
+  GPIO_InitStruct.Pin = SCL_Pin;
+  HAL_GPIO_Init(SCL_GPIO, &GPIO_InitStruct);
+}
 
 
 

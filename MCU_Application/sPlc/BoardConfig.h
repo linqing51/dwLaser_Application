@@ -4,7 +4,7 @@
 #include "main.h"
 #include "usbh_core.h"
 /*****************************************************************************/
-#if defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250910_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP) || defined(GLOBAL_LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 extern ADC_HandleTypeDef hadc1;
 extern CRC_HandleTypeDef hcrc;
 extern DAC_HandleTypeDef hdac;//LAS0 LAS1
@@ -65,7 +65,7 @@ extern RNG_HandleTypeDef hrng;
 #endif
 /*****************************************************************************/
 //引脚功能定义
-#if defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250910_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP) || defined(GLOBAL_LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define SET_EDAC0_CS(b)												
 #define SET_EDAC1_CS(b)												
 #define SET_EDAC2_CS(b)												
@@ -183,37 +183,49 @@ extern RNG_HandleTypeDef hrng;
 #define GET_PWR_LED														HAL_GPIO_ReadPin(PWR_LED_GPIO_Port, PWR_LED_Pin)
 #define FLIP_PWR_LED													HAL_GPIO_TogglePin(PWR_LED_GPIO_Port, PWR_LED_Pin)
 
-//USB FS MUX MCU/MPU 选择											0:MPU USB 1:MCU USB
-#define SET_USB_FS_SEL(b)											HAL_GPIO_WritePin(USB_FS_SEL_GPIO_Port, USB_FS_SEL_Pin, b)
-#define GET_USB_FS_SEL												HAL_GPIO_ReadPin(USB_FS_SEL_GPIO_Port, USB_FS_SEL_Pin)
-#define SET_USB_FS_SEL_ON											HAL_GPIO_WritePin(USB_FS_SEL_GPIO_Port, USB_FS_SEL_Pin, GPIO_PIN_SET)
-#define SET_USB_FS_SEL_OFF										HAL_GPIO_WritePin(USB_FS_SEL_GPIO_Port, USB_FS_SEL_Pin, GPIO_PIN_RESET)
-#define FLIP_USB_FS_SEL												HAL_GPIO_TogglePin(USB_FS_SEL_GPIO_Port, USB_FS_SEL_Pin)
-
-//USB MCU INT与USB MCU EXT选择								0:EXT USB 1:INT USB
-#define SET_USB_FS_SEL2(b)										HAL_GPIO_WritePin(USB_FS_SEL2_GPIO_Port, USB_FS_SEL2_Pin, b)	
-#define GET_USB_FS_SEL2												HAL_GPIO_ReadPin(USB_FS_SEL2_GPIO_Port, USB_FS_SEL2_Pin)
-#define SET_USB_FS_SEL2_ON										HAL_GPIO_WritePin(USB_FS_SEL2_GPIO_Port, USB_FS_SEL2_Pin, GPIO_PIN_SET)
-#define SET_USB_FS_SEL2_OFF										HAL_GPIO_WritePin(USB_FS_SEL2_GPIO_Port, USB_FS_SEL2_Pin, GPIO_PIN_RESET)
-#define FLIP_USB_FS_SEL2											HAL_GPIO_TogglePin(USB_FS_SEL2_GPIO_Port, USB_FS_SEL2_Pin)
-
-//USB_INT_PSON 内部USB供电
-#define SET_USB_INT_PSON(b)										HAL_GPIO_WritePin(USB_INT_PSON_GPIO_Port, USB_INT_PSON_Pin, b)	
-#define GET_USB_INT_PSON											HAL_GPIO_ReadPin(USB_INT_PSON_GPIO_Port, USB_INT_PSON_Pin)
-#define SET_USB_INT_PSON_ON										HAL_GPIO_WritePin(USB_INT_PSON_GPIO_Port, USB_INT_PSON_Pin, GPIO_PIN_SET)
-#define SET_USB_INT_PSON_OFF									HAL_GPIO_WritePin(USB_INT_PSON_GPIO_Port, USB_INT_PSON_Pin, GPIO_PIN_RESET)
-#define FLIP_USB_INT_PSON											HAL_GPIO_TogglePin(USB_INT_PSON_GPIO_Port, USB_INT_PSON_Pin)
-
-//USB_EXT_PSON 外部USB供电
-#define SET_USB_EXT_PSON(b)										HAL_GPIO_WritePin(USB_EXT_PSON_GPIO_Port, USB_EXT_PSON_Pin, b)	
-#define GET_USB_EXT_PSON											HAL_GPIO_ReadPin(USB_EXT_PSON_GPIO_Port, USB_EXT_PSON_Pin)
-#define SET_USB_EXT_PSON_ON										HAL_GPIO_WritePin(USB_EXT_PSON_GPIO_Port, USB_EXT_PSON_Pin, GPIO_PIN_SET)
-#define SET_USB_EXT_PSON_OFF									HAL_GPIO_WritePin(USB_EXT_PSON_GPIO_Port, USB_EXT_PSON_Pin, GPIO_PIN_RESET)
-#define FLIP_USB_EXT_PSON											HAL_GPIO_TogglePin(USB_EXT_PSON_GPIO_Port, USB_EXT_PSON_Pin)
-
 //TEC OUT
 #define SET_TEC_ON														SET_ERR_LED_ON												
 #define SET_TEC_OFF														SET_ERR_LED_OFF
+
+#endif
+
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
+//USB FS LEGACY MUX MCU/MPU 选择							0:MCU USB 1:MPU USB
+#define SET_USB_FS_SEL_LEGACY(b)							HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, b)
+#define GET_USB_FS_SEL_LEGACY									HAL_GPIO_ReadPin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin)
+#define SET_USB_FS_SEL_LEGACY_ON							HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, GPIO_PIN_SET)
+#define SET_USB_FS_SEL_LEGACY_OFF							HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, GPIO_PIN_RESET)
+#define FLIP_USB_FS_LEGACY_SEL								HAL_GPIO_TogglePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin)
+
+//USB_FS_PSON 外部USB供电
+#define SET_USB_FS_PSON_LEGACY(b)							HAL_GPIO_WritePin(USB_FS_PSON_LEGACY_GPIO_Port, USB_FS_PSON_LEGACY_Pin, b)	
+#define GET_USB_FS_PSON_LEGACY								HAL_GPIO_ReadPin(USB_FS_PSON_LEGACY_GPIO_Port, USB_FS_PSON_LEGACY_Pin)
+#define SET_USB_FS_PSON_LEGACY_ON							HAL_GPIO_WritePin(USB_FS_PSON_LEGACY_GPIO_Port, USB_FS_PSON_LEGACY_Pin, GPIO_PIN_SET)
+#define SET_USB_FS_PSON_LEGACY_OFF						HAL_GPIO_WritePin(USB_FS_PSON_LEGACY_GPIO_Port, USB_FS_PSON_LEGACY_Pin, GPIO_PIN_RESET)
+#define FLIP_USB_FS_PSON_LEGACY								HAL_GPIO_TogglePin(USB_FS_PSON_LEGACY_GPIO_Port, USB_FS_PSON_LEGACY_Pin)
+
+//USB_HS_PSON 内部USB供电
+#define SET_USB_HS_PSON_LEGACY(b)							HAL_GPIO_WritePin(USB_HS_PSON_LEGACY_GPIO_Port, USB_HS_PSON_LEGACY_Pin, b)	
+#define GET_USB_HS_PSON_LEGACY								HAL_GPIO_ReadPin(USB_HS_PSON_LEGACY_GPIO_Port, USB_HS_PSON_LEGACY_Pin)
+#define SET_USB_HS_PSON_LEGACY_ON							HAL_GPIO_WritePin(USB_HS_PSON_LEGACY_GPIO_Port, USB_HS_PSON_LEGACY_Pin, GPIO_PIN_SET)
+#define SET_USB_HS_PSON_LEGACY_OFF						HAL_GPIO_WritePin(USB_HS_PSON_LEGACY_GPIO_Port, USB_HS_PSON_LEGACY_Pin, GPIO_PIN_RESET)
+#define FLIP_USB_HS_PSON_LEGACY								HAL_GPIO_TogglePin(USB_HS_PSON_LEGACY_GPIO_Port, USB_HS_PSON_LEGACY_Pin)
+#endif
+
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+//USBA MCU/MPU 选择														0:MPU USB 1:MCU USB
+#define SET_USBA0_SEL(b)											HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, b)
+#define GET_USBA0_SEL													HAL_GPIO_ReadPin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin)
+#define SET_USBA0_SEL_ON											HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, GPIO_PIN_SET)
+#define SET_USBA0_SEL_OFF											HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, GPIO_PIN_RESET)
+#define FLIP_USBA0_SEL												HAL_GPIO_TogglePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin)
+
+//USBA->MCU INT/EXT选择												0:EXT USB 1:INT USB
+#define SET_USBA1_SEL(b)											HAL_GPIO_WritePin(USBA1_SEL_GPIO_Port, USBA1_SEL_Pin, b)	
+#define GET_USBA1_SEL													HAL_GPIO_ReadPin(USBA1_SEL_GPIO_Port, USBA1_SEL_Pin)
+#define SET_USBA1_SEL_ON											HAL_GPIO_WritePin(USBA1_SEL_GPIO_Port, USBA1_SEL_Pin, GPIO_PIN_SET)
+#define SET_USBA1_SEL_OFF											HAL_GPIO_WritePin(USBA1_SEL_GPIO_Port, USBA1_SEL_Pin, GPIO_PIN_RESET)
+#define FLIP_USBA1_SEL												HAL_GPIO_TogglePin(USBA1_SEL_GPIO_Port, USBA1_SEL_Pin)
 
 //MPU POWER
 #define SET_MPU_3V3_EN(b)											HAL_GPIO_WritePin(MPU_3V3_EN_GPIO_Port, MPU_3V3_EN_Pin, b)	
@@ -231,21 +243,36 @@ extern RNG_HandleTypeDef hrng;
 #define SET_MPU_1V2_EN_ON											HAL_GPIO_WritePin(MPU_1V2_EN_GPIO_Port, MPU_1V2_EN_Pin, GPIO_PIN_SET)
 #define SET_MPU_1V2_EN_OFF										HAL_GPIO_WritePin(MPU_1V2_EN_GPIO_Port, MPU_1V2_EN_Pin, GPIO_PIN_RESET)
 
-//MICRO USBID ->MCU
-#define GET_MCU_USB0_ID												HAL_GPIO_ReadPin(MCU_USB0_ID_GPIO_Port, MCU_USB0_ID_Pin)
+//MICRO USBID -> MCU
+#define GET_USBD0_ID													HAL_GPIO_ReadPin(USBD0_ID_GPIO_Port, USBD0_ID_Pin)
+
+//MPU_USB_OTG_PSON -> MCU
+#define GET_MPU_USB_OTG_PSON									HAL_GPIO_ReadPin(MPU_USB_OTG_PSON_GPIO_Port, MPU_USB_OTG_PSON_Pin)
 
 //MCU USBID ->MPU
-#define SET_MPU_USB0_ID(b)										HAL_GPIO_WritePin(MPU_USB0_ID_GPIO_Port, MPU_USB0_ID_Pin, b)	
-#define GET_MPU_USB0_ID												HAL_GPIO_ReadPin(MPU_USB0_ID_GPIO_Port, MPU_USB0_ID_Pin)
-#define SET_MPU_USB0_ID_ON										HAL_GPIO_WritePin(MPU_USB0_ID_GPIO_Port, MPU_USB0_ID_Pin, GPIO_PIN_SET)
-#define SET_MPU_USB0_ID_OFF										HAL_GPIO_WritePin(MPU_USB0_ID_GPIO_Port, MPU_USB0_ID_Pin, GPIO_PIN_RESET)
+#define SET_MPU_USB_OTG_ID(b)									HAL_GPIO_WritePin(MPU_USB_OTG_ID_GPIO_Port, MPU_USB_OTG_ID_Pin, b)	
+#define GET_MPU_USB_OTG_ID										HAL_GPIO_ReadPin(MPU_USB_OTG_ID_GPIO_Port, MPU_USB_OTG_ID_Pin)
+#define SET_MPU_USB_OTG_ID_ON									HAL_GPIO_WritePin(MPU_USB_OTG_ID_GPIO_Port, MPU_USB_OTG_ID_Pin, GPIO_PIN_SET)
+#define SET_MPU_USB_OTG_ID_OFF								HAL_GPIO_WritePin(MPU_USB_OTG_ID_GPIO_Port, MPU_USB_OTG_ID_Pin, GPIO_PIN_RESET)
 
-//MPU USB-OTG PSON 外部USB-A供电
-#define SET_USB0_PSON(b)											HAL_GPIO_WritePin(MCU_USB0_PSON_GPIO_Port, MCU_USB0_PSON_Pin, b)	
-#define GET_USB0_PSON													HAL_GPIO_ReadPin(MCU_USB0_PSON_GPIO_Port, MCU_USB0_PSON_Pin)
-#define SET_USB0_PSON_ON											HAL_GPIO_WritePin(MCU_USB0_PSON_GPIO_Port, MCU_USB0_PSON_Pin, GPIO_PIN_SET)
-#define SET_USB0_PSON_OFF											HAL_GPIO_WritePin(MCU_USB0_PSON_GPIO_Port, MCU_USB0_PSON_Pin, GPIO_PIN_RESET)
-#define FLIP_USB0_PSON												HAL_GPIO_TogglePin(MCU_USB0_PSON_GPIO_Port, MCU_USB0_PSON_Pin)
+//外部USB-A供电
+#define SET_USBA0_PSON(b)											HAL_GPIO_WritePin(USBA0_PSON_GPIO_Port, USBA0_PSON_Pin, b)	
+#define GET_USBA0_PSON												HAL_GPIO_ReadPin(USBA0_PSON_GPIO_Port, USBA0_PSON_Pin)
+#define SET_USBA0_PSON_ON											HAL_GPIO_WritePin(USBA0_PSON_GPIO_Port, USBA0_PSON_Pin, GPIO_PIN_SET)
+#define SET_USBA0_PSON_OFF										HAL_GPIO_WritePin(USBA0_PSON_GPIO_Port, USBA0_PSON_Pin, GPIO_PIN_RESET)
+#define FLIP_USBA0_PSON												HAL_GPIO_TogglePin(USBA0_PSON_GPIO_Port, USBA0_PSON_Pin)
+//内部USB-A供电
+#define SET_USBA1_PSON(b)											HAL_GPIO_WritePin(USBA1_PSON_GPIO_Port, USBA1_PSON_Pin, b)	
+#define GET_USBA1_PSON												HAL_GPIO_ReadPin(USBA1_PSON_GPIO_Port, USBA1_PSON_Pin)
+#define SET_USBA1_PSON_ON											HAL_GPIO_WritePin(USBA1_PSON_GPIO_Port, USBA1_PSON_Pin, GPIO_PIN_SET)
+#define SET_USBA1_PSON_OFF										HAL_GPIO_WritePin(USBA1_PSON_GPIO_Port, USBA1_PSON_Pin, GPIO_PIN_RESET)
+#define FLIP_USBA1_PSON												HAL_GPIO_TogglePin(USBA1_PSON_GPIO_Port, USBA1_PSON_Pin)
+//外部USB-MICRO 供电
+#define SET_USBD0_PSON(b)											HAL_GPIO_WritePin(USBD0_PSON_GPIO_Port, USBD0_PSON_Pin, b)	
+#define GET_USBD0_PSON												HAL_GPIO_ReadPin(USBD0_PSON_GPIO_Port, USBD0_PSON_Pin)
+#define SET_USBD0_PSON_ON											HAL_GPIO_WritePin(USBD0_PSON_GPIO_Port, USBD0_PSON_Pin, GPIO_PIN_SET)
+#define SET_USBD0_PSON_OFF										HAL_GPIO_WritePin(USBD0_PSON_GPIO_Port, USBD0_PSON_Pin, GPIO_PIN_RESET)
+#define FLIP_USBD0_PSON												HAL_GPIO_TogglePin(USBD0_PSON_GPIO_Port, USBD0_PSON_Pin)
 
 //MPU REFLASH 固件写入
 #define SET_MPU_REFLASH(b)										HAL_GPIO_WritePin(MPU_REFLASH_GPIO_Port, MPU_REFLASH_Pin, b)	
@@ -255,13 +282,13 @@ extern RNG_HandleTypeDef hrng;
 #define FLIP_MPU_REFLASH											HAL_GPIO_TogglePin(MPU_REFLASH_GPIO_Port, MPU_REFLASH_Pin)
 
 //MPU RESET 复位
-#define SET_MPU_RESET(b)										HAL_GPIO_WritePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin, b)	
-#define GET_MPU_RESET												HAL_GPIO_ReadPin(MPU_RESET_GPIO_Port, MPU_RESET_Pin)
-#define SET_MPU_RESET_ON										HAL_GPIO_WritePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin, GPIO_PIN_SET)
-#define SET_MPU_RESET_OFF										HAL_GPIO_WritePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin, GPIO_PIN_RESET)
-#define FLIP_MPU_RESET											HAL_GPIO_TogglePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin)
-
+#define SET_MPU_RESET(b)											HAL_GPIO_WritePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin, b)	
+#define GET_MPU_RESET													HAL_GPIO_ReadPin(MPU_RESET_GPIO_Port, MPU_RESET_Pin)
+#define SET_MPU_RESET_ON											HAL_GPIO_WritePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin, GPIO_PIN_SET)
+#define SET_MPU_RESET_OFF											HAL_GPIO_WritePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin, GPIO_PIN_RESET)
+#define FLIP_MPU_RESET												HAL_GPIO_TogglePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin)
 #endif
+
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 /*****************************************************************************/
@@ -391,7 +418,7 @@ extern uint16_t audioSineTable[];
 #define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
 #define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
 /*****************************************************************************/
-#if defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250910_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP) || defined(GLOBAL_LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_LASER_TIM_HANDLE								htim7
 #define CONFIG_LASER_TIM											TIM7
 
@@ -403,7 +430,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_FAN_PWM_CHANNEL								TIM_CHANNEL_2
 #define CONFIG_FAN_FG_CHANNEL									TIM_CHANNEL_1
 
-#define CONFIG_RPROM_BUS											hi2c1//SPLC NVRAM接口定义
+#define CONFIG_EPROM_BUS_HANDLE								hi2c1//SPLC NVRAM接口定义
+#define CONFIG_EPROM_BUS											I2C1
 
 #define CONFIG_DEBUG_UART											huart1//调试串口
 #define CONFIG_GDDC_UART											huart2//GDDC串口
@@ -411,7 +439,6 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
 #define CONFIG_SPLC_ADC_CHANNEL								13//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM						10//ADC平均值次数
-
 #endif
 
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)

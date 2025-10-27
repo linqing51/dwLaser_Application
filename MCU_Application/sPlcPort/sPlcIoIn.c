@@ -84,7 +84,7 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 #endif
-#if defined(MODEL_PVGLS_15W_1470_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
 	if(temp == 1){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;

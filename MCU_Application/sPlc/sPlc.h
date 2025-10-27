@@ -19,6 +19,7 @@
 /*****************************************************************************/
 //lib
 #include "sPlcConfig.h"
+#include "sPlcEprom.h"
 #include "sPlcFun.h"
 #include "libcrc.h"
 #include "libdbg.h"
@@ -52,14 +53,6 @@
 #define LASER_MODE_CW													0x01//连续模式
 #define LASER_MODE_MP													0x02//多脉冲模式
 /*****************************************************************************/
-typedef enum {
-	CLEAR_EPROM_ALL 														= 0x01,
-	CLEAR_EPROM_NVRAM														= 0x02,
-	CLEAR_EPROM_FDRAM														= 0x03,
-	CLEAR_EPROM_FIRMWARE_CRC										= 0x04,
-	CLEAR_EPROM_DEVICE_CONFIG										= 0x05,
-	CLEAR_EPROM_LOG_INFO												= 0x06
-}clarmEpromCmd_t;
 typedef struct{
 	uint16_t calibrationPwr0[10];//通道0功率校正表
 	uint16_t calibrationPwr1[10];//通道1功率校正表
@@ -173,9 +166,6 @@ extern HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//�
 extern HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
 extern HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
 extern uint8_t sPlcEpromTest(void);
-extern uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
-void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
-void listEpromTable(void);
 
 extern uint32_t getOriginBootloadCrc(void);//计算MCU Bootload CRC32
 extern uint32_t getOriginAppCrc(void);//计算MCU App CRC32
@@ -183,9 +173,6 @@ extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
 extern void confirmBootloadUpdate(void);//执行Bootload更新
 extern void exitBootloadUpdate(void);//退出Bootload更新
 void softDelayMs(uint16_t ms);//软件延时
-/*****************************************************************************/
-extern arm_pid_instance_f32 laserTecPids;
-extern arm_pid_instance_f32 laserFanPids;
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

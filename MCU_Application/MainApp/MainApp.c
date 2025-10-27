@@ -5,7 +5,7 @@ void mainAppTask(void *argument){
 	while(1){
 		sPlcProcessStart();
 		if(LD(SPCOIL_START_UP)){//
-			dcHmiLoopInit();	
+			dcHmiLoopInit();
 		}
 		dcHmiLoop();
 		sPlcProcessEnd();

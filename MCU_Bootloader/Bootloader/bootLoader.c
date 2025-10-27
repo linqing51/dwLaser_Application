@@ -54,16 +54,6 @@
 #define GDDC_TX_TIMEOUT													0xFFFF
 #define GDDC_RETRY_TIMES												10//发送重试次数
 /*****************************************************************************/
-typedef enum {
-	CLEAR_EPROM_ALL 														= 0x01,
-	CLEAR_EPROM_NVRAM														= 0x02,
-	CLEAR_EPROM_FDRAM														= 0x03,
-	CLEAR_EPROM_MCU_FIRMWARE_CRC								= 0x04,
-	CLEAR_EPROM_LCD_FIRMWARE_CRC								= 0x05,
-	CLEAR_EPROM_DEVICE_CONFIG										= 0x06,
-	CLEAR_EPROM_LOG_INFO												= 0x07
-}clarmEpromCmd_t;
-/*****************************************************************************/
 uint32_t crcEpromMcu, crcEpromLcd;//EPROM中储存的CRC记录值
 uint32_t TmpReadSize = 0x00;
 uint32_t RamAddress = 0x00;
@@ -71,7 +61,7 @@ static __IO uint32_t LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//文件读写缓冲
 /*****************************************************************************/
 const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   		= '2';
-const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '0';
+const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '1';
 /*****************************************************************************/
 uint8_t cmdShakeHandOp[] = {0xEE,0x04,0xFF,0xFC,0xFF,0xFF};
 uint8_t cmdShakeHandRespondOp[] = {0xEE,0x55,0xFF,0xFC,0xFF,0xFF};
@@ -111,23 +101,11 @@ static uint32_t getNewMcuAppCrc(void);
 static uint32_t getNewLcdAppCrc(char* filePath);//获取文件校验码　CRC32
 static uint32_t updateMcuApp(void);
 static uint32_t updateLcdApp(char* filePath);//更新LCD APP
-static void DBGU_Printk(uint8_t *buffer);
 static void DBGU_Printk_num(uint8_t *buffer, uint16_t datanum);
 static void dp_display_text_num(uint8_t *text,uint16_t datanum);	
 static void clearFlash(void);
 static void updateEprom(void);
 static void dumpEprom(void);
-static HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//在AT24CXX指定地址读出一个数据
-static HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//在AT24CXX里面的指定地址开始读出16位数
-static HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////在AT24CXX里面的指定地址开始读出32位数
-static HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//在AT24CXX指定地址写入8位数据
-static HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//在AT24CXX里面的指定地址开始写入16位数
-static HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//在AT24CXX里面的指定地址开始写入32位数
-static HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
-static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
-static uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
-static void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
-static void listEpromTable(void);
 static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len);
 static FRESULT crcLcdFile(char* scanPath);
 static FRESULT updateLcdFile(char* scanPath);
@@ -163,26 +141,36 @@ void bootLoadInit(void){//引导程序初始化
 	SET_LASER_CH2_OFF;
 	SET_LASER_CH3_OFF;
 	//USB-A切换为MCU
-	SET_USB_FS_SEL_ON;
-	SET_USB_FS_SEL2_OFF;
-	//USB-A 打开电源
-	SET_USB_EXT_PSON_ON;
-	SET_USB_INT_PSON_OFF;
-	//USB-OTG 关闭电源
-	SET_USB0_PSON_OFF;
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)	
+	//打开USB FS电源
+	SET_USB_FS_PSON_LEGACY_ON;
+	//USBA切换到MCU
+	SET_USB_FS_SEL_LEGACY_OFF;
+	//关闭USB HS电源
+	SET_USB_HS_PSON_LEGACY_OFF;
+#endif
+
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+	//MCU FS USB 切换到外部USBA-0
+	SET_USBA0_SEL_OFF;
+	SET_USBA1_SEL_OFF;
+	//USBA-0 打开电源
+	SET_USBA0_PSON_ON;
+	SET_USBA1_PSON_OFF;
+	SET_USBD0_PSON_OFF;
 	//MPU 电源关闭
 	SET_MPU_RESET_OFF;
 	SET_MPU_1V2_EN_OFF;
 	SET_MPU_1V8_EN_OFF;
-	SET_MPU_3V3_EN_OFF;
-	
+	SET_MPU_3V3_EN_OFF;	
+#endif
 	//关闭所有LED
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
 	SET_TICK_LED_OFF;
 	SET_ERR_LED_OFF;
-#if !defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL) && !defined(GLOBAL_LDR2P1_G5_A1_20250910_DUAL) && !defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP) && !defined(GLOBAL_LDR2P1_G5_A1_20250910_TRIP)
+#if !defined(LDR2P1_G5_A1_20250731_DUAL) && !defined(LDR2P1_G5_A1_20250910_DUAL) && !defined(LDR2P1_G5_A1_20250731_TRIP) && !defined(LDR2P1_G5_A1_20250910_TRIP)
 	//R-G-Y流水
 	//R
 	SET_RED_LED_ON;
@@ -315,7 +303,7 @@ void bootLoadProcess(void){//bootload 执行程序
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下		
 #endif
 					
-#if defined(GLOBAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250910_DUAL) || defined(GLOBAL_LDR2P1_G5_A1_20250731_TRIP) || defined(GLOBAL_LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//安全连锁未插入
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
@@ -1067,12 +1055,6 @@ static uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
 }
 /*****************************************************************************/
 //触摸屏程序
-static void DBGU_Printk(uint8_t *buffer){//arg pointer to a string ending by
-	while(*buffer != '\0'){
-		HAL_UART_Transmit(&CONFIG_GDDC_UART, buffer, 1, GDDC_TX_TIMEOUT);
-		buffer ++;
-    }
-}
 static void DBGU_Printk_num(uint8_t *buffer, uint16_t datanum){//arg pointer to a string ending by
 	HAL_UART_Transmit(&CONFIG_GDDC_UART, (const uint8_t*)buffer, datanum, GDDC_TX_TIMEOUT);
 }
@@ -1082,399 +1064,7 @@ static void dp_display_text_num(uint8_t *text, uint16_t datanum){
     DBGU_Printk_num(text, datanum);
 }
 
-static void dp_display_array(uint8_t *value, int bytes, int descriptive){
-    /* User Specific Code */
-    uint8_t print_buf[10];
-    int i;
-    for(i=0; i < bytes; i++){
-        if (descriptive == GDDC_HEX){
-            sprintf((char *)print_buf, "%lX", (uint8_t)value[i]);
-            DBGU_Printk(print_buf);
-        }
-        else if(descriptive == GDDC_DEC){
-            sprintf((char *)print_buf, "%ld", (uint8_t)value[i]);
-            DBGU_Printk(print_buf);
-        }
-        else if(descriptive == GDDC_CHR){
-            sprintf((char *)print_buf, "%c", (uint8_t)value[i]);
-            DBGU_Printk(print_buf);
-        }
-    }
-}
-
 /*****************************************************************************/
-static void softDelayMs(uint16_t ms){//软件延时
-	uint32_t i;
-	for(i = 0;i < 1000;i ++){
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	}
-}
-
-static void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
-	GPIO_InitTypeDef GPIO_InitStruct;
-	/* GPIO Ports Clock Enable */
-	__HAL_RCC_GPIOA_CLK_ENABLE();
-	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
-	/*Configure GPIO pin : PA12 */
-	GPIO_InitStruct.Pin = GPIO_PIN_12;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);                                            
-	softDelayMs(100);
-	//先把PA12拉低再拉高，利用D+模拟USB的拔插动作   
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
-	softDelayMs(100);
-	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
-	__HAL_RCC_GPIOA_CLK_DISABLE();
-	__HAL_RCC_GPIOG_CLK_ENABLE();
-	
-	HAL_GPIO_WritePin(USB_FS_PSON_GPIO_Port, USB_FS_PSON_Pin, GPIO_PIN_RESET);//关闭VBUS供电
-	HAL_GPIO_WritePin(USB_INT_PSON_GPIO_Port, USB_INT_PSON_Pin, GPIO_PIN_RESET);
-	//GPIO_InitStruct.Pin = GPIO_PIN_8;
-	//GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	//GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-	//GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	//HAL_GPIO_Init(OTG_FS_PSON_GPIO_Port, &GPIO_InitStruct);
-	softDelayMs(300);
-	HAL_GPIO_DeInit(USB_FS_PSON_GPIO_Port, USB_FS_PSON_Pin);
-	HAL_GPIO_DeInit(USB_INT_PSON_GPIO_Port, USB_INT_PSON_Pin);
-	__HAL_RCC_GPIOG_CLK_DISABLE();	
-	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//关闭USB时钟
-	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//关闭USB 中断
-	HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);//清楚 USB 中断标志
-}
-static void SystemClock_Reset(void){//复位系统时钟
-	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-	__HAL_RCC_BACKUPRESET_RELEASE();
-	__HAL_RCC_BACKUPRESET_FORCE();
-	__HAL_RCC_PLL_DISABLE();
-	__HAL_RCC_HSI_DISABLE();
-	/** Configure the main internal regulator output voltage */
-	__HAL_RCC_PWR_CLK_DISABLE();
-	__HAL_RCC_PWR_CLK_ENABLE();
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-	/** Initializes the CPU, AHB and APB busses clocks */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK){
-		Error_Handler();
-	}
-	/** Initializes the CPU, AHB and APB busses clocks */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK){
-		Error_Handler();
-	}
-}
-void resetInit(void){//复位后初始化
-	HAL_DeInit();
-	//复位RCC时钟
-	SystemClock_Reset();
-	UsbGpioReset();
-	__enable_irq();
-}
-/*****************************************************************************/
-static HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地址读出8位数据
-//ReadAddr:开始读数的地址  
-//返回值  :数据				  
-	HAL_StatusTypeDef ret;
-	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
-		ret = HAL_ERROR;
-		return ret;
-	}	
-	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS,
-	                       CONFIG_EPROM_READ_ADDR,
-	                       ReadAddr,
-	                       I2C_MEMADD_SIZE_16BIT,
-	                       (uint8_t*)(rdat),
-	                       1,
-	                       CONFIG_EPROM_TIMEOUT);
-	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器
-	}
-	return ret;
-}
-static HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//在指定地址开始读出16位数
-//该函数用于读出16bit或者32bit的数据.
-//ReadAddr   :开始读出的地址 
-//返回值     :数据  	
-	HAL_StatusTypeDef ret;
-	if((ReadAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
-		ret = HAL_ERROR;
-		return ret;
-	}	
-	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, 
-						   CONFIG_EPROM_READ_ADDR,
-	                       ReadAddr,
-	                       I2C_MEMADD_SIZE_16BIT,
-	                       (uint8_t*)(rdat),
-	                       2,
-	                       CONFIG_EPROM_TIMEOUT);
-	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
-	}
-	return ret;
-}
-static HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){////在指定地址开始读出32位数
-//该函数用于读出32bit的数据.
-//ReadAddr   :开始读出的地址 
-//返回值     :数据  	
-	HAL_StatusTypeDef ret;
-	if((ReadAddr + 3) > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
-		ret = HAL_ERROR;
-		return ret;
-	}	
-	ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, 
-	                       CONFIG_EPROM_READ_ADDR,
-	                       ReadAddr,
-	                       I2C_MEMADD_SIZE_16BIT,
-	                       (uint8_t*)(rdat),
-	                       4,
-	                       CONFIG_EPROM_TIMEOUT);
-	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
-	}
-	return ret;
-}
-static HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//在指定地址写入8位数据
-//WriteAddr  :写入数据的目的地址    
-//DataToWrite:要写入的数据
-	HAL_StatusTypeDef ret;
-	if(WriteAddr > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
-		ret = HAL_ERROR;
-		return ret;
-	}
-	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
-	                        CONFIG_EPROM_WRITE_ADDR,
-	                        WriteAddr, 
-	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(wdat), 
-	                        1, 
-	                        CONFIG_EPROM_TIMEOUT);
-	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器
-	}
-	return ret;
-}
-static HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//在的指定地址开始写入16位数
-//该函数用于写入16bit的数据.
-//WriteAddr  :开始写入的地址  
-//DataToWrite:数据数组首地址
-	HAL_StatusTypeDef ret;
-	if((WriteAddr + 1) > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
-		ret = HAL_ERROR;
-		return ret;
-	}
-	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
-	                        CONFIG_EPROM_WRITE_ADDR, 
-	                        WriteAddr, 
-	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(wdat), 
-	                        2, 
-	                        CONFIG_EPROM_TIMEOUT);
-	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器	
-	}
-	return ret;
-}
-static HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//在的指定地址开始写入32位数
-//该函数用于写入32bit的数据.
-//WriteAddr  :开始写入的地址  
-//DataToWrite:数据数组首地址
-	HAL_StatusTypeDef ret;
-	if((WriteAddr + 3) >= (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
-		ret = HAL_ERROR;
-		return ret;
-	}
-	ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, 
-	                        CONFIG_EPROM_WRITE_ADDR, 
-	                        WriteAddr, 
-	                        I2C_MEMADD_SIZE_16BIT, 
-	                        (uint8_t*)(wdat), 
-	                        4, 
-	                        CONFIG_EPROM_TIMEOUT);
-	if(ret != HAL_OK){
-		ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-		ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
-	}
-	return ret;
-}   
-static HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//在的指定地址开始读出指定个数的数据
-//ReadAddr :开始读出的地址 对24c02为0~255
-//pBuffer  :数据数组首地址
-//NumToRead:要读出数据的个数
-	HAL_StatusTypeDef ret;
-	uint16_t rAddr, rBlock, rByte, doBlock;
-	uint8_t* rBuffer;
-	if((ReadAddr + NumToRead) > CONFIG_EPROM_SIZE){//读地址超过限制
-		ret = HAL_ERROR;
-		return ret;
-	}
-	rBlock = NumToRead / CONFIG_EPROM_PAGE_SIZE;
-	rByte = NumToRead % CONFIG_EPROM_PAGE_SIZE;
-	rAddr = ReadAddr;
-	rBuffer = pBuffer;
-	for(doBlock = 0;doBlock < rBlock;doBlock ++){
-		ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
-		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);//释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);//这句重新初始化I2C控制器
-		}
-		rAddr += CONFIG_EPROM_PAGE_SIZE;
-		rBuffer += CONFIG_EPROM_PAGE_SIZE;
-	}
-	if(rByte != 0x0){
-		ret = HAL_I2C_Mem_Read(&CONFIG_RPROM_BUS, CONFIG_EPROM_READ_ADDR, rAddr, I2C_MEMADD_SIZE_16BIT, rBuffer, rByte ,CONFIG_EPROM_TIMEOUT);
-		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
-		}
-	}
-	return ret;	
-}  
-static HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite){//在的指定地址开始写入指定个数的数据
-//WriteAddr :开始写入的地址 对24c02为0~255
-//pBuffer   :数据数组首地址
-//NumToWrite:要写入数据的个数
-	HAL_StatusTypeDef ret;
-	uint16_t wAddr, wBlock, wByte, doBlock;
-	uint8_t* wBuffer;
-	if((WriteAddr + NumToWrite) > CONFIG_EPROM_SIZE){//读地址超过限制
-		ret = HAL_ERROR;
-		return ret;
-	}
-	wBlock = NumToWrite / CONFIG_EPROM_PAGE_SIZE;
-	wByte = NumToWrite % CONFIG_EPROM_PAGE_SIZE;
-	wAddr = WriteAddr;
-	wBuffer = pBuffer;
-	for(doBlock = 0;doBlock < wBlock;doBlock ++){
-		ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, CONFIG_EPROM_PAGE_SIZE, CONFIG_EPROM_TIMEOUT);
-		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
-		}
-		wAddr += CONFIG_EPROM_PAGE_SIZE;
-		wBuffer += CONFIG_EPROM_PAGE_SIZE;
-#if CONFIG_EPROM_WRITE_DELAY > 0
-		HAL_Delay(CONFIG_EPROM_WRITE_DELAY);
-#endif
-	}
-	if(wByte != 0x0){		
-		ret = HAL_I2C_Mem_Write(&CONFIG_RPROM_BUS, CONFIG_EPROM_WRITE_ADDR, wAddr, I2C_MEMADD_SIZE_16BIT, wBuffer, wByte, CONFIG_EPROM_TIMEOUT);
-		if(ret != HAL_OK){
-			ret = HAL_I2C_DeInit(&CONFIG_RPROM_BUS);        //释放IO口为GPIO，复位句柄状态标志
-			ret = HAL_I2C_Init(&CONFIG_RPROM_BUS);          //这句重新初始化I2C控制器
-		}
-	}
-#if CONFIG_EPROM_WRITE_DELAY > 0
-	HAL_Delay(CONFIG_EPROM_WRITE_DELAY);
-#endif
-	return ret;
-}
-/*****************************************************************************/
-static void listEpromTable(void){//输出EPROM分布表
-	printf("MR EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
-	printf("DM EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
-	printf("FD EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
-	
-	printf("MR CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MR_CRC, (uint32_t)(CONFIG_EPROM_MR_CRC + 3));
-	printf("DM CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_DM_CRC, (uint32_t)(CONFIG_EPROM_DM_CRC + 3));
-	printf("FD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3));	
-	printf("MCU CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3));
-	printf("LCD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3));
-	
-	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
-	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
-}
-static void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
-	uint8_t var = 0;
-	uint32_t i;	
-	switch(cmd){
-		case CLEAR_EPROM_ALL:{
-			for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
-				epromWriteByte(i, &var);
-			}
-			break;
-		}
-		case CLEAR_EPROM_NVRAM:{
-			for(i = CONFIG_EPROM_MR_START; i <= CONFIG_EPROM_MR_END;i ++){
-				epromWriteByte(i, &var);
-			}
-			for(i = CONFIG_EPROM_DM_START; i <= CONFIG_EPROM_DM_END;i ++){
-				epromWriteByte(i, &var);
-			}
-			
-			for(i = CONFIG_EPROM_MR_CRC; i <= (CONFIG_EPROM_MR_CRC + 3);i ++){
-				epromWriteByte(i, &var);
-			}
-			
-			for(i = CONFIG_EPROM_DM_CRC; i <= (CONFIG_EPROM_DM_CRC + 3);i ++){
-				epromWriteByte(i, &var);
-			}
-			break;
-		}
-		case CLEAR_EPROM_FDRAM:{
-			for(i = CONFIG_EPROM_FD_START; i <= CONFIG_EPROM_FD_END;i ++){
-				epromWriteByte(i, &var);
-			}			
-			for(i = CONFIG_EPROM_FD_CRC; i <= (CONFIG_EPROM_FD_CRC + 3);i ++){
-				epromWriteByte(i, &var);
-			}
-			break;
-		}
-		case CLEAR_EPROM_MCU_FIRMWARE_CRC:{
-			for(i = CONFIG_EPROM_MCU_FW_CRC;i <= (CONFIG_EPROM_MCU_FW_CRC + 3);i ++){
-				epromWriteByte(i, &var);
-			}
-			break;
-		}
-		case CLEAR_EPROM_LCD_FIRMWARE_CRC:{
-			for(i = CONFIG_EPROM_LCD_FW_CRC;i <= (CONFIG_EPROM_LCD_FW_CRC + 3);i ++){
-				epromWriteByte(i, &var);
-			}
-			break;
-		}
-		case CLEAR_EPROM_DEVICE_CONFIG:{
-			for(i = CONFIG_EPROM_CONFIG_START;i <= CONFIG_EPROM_CONFIG_END;i ++){
-				epromWriteByte(i, &var);
-			}
-			break;
-		}
-		case CLEAR_EPROM_LOG_INFO:{
-			for(i = CONFIG_EPROM_LOGINFO_START;i <= CONFIG_EPROM_LOGINFO_END;i ++){
-				epromWriteByte(i, &var);
-			}
-			break;
-		}
-		default:break;
-	}
-}
-static uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash 查空
-	uint8_t val;
-	uint32_t i;
-	for(i = 0;i < size;i ++){
-		val = *(__IO uint8_t*)(adr + i);
-		if(val != 0xFF){
-			return false;
-		}
-	}
-	return true;
-}
-
 static FRESULT crcLcdFile(char* scanPath){//扫描文件夹内全部文件并计算CRC值
 	DIR memofsrcdir;
 	DIR *srcdir;
@@ -1510,7 +1100,6 @@ static FRESULT crcLcdFile(char* scanPath){//扫描文件夹内全部文件并计
 	f_closedir(srcdir);
 	return retUsbH;
 }	
-
 
 static FRESULT updateLcdFile(char* scanPath){//扫描文件夹内全部文件并上传
 	DIR memofsrcdir;

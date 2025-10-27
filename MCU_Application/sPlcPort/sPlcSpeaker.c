@@ -101,7 +101,7 @@ static float32_t linearToLog(int16_t volume){//线性音量转化为对数音量
 }
 #endif
 
-#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
 static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	uint16_t tmp, i, wdat;
 	SET_MCP41010_CS(GPIO_PIN_SET);//CS = 1

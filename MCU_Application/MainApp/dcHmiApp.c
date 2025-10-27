@@ -8,6 +8,8 @@ uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写�
 uint32_t newBootloadCrc32;
 int16_t LaserTecOutCounter, LaserTecOut;
 PID_Controller temp_controller;
+// 创建风扇控制器实例
+FanController FanTec;
 /*****************************************************************************/
 FRESULT retUsbH;
 FATFS	USBH_fatfs;
@@ -36,11 +38,18 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	uint32_t i;
 	//警告信息
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Please Standby,Do Not Power Off!!"));
-	SET_USB_FS_SEL_OFF;
-	SET_USB_FS_SEL2_ON;//切换为外部USB
-	printf("Bootloader:switch ext usb\n");
-	SET_USB_INT_PSON_OFF;//关闭内部USB供电
-	printf("Bootloader:power off int usb power\n");
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
+	SET_USB_FS_SEL_LEGACY_ON;
+	SET_USB_FS_PSON_LEGACY_ON;
+	SET_USB_HS_PSON_LEGACY_OFF;
+#endif
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+	SET_USBA0_SEL_OFF;
+	SET_USBA1_SEL_ON;//切换为外部USB
+	SET_USBA0_PSON_ON;
+	SET_USBA1_PSON_OFF;
+#endif
+	printf("Bootloader:switch ext usb,power off int usb power\n");
 	vTaskDelay(2000);
 	//挂载USB DISK FAT文件系统
 	retUsbH = f_mount(&USBH_fatfs, (const TCHAR*)FATFS_ROOT, 1);
@@ -171,9 +180,17 @@ void exitBootloadUpdate(void){//退出Bootload更新
 	f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 	vTaskDelay(300);
 	//切换回内部USB
-	SET_USB_FS_SEL2_ON;//切换为内部USB
-	SET_USB_INT_PSON_ON;//打开内部USB供电
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
+	SET_USB_FS_SEL_LEGACY_OFF;
+	SET_USB_FS_PSON_LEGACY_ON;
+	SET_USB_HS_PSON_LEGACY_OFF;
+#endif
 	
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+	SET_USBA0_SEL_OFF;
+	SET_USBA1_SEL_ON;//切换为内部USB
+	SET_USBA0_PSON_ON;//打开内部USB供电
+#endif
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
@@ -2408,7 +2425,8 @@ void dcHmiLoopInit(void){//初始化模块
 	else{
 		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
 	}
-  PID_Init(&temp_controller, 25.0f, 0.9f, 3.0f, CONFIG_DIODE_SET_TEMP, 500); 
+  PID_Init(&temp_controller, 25.0f, 0.9f, 3.0f, CONFIG_DIODE_SET_TEMP, 500);  
+	FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
 	hmiUartInit();
@@ -2443,10 +2461,16 @@ void dcHmiLoopInit(void){//初始化模块
 	RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 	SET_SPK_TIM_ON;
 	SET_BEEM_LED_OFF;
-	SET_USB_FS_SEL_OFF;//切换为MCU USB
-	SET_USB_FS_SEL2_ON;//切换为内部USB
-	SET_USB_INT_PSON_ON;//打开内部USB供电
-	
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)	
+	SET_USB_FS_SEL_LEGACY_OFF;//切换为MCU USB
+	SET_USB_FS_PSON_LEGACY_ON;//切换为内部USB
+	SET_USB_HS_PSON_LEGACY_OFF;//打开内部USB供电
+#endif
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+	SET_USBA0_SEL_OFF;
+	SET_USBA1_SEL_ON;
+	SET_USBA0_PSON_ON;
+#endif
 }
 
 static void temperatureLoop(void){//温度轮询轮询
@@ -2456,7 +2480,7 @@ static void temperatureLoop(void){//温度轮询轮询
 	TNTUC(EM_HT_TEMP, SPREG_ADC_12);
 	TENV(EM_MCU_TEMP, SPREG_ADC_13);
 #endif
-#if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 	TNTLC(EM_LASER_TEMP, SPREG_ADC_11);
 	TNTLC(EM_HT_TEMP, SPREG_ADC_12);
 	TNTLC(EM_MBAT_TEMP, SPREG_ADC_8);
@@ -2489,7 +2513,16 @@ static void temperatureLoop(void){//温度轮询轮询
 		RRES(R_MCU_TEMP_LOW);
 	}
 	//温控执行 激光等待发射及错误状态启动温控
-	if(LDP(SPCOIL_PS100MS)){//2秒间隔
+	if(LDP(SPCOIL_PS100MS)){//0.2秒间隔
+		if(LD(R_LASER_TEMP_HIGH) || LD(R_MCU_TEMP_HIGH)){//过热状态无条件打开风扇
+			 	NVRAM0[EM_FAN_SET_SPEED] = 100;
+		}
+		else{
+			FanTec.current_temp = ((float)NVRAM0[EM_HT_TEMP] / 10.0F);
+			FanController_Run(&FanTec);// 更新风扇控制
+			NVRAM0[EM_FAN_SET_SPEED] = FanTec.current_speed;
+		}
+		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
 		LaserTecOut = PID_Compute(&temp_controller, NVRAM0[EM_LASER_TEMP]);	
 		if(LaserTecOut >= 4095){
 			LaserTecOut = 4095;
@@ -2516,95 +2549,7 @@ static void temperatureLoop(void){//温度轮询轮询
 			RRES(Y_TEC);
 		}
 		LaserTecOutCounter ++;
-	}		
-//温控执行 激光等待发射及错误状态启动温控
-	if(LDP(SPCOIL_PS1000MS)){	
-		if(LD(R_LASER_TEMP_HIGH) || LD(R_LASER_TEMP_LOW) || LD(R_MCU_TEMP_HIGH) || LD(R_MCU_TEMP_LOW)){//过热状态无条件打开风扇
-			NVRAM0[EM_FAN_SET_SPEED] = 100;
-		}
-		else{	
-			if(NVRAM0[EM_HT_TEMP] < -100){	
-				if(NVRAM0[EM_HMI_OPERA_STEP] ==  FSMSTEP_LASER_EMITING){
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//1470发射时
-						if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
-							if(NVRAM0[EM_LASER_POWER_CH0] <= 50){//功率小于5W
-								NVRAM0[EM_FAN_SET_SPEED] = 45;
-							}
-							else if((NVRAM0[EM_LASER_POWER_CH0] > 50) && (NVRAM0[EM_LASER_POWER_CH0] < 100)){//5-10W
-								NVRAM0[EM_FAN_SET_SPEED] = 65;
-							}
-							else if((NVRAM0[EM_LASER_POWER_CH0] >= 100) && (NVRAM0[EM_LASER_POWER_CH0] < 130)){//10-13W
-								NVRAM0[EM_FAN_SET_SPEED] = 75;
-							}
-							else if(NVRAM0[EM_LASER_POWER_CH0] >= 130){//13-15W
-								NVRAM0[EM_FAN_SET_SPEED] = 100;
-							}
-						}
-						else{//激光器温度大于35度风扇满转
-							NVRAM0[EM_FAN_SET_SPEED] = 100;
-						}
-					}
-					
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//980发射时
-						if(NVRAM0[EM_LASER_TEMP] <= 350){//激光器温度小于35度启用静音风扇
-							if(NVRAM0[EM_LASER_POWER_CH1] <= 50){//功率小于5W
-								NVRAM0[EM_FAN_SET_SPEED] = 35;
-							}
-							else if((NVRAM0[EM_LASER_POWER_CH1] > 50) && (NVRAM0[EM_LASER_POWER_CH1] < 100)){//5-10W
-								NVRAM0[EM_FAN_SET_SPEED] = 55;
-							}
-							else if((NVRAM0[EM_LASER_POWER_CH1] >= 100) && (NVRAM0[EM_LASER_POWER_CH1] < 130)){//10-13W
-								NVRAM0[EM_FAN_SET_SPEED] = 65;
-							}
-							else if(NVRAM0[EM_LASER_POWER_CH1] >= 130){//13-15W
-								NVRAM0[EM_FAN_SET_SPEED] = 100;
-							}
-						}
-						else{//激光器温度大于35度风扇满转
-							NVRAM0[EM_FAN_SET_SPEED] = 100;
-						}
-					}
-					
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//红激光发射时
-						NVRAM0[EM_FAN_SET_SPEED] = 30;
-					}
-				}
-				else{
-					NVRAM0[EM_FAN_SET_SPEED] = 20;
-				}
-			}
-			else{
-				if(NVRAM0[EM_HT_TEMP] >= -100 &&  NVRAM0[EM_HT_TEMP] < 150){
-					NVRAM0[EM_FAN_SET_SPEED] = 25;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 150 && NVRAM0[EM_HT_TEMP] < 200){
-					NVRAM0[EM_FAN_SET_SPEED] = 30;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 200 && NVRAM0[EM_HT_TEMP] < 250){
-					NVRAM0[EM_FAN_SET_SPEED] = 35;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 250 && NVRAM0[EM_HT_TEMP] < 300){
-					NVRAM0[EM_FAN_SET_SPEED] = 40;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 300 && NVRAM0[EM_HT_TEMP] < 400){
-					NVRAM0[EM_FAN_SET_SPEED] = 60;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 400 && NVRAM0[EM_HT_TEMP] < 450){
-					NVRAM0[EM_FAN_SET_SPEED] = 85;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 450 && NVRAM0[EM_HT_TEMP] < 500){
-					NVRAM0[EM_FAN_SET_SPEED] = 90;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 500 && NVRAM0[EM_HT_TEMP]< 550){
-					NVRAM0[EM_FAN_SET_SPEED] = 95;
-				}
-				else if(NVRAM0[EM_HT_TEMP] >= 550){
-					NVRAM0[EM_FAN_SET_SPEED] = 100;
-				}
-			}
-		}
-		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
-	}	
+	}
 }
 
 static void faultLoop(void){//故障轮询
@@ -2640,7 +2585,7 @@ static void faultLoop(void){//故障轮询
 	}
 	else{
 		if(deviceConfig.normalOpenInterLock == 1){//常开连锁			
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_10W_1940_A1) || defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_10W_1940_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
 			if(LD(X_INTERLOCK_NC)){
 				RRES(R_INTERLOCK);
 			}
@@ -3433,7 +3378,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 			}
 			//打开指示激光
-			setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain);
+			setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain + CONFIG_LASER_AIM_OFFSET);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);

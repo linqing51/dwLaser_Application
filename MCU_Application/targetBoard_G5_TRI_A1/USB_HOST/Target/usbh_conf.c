@@ -72,7 +72,7 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hcdHandle)
     PA11     ------> USB_OTG_FS_DM
     PA12     ------> USB_OTG_FS_DP
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+    GPIO_InitStruct.Pin = USB_OTG_FS_DM_Pin|USB_OTG_FS_DP_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -105,7 +105,7 @@ void HAL_HCD_MspDeInit(HCD_HandleTypeDef* hcdHandle)
     PA11     ------> USB_OTG_FS_DM
     PA12     ------> USB_OTG_FS_DP
     */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11|GPIO_PIN_12);
+    HAL_GPIO_DeInit(GPIOA, USB_OTG_FS_DM_Pin|USB_OTG_FS_DP_Pin);
 
     /* Peripheral interrupt Deinit*/
     HAL_NVIC_DisableIRQ(OTG_FS_IRQn);
@@ -467,7 +467,12 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
       /* Drive high Charge pump */
       /* ToDo: Add IOE driver control */
       /* USER CODE BEGIN DRIVE_HIGH_CHARGE_FOR_FS */
-			SET_USB_EXT_PSON_OFF;
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
+			SET_USB_FS_PSON_LEGACY_OFF;
+#endif
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+			SET_USBA0_PSON_OFF;
+#endif
       /* USER CODE END DRIVE_HIGH_CHARGE_FOR_FS */
     }
     else
@@ -475,7 +480,12 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
       /* Drive low Charge pump */
       /* ToDo: Add IOE driver control */
       /* USER CODE BEGIN DRIVE_LOW_CHARGE_FOR_FS */
-			SET_USB_EXT_PSON_ON;
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
+			SET_USB_FS_PSON_LEGACY_ON;
+#endif
+#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+			SET_USBA0_PSON_ON;
+#endif			
       /* USER CODE END DRIVE_LOW_CHARGE_FOR_FS */
     }
   }

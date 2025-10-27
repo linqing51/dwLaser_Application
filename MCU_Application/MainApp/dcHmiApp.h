@@ -16,6 +16,7 @@
 #include "hmiLib.h"
 #include "dcHmiRes.h"
 #include "MainAppLib.h"
+#include "fan_controller.h"
 /*****************************************************************************/
 #define FSMSTEP_IDLE																0//待机
 #define FSMSTEP_POWERUP															10//上电

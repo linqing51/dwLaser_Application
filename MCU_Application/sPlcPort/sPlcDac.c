@@ -1,7 +1,7 @@
 #include "sPlc.h"
 #include "boardConfig.h"
 /*****************************************************************************/
-#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
 static void writeDac7311(uint16_t dat){
 	uint8_t tmp, i;
 	SET_EDAC7_CS(GPIO_PIN_RESET);//CS = 0

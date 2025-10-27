@@ -66,3 +66,6 @@
 .\targetboard_g5_tri_a1\libcpu.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\libcpu.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\libcpu.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\libcpu.o: ..\..\lib\flash_if.h
+.\targetboard_g5_tri_a1\libcpu.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\libcpu.o: ..\..\lib\libcrc.h

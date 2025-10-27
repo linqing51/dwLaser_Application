@@ -19,7 +19,9 @@
 #include "flash_if.h"
 //#include "usart.h"
 /*****************************************************************************/
+#include "..\..\MCU_Application\sPlcPort\sPlcEprom.h"
 #include "..\..\MCU_Application\lib\libcpu.h"
+#include "..\..\MCU_Application\lib\libdbg.h"
 #include "..\..\MCU_Application\sPlc\sPlcConfig.h"
 #include "..\..\MCU_Application\sPlc\BoardConfig.h"
 #include "..\..\MCU_Application\MainApp\AppConfig.h"

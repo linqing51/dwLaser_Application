@@ -831,7 +831,7 @@ ARM Macro Assembler    Page 13
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=targetboard_g5_tri_a1\startup_stm32f407xx.d -otargetboard_g5
-_tri_a1\startup_stm32f407xx.o -I.\RTE\_G5_DUAL_A1_20250910 -IC:\Users\linqi\App
+_tri_a1\startup_stm32f407xx.o -I.\RTE\_G5_TRIP_A1_20250731 -IC:\Users\linqi\App
 Data\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include --predefine="__MICROLIB
  SETA 1" --predefine="__UVISION_VERSION SETA 542" --predefine="STM32F407xx SETA
  1" --predefine="_RTE_ SETA 1" --list=.\targetboard_g5_tri_a1\startup_stm32f407

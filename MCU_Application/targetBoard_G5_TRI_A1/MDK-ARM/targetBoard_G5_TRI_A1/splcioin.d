@@ -72,10 +72,7 @@
 .\targetboard_g5_tri_a1\splcioin.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\targetboard_g5_tri_a1\splcioin.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/sPlcConfig.h
-.\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/sPlcFun.h
-.\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\splcioin.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\splcioin.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\splcioin.o: ../../sPlcPort/sPlcEprom.h
 .\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splcioin.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1\splcioin.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -96,6 +93,12 @@
 .\targetboard_g5_tri_a1\splcioin.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\splcioin.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\splcioin.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\splcioin.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/sPlcFun.h
+.\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/sPlc.h
+.\targetboard_g5_tri_a1\splcioin.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\splcioin.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splcioin.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\splcioin.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splcioin.o: ../../lib/flash_if.h

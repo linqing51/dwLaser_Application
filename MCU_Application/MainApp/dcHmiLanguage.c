@@ -48,13 +48,17 @@ const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+15w+0.5w"};
 const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
 #endif
 
-#if defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_TRIP)
 const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
 const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+15w+0.5w"};
 const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
 #endif
 
-
+#if defined(LDR2P1_G5_A1_20250910_TRIP)
+const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
+const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+30w+0.5w"};
+const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
+#endif
 
 /*****************************************************************************/
 

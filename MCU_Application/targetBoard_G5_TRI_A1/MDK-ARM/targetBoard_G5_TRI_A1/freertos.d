@@ -85,10 +85,7 @@
 .\targetboard_g5_tri_a1\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\targetboard_g5_tri_a1\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\freertos.o: ../../sPlc/sPlcConfig.h
-.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/sPlcFun.h
-.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\freertos.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\freertos.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\freertos.o: ../../sPlcPort/sPlcEprom.h
 .\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\freertos.o: ../USB_HOST/Target/usbh_conf.h
@@ -97,6 +94,12 @@
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\freertos.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/sPlcFun.h
+.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/sPlc.h
+.\targetboard_g5_tri_a1\freertos.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\freertos.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/flash_if.h
@@ -118,7 +121,6 @@
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiApp.h
 .\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\freertos.o: ../../MainApp/appConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiApp.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/preScheme.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiLanguage.h
@@ -134,3 +136,4 @@
 .\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiRes.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/MainAppLib.h
+.\targetboard_g5_tri_a1\freertos.o: ../../lib/fan_controller.h

@@ -851,10 +851,10 @@ ARM Macro Assembler    Page 14
 
 d_g5_tri_a1\startup_stm32f407xx.o -I../Drivers/CMSIS/Include -I../Middlewares/T
 hird_Party/ARM_CMSIS/CMSIS/Core_A/Include/ -I../Middlewares/Third_Party/ARM_CMS
-IS/CMSIS/DSP/Include -I.\RTE\_targetBoard_G5_TRI_A1 -IC:\Users\linqi\AppData\Lo
-cal\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include --predefine="__UVISION_VERSION
- SETA 542" --predefine="STM32F407xx SETA 1" --predefine="_RTE_ SETA 1" --list=.
-\targetboard_g5_tri_a1\startup_stm32f407xx.lst startup_stm32f407xx.s
+IS/CMSIS/DSP/Include -I.\RTE\_G5_DUAL_A1_20250910 -IC:\Users\linqi\AppData\Loca
+l\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include --predefine="__UVISION_VERSION S
+ETA 542" --predefine="STM32F407xx SETA 1" --predefine="_RTE_ SETA 1" --list=.\t
+argetboard_g5_tri_a1\startup_stm32f407xx.lst startup_stm32f407xx.s
 
 
 

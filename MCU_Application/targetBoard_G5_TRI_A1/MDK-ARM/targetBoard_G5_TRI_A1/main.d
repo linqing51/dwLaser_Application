@@ -112,6 +112,9 @@
 .\targetboard_g5_tri_a1\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\targetboard_g5_tri_a1\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\main.o: ../../sPlc/sPlcConfig.h
+.\targetboard_g5_tri_a1\main.o: ../../sPlcPort/sPlcEprom.h
+.\targetboard_g5_tri_a1\main.o: ../../sPlc/boardConfig.h
+.\targetboard_g5_tri_a1\main.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\main.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\main.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\main.o: ../../lib/libcrc.h

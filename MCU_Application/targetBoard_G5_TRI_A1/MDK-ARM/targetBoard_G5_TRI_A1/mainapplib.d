@@ -73,10 +73,7 @@
 .\targetboard_g5_tri_a1\mainapplib.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\targetboard_g5_tri_a1\mainapplib.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/sPlcConfig.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/sPlcFun.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlcPort/sPlcEprom.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -97,6 +94,12 @@
 .\targetboard_g5_tri_a1\mainapplib.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/sPlcFun.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/sPlc.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/flash_if.h
@@ -119,7 +122,6 @@
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\preScheme.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiApp.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\appConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiApp.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\preScheme.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiLanguage.h
@@ -135,3 +137,4 @@
 .\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiRes.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\MainAppLib.h
+.\targetboard_g5_tri_a1\mainapplib.o: ../../lib/fan_controller.h

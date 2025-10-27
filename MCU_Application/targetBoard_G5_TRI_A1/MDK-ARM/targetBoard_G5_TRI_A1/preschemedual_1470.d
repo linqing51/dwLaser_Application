@@ -73,10 +73,7 @@
 .\targetboard_g5_tri_a1\preschemedual_1470.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/sPlcConfig.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/sPlcFun.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlcPort/sPlcEprom.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -97,6 +94,12 @@
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/sPlcFun.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/sPlc.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/flash_if.h
@@ -118,7 +121,6 @@
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiApp.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\appConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiApp.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\preScheme.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiLanguage.h
@@ -134,3 +136,4 @@
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiRes.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\MainAppLib.h
+.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/fan_controller.h

@@ -35,7 +35,7 @@ void sPlcAdcProcess(void){//循环采集ADC
 			
 			}
 		}			
-#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 		NVRAM0[SPREG_ADC_6] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//IN6 VIN VOLTAGE
 		NVRAM0[SPREG_ADC_11] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//IN7 LASER_NTC
 		NVRAM0[SPREG_ADC_12] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//IN8 HT1_NTC
@@ -86,7 +86,7 @@ void sPlcAdcProcess(void){//循环采集ADC
 			
 			}
 		}		
-#if defined(GLOAL_LDR2P1_G5_A1_20250731_DUAL) || defined(GLOAL_LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
 		NVRAM0[SPREG_ADC_6] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//IN6 VIN VOLTAGE
 		NVRAM0[SPREG_ADC_11] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//IN7 LASER_NTC
 		NVRAM0[SPREG_ADC_12] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//IN8 HT1_NTC
@@ -102,7 +102,7 @@ void sPlcAdcProcess(void){//循环采集ADC
 		NVRAM0[SPREG_ADC_15] = (uint16_t)((float)sum[12] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VBAT
 #endif			
 		
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)	
+#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 		NVRAM0[SPREG_ADC_12] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//HNTC
 		NVRAM0[SPREG_ADC_11] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LNTC
 		NVRAM0[SPREG_ADC_10] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LPD

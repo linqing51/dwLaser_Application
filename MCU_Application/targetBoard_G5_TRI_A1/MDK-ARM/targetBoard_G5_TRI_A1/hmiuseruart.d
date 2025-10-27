@@ -73,10 +73,7 @@
 .\targetboard_g5_tri_a1\hmiuseruart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/sPlcConfig.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/sPlcFun.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlcPort/sPlcEprom.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -97,6 +94,12 @@
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\hmiuseruart.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/sPlcFun.h
+.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/sPlc.h
+.\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/flash_if.h
@@ -121,4 +124,3 @@
 .\targetboard_g5_tri_a1\hmiuseruart.o: ..\..\dcHmi\hmiDriver.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ..\..\dcHmi\hmiCmdProcess.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../MainApp/appConfig.h

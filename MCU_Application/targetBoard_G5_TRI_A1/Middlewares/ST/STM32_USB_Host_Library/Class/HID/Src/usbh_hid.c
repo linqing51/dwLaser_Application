@@ -279,6 +279,7 @@ static USBH_StatusTypeDef USBH_HID_InterfaceDeInit(USBH_HandleTypeDef *phost)
   * @param  phost: Host handle
   * @retval USBH Status
   */
+uint8_t isLegalUsbDev(USBH_HandleTypeDef *phost);
 static USBH_StatusTypeDef USBH_HID_ClassRequest(USBH_HandleTypeDef *phost)
 {
 
@@ -347,11 +348,18 @@ static USBH_StatusTypeDef USBH_HID_ClassRequest(USBH_HandleTypeDef *phost)
         phost->pUser(phost, HOST_USER_CLASS_ACTIVE);
         status = USBH_OK;
       }
-      else if (classReqStatus == USBH_NOT_SUPPORTED)
-      {
-        USBH_ErrLog("Control error: HID: Device Set protocol request failed");
-        status = USBH_FAIL;
-      }
+      else if (classReqStatus == USBH_NOT_SUPPORTED){
+				if(isLegalUsbDev(phost)){
+					/* all requests performed */
+					USBH_UsrLog("Find KACON HRF-M9G USB HID Device,skip set protocol\n");
+					phost->pUser(phost, HOST_USER_CLASS_ACTIVE);
+					status = USBH_OK;
+				}
+				else{
+					USBH_ErrLog("Control error: HID: Device Set protocol request failed");
+					status = USBH_FAIL;
+				}
+			}
       else
       {
         /* .. */
