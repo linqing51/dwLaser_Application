@@ -99,24 +99,24 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LAS_PWM1_Pin DEV_SPI_STA_Pin MPU_REFLASH_Pin MPU_USB_OTG_ID_Pin */
-  GPIO_InitStruct.Pin = LAS_PWM1_Pin|DEV_SPI_STA_Pin|MPU_REFLASH_Pin|MPU_USB_OTG_ID_Pin;
+  /*Configure GPIO pin : LAS_PWM1_Pin */
+  GPIO_InitStruct.Pin = LAS_PWM1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+  HAL_GPIO_Init(LAS_PWM1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LAS_PWM0_Pin */
   GPIO_InitStruct.Pin = LAS_PWM0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LAS_PWM0_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : TEC_PWM_Pin */
   GPIO_InitStruct.Pin = TEC_PWM_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(TEC_PWM_GPIO_Port, &GPIO_InitStruct);
 
@@ -159,6 +159,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : DEV_SPI_STA_Pin MPU_REFLASH_Pin MPU_USB_OTG_ID_Pin */
+  GPIO_InitStruct.Pin = DEV_SPI_STA_Pin|MPU_REFLASH_Pin|MPU_USB_OTG_ID_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pin : MPU_USB1_PSON_LEGACY_Pin */
   GPIO_InitStruct.Pin = MPU_USB1_PSON_LEGACY_Pin;

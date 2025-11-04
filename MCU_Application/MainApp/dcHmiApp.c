@@ -229,9 +229,9 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 void updateDebugInfo(void){//更新Standby调试信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,BT:%05d,FPD:%05d,LPD:%05d", \
-	NVRAM0[EM_LASER_TEMP], NVRAM0[EM_HT_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_MBAT_TEMP] ,\
-	NVRAM0[SPREG_ADC_9], NVRAM0[SPREG_ADC_10]);
+	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,FPD:%05d,LPD:%05d,TC:%05d", \
+	NVRAM0[EM_LASER_TEMP], NVRAM0[EM_HT_TEMP], NVRAM0[EM_MCU_TEMP],\
+	NVRAM0[SPREG_ADC_9], NVRAM0[SPREG_ADC_10], NVRAM0[SPREG_DAC_7]);
 	switch(NVRAM0[EM_DC_PAGE]){
 		case GDDC_PAGE_STANDBY:{
 			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
@@ -2425,7 +2425,7 @@ void dcHmiLoopInit(void){//初始化模块
 	else{
 		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
 	}
-  PID_Init(&temp_controller, 25.0f, 0.9f, 3.0f, CONFIG_DIODE_SET_TEMP, 500);  
+  PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_SET_TEMP, 500);  
 	FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
@@ -2524,19 +2524,19 @@ static void temperatureLoop(void){//温度轮询轮询
 		}
 		setFanSpeed(NVRAM0[EM_FAN_SET_SPEED]);
 		LaserTecOut = PID_Compute(&temp_controller, NVRAM0[EM_LASER_TEMP]);	
-		if(LaserTecOut >= 4095){
-			LaserTecOut = 4095;
+		if(LaserTecOut >= 0xFFF){
+			LaserTecOut = 0xFFF;
 		}
 		if(LaserTecOut < 0){
 			LaserTecOut = 0;
 		}
 		NVRAM0[SPREG_DAC_7] = LaserTecOut;
-		if(LaserTecOut <= 0 ){
-			SET_LASER_CH7_OFF;
-		}
-		else{
-			SET_LASER_CH7_ON;
-		}
+//		if(LaserTecOut <= 0 ){
+//			SET_LASER_CH7_OFF;
+//		}
+//		else{
+//			SET_LASER_CH7_ON;
+//		}
 		UPDAC7();
 		LaserTecOut = LaserTecOut / 20;
 		LaserTecOutCounter = 0;
@@ -2913,7 +2913,8 @@ static void powerDown(void){//关机函数
 	NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
 	NVRAM0[SPREG_DAC_4] = 0;NVRAM0[SPREG_DAC_5] = 0;NVRAM0[SPREG_DAC_6] = 0;NVRAM0[SPREG_DAC_7] = 0;
 	UPDAC0();UPDAC1();UPDAC2();UPDAC3();
-	UPDAC4();UPDAC5();UPDAC6();UPDAC7();	
+	UPDAC4();UPDAC5();UPDAC6();UPDAC7();
+	SET_LASER_CH7_OFF;	
 	printf("%s,%d,%s:shutdown laser power!\n",__FILE__, __LINE__, __func__);
 	EDLAR();//停止发射
 	SET_AIM_TIM_OFF;//停止指示激光发射
@@ -2941,10 +2942,11 @@ static void powerUp(void){//开机函数
 	SSET(Y_VN5016_INPUT);
 	SSET(Y_PWR_LED);
 	RRES(Y_VN5016_CSDIS);//打开电流监控
+	//SET_LASER_CH7_ON;
 	printf("%s,%d,%s:powerup!\n",__FILE__, __LINE__, __func__);
 	printf("\n\n\n");
 	printf("%s,%d,%s:powerup!\n",__FILE__, __LINE__, __func__);
-	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_POWERUP;
+	//NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_POWERUP;
 }
 
 
@@ -2965,6 +2967,9 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_IDLE){//待机
 		if(LD(X_PWR_KEY)){
 			powerUp();
+			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
+			SET_SPK_TIM_ON;
+			PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_SET_TEMP, 500);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_POWERUP;
 		}
 		return;
@@ -3126,6 +3131,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_STANDBY){//待机状态机
+		SET_LASER_CH7_OFF;
 		if(LDB(X_PWR_KEY)){
 			powerDown();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
@@ -3292,6 +3298,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_STANDBY_KEY_ENTER_OPTION_DOWN);
 		}else
 		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
+			SET_LASER_CH7_ON;	
 			CLRD(EM_LASER_RELEASE_TIME);
 			CLRD(EM_LASER_TRIG_TIME);
 			LaserTimer_Mode = (int8_t)NVRAM0[EM_LASER_PULSE_MODE];
