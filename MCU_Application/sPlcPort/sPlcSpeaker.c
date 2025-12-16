@@ -5,18 +5,20 @@
 static int8_t LoudspeakerEnable = -1;//喇叭使能状态
 static int8_t LoudspeakerVolume = -1;//喇叭音量
 /*****************************************************************************/
+extern 	void MX_TIM8_Init(void);
 void sPlcSpeakerInit(void){//喇叭初始化
+  HAL_TIM_Base_DeInit(&htim8);
+	MX_TIM8_Init();
 	RRES(SPCOIL_BEEM_ENABLE);
 	sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 	sPlcSpeakerDisable();
 	sPlcSpeakerFreq(CONFIG_DEFAULT_SPK_FREQ);
-	printf("%s,%d,%s:speaker dma init......\n",__FILE__, __LINE__, __func__);
 }
 
 void sPlcSpeakerDisable(void){//关闭喇叭数据流
 	if(LoudspeakerEnable != false){
 		SET_SPK_AP_OFF;
-		//SET_SPK_TIM_OFF;
+		SET_SPK_TIM_OFF;
 		//printf("%s,%d,%s:set loadspeaker off!\n",__FILE__, __LINE__, __func__);
 		LoudspeakerEnable = false;
 	}
@@ -25,7 +27,7 @@ void sPlcSpeakerDisable(void){//关闭喇叭数据流
 void sPlcSpeakerEnable(void){//打开喇叭数据流
 	if(LoudspeakerEnable != true){
 		SET_SPK_AP_ON;
-		//SET_SPK_TIM_ON;
+		SET_SPK_TIM_ON;
 		//printf("%s,%d,%s:set loadspeaker on!\n",__FILE__, __LINE__, __func__);
 		LoudspeakerEnable = true;
 	}

@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>targetBoard_G5_TRI_A1</TargetName>
+      <TargetName>G5_TRIP_A1__20250731</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
@@ -1169,11 +1169,6 @@
               <FileName>stm32f4xx_hal_adc_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_ll_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_hal_crc.c</FileName>
@@ -2433,9 +2428,6 @@
           </GroupOption>
         </Group>
         <Group>
-          <GroupName>::CMSIS</GroupName>
-        </Group>
-        <Group>
           <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -2532,6 +2524,9 @@
               </FileOption>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
     </Target>
@@ -3700,11 +3695,6 @@
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f4xx_ll_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f4xx_hal_crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c</FilePath>
@@ -4962,6 +4952,16 @@
           </GroupOption>
         </Group>
         <Group>
+          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
+          <Files>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -5032,16 +5032,6 @@
               </Aads>
             </GroupArmAds>
           </GroupOption>
-        </Group>
-        <Group>
-          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
-          <Files>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
-            </File>
-          </Files>
         </Group>
       </Groups>
     </Target>
@@ -6210,11 +6200,6 @@
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f4xx_ll_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f4xx_hal_crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c</FilePath>
@@ -7472,6 +7457,16 @@
           </GroupOption>
         </Group>
         <Group>
+          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
+          <Files>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -7542,16 +7537,6 @@
               </Aads>
             </GroupArmAds>
           </GroupOption>
-        </Group>
-        <Group>
-          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
-          <Files>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
-            </File>
-          </Files>
         </Group>
       </Groups>
     </Target>
@@ -8720,11 +8705,6 @@
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f4xx_ll_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f4xx_hal_crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c</FilePath>
@@ -9982,6 +9962,16 @@
           </GroupOption>
         </Group>
         <Group>
+          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
+          <Files>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -10053,16 +10043,6 @@
             </GroupArmAds>
           </GroupOption>
         </Group>
-        <Group>
-          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
-          <Files>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
-            </File>
-          </Files>
-        </Group>
       </Groups>
     </Target>
   </Targets>
@@ -10073,9 +10053,8 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="6.1.1" condition="ARMv6_7_8-M Device">
         <package name="CMSIS" schemaVersion="1.7.40" url="https://www.keil.com/pack/" vendor="ARM" version="6.2.0"/>
         <targetInfos>
-          <targetInfo name="G5_TRIP_A1_20250731"/>
           <targetInfo name="G5_TRIP_A1_20250910"/>
-          <targetInfo name="targetBoard_G5_TRI_A1"/>
+          <targetInfo name="G5_TRIP_A1__20250731"/>
         </targetInfos>
       </component>
     </components>

@@ -2943,6 +2943,7 @@ static void powerUp(void){//开机函数
 	SSET(Y_PWR_LED);
 	RRES(Y_VN5016_CSDIS);//打开电流监控
 	//SET_LASER_CH7_ON;
+	sPlcSpeakerInit();//重新初始化SPK TIM
 	printf("%s,%d,%s:powerup!\n",__FILE__, __LINE__, __func__);
 	printf("\n\n\n");
 	printf("%s,%d,%s:powerup!\n",__FILE__, __LINE__, __func__);
