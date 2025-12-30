@@ -82,7 +82,7 @@ I (../../Bootloader/flash_if.h)(0x68C6CF96)
 I (../../Bootloader/..\..\MCU_Application\sPlcPort\sPlcEprom.h)(0x68FA3419)
 I (../../../MCU_Application/sPlc/sPlcConfig.h)(0x68CD8043)
 I (../../../MCU_Application/sPlc/boardConfig.h)(0x68FE340A)
-I (../../../MCU_Application/MainApp/AppConfig.h)(0x6922854D)
+I (../../../MCU_Application/MainApp/AppConfig.h)(0x694AA6CF)
 I (../../Bootloader/..\..\MCU_Application\lib\libcpu.h)(0x68F108FA)
 I (../../Bootloader/..\..\MCU_Application\lib\flash_if.h)(0x68B1B817)
 I (../../Bootloader/..\..\MCU_Application\lib\libcrc.h)(0x687B788C)
@@ -2862,7 +2862,7 @@ I (..\..\Bootloader\flash_if.h)(0x68C6CF96)
 I (..\..\Bootloader\..\..\MCU_Application\sPlcPort\sPlcEprom.h)(0x68FA3419)
 I (../../../MCU_Application/sPlc/sPlcConfig.h)(0x68CD8043)
 I (../../../MCU_Application/sPlc/boardConfig.h)(0x68FE340A)
-I (../../../MCU_Application/MainApp/AppConfig.h)(0x6922854D)
+I (../../../MCU_Application/MainApp/AppConfig.h)(0x694AA6CF)
 I (..\..\Bootloader\..\..\MCU_Application\lib\libcpu.h)(0x68F108FA)
 I (..\..\Bootloader\..\..\MCU_Application\lib\flash_if.h)(0x68B1B817)
 I (..\..\Bootloader\..\..\MCU_Application\lib\libcrc.h)(0x687B788C)
@@ -3067,7 +3067,7 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ioreq.h)(0x68220D4C)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h)(0x68220D4C)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h)(0x68220D4C)
 I (..\..\..\MCU_Application\lib\flash_if.h)(0x68B1B817)
-I (../../../MCU_Application/MainApp/AppConfig.h)(0x6922854D)
+I (../../../MCU_Application/MainApp/AppConfig.h)(0x694AA6CF)
 I (..\..\..\MCU_Application\lib\libcrc.h)(0x687B788C)
 F (..\..\..\MCU_Application\sPlcPort\sPlcEprom.c)(0x68FA38C5)(--c99 -c --cpu Cortex-M4.fp.sp -g -O1 --apcs=interwork --split_sections -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../Bootloader -I ../../../MCU_Application/sPlc -I ..\..\..\MCU_Application\lib -I ../../../MCU_Application/MainApp -I ../../../MCU_Application/deviceInfo -I ../Drivers/CMSIS/DSP/Include-I.\RTE\_G5_DUAL_A1_20250910-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="542" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx -DLDR2P1_G5_A1_20250910_DUAL-o targetboard_g5_tri_a1\splceprom.o --omf_browse targetboard_g5_tri_a1\splceprom.crf --depend targetboard_g5_tri_a1\splceprom.d)
 I (..\..\..\MCU_Application\sPlcPort\sPlcEprom.h)(0x68FA3419)
@@ -3126,4 +3126,4 @@ I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h)(0x68220D4C)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ioreq.h)(0x68220D4C)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h)(0x68220D4C)
 I (../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h)(0x68220D4C)
-I (../../../MCU_Application/MainApp/AppConfig.h)(0x6922854D)
+I (../../../MCU_Application/MainApp/AppConfig.h)(0x694AA6CF)

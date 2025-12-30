@@ -211,7 +211,11 @@ inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
 inline void sPlcSpeakerVolume(int16_t volume){//设置喇叭音量
 	float ftmp;
 	if(LoudspeakerVolume != volume){
+#if defined(LDR2P1_G5_A1_20251108_DUAL)
+		ftmp = volume * 127 / 100;
+#else
 		ftmp = volume * 255 / 100;
+#endif
 		if(ftmp > 0xFF){
 			ftmp = 0xFF;
 		}

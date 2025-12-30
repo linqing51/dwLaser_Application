@@ -605,7 +605,12 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				if(strlen((char*)sGynecology[21].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[21].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
-				}					
+				}
+				if(strlen((char*)sGynecology[22].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sGynecology[22].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+				}
+				
 				//方案5-15禁止选择
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
@@ -614,7 +619,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
-				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, false);
+				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, false);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, false);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, false);
@@ -633,7 +638,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
 				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
 				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
 				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
 				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
 				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);

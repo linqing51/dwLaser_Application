@@ -442,7 +442,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	
 	//1470nm, CW 5w
 	p = &sGynecology[6];
-	p->name = "Stress Incontinence, 75J";
+	p->name = "Stress Urinary Incontinence";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 50;
@@ -451,8 +451,19 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
 	
-	//1470nm, CW 5w
+		//1470nm 10w CW
 	p = &sGynecology[7];
+	p->name = "LVR/SUI Pro @ 4 Passes / 2400J";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 150;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 150;
+	
+	//1470nm, CW 5w
+	p = &sGynecology[8];
 	p->name = "Infection control, 50J";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -463,7 +474,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000; 	
 	
 	//1470nm, CW 8w
-	p = &sGynecology[8];
+	p = &sGynecology[9];
 	p->name = "Treatment after Menopause, 480J";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -474,7 +485,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000; 	
 
 	//1470nm 12w CW
-	p = &sGynecology[9];
+	p = &sGynecology[10];
 	p->name = "Hysteroscopy Myomas";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -485,7 +496,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 	
 	//1470nm 8w CW
-	p = &sGynecology[10];
+	p = &sGynecology[11];
 	p->name = "Hysteroscopy Polyps";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -496,7 +507,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;	
 	
 	//1470nm 10w CW
-	p = &sGynecology[11];
+	p = &sGynecology[12];
 	p->name = "Hysteroscopy Septum";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -507,7 +518,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;		
 	
 	//1470nm 10w CW
-	p = &sGynecology[12];
+	p = &sGynecology[13];
 	p->name = "Hysteroscopy Adhesion";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -518,7 +529,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[13];
+	p = &sGynecology[14];
 	p->name = "Hysteroscopy Dysmorphic Uterus";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -529,7 +540,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[14];
+	p = &sGynecology[15];
 	p->name = "Hysteroscopy Isthmocele";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -540,7 +551,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[15];
+	p = &sGynecology[16];
 	p->name = "Hysteroscopy T-Shape Uterus";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -551,7 +562,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;		
 	
 	//1470nm 12w CW
-	p = &sGynecology[16];
+	p = &sGynecology[17];
 	p->name = "Laparoscopy Myomas";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -562,7 +573,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 
 	//1470nm 10w CW
-	p = &sGynecology[17];
+	p = &sGynecology[18];
 	p->name = "Laparoscopy Ovarian Cysts";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -573,7 +584,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &sGynecology[18];
+	p = &sGynecology[19];
 	p->name = "Laparoscopy Adhesion";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -584,7 +595,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &sGynecology[19];
+	p = &sGynecology[20];
 	p->name = "Laparoscopy Salpingectomy";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -595,7 +606,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;
 	
 	//1470nm 10w CW
-	p = &sGynecology[20];
+	p = &sGynecology[21];
 	p->name = "Laparoscopy Cysts";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
@@ -606,7 +617,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 1000;	
 	
 	//1470nm 10w CW
-	p = &sGynecology[21];
+	p = &sGynecology[22];
 	p->name = "Laparoscopy Endometriosis";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 

@@ -1,20 +1,26 @@
 #ifndef __APPCONFIG_H__
 #define __APPCONFIG_H__
 /*****************************************************************************/
-#define SW_VERSION																		"3.1a18b9"
+#define SW_VERSION																		"3.1a19b3"
 
 #if defined(LDR2P1_G5_A1_20250731_DUAL)
-#define HW_VERSION																		"LDR2P1_G5_A1_20250731_DUAL"
+#define HW_VERSION																		"LDR2P1G5A1_20250731_DUAL"
 #endif
 #if defined(LDR2P1_G5_A1_20250910_DUAL)
-#define HW_VERSION																		"LDR2P1_G5_A1_20250910_DUAL"
+#if !defined(LDR2P1_G5_A1_20251108_DUAL)
+#define HW_VERSION																		"LDR2P1G5A1_20250910_DUAL"
+#endif
+#endif
+#if defined(LDR2P1_G5_A1_20251108_DUAL)
+#define HW_VERSION																		"LDR2P1G5A1_20251108_DUAL"
 #endif
 #if defined(LDR2P1_G5_A1_20250731_TRIP)
-#define HW_VERSION																		"LDR2P1_G5_A1_20250731_TRIP"
+#define HW_VERSION																		"LDR2P1G5A1_20250731_TRIP"
 #endif
 #if defined(LDR2P1_G5_A1_20250910_TRIP)
-#define HW_VERSION																		"LDR2P1_G5_A1_20250910_TRIP"
+#define HW_VERSION																		"LDR2P1G5A1_20250910_TRIP"
 #endif
+
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 #define APP_CONFIG_WAVE_1940_650//APP为双波长 1940+650
@@ -79,7 +85,7 @@
 //定义分类方案个数
 #define CONFIG_PHLEBOLOGY_SIZE												3
 #define CONFIG_PROCTOLOGY_SIZE												6
-#define CONFIG_GYNECOLOGY_SIZE												22
+#define CONFIG_GYNECOLOGY_SIZE												23
 #define CONFIG_ENT_SIZE																16
 #if defined(MODEL_PVGLS_TRI_A0) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined (LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_NEUROSURGERY_SIZE											5
