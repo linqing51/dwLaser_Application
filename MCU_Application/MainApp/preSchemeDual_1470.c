@@ -442,7 +442,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	
 	//1470nm, CW 5w
 	p = &sGynecology[6];
-	p->name = "Stress Urinary Incontinence";
+	p->name = "Stress Urinary Incontinence,75J";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 50;
