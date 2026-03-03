@@ -1,139 +1,99 @@
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\MainApp.c
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\MainApp.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Core/Inc/stm32f4xx_hal_conf.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Include/cmsis_version.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Include/mpu_armv7.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_adc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_crc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dac.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dac_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rng.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/arm_math_types.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/arm_math_memory.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/none.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/utils.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/interpolation_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/bayes_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/matrix_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/controller_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/support_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/distance_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/svm_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/svm_defines.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/transform_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
-.\targetboard_g5_tri_a1\mainapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/sPlcConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlcPort/sPlcEprom.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Core/Inc/main.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
-.\targetboard_g5_tri_a1\mainapp.o: ../USB_HOST/Target/usbh_conf.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Core/Inc/FreeRTOSConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ioreq.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../MainApp/AppConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/sPlcFun.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../lib/libcpu.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../lib/flash_if.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../lib/pid_temp_control.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../lib/fuzzy_pid.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h
-.\targetboard_g5_tri_a1\mainapp.o: ../USB_HOST/App/usb_host.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_mouse.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid_keybd.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FatFs/src/ff.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FatFs/src/integer.h
-.\targetboard_g5_tri_a1\mainapp.o: ../FATFS/Target/ffconf.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
-.\targetboard_g5_tri_a1\mainapp.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiApp.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiApp.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\preScheme.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiLanguage.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiNotifyButton.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiNotifyProgress.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiNotifyReadRTC.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiNotifyText.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../dcHmi/hmiLib.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../dcHmi/hmiCmdQueue.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../dcHmi/hmiLib.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../dcHmi/hmiDriver.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../dcHmi/hmiCmdProcess.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\dcHmiRes.h
-.\targetboard_g5_tri_a1\mainapp.o: ..\..\MainApp\MainAppLib.h
-.\targetboard_g5_tri_a1\mainapp.o: ../../lib/fan_controller.h
+./targetboard_g5_tri_a1/mainapp.o: ..\..\MainApp\MainApp.c \
+  ..\..\MainApp\MainApp.h ..\..\sPlc\sPlc.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
+  ..\Core\Inc\stm32f4xx_hal_conf.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h \
+  ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h \
+  ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h \
+  ..\Drivers\CMSIS\Include\core_cm4.h \
+  ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_exti.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dma.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dma_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_cortex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_adc.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_crc.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dac.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dac_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ramfunc.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rng.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_hcd.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math_types.h \
+  ..\Drivers\CMSIS\Include\cmsis_compiler.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math_memory.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\none.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\utils.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\basic_math_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\interpolation_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\bayes_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\statistics_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\fast_math_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\matrix_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\complex_math_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\controller_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\support_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\distance_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\svm_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\svm_defines.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\transform_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\filtering_functions.h \
+  ..\Drivers\CMSIS\DSP\Include\dsp\quaternion_math_functions.h \
+  ..\..\sPlc\sPlcConfig.h ..\..\sPlcPort\sPlcEprom.h \
+  ..\..\sPlc\boardConfig.h ..\Core\Inc\main.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Core\Inc\usbh_core.h \
+  ..\USB_HOST\Target\usbh_conf.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2\cmsis_os.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
+  ..\Core\Inc\FreeRTOSConfig.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2\cmsis_os2.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Core\Inc\usbh_def.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Core\Inc\usbh_ioreq.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Core\Inc\usbh_pipes.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Core\Inc\usbh_ctlreq.h \
+  ..\..\MainApp\AppConfig.h ..\..\sPlc\sPlcFun.h ..\..\lib\libcrc.h \
+  ..\..\lib\libdbg.h ..\..\lib\libcpu.h ..\..\lib\flash_if.h \
+  ..\..\lib\pid_temp_control.h ..\..\lib\fuzzy_pid.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Class\MSC\Inc\usbh_msc.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Class\MSC\Inc\usbh_msc_bot.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Class\MSC\Inc\usbh_msc_scsi.h \
+  ..\USB_HOST\App\usb_host.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Class\HID\Inc\usbh_hid.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Class\HID\Inc\usbh_hid_mouse.h \
+  ..\Middlewares\ST\STM32_USB_Host_Library\Class\HID\Inc\usbh_hid_keybd.h \
+  ..\Middlewares\Third_Party\FatFs\src\ff.h \
+  ..\Middlewares\Third_Party\FatFs\src\integer.h \
+  ..\FATFS\Target\ffconf.h \
+  ..\Middlewares\Third_Party\FatFs\src\ff_gen_drv.h \
+  ..\Middlewares\Third_Party\FatFs\src\diskio.h ..\..\MainApp\dcHmiApp.h \
+  ..\..\MainApp\preScheme.h ..\..\MainApp\dcHmiLanguage.h \
+  ..\..\MainApp\dcHmiNotifyButton.h ..\..\MainApp\dcHmiNotifyProgress.h \
+  ..\..\MainApp\dcHmiNotifyReadRTC.h ..\..\MainApp\dcHmiNotifyText.h \
+  ..\..\dcHmi\hmiLib.h ..\..\dcHmi\hmiCmdQueue.h ..\..\dcHmi\hmiDriver.h \
+  ..\..\dcHmi\hmiCmdProcess.h ..\..\MainApp\dcHmiRes.h \
+  ..\..\MainApp\MainAppLib.h ..\..\lib\fan_controller.h
