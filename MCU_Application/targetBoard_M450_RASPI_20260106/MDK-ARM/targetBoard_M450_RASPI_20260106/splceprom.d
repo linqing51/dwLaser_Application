@@ -45,7 +45,7 @@ targetboard_m450_raspi_20260106\splceprom.o: ../Drivers/STM32F4xx_HAL_Driver/Inc
 targetboard_m450_raspi_20260106\splceprom.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h
 targetboard_m450_raspi_20260106\splceprom.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 targetboard_m450_raspi_20260106\splceprom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-targetboard_m450_raspi_20260106\splceprom.o: ../../sPlc/sPlcConfig.h
+targetboard_m450_raspi_20260106\splceprom.o: ../../lib/libcpu.h
 targetboard_m450_raspi_20260106\splceprom.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\splceprom.o: ../Core/Inc/main.h
 targetboard_m450_raspi_20260106\splceprom.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -69,4 +69,8 @@ targetboard_m450_raspi_20260106\splceprom.o: ../Middlewares/ST/STM32_USB_Host_Li
 targetboard_m450_raspi_20260106\splceprom.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 targetboard_m450_raspi_20260106\splceprom.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 targetboard_m450_raspi_20260106\splceprom.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+targetboard_m450_raspi_20260106\splceprom.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\splceprom.o: ../../MainApp/AppConfig.h
+targetboard_m450_raspi_20260106\splceprom.o: ../../lib/libcrc.h
+targetboard_m450_raspi_20260106\splceprom.o: ../../sPlc/sPlcConfig.h
+targetboard_m450_raspi_20260106\splceprom.o: ../../sPlc/boardConfig.h

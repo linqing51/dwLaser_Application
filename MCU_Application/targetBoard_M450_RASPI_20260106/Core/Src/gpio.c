@@ -84,6 +84,9 @@ void MX_GPIO_Init(void)
                           |TEC7_PWN_Pin|TEC6_PWM_Pin|IBUS_RESET_Pin|INTERLOCK_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(ESTOP_RESET_GPIO_Port, ESTOP_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : LTC2955_INT_Pin PWR_DCOK_Pin */
@@ -240,6 +243,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(INTERLOCK_NC_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : EPROM_NSS_Pin */
+  GPIO_InitStruct.Pin = EPROM_NSS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(EPROM_NSS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : ESTOP_RESET_Pin */
   GPIO_InitStruct.Pin = ESTOP_RESET_Pin;

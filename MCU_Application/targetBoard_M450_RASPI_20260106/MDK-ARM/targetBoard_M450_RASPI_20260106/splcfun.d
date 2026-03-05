@@ -75,6 +75,7 @@ targetboard_m450_raspi_20260106\splcfun.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\c
 targetboard_m450_raspi_20260106\splcfun.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 targetboard_m450_raspi_20260106\splcfun.o: ..\..\sPlc\sPlcConfig.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../sPlcPort/sPlcEprom.h
+targetboard_m450_raspi_20260106\splcfun.o: ../../lib/libcpu.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\splcfun.o: ../Core/Inc/main.h
 targetboard_m450_raspi_20260106\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -95,14 +96,13 @@ targetboard_m450_raspi_20260106\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Libr
 targetboard_m450_raspi_20260106\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 targetboard_m450_raspi_20260106\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 targetboard_m450_raspi_20260106\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+targetboard_m450_raspi_20260106\splcfun.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../MainApp/AppConfig.h
-targetboard_m450_raspi_20260106\splcfun.o: ..\..\sPlc\sPlcFun.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../lib/libcrc.h
+targetboard_m450_raspi_20260106\splcfun.o: ../../sPlc/boardConfig.h
+targetboard_m450_raspi_20260106\splcfun.o: ..\..\sPlc\sPlcFun.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../lib/libdbg.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\splcfun.o: ../../lib/libcpu.h
-targetboard_m450_raspi_20260106\splcfun.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\splcfun.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\splcfun.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

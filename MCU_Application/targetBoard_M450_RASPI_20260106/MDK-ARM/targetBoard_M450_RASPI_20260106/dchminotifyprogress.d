@@ -76,6 +76,7 @@ targetboard_m450_raspi_20260106\dchminotifyprogress.o: C:\Keil_v5\ARM\ARMCC\Bin\
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlc/sPlcConfig.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlcPort/sPlcEprom.h
+targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/libcpu.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../Core/Inc/main.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -96,15 +97,14 @@ targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../Middlewares/ST/STM32_U
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../MainApp/AppConfig.h
+targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/libcrc.h
+targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlc/sPlc.h
-targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/libcrc.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/libdbg.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/libcpu.h
-targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\dchminotifyprogress.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

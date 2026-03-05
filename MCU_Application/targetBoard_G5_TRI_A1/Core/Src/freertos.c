@@ -54,19 +54,22 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-
-/* Private function prototypes -----------------------------------------------*/
-/* USER CODE BEGIN FunctionPrototypes */
+/* Definitions for mainAppTask */
 osThreadId_t mainAppTaskHandle;
 const osThreadAttr_t mainAppTask_attributes = {
   .name = "mainAppTask",
-  .priority  = (osPriority_t) osPriorityNormal,
-  .stack_size = 1024 * 32
-};  
+  .stack_size = 10240 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+/* Private function prototypes -----------------------------------------------*/
+/* USER CODE BEGIN FunctionPrototypes */
+ 
   
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
+extern void StartMainAppTask(void *argument);
 
 extern void MX_USB_HOST_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -101,9 +104,11 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
+  /* creation of mainAppTask */
+  mainAppTaskHandle = osThreadNew(StartMainAppTask, NULL, &mainAppTask_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-	mainAppTaskHandle = osThreadNew(mainAppTask, NULL, &mainAppTask_attributes);
 	
 	//testTaskHandle = osThreadNew(testTask, NULL, &testTask_attributes);
   /* USER CODE END RTOS_THREADS */

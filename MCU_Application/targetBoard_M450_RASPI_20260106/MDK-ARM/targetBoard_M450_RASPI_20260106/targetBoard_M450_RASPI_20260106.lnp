@@ -90,6 +90,7 @@
 "targetboard_m450_raspi_20260106\splclaser.o"
 "targetboard_m450_raspi_20260106\splcmisc.o"
 "targetboard_m450_raspi_20260106\splcspeaker.o"
+"targetboard_m450_raspi_20260106\splceprom.o"
 "targetboard_m450_raspi_20260106\dchmiapp.o"
 "targetboard_m450_raspi_20260106\dchmilanguage.o"
 "targetboard_m450_raspi_20260106\dchminotifybutton.o"

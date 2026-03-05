@@ -1,13 +1,13 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
-#define CONFIG_DEBUG_DAC															0//调试DAC驱动
-#define CONFIG_DEBUB_ADC															0//调试ADC驱动
-#define CONFIG_DEBUG_EPROM														0//调试EPROM驱动
-#define CONFIG_DEBUG_IO																0//调试IO
+#define CONFIG_DEBUG_DAC															1//调试DAC驱动
+#define CONFIG_DEBUB_ADC															1//调试ADC驱动
+#define CONFIG_DEBUG_EPROM														1//调试EPROM驱动
+#define CONFIG_DEBUG_IO																1//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
-#define CONFIG_DEBUG_LED															0//调试指示灯驱动
-#define CONFIG_DEBUG_AIM															0//调试指示光驱动
+#define CONFIG_DEBUG_LED															1//调试指示灯驱动
+#define CONFIG_DEBUG_AIM															1//调试指示光驱动
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
@@ -16,7 +16,7 @@
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
 #define CONFIG_SPLC_USING_SPWM												1//使能软件PWM功能
 #define CONFIG_SPLC_USING_FUNTEST											0//功能指令测试
-#define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM 读写测试
+#define CONFIG_SPLC_USING_EPROM_TEST									1//EPROM 读写测试
 #define CONFIG_SPLC_USING_LASER_TEST									0
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT														1//检查地址范围
@@ -145,22 +145,29 @@
 #define SPCOIL_SPWM_OUT_3															(SPCOIL_START * 16 + 54)//SPWM3输出状态
 #define SPCOIL_SPWM_RESET_3														(SPCOIL_START * 16 + 55)//SPWM3复位
 /*****************************************************************************/
-#define SPREG_ADC_0																		(SPREG_START + 11)//采集值 CH0 CURRENT
-#define SPREG_ADC_1																		(SPREG_START + 12)//采集值 CH1 CURRENT
-#define SPREG_ADC_2																		(SPREG_START + 13)//采集值 CH2 CURRENT
-#define SPREG_ADC_3																		(SPREG_START + 14)//采集值 CH3 CURRENT
-#define SPREG_ADC_4																		(SPREG_START + 15)//采集值 PWR CURRENT 母线电流
-#define SPREG_ADC_5																		(SPREG_START + 16)//采集值 HT2_NTC
-#define SPREG_ADC_6																		(SPREG_START + 17)//采集值 VIN VOLTAGE 母线电压
-#define SPREG_ADC_7																		(SPREG_START + 18)//采集值 TEC CURRENT
-#define SPREG_ADC_8																		(SPREG_START + 19)//采集值 BAT NTC
-#define SPREG_ADC_9																		(SPREG_START + 20)//采集值 LASER_FPD
-#define SPREG_ADC_10																	(SPREG_START + 21)//采集值 LASER_LPD
-#define SPREG_ADC_11																	(SPREG_START + 22)//采集值 LASER_NTC
-#define SPREG_ADC_12																	(SPREG_START + 23)//采集值 HT1_NTC
-#define SPREG_ADC_13																	(SPREG_START + 24)//CHIP TEMP片内温度传感器
-#define SPREG_ADC_14																	(SPREG_START + 25)//CHIP VREFINT片内基准源
-#define SPREG_ADC_15																	(SPREG_START + 26)//VBAT 掉电存储电池 
+#define SPREG_ADC_0																		(SPREG_START + 0)//采集值 CH0 CURRENT
+#define SPREG_ADC_1																		(SPREG_START + 1)//采集值 CH1 CURRENT
+#define SPREG_ADC_2																		(SPREG_START + 2)//采集值 CH2 CURRENT
+#define SPREG_ADC_3																		(SPREG_START + 3)//采集值 CH3 CURRENT
+#define SPREG_ADC_4																		(SPREG_START + 4)//采集值 CH4 CURRENT
+#define SPREG_ADC_5																		(SPREG_START + 5)//采集值 CH5 CURRENT
+#define SPREG_ADC_6																		(SPREG_START + 6)//采集值 CH7 CURRENT
+#define SPREG_ADC_7																		(SPREG_START + 7)//采集值 CH8 CURRENT
+#define SPREG_ADC_8																		(SPREG_START + 8)//采集值 TEC0 CURRENT
+#define SPREG_ADC_9																		(SPREG_START + 9)//采集值 TEC1 CURRENT
+#define SPREG_ADC_10																	(SPREG_START + 10)//采集值 TEC2 CURRENT
+#define SPREG_ADC_11																	(SPREG_START + 11)//采集值 TEC3 CURRENT
+#define SPREG_ADC_12																	(SPREG_START + 12)//采集值 PWR CURRENT 母线电流
+#define SPREG_ADC_13																	(SPREG_START + 13)//采集值 VIN VOLTAGE 母线电压
+#define SPREG_ADC_14																	(SPREG_START + 14)//采集值 LASER_NTC
+#define SPREG_ADC_15																	(SPREG_START + 15)//采集值 散热器HT1_NTC/散热器水温 
+#define SPREG_ADC_16																	(SPREG_START + 16)//采集值 HT2_NTC/激光器水温 
+#define SPREG_ADC_17																	(SPREG_START + 17)//采集值 BAT NTC
+#define SPREG_ADC_18																	(SPREG_START + 18)//采集值 LASER_FPD
+#define SPREG_ADC_19																	(SPREG_START + 19)//采集值 LASER_LPD
+#define SPREG_ADC_20																	(SPREG_START + 20)//CHIP TEMP片内温度传感器
+#define SPREG_ADC_21																	(SPREG_START + 21)//CHIP VREFINT片内基准源
+#define SPREG_ADC_22																	(SPREG_START + 22)//VBAT 掉电存储电池 
 
 #define SPREG_DAC_0																		(SPREG_START + 30)//DAC设定值 激光通道 CH0 ->1470 1940
 #define SPREG_DAC_1																		(SPREG_START + 31)//DAC设定值 激光通道 CH1 ->980

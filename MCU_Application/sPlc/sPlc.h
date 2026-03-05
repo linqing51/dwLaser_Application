@@ -128,7 +128,8 @@ extern void sPlcTimerEnable(void);//SPLC打开计时器
 extern void sPlcDacInit(void);//DAC初始化
 extern void sPlcDacRefresh(void);//刷新DAC
 extern void sPlcAdcInit(void);
-extern void sPlcAdcProcess(void);
+extern void sPlcAdcProcessBufferA(void);
+extern void sPlcAdcProcessBufferB(void);
 extern void sPlcSpeakerFreq(int16_t freq);//设置喇叭频率
 extern void sPlcSpeakerVolume(int16_t volume);//设置喇叭音量
 extern void sPlcSpeakerEnable(void);//打开喇叭数据流
@@ -156,9 +157,10 @@ extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
 extern void saveDeviceConfig(void);//将配置写入EPROM
 extern void loadDeviceConfig(void);//从EPROM载入配置文件
-extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//在AT24CXX指定地址读出一个数据
-extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//在AT24CXX里面的指定地址开始读出16位数
-extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////在AT24CXX里面的指定地址开始读出32位数
+extern HAL_StatusTypeDef epromWriteEnable(bool en);//ERPOM写保护
+extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//指定地址读出一个数据
+extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//指定地址开始读出16位数
+extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);//指定地址开始读出32位数
 extern HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//在AT24CXX指定地址写入8位数据
 extern HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//在AT24CXX里面的指定地址开始写入16位数
 extern HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//在AT24CXX里面的指定地址开始写入32位数

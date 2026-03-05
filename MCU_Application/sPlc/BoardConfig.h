@@ -396,9 +396,9 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define DAC8568_CLR_LOW    										HAL_GPIO_WritePin(DAC8568_CLEAR_GPIO_Port, DAC8568_CLEAR_Pin, GPIO_PIN_RESET)
 
 //SPI EPROM
-#define EPROM_SPI_NSS(b)											HAL_GPIO_WritePin(SPI3_NSS_GPIO_PORT, SPI3_NSS_PIN, b);
-#define EPROM_SPI_NSS_DESEL										HAL_GPIO_WritePin(SPI3_NSS_GPIO_PORT, SPI3_NSS_PIN, GPIO_PIN_SET);
-#define EPROM_SPI_NSS_SEL											HAL_GPIO_WritePin(SPI3_NSS_GPIO_PORT, SPI3_NSS_PIN, GPIO_PIN_RESET);
+#define EPROM_SPI_NSS(b)											HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, b)
+#define EPROM_SPI_NSS_DESEL										HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_SET)
+#define EPROM_SPI_NSS_SEL											HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET)
 #endif
 /*****************************************************************************/
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
@@ -706,8 +706,9 @@ extern uint16_t audioSineTable[];
 #define CONFIG_DEBUG_UART											huart5//调试串口
 #define CONFIG_GDDC_UART											huart3//GDDC串口
 #define CONFIG_GDDC_UART_INSTANCE							USART3//GDDC串口中断
-#define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
-#define CONFIG_SPLC_ADC_CHANNEL								13//ADC采集通道
+#define CONFIG_EPROM_SIZE 										CONFIG_FM25W256G_SIZE
+#define CONFIG_SPLC_ADC1_CHANNEL							7//ADC采集通道
+#define CONFIG_SPLC_ADC3_CHANNEL							3//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM						10//ADC平均值次数
 #endif
 /*****************************************************************************/
@@ -722,7 +723,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
 #define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
 /*****************************************************************************/
-#define CONFIG_ADC_DMA_BUFFER_SIZE						(CONFIG_SPLC_ADC_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
+#define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_SPLC_ADC1_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
+#define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_SPLC_ADC3_CHANNEL * CONFIG_SPLC_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_AMBIENT_TEMP             			25// Ambient temp in deg C
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 

@@ -76,6 +76,7 @@ targetboard_m450_raspi_20260106\hmidriver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include
 targetboard_m450_raspi_20260106\hmidriver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlc/sPlcConfig.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlcPort/sPlcEprom.h
+targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/libcpu.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../Core/Inc/main.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -96,15 +97,14 @@ targetboard_m450_raspi_20260106\hmidriver.o: ../Middlewares/ST/STM32_USB_Host_Li
 targetboard_m450_raspi_20260106\hmidriver.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../MainApp/AppConfig.h
+targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/libcrc.h
+targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlc/sPlc.h
-targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/libcrc.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/libdbg.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/libcpu.h
-targetboard_m450_raspi_20260106\hmidriver.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\hmidriver.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

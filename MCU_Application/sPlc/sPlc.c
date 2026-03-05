@@ -275,6 +275,7 @@ void sPlcSpwmLoop(void){//SPWM轮询
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
+	epromWriteEnable(true);
 	listEpromTable();
 	readStm32UniqueID();
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
@@ -332,7 +333,10 @@ void sPlcProcessStart(void){//sPLC轮询起始
 #if CONFIG_SPLC_USING_SPWM == 1
 	sPlcSpwmLoop();
 #endif
-	sPlcAdcProcess();//ADC 更新NVRAM
+	sPlcAdcProcessBufferA();//ADC 更新NVRAM
+#if defined(LYPE_MCU_1V0_20260106)
+	sPlcAdcProcessBufferB();//ADC 更新NVRAM
+#endif
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束

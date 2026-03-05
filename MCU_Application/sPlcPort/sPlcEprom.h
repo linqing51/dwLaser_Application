@@ -2,6 +2,7 @@
 #define __SPLCEPROM_H__
 #include "stm32f4xx_hal.h"
 #include "stdbool.h"
+#include "libcpu.h"
 #include "sPlcConfig.h"
 #include "boardConfig.h"
 #include "AppConfig.h"

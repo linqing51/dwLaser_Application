@@ -75,6 +75,7 @@ targetboard_m450_raspi_20260106\dchmilanguage.o: C:\Keil_v5\ARM\ARMCC\Bin\..\inc
 targetboard_m450_raspi_20260106\dchmilanguage.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlc/sPlcConfig.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlcPort/sPlcEprom.h
+targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/libcpu.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../Core/Inc/main.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -95,15 +96,14 @@ targetboard_m450_raspi_20260106\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Hos
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../MainApp/AppConfig.h
+targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/libcrc.h
+targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlc/sPlc.h
-targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/libcrc.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/libdbg.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/libcpu.h
-targetboard_m450_raspi_20260106\dchmilanguage.o: ../../sPlc/boardConfig.h
-targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
