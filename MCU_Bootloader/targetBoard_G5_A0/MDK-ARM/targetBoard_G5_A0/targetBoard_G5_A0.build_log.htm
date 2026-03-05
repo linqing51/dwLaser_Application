@@ -1,0 +1,119 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.42.0.0
+Copyright (C) 2025 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 1, 1, LIC=PE7DL-0SZMZ-016P1-C81TA-QL62A-TMCDT
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.42.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.42.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.3.0.0
+Dialog DLL:      TCM.DLL V1.56.6.0
+ 
+<h2>Project:</h2>
+D:\GitHub\dwLaser_Application\MCU_Bootloader\targetBoard_G5_A0\MDK-ARM\targetBoard_G5_A0.uvprojx
+Project File Date:  09/10/2025
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'targetBoard_G5_A0'
+compiling bootLoader.c...
+..\..\Bootloader\bootLoader.c(209): error:  #20: identifier "DAC_HandleTypeDef" is undefined
+  extern DAC_HandleTypeDef hdac;
+..\..\Bootloader\bootLoader.c(215): error:  #20: identifier "BUFFER_SIZE" is undefined
+  uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//文件读写缓冲
+..\..\Bootloader\bootLoader.c(217): error:  #20: identifier "BOOTLOAD_MAIN_ADDRESS" is undefined
+  const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   			= '1';
+..\..\Bootloader\bootLoader.c(218): error:  #20: identifier "BOOTLAOD_MINOR_ADDRESS" is undefined
+  const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '6';
+..\..\Bootloader\bootLoader.c(334): error:  #20: identifier "CONFIG_JUMP_DELAY" is undefined
+  	overTime = HAL_GetTick() + CONFIG_JUMP_DELAY;
+..\..\Bootloader\bootLoader.c(515): error:  #20: identifier "FATFS_ROOT" is undefined
+  			retUsbH = f_mount(&USBH_fatfs, FATFS_ROOT, 0);
+..\..\Bootloader\bootLoader.c(541): error:  #20: identifier "CFG_FIRMWARE_FILENAME" is undefined
+  			retUsbH = f_open(&CfgFile, CFG_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);//读取完成信息文件
+..\..\Bootloader\bootLoader.c(557): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(557): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(566): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(566): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(575): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配				
+..\..\Bootloader\bootLoader.c(575): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配				
+..\..\Bootloader\bootLoader.c(585): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(585): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(595): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(595): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(607): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(607): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(619): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(619): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(631): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(631): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(641): error:  #20: identifier "DEVID_L" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(641): error:  #20: identifier "DEVID_H" is undefined
+  					if(fileBuff[3] == DEVID_L && fileBuff[4] == DEVID_H){//设备匹配
+..\..\Bootloader\bootLoader.c(842): error:  #20: identifier "LMCU_FIRMWARE_FILENAME" is undefined
+  			printf("Bootloader:FailHandler,%s size is invalid!\n", LMCU_FIRMWARE_FILENAME);
+..\..\Bootloader\bootLoader.c(846): error:  #20: identifier "LLCD_FIRMWARE_FILENAME" is undefined
+  			printf("Bootloader:FailHandler,%s size is invalid!\n", LLCD_FIRMWARE_FILENAME);
+..\..\Bootloader\bootLoader.c(850): error:  #20: identifier "LMCU_FIRMWARE_FILENAME" is undefined
+  			printf("Bootloader:FailHandler,Verify %s fail!.\n", LMCU_FIRMWARE_FILENAME);
+..\..\Bootloader\bootLoader.c(900): error:  #20: identifier "LMCU_FIRMWARE_FILENAME" is undefined
+  	retUsbH = f_open(&McuFile, LMCU_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);
+..\..\Bootloader\bootLoader.c(966): error:  #20: identifier "LMCU_FIRMWARE_FILENAME" is undefined
+  	retUsbH = f_open(&McuFile, LMCU_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);
+..\..\Bootloader\bootLoader.c: 0 warnings, 30 errors
+".\targetBoard_G5_A0\targetBoard_G5_A0.axf" - 30 Error(s), 0 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                https://www.keil.com/pack/ARM.CMSIS.6.2.0.pack
+                ARM::CMSIS@6.2.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 6.1.1
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F4xx_DFP.3.0.0.pack
+                Keil::STM32F4xx_DFP@3.0.0
+                STMicroelectronics STM32F4 Series Device Support
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_targetBoard_G5_A0
+  C:/Users/linqi/AppData/Local/Arm/Packs/ARM/CMSIS/6.2.0/CMSIS/Core/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@6.1.1
+      Include file:  CMSIS/Core/Include/tz_context.h
+Target not created.
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>

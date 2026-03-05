@@ -1,0 +1,130 @@
+<html>
+<body>
+<pre>
+<h1>�Vision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ��Vision V5.43.1.0
+Copyright (C) 2025 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 11, 1, LIC=WHYH9-4JM2U-8TH3P-MLCN1-RZ7P9-KLWGS
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.43.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.43.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.3.1.0
+Dialog DLL:      TCM.DLL V1.56.6.0
+ 
+<h2>Project:</h2>
+D:\GitHub\dwLaser_Application\MCU_Application\targetBoard_M450_RASPI_20260106\MDK-ARM\targetBoard_M450_RASPI_20260106.uvprojx
+Project File Date:  03/05/2026
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'targetBoard_M450_RASPI_20260106'
+assembling startup_stm32f407xx.s...
+compiling sPlcEprom.c...
+..\..\sPlcPort\sPlcEprom.c(29): error:  #65: expected a ";"
+  static HAL_StatusTypeDef SPI3_Eprom_ReceiveByte(uint8_t *pbyte){//SPI3接收一个字�?
+..\..\sPlcPort\sPlcEprom.c(64): warning:  #12-D: parsing restarts here after previous syntax error
+      status = SPI3_Eprom_ReceiveByte(rdat);
+..\..\sPlcPort\sPlcEprom.c(66): error:  #77-D: this declaration has no storage class or type specifier
+  exit:
+..\..\sPlcPort\sPlcEprom.c(66): error:  #147: declaration is incompatible with "void exit(int)"  (declared at line 438 of "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h")
+  exit:
+..\..\sPlcPort\sPlcEprom.c(66): error:  #65: expected a ";"
+  exit:
+..\..\sPlcPort\sPlcEprom.c(68): error:  #169: expected a declaration
+      return status;
+..\..\sPlcPort\sPlcEprom.c(69): error:  #169: expected a declaration
+  }
+..\..\sPlcPort\sPlcEprom.c(92): warning:  #12-D: parsing restarts here after previous syntax error
+      if (status != HAL_OK) goto exit;
+..\..\sPlcPort\sPlcEprom.c(95): error:  #77-D: this declaration has no storage class or type specifier
+      status = SPI3_Eprom_SendByte(wdat);
+..\..\sPlcPort\sPlcEprom.c(95): error:  #20: identifier "SPI3_Eprom_SendByte" is undefined
+      status = SPI3_Eprom_SendByte(wdat);
+..\..\sPlcPort\sPlcEprom.c(95): error:  #59: function call is not allowed in a constant expression
+      status = SPI3_Eprom_SendByte(wdat);
+..\..\sPlcPort\sPlcEprom.c(95): error:  #20: identifier "wdat" is undefined
+      status = SPI3_Eprom_SendByte(wdat);
+..\..\sPlcPort\sPlcEprom.c(97): error:  #77-D: this declaration has no storage class or type specifier
+  exit:
+..\..\sPlcPort\sPlcEprom.c(97): error:  #65: expected a ";"
+  exit:
+..\..\sPlcPort\sPlcEprom.c(99): error:  #169: expected a declaration
+      return status;
+..\..\sPlcPort\sPlcEprom.c(100): error:  #169: expected a declaration
+  }
+..\..\sPlcPort\sPlcEprom.c(162): warning:  #12-D: parsing restarts here after previous syntax error
+      *rdat = ((uint32_t)b3 << 24) | ((uint32_t)b2 << 16) | ((uint32_t)b1 << 8) | b0;
+..\..\sPlcPort\sPlcEprom.c(163): error:  #169: expected a declaration
+      return status;
+..\..\sPlcPort\sPlcEprom.c(164): error:  #169: expected a declaration
+  }
+..\..\sPlcPort\sPlcEprom.c(207): warning:  #12-D: parsing restarts here after previous syntax error
+      status = HAL_SPI_Receive(&hspi3, pBuffer, NumToRead, 100); // 超时100ms
+..\..\sPlcPort\sPlcEprom.c(209): error:  #77-D: this declaration has no storage class or type specifier
+  exit:
+..\..\sPlcPort\sPlcEprom.c(209): error:  #65: expected a ";"
+  exit:
+..\..\sPlcPort\sPlcEprom.c(211): error:  #169: expected a declaration
+      return status;
+..\..\sPlcPort\sPlcEprom.c(212): error:  #169: expected a declaration
+  }
+..\..\sPlcPort\sPlcEprom.c(237): warning:  #12-D: parsing restarts here after previous syntax error
+      status = SPI3_Eprom_SendByte((WriteAddr >> 8) & 0xFF); // �?8位地址
+..\..\sPlcPort\sPlcEprom.c(238): error:  #169: expected a declaration
+      if (status != HAL_OK) goto exit;
+..\..\sPlcPort\sPlcEprom.c(239): error:  #77-D: this declaration has no storage class or type specifier
+      status = SPI3_Eprom_SendByte(WriteAddr & 0xFF);        // �?8位地址
+..\..\sPlcPort\sPlcEprom.c(239): error:  #148: variable "status"  has already been initialized
+      status = SPI3_Eprom_SendByte(WriteAddr & 0xFF);        // �?8位地址
+..\..\sPlcPort\sPlcEprom.c(239): error:  #59: function call is not allowed in a constant expression
+      status = SPI3_Eprom_SendByte(WriteAddr & 0xFF);        // �?8位地址
+..\..\sPlcPort\sPlcEprom.c(239): error:  #20: identifier "WriteAddr" is undefined
+      status = SPI3_Eprom_SendByte(WriteAddr & 0xFF);        // �?8位地址
+..\..\sPlcPort\sPlcEprom.c(240): error:  #169: expected a declaration
+      if (status != HAL_OK) goto exit;
+..\..\sPlcPort\sPlcEprom.c(243): error:  #77-D: this declaration has no storage class or type specifier
+      status = HAL_SPI_Transmit(&hspi3, (uint8_t *)pBufferpBuffer, NumToWrite, 100); // 超时100ms
+..\..\sPlcPort\sPlcEprom.c(243): error:  #148: variable "status"  has already been initialized
+      status = HAL_SPI_Transmit(&hspi3, (uint8_t *)pBufferpBuffer, NumToWrite, 100); // 超时100ms
+..\..\sPlcPort\sPlcEprom.c(243): error:  #59: function call is not allowed in a constant expression
+      status = HAL_SPI_Transmit(&hspi3, (uint8_t *)pBufferpBuffer, NumToWrite, 100); // 超时100ms
+..\..\sPlcPort\sPlcEprom.c(243): error:  #20: identifier "pBufferpBuffer" is undefined
+      status = HAL_SPI_Transmit(&hspi3, (uint8_t *)pBufferpBuffer, NumToWrite, 100); // 超时100ms
+..\..\sPlcPort\sPlcEprom.c: 5 warnings, 30 errors
+"targetBoard_M450_RASPI_20260106\targetBoard_M450_RASPI_20260106.axf" - 30 Error(s), 5 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                https://www.keil.com/pack/ARM.CMSIS.6.3.0.pack
+                ARM::CMSIS@6.3.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 6.2.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F4xx_DFP.3.1.1.pack
+                Keil::STM32F4xx_DFP@3.1.1
+                STMicroelectronics STM32F4 Series Device Support
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_targetBoard_M450_RASPI_20260106
+  C:/Users/linqing/AppData/Local/Arm/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@6.2.0
+      Include file:  CMSIS/Core/Include/tz_context.h
+Target not created.
+Build Time Elapsed:  00:00:02
+</pre>
+</body>
+</html>
