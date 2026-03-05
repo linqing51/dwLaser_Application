@@ -1,6 +1,6 @@
 #include "MainApp.h"
 /*****************************************************************************/
-void mainAppTask(void *argument){
+void StartMainAppTask(void *argument){
 	sPlcInit();
 	while(1){
 		sPlcProcessStart();

@@ -22,7 +22,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>G5_TRIP_A1_20250731</TargetName>
+    <TargetName>targetBoard_G5_TRI_A1</TargetName>
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>
@@ -2135,7 +2135,7 @@
       <GroupNumber>14</GroupNumber>
       <FileNumber>93</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\sPlcPort\sPlcLaser.c</PathWithFileName>
@@ -2391,6 +2391,14 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+  </Group>
+
+  <Group>
+    <GroupName>::CMSIS</GroupName>
+    <tvExp>0</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>1</RteFlg>
   </Group>
 
 </ProjectOpt>

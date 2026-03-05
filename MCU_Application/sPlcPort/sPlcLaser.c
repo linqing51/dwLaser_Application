@@ -4,6 +4,7 @@
 #include "appConfig.h"
 /*****************************************************************************/
 int8_t LaserOn_635;
+int8_t LaserOn_535;
 int8_t LaserTimer_Mode;
 int16_t LaserTimer_TCounter;
 int16_t LaserTimer_TMate;
@@ -231,17 +232,36 @@ void setRedLaserPwm(int16_t pwm){//设置红激光占空比
 	if(pwm < 0){
 		pwm = 0;
 	}
-	SET_AIM_TIM_PWM(pwm);
+	SET_RAIM_TIM_PWM(pwm);
 	if(pwm != 0){
-		SET_AIM_TIM_ON;//打开TIM
+		SET_RAIM_TIM_ON;//打开TIM
 		LaserOn_635 = true;
 	}
 	else{
-		SET_AIM_TIM_OFF;//关闭TIM
+		SET_RAIM_TIM_OFF;//关闭TIM
 		LaserOn_635 = false;
 	}
-	//printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
+#if (CONFIG_DEBUG_AIM == 1)
+	printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
+#endif
+}
 
+void setGreenLaserPwm(int16_t pwm){//设置绿激光占空比
+	if(pwm < 0){
+		pwm = 0;
+	}
+	SET_GAIM_TIM_PWM(pwm);
+	if(pwm != 0){
+		SET_GAIM_TIM_ON;//打开TIM
+		LaserOn_535 = true;
+	}
+	else{
+		SET_GAIM_TIM_OFF;//关闭TIM
+		LaserOn_535 = false;
+	}
+#if (CONFIG_DEBUG_AIM == 1)
+	printf("%s,%d,%s:set laser(535) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
+#endif	
 }
 
 

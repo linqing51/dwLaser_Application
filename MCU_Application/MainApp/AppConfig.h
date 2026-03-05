@@ -20,13 +20,19 @@
 #if defined(LDR2P1_G5_A1_20250910_TRIP)
 #define HW_VERSION																		"LDR2P1G5A1_20250910_TRIP"
 #endif
-
+#if defined(LYPE_MCU_1V0_20260106)
+#define HW_VERSION																		"LYPE_MCU_1V0_20260106"
+#endif
 /*****************************************************************************/
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 #define APP_CONFIG_WAVE_1940_650//APP为双波长 1940+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LYPE_MCU_1V0_20260106)
 #define APP_CONFIG_WAVE_1470_650//APP为双波长 1470+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
@@ -57,7 +63,11 @@
 #define MODLE_M12_1920_10_400S//吉光1940
 #endif
 
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LYPE_MCU_1V0_20260106)
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #else
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
@@ -87,11 +97,17 @@
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												23
 #define CONFIG_ENT_SIZE																16
-#if defined(MODEL_PVGLS_TRI_A0) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined (LDR2P1_G5_A1_20250910_TRIP)
+#if defined(MODEL_PVGLS_TRI_A0) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined (LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_NEUROSURGERY_SIZE											5
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL)
 #define CONFIG_NEUROSURGERY_SIZE											3
 #endif
 
@@ -99,11 +115,17 @@
 #define CONFIG_LIPOSUCTION_SIZE												7
 #define CONFIG_DENTISRTY_SIZE													23
 
-#if defined(MODEL_PVGLS_TRI_A0) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(MODEL_PVGLS_TRI_A0) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_THERAPY_SIZE														8
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL)
 #define CONFIG_THERAPY_SIZE														3
 #endif
 //方案配置
@@ -197,6 +219,25 @@
 #define CONFIG_MIN_LASER_POWER_CH0										1//通道1940最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH1										1//通道980最小激光功率
 #endif
+#if defined(LYPE_MCU_1V0_20260106)
+#define CONFIG_MAX_LASER_POWER_CH0										500//通道0-450最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH1										500//通道1-450最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH2										500//通道2-450最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH3										500//通道3-450最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH4										500//通道4-980最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH5										0//通道5最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH6										0//通道6最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH7										0//通道7最大激光功率
+#define CONFIG_MIN_LASER_POWER_CH0										1//通道0-450最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH1										1//通道1-450最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH2										1//通道2-450最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH3										1//通道3-450最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH4										1//通道4-980最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH5										0//通道5最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH6										0//通道6最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH7										0//通道7最小激光功率
+#endif
+
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1
@@ -245,6 +286,14 @@
 #define CONFIG_RED_LED_DEFAULT_DC											90
 #define CONFIG_GREEN_LED_MAX_DC												100
 #define CONFIG_GREEN_LED_DEFAULT_DC										90
+#endif
+#if defined(LYPE_MCU_1V0_20260106)
+#define CONFIG_BLUE_LED_MAX_DC												100
+#define CONFIG_BLUE_LED_DEFAULT_DC										0
+#define CONFIG_RED_LED_MAX_DC													100	
+#define CONFIG_RED_LED_DEFAULT_DC											0
+#define CONFIG_GREEN_LED_MAX_DC												100
+#define CONFIG_GREEN_LED_DEFAULT_DC										0
 #endif
 /*****************************************************************************/
 #define CONFIG_AIM_DEFAULT_GAIN												60

@@ -1,9 +1,0 @@
-targetboard_g5_tri_a1\device.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/components/device/device.c
-targetboard_g5_tri_a1\device.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtthread.h
-targetboard_g5_tri_a1\device.o: ../RT-Thread/rtconfig.h
-targetboard_g5_tri_a1\device.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtdebug.h
-targetboard_g5_tri_a1\device.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtdef.h
-targetboard_g5_tri_a1\device.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
-targetboard_g5_tri_a1\device.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtservice.h
-targetboard_g5_tri_a1\device.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtm.h
-targetboard_g5_tri_a1\device.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtthread.h

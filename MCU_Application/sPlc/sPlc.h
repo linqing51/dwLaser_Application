@@ -146,7 +146,6 @@ extern void sPlcFdramSave(void);
 extern void sPlcFdramClear(void);
 extern void sPlcDeviceConfigClear(void);
 extern void sPlcDeviceLogClear(void);
-extern void softDelayMs(uint16_t ms);//软件延时
 extern void mucReboot(void);//软件复位
 extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
@@ -172,7 +171,6 @@ extern uint32_t getOriginAppCrc(void);//计算MCU App CRC32
 extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
 extern void confirmBootloadUpdate(void);//执行Bootload更新
 extern void exitBootloadUpdate(void);//退出Bootload更新
-void softDelayMs(uint16_t ms);//软件延时
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

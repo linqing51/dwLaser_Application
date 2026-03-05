@@ -2590,7 +2590,12 @@ static void faultLoop(void){//故障轮询
 	}
 	else{
 		if(deviceConfig.normalOpenInterLock == 1){//常开连锁			
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_10W_1940_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_10W_1940_A1) ||\
+		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
 			if(LD(X_INTERLOCK_NC)){
 				RRES(R_INTERLOCK);
 			}
@@ -2608,7 +2613,8 @@ static void faultLoop(void){//故障轮询
 		}
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470_A1) 
+#if defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(LYPE_MCU_1V0_20260106)
 			if(LD(X_INTERLOCK_NC)){
 				SSET(R_INTERLOCK);
 			}
@@ -2922,7 +2928,7 @@ static void powerDown(void){//关机函数
 	SET_LASER_CH7_OFF;	
 	printf("%s,%d,%s:shutdown laser power!\n",__FILE__, __LINE__, __func__);
 	EDLAR();//停止发射
-	SET_AIM_TIM_OFF;//停止指示激光发射
+	SET_RAIM_TIM_OFF;//停止指示激光发射
 	printf("%s,%d,%s:shutdown aim!\n",__FILE__, __LINE__, __func__);
 	RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 	sPlcSpeakerDisable();//关闭SPK AP

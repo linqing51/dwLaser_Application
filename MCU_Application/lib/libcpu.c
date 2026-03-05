@@ -2,6 +2,32 @@
 /*****************************************************************************/
 uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
+void softDelayMs(uint32_t ms){// 同样使用易变变量防止外层循环被优化
+	volatile uint32_t ms_count = ms;
+	__DSB();  
+	for(; ms_count > 0; ms_count--){
+		softDelayUs(1000);
+		__ISB();
+	}
+	__DSB();
+}
+
+void softDelayUs(uint32_t us){
+	// 1. 易变变量：告诉编译器该变量可能被外部修改，禁止优化访问
+	volatile uint32_t nop_count = us * 168;
+	// 2. 内存屏障：强制编译器按顺序执行指令，禁止指令重排
+	__DSB(); // 数据同步屏障，确保前面的计算完成后再执行循环
+	// 3. 循环执行nop，引入内存操作防止循环被优化
+	for(; nop_count > 0; nop_count--){
+		__nop();
+		// 额外内存屏障：防止编译器将循环展开/合并
+		__ISB(); // 指令同步屏障，确保nop指令被执行
+	}
+	// 4. 最终内存屏障：确保所有nop执行完毕
+	__DSB();
+}
+
+
 uint16_t cpuGetFlashSize(void){//获取处理器程序容量
    return *(volatile uint16_t*)(0x1FFF7A22);
 }
@@ -10,17 +36,6 @@ void readStm32UniqueID(void){//获取处理器唯一序列号
     UniqueId[0] = *(volatile uint32_t*)(0x1FFF7A10);
     UniqueId[1] = *(volatile uint32_t*)(0x1FFF7A14);
     UniqueId[2] = *(volatile uint32_t*)(0x1FFF7A18);
-}
-
-void softDelayMs(uint16_t ms){//软件延时
-	// 168MHz主频下，每个循环约4个指令周期
-	// 计算每个毫秒需要的循环次数：(168,000,000 周期/秒) / (1000 毫秒/秒) / 4 周期/循环 = 42000
-	const uint32_t cycles_per_ms = 42000;
-	volatile uint32_t count;// 使用volatile关键字防止编译器优化掉空循环
-	while (ms--){
-		count = cycles_per_ms;
-		while (count--);
-	}
 }
 
 void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电

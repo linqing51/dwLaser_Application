@@ -103,7 +103,11 @@ static float32_t linearToLog(int16_t volume){//线性音量转化为对数音量
 }
 #endif
 
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LYPE_MCU_1V0_20260106)
 static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	uint16_t tmp, i, wdat;
 	SET_MCP41010_CS(GPIO_PIN_SET);//CS = 1
@@ -139,10 +143,6 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	SET_MCP41010_CS(GPIO_PIN_SET);
 }
-
-
-
-
 
 static void setSpeakerFreq(uint16_t frequency){
   // TIM8时钟频率为168MHz (APB2时钟84MHz，定时器时钟=2*APB2时钟)

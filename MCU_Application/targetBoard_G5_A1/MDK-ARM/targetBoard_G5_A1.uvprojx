@@ -10,13 +10,13 @@
       <TargetName>targetBoard_G5_A1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F405RGTx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F4xx_DFP.3.0.0</PackID>
+          <PackID>Keil.STM32F4xx_DFP.3.1.1</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2004FFFF) IROM(0x8000000-0x817FFFF) CLOCK(25000000) FPU2 CPUTYPE("Cortex-M4")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,ARM_MATH_CM4,STM32F405xx,USER_VECT_TAB_ADDRESS,MODEL_PVGLS_15W_1470_A1</Define>
+              <Define>USE_HAL_DRIVER,ARM_MATH_CM4,STM32F405xx,USER_VECT_TAB_ADDRESS,LDR2P1_G5_A1_20250910_DUAL</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../../lib;../../sPlc;../../sPlcPort;../../dcHmi;../../MainApp;../../deviceInfo;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Drivers\CMSIS\DSP\Include;../../lib;../../sPlc;../../sPlcPort;../../dcHmi;../../MainApp;../../deviceInfo;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -592,9 +592,34 @@
               <FilePath>..\..\lib\arm_cortexM4lf_math.lib</FilePath>
             </File>
             <File>
-              <FileName>FuzzyPID_Relay.c</FileName>
+              <FileName>fan_controller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\lib\FuzzyPID_Relay.c</FilePath>
+              <FilePath>..\..\lib\fan_controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>flash_if.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\flash_if.c</FilePath>
+            </File>
+            <File>
+              <FileName>fuzzy_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\fuzzy_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>libcpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\libcpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>libdbg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\libdbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid_temp_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\pid_temp_control.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -610,11 +635,6 @@
               <FileName>sPlc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlc\sPlc.c</FilePath>
-            </File>
-            <File>
-              <FileName>Retarget.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlc\Retarget.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -722,11 +742,6 @@
               <FilePath>..\..\MainApp\dcHmiNotifyText.c</FilePath>
             </File>
             <File>
-              <FileName>flash_if.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\flash_if.c</FilePath>
-            </File>
-            <File>
               <FileName>MainApp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\MainApp.c</FilePath>
@@ -737,19 +752,19 @@
               <FilePath>..\..\MainApp\MainAppLib.c</FilePath>
             </File>
             <File>
-              <FileName>preScheme.c</FileName>
+              <FileName>preSchemeDual_1470.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preScheme.c</FilePath>
+              <FilePath>..\..\MainApp\preSchemeDual_1470.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>deviceInfo</GroupName>
-          <Files>
             <File>
-              <FileName>deviceConfig.c</FileName>
+              <FileName>preSchemeDual_1940.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\deviceInfo\deviceConfig.c</FilePath>
+              <FilePath>..\..\MainApp\preSchemeDual_1940.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeTrip.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -825,6 +840,62 @@
             </GroupArmAds>
           </GroupOption>
           <Files>
+            <File>
+              <FileName>stm32f4xx_ll_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
             <File>
               <FileName>stm32f4xx_hal_tim.c</FileName>
               <FileType>1</FileType>
@@ -1837,62 +1908,6 @@
               <FileName>stm32f4xx_hal_adc_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>1</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
-            <File>
-              <FileName>stm32f4xx_ll_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>

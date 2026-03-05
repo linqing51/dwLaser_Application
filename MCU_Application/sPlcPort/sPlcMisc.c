@@ -17,24 +17,24 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 		if(speed < CONFIG_FAN_MIN_DC){
 			speed = CONFIG_FAN_MIN_DC;
 		}
-		__HAL_TIM_SET_COMPARE(&CONFIG_FAN_TIM_HANDLE, CONFIG_FAN_PWM_CHANNEL, speed);
+		__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, speed);
 		if(speed != 0){
-			HAL_TIM_PWM_Start(&CONFIG_FAN_TIM_HANDLE, CONFIG_FAN_PWM_CHANNEL);//打开TIM
+			HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//打开TIM
 		}
 		else{
-			HAL_TIM_PWM_Stop(&CONFIG_FAN_TIM_HANDLE, CONFIG_FAN_PWM_CHANNEL);//关闭TIM
+			HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//关闭TIM
 		}
 
 		if(speed <= 0){
-			SET_FAN_OFF;
+			SET_FAN0_OFF;
 		}
 		else if(speed >0 && speed < 100){
-			SET_FAN_ON;
-			SET_FAN_TIM_PWM(speed);
+			SET_FAN0_ON;
+			SET_FAN0_TIM_PWM(speed);
 		}
 		else if(speed >= 100){
-			SET_FAN_ON;
-			SET_FAN_TIM_PWM(100);
+			SET_FAN0_ON;
+			SET_FAN0_TIM_PWM(100);
 		}
 		FanSpeed = speed;
 		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	

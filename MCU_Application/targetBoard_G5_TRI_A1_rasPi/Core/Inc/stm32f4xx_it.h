@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -51,14 +51,10 @@ void HardFault_Handler(void);
 void MemManage_Handler(void);
 void BusFault_Handler(void);
 void UsageFault_Handler(void);
+void SVC_Handler(void);
 void DebugMon_Handler(void);
-void USART2_IRQHandler(void);
-void TIM8_UP_TIM13_IRQHandler(void);
-void TIM8_TRG_COM_TIM14_IRQHandler(void);
-void TIM6_DAC_IRQHandler(void);
-void TIM7_IRQHandler(void);
-void DMA2_Stream0_IRQHandler(void);
-void OTG_FS_IRQHandler(void);
+void PendSV_Handler(void);
+void SysTick_Handler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
