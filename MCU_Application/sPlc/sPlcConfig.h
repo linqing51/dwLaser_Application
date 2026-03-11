@@ -16,7 +16,7 @@
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
 #define CONFIG_SPLC_USING_SPWM												1//使能软件PWM功能
 #define CONFIG_SPLC_USING_FUNTEST											0//功能指令测试
-#define CONFIG_SPLC_USING_EPROM_TEST									1//EPROM 读写测试
+#define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM 读写测试
 #define CONFIG_SPLC_USING_LASER_TEST									0
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT														1//检查地址范围
@@ -93,15 +93,15 @@
 //输出位寄存器 16 * 8 = 128
 #define Y_START																				1312
 #define Y_END																					1319
-//特殊寄存器 64
+//特殊寄存器 128
 #define SPREG_START																		1320
-#define SPREG_END																			1383
+#define SPREG_END																			1447
 //特殊线圈 16 * 16 = 256
-#define SPCOIL_START																	1384
-#define SPCOIL_END																		1399
+#define SPCOIL_START																	1448
+#define SPCOIL_END																		1463
 //临时寄存器 64
-#define TMP_START																			1400
-#define TMP_END																				1463
+#define TMP_START																			1464
+#define TMP_END																				1527
 /*****************************************************************************/
 #define CONFIG_NVRAM_SIZE 														(TMP_END + 1)
 /*****************************************************************************/
@@ -153,56 +153,104 @@
 #define SPREG_ADC_5																		(SPREG_START + 5)//采集值 CH5 CURRENT
 #define SPREG_ADC_6																		(SPREG_START + 6)//采集值 CH7 CURRENT
 #define SPREG_ADC_7																		(SPREG_START + 7)//采集值 CH8 CURRENT
-#define SPREG_ADC_8																		(SPREG_START + 8)//采集值 TEC0 CURRENT
-#define SPREG_ADC_9																		(SPREG_START + 9)//采集值 TEC1 CURRENT
-#define SPREG_ADC_10																	(SPREG_START + 10)//采集值 TEC2 CURRENT
-#define SPREG_ADC_11																	(SPREG_START + 11)//采集值 TEC3 CURRENT
-#define SPREG_ADC_12																	(SPREG_START + 12)//采集值 PWR CURRENT 母线电流
-#define SPREG_ADC_13																	(SPREG_START + 13)//采集值 VIN VOLTAGE 母线电压
-#define SPREG_ADC_14																	(SPREG_START + 14)//采集值 LASER_NTC
-#define SPREG_ADC_15																	(SPREG_START + 15)//采集值 散热器HT1_NTC/散热器水温 
-#define SPREG_ADC_16																	(SPREG_START + 16)//采集值 HT2_NTC/激光器水温 
-#define SPREG_ADC_17																	(SPREG_START + 17)//采集值 BAT NTC
-#define SPREG_ADC_18																	(SPREG_START + 18)//采集值 LASER_FPD
-#define SPREG_ADC_19																	(SPREG_START + 19)//采集值 LASER_LPD
-#define SPREG_ADC_20																	(SPREG_START + 20)//CHIP TEMP片内温度传感器
-#define SPREG_ADC_21																	(SPREG_START + 21)//CHIP VREFINT片内基准源
-#define SPREG_ADC_22																	(SPREG_START + 22)//VBAT 掉电存储电池 
 
-#define SPREG_DAC_0																		(SPREG_START + 30)//DAC设定值 激光通道 CH0 ->1470 1940
-#define SPREG_DAC_1																		(SPREG_START + 31)//DAC设定值 激光通道 CH1 ->980
-#define SPREG_DAC_2																		(SPREG_START + 32)//DAC设定值 激光通道 CH2 
-#define SPREG_DAC_3																		(SPREG_START + 33)//DAC设定值 激光通道 CH3
-#define SPREG_DAC_4																		(SPREG_START + 34)//DAC设定值 激光通道 CH4
-#define SPREG_DAC_5																		(SPREG_START + 35)//DAC设定值 激光通道 CH5
-#define SPREG_DAC_6																		(SPREG_START + 36)//DAC设定值 激光通道 CH6 -> 635 PWM 占空比
-#define SPREG_DAC_7																		(SPREG_START + 37)//DAC设定值 激光通道 CH7 ->TEC 
+#define SPREG_ADC_8																		(SPREG_START + 8)//采集值 CH0 VOLTAGE
+#define SPREG_ADC_9																		(SPREG_START + 9)//采集值 CH1 VOLTAGE
+#define SPREG_ADC_10																	(SPREG_START + 10)//采集值 CH2 VOLTAGE
+#define SPREG_ADC_11																	(SPREG_START + 11)//采集值 CH3 VOLTAGE
+#define SPREG_ADC_12																	(SPREG_START + 12)//采集值 CH4 VOLTAGE
+#define SPREG_ADC_13																	(SPREG_START + 13)//采集值 CH5 VOLTAGE
+#define SPREG_ADC_14																	(SPREG_START + 14)//采集值 CH7 VOLTAGE
+#define SPREG_ADC_15																	(SPREG_START + 15)//采集值 CH8 VOLTAGE
+
+#define SPREG_ADC_16																	(SPREG_START + 16)//采集值 TEC0 CURRENT
+#define SPREG_ADC_17																	(SPREG_START + 17)//采集值 TEC1 CURRENT
+#define SPREG_ADC_18																	(SPREG_START + 18)//采集值 TEC2 CURRENT
+#define SPREG_ADC_19																	(SPREG_START + 19)//采集值 TEC3 CURRENT
+#define SPREG_ADC_20																	(SPREG_START + 20)//采集值 TEC4 CURRENT
+#define SPREG_ADC_21																	(SPREG_START + 21)//采集值 TEC5 CURRENT
+#define SPREG_ADC_22																	(SPREG_START + 22)//采集值 TEC6 CURRENT
+#define SPREG_ADC_23																	(SPREG_START + 23)//采集值 TEC7 CURRENT
+
+#define SPREG_ADC_24																	(SPREG_START + 24)//采集值 TEC1 VOLTAGE
+#define SPREG_ADC_25																	(SPREG_START + 25)//采集值 TEC2 VOLTAGE
+#define SPREG_ADC_26																	(SPREG_START + 26)//采集值 TEC3 VOLTAGE
+#define SPREG_ADC_27																	(SPREG_START + 27)//采集值 TEC4 VOLTAGE
+#define SPREG_ADC_28																	(SPREG_START + 28)//采集值 TEC5 VOLTAGE
+#define SPREG_ADC_29																	(SPREG_START + 29)//采集值 TEC6 VOLTAGE
+#define SPREG_ADC_30																	(SPREG_START + 30)//采集值 TEC7 VOLTAGE
+#define SPREG_ADC_31																	(SPREG_START + 31)//采集值 TEC8 VOLTAGE
+
+#define SPREG_ADC_32																	(SPREG_START + 32)//采集值 散热器HT1_NTC 
+#define SPREG_ADC_33																	(SPREG_START + 33)//采集值 散热器HT2_NTC 
+#define SPREG_ADC_34																	(SPREG_START + 34)//采集值 散热器HT2_NTC 
+#define SPREG_ADC_35																	(SPREG_START + 35)//采集值 散热器HT3_NTC
+#define SPREG_ADC_36																	(SPREG_START + 36)//采集值 冷却液WATER1_NTC 
+#define SPREG_ADC_37																	(SPREG_START + 37)//采集值 冷却液WATER2_NTC
+#define SPREG_ADC_38																	(SPREG_START + 38)//采集值 冷却液WATER3_NTC 
+#define SPREG_ADC_39																	(SPREG_START + 39)//采集值 冷却液WATER4_NTC
+
+#define SPREG_ADC_40																	(SPREG_START + 40)//采集值 激光器DIODE LASER_NTC
+#define SPREG_ADC_41																	(SPREG_START + 41)//采集值 激光器耦合 FIBER_NTC
+#define SPREG_ADC_42																	(SPREG_START + 42)//采集值 激光器晶体1
+#define SPREG_ADC_43																	(SPREG_START + 43)//采集值 激光器晶体2
+
+#define SPREG_ADC_44																	(SPREG_START + 44)//采集值 PWR CURRENT 母线电流
+#define SPREG_ADC_45																	(SPREG_START + 45)//采集值 VIN VOLTAGE 母线电压
+#define SPREG_ADC_46																	(SPREG_START + 46)//采集值 BAT NTC
+#define SPREG_ADC_47																	(SPREG_START + 47)//采集值 LASER_FPD
+#define SPREG_ADC_48																	(SPREG_START + 48)//采集值 LASER_LPD
+#define SPREG_ADC_49																	(SPREG_START + 48)//采集值 AMB_TEMP环境温度
+#define SPREG_ADC_50																	(SPREG_START + 49)//CHIP TEMP片内温度传感器
+#define SPREG_ADC_51																	(SPREG_START + 50)//CHIP VREFINT片内基准源
+#define SPREG_ADC_52																	(SPREG_START + 51)//VBAT 掉电存储电池 
 /*****************************************************************************/
-#define SPREG_SPWM_POS_0															(SPREG_START + 40)//软件PWM0正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_0												(SPREG_START + 41)//软件PWM0正脉宽阴影
-#define SPREG_SPWM_CYCLE_0														(SPREG_START + 42)//软件PWM0周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_0											(SPREG_START + 43)//软件PWM0周期阴影
-#define SPREG_SPWM_COUNTER_0													(SPREG_START + 44)//软件PWM0计数器
-#define SPREG_SPWM_POS_1															(SPREG_START + 45)//软件PWM1正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_1												(SPREG_START + 46)//软件PWM1正脉宽阴影
-#define SPREG_SPWM_CYCLE_1														(SPREG_START + 47)//软件PWM1周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_1											(SPREG_START + 48)//软件PWM1周期阴影
-#define SPREG_SPWM_COUNTER_1													(SPREG_START + 49)//软件PWM1计数器
-#define SPREG_SPWM_POS_2															(SPREG_START + 50)//软件PWM2正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_2												(SPREG_START + 51)//软件PWM2正脉宽阴影
-#define SPREG_SPWM_CYCLE_2														(SPREG_START + 52)//软件PWM2周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_2											(SPREG_START + 53)//软件PWM2周期阴影
-#define SPREG_SPWM_COUNTER_2													(SPREG_START + 54)//软件PWM2计数器
-#define SPREG_SPWM_POS_3															(SPREG_START + 55)//软件PWM3正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_3												(SPREG_START + 56)//软件PWM3正脉宽阴影
-#define SPREG_SPWM_CYCLE_3														(SPREG_START + 57)//软件PWM3周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_3											(SPREG_START + 58)//软件PWM3周期阴影
-#define SPREG_SPWM_COUNTER_3													(SPREG_START + 59)//软件PWM3计数器
+#define SPREG_DAC_0																		(SPREG_START + 60)//DAC设定值 激光通道 CH0 ->1470 1940
+#define SPREG_DAC_1																		(SPREG_START + 61)//DAC设定值 激光通道 CH1 ->980
+#define SPREG_DAC_2																		(SPREG_START + 62)//DAC设定值 激光通道 CH2 
+#define SPREG_DAC_3																		(SPREG_START + 63)//DAC设定值 激光通道 CH3
+#define SPREG_DAC_4																		(SPREG_START + 64)//DAC设定值 激光通道 CH4
+#define SPREG_DAC_5																		(SPREG_START + 65)//DAC设定值 激光通道 CH5
+#define SPREG_DAC_6																		(SPREG_START + 66)//DAC设定值 激光通道 CH6 -> 635 PWM 占空比
+#define SPREG_DAC_7																		(SPREG_START + 67)//DAC设定值 激光通道 CH7 
 /*****************************************************************************/
-#define SPREG_BEEM_VOLUME											  			(SPREG_START + 60)//蜂鸣器音量 0-100% 1320+60=1380
-#define SPREG_BEEM_FREQ												  			(SPREG_START + 61)//蜂鸣器频率        1320+61=1381
-#define SPREG_BEEM_MODE												  			(SPREG_START + 62)//蜂鸣器模式        1320+62=1382
-#define SPREG_BEEM_COUNTER										  			(SPREG_START + 63)//蜂鸣器计时器      1320+63=1383
+#define SPREG_DAC_8																		(SPREG_START + 68)//DAC设定值 激光通道 CH8 ->TEC0
+#define SPREG_DAC_9																		(SPREG_START + 69)//DAC设定值 激光通道 CH9 ->TEC1
+#define SPREG_DAC_10																	(SPREG_START + 70)//DAC设定值 激光通道 CH10 ->TEC2
+#define SPREG_DAC_11																	(SPREG_START + 71)//DAC设定值 激光通道 CH11 ->TEC3
+#define SPREG_DAC_12																	(SPREG_START + 72)//DAC设定值 激光通道 CH12 ->TEC4
+#define SPREG_DAC_13																	(SPREG_START + 73)//DAC设定值 激光通道 CH13 ->TEC5
+#define SPREG_DAC_14																	(SPREG_START + 74)//DAC设定值 激光通道 CH14 ->TEC6
+#define SPREG_DAC_15																	(SPREG_START + 75)//DAC设定值 激光通道 CH15 ->TEC7
+/*****************************************************************************/
+#define SPREG_DAC_16																	(SPREG_START + 76)//DAC设定值 激光通道 CH16 -> 635 PWM 占空比
+#define SPREG_DAC_17																	(SPREG_START + 77)//DAC设定值 激光通道 CH17 -> 532 PWM 占空比
+/*****************************************************************************/
+#define SPREG_SPWM_POS_0															(SPREG_START + 80)//软件PWM0正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_0												(SPREG_START + 81)//软件PWM0正脉宽阴影
+#define SPREG_SPWM_CYCLE_0														(SPREG_START + 82)//软件PWM0周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_0											(SPREG_START + 83)//软件PWM0周期阴影
+#define SPREG_SPWM_COUNTER_0													(SPREG_START + 84)//软件PWM0计数器
+#define SPREG_SPWM_POS_1															(SPREG_START + 85)//软件PWM1正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_1												(SPREG_START + 86)//软件PWM1正脉宽阴影
+#define SPREG_SPWM_CYCLE_1														(SPREG_START + 87)//软件PWM1周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_1											(SPREG_START + 88)//软件PWM1周期阴影
+#define SPREG_SPWM_COUNTER_1													(SPREG_START + 89)//软件PWM1计数器
+#define SPREG_SPWM_POS_2															(SPREG_START + 90)//软件PWM2正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_2												(SPREG_START + 91)//软件PWM2正脉宽阴影
+#define SPREG_SPWM_CYCLE_2														(SPREG_START + 92)//软件PWM2周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_2											(SPREG_START + 93)//软件PWM2周期阴影
+#define SPREG_SPWM_COUNTER_2													(SPREG_START + 94)//软件PWM2计数器
+#define SPREG_SPWM_POS_3															(SPREG_START + 95)//软件PWM3正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_3												(SPREG_START + 96)//软件PWM3正脉宽阴影
+#define SPREG_SPWM_CYCLE_3														(SPREG_START + 97)//软件PWM3周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_3											(SPREG_START + 98)//软件PWM3周期阴影
+#define SPREG_SPWM_COUNTER_3													(SPREG_START + 99)//软件PWM3计数器
+/*****************************************************************************/
+#define SPREG_BEEM_VOLUME											  			(SPREG_START + 100)//蜂鸣器音量 0-100% 1320+60=1380
+#define SPREG_BEEM_FREQ												  			(SPREG_START + 101)//蜂鸣器频率        1320+61=1381
+#define SPREG_BEEM_MODE												  			(SPREG_START + 102)//蜂鸣器模式        1320+62=1382
+#define SPREG_BEEM_COUNTER										  			(SPREG_START + 103)//蜂鸣器计时器      1320+63=1383
 /*****************************************************************************/
 //需要存储的方案
 #define EM_LASER_SCHEME_NAME													(EM_START + 0)//方案名称

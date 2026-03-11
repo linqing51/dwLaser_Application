@@ -652,7 +652,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_GDDC_UART											huart2//GDDC串口
 #define CONFIG_GDDC_UART_INSTANCE							USART2//GDDC串口中断
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
-#define CONFIG_SPLC_ADC_CHANNEL								13//ADC采集通道
+#define CONFIG_SPLC_ADC1_CHANNEL								13//ADC采集通道
 #define CONFIG_SPLC_ADC_AVERAGE_NUM						10//ADC平均值次数
 #endif
 
@@ -716,7 +716,7 @@ extern uint16_t audioSineTable[];
 #define	CONFIG_AT24C64_SIZE										8192
 #define	CONFIG_AT24C128_SIZE 									16384
 #define	CONFIG_AT24C256_SIZE 									32768//32K*8
-#define CONFIG_FM25W256G_SIZE									1024 * 32//64K
+#define CONFIG_FM25W256G_SIZE									32768//32K
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时

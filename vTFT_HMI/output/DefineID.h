@@ -10,47 +10,50 @@
 //创建画面GDDC_PAGE_POWERUP_1940的命令索引ID
 #define  _SCREEN_GDDC_PAGE_POWERUP_1940                                        3
 
+//创建画面GDDC_PAGE_POWERUP_450的命令索引ID
+#define  _SCREEN_GDDC_PAGE_POWERUP_450                                         4
+
 //创建画面GDDC_PAGE_PASSCODE的命令索引ID
-#define  _SCREEN_GDDC_PAGE_PASSCODE                                            4
+#define  _SCREEN_GDDC_PAGE_PASSCODE                                            5
 
 //创建画面GDDC_PAGE_NEW_PASSCODE的命令索引ID
-#define  _SCREEN_GDDC_PAGE_NEW_PASSCODE                                        5
+#define  _SCREEN_GDDC_PAGE_NEW_PASSCODE                                        6
 
 //创建画面GDDC_PAGE_STANDBY_DUAL的命令索引ID
-#define  _SCREEN_GDDC_PAGE_STANDBY_DUAL                                        6
+#define  _SCREEN_GDDC_PAGE_STANDBY_DUAL                                        7
 
 //创建画面GDDC_PAGE_STANDBY_TRI的命令索引ID
-#define  _SCREEN_GDDC_PAGE_STANDBY_TRI                                         7
+#define  _SCREEN_GDDC_PAGE_STANDBY_TRI                                         8
 
 //创建画面GDDC_PAGE_READY的命令索引ID
-#define  _SCREEN_GDDC_PAGE_READY                                               8
+#define  _SCREEN_GDDC_PAGE_READY                                               9
 
 //创建画面GDDC_PAGE_OPTION的命令索引ID
-#define  _SCREEN_GDDC_PAGE_OPTION                                              9
+#define  _SCREEN_GDDC_PAGE_OPTION                                             10
 
 //创建画面GDDC_PAGE_SCHEME_CLASSIFY_TRI的命令索引ID
-#define  _SCREEN_GDDC_PAGE_SCHEME_CLASSIFY_TRI                                10
+#define  _SCREEN_GDDC_PAGE_SCHEME_CLASSIFY_TRI                                11
 
 //创建画面GDDC_PAGE_SCHEME_CLASSIFY_DUAL的命令索引ID
-#define  _SCREEN_GDDC_PAGE_SCHEME_CLASSIFY_DUAL                               11
+#define  _SCREEN_GDDC_PAGE_SCHEME_CLASSIFY_DUAL                               12
 
 //创建画面GDDC_PAGE_SCHEME_DETAIL的命令索引ID
-#define  _SCREEN_GDDC_PAGE_SCHEME_DETAIL                                      12
+#define  _SCREEN_GDDC_PAGE_SCHEME_DETAIL                                      13
 
 //创建画面GDDC_PAGE_INFORMATION的命令索引ID
-#define  _SCREEN_GDDC_PAGE_INFORMATION                                        13
+#define  _SCREEN_GDDC_PAGE_INFORMATION                                        14
 
 //创建画面GDDC_PAGE_DIAGNOSIS的命令索引ID
-#define  _SCREEN_GDDC_PAGE_DIAGNOSIS                                          14
+#define  _SCREEN_GDDC_PAGE_DIAGNOSIS                                          15
 
 //创建画面GDDC_PAGE_RENAME的命令索引ID
-#define  _SCREEN_GDDC_PAGE_RENAME                                             15
+#define  _SCREEN_GDDC_PAGE_RENAME                                             16
 
 //创建画面GDDC_PAGE_RESTORE的命令索引ID
-#define  _SCREEN_GDDC_PAGE_RESTORE                                            16
+#define  _SCREEN_GDDC_PAGE_RESTORE                                            17
 
 //创建画面GDDC_PAGE_WEAR_SAFETY的命令索引ID
-#define  _SCREEN_GDDC_PAGE_WEAR_SAFETY                                        17
+#define  _SCREEN_GDDC_PAGE_WEAR_SAFETY                                        18
 
 #define  _BTN_GDDC_PAGE_PASSCODE_GDDC_PAGE_PASSCODE_KEY_NUM1                   1
 
@@ -180,9 +183,13 @@
 
 #define  _BTN_GDDC_PAGE_STANDBY_DUAL_GDDC_PAGE_STANDBY_KEY_SELECT_RED         25
 
-#define  _BTN_GDDC_PAGE_STANDBY_DUAL_GDDC_PAGE_STANDBY_KEY_SELECT_CH1         24
+#define  _BTN_GDDC_PAGE_STANDBY_DUAL_GDDC_PAGE_STANDBY_KEY_SELECT_CH1A         24
 
 #define  _BTN_GDDC_PAGE_STANDBY_DUAL_GDDC_PAGE_STANDBY_KEY_SELECT_CH0B         45
+
+#define  _BTN_GDDC_PAGE_STANDBY_DUAL_GDDC_PAGE_STANDBY_KEY_SELECT_CH0C         46
+
+#define  _BTN_GDDC_PAGE_STANDBY_DUAL_GDDC_PAGE_STANDBY_KEY_SELECT_CH1B         47
 
 //画面GDDC_PAGE_STANDBY_TRI中动画控件GDDC_PAGE_STANDBY_ICON_MPKEY使用的图片
 #define  _IMG_GDDC_PAGE_STANDBY_TRI_GDDC_PAGE_STANDBY_ICON_MPKEY               8
@@ -254,6 +261,9 @@
 #define  _BTN_GDDC_PAGE_STANDBY_TRI_GDDC_PAGE_STANDBY_KEY_SELECT_CH0A         23
 
 #define  _BTN_GDDC_PAGE_STANDBY_TRI_GDDC_PAGE_STANDBY_KEY_SELECT_RED          25
+
+//全局图片7.1_gddc_page_standby_1.jpg
+#define  _IMG_7.1_GDDC_PAGE_STANDBY_1_JPG                                     12
 
 #define  _BTN_GDDC_PAGE_STANDBY_TRI_GDDC_PAGE_STANDBY_KEY_SELECT_CH1          24
 

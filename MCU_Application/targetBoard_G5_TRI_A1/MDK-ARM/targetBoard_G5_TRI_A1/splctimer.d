@@ -73,6 +73,7 @@
 .\targetboard_g5_tri_a1\splctimer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../sPlc/sPlcConfig.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../sPlcPort/sPlcEprom.h
+.\targetboard_g5_tri_a1\splctimer.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splctimer.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1\splctimer.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -93,15 +94,14 @@
 .\targetboard_g5_tri_a1\splctimer.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\splctimer.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\splctimer.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\splctimer.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\splctimer.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\splctimer.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\splctimer.o: ../../lib/libcrc.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../lib/libdbg.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\splctimer.o: ../../lib/libcpu.h
-.\targetboard_g5_tri_a1\splctimer.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\splctimer.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\splctimer.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\splctimer.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

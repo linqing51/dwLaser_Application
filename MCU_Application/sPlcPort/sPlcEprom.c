@@ -1,10 +1,13 @@
 //适用于FRAM不适用于EEPROM
+//FM25V02测试通过
 #include "sPlcEprom.h"
 /*****************************************************************************/
 extern I2C_HandleTypeDef hi2c1;
 extern I2C_HandleTypeDef hi2c2;
 extern CRC_HandleTypeDef hcrc;
 extern RNG_HandleTypeDef hrng;
+
+uint8_t status1;
 /*****************************************************************************/
 static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 	uint16_t i;
@@ -24,13 +27,47 @@ typedef enum {//FM25W256 指令定义
 	FM25W256_WRSR = 0x01,//写状态寄存器
 	FM25W256_READ = 0x03,//读数据指令
 	FM25W256_WRITE = 0x02,//写数据指令
+	DEVICE_ID = 0x9F,//读取设备ID
 }fm25w256g_CmdDef;
+
+
+
+HAL_StatusTypeDef epromReadStatusReg(uint8_t *status)
+{
+    HAL_StatusTypeDef ret;
+    uint8_t cmd = FM25W256_RDSR;
+    
+		EPROM_SPI_NSS_SEL;
+    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &cmd, 1, 100);
+    if (ret == HAL_OK)
+    {
+        ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, status, 1, 100);
+    }
+		EPROM_SPI_NSS_DESEL;
+    
+    return ret;
+}
+
+HAL_StatusTypeDef epromReadDeviceId(uint8_t *status)
+{
+    HAL_StatusTypeDef ret;
+    uint8_t cmd = DEVICE_ID;
+    
+		EPROM_SPI_NSS_SEL;
+    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &cmd, 1, 100);
+    if (ret == HAL_OK)
+    {
+        ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, status, 9, 100);
+    }
+		EPROM_SPI_NSS_DESEL;
+    
+    return ret;
+}
+
 
 HAL_StatusTypeDef epromWriteEnable(bool en){//FM25W256写使能（所有写操作前必须调用）
 	HAL_StatusTypeDef status;
   uint8_t cmd;
-	EPROM_SPI_NSS_DESEL;
-	softDelayUs(1);
 	EPROM_SPI_NSS_SEL;
 	__asm volatile ("nop");
 	if(en){
@@ -47,13 +84,14 @@ HAL_StatusTypeDef epromWriteEnable(bool en){//FM25W256写使能（所有写操�
 #endif
 	__asm volatile ("nop");
   EPROM_SPI_NSS_DESEL;
-	__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");
-	return status;
+  return status;
 }
 
 HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地址读出8位数据
+	
 	HAL_StatusTypeDef status = HAL_OK;
 	uint8_t wtmp;
+
 	if(ReadAddr > (CONFIG_EPROM_SIZE - 1)){//读地址超过容量
 		status = HAL_ERROR;
 		return status;
@@ -63,22 +101,30 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地
 	}
 	EPROM_SPI_NSS_SEL;
 	__asm volatile ("nop");
-	// 1. 发送读指令
-	wtmp = FM25W256_READ;
+
+  // 组装读指令和地址
+  wtmp = FM25W256_READ;
 	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	// 2. 发送16位地址
-	//wtmp =  (ReadAddr >> 8) | (ReadAddr << 8);
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)&ReadAddr, 2, 100); //地址
+  wtmp = (ReadAddr >> 8) & 0xFF;   // 地址中位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
+  wtmp = ReadAddr & 0xFF;          // 地址低位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
+	
 	// 3. 接收数据字节
 	status = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, rdat, 1, 100); // 超时100ms		
 #if (CONFIG_DEBUG_EPROM == 1)
@@ -88,48 +134,75 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地
 #endif
 	__asm volatile ("nop");
 	EPROM_SPI_NSS_DESEL;
-	__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");
 	return status;
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//向FM25W256指定地址写入一个字节
-	HAL_StatusTypeDef status = HAL_OK;
 	uint8_t wtmp;
+  HAL_StatusTypeDef status = HAL_OK;
+
+	
 	if(WriteAddr > (CONFIG_EPROM_SIZE - 1)){//写地址超过容量
 		status = HAL_ERROR;
 		return status;
 	}
-	// 1. 先使能写操作
-	//status = FM25W256_WriteEnable();
-	// 2. 发送写指令
+
+  // 先写使能
+  if (epromWriteEnable(true) != HAL_OK) 
+		return HAL_ERROR;
+
+	
 	EPROM_SPI_NSS_SEL;
-	__asm volatile ("nop");
-	wtmp = FM25W256_WRITE;
+
+  // 组装写指令和地址
+  wtmp = FM25W256_WRITE;
 	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-  // 3. 发送地址
-	//wtmp =  (WriteAddr >> 8) | (WriteAddr << 8);
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)&WriteAddr, 2, 100);
+  wtmp = (WriteAddr >> 8) & 0xFF;   // 地址中位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-  // 4. 发送数据字节
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, wdat, 1, 100); 
+  wtmp = WriteAddr & 0xFF;          // 地址低位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	__asm volatile ("nop");
+
+
+  // 发送数据
+  status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, wdat, 1, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
+ 
 	EPROM_SPI_NSS_DESEL;
-	__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");__asm volatile ("nop");
-	return status;
+  
+  return status;
+	
+	
+	
+	
+	
+	
 }
 
 HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//读取FM25W256指定地址的一个半字（16位）
@@ -151,12 +224,21 @@ HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat){//读取FM25
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(&ReadAddr), 2, 100);
+  wtmp = (ReadAddr >> 8) & 0xFF;   // 地址中位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
+  wtmp = ReadAddr & 0xFF;          // 地址低位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
+	
 	status = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)rdat, 2, 100); // 超时100ms		
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
@@ -175,6 +257,9 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//向FM25W
 		status = HAL_ERROR;
 		return status;
 	}
+	// 1. 先使能写操作
+	status = epromWriteEnable(true);
+	
 	EPROM_SPI_NSS_SEL;
 	__asm volatile ("nop");
 	wtmp = FM25W256_WRITE;
@@ -184,12 +269,21 @@ HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat){//向FM25W
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(&WriteAddr), 2, 100); //写地址
+  wtmp = (WriteAddr >> 8) & 0xFF;   // 地址中位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
-#endif	
+#endif
+  wtmp = WriteAddr & 0xFF;          // 地址低位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
+	
 	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(wdat), 2, 100); //写数据
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
@@ -220,7 +314,15 @@ HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat){//读取FM25
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(&ReadAddr), 2, 100);
+  wtmp = (ReadAddr >> 8) & 0xFF;   // 地址中位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
+  wtmp = ReadAddr & 0xFF;          // 地址低位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
@@ -244,6 +346,9 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//向FM25W
 		status = HAL_ERROR;
 		return status;
 	}
+	// 1. 先使能写操作
+	status = epromWriteEnable(true);
+	
 	EPROM_SPI_NSS_SEL;
 	__asm volatile ("nop");
 	wtmp = FM25W256_WRITE;
@@ -253,12 +358,20 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//向FM25W
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(&WriteAddr), 2, 100); //写地址
+  wtmp = (WriteAddr >> 8) & 0xFF;   // 地址中位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
-#endif	
+#endif
+  wtmp = WriteAddr & 0xFF;          // 地址低位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
 	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(wdat), 4, 100); //写数据
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
@@ -273,34 +386,51 @@ HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat){//向FM25W
 HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead){//从FM25W256指定起始地址读取指定数量的字节
 	HAL_StatusTypeDef status = HAL_OK;
 	uint8_t wtmp;
+
 	// 1. 参数合法性校验
 	if (pBuffer == NULL || NumToRead == 0 || (ReadAddr + NumToRead - 1) > CONFIG_EPROM_SIZE){
 		return HAL_ERROR;
 	}
+	
 	EPROM_SPI_NSS_SEL;
-	__asm volatile ("nop");
-	wtmp = FM25W256_READ;
+
+  // 组装读指令和地址
+  wtmp = FM25W256_READ;
 	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(&ReadAddr), 2, 100);
+  wtmp = (ReadAddr >> 8) & 0xFF;
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	status = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)pBuffer, NumToRead, 2000); // 超时100ms		
+  wtmp = ReadAddr & 0xFF;
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
+
+  // 接收数据
+  status = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)pBuffer, NumToRead, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
+  
 	__asm volatile ("nop");
 	EPROM_SPI_NSS_DESEL;
 	return status;
+	
+	
+	
 }
 
 
@@ -311,6 +441,9 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBufferpBuffer, uint16
 	if (pBufferpBuffer == NULL || NumToWrite == 0 || (WriteAddr + NumToWrite - 1) > CONFIG_EPROM_SIZE){
 		return HAL_ERROR;
 	}
+	// 1. 先使能写操作
+	status = epromWriteEnable(true);
+	
 	EPROM_SPI_NSS_SEL;
 	__asm volatile ("nop");
 	wtmp = FM25W256_WRITE;
@@ -320,12 +453,20 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBufferpBuffer, uint16
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
 #endif
-	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(&WriteAddr), 2, 100); //写地址
+  wtmp = (WriteAddr >> 8) & 0xFF;   // 地址中位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
 		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
 	}
-#endif	
+#endif
+  wtmp = WriteAddr & 0xFF;          // 地址低位
+	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &wtmp, 1, 100);
+#if (CONFIG_DEBUG_EPROM == 1)
+	if(status != HAL_OK){
+		printf("%d,%s,%d,%s:\n",status,__FILE__, __LINE__, __func__);
+	}
+#endif
 	status = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)(pBufferpBuffer), NumToWrite, 100); //写数据
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(status != HAL_OK){
@@ -638,24 +779,22 @@ uint8_t checkBlank(uint32_t adr, uint32_t size){//MCU Flash 查空
 	return true;
 }
 
+	uint8_t id[9];
+  uint32_t j1;
+
 uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 	uint32_t i, crcRead = 0, crcWrite = 0;	
 	uint16_t bk, remain;//写入地址
 	uint8_t rblock[64], wblock[64];
-	uint32_t tempRead = 0, tempWrite = 0;
+	uint32_t tempRead, tempWrite;
 	uint8_t res = 0;
-	//简单读写测试
-	for(i =0;i < 16;i++){
-		wblock[i] = i+0x55;
-		epromWriteByte(i, (wblock + i));
-		epromReadByte(i, (rblock + i));
-		if(tempWrite != tempRead){
-			printf("%s,%d,%s:sample write read fail!\r\n", __FILE__, __LINE__, __func__);
-		}
-	}
+//	epromReadDeviceId(id);
+	
+	
+	
 	//字节顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i < 1;i += 4){
+	for(i = 0;i <CONFIG_EPROM_SIZE ;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);	
 		epromWriteByte((i + 0), ((uint8_t*)&tempWrite + 0));
 		epromWriteByte((i + 1), ((uint8_t*)&tempWrite + 1));
@@ -664,13 +803,14 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i < 1;i += 4){
+	for(i = 0;i <CONFIG_EPROM_SIZE;i += 4){
 		epromReadByte((i + 0), ((uint8_t*)&tempRead + 0));
 		epromReadByte((i + 1), ((uint8_t*)&tempRead + 1));
 		epromReadByte((i + 2), ((uint8_t*)&tempRead + 2));
 		epromReadByte((i + 3), ((uint8_t*)&tempRead + 3));
 		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
 	}
+
 	if(crcRead == crcWrite){
 		printf("%s,%d,%s:byte(8bit) sequential write pass!\r\n", __FILE__, __LINE__, __func__);
 	}
@@ -678,20 +818,20 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 		printf("%s,%d,%s:byte(8bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
 		res = false;
 	}
-	//字顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+	for(i = 0;i <CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
-		epromWriteHword((i + 0), ((uint16_t*)&tempWrite + 0)); 
+		epromWriteHword((i + 0), ((uint16_t*)&tempWrite + 0));
 		epromWriteHword((i + 2), ((uint16_t*)&tempWrite + 1));
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
+	for(i = 0;i <CONFIG_EPROM_SIZE;i += 4){
 		epromReadHword((i + 0), ((uint16_t*)&tempRead + 0));
 		epromReadHword((i + 2), ((uint16_t*)&tempRead + 1));
-		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
+		crcRead = HAL_CRC_Accumulate(&hcrc, (uint32_t*)&tempRead, 1);
 	}
+	//字顺序写入
 	if(crcRead == crcWrite){
 		printf("%s,%d,%s:hword(16bit) sequential write pass!\r\n", __FILE__, __LINE__, __func__);
 	}
@@ -701,13 +841,13 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 	}
 	//双字顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i < (CONFIG_EPROM_SIZE - 4);i += 4){
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
 		epromWriteDword(i, &tempWrite);
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i < (CONFIG_EPROM_SIZE - 4);i += 4){
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadDword(i, &tempRead);
 		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
 	}

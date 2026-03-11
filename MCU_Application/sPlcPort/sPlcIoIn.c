@@ -138,7 +138,12 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 	//X5 电源开关
+	
+#if defined(LYPE_MCU_1V0_20260106)
+	temp = 0;
+#else
 	temp = GET_PWR_KEY;
+#endif
 	if(temp == 0){
 		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[5] ++;

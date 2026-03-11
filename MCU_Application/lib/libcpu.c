@@ -51,10 +51,10 @@ void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(USB_OTG_FS_DP_GPIO_Port, &GPIO_InitStruct);
 	HAL_GPIO_WritePin(USB_OTG_FS_DP_GPIO_Port, USB_OTG_FS_DP_Pin, GPIO_PIN_RESET);                                            
-	softDelayMs(50);
+	softDelayMs(5);
 	//先把PA12拉低再拉高，利用D+模拟USB的拔插动作   
 	HAL_GPIO_WritePin(USB_OTG_FS_DP_GPIO_Port, USB_OTG_FS_DP_Pin, GPIO_PIN_SET);
-	softDelayMs(50);
+	softDelayMs(5);
 	HAL_GPIO_DeInit(USB_OTG_FS_DP_GPIO_Port, USB_OTG_FS_DP_Pin);
 	__HAL_RCC_GPIOA_CLK_DISABLE();
 	__HAL_RCC_GPIOG_CLK_ENABLE();

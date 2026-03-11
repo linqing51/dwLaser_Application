@@ -31,18 +31,29 @@
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LYPE_MCU_1V0_20260106)
+		defined(LDR2P1_G5_A1_20250910_DUAL)
 #define APP_CONFIG_WAVE_1470_650//APP为双波长 1470+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
-#if defined(MODEL_PVGLS_TRI_A0) || defined(MODEL_PVGLS_TRI_COMBINE_A0) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(MODEL_PVGLS_TRI_A0) ||\
+		defined(MODEL_PVGLS_TRI_COMBINE_A0) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
 #define APP_CONFIG_WAVE_1470_980_650//APP为三波长 1470+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_TRI
 #endif
 
+#if defined(LYPE_MCU_1V0_20260106)
+#define APP_CONFIG_WAVE_450_980//APP为双波长 450+980
+#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
+#endif
+
+
 //激光器选这
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1) || defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL)
+#if defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL)
 #define MODLE_M1470_640_10_15_02_D200_22_G5W_PK//1470+650 V1
 #endif
 
@@ -73,7 +84,7 @@
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #endif
 /*****************************************************************************/
-#define LASER_CHANNEL_CH0															0x01//1470 1940
+#define LASER_CHANNEL_CH0															0x01//1470 1940 450
 #define LASER_CHANNEL_CH1															0x02//980
 #define LASER_CHANNEL_CH2															0x03
 #define LASER_CHANNEL_CH3															0x04
@@ -220,19 +231,19 @@
 #define CONFIG_MIN_LASER_POWER_CH1										1//通道980最小激光功率
 #endif
 #if defined(LYPE_MCU_1V0_20260106)
-#define CONFIG_MAX_LASER_POWER_CH0										500//通道0-450最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH0										2000//通道0-450最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH1										500//通道1-450最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH2										500//通道2-450最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH3										500//通道3-450最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH4										500//通道4-980最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH2										0//通道2-450最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH3										0//通道3-450最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH4										0//通道4-980最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH5										0//通道5最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH6										0//通道6最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH7										0//通道7最大激光功率
 #define CONFIG_MIN_LASER_POWER_CH0										1//通道0-450最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH1										1//通道1-450最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH2										1//通道2-450最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH3										1//通道3-450最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH4										1//通道4-980最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH2										0//通道2-450最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH3										0//通道3-450最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH4										0//通道4-980最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH5										0//通道5最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH6										0//通道6最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH7										0//通道7最小激光功率

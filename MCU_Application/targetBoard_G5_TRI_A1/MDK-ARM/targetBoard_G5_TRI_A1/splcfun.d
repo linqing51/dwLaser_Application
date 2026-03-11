@@ -74,6 +74,7 @@
 .\targetboard_g5_tri_a1\splcfun.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\splcfun.o: ..\..\sPlc\sPlcConfig.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../sPlcPort/sPlcEprom.h
+.\targetboard_g5_tri_a1\splcfun.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -94,14 +95,13 @@
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\splcfun.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../MainApp/AppConfig.h
-.\targetboard_g5_tri_a1\splcfun.o: ..\..\sPlc\sPlcFun.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\splcfun.o: ../../sPlc/boardConfig.h
+.\targetboard_g5_tri_a1\splcfun.o: ..\..\sPlc\sPlcFun.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../lib/libdbg.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\splcfun.o: ../../lib/libcpu.h
-.\targetboard_g5_tri_a1\splcfun.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\splcfun.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\splcfun.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\splcfun.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

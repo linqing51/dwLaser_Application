@@ -102,6 +102,7 @@
 "targetboard_m450_raspi_20260106\preschemedual_1470.o"
 "targetboard_m450_raspi_20260106\preschemedual_1940.o"
 "targetboard_m450_raspi_20260106\preschemetrip.o"
+"targetboard_m450_raspi_20260106\preschemedual_450.o"
 "targetboard_m450_raspi_20260106\fan_controller.o"
 "targetboard_m450_raspi_20260106\flash_if.o"
 "targetboard_m450_raspi_20260106\fuzzy_pid.o"

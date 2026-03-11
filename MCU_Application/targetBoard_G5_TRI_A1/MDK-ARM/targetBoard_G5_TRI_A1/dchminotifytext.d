@@ -75,6 +75,7 @@
 .\targetboard_g5_tri_a1\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlc/sPlcConfig.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlcPort/sPlcEprom.h
+.\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/libcpu.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -95,15 +96,14 @@
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_pipes.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h
+.\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../MainApp/AppConfig.h
+.\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/libcrc.h
+.\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlc/sPlc.h
-.\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/libcrc.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/libdbg.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/libcpu.h
-.\targetboard_g5_tri_a1\dchminotifytext.o: ../../sPlc/boardConfig.h
-.\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\dchminotifytext.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
