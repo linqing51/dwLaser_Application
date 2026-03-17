@@ -640,6 +640,10 @@ extern uint16_t audioSineTable[];
 #define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
 #define CONFIG_SPLC_TIM												TIM14
 
+#define CONFIG_SPK_HANDLE											htim8//SPK 计时器定义	
+#define CONFIG_SPK_TIM												TIM8
+#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
+
 #define CONFIG_FAN0_TIM_HANDLE								htim4	
 #define CONFIG_FAN0_TIM												TIM4
 #define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_2
@@ -684,6 +688,10 @@ extern uint16_t audioSineTable[];
 
 #define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
 #define CONFIG_SPLC_TIM												TIM14
+
+#define CONFIG_SPK_HANDLE											htim9//SPK 计时器定义	
+#define CONFIG_SPK_TIM												TIM9
+#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_2
 
 #define CONFIG_FAN0_TIM_HANDLE								htim8	
 #define CONFIG_FAN0_TIM												TIM8

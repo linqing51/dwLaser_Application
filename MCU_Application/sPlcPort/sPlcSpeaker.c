@@ -143,11 +143,19 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	SET_MCP41010_CS(GPIO_PIN_SET);
 }
+#endif
 
+
+
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LYPE_MCU_1V0_20260106)
 static void setSpeakerFreq(uint16_t frequency){
   // TIM8时钟频率为168MHz (APB2时钟84MHz，定时器时钟=2*APB2时钟)
-  uint32_t timer_clock = 84000000;
-  
+  //uint32_t timer_clock = 84000000;
+  uint32_t timer_clock = HAL_RCC_GetPCLK2Freq();
   // 计算预分频器和自动重装载值
   // 目标: (PSC + 1) * (ARR + 1) = timer_clock / frequency
   uint32_t prescaler = 0;
@@ -179,8 +187,8 @@ static void setSpeakerFreq(uint16_t frequency){
   htim8.Init.Prescaler = prescaler;
   htim8.Init.Period = arr_value;
   // 重新初始化定时器
-  if (HAL_TIM_Base_Init(&htim8) != HAL_OK){
-		printf("reSet TIM8 base clk fail!!!\n");
+  if (HAL_TIM_Base_Init(&CONFIG_SPK_HANDLE) != HAL_OK){
+		printf("reSet spk tim base clk fail!!!\n");
     Error_Handler();
   }
   // 配置50%占空比
@@ -192,11 +200,12 @@ static void setSpeakerFreq(uint16_t frequency){
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;	
   sConfigOC.Pulse = arr_value / 2;  // 50%占空比
-  if (HAL_TIM_PWM_ConfigChannel(&htim8, &sConfigOC, TIM_CHANNEL_1) != HAL_OK){
-		printf("reSet TIM8 CH1 out freq fail!!!\n");
+  if (HAL_TIM_PWM_ConfigChannel(&CONFIG_SPK_HANDLE, &sConfigOC, CONFIG_SPK_PWM_CHANNEL) != HAL_OK){
+		printf("reSet spk time out freq fail!!!\n");
     Error_Handler();
   }
 }
+#endif
 
 inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
 	if(freq > CONFIG_BEEM_MAX_FREQ){
@@ -225,7 +234,6 @@ inline void sPlcSpeakerVolume(int16_t volume){//设置喇叭音量
 		writeMcp41010((int16_t)ftmp);
 	}
 }
-#endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1) 
 static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
