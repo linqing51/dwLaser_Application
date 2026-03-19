@@ -736,7 +736,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_AMBIENT_TEMP             			25// Ambient temp in deg C
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 
-#define CONFIG_VREF_ADC												SPREG_ADC_14
+#define CONFIG_VREF_ADC												SPREG_ADC_59
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25												760.0F//0.76V@25D
 #define CONFIG_NTC_RS													4700L//NTC分压电阻

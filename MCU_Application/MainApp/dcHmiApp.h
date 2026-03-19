@@ -41,6 +41,7 @@
 #define FSMSTEP_SCHEME															700//方案菜单第页
 
 #define FSMSTEP_DIAGNOSIS  													800//诊断菜单
+#define FSMSTEP_DIAGNOSIS_RAW												801//诊断菜单-RAW数据
 #define FSMSTEP_RENAME															900
 #define FSMSTEP_CORRECTION													1000//功率校正
 /*****************************************************************************/

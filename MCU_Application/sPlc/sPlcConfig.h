@@ -11,6 +11,7 @@
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
+#define CONFIG_DEBUG_IIC_EXPAND												0//调试I2C总线扩展器
 #define CONFIG_INPUT_FILTER_TIME											10//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
@@ -99,9 +100,9 @@
 //特殊线圈 16 * 16 = 256
 #define SPCOIL_START																	1448
 #define SPCOIL_END																		1463
-//临时寄存器 64
+//临时寄存器 16
 #define TMP_START																			1464
-#define TMP_END																				1527
+#define TMP_END																				1479
 /*****************************************************************************/
 #define CONFIG_NVRAM_SIZE 														(TMP_END + 1)
 /*****************************************************************************/
@@ -185,72 +186,81 @@
 #define SPREG_ADC_33																	(SPREG_START + 33)//采集值 散热器HT2_NTC 
 #define SPREG_ADC_34																	(SPREG_START + 34)//采集值 散热器HT2_NTC 
 #define SPREG_ADC_35																	(SPREG_START + 35)//采集值 散热器HT3_NTC
-#define SPREG_ADC_36																	(SPREG_START + 36)//采集值 冷却液WATER1_NTC 
-#define SPREG_ADC_37																	(SPREG_START + 37)//采集值 冷却液WATER2_NTC
+#define SPREG_ADC_36																	(SPREG_START + 36)//采集值 冷却液WATER1_NTC->HOT  
+#define SPREG_ADC_37																	(SPREG_START + 37)//采集值 冷却液WATER2_NTC->COOL
 #define SPREG_ADC_38																	(SPREG_START + 38)//采集值 冷却液WATER3_NTC 
 #define SPREG_ADC_39																	(SPREG_START + 39)//采集值 冷却液WATER4_NTC
 
-#define SPREG_ADC_40																	(SPREG_START + 40)//采集值 激光器DIODE LASER_NTC
-#define SPREG_ADC_41																	(SPREG_START + 41)//采集值 激光器耦合 FIBER_NTC
-#define SPREG_ADC_42																	(SPREG_START + 42)//采集值 激光器晶体1
-#define SPREG_ADC_43																	(SPREG_START + 43)//采集值 激光器晶体2
+#define SPREG_ADC_40																	(SPREG_START + 40)//采集值 激光器DIODE0 LASER_NTC
+#define SPREG_ADC_41																	(SPREG_START + 41)//采集值 激光器DIODE1 LASER_NTC
+#define SPREG_ADC_42																	(SPREG_START + 42)//采集值 激光器DIODE2 LASER_NTC
+#define SPREG_ADC_43																	(SPREG_START + 43)//采集值 激光器DIODE3 LASER_NTC
+#define SPREG_ADC_44																	(SPREG_START + 44)//采集值 激光器DIODE4 LASER_NTC
+#define SPREG_ADC_45																	(SPREG_START + 45)//采集值 激光器DIODE5 LASER_NTC
+#define SPREG_ADC_46																	(SPREG_START + 46)//采集值 激光器DIODE6 LASER_NTC
+#define SPREG_ADC_47																	(SPREG_START + 47)//采集值 激光器DIODE7 LASER_NTC
 
-#define SPREG_ADC_44																	(SPREG_START + 44)//采集值 PWR CURRENT 母线电流
-#define SPREG_ADC_45																	(SPREG_START + 45)//采集值 VIN VOLTAGE 母线电压
-#define SPREG_ADC_46																	(SPREG_START + 46)//采集值 BAT NTC
-#define SPREG_ADC_47																	(SPREG_START + 47)//采集值 LASER_FPD
-#define SPREG_ADC_48																	(SPREG_START + 48)//采集值 LASER_LPD
-#define SPREG_ADC_49																	(SPREG_START + 48)//采集值 AMB_TEMP环境温度
-#define SPREG_ADC_50																	(SPREG_START + 49)//CHIP TEMP片内温度传感器
-#define SPREG_ADC_51																	(SPREG_START + 50)//CHIP VREFINT片内基准源
-#define SPREG_ADC_52																	(SPREG_START + 51)//VBAT 掉电存储电池 
+#define SPREG_ADC_48																	(SPREG_START + 48)//采集值 激光器耦合 FIBER_NTC
+#define SPREG_ADC_49																	(SPREG_START + 49)//采集值 激光器晶体1
+#define SPREG_ADC_50																	(SPREG_START + 50)//采集值 激光器晶体2
+
+#define SPREG_ADC_51																	(SPREG_START + 51)//采集值 PWR CURRENT 母线电流
+#define SPREG_ADC_52																	(SPREG_START + 52)//采集值 VIN VOLTAGE 母线电压
+#define SPREG_ADC_53																	(SPREG_START + 53)//采集值 BAT NTC
+#define SPREG_ADC_54																	(SPREG_START + 54)//采集值 LASER_FPD
+#define SPREG_ADC_55																	(SPREG_START + 55)//采集值 LASER_LPD
+#define SPREG_ADC_56																	(SPREG_START + 56)//采集值 AMB0_TEMP环境温度
+#define SPREG_ADC_57																	(SPREG_START + 57)//采集值 AMB1_TEMP环境温度
+#define SPREG_ADC_58																	(SPREG_START + 58)//CHIP TEMP片内温度传感器
+#define SPREG_ADC_59																	(SPREG_START + 59)//CHIP VREFINT片内基准源
+#define SPREG_ADC_60																	(SPREG_START + 60)//VBAT 掉电存储电池 
 /*****************************************************************************/
-#define SPREG_DAC_0																		(SPREG_START + 60)//DAC设定值 激光通道 CH0 ->1470 1940
-#define SPREG_DAC_1																		(SPREG_START + 61)//DAC设定值 激光通道 CH1 ->980
-#define SPREG_DAC_2																		(SPREG_START + 62)//DAC设定值 激光通道 CH2 
-#define SPREG_DAC_3																		(SPREG_START + 63)//DAC设定值 激光通道 CH3
-#define SPREG_DAC_4																		(SPREG_START + 64)//DAC设定值 激光通道 CH4
-#define SPREG_DAC_5																		(SPREG_START + 65)//DAC设定值 激光通道 CH5
-#define SPREG_DAC_6																		(SPREG_START + 66)//DAC设定值 激光通道 CH6 -> 635 PWM 占空比
-#define SPREG_DAC_7																		(SPREG_START + 67)//DAC设定值 激光通道 CH7 
+#define SPREG_DAC_0																		(SPREG_START + 70)//DAC设定值 激光通道 CH0 ->1470 1940
+#define SPREG_DAC_1																		(SPREG_START + 71)//DAC设定值 激光通道 CH1 ->980
+#define SPREG_DAC_2																		(SPREG_START + 72)//DAC设定值 激光通道 CH2 
+#define SPREG_DAC_3																		(SPREG_START + 73)//DAC设定值 激光通道 CH3
+#define SPREG_DAC_4																		(SPREG_START + 74)//DAC设定值 激光通道 CH4
+#define SPREG_DAC_5																		(SPREG_START + 75)//DAC设定值 激光通道 CH5
+#define SPREG_DAC_6																		(SPREG_START + 76)//DAC设定值 激光通道 CH6 -> 635 PWM 占空比
+#define SPREG_DAC_7																		(SPREG_START + 77)//DAC设定值 激光通道 CH7 
 /*****************************************************************************/
-#define SPREG_DAC_8																		(SPREG_START + 68)//DAC设定值 激光通道 CH8 ->TEC0
-#define SPREG_DAC_9																		(SPREG_START + 69)//DAC设定值 激光通道 CH9 ->TEC1
+#define SPREG_DAC_8																		(SPREG_START + 78)//DAC设定值 激光通道 CH8 ->TEC0
+#define SPREG_DAC_9																		(SPREG_START + 79)//DAC设定值 激光通道 CH9 ->TEC1
 #define SPREG_DAC_10																	(SPREG_START + 70)//DAC设定值 激光通道 CH10 ->TEC2
-#define SPREG_DAC_11																	(SPREG_START + 71)//DAC设定值 激光通道 CH11 ->TEC3
-#define SPREG_DAC_12																	(SPREG_START + 72)//DAC设定值 激光通道 CH12 ->TEC4
-#define SPREG_DAC_13																	(SPREG_START + 73)//DAC设定值 激光通道 CH13 ->TEC5
-#define SPREG_DAC_14																	(SPREG_START + 74)//DAC设定值 激光通道 CH14 ->TEC6
-#define SPREG_DAC_15																	(SPREG_START + 75)//DAC设定值 激光通道 CH15 ->TEC7
+#define SPREG_DAC_11																	(SPREG_START + 81)//DAC设定值 激光通道 CH11 ->TEC3
+#define SPREG_DAC_12																	(SPREG_START + 82)//DAC设定值 激光通道 CH12 ->TEC4
+#define SPREG_DAC_13																	(SPREG_START + 83)//DAC设定值 激光通道 CH13 ->TEC5
+#define SPREG_DAC_14																	(SPREG_START + 84)//DAC设定值 激光通道 CH14 ->TEC6
+#define SPREG_DAC_15																	(SPREG_START + 85)//DAC设定值 激光通道 CH15 ->TEC7
 /*****************************************************************************/
-#define SPREG_DAC_16																	(SPREG_START + 76)//DAC设定值 激光通道 CH16 -> 635 PWM 占空比
-#define SPREG_DAC_17																	(SPREG_START + 77)//DAC设定值 激光通道 CH17 -> 532 PWM 占空比
+#define SPREG_DAC_16																	(SPREG_START + 86)//DAC设定值 激光通道 CH16 -> 635 PWM 占空比
+#define SPREG_DAC_17																	(SPREG_START + 87)//DAC设定值 激光通道 CH17 -> 532 PWM 占空比
 /*****************************************************************************/
-#define SPREG_SPWM_POS_0															(SPREG_START + 80)//软件PWM0正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_0												(SPREG_START + 81)//软件PWM0正脉宽阴影
-#define SPREG_SPWM_CYCLE_0														(SPREG_START + 82)//软件PWM0周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_0											(SPREG_START + 83)//软件PWM0周期阴影
-#define SPREG_SPWM_COUNTER_0													(SPREG_START + 84)//软件PWM0计数器
-#define SPREG_SPWM_POS_1															(SPREG_START + 85)//软件PWM1正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_1												(SPREG_START + 86)//软件PWM1正脉宽阴影
-#define SPREG_SPWM_CYCLE_1														(SPREG_START + 87)//软件PWM1周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_1											(SPREG_START + 88)//软件PWM1周期阴影
-#define SPREG_SPWM_COUNTER_1													(SPREG_START + 89)//软件PWM1计数器
-#define SPREG_SPWM_POS_2															(SPREG_START + 90)//软件PWM2正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_2												(SPREG_START + 91)//软件PWM2正脉宽阴影
-#define SPREG_SPWM_CYCLE_2														(SPREG_START + 92)//软件PWM2周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_2											(SPREG_START + 93)//软件PWM2周期阴影
-#define SPREG_SPWM_COUNTER_2													(SPREG_START + 94)//软件PWM2计数器
-#define SPREG_SPWM_POS_3															(SPREG_START + 95)//软件PWM3正脉宽设置
-#define SPREG_SPWM_POS_SHADOW_3												(SPREG_START + 96)//软件PWM3正脉宽阴影
-#define SPREG_SPWM_CYCLE_3														(SPREG_START + 97)//软件PWM3周期设置
-#define SPREG_SPWM_CYCLE_SHADOW_3											(SPREG_START + 98)//软件PWM3周期阴影
-#define SPREG_SPWM_COUNTER_3													(SPREG_START + 99)//软件PWM3计数器
+#define SPREG_SPWM_POS_0															(SPREG_START + 90)//软件PWM0正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_0												(SPREG_START + 91)//软件PWM0正脉宽阴影
+#define SPREG_SPWM_CYCLE_0														(SPREG_START + 92)//软件PWM0周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_0											(SPREG_START + 93)//软件PWM0周期阴影
+#define SPREG_SPWM_COUNTER_0													(SPREG_START + 94)//软件PWM0计数器
+#define SPREG_SPWM_POS_1															(SPREG_START + 95)//软件PWM1正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_1												(SPREG_START + 96)//软件PWM1正脉宽阴影
+#define SPREG_SPWM_CYCLE_1														(SPREG_START + 97)//软件PWM1周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_1											(SPREG_START + 98)//软件PWM1周期阴影
+#define SPREG_SPWM_COUNTER_1													(SPREG_START + 99)//软件PWM1计数器
+#define SPREG_SPWM_POS_2															(SPREG_START + 100)//软件PWM2正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_2												(SPREG_START + 101)//软件PWM2正脉宽阴影
+#define SPREG_SPWM_CYCLE_2														(SPREG_START + 102)//软件PWM2周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_2											(SPREG_START + 103)//软件PWM2周期阴影
+#define SPREG_SPWM_COUNTER_2													(SPREG_START + 104)//软件PWM2计数器
+#define SPREG_SPWM_POS_3															(SPREG_START + 105)//软件PWM3正脉宽设置
+#define SPREG_SPWM_POS_SHADOW_3												(SPREG_START + 106)//软件PWM3正脉宽阴影
+#define SPREG_SPWM_CYCLE_3														(SPREG_START + 107)//软件PWM3周期设置
+#define SPREG_SPWM_CYCLE_SHADOW_3											(SPREG_START + 108)//软件PWM3周期阴影
+#define SPREG_SPWM_COUNTER_3													(SPREG_START + 109)//软件PWM3计数器
 /*****************************************************************************/
-#define SPREG_BEEM_VOLUME											  			(SPREG_START + 100)//蜂鸣器音量 0-100% 1320+60=1380
-#define SPREG_BEEM_FREQ												  			(SPREG_START + 101)//蜂鸣器频率        1320+61=1381
-#define SPREG_BEEM_MODE												  			(SPREG_START + 102)//蜂鸣器模式        1320+62=1382
-#define SPREG_BEEM_COUNTER										  			(SPREG_START + 103)//蜂鸣器计时器      1320+63=1383
+#define SPREG_BEEM_VOLUME											  			(SPREG_START + 110)//蜂鸣器音量 0-100% 1320+60=1380
+#define SPREG_BEEM_FREQ												  			(SPREG_START + 111)//蜂鸣器频率        1320+61=1381
+#define SPREG_BEEM_MODE												  			(SPREG_START + 112)//蜂鸣器模式        1320+62=1382
+#define SPREG_BEEM_COUNTER										  			(SPREG_START + 113)//蜂鸣器计时器      1320+63=1383
 /*****************************************************************************/
 //需要存储的方案
 #define EM_LASER_SCHEME_NAME													(EM_START + 0)//方案名称
@@ -258,60 +268,143 @@
 #define EM_LASER_PULSE_MODE														(EM_START + 56)//脉冲模式
 #define EM_LASER_POWER_CH0														(EM_START + 57)//通道1470/1940功率
 #define EM_LASER_POWER_CH1														(EM_START + 58)//通道980功率
-#define EM_LASER_POWER_CH2														(EM_START + 59)//备用通道
-#define EM_LASER_POWER_CH3														(EM_START + 60)//备用通道
-#define EM_LASER_POWER_635														(EM_START + 61)//红激光功率
-#define EM_LASER_POSWIDTH															(EM_START + 62)//多脉冲正脉宽
-#define EM_LASER_NEGWIDTH															(EM_START + 63)//多脉冲负脉宽
+#define EM_LASER_POWER_CH2														(EM_START + 59)//备用通道2
+#define EM_LASER_POWER_CH3														(EM_START + 60)//备用通道3
+#define EM_LASER_POWER_CH4														(EM_START + 61)//备用通道4
+#define EM_LASER_POWER_CH5														(EM_START + 62)//备用通道5
+#define EM_LASER_POWER_CH6														(EM_START + 63)//备用通道6
+#define EM_LASER_POWER_CH7														(EM_START + 64)//备用通道7
+#define EM_LASER_POWER_635														(EM_START + 65)//红激光功率
+#define EM_LASER_POSWIDTH															(EM_START + 66)//多脉冲正脉宽
+#define EM_LASER_NEGWIDTH															(EM_START + 67)//多脉冲负脉宽
 /*****************************************************************************/
-#define EM_LASER_AVERAGE_POWER_CH0										(EM_START + 64)//当前模式平均功率 1470/1940
-#define EM_LASER_AVERAGE_POWER_CH1              			(EM_START + 65)//当前模式平均功率 980
-#define EM_LASER_AVERAGE_POWER_CH2										(EM_START + 66)//当前模式平均功率 980
-#define EM_LASER_AVERAGE_POWER_CH3										(EM_START + 67)//当前模式平均功率 980
-#define EM_LASER_AVERAGE_POWER_635              			(EM_START + 68)//当前模式平均高功率 635
-#define EM_LASER_FREQUENCY														(EM_START + 69)//当前模式频率
-#define EM_LASER_DUTY_CYCLE														(EM_START + 70)//当前模式占空比 
+#define EM_LASER_AVERAGE_POWER_CH0										(EM_START + 80)//当前模式平均功率 1470/1940
+#define EM_LASER_AVERAGE_POWER_CH1              			(EM_START + 81)//当前模式平均功率 980
+#define EM_LASER_AVERAGE_POWER_CH2										(EM_START + 82)//当前模式平均功率->备用通道2
+#define EM_LASER_AVERAGE_POWER_CH3										(EM_START + 83)//当前模式平均功率->备用通道3
+#define EM_LASER_AVERAGE_POWER_CH4              			(EM_START + 84)//当前模式平均功率->备用通道4
+#define EM_LASER_AVERAGE_POWER_CH5										(EM_START + 85)//当前模式平均功率->备用通道5
+#define EM_LASER_AVERAGE_POWER_CH6										(EM_START + 86)//当前模式平均功率->备用通道6
+#define EM_LASER_AVERAGE_POWER_CH7              			(EM_START + 87)//当前模式平均功率->备用通道7
+#define EM_LASER_AVERAGE_POWER_635              			(EM_START + 88)//当前模式平均高功率 635
+#define EM_LASER_FREQUENCY														(EM_START + 89)//当前模式频率
+#define EM_LASER_DUTY_CYCLE														(EM_START + 90)//当前模式占空比 
 /*****************************************************************************/
-#define EM_LASER_TEMP																	(EM_START + 71)//激光二极管模块温度
-#define EM_HT_TEMP																		(EM_START + 72)//散热器温度
-#define EM_MCU_TEMP																		(EM_START + 73)//处理器温度
-#define EM_MBAT_TEMP																	(EM_START + 74)//电池温度
-#define EM_FAN_SET_SPEED															(EM_START + 75)//激光散热风扇设定速度 0-100%
-#define EM_FAN_GET_SPEED															(EM_START + 76)//激光散热风扇实际速度 转速
+#define EM_LASER_A_DIODE_TEMP													(EM_START + 100)//激光二极管模块A管芯温度
+#define EM_LASER_A_COUPLER_TEMP												(EM_START + 101)//激光二极管模块A耦合温度
+#define EM_LASER_A_CRYST0_TEMP												(EM_START + 102)//激光器A晶体温度->倍频1
+#define EM_LASER_A_CRYST1_TEMP												(EM_START + 103)//激光器A晶体温度->倍频2
+#define EM_LASER_B_DIODE_TEMP													(EM_START + 104)//激光二极管模块管B芯温度
+#define EM_LASER_B_COUPLER_TEMP												(EM_START + 105)//激光二极管模块耦B合温度
+#define EM_LASER_B_CRYST0_TEMP												(EM_START + 106)//激光器B晶体温度->倍频1
+#define EM_LASER_B_CRYST1_TEMP												(EM_START + 107)//激光器B晶体温度->倍频2
+#define EM_HT0_TEMP																		(EM_START + 108)//散热器1温度
+#define EM_HT1_TEMP																		(EM_START + 109)//散热器2温度
+#define EM_HT2_TEMP																		(EM_START + 110)//散热器3温度
+#define EM_HT3_TEMP																		(EM_START + 111)//散热器4温度
+#define EM_WATER_HOT_TEMP															(EM_START + 112)//冷却水温度->冷水
+#define EM_WATER_COOL_TEMP														(EM_START + 113)//冷却水温度->热水
+#define EM_AMBIENT0_TEMP															(EM_START + 114)//环境温度
+#define EM_AMBIENT1_TEMP															(EM_START + 115)//环境温度
+#define EM_AMBIENT2_TEMP															(EM_START + 116)//环境温度
+#define EM_AMBIENT3_TEMP															(EM_START + 117)//环境温度
+#define EM_RELATIVE0_HUMIDITY													(EM_START + 118)//相对湿度
+#define EM_RELATIVE1_HUMIDITY													(EM_START + 119)//相对湿度
+#define EM_MCU_TEMP																		(EM_START + 120)//处理器温度
+#define EM_MBAT_TEMP																	(EM_START + 121)//电池温度
 
-#define EM_ACOUSTIC_ENERGY														(EM_START + 77)//提示音能量间隔 16BIT
-#define EM_ACOUSTIC_TIME															(EM_START + 78)//提示音时间间隔 16BIT
-#define EM_ACOUSTIC_ENERGY_STEP												(EM_START + 79)//提示音步进能量
-#define EM_ACOUSTIC_TIME_STEP													(EM_START + 80)//提示音步进时间
-#define EM_ACOUSTIC_ENERGY_MAX												(EM_START + 81)//提示音能量最大值
-#define EM_ACOUSTIC_ENERGY_MIN												(EM_START + 82)//提示音能量最小值
-#define EM_ACOUSTIC_TIME_MAX													(EM_START + 83)//提示音时间最大值
-#define EM_ACOUSTIC_TIME_MIN													(EM_START + 84)//提示音时间最小值
+#define EM_LD_CH0_CURRENT															(EM_START + 130)//激光通道0->电流																
+#define EM_LD_CH1_CURRENT															(EM_START + 131)//激光通道1->电流
+#define EM_LD_CH2_CURRENT															(EM_START + 132)//激光通道2->电流
+#define EM_LD_CH3_CURRENT															(EM_START + 133)//激光通道3->电流
+#define EM_LD_CH4_CURRENT															(EM_START + 134)//激光通道4->电流
+#define EM_LD_CH5_CURRENT															(EM_START + 135)//激光通道5->电流
+#define EM_LD_CH6_CURRENT															(EM_START + 136)//激光通道6->电流
+#define EM_LD_CH7_CURRENT															(EM_START + 137)//激光通道7->电流
+
+#define EM_LD_CH0_VOLTAGE															(EM_START + 140)//激光通道0-电压
+#define EM_LD_CH1_VOLTAGE															(EM_START + 141)//激光通道1-电压
+#define EM_LD_CH2_VOLTAGE															(EM_START + 142)//激光通道2-电压
+#define EM_LD_CH3_VOLTAGE															(EM_START + 143)//激光通道3-电压
+#define EM_LD_CH4_VOLTAGE															(EM_START + 144)//激光通道4-电压
+#define EM_LD_CH5_VOLTAGE															(EM_START + 143)//激光通道5-电压
+#define EM_LD_CH6_VOLTAGE															(EM_START + 144)//激光通道6-电压
+#define EM_LD_CH7_VOLTAGE															(EM_START + 145)//激光通道7-电压
+
+#define EM_TEC_CH0_CURRENT														(EM_START + 150)//制冷通道0->电流
+#define EM_TEC_CH1_CURRENT														(EM_START + 151)//制冷通道1->电流
+#define EM_TEC_CH2_CURRENT														(EM_START + 152)//制冷通道2->电流
+#define EM_TEC_CH3_CURRENT														(EM_START + 153)//制冷通道3->电流
+#define EM_TEC_CH4_CURRENT														(EM_START + 154)//制冷通道4->电流
+#define EM_TEC_CH5_CURRENT														(EM_START + 155)//制冷通道5->电流
+#define EM_TEC_CH6_CURRENT														(EM_START + 156)//制冷通道6->电流
+#define EM_TEC_CH7_CURRENT														(EM_START + 157)//制冷通道7->电流
+
+#define EM_TEC_CH0_VOLTAGE														(EM_START + 160)//制冷通道0->电压
+#define EM_TEC_CH1_VOLTAGE														(EM_START + 161)//制冷通道1->电压
+#define EM_TEC_CH2_VOLTAGE														(EM_START + 162)//制冷通道2->电压
+#define EM_TEC_CH3_VOLTAGE														(EM_START + 163)//制冷通道3->电压
+#define EM_TEC_CH4_VOLTAGE														(EM_START + 164)//制冷通道3->电压
+#define EM_TEC_CH5_VOLTAGE														(EM_START + 165)//制冷通道4->电压
+#define EM_TEC_CH6_VOLTAGE														(EM_START + 166)//制冷通道5->电压
+#define EM_TEC_CH7_VOLTAGE														(EM_START + 167)//制冷通道7->电压
+
+#define EM_PWR_CURRENT																(EM_START + 170)//母线供电电流
+#define EM_PWR_VOLTAGE																(EM_START + 171)//母线供电电压
+
+#define EM_FAN0_SET_SPEED															(EM_START + 180)//风扇0设定速度 0-100%
+#define EM_FAN1_SET_SPEED															(EM_START + 181)//风扇1设定速度 0-100%
+#define EM_FAN2_SET_SPEED															(EM_START + 182)//风扇2设定速度 0-100%
+#define EM_FAN3_SET_SPEED															(EM_START + 183)//风扇3设定速度 0-100%
+
+#define EM_FAN0_GET_SPEED															(EM_START + 184)//风扇0实际速度 转速
+#define EM_FAN1_GET_SPEED															(EM_START + 165)//风扇1实际速度 转速
+#define EM_FAN2_GET_SPEED															(EM_START + 166)//风扇2实际速度 转速
+#define EM_FAN3_GET_SPEED															(EM_START + 167)//风扇3实际速度 转速
+
+#define EM_LASER_FPD																	(EM_START + 170)//光纤探测PD计算值
+#define EM_LASER_LPD																	(EM_START + 171)//激光能量PD计算值
+
+#define EM_TPID0_OUT																	(EM_START + 175)//温控PID输出值
+#define EM_TPID1_OUT																	(EM_START + 176)//温控PID输出值
+
+#define EM_ACOUSTIC_ENERGY														(EM_START + 200)//提示音能量间隔 16BIT
+#define EM_ACOUSTIC_TIME															(EM_START + 201)//提示音时间间隔 16BIT
+#define EM_ACOUSTIC_ENERGY_STEP												(EM_START + 202)//提示音步进能量
+#define EM_ACOUSTIC_TIME_STEP													(EM_START + 203)//提示音步进时间
+#define EM_ACOUSTIC_ENERGY_MAX												(EM_START + 204)//提示音能量最大值
+#define EM_ACOUSTIC_ENERGY_MIN												(EM_START + 205)//提示音能量最小值
+#define EM_ACOUSTIC_TIME_MAX													(EM_START + 206)//提示音时间最大值
+#define EM_ACOUSTIC_TIME_MIN													(EM_START + 207)//提示音时间最小值
 /*****************************************************************************/				
-#define EM_LASER_POWER_TOTAL													(EM_START + 85)//发射总功率
-#define EM_HMI_OPERA_STEP															(EM_START +	86)//操作步骤								
-#define EM_ERROR_CODE																	(EM_START + 87)//错误码					
-#define EM_SCHEME_NUM_TMP															(EM_START + 88)//临时方案编号	
-#define EM_SCHEME_CLASSIFY_TMP												(EM_START + 89)//临时分类编号
+#define EM_LASER_POWER_TOTAL													(EM_START + 210)//发射总功率
+#define EM_HMI_OPERA_STEP															(EM_START +	221)//操作步骤								
+#define EM_ERROR_CODE																	(EM_START + 222)//错误码					
+#define EM_SCHEME_NUM_TMP															(EM_START + 223)//临时方案编号	
+#define EM_SCHEME_CLASSIFY_TMP												(EM_START + 224)//临时分类编号
 /*****************************************************************************/
-#define EM_DC_PAGE																		(EM_START + 90)//HMI页面编号 			
-#define EM_DC_PASSCODE_INDEX													(EM_START + 91)//密码输入位索引		
-#define EM_DC_NEW_PASSCODE0														(EM_START + 92)//输入新密码0			
-#define EM_DC_NEW_PASSCODE1														(EM_START + 93)//输入新密码1			
-#define EM_DC_NEW_PASSCODE2														(EM_START + 94)//输入新密码2			
-#define EM_DC_NEW_PASSCODE3														(EM_START + 95)//输入新密码3						
+#define EM_DC_PAGE																		(EM_START + 230)//HMI页面编号 			
+#define EM_DC_PASSCODE_INDEX													(EM_START + 231)//密码输入位索引		
+#define EM_DC_NEW_PASSCODE0														(EM_START + 232)//输入新密码0			
+#define EM_DC_NEW_PASSCODE1														(EM_START + 233)//输入新密码1			
+#define EM_DC_NEW_PASSCODE2														(EM_START + 234)//输入新密码2			
+#define EM_DC_NEW_PASSCODE3														(EM_START + 235)//输入新密码3						
 /*****************************************************************************/
-#define EM_LASER_RELEASE_TIME													(EM_START + 100)//实际激光发射累计时间	
-#define EM_LASER_RELEASE_ENERGY												(EM_START + 102)//实际激光发射累计能量
-#define EM_LASER_TRIG_TIME														(EM_START + 104)//激光触发时间
+#define EM_LASER_RELEASE_TIME													(EM_START + 240)//实际激光发射累计时间	
+#define EM_LASER_RELEASE_ENERGY												(EM_START + 241)//实际激光发射累计能量
+#define EM_LASER_TRIG_TIME														(EM_START + 242)//激光触发时间
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME													(FD_START +  0)//方案名称
-#define FD_LASER_CHANNEL_SELECT												(FD_START +  55)//激光通道选择
-#define FD_LASER_PULSE_MODE														(FD_START +  56)//脉冲模式
-#define FD_LASER_POWER_CH0														(FD_START +  57)//通道1470功率
-#define FD_LASER_POWER_CH1														(FD_START +  58)//通道980功率
-#define FD_LASER_POWER_CH2														(FD_START +  59)//备用通道
-#define FD_LASER_POWER_CH3														(FD_START +  60)//备用通道
+#define FD_LASER_CHANNEL_SELECT												(FD_START +  51)//激光通道选择
+#define FD_LASER_PULSE_MODE														(FD_START +  52)//脉冲模式
+#define FD_LASER_POWER_CH0														(FD_START +  53)//通道1470功率
+#define FD_LASER_POWER_CH1														(FD_START +  54)//通道980功率
+#define FD_LASER_POWER_CH2														(FD_START +  55)//备用通道
+#define FD_LASER_POWER_CH3														(FD_START +  56)//备用通道
+#define FD_LASER_POWER_CH4														(FD_START +  57)//备用通道
+#define FD_LASER_POWER_CH5														(FD_START +  58)//备用通道
+#define FD_LASER_POWER_CH6														(FD_START +  59)//备用通道
+#define FD_LASER_POWER_CH7														(FD_START +  60)//备用通道
 #define FD_LASER_POWER_RED														(FD_START +  61)//红激光功率
 #define FD_LASER_POSWIDTH															(FD_START +  62)//多脉冲正脉宽
 #define FD_LASER_NEGWIDTH															(FD_START +  63)//多脉冲负脉宽
@@ -409,74 +502,25 @@
 #define FD_SCHEME_START_30														(FD_START + 1920)//自定义30存储区起始
 #define FD_SCHEME_END_30															(FD_START + 1983)//自定义30存储区结束
 
-#define FD_SCHEME_START_31											(FD_START + 1984)//自定义31存储区起始
-#define FD_SCHEME_END_31												(FD_START + 2047)//自定义31存储区结束
+#define FD_SCHEME_START_31														(FD_START + 1984)//自定义31存储区起始
+#define FD_SCHEME_END_31															(FD_START + 2047)//自定义31存储区结束
 /*****************************************************************************/
-#define TMP_REG_0																(TMP_START + 0)//临时名称储存区
-#define TMP_REG_1																(TMP_START + 1)//临时名称储存区
-#define TMP_REG_2																(TMP_START + 2)//临时名称储存区
-#define TMP_REG_3																(TMP_START + 3)//临时名称储存区
-#define TMP_REG_4																(TMP_START + 4)//临时名称储存区
-#define TMP_REG_5																(TMP_START + 5)//临时名称储存区
-#define TMP_REG_6																(TMP_START + 6)//临时名称储存区
-#define TMP_REG_7																(TMP_START + 7)//临时名称储存区
-#define TMP_REG_8																(TMP_START + 8)//临时名称储存区
-#define TMP_REG_9																(TMP_START + 9)//临时名称储存区
-#define TMP_REG_10															(TMP_START + 10)//临时名称储存区
-#define TMP_REG_11													(TMP_START + 11)//临时名称储存区
-#define TMP_REG_12													(TMP_START + 12)//临时名称储存区
-#define TMP_REG_13													(TMP_START + 13)//临时名称储存区
-#define TMP_REG_14													(TMP_START + 14)//临时名称储存区
-#define TMP_REG_15													(TMP_START + 15)//临时名称储存区
-#define TMP_REG_16													(TMP_START + 16)//临时名称储存区
-#define TMP_REG_17													(TMP_START + 17)//临时名称储存区
-#define TMP_REG_18													(TMP_START + 18)//临时名称储存区
-#define TMP_REG_19													(TMP_START + 19)//临时名称储存区
-#define TMP_REG_20													(TMP_START + 20)//临时名称储存区
-#define TMP_REG_21													(TMP_START + 21)//临时名称储存区
-#define TMP_REG_22													(TMP_START + 22)//临时名称储存区
-#define TMP_REG_23													(TMP_START + 23)//临时名称储存区
-#define TMP_REG_24													(TMP_START + 24)//临时名称储存区
-#define TMP_REG_25													(TMP_START + 25)//临时名称储存区
-#define TMP_REG_26													(TMP_START + 26)//临时名称储存区
-#define TMP_REG_27													(TMP_START + 27)//临时名称储存区
-#define TMP_REG_28													(TMP_START + 28)//临时名称储存区
-#define TMP_REG_29													(TMP_START + 29)//临时名称储存区
-#define TMP_REG_30													(TMP_START + 30)//临时名称储存区
-#define TMP_REG_31													(TMP_START + 31)//临时名称储存区
-
-#define TMP_REG_32													(TMP_START + 32)//临时名称储存区
-#define TMP_REG_33													(TMP_START + 33)//临时名称储存区
-#define TMP_REG_34													(TMP_START + 34)//临时名称储存区
-#define TMP_REG_35												(TMP_START + 35)//临时名称储存区
-#define TMP_REG_36												(TMP_START + 36)//临时名称储存区
-#define TMP_REG_37												(TMP_START + 37)//临时名称储存区
-#define TMP_REG_38												(TMP_START + 38)//临时名称储存区
-#define TMP_REG_39												(TMP_START + 39)//临时名称储存区
-#define TMP_REG_40												(TMP_START + 40)//临时名称储存区
-#define TMP_REG_41												(TMP_START + 41)//临时名称储存区
-#define TMP_REG_42												(TMP_START + 42)//临时名称储存区
-#define TMP_REG_43												(TMP_START + 43)//临时名称储存区
-#define TMP_REG_44												(TMP_START + 44)//临时名称储存区
-#define TMP_REG_45												(TMP_START + 45)//临时名称储存区
-#define TMP_REG_46												(TMP_START + 46)//临时名称储存区
-#define TMP_REG_47												(TMP_START + 47)//临时名称储存区
-#define TMP_REG_48												(TMP_START + 48)//临时名称储存区
-#define TMP_REG_49												(TMP_START + 49)//临时名称储存区
-#define TMP_REG_50												(TMP_START + 50)//临时名称储存区
-#define TMP_REG_51												(TMP_START + 51)//临时名称储存区
-#define TMP_REG_52												(TMP_START + 52)//临时名称储存区
-#define TMP_REG_53												(TMP_START + 53)//临时名称储存区
-#define TMP_REG_54												(TMP_START + 54)//临时名称储存区
-#define TMP_REG_55												(TMP_START + 55)//临时名称储存区
-#define TMP_REG_56												(TMP_START + 56)//临时名称储存区
-#define TMP_REG_57												(TMP_START + 57)//临时名称储存区
-#define TMP_REG_58												(TMP_START + 58)//临时名称储存区
-#define TMP_REG_59												(TMP_START + 59)//临时名称储存区
-#define TMP_REG_60												(TMP_START + 60)//临时名称储存区
-#define TMP_REG_61												(TMP_START + 61)//临时名称储存区
-#define TMP_REG_62												(TMP_START + 62)//临时名称储存区
-#define TMP_REG_63													(TMP_START + 63)//临时名称储存区
+#define TMP_REG_0																			(TMP_START + 0)//临时名称储存区
+#define TMP_REG_1																			(TMP_START + 1)//临时名称储存区
+#define TMP_REG_2																			(TMP_START + 2)//临时名称储存区
+#define TMP_REG_3																			(TMP_START + 3)//临时名称储存区
+#define TMP_REG_4																			(TMP_START + 4)//临时名称储存区
+#define TMP_REG_5																			(TMP_START + 5)//临时名称储存区
+#define TMP_REG_6																			(TMP_START + 6)//临时名称储存区
+#define TMP_REG_7																			(TMP_START + 7)//临时名称储存区
+#define TMP_REG_8																			(TMP_START + 8)//临时名称储存区
+#define TMP_REG_9																			(TMP_START + 9)//临时名称储存区
+#define TMP_REG_10																		(TMP_START + 10)//临时名称储存区
+#define TMP_REG_11																		(TMP_START + 11)//临时名称储存区
+#define TMP_REG_12																		(TMP_START + 12)//临时名称储存区
+#define TMP_REG_13																		(TMP_START + 13)//临时名称储存区
+#define TMP_REG_14																		(TMP_START + 14)//临时名称储存区
+#define TMP_REG_15																		(TMP_START + 15)//临时名称储存区
 /*****************************************************************************/
 #define DM_SCHEME_CLASSIFY													(DM_START + 0)//选择的方案分类 
 #define DM_SCHEME_INDEX															(DM_START + 1)//选择的方案索引
@@ -634,6 +678,11 @@
 /*****************************************************************************/
 #define R_DIAGNOSIS_OK_DOWN													(R_START * 16 + 160)
 #define R_DIAGNOSIS_OK_UP														(R_START * 16 + 161)
+#define R_DIAGNOSIS_GOTO_RAW_DOWN										(R_START * 16 + 162)
+#define R_DIAGNOSIS_GOTO_RAW_UP											(R_START * 16 + 163)
+/*****************************************************************************/
+#define R_DIAGNOSIS_RAW_RETURN_DOWN									(R_START * 16 + 164)
+#define R_DIAGNOSIS_RAW_RETURN_UP										(R_START * 16 + 165)
 /*****************************************************************************/
 #define R_RENAME_KEY_ENTER_DOWN											(R_START * 16 + 170)
 #define R_RENAME_KEY_EXIT_DOWN											(R_START * 16 + 171)

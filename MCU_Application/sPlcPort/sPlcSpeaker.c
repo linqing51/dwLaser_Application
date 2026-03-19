@@ -184,8 +184,8 @@ static void setSpeakerFreq(uint16_t frequency){
   }
   
   // 配置定时器参数
-  htim8.Init.Prescaler = prescaler;
-  htim8.Init.Period = arr_value;
+  CONFIG_SPK_HANDLE.Init.Prescaler = prescaler;
+  CONFIG_SPK_HANDLE.Init.Period = arr_value;
   // 重新初始化定时器
   if (HAL_TIM_Base_Init(&CONFIG_SPK_HANDLE) != HAL_OK){
 		printf("reSet spk tim base clk fail!!!\n");

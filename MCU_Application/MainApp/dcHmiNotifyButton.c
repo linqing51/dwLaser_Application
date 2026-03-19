@@ -1645,9 +1645,25 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
+				case GDDC_PAGE_DISGNOSIS_KEY_RAW_DATE:{
+					if(state){
+						SSET(R_DIAGNOSIS_GOTO_RAW_DOWN);
+					}
+				}
 				default:break;
 			}
-		}				
+		}		
+		case GDDC_PAGE_DIAGNOSIS_RAW:{
+			switch(control_id){
+				case GDDC_PAGE_DIAGNOSIS_RAW_KEY_ENTER_OK:{
+					if(state){//退回上级菜单
+						SSET(R_DIAGNOSIS_RAW_RETURN_DOWN);
+					}
+				}
+				default:break;
+			}
+			break;
+		}
 		case GDDC_PAGE_RENAME:{
 				switch(control_id){
 				case GDDC_PAGE_RENAME_KEY_EXIT:{

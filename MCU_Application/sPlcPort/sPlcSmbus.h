@@ -1,5 +1,5 @@
-#ifndef __PCA9546_H
-#define __PCA9546_H
+#ifndef __SPLCSMBUS_H__ 
+#define __SPLCSMBUS_H__
 
 #include "stm32f4xx_hal.h"
 
@@ -32,3 +32,6 @@ HAL_StatusTypeDef PCA9546_SelectChannel(uint8_t channel); // 选择通道
 HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel);  // 读取通道状态
 uint8_t PCA9546_Test(void);
 #endif /* __PCA9546_H */
+
+
+

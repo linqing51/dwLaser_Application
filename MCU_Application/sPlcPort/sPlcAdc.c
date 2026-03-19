@@ -103,11 +103,11 @@ void sPlcAdcProcessBufferA(void){//循环采集ADC
 #if defined(LYPE_MCU_1V0_20260106)
 		NVRAM0[SPREG_ADC_40] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS NTC
 		NVRAM0[SPREG_ADC_41] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//NC
-		NVRAM0[SPREG_ADC_48] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS LPD
-		NVRAM0[SPREG_ADC_47] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS FPD
-		NVRAM0[SPREG_ADC_50] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//CHIP TEMP
-		NVRAM0[SPREG_ADC_51] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VREF
-		NVRAM0[SPREG_ADC_52] = (uint16_t)((float)sum[6] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VBAT
+		NVRAM0[SPREG_ADC_55] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS LPD
+		NVRAM0[SPREG_ADC_54] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS FPD
+		NVRAM0[SPREG_ADC_58] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//CHIP TEMP
+		NVRAM0[SPREG_ADC_59] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VREF
+		NVRAM0[SPREG_ADC_60] = (uint16_t)((float)sum[6] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VBAT
 #endif
 	}
 	else{//adcBufferSelect = 1
@@ -163,11 +163,11 @@ void sPlcAdcProcessBufferA(void){//循环采集ADC
 #if defined(LYPE_MCU_1V0_20260106)
 		NVRAM0[SPREG_ADC_40] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS NTC
 		NVRAM0[SPREG_ADC_41] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//NC
-		NVRAM0[SPREG_ADC_48] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS LPD
-		NVRAM0[SPREG_ADC_47] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS FPD
-		NVRAM0[SPREG_ADC_50] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//CHIP TEMP
-		NVRAM0[SPREG_ADC_51] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VREF
-		NVRAM0[SPREG_ADC_52] = (uint16_t)((float)sum[6] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VBAT
+		NVRAM0[SPREG_ADC_55] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS LPD
+		NVRAM0[SPREG_ADC_54] = (uint16_t)((float)sum[3] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//LAS FPD
+		NVRAM0[SPREG_ADC_58] = (uint16_t)((float)sum[4] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//CHIP TEMP
+		NVRAM0[SPREG_ADC_59] = (uint16_t)((float)sum[5] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VREF
+		NVRAM0[SPREG_ADC_60] = (uint16_t)((float)sum[6] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//VBAT
 #endif
 	}
 }
@@ -229,9 +229,9 @@ void sPlcAdcProcessBufferB(void){//循环采集ADC
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
-		NVRAM0[SPREG_ADC_40] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//AMB NTC
+		NVRAM0[SPREG_ADC_56] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//AMB NTC
 		NVRAM0[SPREG_ADC_36] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//HOT WATER
-		NVRAM0[SPREG_ADC_49] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//COOL WATER
+		NVRAM0[SPREG_ADC_37] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//COOL WATER
 #endif
 	}
 	else{//adcBufferBselect = 1
@@ -285,9 +285,9 @@ void sPlcAdcProcessBufferB(void){//循环采集ADC
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
-		NVRAM0[SPREG_ADC_40] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//AMB NTC
+		NVRAM0[SPREG_ADC_56] = (uint16_t)((float)sum[0] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//AMB NTC
 		NVRAM0[SPREG_ADC_36] = (uint16_t)((float)sum[1] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//HOT WATER
-		NVRAM0[SPREG_ADC_49] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//COOL WATER
+		NVRAM0[SPREG_ADC_37] = (uint16_t)((float)sum[2] / (float)CONFIG_SPLC_ADC_AVERAGE_NUM);//COOL WATER
 #endif
 	}
 }

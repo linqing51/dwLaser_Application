@@ -16,9 +16,10 @@
         <page name="GDDC_PAGE_SCHEME_DETAIL" id="13" />
         <page name="GDDC_PAGE_INFORMATION" id="14" />
         <page name="GDDC_PAGE_DIAGNOSIS" id="15" />
-        <page name="GDDC_PAGE_RENAME" id="16" />
-        <page name="GDDC_PAGE_RESTORE" id="17" />
-        <page name="GDDC_PAGE_WEAR_SAFETY" id="18" />
+        <page name="GDDC_PAGE_DIAGNOSIS_RAW" id="16" />
+        <page name="GDDC_PAGE_RENAME" id="17" />
+        <page name="GDDC_PAGE_RESTORE" id="18" />
+        <page name="GDDC_PAGE_WEAR_SAFETY" id="19" />
     </pages>
     <images>
         <image id="0" url="d:\github\dwlaser_application\vtft_hmi\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />

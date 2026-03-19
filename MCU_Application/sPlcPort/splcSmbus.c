@@ -1,7 +1,5 @@
-#include "pca9546.h"
-extern CRC_HandleTypeDef hcrc;
-extern RNG_HandleTypeDef hrng;
-
+#if defined(LYPE_MCU_1V0_20260106)
+#include "sPlcSmbus.h"
 /**
  * @brief  PCA9546复位引脚初始化（PH13推挽输出）
  * @param  无
@@ -93,7 +91,7 @@ HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel)
     return HAL_I2C_Master_Receive(&hi2c3, PCA9546_DEV_ADDR, pChannel, 1, 100);
 }
 
-
+#if CONFIG_DEBUG_IIC_EXPAND == 1
 uint32_t  tempWrite;
 uint8_t PCA9546_Test(void){//自测试
 	
@@ -122,7 +120,10 @@ uint8_t PCA9546_Test(void){//自测试
         // 业务逻辑
     }
 	
-	
-	
-	
 }
+#endif
+#endif
+
+
+
+

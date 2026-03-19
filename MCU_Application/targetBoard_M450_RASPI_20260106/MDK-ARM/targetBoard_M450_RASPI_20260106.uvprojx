@@ -904,6 +904,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcEprom.c</FilePath>
             </File>
+            <File>
+              <FileName>splcSmbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\splcSmbus.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
