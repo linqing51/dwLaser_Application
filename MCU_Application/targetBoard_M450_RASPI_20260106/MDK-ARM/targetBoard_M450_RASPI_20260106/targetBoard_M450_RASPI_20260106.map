@@ -7381,323 +7381,323 @@ Image Symbol Table
     i.sPlcInit                               0x0801e8ac   Section        0  splc.o(i.sPlcInit)
     i.sPlcInputInit                          0x0801e9d8   Section        0  splcioin.o(i.sPlcInputInit)
     i.sPlcInputRefresh                       0x0801ea30   Section        0  splcioin.o(i.sPlcInputRefresh)
-    i.sPlcIsrDisable                         0x0801ec34   Section        0  splc.o(i.sPlcIsrDisable)
-    i.sPlcIsrEnable                          0x0801ec36   Section        0  splc.o(i.sPlcIsrEnable)
-    i.sPlcLaserInit                          0x0801ec38   Section        0  splclaser.o(i.sPlcLaserInit)
-    i.sPlcLaserTimerIsr                      0x0801ed08   Section        0  splclaser.o(i.sPlcLaserTimerIsr)
-    i.sPlcNvramClear                         0x0801edb0   Section        0  splc.o(i.sPlcNvramClear)
-    i.sPlcNvramLoad                          0x0801ee24   Section        0  splc.o(i.sPlcNvramLoad)
-    i.sPlcNvramSave                          0x0801efa0   Section        0  splc.o(i.sPlcNvramSave)
-    i.sPlcNvramUpdate                        0x0801f05c   Section        0  splc.o(i.sPlcNvramUpdate)
-    i.sPlcOutputInit                         0x0801f1bc   Section        0  splcioout.o(i.sPlcOutputInit)
-    i.sPlcOutputRefresh                      0x0801f24c   Section        0  splcioout.o(i.sPlcOutputRefresh)
-    i.sPlcProcessEnd                         0x0801f384   Section        0  splc.o(i.sPlcProcessEnd)
-    i.sPlcProcessStart                       0x0801f3ac   Section        0  splc.o(i.sPlcProcessStart)
-    i.sPlcSpeakerDisable                     0x0801f480   Section        0  splcspeaker.o(i.sPlcSpeakerDisable)
-    i.sPlcSpeakerEnable                      0x0801f4b0   Section        0  splcspeaker.o(i.sPlcSpeakerEnable)
-    i.sPlcSpeakerFreq                        0x0801f4e4   Section        0  splcspeaker.o(i.sPlcSpeakerFreq)
-    i.sPlcSpeakerInit                        0x0801f504   Section        0  splcspeaker.o(i.sPlcSpeakerInit)
-    i.sPlcSpeakerVolume                      0x0801f538   Section        0  splcspeaker.o(i.sPlcSpeakerVolume)
-    i.sPlcSpwmLoop                           0x0801f5a4   Section        0  splc.o(i.sPlcSpwmLoop)
-    i.sPlcTimerInit                          0x0801f824   Section        0  splctimer.o(i.sPlcTimerInit)
-    i.sPlcTimerIsr                           0x0801f8e0   Section        0  splctimer.o(i.sPlcTimerIsr)
-    i.saveDeviceConfig                       0x0801fac0   Section        0  splcmisc.o(i.saveDeviceConfig)
-    i.schemeInit                             0x0801fb60   Section        0  preschemedual_450.o(i.schemeInit)
-    i.seletcSchemeNum                        0x08020158   Section        0  dchmiapp.o(i.seletcSchemeNum)
-    i.setFanSpeed                            0x08020188   Section        0  splcmisc.o(i.setFanSpeed)
-    i.setRedLaserPwm                         0x0802024c   Section        0  splclaser.o(i.setRedLaserPwm)
-    i.setSpeakerFreq                         0x080202d8   Section        0  splcspeaker.o(i.setSpeakerFreq)
-    setSpeakerFreq                           0x080202d9   Thumb Code   152  splcspeaker.o(i.setSpeakerFreq)
-    i.softDelayMs                            0x080203b8   Section        0  libcpu.o(i.softDelayMs)
-    i.softDelayUs                            0x080203e2   Section        0  libcpu.o(i.softDelayUs)
-    i.softSpiWrite                           0x08020408   Section        0  splcdac.o(i.softSpiWrite)
-    softSpiWrite                             0x08020409   Thumb Code   240  splcdac.o(i.softSpiWrite)
-    i.speakerLoop                            0x080204fc   Section        0  dchmiapp.o(i.speakerLoop)
-    speakerLoop                              0x080204fd   Thumb Code  1162  dchmiapp.o(i.speakerLoop)
-    i.st_clust                               0x0802098c   Section        0  ff.o(i.st_clust)
-    st_clust                                 0x0802098d   Thumb Code    36  ff.o(i.st_clust)
-    i.st_dword                               0x080209b0   Section        0  ff.o(i.st_dword)
-    st_dword                                 0x080209b1   Thumb Code    24  ff.o(i.st_dword)
-    i.st_qword                               0x080209c8   Section        0  ff.o(i.st_qword)
-    st_qword                                 0x080209c9   Thumb Code    92  ff.o(i.st_qword)
-    i.st_word                                0x08020a24   Section        0  ff.o(i.st_word)
-    st_word                                  0x08020a25   Thumb Code    12  ff.o(i.st_word)
-    i.standbyDebugInfoVisiable               0x08020a30   Section        0  dchmiapp.o(i.standbyDebugInfoVisiable)
-    i.standbyKeyTouchEnable                  0x08020a4c   Section        0  dchmiapp.o(i.standbyKeyTouchEnable)
-    i.standbyKeyValue                        0x08020a70   Section        0  dchmiapp.o(i.standbyKeyValue)
-    i.store_xdir                             0x08020a80   Section        0  ff.o(i.store_xdir)
-    store_xdir                               0x08020a81   Thumb Code   114  ff.o(i.store_xdir)
-    i.sum_sfn                                0x08020af2   Section        0  ff.o(i.sum_sfn)
-    sum_sfn                                  0x08020af3   Thumb Code    32  ff.o(i.sum_sfn)
-    i.sync_fs                                0x08020b14   Section        0  ff.o(i.sync_fs)
-    sync_fs                                  0x08020b15   Thumb Code   134  ff.o(i.sync_fs)
-    i.sync_window                            0x08020ba4   Section        0  ff.o(i.sync_window)
-    sync_window                              0x08020ba5   Thumb Code    82  ff.o(i.sync_window)
-    i.temperatureLoop                        0x08020bf8   Section        0  dchmiapp.o(i.temperatureLoop)
-    temperatureLoop                          0x08020bf9   Thumb Code   474  dchmiapp.o(i.temperatureLoop)
-    i.unlock_fs                              0x08020de8   Section        0  ff.o(i.unlock_fs)
-    unlock_fs                                0x08020de9   Thumb Code    28  ff.o(i.unlock_fs)
-    i.unselectSchemeAll                      0x08020e04   Section        0  dchmiapp.o(i.unselectSchemeAll)
-    i.unselectSchemeNum                      0x08020e92   Section        0  dchmiapp.o(i.unselectSchemeNum)
-    i.updateAcousticDisplay                  0x08020eb0   Section        0  dchmiapp.o(i.updateAcousticDisplay)
-    i.updateBootloadReq                      0x080210d8   Section        0  dchmiapp.o(i.updateBootloadReq)
-    i.updateCustomScheme                     0x08021470   Section        0  mainapplib.o(i.updateCustomScheme)
-    i.updateDebugInfo                        0x08021490   Section        0  dchmiapp.o(i.updateDebugInfo)
-    i.updateDiognosisInfo                    0x08021518   Section        0  dchmiapp.o(i.updateDiognosisInfo)
-    i.updateDiognosisInfoRaw                 0x080216ec   Section        0  dchmiapp.o(i.updateDiognosisInfoRaw)
-    i.updateDiognosisTextBox                 0x080220cc   Section        0  dchmiapp.o(i.updateDiognosisTextBox)
-    i.updateExtralDisplay                    0x080222bc   Section        0  dchmiapp.o(i.updateExtralDisplay)
-    i.updateInformationDisplay               0x0802259c   Section        0  dchmiapp.o(i.updateInformationDisplay)
-    i.updateNegWidthDisplay                  0x08022744   Section        0  dchmiapp.o(i.updateNegWidthDisplay)
-    i.updateOptionDisplay                    0x080227a0   Section        0  dchmiapp.o(i.updateOptionDisplay)
-    i.updatePosWidthDisplay                  0x08022830   Section        0  dchmiapp.o(i.updatePosWidthDisplay)
-    i.updateReadyDisplay                     0x0802288c   Section        0  dchmiapp.o(i.updateReadyDisplay)
-    i.updateReleaseTimeEnergy                0x08022a98   Section        0  dchmiapp.o(i.updateReleaseTimeEnergy)
-    i.updateSchemeDetail                     0x08022c00   Section        0  dchmiapp.o(i.updateSchemeDetail)
-    i.updateSchemeInfo                       0x08023d5c   Section        0  dchmiapp.o(i.updateSchemeInfo)
-    i.updateStandbyDisplay                   0x08023ff0   Section        0  dchmiapp.o(i.updateStandbyDisplay)
-    i.updateWarnMsgDisplay                   0x0802447c   Section        0  dchmiapp.o(i.updateWarnMsgDisplay)
-    i.uxListRemove                           0x0802455c   Section        0  list.o(i.uxListRemove)
-    i.uxQueueSpacesAvailable                 0x08024584   Section        0  queue.o(i.uxQueueSpacesAvailable)
-    i.vApplicationGetIdleTaskMemory          0x080245b4   Section        0  cmsis_os2.o(i.vApplicationGetIdleTaskMemory)
-    i.vApplicationGetTimerTaskMemory         0x080245cc   Section        0  cmsis_os2.o(i.vApplicationGetTimerTaskMemory)
-    i.vListInitialise                        0x080245e4   Section        0  list.o(i.vListInitialise)
-    i.vListInitialiseItem                    0x080245fe   Section        0  list.o(i.vListInitialiseItem)
-    i.vListInsert                            0x08024604   Section        0  list.o(i.vListInsert)
-    i.vListInsertEnd                         0x08024638   Section        0  list.o(i.vListInsertEnd)
-    i.vPortEnterCritical                     0x08024650   Section        0  port.o(i.vPortEnterCritical)
-    i.vPortExitCritical                      0x080246a4   Section        0  port.o(i.vPortExitCritical)
-    i.vPortFree                              0x080246e0   Section        0  heap_4.o(i.vPortFree)
-    i.vPortSetupTimerInterrupt               0x08024784   Section        0  port.o(i.vPortSetupTimerInterrupt)
-    i.vPortValidateInterruptPriority         0x080247ac   Section        0  port.o(i.vPortValidateInterruptPriority)
-    i.vQueueAddToRegistry                    0x08024824   Section        0  queue.o(i.vQueueAddToRegistry)
-    i.vQueueDelete                           0x08024850   Section        0  queue.o(i.vQueueDelete)
-    i.vQueueUnregisterQueue                  0x08024884   Section        0  queue.o(i.vQueueUnregisterQueue)
-    i.vQueueWaitForMessageRestricted         0x080248b4   Section        0  queue.o(i.vQueueWaitForMessageRestricted)
-    i.vTaskDelay                             0x08024900   Section        0  tasks.o(i.vTaskDelay)
-    i.vTaskInternalSetTimeOutState           0x0802495c   Section        0  tasks.o(i.vTaskInternalSetTimeOutState)
-    i.vTaskMissedYield                       0x08024974   Section        0  tasks.o(i.vTaskMissedYield)
-    i.vTaskPlaceOnEventList                  0x08024980   Section        0  tasks.o(i.vTaskPlaceOnEventList)
-    i.vTaskPlaceOnEventListRestricted        0x080249b8   Section        0  tasks.o(i.vTaskPlaceOnEventListRestricted)
-    i.vTaskPriorityDisinheritAfterTimeout    0x080249f8   Section        0  tasks.o(i.vTaskPriorityDisinheritAfterTimeout)
-    i.vTaskStartScheduler                    0x08024ac8   Section        0  tasks.o(i.vTaskStartScheduler)
-    i.vTaskSuspendAll                        0x08024b80   Section        0  tasks.o(i.vTaskSuspendAll)
-    i.vTaskSwitchContext                     0x08024b90   Section        0  tasks.o(i.vTaskSwitchContext)
-    i.validate                               0x08024c20   Section        0  ff.o(i.validate)
-    validate                                 0x08024c21   Thumb Code    82  ff.o(i.validate)
-    i.wfswLoop                               0x08024c74   Section        0  dchmiapp.o(i.wfswLoop)
-    i.writeMcp41010                          0x08024df0   Section        0  splcspeaker.o(i.writeMcp41010)
-    writeMcp41010                            0x08024df1   Thumb Code   530  splcspeaker.o(i.writeMcp41010)
-    i.xPortStartScheduler                    0x0802500c   Section        0  port.o(i.xPortStartScheduler)
-    i.xPortSysTickHandler                    0x08025174   Section        0  port.o(i.xPortSysTickHandler)
-    i.xQueueCreateMutex                      0x080251a8   Section        0  queue.o(i.xQueueCreateMutex)
-    i.xQueueCreateMutexStatic                0x080251ca   Section        0  queue.o(i.xQueueCreateMutexStatic)
-    i.xQueueGenericCreate                    0x080251f4   Section        0  queue.o(i.xQueueGenericCreate)
-    i.xQueueGenericCreateStatic              0x0802524e   Section        0  queue.o(i.xQueueGenericCreateStatic)
-    i.xQueueGenericReset                     0x08025330   Section        0  queue.o(i.xQueueGenericReset)
-    i.xQueueGenericSend                      0x080253c8   Section        0  queue.o(i.xQueueGenericSend)
-    i.xQueueGenericSendFromISR               0x08025570   Section        0  queue.o(i.xQueueGenericSendFromISR)
-    i.xQueueGiveMutexRecursive               0x0802566c   Section        0  queue.o(i.xQueueGiveMutexRecursive)
-    i.xQueueReceive                          0x080256b4   Section        0  queue.o(i.xQueueReceive)
-    i.xQueueReceiveFromISR                   0x0802581c   Section        0  queue.o(i.xQueueReceiveFromISR)
-    i.xQueueSemaphoreTake                    0x080258e8   Section        0  queue.o(i.xQueueSemaphoreTake)
-    i.xQueueTakeMutexRecursive               0x08025aa0   Section        0  queue.o(i.xQueueTakeMutexRecursive)
-    i.xTaskCheckForTimeOut                   0x08025af0   Section        0  tasks.o(i.xTaskCheckForTimeOut)
-    i.xTaskCreate                            0x08025b7c   Section        0  tasks.o(i.xTaskCreate)
-    i.xTaskCreateStatic                      0x08025be0   Section        0  tasks.o(i.xTaskCreateStatic)
-    i.xTaskGetCurrentTaskHandle              0x08025c9c   Section        0  tasks.o(i.xTaskGetCurrentTaskHandle)
-    i.xTaskGetSchedulerState                 0x08025ca8   Section        0  tasks.o(i.xTaskGetSchedulerState)
-    i.xTaskGetTickCount                      0x08025cc8   Section        0  tasks.o(i.xTaskGetTickCount)
-    i.xTaskIncrementTick                     0x08025cd4   Section        0  tasks.o(i.xTaskIncrementTick)
-    i.xTaskPriorityDisinherit                0x08025e18   Section        0  tasks.o(i.xTaskPriorityDisinherit)
-    i.xTaskPriorityInherit                   0x08025ebc   Section        0  tasks.o(i.xTaskPriorityInherit)
-    i.xTaskRemoveFromEventList               0x08025f60   Section        0  tasks.o(i.xTaskRemoveFromEventList)
-    i.xTaskResumeAll                         0x08025ff8   Section        0  tasks.o(i.xTaskResumeAll)
-    i.xTimerCreateTimerTask                  0x080260fc   Section        0  timers.o(i.xTimerCreateTimerTask)
-    i.xTimerGenericCommand                   0x08026174   Section        0  timers.o(i.xTimerGenericCommand)
-    i.xdir_sum                               0x080261f8   Section        0  ff.o(i.xdir_sum)
-    xdir_sum                                 0x080261f9   Thumb Code    58  ff.o(i.xdir_sum)
-    i.xname_sum                              0x08026232   Section        0  ff.o(i.xname_sum)
-    xname_sum                                0x08026233   Thumb Code    76  ff.o(i.xname_sum)
-    locale$$code                             0x08026280   Section       44  lc_numeric_c.o(locale$$code)
-    locale$$code                             0x080262ac   Section       44  lc_ctype_c.o(locale$$code)
-    x$fpl$basic                              0x080262d8   Section       24  basic.o(x$fpl$basic)
-    $v0                                      0x080262d8   Number         0  basic.o(x$fpl$basic)
-    x$fpl$d2f                                0x080262f0   Section       98  d2f.o(x$fpl$d2f)
-    $v0                                      0x080262f0   Number         0  d2f.o(x$fpl$d2f)
-    x$fpl$dadd                               0x08026354   Section      336  daddsub_clz.o(x$fpl$dadd)
-    $v0                                      0x08026354   Number         0  daddsub_clz.o(x$fpl$dadd)
-    _dadd1                                   0x08026365   Thumb Code     0  daddsub_clz.o(x$fpl$dadd)
-    x$fpl$dcheck1                            0x080264a4   Section       16  dcheck1.o(x$fpl$dcheck1)
-    $v0                                      0x080264a4   Number         0  dcheck1.o(x$fpl$dcheck1)
-    x$fpl$dcmpinf                            0x080264b4   Section       24  dcmpi.o(x$fpl$dcmpinf)
-    $v0                                      0x080264b4   Number         0  dcmpi.o(x$fpl$dcmpinf)
-    x$fpl$ddiv                               0x080264cc   Section      688  ddiv.o(x$fpl$ddiv)
-    $v0                                      0x080264cc   Number         0  ddiv.o(x$fpl$ddiv)
-    ddiv_entry                               0x080264d3   Thumb Code     0  ddiv.o(x$fpl$ddiv)
-    x$fpl$deqf                               0x0802677c   Section      120  deqf.o(x$fpl$deqf)
-    $v0                                      0x0802677c   Number         0  deqf.o(x$fpl$deqf)
-    x$fpl$dfixu                              0x080267f4   Section       90  dfixu.o(x$fpl$dfixu)
-    $v0                                      0x080267f4   Number         0  dfixu.o(x$fpl$dfixu)
-    x$fpl$dflt                               0x0802684e   Section       46  dflt_clz.o(x$fpl$dflt)
-    $v0                                      0x0802684e   Number         0  dflt_clz.o(x$fpl$dflt)
-    x$fpl$dfltu                              0x0802687c   Section       38  dflt_clz.o(x$fpl$dfltu)
-    $v0                                      0x0802687c   Number         0  dflt_clz.o(x$fpl$dfltu)
-    x$fpl$dleqf                              0x080268a4   Section      120  dleqf.o(x$fpl$dleqf)
-    $v0                                      0x080268a4   Number         0  dleqf.o(x$fpl$dleqf)
-    x$fpl$dmul                               0x0802691c   Section      340  dmul.o(x$fpl$dmul)
-    $v0                                      0x0802691c   Number         0  dmul.o(x$fpl$dmul)
-    x$fpl$dnaninf                            0x08026a70   Section      156  dnaninf.o(x$fpl$dnaninf)
-    $v0                                      0x08026a70   Number         0  dnaninf.o(x$fpl$dnaninf)
-    x$fpl$dretinf                            0x08026b0c   Section       12  dretinf.o(x$fpl$dretinf)
-    $v0                                      0x08026b0c   Number         0  dretinf.o(x$fpl$dretinf)
-    x$fpl$drleqf                             0x08026b18   Section      108  drleqf.o(x$fpl$drleqf)
-    $v0                                      0x08026b18   Number         0  drleqf.o(x$fpl$drleqf)
-    x$fpl$drsb                               0x08026b84   Section       22  daddsub_clz.o(x$fpl$drsb)
-    $v0                                      0x08026b84   Number         0  daddsub_clz.o(x$fpl$drsb)
-    x$fpl$dsub                               0x08026b9c   Section      468  daddsub_clz.o(x$fpl$dsub)
-    $v0                                      0x08026b9c   Number         0  daddsub_clz.o(x$fpl$dsub)
-    _dsub1                                   0x08026bad   Thumb Code     0  daddsub_clz.o(x$fpl$dsub)
-    x$fpl$f2d                                0x08026d70   Section       86  f2d.o(x$fpl$f2d)
-    $v0                                      0x08026d70   Number         0  f2d.o(x$fpl$f2d)
-    x$fpl$fnaninf                            0x08026dc6   Section      140  fnaninf.o(x$fpl$fnaninf)
-    $v0                                      0x08026dc6   Number         0  fnaninf.o(x$fpl$fnaninf)
-    x$fpl$fpinit                             0x08026e52   Section       10  fpinit.o(x$fpl$fpinit)
-    $v0                                      0x08026e52   Number         0  fpinit.o(x$fpl$fpinit)
-    x$fpl$fretinf                            0x08026e5c   Section       10  fretinf.o(x$fpl$fretinf)
-    $v0                                      0x08026e5c   Number         0  fretinf.o(x$fpl$fretinf)
-    x$fpl$ieeestatus                         0x08026e66   Section        6  istatus.o(x$fpl$ieeestatus)
-    $v0                                      0x08026e66   Number         0  istatus.o(x$fpl$ieeestatus)
-    x$fpl$printf1                            0x08026e6c   Section        4  printf1.o(x$fpl$printf1)
-    $v0                                      0x08026e6c   Number         0  printf1.o(x$fpl$printf1)
-    x$fpl$retnan                             0x08026e70   Section      100  retnan.o(x$fpl$retnan)
-    $v0                                      0x08026e70   Number         0  retnan.o(x$fpl$retnan)
-    x$fpl$scalbn                             0x08026ed4   Section       92  scalbn.o(x$fpl$scalbn)
-    $v0                                      0x08026ed4   Number         0  scalbn.o(x$fpl$scalbn)
-    x$fpl$scanf1                             0x08026f30   Section        4  scanf1.o(x$fpl$scanf1)
-    $v0                                      0x08026f30   Number         0  scanf1.o(x$fpl$scanf1)
-    x$fpl$scanf2                             0x08026f34   Section        8  scanf2.o(x$fpl$scanf2)
-    $v0                                      0x08026f34   Number         0  scanf2.o(x$fpl$scanf2)
-    x$fpl$trapveneer                         0x08026f3c   Section       48  trapv.o(x$fpl$trapveneer)
-    $v0                                      0x08026f3c   Number         0  trapv.o(x$fpl$trapveneer)
-    .constdata                               0x08026f6c   Section       72  freertos.o(.constdata)
-    x$fpl$usenofp                            0x08026f6c   Section        0  usenofp.o(x$fpl$usenofp)
-    .constdata                               0x08026fb4   Section       20  usbh_diskio.o(.constdata)
-    .constdata                               0x08026fc8   Section        8  stm32f4xx_hal_dma.o(.constdata)
-    flagBitshiftOffset                       0x08026fc8   Data           8  stm32f4xx_hal_dma.o(.constdata)
-    .constdata                               0x08026fd0   Section       24  system_stm32f4xx.o(.constdata)
-    .constdata                               0x08026fe8   Section      186  ff.o(.constdata)
-    ExCvt                                    0x08026fe8   Data         128  ff.o(.constdata)
-    LfnOfs                                   0x08027068   Data          13  ff.o(.constdata)
-    badchr                                   0x08027075   Data          16  ff.o(.constdata)
-    cst                                      0x08027086   Data          14  ff.o(.constdata)
-    cst32                                    0x08027094   Data          14  ff.o(.constdata)
-    .constdata                               0x080270a2   Section      942  ccsbcs.o(.constdata)
-    Tbl                                      0x080270a2   Data         256  ccsbcs.o(.constdata)
-    cvt1                                     0x080271a2   Data         498  ccsbcs.o(.constdata)
-    cvt2                                     0x08027394   Data         188  ccsbcs.o(.constdata)
-    .constdata                               0x08027450   Section      784  usbh_hid_keybd.o(.constdata)
-    imp_0_lctrl                              0x08027450   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_lshift                             0x08027470   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_lalt                               0x08027490   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_lgui                               0x080274b0   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_rctrl                              0x080274d0   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_rshift                             0x080274f0   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_ralt                               0x08027510   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_rgui                               0x08027530   Data          32  usbh_hid_keybd.o(.constdata)
-    imp_0_key_array                          0x08027550   Data          32  usbh_hid_keybd.o(.constdata)
-    HID_KEYBRD_Key                           0x08027570   Data         132  usbh_hid_keybd.o(.constdata)
-    HID_KEYBRD_ShiftKey                      0x080275f4   Data         132  usbh_hid_keybd.o(.constdata)
-    HID_KEYBRD_Codes                         0x08027678   Data         232  usbh_hid_keybd.o(.constdata)
-    .constdata                               0x08027760   Section      152  splc.o(.constdata)
-    __func__                                 0x08027760   Data          14  splc.o(.constdata)
-    __func__                                 0x0802776e   Data          14  splc.o(.constdata)
-    __func__                                 0x0802777c   Data          16  splc.o(.constdata)
-    __func__                                 0x0802778c   Data          15  splc.o(.constdata)
-    __func__                                 0x0802779b   Data          14  splc.o(.constdata)
-    __func__                                 0x080277a9   Data          14  splc.o(.constdata)
-    __func__                                 0x080277b7   Data          15  splc.o(.constdata)
-    __func__                                 0x080277c6   Data          22  splc.o(.constdata)
-    __func__                                 0x080277dc   Data          19  splc.o(.constdata)
-    __func__                                 0x080277ef   Data           9  splc.o(.constdata)
-    .constdata                               0x080277f8   Section       10  splcfun.o(.constdata)
-    __func__                                 0x080277f8   Data          10  splcfun.o(.constdata)
-    .constdata                               0x08027802   Section       14  splctimer.o(.constdata)
-    __func__                                 0x08027802   Data          14  splctimer.o(.constdata)
-    .constdata                               0x08027810   Section       12  splcadc.o(.constdata)
-    __func__                                 0x08027810   Data          12  splcadc.o(.constdata)
-    .constdata                               0x0802781c   Section       14  splcioin.o(.constdata)
-    __func__                                 0x0802781c   Data          14  splcioin.o(.constdata)
-    .constdata                               0x0802782a   Section       15  splcioout.o(.constdata)
-    __func__                                 0x0802782a   Data          15  splcioout.o(.constdata)
-    .constdata                               0x08027839   Section       58  splclaser.o(.constdata)
-    __func__                                 0x08027839   Data           6  splclaser.o(.constdata)
-    __func__                                 0x0802783f   Data           6  splclaser.o(.constdata)
-    __func__                                 0x08027845   Data          14  splclaser.o(.constdata)
-    __func__                                 0x08027853   Data          15  splclaser.o(.constdata)
-    __func__                                 0x08027862   Data          17  splclaser.o(.constdata)
-    .constdata                               0x08027873   Section       46  splcmisc.o(.constdata)
-    __func__                                 0x08027873   Data          12  splcmisc.o(.constdata)
-    __func__                                 0x0802787f   Data          17  splcmisc.o(.constdata)
-    __func__                                 0x08027890   Data          17  splcmisc.o(.constdata)
-    .constdata                               0x080278a1   Section      143  splceprom.o(.constdata)
-    __func__                                 0x080278a1   Data          17  splceprom.o(.constdata)
-    __func__                                 0x080278b2   Data          14  splceprom.o(.constdata)
-    __func__                                 0x080278c0   Data          15  splceprom.o(.constdata)
-    __func__                                 0x080278cf   Data          15  splceprom.o(.constdata)
-    __func__                                 0x080278de   Data          16  splceprom.o(.constdata)
-    __func__                                 0x080278ee   Data          15  splceprom.o(.constdata)
-    __func__                                 0x080278fd   Data          16  splceprom.o(.constdata)
-    __func__                                 0x0802790d   Data          10  splceprom.o(.constdata)
-    __func__                                 0x08027917   Data          11  splceprom.o(.constdata)
-    __func__                                 0x08027922   Data          14  splceprom.o(.constdata)
-    .constdata                               0x08027930   Section       59  dchmiapp.o(.constdata)
-    __func__                                 0x08027930   Data          22  dchmiapp.o(.constdata)
-    __func__                                 0x08027946   Data           9  dchmiapp.o(.constdata)
-    __func__                                 0x0802794f   Data          10  dchmiapp.o(.constdata)
-    __func__                                 0x08027959   Data           8  dchmiapp.o(.constdata)
-    __func__                                 0x08027961   Data          10  dchmiapp.o(.constdata)
-    .constdata                               0x0802796b   Section      499  dchmilanguage.o(.constdata)
-    .constdata                               0x08027b5e   Section       15  mainapplib.o(.constdata)
-    __func__                                 0x08027b5e   Data          15  mainapplib.o(.constdata)
-    .constdata                               0x08027b6d   Section       17  preschemedual_450.o(.constdata)
-    __func__                                 0x08027b6d   Data          17  preschemedual_450.o(.constdata)
-    .constdata                               0x08027b80   Section     1536  libcrc.o(.constdata)
-    .constdata                               0x08028180   Section       28  hmiuseruart.o(.constdata)
-    __func__                                 0x08028180   Data          12  hmiuseruart.o(.constdata)
-    __func__                                 0x0802818c   Data          16  hmiuseruart.o(.constdata)
-    .constdata                               0x0802819c   Section       40  _printf_hex_int.o(.constdata)
-    uc_hextab                                0x0802819c   Data          20  _printf_hex_int.o(.constdata)
-    lc_hextab                                0x080281b0   Data          20  _printf_hex_int.o(.constdata)
-    .constdata                               0x080281c4   Section       17  __printf_flags_wp.o(.constdata)
-    maptable                                 0x080281c4   Data          17  __printf_flags_wp.o(.constdata)
-    .constdata                               0x080281d8   Section       56  log.o(.constdata)
-    Lg2                                      0x080281d8   Data          24  log.o(.constdata)
-    Lg                                       0x080281f0   Data          32  log.o(.constdata)
-    .constdata                               0x08028210   Section        8  qnan.o(.constdata)
-    .constdata                               0x08028218   Section      148  bigflt0.o(.constdata)
-    tenpwrs_x                                0x08028218   Data          60  bigflt0.o(.constdata)
-    tenpwrs_i                                0x08028254   Data          64  bigflt0.o(.constdata)
-    .conststring                             0x080282ac   Section       24  freertos.o(.conststring)
-    .conststring                             0x080282c4   Section        6  usbh_audio.o(.conststring)
-    .conststring                             0x080282cc   Section        4  usbh_cdc.o(.conststring)
-    .conststring                             0x080282d0   Section        4  usbh_hid.o(.conststring)
-    .conststring                             0x080282d4   Section        4  usbh_msc.o(.conststring)
-    .conststring                             0x080282d8   Section        4  usbh_mtp.o(.conststring)
-    .conststring                             0x080282dc   Section     1207  dchmiapp.o(.conststring)
-    c$$dinf                                  0x080287d4   Section        8  fpconst.o(c$$dinf)
-    c$$dmax                                  0x080287dc   Section        8  fpconst.o(c$$dmax)
-    locale$$data                             0x080287e4   Section       28  lc_numeric_c.o(locale$$data)
-    __lcnum_c_name                           0x080287e8   Data           2  lc_numeric_c.o(locale$$data)
-    __lcnum_c_start                          0x080287f0   Data           0  lc_numeric_c.o(locale$$data)
-    __lcnum_c_point                          0x080287fc   Data           0  lc_numeric_c.o(locale$$data)
-    __lcnum_c_thousands                      0x080287fe   Data           0  lc_numeric_c.o(locale$$data)
-    __lcnum_c_grouping                       0x080287ff   Data           0  lc_numeric_c.o(locale$$data)
-    locale$$data                             0x08028800   Section      272  lc_ctype_c.o(locale$$data)
-    __lcnum_c_end                            0x08028800   Data           0  lc_numeric_c.o(locale$$data)
-    __lcctype_c_name                         0x08028804   Data           2  lc_ctype_c.o(locale$$data)
-    __lcctype_c_start                        0x0802880c   Data           0  lc_ctype_c.o(locale$$data)
-    __lcctype_c_end                          0x08028910   Data           0  lc_ctype_c.o(locale$$data)
+    i.sPlcIsrDisable                         0x0801ec8c   Section        0  splc.o(i.sPlcIsrDisable)
+    i.sPlcIsrEnable                          0x0801ec8e   Section        0  splc.o(i.sPlcIsrEnable)
+    i.sPlcLaserInit                          0x0801ec90   Section        0  splclaser.o(i.sPlcLaserInit)
+    i.sPlcLaserTimerIsr                      0x0801ed60   Section        0  splclaser.o(i.sPlcLaserTimerIsr)
+    i.sPlcNvramClear                         0x0801ee08   Section        0  splc.o(i.sPlcNvramClear)
+    i.sPlcNvramLoad                          0x0801ee7c   Section        0  splc.o(i.sPlcNvramLoad)
+    i.sPlcNvramSave                          0x0801eff8   Section        0  splc.o(i.sPlcNvramSave)
+    i.sPlcNvramUpdate                        0x0801f0b4   Section        0  splc.o(i.sPlcNvramUpdate)
+    i.sPlcOutputInit                         0x0801f214   Section        0  splcioout.o(i.sPlcOutputInit)
+    i.sPlcOutputRefresh                      0x0801f2a4   Section        0  splcioout.o(i.sPlcOutputRefresh)
+    i.sPlcProcessEnd                         0x0801f3dc   Section        0  splc.o(i.sPlcProcessEnd)
+    i.sPlcProcessStart                       0x0801f404   Section        0  splc.o(i.sPlcProcessStart)
+    i.sPlcSpeakerDisable                     0x0801f4d8   Section        0  splcspeaker.o(i.sPlcSpeakerDisable)
+    i.sPlcSpeakerEnable                      0x0801f508   Section        0  splcspeaker.o(i.sPlcSpeakerEnable)
+    i.sPlcSpeakerFreq                        0x0801f53c   Section        0  splcspeaker.o(i.sPlcSpeakerFreq)
+    i.sPlcSpeakerInit                        0x0801f55c   Section        0  splcspeaker.o(i.sPlcSpeakerInit)
+    i.sPlcSpeakerVolume                      0x0801f590   Section        0  splcspeaker.o(i.sPlcSpeakerVolume)
+    i.sPlcSpwmLoop                           0x0801f5fc   Section        0  splc.o(i.sPlcSpwmLoop)
+    i.sPlcTimerInit                          0x0801f87c   Section        0  splctimer.o(i.sPlcTimerInit)
+    i.sPlcTimerIsr                           0x0801f938   Section        0  splctimer.o(i.sPlcTimerIsr)
+    i.saveDeviceConfig                       0x0801fb18   Section        0  splcmisc.o(i.saveDeviceConfig)
+    i.schemeInit                             0x0801fbb8   Section        0  preschemedual_450.o(i.schemeInit)
+    i.seletcSchemeNum                        0x080201b0   Section        0  dchmiapp.o(i.seletcSchemeNum)
+    i.setFanSpeed                            0x080201e0   Section        0  splcmisc.o(i.setFanSpeed)
+    i.setRedLaserPwm                         0x080202a4   Section        0  splclaser.o(i.setRedLaserPwm)
+    i.setSpeakerFreq                         0x08020330   Section        0  splcspeaker.o(i.setSpeakerFreq)
+    setSpeakerFreq                           0x08020331   Thumb Code   152  splcspeaker.o(i.setSpeakerFreq)
+    i.softDelayMs                            0x08020410   Section        0  libcpu.o(i.softDelayMs)
+    i.softDelayUs                            0x0802043a   Section        0  libcpu.o(i.softDelayUs)
+    i.softSpiWrite                           0x08020460   Section        0  splcdac.o(i.softSpiWrite)
+    softSpiWrite                             0x08020461   Thumb Code   240  splcdac.o(i.softSpiWrite)
+    i.speakerLoop                            0x08020554   Section        0  dchmiapp.o(i.speakerLoop)
+    speakerLoop                              0x08020555   Thumb Code  1162  dchmiapp.o(i.speakerLoop)
+    i.st_clust                               0x080209e4   Section        0  ff.o(i.st_clust)
+    st_clust                                 0x080209e5   Thumb Code    36  ff.o(i.st_clust)
+    i.st_dword                               0x08020a08   Section        0  ff.o(i.st_dword)
+    st_dword                                 0x08020a09   Thumb Code    24  ff.o(i.st_dword)
+    i.st_qword                               0x08020a20   Section        0  ff.o(i.st_qword)
+    st_qword                                 0x08020a21   Thumb Code    92  ff.o(i.st_qword)
+    i.st_word                                0x08020a7c   Section        0  ff.o(i.st_word)
+    st_word                                  0x08020a7d   Thumb Code    12  ff.o(i.st_word)
+    i.standbyDebugInfoVisiable               0x08020a88   Section        0  dchmiapp.o(i.standbyDebugInfoVisiable)
+    i.standbyKeyTouchEnable                  0x08020aa4   Section        0  dchmiapp.o(i.standbyKeyTouchEnable)
+    i.standbyKeyValue                        0x08020ac8   Section        0  dchmiapp.o(i.standbyKeyValue)
+    i.store_xdir                             0x08020ad8   Section        0  ff.o(i.store_xdir)
+    store_xdir                               0x08020ad9   Thumb Code   114  ff.o(i.store_xdir)
+    i.sum_sfn                                0x08020b4a   Section        0  ff.o(i.sum_sfn)
+    sum_sfn                                  0x08020b4b   Thumb Code    32  ff.o(i.sum_sfn)
+    i.sync_fs                                0x08020b6c   Section        0  ff.o(i.sync_fs)
+    sync_fs                                  0x08020b6d   Thumb Code   134  ff.o(i.sync_fs)
+    i.sync_window                            0x08020bfc   Section        0  ff.o(i.sync_window)
+    sync_window                              0x08020bfd   Thumb Code    82  ff.o(i.sync_window)
+    i.temperatureLoop                        0x08020c50   Section        0  dchmiapp.o(i.temperatureLoop)
+    temperatureLoop                          0x08020c51   Thumb Code   474  dchmiapp.o(i.temperatureLoop)
+    i.unlock_fs                              0x08020e40   Section        0  ff.o(i.unlock_fs)
+    unlock_fs                                0x08020e41   Thumb Code    28  ff.o(i.unlock_fs)
+    i.unselectSchemeAll                      0x08020e5c   Section        0  dchmiapp.o(i.unselectSchemeAll)
+    i.unselectSchemeNum                      0x08020eea   Section        0  dchmiapp.o(i.unselectSchemeNum)
+    i.updateAcousticDisplay                  0x08020f08   Section        0  dchmiapp.o(i.updateAcousticDisplay)
+    i.updateBootloadReq                      0x08021130   Section        0  dchmiapp.o(i.updateBootloadReq)
+    i.updateCustomScheme                     0x080214c8   Section        0  mainapplib.o(i.updateCustomScheme)
+    i.updateDebugInfo                        0x080214e8   Section        0  dchmiapp.o(i.updateDebugInfo)
+    i.updateDiognosisInfo                    0x08021570   Section        0  dchmiapp.o(i.updateDiognosisInfo)
+    i.updateDiognosisInfoRaw                 0x08021744   Section        0  dchmiapp.o(i.updateDiognosisInfoRaw)
+    i.updateDiognosisTextBox                 0x08022124   Section        0  dchmiapp.o(i.updateDiognosisTextBox)
+    i.updateExtralDisplay                    0x08022314   Section        0  dchmiapp.o(i.updateExtralDisplay)
+    i.updateInformationDisplay               0x080225f4   Section        0  dchmiapp.o(i.updateInformationDisplay)
+    i.updateNegWidthDisplay                  0x0802279c   Section        0  dchmiapp.o(i.updateNegWidthDisplay)
+    i.updateOptionDisplay                    0x080227f8   Section        0  dchmiapp.o(i.updateOptionDisplay)
+    i.updatePosWidthDisplay                  0x08022888   Section        0  dchmiapp.o(i.updatePosWidthDisplay)
+    i.updateReadyDisplay                     0x080228e4   Section        0  dchmiapp.o(i.updateReadyDisplay)
+    i.updateReleaseTimeEnergy                0x08022af0   Section        0  dchmiapp.o(i.updateReleaseTimeEnergy)
+    i.updateSchemeDetail                     0x08022c58   Section        0  dchmiapp.o(i.updateSchemeDetail)
+    i.updateSchemeInfo                       0x08023db4   Section        0  dchmiapp.o(i.updateSchemeInfo)
+    i.updateStandbyDisplay                   0x08024048   Section        0  dchmiapp.o(i.updateStandbyDisplay)
+    i.updateWarnMsgDisplay                   0x080244d4   Section        0  dchmiapp.o(i.updateWarnMsgDisplay)
+    i.uxListRemove                           0x080245b4   Section        0  list.o(i.uxListRemove)
+    i.uxQueueSpacesAvailable                 0x080245dc   Section        0  queue.o(i.uxQueueSpacesAvailable)
+    i.vApplicationGetIdleTaskMemory          0x0802460c   Section        0  cmsis_os2.o(i.vApplicationGetIdleTaskMemory)
+    i.vApplicationGetTimerTaskMemory         0x08024624   Section        0  cmsis_os2.o(i.vApplicationGetTimerTaskMemory)
+    i.vListInitialise                        0x0802463c   Section        0  list.o(i.vListInitialise)
+    i.vListInitialiseItem                    0x08024656   Section        0  list.o(i.vListInitialiseItem)
+    i.vListInsert                            0x0802465c   Section        0  list.o(i.vListInsert)
+    i.vListInsertEnd                         0x08024690   Section        0  list.o(i.vListInsertEnd)
+    i.vPortEnterCritical                     0x080246a8   Section        0  port.o(i.vPortEnterCritical)
+    i.vPortExitCritical                      0x080246fc   Section        0  port.o(i.vPortExitCritical)
+    i.vPortFree                              0x08024738   Section        0  heap_4.o(i.vPortFree)
+    i.vPortSetupTimerInterrupt               0x080247dc   Section        0  port.o(i.vPortSetupTimerInterrupt)
+    i.vPortValidateInterruptPriority         0x08024804   Section        0  port.o(i.vPortValidateInterruptPriority)
+    i.vQueueAddToRegistry                    0x0802487c   Section        0  queue.o(i.vQueueAddToRegistry)
+    i.vQueueDelete                           0x080248a8   Section        0  queue.o(i.vQueueDelete)
+    i.vQueueUnregisterQueue                  0x080248dc   Section        0  queue.o(i.vQueueUnregisterQueue)
+    i.vQueueWaitForMessageRestricted         0x0802490c   Section        0  queue.o(i.vQueueWaitForMessageRestricted)
+    i.vTaskDelay                             0x08024958   Section        0  tasks.o(i.vTaskDelay)
+    i.vTaskInternalSetTimeOutState           0x080249b4   Section        0  tasks.o(i.vTaskInternalSetTimeOutState)
+    i.vTaskMissedYield                       0x080249cc   Section        0  tasks.o(i.vTaskMissedYield)
+    i.vTaskPlaceOnEventList                  0x080249d8   Section        0  tasks.o(i.vTaskPlaceOnEventList)
+    i.vTaskPlaceOnEventListRestricted        0x08024a10   Section        0  tasks.o(i.vTaskPlaceOnEventListRestricted)
+    i.vTaskPriorityDisinheritAfterTimeout    0x08024a50   Section        0  tasks.o(i.vTaskPriorityDisinheritAfterTimeout)
+    i.vTaskStartScheduler                    0x08024b20   Section        0  tasks.o(i.vTaskStartScheduler)
+    i.vTaskSuspendAll                        0x08024bd8   Section        0  tasks.o(i.vTaskSuspendAll)
+    i.vTaskSwitchContext                     0x08024be8   Section        0  tasks.o(i.vTaskSwitchContext)
+    i.validate                               0x08024c78   Section        0  ff.o(i.validate)
+    validate                                 0x08024c79   Thumb Code    82  ff.o(i.validate)
+    i.wfswLoop                               0x08024ccc   Section        0  dchmiapp.o(i.wfswLoop)
+    i.writeMcp41010                          0x08024e48   Section        0  splcspeaker.o(i.writeMcp41010)
+    writeMcp41010                            0x08024e49   Thumb Code   530  splcspeaker.o(i.writeMcp41010)
+    i.xPortStartScheduler                    0x08025064   Section        0  port.o(i.xPortStartScheduler)
+    i.xPortSysTickHandler                    0x080251cc   Section        0  port.o(i.xPortSysTickHandler)
+    i.xQueueCreateMutex                      0x08025200   Section        0  queue.o(i.xQueueCreateMutex)
+    i.xQueueCreateMutexStatic                0x08025222   Section        0  queue.o(i.xQueueCreateMutexStatic)
+    i.xQueueGenericCreate                    0x0802524c   Section        0  queue.o(i.xQueueGenericCreate)
+    i.xQueueGenericCreateStatic              0x080252a6   Section        0  queue.o(i.xQueueGenericCreateStatic)
+    i.xQueueGenericReset                     0x08025388   Section        0  queue.o(i.xQueueGenericReset)
+    i.xQueueGenericSend                      0x08025420   Section        0  queue.o(i.xQueueGenericSend)
+    i.xQueueGenericSendFromISR               0x080255c8   Section        0  queue.o(i.xQueueGenericSendFromISR)
+    i.xQueueGiveMutexRecursive               0x080256c4   Section        0  queue.o(i.xQueueGiveMutexRecursive)
+    i.xQueueReceive                          0x0802570c   Section        0  queue.o(i.xQueueReceive)
+    i.xQueueReceiveFromISR                   0x08025874   Section        0  queue.o(i.xQueueReceiveFromISR)
+    i.xQueueSemaphoreTake                    0x08025940   Section        0  queue.o(i.xQueueSemaphoreTake)
+    i.xQueueTakeMutexRecursive               0x08025af8   Section        0  queue.o(i.xQueueTakeMutexRecursive)
+    i.xTaskCheckForTimeOut                   0x08025b48   Section        0  tasks.o(i.xTaskCheckForTimeOut)
+    i.xTaskCreate                            0x08025bd4   Section        0  tasks.o(i.xTaskCreate)
+    i.xTaskCreateStatic                      0x08025c38   Section        0  tasks.o(i.xTaskCreateStatic)
+    i.xTaskGetCurrentTaskHandle              0x08025cf4   Section        0  tasks.o(i.xTaskGetCurrentTaskHandle)
+    i.xTaskGetSchedulerState                 0x08025d00   Section        0  tasks.o(i.xTaskGetSchedulerState)
+    i.xTaskGetTickCount                      0x08025d20   Section        0  tasks.o(i.xTaskGetTickCount)
+    i.xTaskIncrementTick                     0x08025d2c   Section        0  tasks.o(i.xTaskIncrementTick)
+    i.xTaskPriorityDisinherit                0x08025e70   Section        0  tasks.o(i.xTaskPriorityDisinherit)
+    i.xTaskPriorityInherit                   0x08025f14   Section        0  tasks.o(i.xTaskPriorityInherit)
+    i.xTaskRemoveFromEventList               0x08025fb8   Section        0  tasks.o(i.xTaskRemoveFromEventList)
+    i.xTaskResumeAll                         0x08026050   Section        0  tasks.o(i.xTaskResumeAll)
+    i.xTimerCreateTimerTask                  0x08026154   Section        0  timers.o(i.xTimerCreateTimerTask)
+    i.xTimerGenericCommand                   0x080261cc   Section        0  timers.o(i.xTimerGenericCommand)
+    i.xdir_sum                               0x08026250   Section        0  ff.o(i.xdir_sum)
+    xdir_sum                                 0x08026251   Thumb Code    58  ff.o(i.xdir_sum)
+    i.xname_sum                              0x0802628a   Section        0  ff.o(i.xname_sum)
+    xname_sum                                0x0802628b   Thumb Code    76  ff.o(i.xname_sum)
+    locale$$code                             0x080262d8   Section       44  lc_numeric_c.o(locale$$code)
+    locale$$code                             0x08026304   Section       44  lc_ctype_c.o(locale$$code)
+    x$fpl$basic                              0x08026330   Section       24  basic.o(x$fpl$basic)
+    $v0                                      0x08026330   Number         0  basic.o(x$fpl$basic)
+    x$fpl$d2f                                0x08026348   Section       98  d2f.o(x$fpl$d2f)
+    $v0                                      0x08026348   Number         0  d2f.o(x$fpl$d2f)
+    x$fpl$dadd                               0x080263ac   Section      336  daddsub_clz.o(x$fpl$dadd)
+    $v0                                      0x080263ac   Number         0  daddsub_clz.o(x$fpl$dadd)
+    _dadd1                                   0x080263bd   Thumb Code     0  daddsub_clz.o(x$fpl$dadd)
+    x$fpl$dcheck1                            0x080264fc   Section       16  dcheck1.o(x$fpl$dcheck1)
+    $v0                                      0x080264fc   Number         0  dcheck1.o(x$fpl$dcheck1)
+    x$fpl$dcmpinf                            0x0802650c   Section       24  dcmpi.o(x$fpl$dcmpinf)
+    $v0                                      0x0802650c   Number         0  dcmpi.o(x$fpl$dcmpinf)
+    x$fpl$ddiv                               0x08026524   Section      688  ddiv.o(x$fpl$ddiv)
+    $v0                                      0x08026524   Number         0  ddiv.o(x$fpl$ddiv)
+    ddiv_entry                               0x0802652b   Thumb Code     0  ddiv.o(x$fpl$ddiv)
+    x$fpl$deqf                               0x080267d4   Section      120  deqf.o(x$fpl$deqf)
+    $v0                                      0x080267d4   Number         0  deqf.o(x$fpl$deqf)
+    x$fpl$dfixu                              0x0802684c   Section       90  dfixu.o(x$fpl$dfixu)
+    $v0                                      0x0802684c   Number         0  dfixu.o(x$fpl$dfixu)
+    x$fpl$dflt                               0x080268a6   Section       46  dflt_clz.o(x$fpl$dflt)
+    $v0                                      0x080268a6   Number         0  dflt_clz.o(x$fpl$dflt)
+    x$fpl$dfltu                              0x080268d4   Section       38  dflt_clz.o(x$fpl$dfltu)
+    $v0                                      0x080268d4   Number         0  dflt_clz.o(x$fpl$dfltu)
+    x$fpl$dleqf                              0x080268fc   Section      120  dleqf.o(x$fpl$dleqf)
+    $v0                                      0x080268fc   Number         0  dleqf.o(x$fpl$dleqf)
+    x$fpl$dmul                               0x08026974   Section      340  dmul.o(x$fpl$dmul)
+    $v0                                      0x08026974   Number         0  dmul.o(x$fpl$dmul)
+    x$fpl$dnaninf                            0x08026ac8   Section      156  dnaninf.o(x$fpl$dnaninf)
+    $v0                                      0x08026ac8   Number         0  dnaninf.o(x$fpl$dnaninf)
+    x$fpl$dretinf                            0x08026b64   Section       12  dretinf.o(x$fpl$dretinf)
+    $v0                                      0x08026b64   Number         0  dretinf.o(x$fpl$dretinf)
+    x$fpl$drleqf                             0x08026b70   Section      108  drleqf.o(x$fpl$drleqf)
+    $v0                                      0x08026b70   Number         0  drleqf.o(x$fpl$drleqf)
+    x$fpl$drsb                               0x08026bdc   Section       22  daddsub_clz.o(x$fpl$drsb)
+    $v0                                      0x08026bdc   Number         0  daddsub_clz.o(x$fpl$drsb)
+    x$fpl$dsub                               0x08026bf4   Section      468  daddsub_clz.o(x$fpl$dsub)
+    $v0                                      0x08026bf4   Number         0  daddsub_clz.o(x$fpl$dsub)
+    _dsub1                                   0x08026c05   Thumb Code     0  daddsub_clz.o(x$fpl$dsub)
+    x$fpl$f2d                                0x08026dc8   Section       86  f2d.o(x$fpl$f2d)
+    $v0                                      0x08026dc8   Number         0  f2d.o(x$fpl$f2d)
+    x$fpl$fnaninf                            0x08026e1e   Section      140  fnaninf.o(x$fpl$fnaninf)
+    $v0                                      0x08026e1e   Number         0  fnaninf.o(x$fpl$fnaninf)
+    x$fpl$fpinit                             0x08026eaa   Section       10  fpinit.o(x$fpl$fpinit)
+    $v0                                      0x08026eaa   Number         0  fpinit.o(x$fpl$fpinit)
+    x$fpl$fretinf                            0x08026eb4   Section       10  fretinf.o(x$fpl$fretinf)
+    $v0                                      0x08026eb4   Number         0  fretinf.o(x$fpl$fretinf)
+    x$fpl$ieeestatus                         0x08026ebe   Section        6  istatus.o(x$fpl$ieeestatus)
+    $v0                                      0x08026ebe   Number         0  istatus.o(x$fpl$ieeestatus)
+    x$fpl$printf1                            0x08026ec4   Section        4  printf1.o(x$fpl$printf1)
+    $v0                                      0x08026ec4   Number         0  printf1.o(x$fpl$printf1)
+    x$fpl$retnan                             0x08026ec8   Section      100  retnan.o(x$fpl$retnan)
+    $v0                                      0x08026ec8   Number         0  retnan.o(x$fpl$retnan)
+    x$fpl$scalbn                             0x08026f2c   Section       92  scalbn.o(x$fpl$scalbn)
+    $v0                                      0x08026f2c   Number         0  scalbn.o(x$fpl$scalbn)
+    x$fpl$scanf1                             0x08026f88   Section        4  scanf1.o(x$fpl$scanf1)
+    $v0                                      0x08026f88   Number         0  scanf1.o(x$fpl$scanf1)
+    x$fpl$scanf2                             0x08026f8c   Section        8  scanf2.o(x$fpl$scanf2)
+    $v0                                      0x08026f8c   Number         0  scanf2.o(x$fpl$scanf2)
+    x$fpl$trapveneer                         0x08026f94   Section       48  trapv.o(x$fpl$trapveneer)
+    $v0                                      0x08026f94   Number         0  trapv.o(x$fpl$trapveneer)
+    .constdata                               0x08026fc4   Section       72  freertos.o(.constdata)
+    x$fpl$usenofp                            0x08026fc4   Section        0  usenofp.o(x$fpl$usenofp)
+    .constdata                               0x0802700c   Section       20  usbh_diskio.o(.constdata)
+    .constdata                               0x08027020   Section        8  stm32f4xx_hal_dma.o(.constdata)
+    flagBitshiftOffset                       0x08027020   Data           8  stm32f4xx_hal_dma.o(.constdata)
+    .constdata                               0x08027028   Section       24  system_stm32f4xx.o(.constdata)
+    .constdata                               0x08027040   Section      186  ff.o(.constdata)
+    ExCvt                                    0x08027040   Data         128  ff.o(.constdata)
+    LfnOfs                                   0x080270c0   Data          13  ff.o(.constdata)
+    badchr                                   0x080270cd   Data          16  ff.o(.constdata)
+    cst                                      0x080270de   Data          14  ff.o(.constdata)
+    cst32                                    0x080270ec   Data          14  ff.o(.constdata)
+    .constdata                               0x080270fa   Section      942  ccsbcs.o(.constdata)
+    Tbl                                      0x080270fa   Data         256  ccsbcs.o(.constdata)
+    cvt1                                     0x080271fa   Data         498  ccsbcs.o(.constdata)
+    cvt2                                     0x080273ec   Data         188  ccsbcs.o(.constdata)
+    .constdata                               0x080274a8   Section      784  usbh_hid_keybd.o(.constdata)
+    imp_0_lctrl                              0x080274a8   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_lshift                             0x080274c8   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_lalt                               0x080274e8   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_lgui                               0x08027508   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_rctrl                              0x08027528   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_rshift                             0x08027548   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_ralt                               0x08027568   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_rgui                               0x08027588   Data          32  usbh_hid_keybd.o(.constdata)
+    imp_0_key_array                          0x080275a8   Data          32  usbh_hid_keybd.o(.constdata)
+    HID_KEYBRD_Key                           0x080275c8   Data         132  usbh_hid_keybd.o(.constdata)
+    HID_KEYBRD_ShiftKey                      0x0802764c   Data         132  usbh_hid_keybd.o(.constdata)
+    HID_KEYBRD_Codes                         0x080276d0   Data         232  usbh_hid_keybd.o(.constdata)
+    .constdata                               0x080277b8   Section      152  splc.o(.constdata)
+    __func__                                 0x080277b8   Data          14  splc.o(.constdata)
+    __func__                                 0x080277c6   Data          14  splc.o(.constdata)
+    __func__                                 0x080277d4   Data          16  splc.o(.constdata)
+    __func__                                 0x080277e4   Data          15  splc.o(.constdata)
+    __func__                                 0x080277f3   Data          14  splc.o(.constdata)
+    __func__                                 0x08027801   Data          14  splc.o(.constdata)
+    __func__                                 0x0802780f   Data          15  splc.o(.constdata)
+    __func__                                 0x0802781e   Data          22  splc.o(.constdata)
+    __func__                                 0x08027834   Data          19  splc.o(.constdata)
+    __func__                                 0x08027847   Data           9  splc.o(.constdata)
+    .constdata                               0x08027850   Section       10  splcfun.o(.constdata)
+    __func__                                 0x08027850   Data          10  splcfun.o(.constdata)
+    .constdata                               0x0802785a   Section       14  splctimer.o(.constdata)
+    __func__                                 0x0802785a   Data          14  splctimer.o(.constdata)
+    .constdata                               0x08027868   Section       12  splcadc.o(.constdata)
+    __func__                                 0x08027868   Data          12  splcadc.o(.constdata)
+    .constdata                               0x08027874   Section       14  splcioin.o(.constdata)
+    __func__                                 0x08027874   Data          14  splcioin.o(.constdata)
+    .constdata                               0x08027882   Section       15  splcioout.o(.constdata)
+    __func__                                 0x08027882   Data          15  splcioout.o(.constdata)
+    .constdata                               0x08027891   Section       58  splclaser.o(.constdata)
+    __func__                                 0x08027891   Data           6  splclaser.o(.constdata)
+    __func__                                 0x08027897   Data           6  splclaser.o(.constdata)
+    __func__                                 0x0802789d   Data          14  splclaser.o(.constdata)
+    __func__                                 0x080278ab   Data          15  splclaser.o(.constdata)
+    __func__                                 0x080278ba   Data          17  splclaser.o(.constdata)
+    .constdata                               0x080278cb   Section       46  splcmisc.o(.constdata)
+    __func__                                 0x080278cb   Data          12  splcmisc.o(.constdata)
+    __func__                                 0x080278d7   Data          17  splcmisc.o(.constdata)
+    __func__                                 0x080278e8   Data          17  splcmisc.o(.constdata)
+    .constdata                               0x080278f9   Section      143  splceprom.o(.constdata)
+    __func__                                 0x080278f9   Data          17  splceprom.o(.constdata)
+    __func__                                 0x0802790a   Data          14  splceprom.o(.constdata)
+    __func__                                 0x08027918   Data          15  splceprom.o(.constdata)
+    __func__                                 0x08027927   Data          15  splceprom.o(.constdata)
+    __func__                                 0x08027936   Data          16  splceprom.o(.constdata)
+    __func__                                 0x08027946   Data          15  splceprom.o(.constdata)
+    __func__                                 0x08027955   Data          16  splceprom.o(.constdata)
+    __func__                                 0x08027965   Data          10  splceprom.o(.constdata)
+    __func__                                 0x0802796f   Data          11  splceprom.o(.constdata)
+    __func__                                 0x0802797a   Data          14  splceprom.o(.constdata)
+    .constdata                               0x08027988   Section       59  dchmiapp.o(.constdata)
+    __func__                                 0x08027988   Data          22  dchmiapp.o(.constdata)
+    __func__                                 0x0802799e   Data           9  dchmiapp.o(.constdata)
+    __func__                                 0x080279a7   Data          10  dchmiapp.o(.constdata)
+    __func__                                 0x080279b1   Data           8  dchmiapp.o(.constdata)
+    __func__                                 0x080279b9   Data          10  dchmiapp.o(.constdata)
+    .constdata                               0x080279c3   Section      499  dchmilanguage.o(.constdata)
+    .constdata                               0x08027bb6   Section       15  mainapplib.o(.constdata)
+    __func__                                 0x08027bb6   Data          15  mainapplib.o(.constdata)
+    .constdata                               0x08027bc5   Section       17  preschemedual_450.o(.constdata)
+    __func__                                 0x08027bc5   Data          17  preschemedual_450.o(.constdata)
+    .constdata                               0x08027bd8   Section     1536  libcrc.o(.constdata)
+    .constdata                               0x080281d8   Section       28  hmiuseruart.o(.constdata)
+    __func__                                 0x080281d8   Data          12  hmiuseruart.o(.constdata)
+    __func__                                 0x080281e4   Data          16  hmiuseruart.o(.constdata)
+    .constdata                               0x080281f4   Section       40  _printf_hex_int.o(.constdata)
+    uc_hextab                                0x080281f4   Data          20  _printf_hex_int.o(.constdata)
+    lc_hextab                                0x08028208   Data          20  _printf_hex_int.o(.constdata)
+    .constdata                               0x0802821c   Section       17  __printf_flags_wp.o(.constdata)
+    maptable                                 0x0802821c   Data          17  __printf_flags_wp.o(.constdata)
+    .constdata                               0x08028230   Section       56  log.o(.constdata)
+    Lg2                                      0x08028230   Data          24  log.o(.constdata)
+    Lg                                       0x08028248   Data          32  log.o(.constdata)
+    .constdata                               0x08028268   Section        8  qnan.o(.constdata)
+    .constdata                               0x08028270   Section      148  bigflt0.o(.constdata)
+    tenpwrs_x                                0x08028270   Data          60  bigflt0.o(.constdata)
+    tenpwrs_i                                0x080282ac   Data          64  bigflt0.o(.constdata)
+    .conststring                             0x08028304   Section       24  freertos.o(.conststring)
+    .conststring                             0x0802831c   Section        6  usbh_audio.o(.conststring)
+    .conststring                             0x08028324   Section        4  usbh_cdc.o(.conststring)
+    .conststring                             0x08028328   Section        4  usbh_hid.o(.conststring)
+    .conststring                             0x0802832c   Section        4  usbh_msc.o(.conststring)
+    .conststring                             0x08028330   Section        4  usbh_mtp.o(.conststring)
+    .conststring                             0x08028334   Section     1207  dchmiapp.o(.conststring)
+    c$$dinf                                  0x0802882c   Section        8  fpconst.o(c$$dinf)
+    c$$dmax                                  0x08028834   Section        8  fpconst.o(c$$dmax)
+    locale$$data                             0x0802883c   Section       28  lc_numeric_c.o(locale$$data)
+    __lcnum_c_name                           0x08028840   Data           2  lc_numeric_c.o(locale$$data)
+    __lcnum_c_start                          0x08028848   Data           0  lc_numeric_c.o(locale$$data)
+    __lcnum_c_point                          0x08028854   Data           0  lc_numeric_c.o(locale$$data)
+    __lcnum_c_thousands                      0x08028856   Data           0  lc_numeric_c.o(locale$$data)
+    __lcnum_c_grouping                       0x08028857   Data           0  lc_numeric_c.o(locale$$data)
+    locale$$data                             0x08028858   Section      272  lc_ctype_c.o(locale$$data)
+    __lcnum_c_end                            0x08028858   Data           0  lc_numeric_c.o(locale$$data)
+    __lcctype_c_name                         0x0802885c   Data           2  lc_ctype_c.o(locale$$data)
+    __lcctype_c_start                        0x08028864   Data           0  lc_ctype_c.o(locale$$data)
+    __lcctype_c_end                          0x08028968   Data           0  lc_ctype_c.o(locale$$data)
     .ARM.__AT_0x10000000                     0x10000000   Section    65535  dchmiapp.o(.ARM.__AT_0x10000000)
     .data                                    0x20000000   Section        8  crc.o(.data)
     .data                                    0x20000008   Section        5  fatfs.o(.data)
@@ -8570,205 +8570,205 @@ Image Symbol Table
     sPlcFdramSave                            0x0801e819   Thumb Code    56  splc.o(i.sPlcFdramSave)
     sPlcInit                                 0x0801e8ad   Thumb Code   170  splc.o(i.sPlcInit)
     sPlcInputInit                            0x0801e9d9   Thumb Code    24  splcioin.o(i.sPlcInputInit)
-    sPlcInputRefresh                         0x0801ea31   Thumb Code   492  splcioin.o(i.sPlcInputRefresh)
-    sPlcIsrDisable                           0x0801ec35   Thumb Code     2  splc.o(i.sPlcIsrDisable)
-    sPlcIsrEnable                            0x0801ec37   Thumb Code     2  splc.o(i.sPlcIsrEnable)
-    sPlcLaserInit                            0x0801ec39   Thumb Code    92  splclaser.o(i.sPlcLaserInit)
-    sPlcLaserTimerIsr                        0x0801ed09   Thumb Code   152  splclaser.o(i.sPlcLaserTimerIsr)
-    sPlcNvramClear                           0x0801edb1   Thumb Code    50  splc.o(i.sPlcNvramClear)
-    sPlcNvramLoad                            0x0801ee25   Thumb Code   172  splc.o(i.sPlcNvramLoad)
-    sPlcNvramSave                            0x0801efa1   Thumb Code    96  splc.o(i.sPlcNvramSave)
-    sPlcNvramUpdate                          0x0801f05d   Thumb Code   212  splc.o(i.sPlcNvramUpdate)
-    sPlcOutputInit                           0x0801f1bd   Thumb Code    68  splcioout.o(i.sPlcOutputInit)
-    sPlcOutputRefresh                        0x0801f24d   Thumb Code   298  splcioout.o(i.sPlcOutputRefresh)
-    sPlcProcessEnd                           0x0801f385   Thumb Code    38  splc.o(i.sPlcProcessEnd)
-    sPlcProcessStart                         0x0801f3ad   Thumb Code   182  splc.o(i.sPlcProcessStart)
-    sPlcSpeakerDisable                       0x0801f481   Thumb Code    34  splcspeaker.o(i.sPlcSpeakerDisable)
-    sPlcSpeakerEnable                        0x0801f4b1   Thumb Code    38  splcspeaker.o(i.sPlcSpeakerEnable)
-    sPlcSpeakerFreq                          0x0801f4e5   Thumb Code    32  splcspeaker.o(i.sPlcSpeakerFreq)
-    sPlcSpeakerInit                          0x0801f505   Thumb Code    44  splcspeaker.o(i.sPlcSpeakerInit)
-    sPlcSpeakerVolume                        0x0801f539   Thumb Code    96  splcspeaker.o(i.sPlcSpeakerVolume)
-    sPlcSpwmLoop                             0x0801f5a5   Thumb Code   634  splc.o(i.sPlcSpwmLoop)
-    sPlcTimerInit                            0x0801f825   Thumb Code    72  splctimer.o(i.sPlcTimerInit)
-    sPlcTimerIsr                             0x0801f8e1   Thumb Code   424  splctimer.o(i.sPlcTimerIsr)
-    saveDeviceConfig                         0x0801fac1   Thumb Code    54  splcmisc.o(i.saveDeviceConfig)
-    schemeInit                               0x0801fb61   Thumb Code  1488  preschemedual_450.o(i.schemeInit)
-    seletcSchemeNum                          0x08020159   Thumb Code    48  dchmiapp.o(i.seletcSchemeNum)
-    setFanSpeed                              0x08020189   Thumb Code   130  splcmisc.o(i.setFanSpeed)
-    setRedLaserPwm                           0x0802024d   Thumb Code    64  splclaser.o(i.setRedLaserPwm)
-    softDelayMs                              0x080203b9   Thumb Code    42  libcpu.o(i.softDelayMs)
-    softDelayUs                              0x080203e3   Thumb Code    38  libcpu.o(i.softDelayUs)
-    standbyDebugInfoVisiable                 0x08020a31   Thumb Code    26  dchmiapp.o(i.standbyDebugInfoVisiable)
-    standbyKeyTouchEnable                    0x08020a4d   Thumb Code    30  dchmiapp.o(i.standbyKeyTouchEnable)
-    standbyKeyValue                          0x08020a71   Thumb Code    16  dchmiapp.o(i.standbyKeyValue)
-    unselectSchemeAll                        0x08020e05   Thumb Code   142  dchmiapp.o(i.unselectSchemeAll)
-    unselectSchemeNum                        0x08020e93   Thumb Code    28  dchmiapp.o(i.unselectSchemeNum)
-    updateAcousticDisplay                    0x08020eb1   Thumb Code   384  dchmiapp.o(i.updateAcousticDisplay)
-    updateBootloadReq                        0x080210d9   Thumb Code   454  dchmiapp.o(i.updateBootloadReq)
-    updateCustomScheme                       0x08021471   Thumb Code    24  mainapplib.o(i.updateCustomScheme)
-    updateDebugInfo                          0x08021491   Thumb Code   128  dchmiapp.o(i.updateDebugInfo)
-    updateDiognosisInfo                      0x08021519   Thumb Code   314  dchmiapp.o(i.updateDiognosisInfo)
-    updateDiognosisInfoRaw                   0x080216ed   Thumb Code  2240  dchmiapp.o(i.updateDiognosisInfoRaw)
-    updateDiognosisTextBox                   0x080220cd   Thumb Code   480  dchmiapp.o(i.updateDiognosisTextBox)
-    updateExtralDisplay                      0x080222bd   Thumb Code   686  dchmiapp.o(i.updateExtralDisplay)
-    updateInformationDisplay                 0x0802259d   Thumb Code   284  dchmiapp.o(i.updateInformationDisplay)
-    updateNegWidthDisplay                    0x08022745   Thumb Code    70  dchmiapp.o(i.updateNegWidthDisplay)
-    updateOptionDisplay                      0x080227a1   Thumb Code   138  dchmiapp.o(i.updateOptionDisplay)
-    updatePosWidthDisplay                    0x08022831   Thumb Code    70  dchmiapp.o(i.updatePosWidthDisplay)
-    updateReadyDisplay                       0x0802288d   Thumb Code   444  dchmiapp.o(i.updateReadyDisplay)
-    updateReleaseTimeEnergy                  0x08022a99   Thumb Code   328  dchmiapp.o(i.updateReleaseTimeEnergy)
-    updateSchemeDetail                       0x08022c01   Thumb Code  4402  dchmiapp.o(i.updateSchemeDetail)
-    updateSchemeInfo                         0x08023d5d   Thumb Code   528  dchmiapp.o(i.updateSchemeInfo)
-    updateStandbyDisplay                     0x08023ff1   Thumb Code  1148  dchmiapp.o(i.updateStandbyDisplay)
-    updateWarnMsgDisplay                     0x0802447d   Thumb Code   144  dchmiapp.o(i.updateWarnMsgDisplay)
-    uxListRemove                             0x0802455d   Thumb Code    40  list.o(i.uxListRemove)
-    uxQueueSpacesAvailable                   0x08024585   Thumb Code    48  queue.o(i.uxQueueSpacesAvailable)
-    vApplicationGetIdleTaskMemory            0x080245b5   Thumb Code    14  cmsis_os2.o(i.vApplicationGetIdleTaskMemory)
-    vApplicationGetTimerTaskMemory           0x080245cd   Thumb Code    16  cmsis_os2.o(i.vApplicationGetTimerTaskMemory)
-    vListInitialise                          0x080245e5   Thumb Code    26  list.o(i.vListInitialise)
-    vListInitialiseItem                      0x080245ff   Thumb Code     6  list.o(i.vListInitialiseItem)
-    vListInsert                              0x08024605   Thumb Code    52  list.o(i.vListInsert)
-    vListInsertEnd                           0x08024639   Thumb Code    24  list.o(i.vListInsertEnd)
-    vPortEnterCritical                       0x08024651   Thumb Code    76  port.o(i.vPortEnterCritical)
-    vPortExitCritical                        0x080246a5   Thumb Code    56  port.o(i.vPortExitCritical)
-    vPortFree                                0x080246e1   Thumb Code   150  heap_4.o(i.vPortFree)
-    vPortSetupTimerInterrupt                 0x08024785   Thumb Code    36  port.o(i.vPortSetupTimerInterrupt)
-    vPortValidateInterruptPriority           0x080247ad   Thumb Code   106  port.o(i.vPortValidateInterruptPriority)
-    vQueueAddToRegistry                      0x08024825   Thumb Code    38  queue.o(i.vQueueAddToRegistry)
-    vQueueDelete                             0x08024851   Thumb Code    50  queue.o(i.vQueueDelete)
-    vQueueUnregisterQueue                    0x08024885   Thumb Code    44  queue.o(i.vQueueUnregisterQueue)
-    vQueueWaitForMessageRestricted           0x080248b5   Thumb Code    74  queue.o(i.vQueueWaitForMessageRestricted)
-    vTaskDelay                               0x08024901   Thumb Code    82  tasks.o(i.vTaskDelay)
-    vTaskInternalSetTimeOutState             0x0802495d   Thumb Code    14  tasks.o(i.vTaskInternalSetTimeOutState)
-    vTaskMissedYield                         0x08024975   Thumb Code     8  tasks.o(i.vTaskMissedYield)
-    vTaskPlaceOnEventList                    0x08024981   Thumb Code    52  tasks.o(i.vTaskPlaceOnEventList)
-    vTaskPlaceOnEventListRestricted          0x080249b9   Thumb Code    60  tasks.o(i.vTaskPlaceOnEventListRestricted)
-    vTaskPriorityDisinheritAfterTimeout      0x080249f9   Thumb Code   194  tasks.o(i.vTaskPriorityDisinheritAfterTimeout)
-    vTaskStartScheduler                      0x08024ac9   Thumb Code   156  tasks.o(i.vTaskStartScheduler)
-    vTaskSuspendAll                          0x08024b81   Thumb Code    12  tasks.o(i.vTaskSuspendAll)
-    vTaskSwitchContext                       0x08024b91   Thumb Code   122  tasks.o(i.vTaskSwitchContext)
-    wfswLoop                                 0x08024c75   Thumb Code   170  dchmiapp.o(i.wfswLoop)
-    xPortStartScheduler                      0x0802500d   Thumb Code   330  port.o(i.xPortStartScheduler)
-    xPortSysTickHandler                      0x08025175   Thumb Code    46  port.o(i.xPortSysTickHandler)
-    xQueueCreateMutex                        0x080251a9   Thumb Code    34  queue.o(i.xQueueCreateMutex)
-    xQueueCreateMutexStatic                  0x080251cb   Thumb Code    42  queue.o(i.xQueueCreateMutexStatic)
-    xQueueGenericCreate                      0x080251f5   Thumb Code    90  queue.o(i.xQueueGenericCreate)
-    xQueueGenericCreateStatic                0x0802524f   Thumb Code   224  queue.o(i.xQueueGenericCreateStatic)
-    xQueueGenericReset                       0x08025331   Thumb Code   146  queue.o(i.xQueueGenericReset)
-    xQueueGenericSend                        0x080253c9   Thumb Code   420  queue.o(i.xQueueGenericSend)
-    xQueueGenericSendFromISR                 0x08025571   Thumb Code   252  queue.o(i.xQueueGenericSendFromISR)
-    xQueueGiveMutexRecursive                 0x0802566d   Thumb Code    72  queue.o(i.xQueueGiveMutexRecursive)
-    xQueueReceive                            0x080256b5   Thumb Code   356  queue.o(i.xQueueReceive)
-    xQueueReceiveFromISR                     0x0802581d   Thumb Code   202  queue.o(i.xQueueReceiveFromISR)
-    xQueueSemaphoreTake                      0x080258e9   Thumb Code   434  queue.o(i.xQueueSemaphoreTake)
-    xQueueTakeMutexRecursive                 0x08025aa1   Thumb Code    78  queue.o(i.xQueueTakeMutexRecursive)
-    xTaskCheckForTimeOut                     0x08025af1   Thumb Code   132  tasks.o(i.xTaskCheckForTimeOut)
-    xTaskCreate                              0x08025b7d   Thumb Code   100  tasks.o(i.xTaskCreate)
-    xTaskCreateStatic                        0x08025be1   Thumb Code   186  tasks.o(i.xTaskCreateStatic)
-    xTaskGetCurrentTaskHandle                0x08025c9d   Thumb Code     6  tasks.o(i.xTaskGetCurrentTaskHandle)
-    xTaskGetSchedulerState                   0x08025ca9   Thumb Code    24  tasks.o(i.xTaskGetSchedulerState)
-    xTaskGetTickCount                        0x08025cc9   Thumb Code     6  tasks.o(i.xTaskGetTickCount)
-    xTaskIncrementTick                       0x08025cd5   Thumb Code   280  tasks.o(i.xTaskIncrementTick)
-    xTaskPriorityDisinherit                  0x08025e19   Thumb Code   152  tasks.o(i.xTaskPriorityDisinherit)
-    xTaskPriorityInherit                     0x08025ebd   Thumb Code   150  tasks.o(i.xTaskPriorityInherit)
-    xTaskRemoveFromEventList                 0x08025f61   Thumb Code   126  tasks.o(i.xTaskRemoveFromEventList)
-    xTaskResumeAll                           0x08025ff9   Thumb Code   222  tasks.o(i.xTaskResumeAll)
-    xTimerCreateTimerTask                    0x080260fd   Thumb Code   100  timers.o(i.xTimerCreateTimerTask)
-    xTimerGenericCommand                     0x08026175   Thumb Code   128  timers.o(i.xTimerGenericCommand)
-    _get_lc_numeric                          0x08026281   Thumb Code    44  lc_numeric_c.o(locale$$code)
-    _get_lc_ctype                            0x080262ad   Thumb Code    44  lc_ctype_c.o(locale$$code)
-    __aeabi_dneg                             0x080262d9   Thumb Code     0  basic.o(x$fpl$basic)
-    _dneg                                    0x080262d9   Thumb Code     6  basic.o(x$fpl$basic)
-    __aeabi_fneg                             0x080262df   Thumb Code     0  basic.o(x$fpl$basic)
-    _fneg                                    0x080262df   Thumb Code     6  basic.o(x$fpl$basic)
-    _dabs                                    0x080262e5   Thumb Code     6  basic.o(x$fpl$basic)
-    _fabs                                    0x080262eb   Thumb Code     6  basic.o(x$fpl$basic)
-    __aeabi_d2f                              0x080262f1   Thumb Code     0  d2f.o(x$fpl$d2f)
-    _d2f                                     0x080262f1   Thumb Code    98  d2f.o(x$fpl$d2f)
-    __aeabi_dadd                             0x08026355   Thumb Code     0  daddsub_clz.o(x$fpl$dadd)
-    _dadd                                    0x08026355   Thumb Code   332  daddsub_clz.o(x$fpl$dadd)
-    __fpl_dcheck_NaN1                        0x080264a5   Thumb Code    10  dcheck1.o(x$fpl$dcheck1)
-    __fpl_dcmp_Inf                           0x080264b5   Thumb Code    24  dcmpi.o(x$fpl$dcmpinf)
-    __aeabi_ddiv                             0x080264cd   Thumb Code     0  ddiv.o(x$fpl$ddiv)
-    _ddiv                                    0x080264cd   Thumb Code   552  ddiv.o(x$fpl$ddiv)
-    __aeabi_cdcmpeq                          0x0802677d   Thumb Code     0  deqf.o(x$fpl$deqf)
-    _dcmpeq                                  0x0802677d   Thumb Code   120  deqf.o(x$fpl$deqf)
-    __aeabi_d2uiz                            0x080267f5   Thumb Code     0  dfixu.o(x$fpl$dfixu)
-    _dfixu                                   0x080267f5   Thumb Code    90  dfixu.o(x$fpl$dfixu)
-    __aeabi_i2d                              0x0802684f   Thumb Code     0  dflt_clz.o(x$fpl$dflt)
-    _dflt                                    0x0802684f   Thumb Code    46  dflt_clz.o(x$fpl$dflt)
-    __aeabi_ui2d                             0x0802687d   Thumb Code     0  dflt_clz.o(x$fpl$dfltu)
-    _dfltu                                   0x0802687d   Thumb Code    38  dflt_clz.o(x$fpl$dfltu)
-    __aeabi_cdcmple                          0x080268a5   Thumb Code     0  dleqf.o(x$fpl$dleqf)
-    _dcmple                                  0x080268a5   Thumb Code   120  dleqf.o(x$fpl$dleqf)
-    __fpl_dcmple_InfNaN                      0x08026907   Thumb Code     0  dleqf.o(x$fpl$dleqf)
-    __aeabi_dmul                             0x0802691d   Thumb Code     0  dmul.o(x$fpl$dmul)
-    _dmul                                    0x0802691d   Thumb Code   332  dmul.o(x$fpl$dmul)
-    __fpl_dnaninf                            0x08026a71   Thumb Code   156  dnaninf.o(x$fpl$dnaninf)
-    __fpl_dretinf                            0x08026b0d   Thumb Code    12  dretinf.o(x$fpl$dretinf)
-    __aeabi_cdrcmple                         0x08026b19   Thumb Code     0  drleqf.o(x$fpl$drleqf)
-    _drcmple                                 0x08026b19   Thumb Code   108  drleqf.o(x$fpl$drleqf)
-    __aeabi_drsub                            0x08026b85   Thumb Code     0  daddsub_clz.o(x$fpl$drsb)
-    _drsb                                    0x08026b85   Thumb Code    22  daddsub_clz.o(x$fpl$drsb)
-    __aeabi_dsub                             0x08026b9d   Thumb Code     0  daddsub_clz.o(x$fpl$dsub)
-    _dsub                                    0x08026b9d   Thumb Code   464  daddsub_clz.o(x$fpl$dsub)
-    __aeabi_f2d                              0x08026d71   Thumb Code     0  f2d.o(x$fpl$f2d)
-    _f2d                                     0x08026d71   Thumb Code    86  f2d.o(x$fpl$f2d)
-    __fpl_fnaninf                            0x08026dc7   Thumb Code   140  fnaninf.o(x$fpl$fnaninf)
-    _fp_init                                 0x08026e53   Thumb Code    10  fpinit.o(x$fpl$fpinit)
-    __fplib_config_fpu_vfp                   0x08026e5b   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fplib_config_pureend_doubles           0x08026e5b   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fpl_fretinf                            0x08026e5d   Thumb Code    10  fretinf.o(x$fpl$fretinf)
-    __ieee_status                            0x08026e67   Thumb Code     6  istatus.o(x$fpl$ieeestatus)
-    _printf_fp_dec                           0x08026e6d   Thumb Code     4  printf1.o(x$fpl$printf1)
-    __fpl_return_NaN                         0x08026e71   Thumb Code   100  retnan.o(x$fpl$retnan)
-    __ARM_scalbn                             0x08026ed5   Thumb Code    92  scalbn.o(x$fpl$scalbn)
-    _scanf_real                              0x08026f31   Thumb Code     4  scanf1.o(x$fpl$scanf1)
-    _scanf_hex_real                          0x08026f35   Thumb Code     4  scanf2.o(x$fpl$scanf2)
-    _scanf_infnan                            0x08026f39   Thumb Code     4  scanf2.o(x$fpl$scanf2)
-    __fpl_cmpreturn                          0x08026f3d   Thumb Code    48  trapv.o(x$fpl$trapveneer)
-    __I$use$fp                               0x08026f6c   Number         0  usenofp.o(x$fpl$usenofp)
-    defaultTask_attributes                   0x08026f6c   Data          36  freertos.o(.constdata)
-    mainAppTask_attributes                   0x08026f90   Data          36  freertos.o(.constdata)
-    USBH_Driver                              0x08026fb4   Data          20  usbh_diskio.o(.constdata)
-    AHBPrescTable                            0x08026fd0   Data          16  system_stm32f4xx.o(.constdata)
-    APBPrescTable                            0x08026fe0   Data           8  system_stm32f4xx.o(.constdata)
-    WARN_MSG_NO_ERROR                        0x0802796b   Data           1  dchmilanguage.o(.constdata)
-    WARN_MSG_INTERLOCK_UNPLUG                0x0802796c   Data          28  dchmilanguage.o(.constdata)
-    WARN_MSG_FOOTSWITCH_UNPLUG               0x08027988   Data          25  dchmilanguage.o(.constdata)
-    WARN_MSG_ESTOP_PRESS                     0x080279a1   Data          12  dchmilanguage.o(.constdata)
-    WARN_MSG_FIBER_UNPLUG                    0x080279ad   Data          19  dchmilanguage.o(.constdata)
-    WARN_MSG_OUT_ENERGY                      0x080279c0   Data          24  dchmilanguage.o(.constdata)
-    WARN_MSG_DIODE_HTEMP                     0x080279d8   Data          18  dchmilanguage.o(.constdata)
-    WARN_MSG_DIODE_LTEMP                     0x080279ea   Data          29  dchmilanguage.o(.constdata)
-    WARN_MSG_DIODE0_OVERCURRENT              0x08027a07   Data          32  dchmilanguage.o(.constdata)
-    WARN_MSG_DIODE1_OVERCURRENT              0x08027a27   Data          32  dchmilanguage.o(.constdata)
-    WARN_MSG_NTC_ERROR                       0x08027a47   Data          17  dchmilanguage.o(.constdata)
-    WARN_MSG_ENVI_HTEMP                      0x08027a58   Data          22  dchmilanguage.o(.constdata)
-    WARN_MSG_ENVI_LTEMP                      0x08027a6e   Data          21  dchmilanguage.o(.constdata)
-    WARN_MSG_FOOT_DEPRESSED                  0x08027a83   Data          32  dchmilanguage.o(.constdata)
-    WARN_MSG_LASER_EMIT                      0x08027aa3   Data          16  dchmilanguage.o(.constdata)
-    WARN_MSG_WAIT_TRIGGER                    0x08027ab3   Data          19  dchmilanguage.o(.constdata)
-    WARN_MSG_FIBER_MISSMATE                  0x08027ac6   Data          15  dchmilanguage.o(.constdata)
-    INFO_MSG_SN                              0x08027ad5   Data           5  dchmilanguage.o(.constdata)
-    INFO_MSG_HW_VERSION                      0x08027ada   Data          25  dchmilanguage.o(.constdata)
-    INFO_MSG_SW_VERSION                      0x08027af3   Data          12  dchmilanguage.o(.constdata)
-    INFO_MSG_MANUFACTURE_DATE                0x08027aff   Data          19  dchmilanguage.o(.constdata)
-    INFO_MSG_TYPE                            0x08027b12   Data          19  dchmilanguage.o(.constdata)
-    INFO_MSG_LASER_POWER                     0x08027b25   Data          26  dchmilanguage.o(.constdata)
-    INFO_MSG_WAVELENGTH                      0x08027b3f   Data          31  dchmilanguage.o(.constdata)
-    crc16Tab                                 0x08027b80   Data         512  libcrc.o(.constdata)
-    crc32Tab                                 0x08027d80   Data        1024  libcrc.o(.constdata)
-    __mathlib_zero                           0x08028210   Data           8  qnan.o(.constdata)
-    Region$$Table$$Base                      0x08028794   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x080287d4   Number         0  anon$$obj.o(Region$$Table)
-    __aeabi_HUGE_VAL                         0x080287d4   Data           0  fpconst.o(c$$dinf)
-    __aeabi_HUGE_VALL                        0x080287d4   Data           0  fpconst.o(c$$dinf)
-    __aeabi_INFINITY                         0x080287d4   Data           0  fpconst.o(c$$dinf)
-    __dInf                                   0x080287d4   Data           0  fpconst.o(c$$dinf)
-    __huge_val                               0x080287d4   Data           0  fpconst.o(c$$dinf)
-    __dbl_max                                0x080287dc   Data           0  fpconst.o(c$$dmax)
-    __ctype                                  0x0802880d   Data           0  lc_ctype_c.o(locale$$data)
+    sPlcInputRefresh                         0x0801ea31   Thumb Code   578  splcioin.o(i.sPlcInputRefresh)
+    sPlcIsrDisable                           0x0801ec8d   Thumb Code     2  splc.o(i.sPlcIsrDisable)
+    sPlcIsrEnable                            0x0801ec8f   Thumb Code     2  splc.o(i.sPlcIsrEnable)
+    sPlcLaserInit                            0x0801ec91   Thumb Code    92  splclaser.o(i.sPlcLaserInit)
+    sPlcLaserTimerIsr                        0x0801ed61   Thumb Code   152  splclaser.o(i.sPlcLaserTimerIsr)
+    sPlcNvramClear                           0x0801ee09   Thumb Code    50  splc.o(i.sPlcNvramClear)
+    sPlcNvramLoad                            0x0801ee7d   Thumb Code   172  splc.o(i.sPlcNvramLoad)
+    sPlcNvramSave                            0x0801eff9   Thumb Code    96  splc.o(i.sPlcNvramSave)
+    sPlcNvramUpdate                          0x0801f0b5   Thumb Code   212  splc.o(i.sPlcNvramUpdate)
+    sPlcOutputInit                           0x0801f215   Thumb Code    68  splcioout.o(i.sPlcOutputInit)
+    sPlcOutputRefresh                        0x0801f2a5   Thumb Code   298  splcioout.o(i.sPlcOutputRefresh)
+    sPlcProcessEnd                           0x0801f3dd   Thumb Code    38  splc.o(i.sPlcProcessEnd)
+    sPlcProcessStart                         0x0801f405   Thumb Code   182  splc.o(i.sPlcProcessStart)
+    sPlcSpeakerDisable                       0x0801f4d9   Thumb Code    34  splcspeaker.o(i.sPlcSpeakerDisable)
+    sPlcSpeakerEnable                        0x0801f509   Thumb Code    38  splcspeaker.o(i.sPlcSpeakerEnable)
+    sPlcSpeakerFreq                          0x0801f53d   Thumb Code    32  splcspeaker.o(i.sPlcSpeakerFreq)
+    sPlcSpeakerInit                          0x0801f55d   Thumb Code    44  splcspeaker.o(i.sPlcSpeakerInit)
+    sPlcSpeakerVolume                        0x0801f591   Thumb Code    96  splcspeaker.o(i.sPlcSpeakerVolume)
+    sPlcSpwmLoop                             0x0801f5fd   Thumb Code   634  splc.o(i.sPlcSpwmLoop)
+    sPlcTimerInit                            0x0801f87d   Thumb Code    72  splctimer.o(i.sPlcTimerInit)
+    sPlcTimerIsr                             0x0801f939   Thumb Code   424  splctimer.o(i.sPlcTimerIsr)
+    saveDeviceConfig                         0x0801fb19   Thumb Code    54  splcmisc.o(i.saveDeviceConfig)
+    schemeInit                               0x0801fbb9   Thumb Code  1488  preschemedual_450.o(i.schemeInit)
+    seletcSchemeNum                          0x080201b1   Thumb Code    48  dchmiapp.o(i.seletcSchemeNum)
+    setFanSpeed                              0x080201e1   Thumb Code   130  splcmisc.o(i.setFanSpeed)
+    setRedLaserPwm                           0x080202a5   Thumb Code    64  splclaser.o(i.setRedLaserPwm)
+    softDelayMs                              0x08020411   Thumb Code    42  libcpu.o(i.softDelayMs)
+    softDelayUs                              0x0802043b   Thumb Code    38  libcpu.o(i.softDelayUs)
+    standbyDebugInfoVisiable                 0x08020a89   Thumb Code    26  dchmiapp.o(i.standbyDebugInfoVisiable)
+    standbyKeyTouchEnable                    0x08020aa5   Thumb Code    30  dchmiapp.o(i.standbyKeyTouchEnable)
+    standbyKeyValue                          0x08020ac9   Thumb Code    16  dchmiapp.o(i.standbyKeyValue)
+    unselectSchemeAll                        0x08020e5d   Thumb Code   142  dchmiapp.o(i.unselectSchemeAll)
+    unselectSchemeNum                        0x08020eeb   Thumb Code    28  dchmiapp.o(i.unselectSchemeNum)
+    updateAcousticDisplay                    0x08020f09   Thumb Code   384  dchmiapp.o(i.updateAcousticDisplay)
+    updateBootloadReq                        0x08021131   Thumb Code   454  dchmiapp.o(i.updateBootloadReq)
+    updateCustomScheme                       0x080214c9   Thumb Code    24  mainapplib.o(i.updateCustomScheme)
+    updateDebugInfo                          0x080214e9   Thumb Code   128  dchmiapp.o(i.updateDebugInfo)
+    updateDiognosisInfo                      0x08021571   Thumb Code   314  dchmiapp.o(i.updateDiognosisInfo)
+    updateDiognosisInfoRaw                   0x08021745   Thumb Code  2240  dchmiapp.o(i.updateDiognosisInfoRaw)
+    updateDiognosisTextBox                   0x08022125   Thumb Code   480  dchmiapp.o(i.updateDiognosisTextBox)
+    updateExtralDisplay                      0x08022315   Thumb Code   686  dchmiapp.o(i.updateExtralDisplay)
+    updateInformationDisplay                 0x080225f5   Thumb Code   284  dchmiapp.o(i.updateInformationDisplay)
+    updateNegWidthDisplay                    0x0802279d   Thumb Code    70  dchmiapp.o(i.updateNegWidthDisplay)
+    updateOptionDisplay                      0x080227f9   Thumb Code   138  dchmiapp.o(i.updateOptionDisplay)
+    updatePosWidthDisplay                    0x08022889   Thumb Code    70  dchmiapp.o(i.updatePosWidthDisplay)
+    updateReadyDisplay                       0x080228e5   Thumb Code   444  dchmiapp.o(i.updateReadyDisplay)
+    updateReleaseTimeEnergy                  0x08022af1   Thumb Code   328  dchmiapp.o(i.updateReleaseTimeEnergy)
+    updateSchemeDetail                       0x08022c59   Thumb Code  4402  dchmiapp.o(i.updateSchemeDetail)
+    updateSchemeInfo                         0x08023db5   Thumb Code   528  dchmiapp.o(i.updateSchemeInfo)
+    updateStandbyDisplay                     0x08024049   Thumb Code  1148  dchmiapp.o(i.updateStandbyDisplay)
+    updateWarnMsgDisplay                     0x080244d5   Thumb Code   144  dchmiapp.o(i.updateWarnMsgDisplay)
+    uxListRemove                             0x080245b5   Thumb Code    40  list.o(i.uxListRemove)
+    uxQueueSpacesAvailable                   0x080245dd   Thumb Code    48  queue.o(i.uxQueueSpacesAvailable)
+    vApplicationGetIdleTaskMemory            0x0802460d   Thumb Code    14  cmsis_os2.o(i.vApplicationGetIdleTaskMemory)
+    vApplicationGetTimerTaskMemory           0x08024625   Thumb Code    16  cmsis_os2.o(i.vApplicationGetTimerTaskMemory)
+    vListInitialise                          0x0802463d   Thumb Code    26  list.o(i.vListInitialise)
+    vListInitialiseItem                      0x08024657   Thumb Code     6  list.o(i.vListInitialiseItem)
+    vListInsert                              0x0802465d   Thumb Code    52  list.o(i.vListInsert)
+    vListInsertEnd                           0x08024691   Thumb Code    24  list.o(i.vListInsertEnd)
+    vPortEnterCritical                       0x080246a9   Thumb Code    76  port.o(i.vPortEnterCritical)
+    vPortExitCritical                        0x080246fd   Thumb Code    56  port.o(i.vPortExitCritical)
+    vPortFree                                0x08024739   Thumb Code   150  heap_4.o(i.vPortFree)
+    vPortSetupTimerInterrupt                 0x080247dd   Thumb Code    36  port.o(i.vPortSetupTimerInterrupt)
+    vPortValidateInterruptPriority           0x08024805   Thumb Code   106  port.o(i.vPortValidateInterruptPriority)
+    vQueueAddToRegistry                      0x0802487d   Thumb Code    38  queue.o(i.vQueueAddToRegistry)
+    vQueueDelete                             0x080248a9   Thumb Code    50  queue.o(i.vQueueDelete)
+    vQueueUnregisterQueue                    0x080248dd   Thumb Code    44  queue.o(i.vQueueUnregisterQueue)
+    vQueueWaitForMessageRestricted           0x0802490d   Thumb Code    74  queue.o(i.vQueueWaitForMessageRestricted)
+    vTaskDelay                               0x08024959   Thumb Code    82  tasks.o(i.vTaskDelay)
+    vTaskInternalSetTimeOutState             0x080249b5   Thumb Code    14  tasks.o(i.vTaskInternalSetTimeOutState)
+    vTaskMissedYield                         0x080249cd   Thumb Code     8  tasks.o(i.vTaskMissedYield)
+    vTaskPlaceOnEventList                    0x080249d9   Thumb Code    52  tasks.o(i.vTaskPlaceOnEventList)
+    vTaskPlaceOnEventListRestricted          0x08024a11   Thumb Code    60  tasks.o(i.vTaskPlaceOnEventListRestricted)
+    vTaskPriorityDisinheritAfterTimeout      0x08024a51   Thumb Code   194  tasks.o(i.vTaskPriorityDisinheritAfterTimeout)
+    vTaskStartScheduler                      0x08024b21   Thumb Code   156  tasks.o(i.vTaskStartScheduler)
+    vTaskSuspendAll                          0x08024bd9   Thumb Code    12  tasks.o(i.vTaskSuspendAll)
+    vTaskSwitchContext                       0x08024be9   Thumb Code   122  tasks.o(i.vTaskSwitchContext)
+    wfswLoop                                 0x08024ccd   Thumb Code   170  dchmiapp.o(i.wfswLoop)
+    xPortStartScheduler                      0x08025065   Thumb Code   330  port.o(i.xPortStartScheduler)
+    xPortSysTickHandler                      0x080251cd   Thumb Code    46  port.o(i.xPortSysTickHandler)
+    xQueueCreateMutex                        0x08025201   Thumb Code    34  queue.o(i.xQueueCreateMutex)
+    xQueueCreateMutexStatic                  0x08025223   Thumb Code    42  queue.o(i.xQueueCreateMutexStatic)
+    xQueueGenericCreate                      0x0802524d   Thumb Code    90  queue.o(i.xQueueGenericCreate)
+    xQueueGenericCreateStatic                0x080252a7   Thumb Code   224  queue.o(i.xQueueGenericCreateStatic)
+    xQueueGenericReset                       0x08025389   Thumb Code   146  queue.o(i.xQueueGenericReset)
+    xQueueGenericSend                        0x08025421   Thumb Code   420  queue.o(i.xQueueGenericSend)
+    xQueueGenericSendFromISR                 0x080255c9   Thumb Code   252  queue.o(i.xQueueGenericSendFromISR)
+    xQueueGiveMutexRecursive                 0x080256c5   Thumb Code    72  queue.o(i.xQueueGiveMutexRecursive)
+    xQueueReceive                            0x0802570d   Thumb Code   356  queue.o(i.xQueueReceive)
+    xQueueReceiveFromISR                     0x08025875   Thumb Code   202  queue.o(i.xQueueReceiveFromISR)
+    xQueueSemaphoreTake                      0x08025941   Thumb Code   434  queue.o(i.xQueueSemaphoreTake)
+    xQueueTakeMutexRecursive                 0x08025af9   Thumb Code    78  queue.o(i.xQueueTakeMutexRecursive)
+    xTaskCheckForTimeOut                     0x08025b49   Thumb Code   132  tasks.o(i.xTaskCheckForTimeOut)
+    xTaskCreate                              0x08025bd5   Thumb Code   100  tasks.o(i.xTaskCreate)
+    xTaskCreateStatic                        0x08025c39   Thumb Code   186  tasks.o(i.xTaskCreateStatic)
+    xTaskGetCurrentTaskHandle                0x08025cf5   Thumb Code     6  tasks.o(i.xTaskGetCurrentTaskHandle)
+    xTaskGetSchedulerState                   0x08025d01   Thumb Code    24  tasks.o(i.xTaskGetSchedulerState)
+    xTaskGetTickCount                        0x08025d21   Thumb Code     6  tasks.o(i.xTaskGetTickCount)
+    xTaskIncrementTick                       0x08025d2d   Thumb Code   280  tasks.o(i.xTaskIncrementTick)
+    xTaskPriorityDisinherit                  0x08025e71   Thumb Code   152  tasks.o(i.xTaskPriorityDisinherit)
+    xTaskPriorityInherit                     0x08025f15   Thumb Code   150  tasks.o(i.xTaskPriorityInherit)
+    xTaskRemoveFromEventList                 0x08025fb9   Thumb Code   126  tasks.o(i.xTaskRemoveFromEventList)
+    xTaskResumeAll                           0x08026051   Thumb Code   222  tasks.o(i.xTaskResumeAll)
+    xTimerCreateTimerTask                    0x08026155   Thumb Code   100  timers.o(i.xTimerCreateTimerTask)
+    xTimerGenericCommand                     0x080261cd   Thumb Code   128  timers.o(i.xTimerGenericCommand)
+    _get_lc_numeric                          0x080262d9   Thumb Code    44  lc_numeric_c.o(locale$$code)
+    _get_lc_ctype                            0x08026305   Thumb Code    44  lc_ctype_c.o(locale$$code)
+    __aeabi_dneg                             0x08026331   Thumb Code     0  basic.o(x$fpl$basic)
+    _dneg                                    0x08026331   Thumb Code     6  basic.o(x$fpl$basic)
+    __aeabi_fneg                             0x08026337   Thumb Code     0  basic.o(x$fpl$basic)
+    _fneg                                    0x08026337   Thumb Code     6  basic.o(x$fpl$basic)
+    _dabs                                    0x0802633d   Thumb Code     6  basic.o(x$fpl$basic)
+    _fabs                                    0x08026343   Thumb Code     6  basic.o(x$fpl$basic)
+    __aeabi_d2f                              0x08026349   Thumb Code     0  d2f.o(x$fpl$d2f)
+    _d2f                                     0x08026349   Thumb Code    98  d2f.o(x$fpl$d2f)
+    __aeabi_dadd                             0x080263ad   Thumb Code     0  daddsub_clz.o(x$fpl$dadd)
+    _dadd                                    0x080263ad   Thumb Code   332  daddsub_clz.o(x$fpl$dadd)
+    __fpl_dcheck_NaN1                        0x080264fd   Thumb Code    10  dcheck1.o(x$fpl$dcheck1)
+    __fpl_dcmp_Inf                           0x0802650d   Thumb Code    24  dcmpi.o(x$fpl$dcmpinf)
+    __aeabi_ddiv                             0x08026525   Thumb Code     0  ddiv.o(x$fpl$ddiv)
+    _ddiv                                    0x08026525   Thumb Code   552  ddiv.o(x$fpl$ddiv)
+    __aeabi_cdcmpeq                          0x080267d5   Thumb Code     0  deqf.o(x$fpl$deqf)
+    _dcmpeq                                  0x080267d5   Thumb Code   120  deqf.o(x$fpl$deqf)
+    __aeabi_d2uiz                            0x0802684d   Thumb Code     0  dfixu.o(x$fpl$dfixu)
+    _dfixu                                   0x0802684d   Thumb Code    90  dfixu.o(x$fpl$dfixu)
+    __aeabi_i2d                              0x080268a7   Thumb Code     0  dflt_clz.o(x$fpl$dflt)
+    _dflt                                    0x080268a7   Thumb Code    46  dflt_clz.o(x$fpl$dflt)
+    __aeabi_ui2d                             0x080268d5   Thumb Code     0  dflt_clz.o(x$fpl$dfltu)
+    _dfltu                                   0x080268d5   Thumb Code    38  dflt_clz.o(x$fpl$dfltu)
+    __aeabi_cdcmple                          0x080268fd   Thumb Code     0  dleqf.o(x$fpl$dleqf)
+    _dcmple                                  0x080268fd   Thumb Code   120  dleqf.o(x$fpl$dleqf)
+    __fpl_dcmple_InfNaN                      0x0802695f   Thumb Code     0  dleqf.o(x$fpl$dleqf)
+    __aeabi_dmul                             0x08026975   Thumb Code     0  dmul.o(x$fpl$dmul)
+    _dmul                                    0x08026975   Thumb Code   332  dmul.o(x$fpl$dmul)
+    __fpl_dnaninf                            0x08026ac9   Thumb Code   156  dnaninf.o(x$fpl$dnaninf)
+    __fpl_dretinf                            0x08026b65   Thumb Code    12  dretinf.o(x$fpl$dretinf)
+    __aeabi_cdrcmple                         0x08026b71   Thumb Code     0  drleqf.o(x$fpl$drleqf)
+    _drcmple                                 0x08026b71   Thumb Code   108  drleqf.o(x$fpl$drleqf)
+    __aeabi_drsub                            0x08026bdd   Thumb Code     0  daddsub_clz.o(x$fpl$drsb)
+    _drsb                                    0x08026bdd   Thumb Code    22  daddsub_clz.o(x$fpl$drsb)
+    __aeabi_dsub                             0x08026bf5   Thumb Code     0  daddsub_clz.o(x$fpl$dsub)
+    _dsub                                    0x08026bf5   Thumb Code   464  daddsub_clz.o(x$fpl$dsub)
+    __aeabi_f2d                              0x08026dc9   Thumb Code     0  f2d.o(x$fpl$f2d)
+    _f2d                                     0x08026dc9   Thumb Code    86  f2d.o(x$fpl$f2d)
+    __fpl_fnaninf                            0x08026e1f   Thumb Code   140  fnaninf.o(x$fpl$fnaninf)
+    _fp_init                                 0x08026eab   Thumb Code    10  fpinit.o(x$fpl$fpinit)
+    __fplib_config_fpu_vfp                   0x08026eb3   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fplib_config_pureend_doubles           0x08026eb3   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fpl_fretinf                            0x08026eb5   Thumb Code    10  fretinf.o(x$fpl$fretinf)
+    __ieee_status                            0x08026ebf   Thumb Code     6  istatus.o(x$fpl$ieeestatus)
+    _printf_fp_dec                           0x08026ec5   Thumb Code     4  printf1.o(x$fpl$printf1)
+    __fpl_return_NaN                         0x08026ec9   Thumb Code   100  retnan.o(x$fpl$retnan)
+    __ARM_scalbn                             0x08026f2d   Thumb Code    92  scalbn.o(x$fpl$scalbn)
+    _scanf_real                              0x08026f89   Thumb Code     4  scanf1.o(x$fpl$scanf1)
+    _scanf_hex_real                          0x08026f8d   Thumb Code     4  scanf2.o(x$fpl$scanf2)
+    _scanf_infnan                            0x08026f91   Thumb Code     4  scanf2.o(x$fpl$scanf2)
+    __fpl_cmpreturn                          0x08026f95   Thumb Code    48  trapv.o(x$fpl$trapveneer)
+    __I$use$fp                               0x08026fc4   Number         0  usenofp.o(x$fpl$usenofp)
+    defaultTask_attributes                   0x08026fc4   Data          36  freertos.o(.constdata)
+    mainAppTask_attributes                   0x08026fe8   Data          36  freertos.o(.constdata)
+    USBH_Driver                              0x0802700c   Data          20  usbh_diskio.o(.constdata)
+    AHBPrescTable                            0x08027028   Data          16  system_stm32f4xx.o(.constdata)
+    APBPrescTable                            0x08027038   Data           8  system_stm32f4xx.o(.constdata)
+    WARN_MSG_NO_ERROR                        0x080279c3   Data           1  dchmilanguage.o(.constdata)
+    WARN_MSG_INTERLOCK_UNPLUG                0x080279c4   Data          28  dchmilanguage.o(.constdata)
+    WARN_MSG_FOOTSWITCH_UNPLUG               0x080279e0   Data          25  dchmilanguage.o(.constdata)
+    WARN_MSG_ESTOP_PRESS                     0x080279f9   Data          12  dchmilanguage.o(.constdata)
+    WARN_MSG_FIBER_UNPLUG                    0x08027a05   Data          19  dchmilanguage.o(.constdata)
+    WARN_MSG_OUT_ENERGY                      0x08027a18   Data          24  dchmilanguage.o(.constdata)
+    WARN_MSG_DIODE_HTEMP                     0x08027a30   Data          18  dchmilanguage.o(.constdata)
+    WARN_MSG_DIODE_LTEMP                     0x08027a42   Data          29  dchmilanguage.o(.constdata)
+    WARN_MSG_DIODE0_OVERCURRENT              0x08027a5f   Data          32  dchmilanguage.o(.constdata)
+    WARN_MSG_DIODE1_OVERCURRENT              0x08027a7f   Data          32  dchmilanguage.o(.constdata)
+    WARN_MSG_NTC_ERROR                       0x08027a9f   Data          17  dchmilanguage.o(.constdata)
+    WARN_MSG_ENVI_HTEMP                      0x08027ab0   Data          22  dchmilanguage.o(.constdata)
+    WARN_MSG_ENVI_LTEMP                      0x08027ac6   Data          21  dchmilanguage.o(.constdata)
+    WARN_MSG_FOOT_DEPRESSED                  0x08027adb   Data          32  dchmilanguage.o(.constdata)
+    WARN_MSG_LASER_EMIT                      0x08027afb   Data          16  dchmilanguage.o(.constdata)
+    WARN_MSG_WAIT_TRIGGER                    0x08027b0b   Data          19  dchmilanguage.o(.constdata)
+    WARN_MSG_FIBER_MISSMATE                  0x08027b1e   Data          15  dchmilanguage.o(.constdata)
+    INFO_MSG_SN                              0x08027b2d   Data           5  dchmilanguage.o(.constdata)
+    INFO_MSG_HW_VERSION                      0x08027b32   Data          25  dchmilanguage.o(.constdata)
+    INFO_MSG_SW_VERSION                      0x08027b4b   Data          12  dchmilanguage.o(.constdata)
+    INFO_MSG_MANUFACTURE_DATE                0x08027b57   Data          19  dchmilanguage.o(.constdata)
+    INFO_MSG_TYPE                            0x08027b6a   Data          19  dchmilanguage.o(.constdata)
+    INFO_MSG_LASER_POWER                     0x08027b7d   Data          26  dchmilanguage.o(.constdata)
+    INFO_MSG_WAVELENGTH                      0x08027b97   Data          31  dchmilanguage.o(.constdata)
+    crc16Tab                                 0x08027bd8   Data         512  libcrc.o(.constdata)
+    crc32Tab                                 0x08027dd8   Data        1024  libcrc.o(.constdata)
+    __mathlib_zero                           0x08028268   Data           8  qnan.o(.constdata)
+    Region$$Table$$Base                      0x080287ec   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0802882c   Number         0  anon$$obj.o(Region$$Table)
+    __aeabi_HUGE_VAL                         0x0802882c   Data           0  fpconst.o(c$$dinf)
+    __aeabi_HUGE_VALL                        0x0802882c   Data           0  fpconst.o(c$$dinf)
+    __aeabi_INFINITY                         0x0802882c   Data           0  fpconst.o(c$$dinf)
+    __dInf                                   0x0802882c   Data           0  fpconst.o(c$$dinf)
+    __huge_val                               0x0802882c   Data           0  fpconst.o(c$$dinf)
+    __dbl_max                                0x08028834   Data           0  fpconst.o(c$$dmax)
+    __ctype                                  0x08028865   Data           0  lc_ctype_c.o(locale$$data)
     CcmRamBuf                                0x10000000   Data       65535  dchmiapp.o(.ARM.__AT_0x10000000)
     hcrc                                     0x20000000   Data           8  crc.o(.data)
     retUSBH                                  0x20000008   Data           1  fatfs.o(.data)
@@ -8899,9 +8899,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000189
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00028b94, Max: 0x00100000, ABSOLUTE, COMPRESSED[0x000289dc])
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00028bec, Max: 0x00100000, ABSOLUTE, COMPRESSED[0x00028a34])
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00028910, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00028968, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -9728,221 +9728,221 @@ Memory Map of the image
     0x0801e818   0x0801e818   0x00000094   Code   RO        10441    i.sPlcFdramSave     splc.o
     0x0801e8ac   0x0801e8ac   0x0000012c   Code   RO        10442    i.sPlcInit          splc.o
     0x0801e9d8   0x0801e9d8   0x00000058   Code   RO        11163    i.sPlcInputInit     splcioin.o
-    0x0801ea30   0x0801ea30   0x00000204   Code   RO        11164    i.sPlcInputRefresh  splcioin.o
-    0x0801ec34   0x0801ec34   0x00000002   Code   RO        10443    i.sPlcIsrDisable    splc.o
-    0x0801ec36   0x0801ec36   0x00000002   Code   RO        10444    i.sPlcIsrEnable     splc.o
-    0x0801ec38   0x0801ec38   0x000000d0   Code   RO        11232    i.sPlcLaserInit     splclaser.o
-    0x0801ed08   0x0801ed08   0x000000a8   Code   RO        11233    i.sPlcLaserTimerIsr  splclaser.o
-    0x0801edb0   0x0801edb0   0x00000074   Code   RO        10445    i.sPlcNvramClear    splc.o
-    0x0801ee24   0x0801ee24   0x0000017c   Code   RO        10446    i.sPlcNvramLoad     splc.o
-    0x0801efa0   0x0801efa0   0x000000bc   Code   RO        10447    i.sPlcNvramSave     splc.o
-    0x0801f05c   0x0801f05c   0x00000160   Code   RO        10448    i.sPlcNvramUpdate   splc.o
-    0x0801f1bc   0x0801f1bc   0x00000090   Code   RO        11197    i.sPlcOutputInit    splcioout.o
-    0x0801f24c   0x0801f24c   0x00000138   Code   RO        11198    i.sPlcOutputRefresh  splcioout.o
-    0x0801f384   0x0801f384   0x00000026   Code   RO        10449    i.sPlcProcessEnd    splc.o
-    0x0801f3aa   0x0801f3aa   0x00000002   PAD
-    0x0801f3ac   0x0801f3ac   0x000000d4   Code   RO        10450    i.sPlcProcessStart  splc.o
-    0x0801f480   0x0801f480   0x00000030   Code   RO        11345    i.sPlcSpeakerDisable  splcspeaker.o
-    0x0801f4b0   0x0801f4b0   0x00000034   Code   RO        11346    i.sPlcSpeakerEnable  splcspeaker.o
-    0x0801f4e4   0x0801f4e4   0x00000020   Code   RO        11387    i.sPlcSpeakerFreq   splcspeaker.o
-    0x0801f504   0x0801f504   0x00000034   Code   RO        11347    i.sPlcSpeakerInit   splcspeaker.o
-    0x0801f538   0x0801f538   0x0000006c   Code   RO        11393    i.sPlcSpeakerVolume  splcspeaker.o
-    0x0801f5a4   0x0801f5a4   0x00000280   Code   RO        10451    i.sPlcSpwmLoop      splc.o
-    0x0801f824   0x0801f824   0x000000bc   Code   RO        10951    i.sPlcTimerInit     splctimer.o
-    0x0801f8e0   0x0801f8e0   0x000001e0   Code   RO        10952    i.sPlcTimerIsr      splctimer.o
-    0x0801fac0   0x0801fac0   0x000000a0   Code   RO        11302    i.saveDeviceConfig  splcmisc.o
-    0x0801fb60   0x0801fb60   0x000005f8   Code   RO        12296    i.schemeInit        preschemedual_450.o
-    0x08020158   0x08020158   0x00000030   Code   RO        11623    i.seletcSchemeNum   dchmiapp.o
-    0x08020188   0x08020188   0x000000c4   Code   RO        11303    i.setFanSpeed       splcmisc.o
-    0x0802024c   0x0802024c   0x0000008c   Code   RO        11235    i.setRedLaserPwm    splclaser.o
-    0x080202d8   0x080202d8   0x000000e0   Code   RO        11348    i.setSpeakerFreq    splcspeaker.o
-    0x080203b8   0x080203b8   0x0000002a   Code   RO        12527    i.softDelayMs       libcpu.o
-    0x080203e2   0x080203e2   0x00000026   Code   RO        12528    i.softDelayUs       libcpu.o
-    0x08020408   0x08020408   0x000000f4   Code   RO        11066    i.softSpiWrite      splcdac.o
-    0x080204fc   0x080204fc   0x00000490   Code   RO        11624    i.speakerLoop       dchmiapp.o
-    0x0802098c   0x0802098c   0x00000024   Code   RO         6474    i.st_clust          ff.o
-    0x080209b0   0x080209b0   0x00000018   Code   RO         6475    i.st_dword          ff.o
-    0x080209c8   0x080209c8   0x0000005c   Code   RO         6476    i.st_qword          ff.o
-    0x08020a24   0x08020a24   0x0000000c   Code   RO         6477    i.st_word           ff.o
-    0x08020a30   0x08020a30   0x0000001a   Code   RO        11625    i.standbyDebugInfoVisiable  dchmiapp.o
-    0x08020a4a   0x08020a4a   0x00000002   PAD
-    0x08020a4c   0x08020a4c   0x00000024   Code   RO        11626    i.standbyKeyTouchEnable  dchmiapp.o
-    0x08020a70   0x08020a70   0x00000010   Code   RO        11627    i.standbyKeyValue   dchmiapp.o
-    0x08020a80   0x08020a80   0x00000072   Code   RO         6478    i.store_xdir        ff.o
-    0x08020af2   0x08020af2   0x00000020   Code   RO         6479    i.sum_sfn           ff.o
-    0x08020b12   0x08020b12   0x00000002   PAD
-    0x08020b14   0x08020b14   0x00000090   Code   RO         6480    i.sync_fs           ff.o
-    0x08020ba4   0x08020ba4   0x00000052   Code   RO         6481    i.sync_window       ff.o
-    0x08020bf6   0x08020bf6   0x00000002   PAD
-    0x08020bf8   0x08020bf8   0x000001f0   Code   RO        11629    i.temperatureLoop   dchmiapp.o
-    0x08020de8   0x08020de8   0x0000001c   Code   RO         6482    i.unlock_fs         ff.o
-    0x08020e04   0x08020e04   0x0000008e   Code   RO        11630    i.unselectSchemeAll  dchmiapp.o
-    0x08020e92   0x08020e92   0x0000001c   Code   RO        11631    i.unselectSchemeNum  dchmiapp.o
-    0x08020eae   0x08020eae   0x00000002   PAD
-    0x08020eb0   0x08020eb0   0x00000228   Code   RO        11632    i.updateAcousticDisplay  dchmiapp.o
-    0x080210d8   0x080210d8   0x00000398   Code   RO        11633    i.updateBootloadReq  dchmiapp.o
-    0x08021470   0x08021470   0x00000020   Code   RO        12149    i.updateCustomScheme  mainapplib.o
-    0x08021490   0x08021490   0x00000088   Code   RO        11634    i.updateDebugInfo   dchmiapp.o
-    0x08021518   0x08021518   0x000001d4   Code   RO        11635    i.updateDiognosisInfo  dchmiapp.o
-    0x080216ec   0x080216ec   0x000009e0   Code   RO        11636    i.updateDiognosisInfoRaw  dchmiapp.o
-    0x080220cc   0x080220cc   0x000001f0   Code   RO        11637    i.updateDiognosisTextBox  dchmiapp.o
-    0x080222bc   0x080222bc   0x000002e0   Code   RO        11638    i.updateExtralDisplay  dchmiapp.o
-    0x0802259c   0x0802259c   0x000001a8   Code   RO        11639    i.updateInformationDisplay  dchmiapp.o
-    0x08022744   0x08022744   0x0000005c   Code   RO        11640    i.updateNegWidthDisplay  dchmiapp.o
-    0x080227a0   0x080227a0   0x00000090   Code   RO        11641    i.updateOptionDisplay  dchmiapp.o
-    0x08022830   0x08022830   0x0000005c   Code   RO        11642    i.updatePosWidthDisplay  dchmiapp.o
-    0x0802288c   0x0802288c   0x0000020c   Code   RO        11643    i.updateReadyDisplay  dchmiapp.o
-    0x08022a98   0x08022a98   0x00000168   Code   RO        11644    i.updateReleaseTimeEnergy  dchmiapp.o
-    0x08022c00   0x08022c00   0x0000115c   Code   RO        11645    i.updateSchemeDetail  dchmiapp.o
-    0x08023d5c   0x08023d5c   0x00000294   Code   RO        11646    i.updateSchemeInfo  dchmiapp.o
-    0x08023ff0   0x08023ff0   0x0000048c   Code   RO        11647    i.updateStandbyDisplay  dchmiapp.o
-    0x0802447c   0x0802447c   0x000000e0   Code   RO        11648    i.updateWarnMsgDisplay  dchmiapp.o
-    0x0802455c   0x0802455c   0x00000028   Code   RO         7188    i.uxListRemove      list.o
-    0x08024584   0x08024584   0x00000030   Code   RO         7240    i.uxQueueSpacesAvailable  queue.o
-    0x080245b4   0x080245b4   0x00000018   Code   RO         8302    i.vApplicationGetIdleTaskMemory  cmsis_os2.o
-    0x080245cc   0x080245cc   0x00000018   Code   RO         8303    i.vApplicationGetTimerTaskMemory  cmsis_os2.o
-    0x080245e4   0x080245e4   0x0000001a   Code   RO         7189    i.vListInitialise   list.o
-    0x080245fe   0x080245fe   0x00000006   Code   RO         7190    i.vListInitialiseItem  list.o
-    0x08024604   0x08024604   0x00000034   Code   RO         7191    i.vListInsert       list.o
-    0x08024638   0x08024638   0x00000018   Code   RO         7192    i.vListInsertEnd    list.o
-    0x08024650   0x08024650   0x00000054   Code   RO         8817    i.vPortEnterCritical  port.o
-    0x080246a4   0x080246a4   0x0000003c   Code   RO         8818    i.vPortExitCritical  port.o
-    0x080246e0   0x080246e0   0x000000a4   Code   RO         8761    i.vPortFree         heap_4.o
-    0x08024784   0x08024784   0x00000028   Code   RO         8819    i.vPortSetupTimerInterrupt  port.o
-    0x080247ac   0x080247ac   0x00000078   Code   RO         8820    i.vPortValidateInterruptPriority  port.o
-    0x08024824   0x08024824   0x0000002c   Code   RO         7241    i.vQueueAddToRegistry  queue.o
-    0x08024850   0x08024850   0x00000032   Code   RO         7242    i.vQueueDelete      queue.o
-    0x08024882   0x08024882   0x00000002   PAD
-    0x08024884   0x08024884   0x00000030   Code   RO         7244    i.vQueueUnregisterQueue  queue.o
-    0x080248b4   0x080248b4   0x0000004a   Code   RO         7245    i.vQueueWaitForMessageRestricted  queue.o
-    0x080248fe   0x080248fe   0x00000002   PAD
-    0x08024900   0x08024900   0x0000005c   Code   RO         7662    i.vTaskDelay        tasks.o
-    0x0802495c   0x0802495c   0x00000018   Code   RO         7667    i.vTaskInternalSetTimeOutState  tasks.o
-    0x08024974   0x08024974   0x0000000c   Code   RO         7668    i.vTaskMissedYield  tasks.o
-    0x08024980   0x08024980   0x00000038   Code   RO         7670    i.vTaskPlaceOnEventList  tasks.o
-    0x080249b8   0x080249b8   0x00000040   Code   RO         7671    i.vTaskPlaceOnEventListRestricted  tasks.o
-    0x080249f8   0x080249f8   0x000000d0   Code   RO         7673    i.vTaskPriorityDisinheritAfterTimeout  tasks.o
-    0x08024ac8   0x08024ac8   0x000000b8   Code   RO         7680    i.vTaskStartScheduler  tasks.o
-    0x08024b80   0x08024b80   0x00000010   Code   RO         7682    i.vTaskSuspendAll   tasks.o
-    0x08024b90   0x08024b90   0x00000090   Code   RO         7683    i.vTaskSwitchContext  tasks.o
-    0x08024c20   0x08024c20   0x00000052   Code   RO         6483    i.validate          ff.o
-    0x08024c72   0x08024c72   0x00000002   PAD
-    0x08024c74   0x08024c74   0x0000017c   Code   RO        11649    i.wfswLoop          dchmiapp.o
-    0x08024df0   0x08024df0   0x0000021c   Code   RO        11349    i.writeMcp41010     splcspeaker.o
-    0x0802500c   0x0802500c   0x00000168   Code   RO         8821    i.xPortStartScheduler  port.o
-    0x08025174   0x08025174   0x00000034   Code   RO         8822    i.xPortSysTickHandler  port.o
-    0x080251a8   0x080251a8   0x00000022   Code   RO         7248    i.xQueueCreateMutex  queue.o
-    0x080251ca   0x080251ca   0x0000002a   Code   RO         7249    i.xQueueCreateMutexStatic  queue.o
-    0x080251f4   0x080251f4   0x0000005a   Code   RO         7250    i.xQueueGenericCreate  queue.o
-    0x0802524e   0x0802524e   0x000000e0   Code   RO         7251    i.xQueueGenericCreateStatic  queue.o
-    0x0802532e   0x0802532e   0x00000002   PAD
-    0x08025330   0x08025330   0x00000098   Code   RO         7252    i.xQueueGenericReset  queue.o
-    0x080253c8   0x080253c8   0x000001a8   Code   RO         7253    i.xQueueGenericSend  queue.o
-    0x08025570   0x08025570   0x000000fc   Code   RO         7254    i.xQueueGenericSendFromISR  queue.o
-    0x0802566c   0x0802566c   0x00000048   Code   RO         7258    i.xQueueGiveMutexRecursive  queue.o
-    0x080256b4   0x080256b4   0x00000168   Code   RO         7263    i.xQueueReceive     queue.o
-    0x0802581c   0x0802581c   0x000000ca   Code   RO         7264    i.xQueueReceiveFromISR  queue.o
-    0x080258e6   0x080258e6   0x00000002   PAD
-    0x080258e8   0x080258e8   0x000001b8   Code   RO         7265    i.xQueueSemaphoreTake  queue.o
-    0x08025aa0   0x08025aa0   0x0000004e   Code   RO         7266    i.xQueueTakeMutexRecursive  queue.o
-    0x08025aee   0x08025aee   0x00000002   PAD
-    0x08025af0   0x08025af0   0x0000008c   Code   RO         7686    i.xTaskCheckForTimeOut  tasks.o
-    0x08025b7c   0x08025b7c   0x00000064   Code   RO         7687    i.xTaskCreate       tasks.o
-    0x08025be0   0x08025be0   0x000000ba   Code   RO         7688    i.xTaskCreateStatic  tasks.o
-    0x08025c9a   0x08025c9a   0x00000002   PAD
-    0x08025c9c   0x08025c9c   0x0000000c   Code   RO         7693    i.xTaskGetCurrentTaskHandle  tasks.o
-    0x08025ca8   0x08025ca8   0x00000020   Code   RO         7694    i.xTaskGetSchedulerState  tasks.o
-    0x08025cc8   0x08025cc8   0x0000000c   Code   RO         7695    i.xTaskGetTickCount  tasks.o
-    0x08025cd4   0x08025cd4   0x00000144   Code   RO         7697    i.xTaskIncrementTick  tasks.o
-    0x08025e18   0x08025e18   0x000000a4   Code   RO         7700    i.xTaskPriorityDisinherit  tasks.o
-    0x08025ebc   0x08025ebc   0x000000a4   Code   RO         7701    i.xTaskPriorityInherit  tasks.o
-    0x08025f60   0x08025f60   0x00000098   Code   RO         7702    i.xTaskRemoveFromEventList  tasks.o
-    0x08025ff8   0x08025ff8   0x00000104   Code   RO         7703    i.xTaskResumeAll    tasks.o
-    0x080260fc   0x080260fc   0x00000078   Code   RO         8059    i.xTimerCreateTimerTask  timers.o
-    0x08026174   0x08026174   0x00000084   Code   RO         8060    i.xTimerGenericCommand  timers.o
-    0x080261f8   0x080261f8   0x0000003a   Code   RO         6484    i.xdir_sum          ff.o
-    0x08026232   0x08026232   0x0000004c   Code   RO         6485    i.xname_sum         ff.o
-    0x0802627e   0x0802627e   0x00000002   PAD
-    0x08026280   0x08026280   0x0000002c   Code   RO        14079    locale$$code        c_w.l(lc_numeric_c.o)
-    0x080262ac   0x080262ac   0x0000002c   Code   RO        14164    locale$$code        c_w.l(lc_ctype_c.o)
-    0x080262d8   0x080262d8   0x00000018   Code   RO        13967    x$fpl$basic         fz_wm.l(basic.o)
-    0x080262f0   0x080262f0   0x00000062   Code   RO        13817    x$fpl$d2f           fz_wm.l(d2f.o)
-    0x08026352   0x08026352   0x00000002   PAD
-    0x08026354   0x08026354   0x00000150   Code   RO        13819    x$fpl$dadd          fz_wm.l(daddsub_clz.o)
-    0x080264a4   0x080264a4   0x00000010   Code   RO        14232    x$fpl$dcheck1       fz_wm.l(dcheck1.o)
-    0x080264b4   0x080264b4   0x00000018   Code   RO        13969    x$fpl$dcmpinf       fz_wm.l(dcmpi.o)
-    0x080264cc   0x080264cc   0x000002b0   Code   RO        13826    x$fpl$ddiv          fz_wm.l(ddiv.o)
-    0x0802677c   0x0802677c   0x00000078   Code   RO        13971    x$fpl$deqf          fz_wm.l(deqf.o)
-    0x080267f4   0x080267f4   0x0000005a   Code   RO        13829    x$fpl$dfixu         fz_wm.l(dfixu.o)
-    0x0802684e   0x0802684e   0x0000002e   Code   RO        13834    x$fpl$dflt          fz_wm.l(dflt_clz.o)
-    0x0802687c   0x0802687c   0x00000026   Code   RO        13833    x$fpl$dfltu         fz_wm.l(dflt_clz.o)
-    0x080268a2   0x080268a2   0x00000002   PAD
-    0x080268a4   0x080268a4   0x00000078   Code   RO        13839    x$fpl$dleqf         fz_wm.l(dleqf.o)
-    0x0802691c   0x0802691c   0x00000154   Code   RO        13841    x$fpl$dmul          fz_wm.l(dmul.o)
-    0x08026a70   0x08026a70   0x0000009c   Code   RO        13973    x$fpl$dnaninf       fz_wm.l(dnaninf.o)
-    0x08026b0c   0x08026b0c   0x0000000c   Code   RO        13975    x$fpl$dretinf       fz_wm.l(dretinf.o)
-    0x08026b18   0x08026b18   0x0000006c   Code   RO        13843    x$fpl$drleqf        fz_wm.l(drleqf.o)
-    0x08026b84   0x08026b84   0x00000016   Code   RO        13820    x$fpl$drsb          fz_wm.l(daddsub_clz.o)
-    0x08026b9a   0x08026b9a   0x00000002   PAD
-    0x08026b9c   0x08026b9c   0x000001d4   Code   RO        13821    x$fpl$dsub          fz_wm.l(daddsub_clz.o)
-    0x08026d70   0x08026d70   0x00000056   Code   RO        13845    x$fpl$f2d           fz_wm.l(f2d.o)
-    0x08026dc6   0x08026dc6   0x0000008c   Code   RO        13977    x$fpl$fnaninf       fz_wm.l(fnaninf.o)
-    0x08026e52   0x08026e52   0x0000000a   Code   RO        14094    x$fpl$fpinit        fz_wm.l(fpinit.o)
-    0x08026e5c   0x08026e5c   0x0000000a   Code   RO        13979    x$fpl$fretinf       fz_wm.l(fretinf.o)
-    0x08026e66   0x08026e66   0x00000006   Code   RO        14096    x$fpl$ieeestatus    fz_wm.l(istatus.o)
-    0x08026e6c   0x08026e6c   0x00000004   Code   RO        13847    x$fpl$printf1       fz_wm.l(printf1.o)
-    0x08026e70   0x08026e70   0x00000064   Code   RO        14234    x$fpl$retnan        fz_wm.l(retnan.o)
-    0x08026ed4   0x08026ed4   0x0000005c   Code   RO        14213    x$fpl$scalbn        fz_wm.l(scalbn.o)
-    0x08026f30   0x08026f30   0x00000004   Code   RO        13849    x$fpl$scanf1        fz_wm.l(scanf1.o)
-    0x08026f34   0x08026f34   0x00000008   Code   RO        14098    x$fpl$scanf2        fz_wm.l(scanf2.o)
-    0x08026f3c   0x08026f3c   0x00000030   Code   RO        14236    x$fpl$trapveneer    fz_wm.l(trapv.o)
-    0x08026f6c   0x08026f6c   0x00000000   Code   RO        13981    x$fpl$usenofp       fz_wm.l(usenofp.o)
-    0x08026f6c   0x08026f6c   0x00000048   Data   RO          482    .constdata          freertos.o
-    0x08026fb4   0x08026fb4   0x00000014   Data   RO         1160    .constdata          usbh_diskio.o
-    0x08026fc8   0x08026fc8   0x00000008   Data   RO         3520    .constdata          stm32f4xx_hal_dma.o
-    0x08026fd0   0x08026fd0   0x00000018   Data   RO         6304    .constdata          system_stm32f4xx.o
-    0x08026fe8   0x08026fe8   0x000000ba   Data   RO         6488    .constdata          ff.o
-    0x080270a2   0x080270a2   0x000003ae   Data   RO         7030    .constdata          ccsbcs.o
-    0x08027450   0x08027450   0x00000310   Data   RO         9769    .constdata          usbh_hid_keybd.o
-    0x08027760   0x08027760   0x00000098   Data   RO        10453    .constdata          splc.o
-    0x080277f8   0x080277f8   0x0000000a   Data   RO        10638    .constdata          splcfun.o
-    0x08027802   0x08027802   0x0000000e   Data   RO        10953    .constdata          splctimer.o
-    0x08027810   0x08027810   0x0000000c   Data   RO        11008    .constdata          splcadc.o
-    0x0802781c   0x0802781c   0x0000000e   Data   RO        11166    .constdata          splcioin.o
-    0x0802782a   0x0802782a   0x0000000f   Data   RO        11199    .constdata          splcioout.o
-    0x08027839   0x08027839   0x0000003a   Data   RO        11236    .constdata          splclaser.o
-    0x08027873   0x08027873   0x0000002e   Data   RO        11304    .constdata          splcmisc.o
-    0x080278a1   0x080278a1   0x0000008f   Data   RO        11424    .constdata          splceprom.o
-    0x08027930   0x08027930   0x0000003b   Data   RO        11652    .constdata          dchmiapp.o
-    0x0802796b   0x0802796b   0x000001f3   Data   RO        11988    .constdata          dchmilanguage.o
-    0x08027b5e   0x08027b5e   0x0000000f   Data   RO        12150    .constdata          mainapplib.o
-    0x08027b6d   0x08027b6d   0x00000011   Data   RO        12298    .constdata          preschemedual_450.o
-    0x08027b7e   0x08027b7e   0x00000002   PAD
-    0x08027b80   0x08027b80   0x00000600   Data   RO        12618    .constdata          libcrc.o
-    0x08028180   0x08028180   0x0000001c   Data   RO        13606    .constdata          hmiuseruart.o
-    0x0802819c   0x0802819c   0x00000028   Data   RO        13743    .constdata          c_w.l(_printf_hex_int.o)
-    0x080281c4   0x080281c4   0x00000011   Data   RO        13773    .constdata          c_w.l(__printf_flags_wp.o)
-    0x080281d5   0x080281d5   0x00000003   PAD
-    0x080281d8   0x080281d8   0x00000038   Data   RO        13854    .constdata          m_wm.l(log.o)
-    0x08028210   0x08028210   0x00000008   Data   RO        13998    .constdata          m_wm.l(qnan.o)
-    0x08028218   0x08028218   0x00000094   Data   RO        14050    .constdata          c_w.l(bigflt0.o)
-    0x080282ac   0x080282ac   0x00000018   Data   RO          483    .conststring        freertos.o
-    0x080282c4   0x080282c4   0x00000006   Data   RO         9324    .conststring        usbh_audio.o
-    0x080282ca   0x080282ca   0x00000002   PAD
-    0x080282cc   0x080282cc   0x00000004   Data   RO         9525    .conststring        usbh_cdc.o
-    0x080282d0   0x080282d0   0x00000004   Data   RO         9649    .conststring        usbh_hid.o
-    0x080282d4   0x080282d4   0x00000004   Data   RO         9891    .conststring        usbh_msc.o
-    0x080282d8   0x080282d8   0x00000004   Data   RO        10102    .conststring        usbh_mtp.o
-    0x080282dc   0x080282dc   0x000004b7   Data   RO        11653    .conststring        dchmiapp.o
-    0x08028793   0x08028793   0x00000001   PAD
-    0x08028794   0x08028794   0x00000040   Data   RO        14238    Region$$Table       anon$$obj.o
-    0x080287d4   0x080287d4   0x00000008   Data   RO        14090    c$$dinf             fz_wm.l(fpconst.o)
-    0x080287dc   0x080287dc   0x00000008   Data   RO        14093    c$$dmax             fz_wm.l(fpconst.o)
-    0x080287e4   0x080287e4   0x0000001c   Data   RO        14078    locale$$data        c_w.l(lc_numeric_c.o)
-    0x08028800   0x08028800   0x00000110   Data   RO        14163    locale$$data        c_w.l(lc_ctype_c.o)
+    0x0801ea30   0x0801ea30   0x0000025c   Code   RO        11164    i.sPlcInputRefresh  splcioin.o
+    0x0801ec8c   0x0801ec8c   0x00000002   Code   RO        10443    i.sPlcIsrDisable    splc.o
+    0x0801ec8e   0x0801ec8e   0x00000002   Code   RO        10444    i.sPlcIsrEnable     splc.o
+    0x0801ec90   0x0801ec90   0x000000d0   Code   RO        11232    i.sPlcLaserInit     splclaser.o
+    0x0801ed60   0x0801ed60   0x000000a8   Code   RO        11233    i.sPlcLaserTimerIsr  splclaser.o
+    0x0801ee08   0x0801ee08   0x00000074   Code   RO        10445    i.sPlcNvramClear    splc.o
+    0x0801ee7c   0x0801ee7c   0x0000017c   Code   RO        10446    i.sPlcNvramLoad     splc.o
+    0x0801eff8   0x0801eff8   0x000000bc   Code   RO        10447    i.sPlcNvramSave     splc.o
+    0x0801f0b4   0x0801f0b4   0x00000160   Code   RO        10448    i.sPlcNvramUpdate   splc.o
+    0x0801f214   0x0801f214   0x00000090   Code   RO        11197    i.sPlcOutputInit    splcioout.o
+    0x0801f2a4   0x0801f2a4   0x00000138   Code   RO        11198    i.sPlcOutputRefresh  splcioout.o
+    0x0801f3dc   0x0801f3dc   0x00000026   Code   RO        10449    i.sPlcProcessEnd    splc.o
+    0x0801f402   0x0801f402   0x00000002   PAD
+    0x0801f404   0x0801f404   0x000000d4   Code   RO        10450    i.sPlcProcessStart  splc.o
+    0x0801f4d8   0x0801f4d8   0x00000030   Code   RO        11345    i.sPlcSpeakerDisable  splcspeaker.o
+    0x0801f508   0x0801f508   0x00000034   Code   RO        11346    i.sPlcSpeakerEnable  splcspeaker.o
+    0x0801f53c   0x0801f53c   0x00000020   Code   RO        11387    i.sPlcSpeakerFreq   splcspeaker.o
+    0x0801f55c   0x0801f55c   0x00000034   Code   RO        11347    i.sPlcSpeakerInit   splcspeaker.o
+    0x0801f590   0x0801f590   0x0000006c   Code   RO        11393    i.sPlcSpeakerVolume  splcspeaker.o
+    0x0801f5fc   0x0801f5fc   0x00000280   Code   RO        10451    i.sPlcSpwmLoop      splc.o
+    0x0801f87c   0x0801f87c   0x000000bc   Code   RO        10951    i.sPlcTimerInit     splctimer.o
+    0x0801f938   0x0801f938   0x000001e0   Code   RO        10952    i.sPlcTimerIsr      splctimer.o
+    0x0801fb18   0x0801fb18   0x000000a0   Code   RO        11302    i.saveDeviceConfig  splcmisc.o
+    0x0801fbb8   0x0801fbb8   0x000005f8   Code   RO        12296    i.schemeInit        preschemedual_450.o
+    0x080201b0   0x080201b0   0x00000030   Code   RO        11623    i.seletcSchemeNum   dchmiapp.o
+    0x080201e0   0x080201e0   0x000000c4   Code   RO        11303    i.setFanSpeed       splcmisc.o
+    0x080202a4   0x080202a4   0x0000008c   Code   RO        11235    i.setRedLaserPwm    splclaser.o
+    0x08020330   0x08020330   0x000000e0   Code   RO        11348    i.setSpeakerFreq    splcspeaker.o
+    0x08020410   0x08020410   0x0000002a   Code   RO        12527    i.softDelayMs       libcpu.o
+    0x0802043a   0x0802043a   0x00000026   Code   RO        12528    i.softDelayUs       libcpu.o
+    0x08020460   0x08020460   0x000000f4   Code   RO        11066    i.softSpiWrite      splcdac.o
+    0x08020554   0x08020554   0x00000490   Code   RO        11624    i.speakerLoop       dchmiapp.o
+    0x080209e4   0x080209e4   0x00000024   Code   RO         6474    i.st_clust          ff.o
+    0x08020a08   0x08020a08   0x00000018   Code   RO         6475    i.st_dword          ff.o
+    0x08020a20   0x08020a20   0x0000005c   Code   RO         6476    i.st_qword          ff.o
+    0x08020a7c   0x08020a7c   0x0000000c   Code   RO         6477    i.st_word           ff.o
+    0x08020a88   0x08020a88   0x0000001a   Code   RO        11625    i.standbyDebugInfoVisiable  dchmiapp.o
+    0x08020aa2   0x08020aa2   0x00000002   PAD
+    0x08020aa4   0x08020aa4   0x00000024   Code   RO        11626    i.standbyKeyTouchEnable  dchmiapp.o
+    0x08020ac8   0x08020ac8   0x00000010   Code   RO        11627    i.standbyKeyValue   dchmiapp.o
+    0x08020ad8   0x08020ad8   0x00000072   Code   RO         6478    i.store_xdir        ff.o
+    0x08020b4a   0x08020b4a   0x00000020   Code   RO         6479    i.sum_sfn           ff.o
+    0x08020b6a   0x08020b6a   0x00000002   PAD
+    0x08020b6c   0x08020b6c   0x00000090   Code   RO         6480    i.sync_fs           ff.o
+    0x08020bfc   0x08020bfc   0x00000052   Code   RO         6481    i.sync_window       ff.o
+    0x08020c4e   0x08020c4e   0x00000002   PAD
+    0x08020c50   0x08020c50   0x000001f0   Code   RO        11629    i.temperatureLoop   dchmiapp.o
+    0x08020e40   0x08020e40   0x0000001c   Code   RO         6482    i.unlock_fs         ff.o
+    0x08020e5c   0x08020e5c   0x0000008e   Code   RO        11630    i.unselectSchemeAll  dchmiapp.o
+    0x08020eea   0x08020eea   0x0000001c   Code   RO        11631    i.unselectSchemeNum  dchmiapp.o
+    0x08020f06   0x08020f06   0x00000002   PAD
+    0x08020f08   0x08020f08   0x00000228   Code   RO        11632    i.updateAcousticDisplay  dchmiapp.o
+    0x08021130   0x08021130   0x00000398   Code   RO        11633    i.updateBootloadReq  dchmiapp.o
+    0x080214c8   0x080214c8   0x00000020   Code   RO        12149    i.updateCustomScheme  mainapplib.o
+    0x080214e8   0x080214e8   0x00000088   Code   RO        11634    i.updateDebugInfo   dchmiapp.o
+    0x08021570   0x08021570   0x000001d4   Code   RO        11635    i.updateDiognosisInfo  dchmiapp.o
+    0x08021744   0x08021744   0x000009e0   Code   RO        11636    i.updateDiognosisInfoRaw  dchmiapp.o
+    0x08022124   0x08022124   0x000001f0   Code   RO        11637    i.updateDiognosisTextBox  dchmiapp.o
+    0x08022314   0x08022314   0x000002e0   Code   RO        11638    i.updateExtralDisplay  dchmiapp.o
+    0x080225f4   0x080225f4   0x000001a8   Code   RO        11639    i.updateInformationDisplay  dchmiapp.o
+    0x0802279c   0x0802279c   0x0000005c   Code   RO        11640    i.updateNegWidthDisplay  dchmiapp.o
+    0x080227f8   0x080227f8   0x00000090   Code   RO        11641    i.updateOptionDisplay  dchmiapp.o
+    0x08022888   0x08022888   0x0000005c   Code   RO        11642    i.updatePosWidthDisplay  dchmiapp.o
+    0x080228e4   0x080228e4   0x0000020c   Code   RO        11643    i.updateReadyDisplay  dchmiapp.o
+    0x08022af0   0x08022af0   0x00000168   Code   RO        11644    i.updateReleaseTimeEnergy  dchmiapp.o
+    0x08022c58   0x08022c58   0x0000115c   Code   RO        11645    i.updateSchemeDetail  dchmiapp.o
+    0x08023db4   0x08023db4   0x00000294   Code   RO        11646    i.updateSchemeInfo  dchmiapp.o
+    0x08024048   0x08024048   0x0000048c   Code   RO        11647    i.updateStandbyDisplay  dchmiapp.o
+    0x080244d4   0x080244d4   0x000000e0   Code   RO        11648    i.updateWarnMsgDisplay  dchmiapp.o
+    0x080245b4   0x080245b4   0x00000028   Code   RO         7188    i.uxListRemove      list.o
+    0x080245dc   0x080245dc   0x00000030   Code   RO         7240    i.uxQueueSpacesAvailable  queue.o
+    0x0802460c   0x0802460c   0x00000018   Code   RO         8302    i.vApplicationGetIdleTaskMemory  cmsis_os2.o
+    0x08024624   0x08024624   0x00000018   Code   RO         8303    i.vApplicationGetTimerTaskMemory  cmsis_os2.o
+    0x0802463c   0x0802463c   0x0000001a   Code   RO         7189    i.vListInitialise   list.o
+    0x08024656   0x08024656   0x00000006   Code   RO         7190    i.vListInitialiseItem  list.o
+    0x0802465c   0x0802465c   0x00000034   Code   RO         7191    i.vListInsert       list.o
+    0x08024690   0x08024690   0x00000018   Code   RO         7192    i.vListInsertEnd    list.o
+    0x080246a8   0x080246a8   0x00000054   Code   RO         8817    i.vPortEnterCritical  port.o
+    0x080246fc   0x080246fc   0x0000003c   Code   RO         8818    i.vPortExitCritical  port.o
+    0x08024738   0x08024738   0x000000a4   Code   RO         8761    i.vPortFree         heap_4.o
+    0x080247dc   0x080247dc   0x00000028   Code   RO         8819    i.vPortSetupTimerInterrupt  port.o
+    0x08024804   0x08024804   0x00000078   Code   RO         8820    i.vPortValidateInterruptPriority  port.o
+    0x0802487c   0x0802487c   0x0000002c   Code   RO         7241    i.vQueueAddToRegistry  queue.o
+    0x080248a8   0x080248a8   0x00000032   Code   RO         7242    i.vQueueDelete      queue.o
+    0x080248da   0x080248da   0x00000002   PAD
+    0x080248dc   0x080248dc   0x00000030   Code   RO         7244    i.vQueueUnregisterQueue  queue.o
+    0x0802490c   0x0802490c   0x0000004a   Code   RO         7245    i.vQueueWaitForMessageRestricted  queue.o
+    0x08024956   0x08024956   0x00000002   PAD
+    0x08024958   0x08024958   0x0000005c   Code   RO         7662    i.vTaskDelay        tasks.o
+    0x080249b4   0x080249b4   0x00000018   Code   RO         7667    i.vTaskInternalSetTimeOutState  tasks.o
+    0x080249cc   0x080249cc   0x0000000c   Code   RO         7668    i.vTaskMissedYield  tasks.o
+    0x080249d8   0x080249d8   0x00000038   Code   RO         7670    i.vTaskPlaceOnEventList  tasks.o
+    0x08024a10   0x08024a10   0x00000040   Code   RO         7671    i.vTaskPlaceOnEventListRestricted  tasks.o
+    0x08024a50   0x08024a50   0x000000d0   Code   RO         7673    i.vTaskPriorityDisinheritAfterTimeout  tasks.o
+    0x08024b20   0x08024b20   0x000000b8   Code   RO         7680    i.vTaskStartScheduler  tasks.o
+    0x08024bd8   0x08024bd8   0x00000010   Code   RO         7682    i.vTaskSuspendAll   tasks.o
+    0x08024be8   0x08024be8   0x00000090   Code   RO         7683    i.vTaskSwitchContext  tasks.o
+    0x08024c78   0x08024c78   0x00000052   Code   RO         6483    i.validate          ff.o
+    0x08024cca   0x08024cca   0x00000002   PAD
+    0x08024ccc   0x08024ccc   0x0000017c   Code   RO        11649    i.wfswLoop          dchmiapp.o
+    0x08024e48   0x08024e48   0x0000021c   Code   RO        11349    i.writeMcp41010     splcspeaker.o
+    0x08025064   0x08025064   0x00000168   Code   RO         8821    i.xPortStartScheduler  port.o
+    0x080251cc   0x080251cc   0x00000034   Code   RO         8822    i.xPortSysTickHandler  port.o
+    0x08025200   0x08025200   0x00000022   Code   RO         7248    i.xQueueCreateMutex  queue.o
+    0x08025222   0x08025222   0x0000002a   Code   RO         7249    i.xQueueCreateMutexStatic  queue.o
+    0x0802524c   0x0802524c   0x0000005a   Code   RO         7250    i.xQueueGenericCreate  queue.o
+    0x080252a6   0x080252a6   0x000000e0   Code   RO         7251    i.xQueueGenericCreateStatic  queue.o
+    0x08025386   0x08025386   0x00000002   PAD
+    0x08025388   0x08025388   0x00000098   Code   RO         7252    i.xQueueGenericReset  queue.o
+    0x08025420   0x08025420   0x000001a8   Code   RO         7253    i.xQueueGenericSend  queue.o
+    0x080255c8   0x080255c8   0x000000fc   Code   RO         7254    i.xQueueGenericSendFromISR  queue.o
+    0x080256c4   0x080256c4   0x00000048   Code   RO         7258    i.xQueueGiveMutexRecursive  queue.o
+    0x0802570c   0x0802570c   0x00000168   Code   RO         7263    i.xQueueReceive     queue.o
+    0x08025874   0x08025874   0x000000ca   Code   RO         7264    i.xQueueReceiveFromISR  queue.o
+    0x0802593e   0x0802593e   0x00000002   PAD
+    0x08025940   0x08025940   0x000001b8   Code   RO         7265    i.xQueueSemaphoreTake  queue.o
+    0x08025af8   0x08025af8   0x0000004e   Code   RO         7266    i.xQueueTakeMutexRecursive  queue.o
+    0x08025b46   0x08025b46   0x00000002   PAD
+    0x08025b48   0x08025b48   0x0000008c   Code   RO         7686    i.xTaskCheckForTimeOut  tasks.o
+    0x08025bd4   0x08025bd4   0x00000064   Code   RO         7687    i.xTaskCreate       tasks.o
+    0x08025c38   0x08025c38   0x000000ba   Code   RO         7688    i.xTaskCreateStatic  tasks.o
+    0x08025cf2   0x08025cf2   0x00000002   PAD
+    0x08025cf4   0x08025cf4   0x0000000c   Code   RO         7693    i.xTaskGetCurrentTaskHandle  tasks.o
+    0x08025d00   0x08025d00   0x00000020   Code   RO         7694    i.xTaskGetSchedulerState  tasks.o
+    0x08025d20   0x08025d20   0x0000000c   Code   RO         7695    i.xTaskGetTickCount  tasks.o
+    0x08025d2c   0x08025d2c   0x00000144   Code   RO         7697    i.xTaskIncrementTick  tasks.o
+    0x08025e70   0x08025e70   0x000000a4   Code   RO         7700    i.xTaskPriorityDisinherit  tasks.o
+    0x08025f14   0x08025f14   0x000000a4   Code   RO         7701    i.xTaskPriorityInherit  tasks.o
+    0x08025fb8   0x08025fb8   0x00000098   Code   RO         7702    i.xTaskRemoveFromEventList  tasks.o
+    0x08026050   0x08026050   0x00000104   Code   RO         7703    i.xTaskResumeAll    tasks.o
+    0x08026154   0x08026154   0x00000078   Code   RO         8059    i.xTimerCreateTimerTask  timers.o
+    0x080261cc   0x080261cc   0x00000084   Code   RO         8060    i.xTimerGenericCommand  timers.o
+    0x08026250   0x08026250   0x0000003a   Code   RO         6484    i.xdir_sum          ff.o
+    0x0802628a   0x0802628a   0x0000004c   Code   RO         6485    i.xname_sum         ff.o
+    0x080262d6   0x080262d6   0x00000002   PAD
+    0x080262d8   0x080262d8   0x0000002c   Code   RO        14079    locale$$code        c_w.l(lc_numeric_c.o)
+    0x08026304   0x08026304   0x0000002c   Code   RO        14164    locale$$code        c_w.l(lc_ctype_c.o)
+    0x08026330   0x08026330   0x00000018   Code   RO        13967    x$fpl$basic         fz_wm.l(basic.o)
+    0x08026348   0x08026348   0x00000062   Code   RO        13817    x$fpl$d2f           fz_wm.l(d2f.o)
+    0x080263aa   0x080263aa   0x00000002   PAD
+    0x080263ac   0x080263ac   0x00000150   Code   RO        13819    x$fpl$dadd          fz_wm.l(daddsub_clz.o)
+    0x080264fc   0x080264fc   0x00000010   Code   RO        14232    x$fpl$dcheck1       fz_wm.l(dcheck1.o)
+    0x0802650c   0x0802650c   0x00000018   Code   RO        13969    x$fpl$dcmpinf       fz_wm.l(dcmpi.o)
+    0x08026524   0x08026524   0x000002b0   Code   RO        13826    x$fpl$ddiv          fz_wm.l(ddiv.o)
+    0x080267d4   0x080267d4   0x00000078   Code   RO        13971    x$fpl$deqf          fz_wm.l(deqf.o)
+    0x0802684c   0x0802684c   0x0000005a   Code   RO        13829    x$fpl$dfixu         fz_wm.l(dfixu.o)
+    0x080268a6   0x080268a6   0x0000002e   Code   RO        13834    x$fpl$dflt          fz_wm.l(dflt_clz.o)
+    0x080268d4   0x080268d4   0x00000026   Code   RO        13833    x$fpl$dfltu         fz_wm.l(dflt_clz.o)
+    0x080268fa   0x080268fa   0x00000002   PAD
+    0x080268fc   0x080268fc   0x00000078   Code   RO        13839    x$fpl$dleqf         fz_wm.l(dleqf.o)
+    0x08026974   0x08026974   0x00000154   Code   RO        13841    x$fpl$dmul          fz_wm.l(dmul.o)
+    0x08026ac8   0x08026ac8   0x0000009c   Code   RO        13973    x$fpl$dnaninf       fz_wm.l(dnaninf.o)
+    0x08026b64   0x08026b64   0x0000000c   Code   RO        13975    x$fpl$dretinf       fz_wm.l(dretinf.o)
+    0x08026b70   0x08026b70   0x0000006c   Code   RO        13843    x$fpl$drleqf        fz_wm.l(drleqf.o)
+    0x08026bdc   0x08026bdc   0x00000016   Code   RO        13820    x$fpl$drsb          fz_wm.l(daddsub_clz.o)
+    0x08026bf2   0x08026bf2   0x00000002   PAD
+    0x08026bf4   0x08026bf4   0x000001d4   Code   RO        13821    x$fpl$dsub          fz_wm.l(daddsub_clz.o)
+    0x08026dc8   0x08026dc8   0x00000056   Code   RO        13845    x$fpl$f2d           fz_wm.l(f2d.o)
+    0x08026e1e   0x08026e1e   0x0000008c   Code   RO        13977    x$fpl$fnaninf       fz_wm.l(fnaninf.o)
+    0x08026eaa   0x08026eaa   0x0000000a   Code   RO        14094    x$fpl$fpinit        fz_wm.l(fpinit.o)
+    0x08026eb4   0x08026eb4   0x0000000a   Code   RO        13979    x$fpl$fretinf       fz_wm.l(fretinf.o)
+    0x08026ebe   0x08026ebe   0x00000006   Code   RO        14096    x$fpl$ieeestatus    fz_wm.l(istatus.o)
+    0x08026ec4   0x08026ec4   0x00000004   Code   RO        13847    x$fpl$printf1       fz_wm.l(printf1.o)
+    0x08026ec8   0x08026ec8   0x00000064   Code   RO        14234    x$fpl$retnan        fz_wm.l(retnan.o)
+    0x08026f2c   0x08026f2c   0x0000005c   Code   RO        14213    x$fpl$scalbn        fz_wm.l(scalbn.o)
+    0x08026f88   0x08026f88   0x00000004   Code   RO        13849    x$fpl$scanf1        fz_wm.l(scanf1.o)
+    0x08026f8c   0x08026f8c   0x00000008   Code   RO        14098    x$fpl$scanf2        fz_wm.l(scanf2.o)
+    0x08026f94   0x08026f94   0x00000030   Code   RO        14236    x$fpl$trapveneer    fz_wm.l(trapv.o)
+    0x08026fc4   0x08026fc4   0x00000000   Code   RO        13981    x$fpl$usenofp       fz_wm.l(usenofp.o)
+    0x08026fc4   0x08026fc4   0x00000048   Data   RO          482    .constdata          freertos.o
+    0x0802700c   0x0802700c   0x00000014   Data   RO         1160    .constdata          usbh_diskio.o
+    0x08027020   0x08027020   0x00000008   Data   RO         3520    .constdata          stm32f4xx_hal_dma.o
+    0x08027028   0x08027028   0x00000018   Data   RO         6304    .constdata          system_stm32f4xx.o
+    0x08027040   0x08027040   0x000000ba   Data   RO         6488    .constdata          ff.o
+    0x080270fa   0x080270fa   0x000003ae   Data   RO         7030    .constdata          ccsbcs.o
+    0x080274a8   0x080274a8   0x00000310   Data   RO         9769    .constdata          usbh_hid_keybd.o
+    0x080277b8   0x080277b8   0x00000098   Data   RO        10453    .constdata          splc.o
+    0x08027850   0x08027850   0x0000000a   Data   RO        10638    .constdata          splcfun.o
+    0x0802785a   0x0802785a   0x0000000e   Data   RO        10953    .constdata          splctimer.o
+    0x08027868   0x08027868   0x0000000c   Data   RO        11008    .constdata          splcadc.o
+    0x08027874   0x08027874   0x0000000e   Data   RO        11166    .constdata          splcioin.o
+    0x08027882   0x08027882   0x0000000f   Data   RO        11199    .constdata          splcioout.o
+    0x08027891   0x08027891   0x0000003a   Data   RO        11236    .constdata          splclaser.o
+    0x080278cb   0x080278cb   0x0000002e   Data   RO        11304    .constdata          splcmisc.o
+    0x080278f9   0x080278f9   0x0000008f   Data   RO        11424    .constdata          splceprom.o
+    0x08027988   0x08027988   0x0000003b   Data   RO        11652    .constdata          dchmiapp.o
+    0x080279c3   0x080279c3   0x000001f3   Data   RO        11988    .constdata          dchmilanguage.o
+    0x08027bb6   0x08027bb6   0x0000000f   Data   RO        12150    .constdata          mainapplib.o
+    0x08027bc5   0x08027bc5   0x00000011   Data   RO        12298    .constdata          preschemedual_450.o
+    0x08027bd6   0x08027bd6   0x00000002   PAD
+    0x08027bd8   0x08027bd8   0x00000600   Data   RO        12618    .constdata          libcrc.o
+    0x080281d8   0x080281d8   0x0000001c   Data   RO        13606    .constdata          hmiuseruart.o
+    0x080281f4   0x080281f4   0x00000028   Data   RO        13743    .constdata          c_w.l(_printf_hex_int.o)
+    0x0802821c   0x0802821c   0x00000011   Data   RO        13773    .constdata          c_w.l(__printf_flags_wp.o)
+    0x0802822d   0x0802822d   0x00000003   PAD
+    0x08028230   0x08028230   0x00000038   Data   RO        13854    .constdata          m_wm.l(log.o)
+    0x08028268   0x08028268   0x00000008   Data   RO        13998    .constdata          m_wm.l(qnan.o)
+    0x08028270   0x08028270   0x00000094   Data   RO        14050    .constdata          c_w.l(bigflt0.o)
+    0x08028304   0x08028304   0x00000018   Data   RO          483    .conststring        freertos.o
+    0x0802831c   0x0802831c   0x00000006   Data   RO         9324    .conststring        usbh_audio.o
+    0x08028322   0x08028322   0x00000002   PAD
+    0x08028324   0x08028324   0x00000004   Data   RO         9525    .conststring        usbh_cdc.o
+    0x08028328   0x08028328   0x00000004   Data   RO         9649    .conststring        usbh_hid.o
+    0x0802832c   0x0802832c   0x00000004   Data   RO         9891    .conststring        usbh_msc.o
+    0x08028330   0x08028330   0x00000004   Data   RO        10102    .conststring        usbh_mtp.o
+    0x08028334   0x08028334   0x000004b7   Data   RO        11653    .conststring        dchmiapp.o
+    0x080287eb   0x080287eb   0x00000001   PAD
+    0x080287ec   0x080287ec   0x00000040   Data   RO        14238    Region$$Table       anon$$obj.o
+    0x0802882c   0x0802882c   0x00000008   Data   RO        14090    c$$dinf             fz_wm.l(fpconst.o)
+    0x08028834   0x08028834   0x00000008   Data   RO        14093    c$$dmax             fz_wm.l(fpconst.o)
+    0x0802883c   0x0802883c   0x0000001c   Data   RO        14078    locale$$data        c_w.l(lc_numeric_c.o)
+    0x08028858   0x08028858   0x00000110   Data   RO        14163    locale$$data        c_w.l(lc_ctype_c.o)
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08028910, Size: 0x000184c0, Max: 0x0001c000, ABSOLUTE, COMPRESSED[0x0000006c])
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08028968, Size: 0x000184c0, Max: 0x0001c000, ABSOLUTE, COMPRESSED[0x0000006c])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -9994,7 +9994,7 @@ Memory Map of the image
     0x200164c0        -       0x00002000   Zero   RW            1    STACK               startup_stm32f407xx.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x2001c000, Load base: 0x0802897c, Size: 0x000004bc, Max: 0x00004000, ABSOLUTE, COMPRESSED[0x00000060])
+    Execution Region RW_IRAM2 (Exec base: 0x2001c000, Load base: 0x080289d4, Size: 0x000004bc, Max: 0x00004000, ABSOLUTE, COMPRESSED[0x00000060])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -10093,7 +10093,7 @@ Image component sizes
        680         72          0          0          0       8214   splcdac.o
       2278        708        143          0          0      12153   splceprom.o
       2252        264         10          0          0      49021   splcfun.o
-       604         88         14          0        128       1933   splcioin.o
+       692         90         14          0        128       1969   splcioin.o
        456         90         15          0          0       1301   splcioout.o
       1060        398         58         23          0       5662   splclaser.o
        680        348         46          2          0       2248   splcmisc.o
@@ -10150,7 +10150,7 @@ Image component sizes
         32          6          0          0          0        630   usbh_platform.o
 
     ----------------------------------------------------------------------
-    143212      11674       6368        644     165524    1725545   Object Totals
+    143300      11676       6368        644     165524    1725581   Object Totals
          0          0         64          0          0          0   (incl. Generated)
         92          4          5         24          2          0   (incl. Padding)
 
@@ -10299,15 +10299,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-    159204      12430       6956        644     165624    1654517   Grand Totals
-    159204      12430       6956        204     165624    1654517   ELF Image Totals (compressed)
-    159204      12430       6956        204          0          0   ROM Totals
+    159292      12432       6956        644     165624    1654553   Grand Totals
+    159292      12432       6956        204     165624    1654553   ELF Image Totals (compressed)
+    159292      12432       6956        204          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)               166160 ( 162.27kB)
+    Total RO  Size (Code + RO Data)               166248 ( 162.35kB)
     Total RW  Size (RW Data + ZI Data)            166268 ( 162.37kB)
-    Total ROM Size (Code + RO Data + RW Data)     166364 ( 162.46kB)
+    Total ROM Size (Code + RO Data + RW Data)     166452 ( 162.55kB)
 
 ==============================================================================
 

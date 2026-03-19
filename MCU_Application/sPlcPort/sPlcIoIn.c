@@ -120,6 +120,24 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 #endif
+#if defined(LYPE_MCU_1V0_20260106)
+	if(temp == 0){
+		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
+			inputFilter[3] ++;
+		}
+		else{
+			NVRAM0[X_START] |= (int16_t)(1 << 3);
+		}
+	}
+	else{
+		if(inputFilter[3] > (CONFIG_INPUT_FILTER_TIME * -1)){
+			inputFilter[3] --;
+		}
+		else{
+			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
+		}
+	}
+#endif
 	//X4 光纤探测
 	if(NVRAM0[SPREG_ADC_9] <= deviceConfig.fiberDetect){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
