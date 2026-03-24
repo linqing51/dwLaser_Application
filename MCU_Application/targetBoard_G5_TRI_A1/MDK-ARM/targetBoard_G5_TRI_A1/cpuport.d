@@ -1,9 +1,0 @@
-targetboard_g5_tri_a1\cpuport.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/libcpu/arm/cortex-m4/cpuport.c
-targetboard_g5_tri_a1\cpuport.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtthread.h
-targetboard_g5_tri_a1\cpuport.o: ../RT-Thread/rtconfig.h
-targetboard_g5_tri_a1\cpuport.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtdebug.h
-targetboard_g5_tri_a1\cpuport.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtdef.h
-targetboard_g5_tri_a1\cpuport.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
-targetboard_g5_tri_a1\cpuport.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtservice.h
-targetboard_g5_tri_a1\cpuport.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtm.h
-targetboard_g5_tri_a1\cpuport.o: ../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/rtthread.h

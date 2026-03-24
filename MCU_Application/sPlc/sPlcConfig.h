@@ -264,19 +264,19 @@
 /*****************************************************************************/
 //需要存储的方案
 #define EM_LASER_SCHEME_NAME													(EM_START + 0)//方案名称
-#define EM_LASER_CHANNEL_SELECT												(EM_START + 55)//激光通道选择
-#define EM_LASER_PULSE_MODE														(EM_START + 56)//脉冲模式
-#define EM_LASER_POWER_CH0														(EM_START + 57)//通道1470/1940功率
-#define EM_LASER_POWER_CH1														(EM_START + 58)//通道980功率
-#define EM_LASER_POWER_CH2														(EM_START + 59)//备用通道2
-#define EM_LASER_POWER_CH3														(EM_START + 60)//备用通道3
-#define EM_LASER_POWER_CH4														(EM_START + 61)//备用通道4
-#define EM_LASER_POWER_CH5														(EM_START + 62)//备用通道5
-#define EM_LASER_POWER_CH6														(EM_START + 63)//备用通道6
-#define EM_LASER_POWER_CH7														(EM_START + 64)//备用通道7
-#define EM_LASER_POWER_635														(EM_START + 65)//红激光功率
-#define EM_LASER_POSWIDTH															(EM_START + 66)//多脉冲正脉宽
-#define EM_LASER_NEGWIDTH															(EM_START + 67)//多脉冲负脉宽
+#define EM_LASER_CHANNEL_SELECT												(EM_START + 51)//激光通道选择
+#define EM_LASER_PULSE_MODE														(EM_START + 52)//脉冲模式
+#define EM_LASER_POWER_CH0														(EM_START + 53)//通道1470/1940功率
+#define EM_LASER_POWER_CH1														(EM_START + 54)//通道980功率
+#define EM_LASER_POWER_CH2														(EM_START + 55)//备用通道2
+#define EM_LASER_POWER_CH3														(EM_START + 56)//备用通道3
+#define EM_LASER_POWER_CH4														(EM_START + 57)//备用通道4
+#define EM_LASER_POWER_CH5														(EM_START + 58)//备用通道5
+#define EM_LASER_POWER_CH6														(EM_START + 59)//备用通道6
+#define EM_LASER_POWER_CH7														(EM_START + 60)//备用通道7
+#define EM_LASER_POWER_635														(EM_START + 61)//红激光功率
+#define EM_LASER_POSWIDTH															(EM_START + 62)//多脉冲正脉宽
+#define EM_LASER_NEGWIDTH															(EM_START + 63)//多脉冲负脉宽
 /*****************************************************************************/
 #define EM_LASER_AVERAGE_POWER_CH0										(EM_START + 80)//当前模式平均功率 1470/1940
 #define EM_LASER_AVERAGE_POWER_CH1              			(EM_START + 81)//当前模式平均功率 980
@@ -327,9 +327,9 @@
 #define EM_LD_CH2_VOLTAGE															(EM_START + 142)//激光通道2-电压
 #define EM_LD_CH3_VOLTAGE															(EM_START + 143)//激光通道3-电压
 #define EM_LD_CH4_VOLTAGE															(EM_START + 144)//激光通道4-电压
-#define EM_LD_CH5_VOLTAGE															(EM_START + 143)//激光通道5-电压
-#define EM_LD_CH6_VOLTAGE															(EM_START + 144)//激光通道6-电压
-#define EM_LD_CH7_VOLTAGE															(EM_START + 145)//激光通道7-电压
+#define EM_LD_CH5_VOLTAGE															(EM_START + 145)//激光通道5-电压
+#define EM_LD_CH6_VOLTAGE															(EM_START + 146)//激光通道6-电压
+#define EM_LD_CH7_VOLTAGE															(EM_START + 147)//激光通道7-电压
 
 #define EM_TEC_CH0_CURRENT														(EM_START + 150)//制冷通道0->电流
 #define EM_TEC_CH1_CURRENT														(EM_START + 151)//制冷通道1->电流
@@ -356,28 +356,29 @@
 #define EM_FAN1_SET_SPEED															(EM_START + 181)//风扇1设定速度 0-100%
 #define EM_FAN2_SET_SPEED															(EM_START + 182)//风扇2设定速度 0-100%
 #define EM_FAN3_SET_SPEED															(EM_START + 183)//风扇3设定速度 0-100%
-
 #define EM_FAN0_GET_SPEED															(EM_START + 184)//风扇0实际速度 转速
-#define EM_FAN1_GET_SPEED															(EM_START + 165)//风扇1实际速度 转速
-#define EM_FAN2_GET_SPEED															(EM_START + 166)//风扇2实际速度 转速
-#define EM_FAN3_GET_SPEED															(EM_START + 167)//风扇3实际速度 转速
+#define EM_FAN1_GET_SPEED															(EM_START + 185)//风扇1实际速度 转速
+#define EM_FAN2_GET_SPEED															(EM_START + 186)//风扇2实际速度 转速
+#define EM_FAN3_GET_SPEED															(EM_START + 187)//风扇3实际速度 转速
 
-#define EM_LASER_FPD																	(EM_START + 170)//光纤探测PD计算值
-#define EM_LASER_LPD																	(EM_START + 171)//激光能量PD计算值
+#define EM_LASER_FPD																	(EM_START + 190)//光纤探测PD计算值
+#define EM_LASER_LPD																	(EM_START + 191)//激光能量PD计算值
 
-#define EM_TPID0_OUT																	(EM_START + 175)//温控PID输出值
-#define EM_TPID1_OUT																	(EM_START + 176)//温控PID输出值
+#define EM_TPID0_OUT																	(EM_START + 200)//温控PID-0输出值
+#define EM_TPID1_OUT																	(EM_START + 201)//温控PID-1输出值
+#define EM_TPID2_OUT																	(EM_START + 202)//温控PID-2输出值
+#define EM_TPID3_OUT																	(EM_START + 203)//温控PID-3输出值
 
-#define EM_ACOUSTIC_ENERGY														(EM_START + 200)//提示音能量间隔 16BIT
-#define EM_ACOUSTIC_TIME															(EM_START + 201)//提示音时间间隔 16BIT
-#define EM_ACOUSTIC_ENERGY_STEP												(EM_START + 202)//提示音步进能量
-#define EM_ACOUSTIC_TIME_STEP													(EM_START + 203)//提示音步进时间
-#define EM_ACOUSTIC_ENERGY_MAX												(EM_START + 204)//提示音能量最大值
-#define EM_ACOUSTIC_ENERGY_MIN												(EM_START + 205)//提示音能量最小值
-#define EM_ACOUSTIC_TIME_MAX													(EM_START + 206)//提示音时间最大值
-#define EM_ACOUSTIC_TIME_MIN													(EM_START + 207)//提示音时间最小值
+#define EM_ACOUSTIC_ENERGY														(EM_START + 210)//提示音能量间隔 16BIT
+#define EM_ACOUSTIC_TIME															(EM_START + 211)//提示音时间间隔 16BIT
+#define EM_ACOUSTIC_ENERGY_STEP												(EM_START + 212)//提示音步进能量
+#define EM_ACOUSTIC_TIME_STEP													(EM_START + 213)//提示音步进时间
+#define EM_ACOUSTIC_ENERGY_MAX												(EM_START + 214)//提示音能量最大值
+#define EM_ACOUSTIC_ENERGY_MIN												(EM_START + 215)//提示音能量最小值
+#define EM_ACOUSTIC_TIME_MAX													(EM_START + 216)//提示音时间最大值
+#define EM_ACOUSTIC_TIME_MIN													(EM_START + 217)//提示音时间最小值
 /*****************************************************************************/				
-#define EM_LASER_POWER_TOTAL													(EM_START + 210)//发射总功率
+#define EM_LASER_POWER_TOTAL													(EM_START + 220)//发射总功率
 #define EM_HMI_OPERA_STEP															(EM_START +	221)//操作步骤								
 #define EM_ERROR_CODE																	(EM_START + 222)//错误码					
 #define EM_SCHEME_NUM_TMP															(EM_START + 223)//临时方案编号	
@@ -522,203 +523,201 @@
 #define TMP_REG_14																		(TMP_START + 14)//临时名称储存区
 #define TMP_REG_15																		(TMP_START + 15)//临时名称储存区
 /*****************************************************************************/
-#define DM_SCHEME_CLASSIFY													(DM_START + 0)//选择的方案分类 
-#define DM_SCHEME_INDEX															(DM_START + 1)//选择的方案索引
-#define DM_BEEM_VOLUME															(DM_START + 2)//蜂鸣器音量 0-100% 32+3=35
-#define DM_AIM_BRG																	(DM_START + 3)//指示激光亮度
-#define DM_LCD_BRG																	(DM_START + 4)//屏幕亮度
-#define DM_DC_OLD_PASSCODE0													(DM_START + 5)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE1													(DM_START + 6)//屏旧密码2-3
-#define DM_DC_OLD_PASSCODE2													(DM_START + 7)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE3													(DM_START + 8)//屏旧密码2-3
+#define DM_SCHEME_CLASSIFY														(DM_START + 0)//选择的方案分类 
+#define DM_SCHEME_INDEX																(DM_START + 1)//选择的方案索引
+#define DM_BEEM_VOLUME																(DM_START + 2)//蜂鸣器音量 0-100% 32+3=35
+#define DM_AIM_BRG																		(DM_START + 3)//指示激光亮度
+#define DM_LCD_BRG																		(DM_START + 4)//屏幕亮度
+#define DM_DC_OLD_PASSCODE0														(DM_START + 5)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE1														(DM_START + 6)//屏旧密码2-3
+#define DM_DC_OLD_PASSCODE2														(DM_START + 7)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE3														(DM_START + 8)//屏旧密码2-3
 /*****************************************************************************/
-#define X_ESTOP_NC																	(X_START * 16 + 0)//XIN0 紧急停止开关
-#define X_INTERLOCK_NC															(X_START * 16 + 1)//XIN1 安全连锁
-#define X_FOOTSWITCH_NO															(X_START * 16 + 2)//XIN2 脚踏常开
-#define X_FOOTSWITCH_NC															(X_START * 16 + 3)//XIN3 脚踏常闭
-#define X_FIBER_PROBE																(X_START * 16 + 4)//XIN5 光纤探测
-#define X_PWR_KEY																		(X_START * 16 + 5)//XIN6 电源开关
+#define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关
+#define X_INTERLOCK_NC																(X_START * 16 + 1)//XIN1 安全连锁
+#define X_FOOTSWITCH_NO																(X_START * 16 + 2)//XIN2 脚踏常开
+#define X_FOOTSWITCH_NC																(X_START * 16 + 3)//XIN3 脚踏常闭
+#define X_FIBER_PROBE																	(X_START * 16 + 4)//XIN5 光纤探测
+#define X_PWR_KEY																			(X_START * 16 + 5)//XIN6 电源开关
 /*****************************************************************************/
-#define Y_GREEN_LED																	(Y_START * 16 + 0)//YOUT0 绿灯开关
-#define Y_RED_LED																		(Y_START * 16 + 1)//YOUT1 红灯开关
-#define Y_YELLOW_LED																(Y_START * 16 + 2)//YOUT2 蓝灯开关
-#define Y_TICK_LED																	(Y_START * 16 + 3)//YOUT3 板载运行LED指示灯
-#define Y_ERR_LED																		(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
-#define Y_BEEM_LED																	(Y_START * 16 + 5)//YOUT5 板载错误LED指示灯
-#define Y_TEC																				(Y_START * 16 + 6)//YOUT6 TEC输出
-#define Y_VN5016_INPUT															(Y_START * 16 + 7)//YOUT7 VN5016开通	
-#define Y_VN5016_CSDIS															(Y_START * 16 + 8)//YOUT8 电源电流采集	
-#define Y_PWR_LED																		(Y_START * 16 + 9)//YOUT9 电源指示灯
+#define Y_GREEN_LED																		(Y_START * 16 + 0)//YOUT0 绿灯开关
+#define Y_RED_LED																			(Y_START * 16 + 1)//YOUT1 红灯开关
+#define Y_YELLOW_LED																	(Y_START * 16 + 2)//YOUT2 蓝灯开关
+#define Y_TICK_LED																		(Y_START * 16 + 3)//YOUT3 板载运行LED指示灯
+#define Y_ERR_LED																			(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
+#define Y_BEEM_LED																		(Y_START * 16 + 5)//YOUT5 板载错误LED指示灯
+#define Y_TEC																					(Y_START * 16 + 6)//YOUT6 TEC输出
+#define Y_VN5016_INPUT																(Y_START * 16 + 7)//YOUT7 VN5016开通	
+#define Y_VN5016_CSDIS																(Y_START * 16 + 8)//YOUT8 电源电流采集	
+#define Y_PWR_LED																			(Y_START * 16 + 9)//YOUT9 电源指示灯
 /*****************************************************************************/
-#define R_ESTOP																			(R_START * 16 + 0)//急停标志
-#define R_INTERLOCK																	(R_START * 16 + 1)//连锁标志
-#define R_FIBER_PROBE																(R_START * 16 + 2)//光纤插入标志
-#define R_RFID_PASS																	(R_START * 16 + 3)//NFC光纤插入标志
+#define R_ESTOP																				(R_START * 16 + 0)//急停标志
+#define R_INTERLOCK																		(R_START * 16 + 1)//连锁标志
+#define R_FIBER_PROBE																	(R_START * 16 + 2)//光纤插入标志
+#define R_RFID_PASS																		(R_START * 16 + 3)//NFC光纤插入标志
+																										
+#define R_LASER_DIODE_TEMP_HIGH												(R_START * 16 + 10)//激光二极管激光模块高温标志
+#define R_LASER_DIODE_TEMP_LOW												(R_START * 16 + 11)//激光二极管激光模块低温标志
+#define R_WATER_HOT_HIGH															(R_START * 16 + 12)//热水高温报警标志
+#define R_WATER_HOT_LOW																(R_START * 16 + 13)//热水低温报警标志
+#define R_WATER_COOL_HIGH															(R_START * 16 + 14)//冷水高温报警标志
+#define R_WATER_COOL_LOW															(R_START * 16 + 15)//冷水低温报警标志
+#define R_AMBIENT_HIGH																(R_START * 16 + 16)//环境高温报警标志
+#define R_AMBIENT_LOW																	(R_START * 16 + 17)//环境低温报警标志
+#define R_HUMIDITY_HIGH																(R_START * 16 + 18)//环境高湿度报警标志
 
-#define R_LASER_DIODE_TEMP_HIGH											(R_START * 16 + 10)//激光二极管激光模块高温标志
-#define R_LASER_DIODE_TEMP_LOW											(R_START * 16 + 11)//激光二极管激光模块低温标志
-#define R_WATER_HOT_HIGH														(R_START * 16 + 12)//热水高温报警标志
-#define R_WATER_HOT_LOW															(R_START * 16 + 13)//热水低温报警标志
-#define R_WATER_COOL_HIGH														(R_START * 16 + 14)//冷水高温报警标志
-#define R_WATER_COOL_LOW														(R_START * 16 + 15)//冷水低温报警标志
-#define R_AMBIENT_HIGH															(R_START * 16 + 16)//环境高温报警标志
-#define R_AMBIENT_LOW																(R_START * 16 + 17)//环境低温报警标志
-#define R_HUMIDITY_HIGH															(R_START * 16 + 18)//环境高湿度报警标志
-
-#define R_MCU_TEMP_HIGH															(R_START * 16 + 50)//处理器高温标志
-#define R_MCU_TEMP_LOW															(R_START * 16 + 51)//处理器低温标志
-#define R_FOOTSWITCH_PLUG														(R_START * 16 + 52)//脚踏插入标志
-#define R_FOOTSWITCH_PRESS													(R_START * 16 + 53)//脚踏按下标志
-#define R_HMI_FOOTSWITCH_PRESS											(R_START * 16 + 54)//屏幕模拟脚踏按下标志
-#define R_FAULT																			(R_START * 16 + 55)//故障标志
-#define R_DISABLE_ESTOP															(R_START * 16 + 56)//屏蔽急停开关检测
-#define R_DISABLE_TEMPERATURE												(R_START * 16 + 57)//屏蔽温度检测
-#define	R_DISABLE_FOOTSWITCH												(R_START * 16 + 58)//屏蔽脚踏开关检测
-#define R_DISABLE_RFID															(R_START * 16 + 59)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE												(R_START * 16 + 60)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED													(R_START * 16 + 61)//屏蔽风扇控制
-#define R_DISABLE_INTERLOCK													(R_START * 16 + 62)//屏蔽安全连锁
-#define R_CLEAR_EPROM																(R_START * 16 + 63)//完全清空EPROM
-#define R_SAVE_EPROM																(R_START * 16 + 64)//储存SAVE
-#define R_ENGINEER_MODE															(R_START * 16 + 65)//工程师模式
-#define R_CALIBRATION_MODE													(R_START * 16 + 66)//功率校正模式
-#define R_ACOUSTIC_ENABLE														(R_START * 16 + 67)//使能提示音
-#define R_CLEAR_CRC																	(R_START * 16 + 68)//清除固件CRC
-#define R_UPDATE_BOOTLOAD_REQ												(R_START * 16 + 69)//请求更新引导固件
-#define R_UPDATE_BOOTLOAD_YES												(R_START * 16 + 70)//同意更新固件
-#define R_UPDATE_BOOTLOAD_NO												(R_START * 16 + 71)//否定更新固件
-#define R_BURNING_MODE															(R_START * 16 + 72)//老化模式
+#define R_MCU_TEMP_HIGH																(R_START * 16 + 50)//处理器高温标志
+#define R_MCU_TEMP_LOW																(R_START * 16 + 51)//处理器低温标志
+#define R_FOOTSWITCH_PLUG															(R_START * 16 + 52)//脚踏插入标志
+#define R_FOOTSWITCH_PRESS														(R_START * 16 + 53)//脚踏按下标志
+#define R_HMI_FOOTSWITCH_PRESS												(R_START * 16 + 54)//屏幕模拟脚踏按下标志
+#define R_FAULT																				(R_START * 16 + 55)//故障标志
+#define R_DISABLE_ESTOP																(R_START * 16 + 56)//屏蔽急停开关检测
+#define R_DISABLE_TEMPERATURE													(R_START * 16 + 57)//屏蔽温度检测
+#define	R_DISABLE_FOOTSWITCH													(R_START * 16 + 58)//屏蔽脚踏开关检测
+#define R_DISABLE_RFID																(R_START * 16 + 59)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE													(R_START * 16 + 60)//屏蔽光纤探测
+#define R_DISABLE_FAN_SPEED														(R_START * 16 + 61)//屏蔽风扇控制
+#define R_DISABLE_INTERLOCK														(R_START * 16 + 62)//屏蔽安全连锁
+#define R_CLEAR_EPROM																	(R_START * 16 + 63)//完全清空EPROM
+#define R_SAVE_EPROM																	(R_START * 16 + 64)//储存SAVE
+#define R_ENGINEER_MODE																(R_START * 16 + 65)//工程师模式
+#define R_CALIBRATION_MODE														(R_START * 16 + 66)//功率校正模式
+#define R_ACOUSTIC_ENABLE															(R_START * 16 + 67)//使能提示音
+#define R_CLEAR_CRC																		(R_START * 16 + 68)//清除固件CRC
+#define R_UPDATE_BOOTLOAD_REQ													(R_START * 16 + 69)//请求更新引导固件
+#define R_UPDATE_BOOTLOAD_YES													(R_START * 16 + 70)//同意更新固件
+#define R_UPDATE_BOOTLOAD_NO													(R_START * 16 + 71)//否定更新固件
+#define R_BURNING_MODE																(R_START * 16 + 72)//老化模式
 //HMI相关状态
-#define R_DCHMI_RESET_REQ														(R_START * 16 + 30)//HMI复位请求
-#define R_DCHMI_RESET_DOING													(R_START * 16 + 31)//HMI复位中
-#define R_DCHMI_RESET_DONE													(R_START * 16 + 32)//HMI复位完成	
-#define R_DCHMI_UPDATEUI_REQ												(R_START * 16 + 33)//HMI内容更新请求
-#define R_DCHMI_UPDATEUI_DOING											(R_START * 16 + 34)//HMI内容更新中
-#define R_DCHMI_UPDATEUI_DONE												(R_START * 16 + 35)//HMI内容更新请求完成
-#define R_DCHMI_RESTORE_REQ													(R_START * 16 + 36)//HMI从FLASH中恢复设置请求
-#define R_DCHMI_RESTORE_DOING												(R_START * 16 + 37)//HMI从FLASH中恢复中
-#define R_DCHMI_RESTORE_DONE												(R_START * 16 + 38)//HMI从FLASH中恢复设置完成	
-#define R_DCHMI_DISPLAY_WARN												(R_START * 16 + 39)//HMI显示报警信息
-#define R_DCHMI_KEY_STANDBY_ENABLE									(R_START * 16 + 40)//STANDBY 使能
+#define R_DCHMI_RESET_REQ															(R_START * 16 + 80)//HMI复位请求
+#define R_DCHMI_RESET_DOING														(R_START * 16 + 81)//HMI复位中
+#define R_DCHMI_RESET_DONE														(R_START * 16 + 82)//HMI复位完成	
+#define R_DCHMI_UPDATEUI_REQ													(R_START * 16 + 83)//HMI内容更新请求
+#define R_DCHMI_UPDATEUI_DOING												(R_START * 16 + 84)//HMI内容更新中
+#define R_DCHMI_UPDATEUI_DONE													(R_START * 16 + 85)//HMI内容更新请求完成
+#define R_DCHMI_RESTORE_REQ														(R_START * 16 + 86)//HMI从FLASH中恢复设置请求
+#define R_DCHMI_RESTORE_DOING													(R_START * 16 + 87)//HMI从FLASH中恢复中
+#define R_DCHMI_RESTORE_DONE													(R_START * 16 + 88)//HMI从FLASH中恢复设置完成	
+#define R_DCHMI_DISPLAY_WARN													(R_START * 16 + 89)//HMI显示报警信息
+#define R_DCHMI_KEY_STANDBY_ENABLE										(R_START * 16 + 90)//STANDBY 使能
 /*****************************************************************************/
-#define R_STANDBY_KEY_POSWIDTH_ADD_DOWN							(R_START * 16 + 50)
-#define R_STANDBY_KEY_POSWIDTH_ADD_UP								(R_START * 16 + 51)
-#define R_STANDBY_KEY_POSWIDTH_DEC_DOWN							(R_START * 16 + 52)
-#define R_STANDBY_KEY_POSWIDTH_DEC_UP								(R_START * 16 + 53)
-#define R_STANDBY_KEY_NEGWIDTH_ADD_DOWN							(R_START * 16 + 54)
-#define R_STANDBY_KEY_NEGWIDTH_ADD_UP								(R_START * 16 + 55)
-#define R_STANDBY_KEY_NEGWIDTH_DEC_DOWN							(R_START * 16 + 56)
-#define R_STANDBY_KEY_NEGWIDTH_DEC_UP								(R_START * 16 + 57)
-#define R_STANDBY_KEY_TIMES_ADD_DOWN								(R_START * 16 + 58)
-#define R_STANDBY_KEY_TIMES_DEC_DOWN								(R_START * 16 + 59)
-#define R_STANDBY_KEY_STNADBY_DOWN									(R_START * 16 + 60)
-#define R_STANDBY_KEY_STNADBY_UP										(R_START * 16 + 61)
-#define R_STANDBY_KEY_ENTER_OPTION_DOWN							(R_START * 16 + 62)
-#define R_STANDBY_KEY_SCHEME_SAVE_DOWN							(R_START * 16 + 64)
-#define R_STANDBY_KEY_SCHEME_LAST_DOWN							(R_START * 16 + 65)
-#define R_STANDBY_KEY_SCHEME_NEXT_DOWN							(R_START * 16 + 66)
-#define R_STANDBY_KEY_AIM_BRG_ADD_DOWN							(R_START * 16 + 67)
-#define R_STANDBY_KEY_AIM_BRG_DEC_DOWN							(R_START * 16 + 68)
-#define R_STANDBY_KEY_POWER_ADD_DOWN								(R_START * 16 + 69)
-#define R_STANDBY_KEY_POWER_DEC_DOWN								(R_START * 16 + 70)
-#define R_STANDBY_KEY_MODE_CW_DOWN									(R_START * 16 + 71)
-#define R_STANDBY_KEY_MODE_SP_DOWN									(R_START * 16 + 72)
-#define R_STANDBY_KEY_MODE_MP_DOWN									(R_START * 16 + 73)
-#define R_STANDBY_KEY_MODE_GP_DOWN									(R_START * 16 + 74)
+#define R_STANDBY_KEY_POSWIDTH_ADD_DOWN								(R_START * 16 + 100)
+#define R_STANDBY_KEY_POSWIDTH_ADD_UP									(R_START * 16 + 101)
+#define R_STANDBY_KEY_POSWIDTH_DEC_DOWN								(R_START * 16 + 102)
+#define R_STANDBY_KEY_POSWIDTH_DEC_UP									(R_START * 16 + 103)
+#define R_STANDBY_KEY_NEGWIDTH_ADD_DOWN								(R_START * 16 + 104)
+#define R_STANDBY_KEY_NEGWIDTH_ADD_UP									(R_START * 16 + 105)
+#define R_STANDBY_KEY_NEGWIDTH_DEC_DOWN								(R_START * 16 + 106)
+#define R_STANDBY_KEY_NEGWIDTH_DEC_UP									(R_START * 16 + 107)
+#define R_STANDBY_KEY_TIMES_ADD_DOWN									(R_START * 16 + 108)
+#define R_STANDBY_KEY_TIMES_DEC_DOWN									(R_START * 16 + 109)
+#define R_STANDBY_KEY_STNADBY_DOWN										(R_START * 16 + 110)
+#define R_STANDBY_KEY_STNADBY_UP											(R_START * 16 + 111)
+#define R_STANDBY_KEY_ENTER_OPTION_DOWN								(R_START * 16 + 112)
+#define R_STANDBY_KEY_SCHEME_SAVE_DOWN								(R_START * 16 + 113)
+#define R_STANDBY_KEY_SCHEME_LAST_DOWN								(R_START * 16 + 114)
+#define R_STANDBY_KEY_SCHEME_NEXT_DOWN								(R_START * 16 + 115)
+#define R_STANDBY_KEY_AIM_BRG_ADD_DOWN								(R_START * 16 + 116)
+#define R_STANDBY_KEY_AIM_BRG_DEC_DOWN								(R_START * 16 + 117)
+#define R_STANDBY_KEY_POWER_ADD_DOWN									(R_START * 16 + 118)
+#define R_STANDBY_KEY_POWER_DEC_DOWN									(R_START * 16 + 119)
+#define R_STANDBY_KEY_MODE_CW_DOWN										(R_START * 16 + 120)
+#define R_STANDBY_KEY_MODE_SP_DOWN										(R_START * 16 + 121)
+#define R_STANDBY_KEY_MODE_MP_DOWN										(R_START * 16 + 122)
+#define R_STANDBY_KEY_MODE_GP_DOWN										(R_START * 16 + 123)
 /*****************************************************************************/
-#define R_READY_KEY_READY_DOWN											(R_START * 16 + 80)
-#define R_READY_KEY_READY_UP												(R_START * 16 + 81)
-#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN				(R_START * 16 + 82)
-#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_UP					(R_START * 16 + 83)
-#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN				(R_START * 16 + 84)
-#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_UP					(R_START * 16 + 85)
-#define R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN					(R_START * 16 + 86)
-#define R_READY_KEY_ACOUSTIC_TIME_ADD_UP						(R_START * 16 + 87)
-#define R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN					(R_START * 16 + 88)
-#define R_READY_KEY_ACOUSTIC_TIME_DEC_UP						(R_START * 16 + 89)
+#define R_READY_KEY_READY_DOWN												(R_START * 16 + 130)
+#define R_READY_KEY_READY_UP													(R_START * 16 + 131)
+#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN					(R_START * 16 + 132)
+#define R_READY_KEY_ACOUSTIC_ENERGY_ADD_UP						(R_START * 16 + 133)
+#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_DOWN					(R_START * 16 + 134)
+#define R_READY_KEY_ACOUSTIC_ENERGY_DEC_UP						(R_START * 16 + 135)
+#define R_READY_KEY_ACOUSTIC_TIME_ADD_DOWN						(R_START * 16 + 136)
+#define R_READY_KEY_ACOUSTIC_TIME_ADD_UP							(R_START * 16 + 137)
+#define R_READY_KEY_ACOUSTIC_TIME_DEC_DOWN						(R_START * 16 + 138)
+#define R_READY_KEY_ACOUSTIC_TIME_DEC_UP							(R_START * 16 + 139)
 /*****************************************************************************/
-#define R_OPTION_KEY_ENTER_INFORMATION_DOWN					(R_START * 16 + 101)
-#define R_OPTION_KEY_ENTER_OK_DOWN									(R_START * 16 + 102)
-#define R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN						(R_START * 16 + 103)
-#define R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN						(R_START * 16 + 104)
-#define R_OPTION_KEY_BEEM_VOLUME_DEC_DOWN						(R_START * 16 + 105)
-#define R_OPTION_KEY_LCD_BRG_ADD_DOWN								(R_START * 16 + 106)
-#define R_OPTION_KEY_LCD_BRG_DEC_DOWN								(R_START * 16 + 107)
+#define R_OPTION_KEY_ENTER_INFORMATION_DOWN						(R_START * 16 + 140)
+#define R_OPTION_KEY_ENTER_OK_DOWN										(R_START * 16 + 141)
+#define R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN							(R_START * 16 + 142)
+#define R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN							(R_START * 16 + 143)
+#define R_OPTION_KEY_BEEM_VOLUME_DEC_DOWN							(R_START * 16 + 144)
+#define R_OPTION_KEY_LCD_BRG_ADD_DOWN									(R_START * 16 + 145)
+#define R_OPTION_KEY_LCD_BRG_DEC_DOWN									(R_START * 16 + 146)
 /*****************************************************************************/
-#define R_INFORMATION_KEY_OK_DOWN										(R_START * 16 + 110)
-#define R_INFORMATION_KEY_OK_UP											(R_START * 16 + 111)
+#define R_INFORMATION_KEY_OK_DOWN											(R_START * 16 + 150)
+#define R_INFORMATION_KEY_OK_UP												(R_START * 16 + 151)
 /*****************************************************************************/
-#define R_SCHEME_KEY_RENAME_DOWN										(R_START * 16 + 120)
-#define R_SCHEME_KEY_OK_DOWN												(R_START * 16 + 121)
-#define R_SCHEME_KEY_SCHEME_SELECT_0_DOWN						(R_START * 16 + 123)		
-#define R_SCHEME_KEY_SCHEME_SELECT_1_DOWN						(R_START * 16 + 124)
-#define R_SCHEME_KEY_SCHEME_SELECT_2_DOWN						(R_START * 16 + 125)
-#define R_SCHEME_KEY_SCHEME_SELECT_3_DOWN						(R_START * 16 + 126)
-#define R_SCHEME_KEY_SCHEME_SELECT_4_DOWN						(R_START * 16 + 127)
-#define R_SCHEME_KEY_SCHEME_SELECT_5_DOWN						(R_START * 16 + 128)
-#define R_SCHEME_KEY_SCHEME_SELECT_6_DOWN						(R_START * 16 + 129)
-#define R_SCHEME_KEY_SCHEME_SELECT_7_DOWN						(R_START * 16 + 130)
-#define R_SCHEME_KEY_SCHEME_SELECT_8_DOWN						(R_START * 16 + 131)
-#define R_SCHEME_KEY_SCHEME_SELECT_9_DOWN						(R_START * 16 + 132)
-#define R_SCHEME_KEY_SCHEME_SELECT_10_DOWN					(R_START * 16 + 133)
-#define R_SCHEME_KEY_SCHEME_SELECT_11_DOWN					(R_START * 16 + 134)
-#define R_SCHEME_KEY_SCHEME_SELECT_12_DOWN					(R_START * 16 + 135)
-#define R_SCHEME_KEY_SCHEME_SELECT_13_DOWN					(R_START * 16 + 136)
-#define R_SCHEME_KEY_SCHEME_SELECT_14_DOWN					(R_START * 16 + 137)
-#define R_SCHEME_KEY_SCHEME_SELECT_15_DOWN					(R_START * 16 + 138)
-#define R_SCHEME_KEY_SCHEME_SELECT_16_DOWN					(R_START * 16 + 139)
-#define R_SCHEME_KEY_SCHEME_SELECT_17_DOWN					(R_START * 16 + 140)
-#define R_SCHEME_KEY_SCHEME_SELECT_18_DOWN					(R_START * 16 + 141)
-#define R_SCHEME_KEY_SCHEME_SELECT_19_DOWN					(R_START * 16 + 142)
-#define R_SCHEME_KEY_SCHEME_SELECT_20_DOWN					(R_START * 16 + 143)
-#define R_SCHEME_KEY_SCHEME_SELECT_21_DOWN					(R_START * 16 + 144)
-#define R_SCHEME_KEY_SCHEME_SELECT_22_DOWN					(R_START * 16 + 145)
-#define R_SCHEME_KEY_SCHEME_SELECT_23_DOWN					(R_START * 16 + 146)
-#define R_SCHEME_KEY_SCHEME_SELECT_24_DOWN					(R_START * 16 + 147)
-#define R_SCHEME_KEY_SCHEME_SELECT_25_DOWN					(R_START * 16 + 148)
-#define R_SCHEME_KEY_SCHEME_SELECT_26_DOWN					(R_START * 16 + 149)
-#define R_SCHEME_KEY_SCHEME_SELECT_27_DOWN					(R_START * 16 + 150)
-#define R_SCHEME_KEY_SCHEME_SELECT_28_DOWN					(R_START * 16 + 151)
-#define R_SCHEME_KEY_SCHEME_SELECT_29_DOWN					(R_START * 16 + 152)
-#define R_SCHEME_KEY_SCHEME_SELECT_30_DOWN					(R_START * 16 + 153)
-#define R_SCHEME_KEY_SCHEME_SELECT_31_DOWN					(R_START * 16 + 154)
-
-#define R_SCHEME_KEY_NEXT_SCHEME										(R_START * 16 + 155)
-#define R_SCHEME_KEY_LAST_SCHEME										(R_START * 16 + 156)
+#define R_SCHEME_KEY_RENAME_DOWN											(R_START * 16 + 160)
+#define R_SCHEME_KEY_OK_DOWN													(R_START * 16 + 161)
+#define R_SCHEME_KEY_SCHEME_SELECT_0_DOWN							(R_START * 16 + 162)		
+#define R_SCHEME_KEY_SCHEME_SELECT_1_DOWN							(R_START * 16 + 163)
+#define R_SCHEME_KEY_SCHEME_SELECT_2_DOWN							(R_START * 16 + 164)
+#define R_SCHEME_KEY_SCHEME_SELECT_3_DOWN							(R_START * 16 + 165)
+#define R_SCHEME_KEY_SCHEME_SELECT_4_DOWN							(R_START * 16 + 166)
+#define R_SCHEME_KEY_SCHEME_SELECT_5_DOWN							(R_START * 16 + 167)
+#define R_SCHEME_KEY_SCHEME_SELECT_6_DOWN							(R_START * 16 + 168)
+#define R_SCHEME_KEY_SCHEME_SELECT_7_DOWN							(R_START * 16 + 169)
+#define R_SCHEME_KEY_SCHEME_SELECT_8_DOWN							(R_START * 16 + 170)
+#define R_SCHEME_KEY_SCHEME_SELECT_9_DOWN							(R_START * 16 + 171)
+#define R_SCHEME_KEY_SCHEME_SELECT_10_DOWN						(R_START * 16 + 172)
+#define R_SCHEME_KEY_SCHEME_SELECT_11_DOWN						(R_START * 16 + 173)
+#define R_SCHEME_KEY_SCHEME_SELECT_12_DOWN						(R_START * 16 + 174)
+#define R_SCHEME_KEY_SCHEME_SELECT_13_DOWN						(R_START * 16 + 175)
+#define R_SCHEME_KEY_SCHEME_SELECT_14_DOWN						(R_START * 16 + 176)
+#define R_SCHEME_KEY_SCHEME_SELECT_15_DOWN						(R_START * 16 + 177)
+#define R_SCHEME_KEY_SCHEME_SELECT_16_DOWN						(R_START * 16 + 178)
+#define R_SCHEME_KEY_SCHEME_SELECT_17_DOWN						(R_START * 16 + 179)
+#define R_SCHEME_KEY_SCHEME_SELECT_18_DOWN						(R_START * 16 + 180)
+#define R_SCHEME_KEY_SCHEME_SELECT_19_DOWN						(R_START * 16 + 181)
+#define R_SCHEME_KEY_SCHEME_SELECT_20_DOWN						(R_START * 16 + 182)
+#define R_SCHEME_KEY_SCHEME_SELECT_21_DOWN						(R_START * 16 + 183)
+#define R_SCHEME_KEY_SCHEME_SELECT_22_DOWN						(R_START * 16 + 184)
+#define R_SCHEME_KEY_SCHEME_SELECT_23_DOWN						(R_START * 16 + 185)
+#define R_SCHEME_KEY_SCHEME_SELECT_24_DOWN						(R_START * 16 + 186)
+#define R_SCHEME_KEY_SCHEME_SELECT_25_DOWN						(R_START * 16 + 187)
+#define R_SCHEME_KEY_SCHEME_SELECT_26_DOWN						(R_START * 16 + 188)
+#define R_SCHEME_KEY_SCHEME_SELECT_27_DOWN						(R_START * 16 + 189)
+#define R_SCHEME_KEY_SCHEME_SELECT_28_DOWN						(R_START * 16 + 190)
+#define R_SCHEME_KEY_SCHEME_SELECT_29_DOWN						(R_START * 16 + 191)
+#define R_SCHEME_KEY_SCHEME_SELECT_30_DOWN						(R_START * 16 + 192)
+#define R_SCHEME_KEY_SCHEME_SELECT_31_DOWN						(R_START * 16 + 193)
+#define R_SCHEME_KEY_NEXT_SCHEME											(R_START * 16 + 194)
+#define R_SCHEME_KEY_LAST_SCHEME											(R_START * 16 + 195)
 /*****************************************************************************/
-#define R_DIAGNOSIS_OK_DOWN													(R_START * 16 + 160)
-#define R_DIAGNOSIS_OK_UP														(R_START * 16 + 161)
-#define R_DIAGNOSIS_GOTO_RAW_DOWN										(R_START * 16 + 162)
-#define R_DIAGNOSIS_GOTO_RAW_UP											(R_START * 16 + 163)
+#define R_DIAGNOSIS_OK_DOWN														(R_START * 16 + 200)
+#define R_DIAGNOSIS_OK_UP															(R_START * 16 + 201)
+#define R_DIAGNOSIS_GOTO_RAW_DOWN											(R_START * 16 + 202)
+#define R_DIAGNOSIS_GOTO_RAW_UP												(R_START * 16 + 203)
 /*****************************************************************************/
-#define R_DIAGNOSIS_RAW_RETURN_DOWN									(R_START * 16 + 164)
-#define R_DIAGNOSIS_RAW_RETURN_UP										(R_START * 16 + 165)
+#define R_DIAGNOSIS_RAW_RETURN_DOWN										(R_START * 16 + 210)
+#define R_DIAGNOSIS_RAW_RETURN_UP											(R_START * 16 + 211)
 /*****************************************************************************/
-#define R_RENAME_KEY_ENTER_DOWN											(R_START * 16 + 170)
-#define R_RENAME_KEY_EXIT_DOWN											(R_START * 16 + 171)
-#define R_RENAME_TEXTDISPLAY_READ_DONE							(R_START * 16 + 172)
+#define R_RENAME_KEY_ENTER_DOWN												(R_START * 16 + 220)
+#define R_RENAME_KEY_EXIT_DOWN												(R_START * 16 + 221)
+#define R_RENAME_TEXTDISPLAY_READ_DONE								(R_START * 16 + 222)
 /*****************************************************************************/
+#define MR_FOOSWITCH_HAND_SWITCH											(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
+#define MR_BEEP_TONE																	(MR_START * 16 + 11)//蜂鸣器模式 0:SYNC 1:BEEP
 /*****************************************************************************/
-#define MR_FOOSWITCH_HAND_SWITCH										(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
-#define MR_BEEP_TONE																(MR_START * 16 + 11)//蜂鸣器模式 0:SYNC 1:BEEP
+#define T100MS_HMI_POWERUP_DELAY											0//HMI启动复位延时
+#define T100MS_ENTER_PASSCODE_DELAY										1
+#define T100MS_READY_BEEM_DELAY												2//进入READY状态后蜂鸣器响延迟
+#define T100MS_PULSE_BEEM_DELAY												3//脉冲模式蜂鸣器延迟
 /*****************************************************************************/
-#define T100MS_HMI_POWERUP_DELAY										0//HMI启动复位延时
-#define T100MS_ENTER_PASSCODE_DELAY									1
-#define T100MS_READY_BEEM_DELAY											2//进入READY状态后蜂鸣器响延迟
-#define T100MS_PULSE_BEEM_DELAY											3//脉冲模式蜂鸣器延迟
-/*****************************************************************************/
-#define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY						0
-#define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY						1
-#define T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY						2
-#define T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY						3
-#define T10MS_TIMES_ADD_KEYDOWN_DELAY								4
-#define T10MS_TIMES_DEC_KEYDOWN_DELAY								5
-#define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY						6
-#define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY						7
-#define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY			8
-#define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY			9
-#define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY				10
-#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY				11	
+#define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY							0
+#define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY							1
+#define T10MS_NEGWIDTH_ADD_KEYDOWN_DELAY							2
+#define T10MS_NEGWIDTH_DEC_KEYDOWN_DELAY							3
+#define T10MS_TIMES_ADD_KEYDOWN_DELAY									4
+#define T10MS_TIMES_DEC_KEYDOWN_DELAY									5
+#define T10MS_GROUP_OFF_ADD_KEYDOWN_DELAY							6
+#define T10MS_GROUP_OFF_DEC_KEYDOWN_DELAY							7
+#define T10MS_ACOUSTIC_ENERGY_ADD_KEYDOWN_DELAY				8
+#define T10MS_ACOUSTIC_ENERGY_DEC_KEYDOWN_DELAY				9
+#define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY					10
+#define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY					11	
 /*****************************************************************************/
 #endif
 
