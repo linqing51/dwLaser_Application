@@ -72,4 +72,3 @@
 .\targetboard_g5_tri_a1\splceprom.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\splceprom.o: ../../lib/libcrc.h
 .\targetboard_g5_tri_a1\splceprom.o: ../../sPlc/sPlcConfig.h
-.\targetboard_g5_tri_a1\splceprom.o: ../../sPlc/boardConfig.h

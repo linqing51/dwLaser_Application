@@ -100,11 +100,9 @@ targetboard_m450_raspi_20260106\hmicmdqueue.o: ../Middlewares/ST/STM32_USB_Host_
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../lib/libcrc.h
-targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../sPlc/sPlc.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../lib/libdbg.h
-targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -125,4 +123,3 @@ targetboard_m450_raspi_20260106\hmicmdqueue.o: ..\..\dcHmi\hmiCmdQueue.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ..\..\dcHmi\hmiDriver.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ..\..\dcHmi\hmiLib.h
 targetboard_m450_raspi_20260106\hmicmdqueue.o: ..\..\dcHmi\hmiCmdProcess.h
-targetboard_m450_raspi_20260106\hmicmdqueue.o: ../../sPlc/boardConfig.h

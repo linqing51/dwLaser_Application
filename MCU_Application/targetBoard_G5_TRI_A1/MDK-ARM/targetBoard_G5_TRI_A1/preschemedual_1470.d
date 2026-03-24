@@ -98,11 +98,9 @@
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -120,7 +118,6 @@
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiApp.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiApp.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\preScheme.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiLanguage.h
@@ -133,7 +130,6 @@
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../dcHmi/hmiDriver.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../dcHmi/hmiCmdProcess.h
-.\targetboard_g5_tri_a1\preschemedual_1470.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\dcHmiRes.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ..\..\MainApp\MainAppLib.h
 .\targetboard_g5_tri_a1\preschemedual_1470.o: ../../lib/fan_controller.h

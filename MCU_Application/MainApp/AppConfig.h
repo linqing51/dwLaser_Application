@@ -1,6 +1,34 @@
 #ifndef __APPCONFIG_H__
 #define __APPCONFIG_H__
+//通用配置信息
 /*****************************************************************************/
+#define CONFIG_CUSTIOM_SIZE														32//自定义方案数
+#define CONFIG_HMI_SCHEME_NUM													32//每页分类方案数
+/*****************************************************************************/
+#define CONFIG_MORSECODE_SPACE_TIME										3000//莫尔斯电码空时间
+#define CONFIG_MORSECODE_LONG_TIME										900//莫尔斯电码长时间
+#define CONFIG_MORSECODE_SHORT_TIME										300//莫尔斯电码短时间
+/*****************************************************************************/
+#define CONFIG_GDDC_UART_BAUDRATE											115200//LCD通信波特率
+/*****************************************************************************/
+//BOOTLOAD配置
+#define BOOTLOAD_MAIN_ADDRESS													0x0800FE00//主版本标识地址															
+#define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//次版本标识地址
+#define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
+#define DEVID_H																				'1'//设备ID
+#define DEVID_L																				'A'//设备ID
+#define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
+#define CONFIG_JUMP_DELAY															7000//检测U盘时间
+#define FATFS_ROOT																		"0:"
+#define BOOTLOAD_FILENAME															"/bootload.bin"//引导固件
+#define LOG_FIRMWARE_FILENAME													"/log.txt"//操作记录文件
+#define CFG_FIRMWARE_FILENAME													"/las.cfg"//操作配置文件
+#define LMCU_FIRMWARE_FILENAME												"/ld_mcu.bin"//更新MCU固件地址
+#define LLCD_FIRMWARE_FILENAME												"/ld_lcd.pkg"//更新LCD固件地址
+#define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK 储存名称
+#define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM 恢复名称
+/*****************************************************************************/
+//版本配置
 #define SW_VERSION																		"4.0a0b0"
 
 #if defined(LDR2P1_G5_A1_20250731_DUAL)
@@ -24,6 +52,7 @@
 #define HW_VERSION																		"LYPE_MCU_1V0_20260106"
 #endif
 /*****************************************************************************/
+//波长配置
 #if defined(MODEL_PVGLS_7W_1940_A0) || defined(MODEL_PVGLS_10W_1940_A1)
 #define APP_CONFIG_WAVE_1940_650//APP为双波长 1940+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
@@ -47,9 +76,8 @@
 #define APP_CONFIG_WAVE_450_980//APP为双波长 450+980
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
-
-
-//激光器选这
+/*****************************************************************************/
+//配置激光器型号
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
@@ -74,13 +102,16 @@
 #define MODLE_M12_1920_10_400S//吉光1940
 #endif
 
+#if defined(LYPE_MCU_1V0_20260106)
+#define MODLE_M450_980_200_60_D275_22_VI1_GP//大族450-200W 980-60W
+#endif
+/*****************************************************************************/
+//配置无线脚踏USB接口
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LYPE_MCU_1V0_20260106)
-#define APP_CONFIG_WFSW_PORT													hUsbHostFS
-#else
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #endif
 /*****************************************************************************/
@@ -139,36 +170,13 @@
 		defined(LDR2P1_G5_A1_20250910_DUAL)
 #define CONFIG_THERAPY_SIZE														3
 #endif
-//方案配置
-/*****************************************************************************/
-#define CONFIG_CUSTIOM_SIZE														32
-/*****************************************************************************/
-#define CONFIG_MORSECODE_SPACE_TIME										3000
-#define CONFIG_MORSECODE_LONG_TIME										900
-#define CONFIG_MORSECODE_SHORT_TIME										300
-/*****************************************************************************/
-#define CONFIG_GDDC_UART_BAUDRATE											115200//LCD通信波特率
-/*****************************************************************************/
-#define BOOTLOAD_MAIN_ADDRESS													0x0800FE00//主版本标识地址															
-#define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//次版本标识地址
-#define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
-#define DEVID_H																				'1'//设备ID
-#define DEVID_L																				'A'//设备ID
-#define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
-#define CONFIG_JUMP_DELAY															7000//检测U盘时间
-#define FATFS_ROOT																		"0:"
-#define BOOTLOAD_FILENAME															"/bootload.bin"//引导固件
-#define LOG_FIRMWARE_FILENAME													"/log.txt"//操作记录文件
-#define CFG_FIRMWARE_FILENAME													"/las.cfg"//操作配置文件
-#define LMCU_FIRMWARE_FILENAME												"/ld_mcu.bin"//更新MCU固件地址
-#define LLCD_FIRMWARE_FILENAME												"/ld_lcd.pkg"//更新LCD固件地址
-#define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK 储存名称
-#define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM 恢复名称
-/*****************************************************************************/				
+
+//配置蜂鸣器		
 #define CONFIG_MAX_SPK_FREQ														4500L//喇叭最高频率
 #define CONFIG_MIN_SPL_FREQ														500//喇叭最低频率
 #define CONFIG_DEFAULT_SPK_FREQ												1100//蜂鸣器默认频率
 #define CONFIG_ACOUSITC_SPK_FREQ											1400//蜂鸣器变声频率
+
 /*****************************************************************************/
 #define CONFIG_WAIT_HMI_DELAY_TIME										20
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								90
@@ -176,14 +184,40 @@
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
-#define CONFIG_DIODE_SET_TEMP													240//
-#define CONFIG_DIODE_HIGH_TEMP												450//激光器高温极限 46.0C
-#define CONFIG_DIODE_LOW_TEMP													-250//激光器低温极限 -25.0C
+//配置环境报警阈值
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
+#define CONFIG_DIODE_A_SET_TEMP												240//
+#define CONFIG_DIODE_A_HIGH_TEMP											450//激光器高温极限 46.0C
+#define CONFIG_DIODE_A_LOW_TEMP												-250//激光器低温极限 -25.0C
+#define CONFIG_WATER_HOT_HIGH_TEMP										750//热水端高温报警温度
+#define CONFIG_WATER_HOT_LOW_TEMP											50//热水端低温报警温度
+#define CONFIG_WATER_COOL_HIGH_TEMP										400//冷水端高温报警温度
+#define CONFIG_WATER_COOL_LOW_TEMP										50//冷水管低温报警温度
 #define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
 #define CONFIG_ENVI_LOW_TEMP													-200//处理器低温极限 -20.0C
-#define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线（10个点，精细调节）
+#define CONFIG_HUMIDITY_HIGH_PER											85//湿度上限 85%
+#define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
+#endif
+
+#if defined(LYPE_MCU_1V0_20260106)
+#define CONFIG_DIODE_A_SET_TEMP												250//激光器冷却温度
+#define CONFIG_DIODE_A_HIGH_TEMP											350//激光器高温极限 40.0C
+#define CONFIG_DIODE_A_LOW_TEMP												50//激光器低温极限  5.0C
+#define CONFIG_WATER_HOT_HIGH_TEMP										650//热水端高温报警温度
+#define CONFIG_WATER_HOT_LOW_TEMP											50//热水端低温报警温度
+#define CONFIG_WATER_COOL_HIGH_TEMP										400//冷水端高温报警温度
+#define CONFIG_WATER_COOL_LOW_TEMP										50//冷水管低温报警温度
+#define CONFIG_ENVI_HIGH_TEMP													450//处理器高温极限 45.0C
+#define CONFIG_ENVI_LOW_TEMP													5//处理器低温极限 0.0C
+#define CONFIG_HUMIDITY_HIGH_PER											85//湿度上限 85%
+#define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
+#endif
+
 /*****************************************************************************/
-#define CONFIG_HMI_SCHEME_NUM													32//每分类方案数
+//配置密码
 #define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码
 #define CONFIG_HMI_ADMIN_PASSWORD1										0x3038//管理员密码
 #define CONFIG_HMI_ADMIN_PASSWORD2										0x3030//管理员密码
@@ -196,6 +230,13 @@
 /*****************************************************************************/
 #define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
 #define CONFIG_MAX_LASER_DAC_CH1											0xFFF//
+#define CONFIG_MAX_LASER_DAC_CH2											0xFFF//
+#define CONFIG_MAX_LASER_DAC_CH3											0xFFF//
+#define CONFIG_MAX_LASER_DAC_CH4											0xFFF//
+#define CONFIG_MAX_LASER_DAC_CH5											0xFFF//
+#define CONFIG_MAX_LASER_DAC_CH6											0xFFF//
+#define CONFIG_MAX_LASER_DAC_CH7											0xFFF//
+
 
 #define CONFIG_MAX_LASER_POWER_RED                    5//红激光最大功率 5档
 #define CONFIG_MAX_LASER_POWER_AIM                    10//指示激光最大功率 10档

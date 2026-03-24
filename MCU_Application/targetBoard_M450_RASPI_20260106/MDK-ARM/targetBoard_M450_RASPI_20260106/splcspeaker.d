@@ -98,11 +98,9 @@ targetboard_m450_raspi_20260106\splcspeaker.o: ../Middlewares/ST/STM32_USB_Host_
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../lib/libcrc.h
-targetboard_m450_raspi_20260106\splcspeaker.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../sPlc/sPlc.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../lib/libdbg.h
-targetboard_m450_raspi_20260106\splcspeaker.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -119,4 +117,3 @@ targetboard_m450_raspi_20260106\splcspeaker.o: ../Middlewares/Third_Party/FatFs/
 targetboard_m450_raspi_20260106\splcspeaker.o: ../FATFS/Target/ffconf.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 targetboard_m450_raspi_20260106\splcspeaker.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
-targetboard_m450_raspi_20260106\splcspeaker.o: ../../sPlc/boardConfig.h

@@ -97,11 +97,9 @@
 .\targetboard_g5_tri_a1\splcdac.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\splcdac.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\splcdac.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\splcdac.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splcdac.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\splcdac.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\splcdac.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\splcdac.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\splcdac.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\splcdac.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\splcdac.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -118,4 +116,3 @@
 .\targetboard_g5_tri_a1\splcdac.o: ../FATFS/Target/ffconf.h
 .\targetboard_g5_tri_a1\splcdac.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 .\targetboard_g5_tri_a1\splcdac.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
-.\targetboard_g5_tri_a1\splcdac.o: ../../sPlc/boardConfig.h

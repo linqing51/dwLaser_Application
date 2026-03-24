@@ -98,11 +98,9 @@
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -121,7 +119,6 @@
 .\targetboard_g5_tri_a1\mainapplib.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\preScheme.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiApp.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiApp.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\preScheme.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiLanguage.h
@@ -134,7 +131,6 @@
 .\targetboard_g5_tri_a1\mainapplib.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../dcHmi/hmiDriver.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../dcHmi/hmiCmdProcess.h
-.\targetboard_g5_tri_a1\mainapplib.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\dcHmiRes.h
 .\targetboard_g5_tri_a1\mainapplib.o: ..\..\MainApp\MainAppLib.h
 .\targetboard_g5_tri_a1\mainapplib.o: ../../lib/fan_controller.h

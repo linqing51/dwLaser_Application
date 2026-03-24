@@ -3,7 +3,7 @@
 <title>Static Call Graph - [targetBoard_M450_RASPI_20260106\targetBoard_M450_RASPI_20260106.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image targetBoard_M450_RASPI_20260106\targetBoard_M450_RASPI_20260106.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Mar 19 15:33:55 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Mar 24 13:08:12 2026
 <BR><P>
 <H3>Maximum Stack Usage =       1120 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -683,7 +683,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadSelectScheme
 <LI><a href="#[32a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmiUartInit
 <LI><a href="#[30e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fitLaserToCode
-<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FDSAV_ONE
 <LI><a href="#[3bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcTimerInit
 <LI><a href="#[3bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcOutputInit
@@ -706,6 +705,7 @@ Global Symbols
 <LI><a href="#[3b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcFdramLoad
 <LI><a href="#[320]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcFdramClear
 <LI><a href="#[321]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcDeviceConfigClear
+<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
 <LI><a href="#[324]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateBootloadReq
 <LI><a href="#[316]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateAcousticDisplay
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
@@ -837,11 +837,11 @@ Global Symbols
 <LI><a href="#[20a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateCustomScheme
 <LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loadSelectScheme
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
-<LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeDetail
 <LI><a href="#[21c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PTP_BufferFullCallback
 <LI><a href="#[2a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_SCSI_Inquiry
 <LI><a href="#[1ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcNvramUpdate
 <LI><a href="#[3b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcNvramLoad
+<LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeDetail
 </UL>
 
 <P><STRONG><a name="[cf]"></a>__rt_memcpy</STRONG> (Thumb, 138 bytes, Stack size 0 bytes, rt_memcpy_v6.o(.text), UNUSED)
@@ -913,6 +913,11 @@ Global Symbols
 <LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_CDC_InterfaceInit
 <LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_AUDIO_InterfaceInit
 <LI><a href="#[171]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_HCD_MspInit
+<LI><a href="#[2bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_PTP_SendRequest
+<LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MTP_InterfaceInit
+<LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_InterfaceInit
+<LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HID_InterfaceInit
+<LI><a href="#[3b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcAdcProcessBufferA
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateStandbyDisplay
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeInfo
 <LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeDetail
@@ -920,11 +925,6 @@ Global Symbols
 <LI><a href="#[313]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReadyDisplay
 <LI><a href="#[31c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateInformationDisplay
 <LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
-<LI><a href="#[2bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_PTP_SendRequest
-<LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MTP_InterfaceInit
-<LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_MSC_InterfaceInit
-<LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBH_HID_InterfaceInit
-<LI><a href="#[3b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcAdcProcessBufferA
 <LI><a href="#[31d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisTextBox
 <LI><a href="#[327]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisInfoRaw
 <LI><a href="#[326]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisInfo
@@ -2565,9 +2565,9 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartMainAppTask
 <LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcTimerIsr
+<LI><a href="#[3c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcSpwmLoop
 <LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
 <LI><a href="#[30d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateOptionDisplay
-<LI><a href="#[3c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcSpwmLoop
 <LI><a href="#[327]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisInfoRaw
 <LI><a href="#[326]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisInfo
 <LI><a href="#[316]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateAcousticDisplay
@@ -2927,12 +2927,6 @@ Global Symbols
 <LI><a href="#[204]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlVisiable
 <LI><a href="#[205]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetControlEnable
 <LI><a href="#[206]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetButtonValue
-<LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateStandbyDisplay
-<LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeInfo
-<LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeDetail
-<LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePosWidthDisplay
-<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateNegWidthDisplay
-<LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 <LI><a href="#[212]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;REBOOT
 <LI><a href="#[1fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVSAVE
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVFSAVE
@@ -2943,6 +2937,12 @@ Global Symbols
 <LI><a href="#[208]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADDS1
 <LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSET
 <LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RRES
+<LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateStandbyDisplay
+<LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeInfo
+<LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeDetail
+<LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePosWidthDisplay
+<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateNegWidthDisplay
+<LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;standbyDebugInfoVisiable
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;seletcSchemeNum
 <LI><a href="#[20e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
@@ -2973,8 +2973,8 @@ Global Symbols
 <LI>Call Chain = NotifyText &rArr; __0sscanf &rArr; __vfscanf_char &rArr; __vfscanf &rArr; _scanf_real &rArr; _scanf_really_real &rArr; _fp_value &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e
 </UL>
 <BR>[Calls]<UL><LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
-<LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeDetail
 <LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSET
+<LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeDetail
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
 <LI><a href="#[21a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 <LI><a href="#[21b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcpy
@@ -3014,7 +3014,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[211]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;restoreDefault
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
-<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T10MS
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T100MS
 <LI><a href="#[389]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcSpeakerInit
@@ -3022,6 +3021,7 @@ Global Symbols
 <LI><a href="#[3c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcSpwmLoop
 <LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcProcessEnd
 <LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
+<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
 <LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoopInit
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 <LI><a href="#[301]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;temperatureLoop
@@ -3038,12 +3038,12 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyText
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NotifyButton
-<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T10MS
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T100MS
 <LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLIP
 <LI><a href="#[3c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcSpwmLoop
 <LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcInit
+<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
 <LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoopInit
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 <LI><a href="#[301]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;temperatureLoop
@@ -3304,8 +3304,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_ConfigChannel
 </UL>
 
-<P><STRONG><a name="[23f]"></a>TNTLC</STRONG> (Thumb, 428 bytes, Stack size 72 bytes, splcfun.o(i.TNTLC))
-<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = TNTLC &rArr; __hardfp_log &rArr; __kernel_poly &rArr; __aeabi_dmul
+<P><STRONG><a name="[23f]"></a>TNTLC</STRONG> (Thumb, 458 bytes, Stack size 88 bytes, splcfun.o(i.TNTLC))
+<BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = TNTLC &rArr; __hardfp_log &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LIMS16
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcAssertRegisterAddress
@@ -4606,8 +4606,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 504 + Unknown Stack Size
 <LI>Call Chain = clearReleaseTimeEnergy &rArr; updateReleaseTimeEnergy &rArr; SetTextValue &rArr; SendStrings &rArr; hmiUartSendChar &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReleaseTimeEnergy
-<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLRD
+<BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLRD
+<LI><a href="#[2e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReleaseTimeEnergy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[313]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReadyDisplay
 </UL>
@@ -4624,9 +4624,9 @@ Global Symbols
 <LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;softDelayMs
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextValue
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_lf_WriteBootload
-<LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_If_EraseBootload
 <LI><a href="#[212]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;REBOOT
 <LI><a href="#[2ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getOriginBootloadCrc
+<LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_If_EraseBootload
 <LI><a href="#[2eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkBlank
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -4682,17 +4682,6 @@ Global Symbols
 <LI><a href="#[218]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetBackLight
 <LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Init
 <LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FlashRestoreControl
-<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
-<LI><a href="#[30b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateWarnMsgDisplay
-<LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateStandbyDisplay
-<LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeInfo
-<LI><a href="#[2e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReleaseTimeEnergy
-<LI><a href="#[313]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReadyDisplay
-<LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePosWidthDisplay
-<LI><a href="#[30d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateOptionDisplay
-<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateNegWidthDisplay
-<LI><a href="#[31c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateInformationDisplay
-<LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 <LI><a href="#[24b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UPDAC1
 <LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UPDAC0
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;T10MS
@@ -4712,6 +4701,17 @@ Global Symbols
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcFdramSave
 <LI><a href="#[320]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcFdramClear
 <LI><a href="#[321]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sPlcDeviceConfigClear
+<LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wfswLoop
+<LI><a href="#[30b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateWarnMsgDisplay
+<LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateStandbyDisplay
+<LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeInfo
+<LI><a href="#[2e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReleaseTimeEnergy
+<LI><a href="#[313]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReadyDisplay
+<LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePosWidthDisplay
+<LI><a href="#[30d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateOptionDisplay
+<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateNegWidthDisplay
+<LI><a href="#[31c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateInformationDisplay
+<LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
 <LI><a href="#[31d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisTextBox
 <LI><a href="#[327]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisInfoRaw
 <LI><a href="#[326]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisInfo
@@ -6142,10 +6142,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTextInt32
 <LI><a href="#[206]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetButtonValue
+<LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LD
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchSetProgressValue
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchEnd
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BatchBegin
-<LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LD
 </UL>
 <BR>[Called By]<UL><LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
@@ -6855,8 +6855,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[3e3]"></a>_d2f</STRONG> (Thumb, 98 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
-<LI><a href="#[3e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_fretinf
+<BR><BR>[Calls]<UL><LI><a href="#[3e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_fretinf
+<LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
 <P><STRONG><a name="[244]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
@@ -6869,9 +6869,9 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[3e6]"></a>_dadd</STRONG> (Thumb, 332 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
+<BR><BR>[Calls]<UL><LI><a href="#[3e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
+<LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 <LI><a href="#[3e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsub1
-<LI><a href="#[3e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
 </UL>
 
 <P><STRONG><a name="[3e9]"></a>__fpl_dcheck_NaN1</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, dcheck1.o(x$fpl$dcheck1))
@@ -6896,8 +6896,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[3eb]"></a>_ddiv</STRONG> (Thumb, 552 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
-<LI><a href="#[3e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
+<BR><BR>[Calls]<UL><LI><a href="#[3e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
+<LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
 <P><STRONG><a name="[2cb]"></a>__aeabi_cdcmpeq</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, deqf.o(x$fpl$deqf))
@@ -6964,8 +6964,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[3f0]"></a>_dmul</STRONG> (Thumb, 332 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
-<LI><a href="#[3e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
+<BR><BR>[Calls]<UL><LI><a href="#[3e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
+<LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
 <P><STRONG><a name="[3e5]"></a>__fpl_dnaninf</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, dnaninf.o(x$fpl$dnaninf), UNUSED)
@@ -7025,12 +7025,12 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2d
 </UL>
 <BR>[Called By]<UL><LI><a href="#[30e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fitLaserToCode
+<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TNTLC
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateStandbyDisplay
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateSchemeInfo
 <LI><a href="#[2e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReleaseTimeEnergy
 <LI><a href="#[313]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateReadyDisplay
 <LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateExtralDisplay
-<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TNTLC
 <LI><a href="#[31d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateDiognosisTextBox
 <LI><a href="#[316]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateAcousticDisplay
 </UL>
@@ -9019,7 +9019,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
 
-<P><STRONG><a name="[302]"></a>faultLoop</STRONG> (Thumb, 594 bytes, Stack size 8 bytes, dchmiapp.o(i.faultLoop))
+<P><STRONG><a name="[302]"></a>faultLoop</STRONG> (Thumb, 650 bytes, Stack size 8 bytes, dchmiapp.o(i.faultLoop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = faultLoop &rArr; LDB
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LDB
@@ -9082,8 +9082,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dcHmiLoop
 </UL>
 
-<P><STRONG><a name="[301]"></a>temperatureLoop</STRONG> (Thumb, 474 bytes, Stack size 8 bytes, dchmiapp.o(i.temperatureLoop))
-<BR><BR>[Stack]<UL><LI>Max Depth = 224 + Unknown Stack Size
+<P><STRONG><a name="[301]"></a>temperatureLoop</STRONG> (Thumb, 496 bytes, Stack size 8 bytes, dchmiapp.o(i.temperatureLoop))
+<BR><BR>[Stack]<UL><LI>Max Depth = 240 + Unknown Stack Size
 <LI>Call Chain = temperatureLoop &rArr; TNTLC &rArr; __hardfp_log &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Compute

@@ -217,8 +217,8 @@ extern void ADL1(uint16_t Sa) ;//32位非饱和自加
 extern void ADLS1(uint16_t Sa) ;//32位饱和自加
 extern void DEL1(uint16_t Sa) ;//32位非饱和自减
 extern void DELS1(uint16_t Sa) ;//32位饱和自减
-extern void TNTUC(uint16_t dist, uint16_t src);//CODE转换为环境温度
-extern void TNTLC(uint16_t dist, uint16_t src);//CODE转换为环境温度
+extern void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b);//CODE转换为环境温度
+extern void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b);//CODE转换为环境温度
 extern void TENV(uint16_t dist, uint16_t src);//CODE转换为NTC测量温度温度
 extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);//块复制
 extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);//有符号16位数限制幅度指令

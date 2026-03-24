@@ -99,11 +99,9 @@ targetboard_m450_raspi_20260106\dchmiapp.o: ../Middlewares/ST/STM32_USB_Host_Lib
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../lib/libcrc.h
-targetboard_m450_raspi_20260106\dchmiapp.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../sPlc/sPlc.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../lib/libdbg.h
-targetboard_m450_raspi_20260106\dchmiapp.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -120,7 +118,6 @@ targetboard_m450_raspi_20260106\dchmiapp.o: ../Middlewares/Third_Party/FatFs/src
 targetboard_m450_raspi_20260106\dchmiapp.o: ../FATFS/Target/ffconf.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
-targetboard_m450_raspi_20260106\dchmiapp.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ..\..\MainApp\dcHmiApp.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ..\..\MainApp\preScheme.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ..\..\MainApp\dcHmiLanguage.h
@@ -133,7 +130,6 @@ targetboard_m450_raspi_20260106\dchmiapp.o: ../../dcHmi/hmiCmdQueue.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../dcHmi/hmiLib.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../dcHmi/hmiDriver.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../dcHmi/hmiCmdProcess.h
-targetboard_m450_raspi_20260106\dchmiapp.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ..\..\MainApp\dcHmiRes.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ..\..\MainApp\MainAppLib.h
 targetboard_m450_raspi_20260106\dchmiapp.o: ../../lib/fan_controller.h

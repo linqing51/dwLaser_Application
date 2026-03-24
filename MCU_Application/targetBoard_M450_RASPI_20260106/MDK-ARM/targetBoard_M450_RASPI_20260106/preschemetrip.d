@@ -99,11 +99,9 @@ targetboard_m450_raspi_20260106\preschemetrip.o: ../Middlewares/ST/STM32_USB_Hos
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../lib/libcrc.h
-targetboard_m450_raspi_20260106\preschemetrip.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../sPlc/sPlc.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../lib/libdbg.h
-targetboard_m450_raspi_20260106\preschemetrip.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -121,7 +119,6 @@ targetboard_m450_raspi_20260106\preschemetrip.o: ../FATFS/Target/ffconf.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ..\..\MainApp\dcHmiApp.h
-targetboard_m450_raspi_20260106\preschemetrip.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ..\..\MainApp\dcHmiApp.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ..\..\MainApp\preScheme.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ..\..\MainApp\dcHmiLanguage.h
@@ -134,7 +131,6 @@ targetboard_m450_raspi_20260106\preschemetrip.o: ../../dcHmi/hmiCmdQueue.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../dcHmi/hmiLib.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../dcHmi/hmiDriver.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../dcHmi/hmiCmdProcess.h
-targetboard_m450_raspi_20260106\preschemetrip.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ..\..\MainApp\dcHmiRes.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ..\..\MainApp\MainAppLib.h
 targetboard_m450_raspi_20260106\preschemetrip.o: ../../lib/fan_controller.h

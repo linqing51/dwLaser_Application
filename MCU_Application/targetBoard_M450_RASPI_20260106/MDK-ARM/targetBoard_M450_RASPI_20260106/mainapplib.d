@@ -99,11 +99,9 @@ targetboard_m450_raspi_20260106\mainapplib.o: ../Middlewares/ST/STM32_USB_Host_L
 targetboard_m450_raspi_20260106\mainapplib.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../lib/libcrc.h
-targetboard_m450_raspi_20260106\mainapplib.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../sPlc/sPlc.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../lib/libdbg.h
-targetboard_m450_raspi_20260106\mainapplib.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -122,7 +120,6 @@ targetboard_m450_raspi_20260106\mainapplib.o: ../Middlewares/Third_Party/FatFs/s
 targetboard_m450_raspi_20260106\mainapplib.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 targetboard_m450_raspi_20260106\mainapplib.o: ..\..\MainApp\preScheme.h
 targetboard_m450_raspi_20260106\mainapplib.o: ..\..\MainApp\dcHmiApp.h
-targetboard_m450_raspi_20260106\mainapplib.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\mainapplib.o: ..\..\MainApp\dcHmiApp.h
 targetboard_m450_raspi_20260106\mainapplib.o: ..\..\MainApp\preScheme.h
 targetboard_m450_raspi_20260106\mainapplib.o: ..\..\MainApp\dcHmiLanguage.h
@@ -135,7 +132,6 @@ targetboard_m450_raspi_20260106\mainapplib.o: ../../dcHmi/hmiCmdQueue.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../dcHmi/hmiLib.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../dcHmi/hmiDriver.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../dcHmi/hmiCmdProcess.h
-targetboard_m450_raspi_20260106\mainapplib.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\mainapplib.o: ..\..\MainApp\dcHmiRes.h
 targetboard_m450_raspi_20260106\mainapplib.o: ..\..\MainApp\MainAppLib.h
 targetboard_m450_raspi_20260106\mainapplib.o: ../../lib/fan_controller.h

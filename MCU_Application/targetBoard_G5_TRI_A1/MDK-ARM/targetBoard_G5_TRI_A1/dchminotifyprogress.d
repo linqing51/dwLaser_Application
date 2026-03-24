@@ -99,11 +99,9 @@
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -120,7 +118,6 @@
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../FATFS/Target/ffconf.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
-.\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ..\..\MainApp\dcHmiApp.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ..\..\MainApp\preScheme.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ..\..\MainApp\dcHmiLanguage.h
@@ -133,7 +130,6 @@
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../dcHmi/hmiDriver.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../dcHmi/hmiCmdProcess.h
-.\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ..\..\MainApp\dcHmiRes.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ..\..\MainApp\MainAppLib.h
 .\targetboard_g5_tri_a1\dchminotifyprogress.o: ../../lib/fan_controller.h

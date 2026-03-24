@@ -73,4 +73,3 @@ targetboard_m450_raspi_20260106\splceprom.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\splceprom.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\splceprom.o: ../../lib/libcrc.h
 targetboard_m450_raspi_20260106\splceprom.o: ../../sPlc/sPlcConfig.h
-targetboard_m450_raspi_20260106\splceprom.o: ../../sPlc/boardConfig.h

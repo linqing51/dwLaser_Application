@@ -98,11 +98,9 @@
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\dchmilanguage.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\dchmilanguage.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h

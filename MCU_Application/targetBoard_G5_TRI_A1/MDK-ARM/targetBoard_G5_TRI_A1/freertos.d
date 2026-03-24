@@ -98,11 +98,9 @@
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\freertos.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -120,7 +118,6 @@
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 .\targetboard_g5_tri_a1\freertos.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiApp.h
-.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiApp.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/preScheme.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiLanguage.h
@@ -133,7 +130,6 @@
 .\targetboard_g5_tri_a1\freertos.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1\freertos.o: ../../dcHmi/hmiDriver.h
 .\targetboard_g5_tri_a1\freertos.o: ../../dcHmi/hmiCmdProcess.h
-.\targetboard_g5_tri_a1\freertos.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/dcHmiRes.h
 .\targetboard_g5_tri_a1\freertos.o: ../../MainApp/MainAppLib.h
 .\targetboard_g5_tri_a1\freertos.o: ../../lib/fan_controller.h

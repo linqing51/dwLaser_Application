@@ -120,11 +120,9 @@ targetboard_m450_raspi_20260106\main.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\main.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\main.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\main.o: ../../lib/libcrc.h
-targetboard_m450_raspi_20260106\main.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\main.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\main.o: ../../sPlc/sPlc.h
 targetboard_m450_raspi_20260106\main.o: ../../lib/libdbg.h
-targetboard_m450_raspi_20260106\main.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\main.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\main.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc/usbh_hid.h

@@ -100,11 +100,9 @@ targetboard_m450_raspi_20260106\dchminotifytext.o: ../Middlewares/ST/STM32_USB_H
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../lib/flash_if.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../MainApp/AppConfig.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../lib/libcrc.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlc/sPlcFun.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlc/sPlc.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../lib/libdbg.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../lib/pid_temp_control.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../lib/fuzzy_pid.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -121,7 +119,6 @@ targetboard_m450_raspi_20260106\dchminotifytext.o: ../Middlewares/Third_Party/Fa
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../FATFS/Target/ffconf.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ..\..\MainApp\dcHmiApp.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ..\..\MainApp\preScheme.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ..\..\MainApp\dcHmiLanguage.h
@@ -134,7 +131,6 @@ targetboard_m450_raspi_20260106\dchminotifytext.o: ../../dcHmi/hmiCmdQueue.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../dcHmi/hmiLib.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../dcHmi/hmiDriver.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../dcHmi/hmiCmdProcess.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlc/boardConfig.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ..\..\MainApp\dcHmiRes.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ..\..\MainApp\MainAppLib.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../lib/fan_controller.h

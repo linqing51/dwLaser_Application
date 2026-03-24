@@ -150,7 +150,7 @@ void MOVD(uint16_t dist, uint16_t src){//32位寄存器传输
 //}
 //void ANDD(uint16_t dist){//32位数 按位求与
 //}
-void TNTUC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度 电阻上拉
+void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换为NTC测量温度温度 电阻上拉
 	float32_t ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	sPlcAssertRegisterAddress(dist);//检查寄存器地址
@@ -162,28 +162,28 @@ void TNTUC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度 电
 	//使用内部基准校准
 	if(NVRAM0[src] >= 10){
 		if(NVRAM0[CONFIG_VREF_ADC]  > 0){
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+			ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
 		}
 		else{
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//计算电压
+			ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//计算电压
 		}
 		if(ftemp == CONFIG_NTC_VREF){
 			ftemp = 999999.9F;//计算电阻
 		}
 		else{
-			ftemp = ftemp * CONFIG_NTC_RS / (CONFIG_NTC_VREF - ftemp);//计算电阻
+			ftemp = ftemp * ntc_rs / (CONFIG_NTC_VREF - ftemp);//计算电阻
 		}
 	}
 	else{
 		ftemp = 0.1F;
 	}
-	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / CONFIG_NTC_B * log(ftemp / CONFIG_NTC_R25)) - 273.15;
+	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * log(ftemp / CONFIG_NTC_R25)) - 273.15;
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 
-void TNTLC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度 电阻下拉
+void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换为NTC测量温度温度 电阻下拉
 	float32_t ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	sPlcAssertRegisterAddress(dist);//检查寄存器地址
@@ -195,22 +195,22 @@ void TNTLC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度 电
 	//使用内部基准校准
 	if(NVRAM0[src] >= 10){
 		if(NVRAM0[CONFIG_VREF_ADC]  > 0){
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+			ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
 		}
 		else{
-			ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//计算电压
+			ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;//计算电压
 		}
-		if(ftemp == CONFIG_NTC_RS){
+		if(ftemp == ntc_rs){
 			ftemp = 999999.9F;//计算电阻
 		}
 		else{
-			ftemp = CONFIG_NTC_RS * CONFIG_NTC_VREF / ftemp - CONFIG_NTC_RS;//计算电阻
+			ftemp = ntc_rs * CONFIG_NTC_VREF / ftemp - ntc_rs;//计算电阻
 		}
 	}
 	else{
 		ftemp = 0.1F;
 	}
-	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / CONFIG_NTC_B * log(ftemp / CONFIG_NTC_R25)) - 273.15;
+	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * log(ftemp / CONFIG_NTC_R25)) - 273.15;
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
@@ -219,12 +219,11 @@ void TNTLC(uint16_t dist, uint16_t src){//CODE转换为NTC测量温度温度 电
 void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
 	float32_t ftemp;
 	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
-		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);
 	}
 	else{
-		ftemp = (3300.0F * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / 4096.0F;
 	}
-	//ftemp = NVRAM0[SPREG_VREF]* NVRAM0[src] / 4096;//单位mV
 	ftemp = ((ftemp - CONFIG_ADC_V25) / CONFIG_ADC_AVG_SLOPE) + 25.0F;
 	if(ftemp >= 100)
 		ftemp =100;
@@ -491,8 +490,6 @@ void FDLAD(void){//FDRAM<-EPROM
 	sPlcFdramLoad();
 	sPlcIsrEnable();
 }
-
-
 
 /*****************************************************************************/
 //IO指令

@@ -98,11 +98,9 @@
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/flash_if.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../MainApp/AppConfig.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/libcrc.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/libdbg.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/boardConfig.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/pid_temp_control.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../../lib/fuzzy_pid.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
@@ -123,4 +121,3 @@
 .\targetboard_g5_tri_a1\hmiuseruart.o: ..\..\dcHmi\hmiLib.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ..\..\dcHmi\hmiDriver.h
 .\targetboard_g5_tri_a1\hmiuseruart.o: ..\..\dcHmi\hmiCmdProcess.h
-.\targetboard_g5_tri_a1\hmiuseruart.o: ../../sPlc/boardConfig.h
