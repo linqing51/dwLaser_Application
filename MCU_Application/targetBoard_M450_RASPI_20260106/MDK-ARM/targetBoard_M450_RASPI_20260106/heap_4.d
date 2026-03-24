@@ -1,8 +1,8 @@
 targetboard_m450_raspi_20260106\heap_4.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c
-targetboard_m450_raspi_20260106\heap_4.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+targetboard_m450_raspi_20260106\heap_4.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
 targetboard_m450_raspi_20260106\heap_4.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-targetboard_m450_raspi_20260106\heap_4.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-targetboard_m450_raspi_20260106\heap_4.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+targetboard_m450_raspi_20260106\heap_4.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+targetboard_m450_raspi_20260106\heap_4.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 targetboard_m450_raspi_20260106\heap_4.o: ../Core/Inc/FreeRTOSConfig.h
 targetboard_m450_raspi_20260106\heap_4.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 targetboard_m450_raspi_20260106\heap_4.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

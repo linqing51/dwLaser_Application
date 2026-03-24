@@ -9,7 +9,7 @@ targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driv
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Include/core_cm4.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Include/cmsis_version.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -17,7 +17,7 @@ targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Include/mpu_
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -48,10 +48,10 @@ targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driv
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/arm_math_types.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\float.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\limits.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/arm_math_memory.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/dsp/none.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/dsp/utils.h
@@ -70,10 +70,10 @@ targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/dsp/transform_functions.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
-targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\ctype.h
+targetboard_m450_raspi_20260106\dchminotifytext.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdbool.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlc/sPlcConfig.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../sPlcPort/sPlcEprom.h
 targetboard_m450_raspi_20260106\dchminotifytext.o: ../../lib/libcpu.h

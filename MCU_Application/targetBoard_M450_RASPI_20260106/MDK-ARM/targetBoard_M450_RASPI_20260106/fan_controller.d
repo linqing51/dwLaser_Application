@@ -3,7 +3,7 @@ targetboard_m450_raspi_20260106\fan_controller.o: ..\..\lib\fan_controller.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/CMSIS/Include/core_cm4.h
-targetboard_m450_raspi_20260106\fan_controller.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+targetboard_m450_raspi_20260106\fan_controller.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/CMSIS/Include/cmsis_version.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -15,7 +15,7 @@ targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Drive
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-targetboard_m450_raspi_20260106\fan_controller.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+targetboard_m450_raspi_20260106\fan_controller.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -44,5 +44,5 @@ targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Drive
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
-targetboard_m450_raspi_20260106\fan_controller.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+targetboard_m450_raspi_20260106\fan_controller.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdbool.h
 targetboard_m450_raspi_20260106\fan_controller.o: ../../MainApp/appConfig.h

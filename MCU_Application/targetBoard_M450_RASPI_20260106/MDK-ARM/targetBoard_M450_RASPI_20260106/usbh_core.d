@@ -1,9 +1,9 @@
 targetboard_m450_raspi_20260106\usbh_core.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.c
 targetboard_m450_raspi_20260106\usbh_core.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../USB_HOST/Target/usbh_conf.h
-targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
+targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Core/Inc/main.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -12,7 +12,7 @@ targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Include/core_cm4.h
-targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Include/cmsis_version.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -20,7 +20,7 @@ targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Include/mpu_armv7.
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+targetboard_m450_raspi_20260106\usbh_core.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 targetboard_m450_raspi_20260106\usbh_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h

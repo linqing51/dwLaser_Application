@@ -849,11 +849,36 @@ extern uint16_t audioSineTable[];
 #define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
 #endif
 
+/*****************************************************************************/
 //配置EPROM数据地址
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP)
+#define CONFIG_EPROM_MR_START									(0x0L)//
+#define CONFIG_EPROM_MR_END										(CONFIG_EPROM_MR_START + MR_END - MR_START)
+#define CONFIG_EPROM_DM_START									(CONFIG_EPROM_MR_END + 1)//NVRAM中DM在EPROM储存地址
+#define CONFIG_EPROM_DM_END										(CONFIG_EPROM_DM_START + DM_END - DM_START)
+
+#define CONFIG_EPROM_FD_SCHEME_SIZE						((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//单个方案占用的EPROM空间
+#define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
+#define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
+
+#define CONFIG_EPROM_MR_CRC										(7524L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC										(7528L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC										(7532L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(7536L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(7540L)//4B LCD固件CRC32值 软件计算
+#define CONFIG_EPROM_CFG_CRC									(7544L)//4B deviceConfig CRC32值 硬件计算
+#define CONFIG_EPROM_LOG_CRC									(7548L)//4B logInfo CRC32值 硬件计算
+
+#define CONFIG_EPROM_CONFIG_START							(7552L)//512B 配置信息区
+#define CONFIG_EPROM_CONFIG_END								(8063L)
+#define CONFIG_EPROM_LOGINFO_START						(8064L)//128B 记录信息区 
+#define CONFIG_EPROM_LOGINFO_END							(8191L)
+#endif
+
+#if defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_EPROM_MR_START									(0x0L)//
 #define CONFIG_EPROM_MR_END										(CONFIG_EPROM_MR_START + MR_END - MR_START)
 #define CONFIG_EPROM_DM_START									(CONFIG_EPROM_MR_END + 1)//NVRAM中DM在EPROM储存地址

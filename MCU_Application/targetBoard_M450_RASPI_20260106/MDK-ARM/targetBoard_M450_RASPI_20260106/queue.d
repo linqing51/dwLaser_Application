@@ -1,9 +1,9 @@
 targetboard_m450_raspi_20260106\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
-targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
+targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 targetboard_m450_raspi_20260106\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+targetboard_m450_raspi_20260106\queue.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 targetboard_m450_raspi_20260106\queue.o: ../Core/Inc/FreeRTOSConfig.h
 targetboard_m450_raspi_20260106\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 targetboard_m450_raspi_20260106\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

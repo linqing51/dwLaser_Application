@@ -160,7 +160,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.greenLedDc = CONFIG_GREEN_LED_DEFAULT_DC;
 		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
 		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
-		deviceConfig.aimGain = CONFIG_AIM_DEFAULT_GAIN;
+		deviceConfig.aimGain = CONFIG_LASER_AIM_DEFAULT_GAIN;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 		deviceConfig.normalOpenInterLock = 1;//默认常开联锁 
 		saveDeviceConfig();
