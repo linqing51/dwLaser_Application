@@ -819,19 +819,19 @@ extern uint16_t audioSineTable[];
 #define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 
 #define CONFIG_VREF_ADC												SPREG_ADC_59
-#define CONFIG_MCU_VREF												2500.0F
+#define CONFIG_MCU_VREF												3300.0F
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25												760.0F//0.76V@25D
 
-#define CONFIG_DIODE_NTC_RS										4700L//激光器热敏电阻分压电阻值
+#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻值
 #define CONFIG_HT0_NTC_RS											4700L//散热器0热敏电阻分压电阻值
 #define CONFIG_HT1_NTC_RS											4700L//散热器1热敏电阻分压电阻值
 #define CONFIG_HT2_NTC_RS											4700L//散热器2热敏电阻分压电阻值
 #define CONFIG_HT3_NTC_RS											4700L//散热器3热敏电阻分压电阻值
-#define CONFIG_WATER_HOT_NTC_RS								4700L//热水端热敏电阻分压电阻值
-#define CONFIG_WATER_COOL_NTC_RS							4700L//冷水端热敏电阻分压电阻值
-#define CONFIG_AMBIENT_NTC_RS									4700L//环境热敏电阻分压电阻值
-#define CONFIG_MBAT_NTC_RS										4700L//环境热敏电阻分压电阻值
+#define CONFIG_WATER_HOT_NTC_RS								11000L//热水端热敏电阻分压电阻值
+#define CONFIG_WATER_COOL_NTC_RS							11000L//冷水端热敏电阻分压电阻值
+#define CONFIG_AMBIENT_NTC_RS									10000L//环境热敏电阻分压电阻值
+#define CONFIG_MBAT_NTC_RS										10000L//环境热敏电阻分压电阻值
 
 #define CONFIG_DIODE_NTC_B										3477.0F//激光器热敏电阻B值
 #define CONFIG_HT0_NTC_B											3477.0F//散热器0热敏电阻B值
@@ -840,8 +840,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_HT3_NTC_B											3477.0F//散热器3热敏电阻B值
 #define CONFIG_MBAT_NTC_B											3477.0F//散热器3热敏电阻B值
 
-#define CONFIG_WATER_HOT_NTC_B								3477.0F//热水端热敏电阻B值
-#define CONFIG_WATER_COOL_NTC_B								3477.0F//冷水端热敏电阻B值
+#define CONFIG_WATER_HOT_NTC_B								3900.0F//热水端热敏电阻B值
+#define CONFIG_WATER_COOL_NTC_B								3900.0F//冷水端热敏电阻B值
 #define CONFIG_AMBIENT_NTC_B									3477.0F//环境热敏电阻B值
 
 #define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
@@ -888,6 +888,52 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
+//功率校准表地址
+#define CALIBRATION_FACTOR_CH0_START					(7374L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH0_END						(7384L)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH1_START					(7385L)//通道1激光校准系数表起始
+#define CALIBRATION_FACTOR_CH1_END						(7394L)//通道1激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH2_START					(7395L)//通道2激光校准系数表起始
+#define CALIBRATION_FACTOR_CH2_END						(7404L)//通道2激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH3_START					(7405L)//通道3激光校准系数表起始
+#define CALIBRATION_FACTOR_CH4_END						(7414L)//通道3激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH5_START					(7415L)//通道4激光校准系数表起始
+#define CALIBRATION_FACTOR_CH5_END						(7424L)//通道4激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH6_START					(7425L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH6_END						(7434L)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH7_START					(7435L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH7_END						(7444L)//通道0激光校准系数表结束
+//功率校准表备份地址
+#define CALIBRATION_FACTOR_CH0_BK_START				(7445L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH0_BK_END					(7454L)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH1_BK_START				(7455L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH1_BK_END					(7464L)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH2_BK_START				(7465L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH2_BK_END					(7474L)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH3_BK_START				(7475L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH4_BK_END					(7484L)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH5_BK_START				(7485L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH5_BK_END					(7494L)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH6_BK_START				(7494L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH6_BK_END					(7505L)//通道0激光校准系数表结束
+
+//10->16BIT
+#define CALIBRATION_FACTOR_CH7_BK_START				(7504L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH7_BK_END					(7515L)//通道0激光校准系数表结束
+
+#define CONFIG_EPROM_CALB_CRC									(7516L)//4B 功率校准表 CRC32
+#define CONFIG_EPROM_CALB_BK_CRC							(7520L)//4B 备份功率校准表 CRC32
 #define CONFIG_EPROM_MR_CRC										(7524L)//4B MR NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_DM_CRC										(7528L)//4B DM NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_FD_CRC										(7532L)//4B FD NVRAM CRC32 硬件计算

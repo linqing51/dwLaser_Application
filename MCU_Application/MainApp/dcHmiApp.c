@@ -2694,7 +2694,7 @@ static void temperatureLoop(void){//温度轮询轮询
 #if defined(LYPE_MCU_1V0_20260106)
 	TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS , CONFIG_DIODE_NTC_B);//激光器芯片温度
 	TNTLC(EM_WATER_HOT_TEMP, SPREG_ADC_36, CONFIG_WATER_HOT_NTC_RS, CONFIG_WATER_HOT_NTC_B);//水冷热端温度
-	TNTLC(EM_WATER_COOL_TEMP, SPREG_ADC_37, CONFIG_WATER_COOL_NTC_RS, CONFIG_WATER_COOL_NTC_B);//水冷冷端温度
+	TNTUC(EM_WATER_COOL_TEMP, SPREG_ADC_37, CONFIG_WATER_COOL_NTC_RS, CONFIG_WATER_COOL_NTC_B);//水冷冷端温度
 	TNTLC(EM_AMBIENT0_TEMP, SPREG_ADC_56, CONFIG_AMBIENT_NTC_RS, CONFIG_AMBIENT_NTC_B);//模拟环境温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_58);//CODE转换为MCU温度
 
@@ -3187,6 +3187,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		speakerLoop();
 		temperatureLoop();//温控程序
 		faultLoop();
+		NVRAM0[EM_LASER_FPD] = NVRAM0[SPREG_ADC_54];
 		if(LD(R_DCHMI_RESET_DONE) && LD(R_DCHMI_RESTORE_DONE)){//HMI复位完成后处理串口指令
 			hmiCmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE);//从缓冲区中获取一条指令         
 					if(hmiCmdSize > 0){//接收到指令及判断是否为开机提示                                                            

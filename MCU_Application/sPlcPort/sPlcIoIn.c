@@ -139,7 +139,7 @@ void sPlcInputRefresh(void){//获取输入IO
 	}
 #endif
 	//X4 光纤探测
-	if(NVRAM0[SPREG_ADC_9] <= deviceConfig.fiberDetect){
+	if(NVRAM0[SPREG_ADC_54] <= deviceConfig.fiberDetect){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[4] ++;
 		}
