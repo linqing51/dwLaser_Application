@@ -99,12 +99,12 @@
 #define POWER_REAL_CH3_95P														3800
 #define POWER_REAL_CH3_100P														4000
 /*****************************************************************************/
-//定义激光通道编码
-#define LASER_CHANNEL_CH0															0x01//1470 1940 450
-#define LASER_CHANNEL_CH1															0x02//980
-#define LASER_CHANNEL_CH2															0x03
-#define LASER_CHANNEL_CH3															0x04
-#define LASER_CHANNEL_CH4															0x05
+//定义逻辑激光通道使能编码
+#define LASER_CHANNEL_CH0															0x01//1470/1940/450
+#define LASER_CHANNEL_CH1															0x02//980/       
+#define LASER_CHANNEL_CH2															0x03//           
+#define LASER_CHANNEL_CH3															0x04//          
+#define LASER_CHANNEL_CH4															0x05//          
 #define LASER_CHANNEL_CH5															0x06
 #define LASER_CHANNEL_CH6															0x07
 #define LASER_CHANNEL_CH7															0x08
@@ -117,6 +117,16 @@
 #define LASER_CHANNEL_CH5_RED													0x15
 #define LASER_CHANNEL_CH6_RED													0x16
 #define LASER_CHANNEL_CH7_RED													0x17
+/*****************************************************************************/
+//定义物理激光DAC通道编码
+#define LASER_DAC_CHANNEL_CH0													(1 << 0)
+#define LASER_DAC_CHANNEL_CH1													(1 << 1)
+#define LASER_DAC_CHANNEL_CH2													(1 << 2)
+#define LASER_DAC_CHANNEL_CH3													(1 << 3)
+#define LASER_DAC_CHANNEL_CH4													(1 << 4)
+#define LASER_DAC_CHANNEL_CH5													(1 << 5)
+#define LASER_DAC_CHANNEL_CH6													(1 << 6)
+#define LASER_DAC_CHANNEL_CH7													(1 << 7)
 /*****************************************************************************/
 //预设方案编码
 #define SCHEME_PHLEBOLOGY															0x0001
@@ -495,6 +505,8 @@
 #define CONFIG_MIN_LASER_POWER_CH5										0//通道5最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH6										0//通道6最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH7										0//通道7最小激光功率
+
+
 
 #define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
 #define CONFIG_MAX_LASER_DAC_CH1											0xFFF//

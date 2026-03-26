@@ -410,6 +410,30 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_LASER_CH7_ON											HAL_GPIO_WritePin(LAS7_PWM_GPIO_Port, LAS7_PWM_Pin, GPIO_PIN_SET)
 #define SET_LASER_CH7_OFF											HAL_GPIO_WritePin(LAS7_PWM_GPIO_Port, LAS7_PWM_Pin, GPIO_PIN_RESET)
 
+#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH0_OFF												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_RESET)
+
+#define SET_TEC_CH1_ON												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH1_OFF												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_RESET)
+
+#define SET_TEC_CH2_ON												__nop()												
+#define SET_TEC_CH2_OFF												__nop()
+
+#define SET_TEC_CH3_ON												__nop()
+#define SET_TEC_CH3_OFF												__nop()
+
+#define SET_TEC_CH4_ON												__nop()
+#define SET_TEC_CH4_OFF												__nop()
+
+#define SET_TEC_CH5_ON												__nop()
+#define SET_TEC_CH5_OFF												__nop()
+
+#define SET_TEC_CH6_ON												__nop()
+#define SET_TEC_CH6_OFF												__nop()
+
+#define SET_TEC_CH7_ON												__nop()
+#define SET_TEC_CH7_OFF												__nop()
+
 #define FLIP_LASER_CH0												HAL_GPIO_TogglePin(LAS0_PWM_GPIO_Port, LAS0_PWM_Pin)
 #define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LAS1_PWM_GPIO_Port, LAS1_PWM_Pin)
 #define FLIP_LASER_CH2												HAL_GPIO_TogglePin(LAS2_PWM_GPIO_Port, LAS2_PWM_Pin)
@@ -689,8 +713,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_GDDC_UART											huart4
 #define CONFIG_GDDC_UART_INSTANCE							UART4
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
-#define CONFIG_ADC_CHANNEL								7//ADC采集通道
-#define CONFIG_ADC_AVERAGE_NUM						8//ADC平均值次数
+#define CONFIG_ADC_CHANNEL										7//ADC采集通道
+#define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
@@ -700,8 +724,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_GDDC_UART											huart3
 #define CONFIG_GDDC_UART_INSTANCE							USART3
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
-#define CONFIG_ADC_CHANNEL								10//ADC采集通道
-#define CONFIG_ADC_AVERAGE_NUM						8//ADC平均值次数
+#define CONFIG_ADC_CHANNEL										10//ADC采集通道
+#define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)

@@ -56,6 +56,14 @@
 typedef struct{
 	uint16_t calibrationPwr0[10];//通道0功率校正表
 	uint16_t calibrationPwr1[10];//通道1功率校正表
+	uint16_t calibrationPwr2[10];//通道1功率校正表
+	uint16_t calibrationPwr3[10];//通道1功率校正表
+	uint16_t calibrationPwr4[10];//通道1功率校正表
+	uint16_t calibrationPwr5[10];//通道1功率校正表
+	uint16_t calibrationPwr6[10];//通道1功率校正表
+	uint16_t calibrationPwr7[10];//通道1功率校正表
+	uint16_t calibrationPwr8[10];//通道1功率校正表
+	uint16_t calibrationPwr9[10];//通道1功率校正表
 	char serialNumber[16];//序列号
 	int16_t mfg_year;//生产年
 	int16_t mfg_month;//生产月
@@ -222,15 +230,23 @@ extern void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b);//CODE
 extern void TENV(uint16_t dist, uint16_t src);//CODE转换为NTC测量温度温度
 extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);//块复制
 extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);//有符号16位数限制幅度指令
-extern void UPDAC0(void);//立即更新DAC0
-extern void UPDAC1(void);//立即更新DAC1
-extern void UPDAC2(void);
-extern void UPDAC3(void);
-extern void UPDAC4(void);
-extern void UPDAC5(void);
-extern void UPDAC6(void);
-extern void UPDAC7(void);
-extern void CLDAC(void);//立即清空DAC0和DAC1
+extern void UPDAC0(void);//立即更新LASER DAC0
+extern void UPDAC1(void);//立即更新LASER DAC1
+extern void UPDAC2(void);//立即更新LASER DAC2
+extern void UPDAC3(void);//立即更新LASER DAC3
+extern void UPDAC4(void);//立即更新LASER DAC4
+extern void UPDAC5(void);//立即更新LASER DAC5
+extern void UPDAC6(void);//立即更新LASER DAC6
+extern void UPDAC7(void);//立即更新LASER DAC7
+extern void UPDAC8(void);//立即更新TEC DAC8
+extern void UPDAC9(void);//立即更新TEC DAC9
+extern void UPDAC10(void);//立即更新TEC DAC10
+extern void UPDAC11(void);//立即更新TEC DAC11
+extern void UPDAC12(void);//立即更新TEC DAC12
+extern void UPDAC13(void);//立即更新TEC DAC13
+extern void UPDAC14(void);//立即更新TEC DAC14
+extern void UPDAC15(void);//立即更新TEC DAC15
+extern void CLDAC(void);//立即清空全部DAC
 extern void IMDIO(void) ;//立即更新IO点状态含输入输出
 extern void NVSAVE(void);//强制立即更新NVRAM
 extern void NVFSAVE(void);//NVRAM全部写入EPROM

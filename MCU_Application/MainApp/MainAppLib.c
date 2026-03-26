@@ -133,16 +133,52 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//åŠŸçŽ
 	uint16_t *pCal;
 	uint16_t out;
 	switch(ch){
-		case LASER_CHANNEL_CH0:{
+		case LASER_DAC_CHANNEL_CH0:{
 			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH0;
 			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH0;
 			pCal = deviceConfig.calibrationPwr0;
 			break;
 		}
-		case LASER_CHANNEL_CH1:{
+		case LASER_DAC_CHANNEL_CH1:{
 			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH1;
 			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH1;
 			pCal = deviceConfig.calibrationPwr1;
+			break;
+		}
+		case LASER_DAC_CHANNEL_CH2:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH2;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH2;
+			pCal = deviceConfig.calibrationPwr2;
+			break;
+		}
+		case LASER_DAC_CHANNEL_CH3:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH3;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH3;
+			pCal = deviceConfig.calibrationPwr0;
+			break;
+		}
+		case LASER_DAC_CHANNEL_CH4:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH4;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH4;
+			pCal = deviceConfig.calibrationPwr4;
+			break;
+		}
+		case LASER_DAC_CHANNEL_CH5:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH5;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH5;
+			pCal = deviceConfig.calibrationPwr5;
+			break;
+		}
+		case LASER_DAC_CHANNEL_CH6:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH6;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH6;
+			pCal = deviceConfig.calibrationPwr6;
+			break;
+		}
+		case LASER_DAC_CHANNEL_CH7:{
+			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH7;
+			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH7;
+			pCal = deviceConfig.calibrationPwr7;
 			break;
 		}
 		default:{

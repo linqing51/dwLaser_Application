@@ -422,46 +422,84 @@ void sPlcDacInit(void){//DAC初始化
 }
 void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_A, temp);
 }
 void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_B, temp);
 }
 void UPDAC2(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_C, temp);
 }
 void UPDAC3(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_D, temp);
 }
 void UPDAC4(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_E, temp);
 }
 void UPDAC5(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_F, temp);
 }
 void UPDAC6(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_G, temp);
 }
 void UPDAC7(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_H, temp);
 }
+void UPDAC8(void){
+	uint16_t temp;
+	temp = NVRAM0[SPREG_DAC_0];
+	if(temp > 0xFFF){
+		temp = 0xFFF;
+	}
+	if(temp < 0){
+		temp = 0;
+	}
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+}
+void UPDAC9(void){
+	uint16_t temp;
+	temp = NVRAM0[SPREG_DAC_1];
+	if(temp > 0xFFF){
+		temp = 0xFFF;
+	}
+	if(temp < 0){
+		temp = 0;
+	}
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+}
+void UPDAC10(void){
+}
+void UPDAC11(void){
+}
+void UPDAC12(void){
+}
+void UPDAC13(void){
+}
+void UPDAC14(void){
+}
+void UPDAC15(void){
+}
+
+
 void CLDAC(void){//立即清空全部DAC
 	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_ALL, DAC8568_CH_ALL, 0x0);
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // 设置DAC输出值
 }
 
 #endif

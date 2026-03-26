@@ -2739,20 +2739,17 @@ static void temperatureLoop(void){//温度轮询轮询
 		}
 		setFanSpeed(NVRAM0[EM_FAN0_SET_SPEED]);
 		LaserTecOut = PID_Compute(&temp_controller, NVRAM0[EM_LASER_A_DIODE_TEMP]);	
-		if(LaserTecOut >= 0xFFF){
-			LaserTecOut = 0xFFF;
+		NVRAM0[SPREG_DAC_8] = LaserTecOut;
+		NVRAM0[SPREG_DAC_9] = LaserTecOut;
+		if(LaserTecOut <= 0 ){
+			SET_TEC_CH0_OFF;
+			SET_TEC_CH1_OFF;
 		}
-		if(LaserTecOut < 0){
-			LaserTecOut = 0;
+		else{
+			SET_TEC_CH0_ON;
+			SET_TEC_CH1_ON;
 		}
-		NVRAM0[SPREG_DAC_7] = LaserTecOut;
-//		if(LaserTecOut <= 0 ){
-//			SET_LASER_CH7_OFF;
-//		}
-//		else{
-//			SET_LASER_CH7_ON;
-//		}
-		UPDAC7();
+		UPDAC8();UPDAC9();
 		LaserTecOut = LaserTecOut / 20;
 		LaserTecOutCounter = 0;
 	}	
@@ -2854,7 +2851,6 @@ static void faultLoop(void){//故障轮询
 		RRES(R_HUMIDITY_HIGH);
 		RRES(R_MCU_TEMP_HIGH);
 		RRES(R_MCU_TEMP_LOW);
-		
 	}
 	if(LD(R_DISABLE_FOOTSWITCH)){//屏蔽脚踏插入探测、使能屏幕激光发射控制
 		SSET(R_FOOTSWITCH_PLUG);
@@ -3604,6 +3600,28 @@ void dcHmiLoop(void){//HMI轮训程序
 			printf("%s,%d,%s:acoustic energy max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MAX]);
 			
 			//校正输出功率
+#if defined(LYPE_MCU_1V0_20260106)
+			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//->450nm  0-3CH 
+				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
+				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
+				NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
+				NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
+				UPDAC0();UPDAC1();UPDAC2();UPDAC3();
+			}
+			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//->980nm 4CH
+				NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
+				UPDAC0();UPDAC1();UPDAC2();UPDAC3();
+				NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig);
+				UPDAC4();
+			}
+#endif
+			
+#if defined(MODEL_PVGLS_7W_1940_A0) ||\
+		defined(MODEL_PVGLS_10W_1940_A1) ||\
+		defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL)
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
 				UPDAC0();
@@ -3620,6 +3638,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 			}
+#endif
 			//打开指示激光
 			setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain + CONFIG_LASER_AIM_OFFSET);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
