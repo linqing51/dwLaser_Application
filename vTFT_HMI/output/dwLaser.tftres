@@ -59,14 +59,12 @@
         <image id="33" url="d:\github\dwlaser_application\vtft_hmi\Images\24_GDDC_PAGE_DIAGNOSIS_0.jpg" effect_width="1024" effect_height="600" />
         <image id="34" url="d:\github\dwlaser_application\vtft_hmi\Images\Diagnosis_button_0.jpg" effect_width="120" effect_height="40" />
         <image id="35" url="d:\github\dwlaser_application\vtft_hmi\Images\Diagnosis_button_1.jpg" effect_width="120" effect_height="40" />
-        <image id="36" url="d:\github\dwlaser_application\vtft_hmi\Images\Diagnosis_button_0.jpg" effect_width="200" effect_height="40" />
-        <image id="37" url="d:\github\dwlaser_application\vtft_hmi\Images\Diagnosis_button_1.jpg" effect_width="200" effect_height="40" />
-        <image id="38" url="d:\github\dwlaser_application\vtft_hmi\Images\full_800_600_up.jpg" effect_width="1024" effect_height="600" />
-        <image id="39" url="d:\github\dwlaser_application\vtft_hmi\Images\full_800_600_down.jpg" effect_width="1024" effect_height="600" />
-        <image id="40" url="d:\github\dwlaser_application\vtft_hmi\Images\26_GDDC_PAGE_RESTORE_0.jpg" effect_width="431" effect_height="200" />
-        <image id="41" url="d:\github\dwlaser_application\vtft_hmi\Images\Cancel.png" effect_width="205" effect_height="62" />
-        <image id="42" url="d:\github\dwlaser_application\vtft_hmi\Images\Yes.png" effect_width="212" effect_height="62" />
-        <image id="43" url="d:\github\dwlaser_application\vtft_hmi\Images\27_GDDC_PAGE_WEAR_SAFETY.jpg" effect_width="330" effect_height="168" />
+        <image id="36" url="d:\github\dwlaser_application\vtft_hmi\Images\full_800_600_up.jpg" effect_width="1024" effect_height="600" />
+        <image id="37" url="d:\github\dwlaser_application\vtft_hmi\Images\full_800_600_down.jpg" effect_width="1024" effect_height="600" />
+        <image id="38" url="d:\github\dwlaser_application\vtft_hmi\Images\26_GDDC_PAGE_RESTORE_0.jpg" effect_width="431" effect_height="200" />
+        <image id="39" url="d:\github\dwlaser_application\vtft_hmi\Images\Cancel.png" effect_width="205" effect_height="62" />
+        <image id="40" url="d:\github\dwlaser_application\vtft_hmi\Images\Yes.png" effect_width="212" effect_height="62" />
+        <image id="41" url="d:\github\dwlaser_application\vtft_hmi\Images\27_GDDC_PAGE_WEAR_SAFETY.jpg" effect_width="330" effect_height="168" />
     </images>
     <waves />
 </Resource>
