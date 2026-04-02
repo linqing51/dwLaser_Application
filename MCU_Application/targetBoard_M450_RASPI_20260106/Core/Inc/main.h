@@ -57,8 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LTC2955_INT_Pin GPIO_PIN_2
-#define LTC2955_INT_GPIO_Port GPIOE
+#define POWER_INT_Pin GPIO_PIN_2
+#define POWER_INT_GPIO_Port GPIOE
 #define PWR_DCOK_Pin GPIO_PIN_3
 #define PWR_DCOK_GPIO_Port GPIOE
 #define STA0_LED_Pin GPIO_PIN_4
@@ -253,8 +253,8 @@ void Error_Handler(void);
 #define ECAN_TX_GPIO_Port GPIOB
 #define PUMP1_PWM_Pin GPIO_PIN_0
 #define PUMP1_PWM_GPIO_Port GPIOE
-#define LTC2955_KILL_Pin GPIO_PIN_1
-#define LTC2955_KILL_GPIO_Port GPIOE
+#define POWER_KILL_Pin GPIO_PIN_1
+#define POWER_KILL_GPIO_Port GPIOE
 #define VBUS_FS_EN_Pin GPIO_PIN_4
 #define VBUS_FS_EN_GPIO_Port GPIOI
 #define FAN2_PWM_Pin GPIO_PIN_5

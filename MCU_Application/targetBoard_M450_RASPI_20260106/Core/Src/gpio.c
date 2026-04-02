@@ -59,7 +59,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOE, STA0_LED_Pin|STA1_LED_Pin|LAS7_PWM_Pin|LAS6_PWM_Pin
                           |LAS5_PWM_Pin|LAS4_PWM_Pin|LAS3_PWM_Pin|LAS2_PWM_Pin
                           |LAS1_PWM_Pin|LAS0_PWM_Pin|TEC_BREAK_Pin|PUMP1_PWM_Pin
-                          |LTC2955_KILL_Pin, GPIO_PIN_RESET);
+                          |POWER_KILL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOI, STA2_LED_Pin|MCP41010_SCK_Pin|MCP41010_CS_Pin|RED_LED_Pin
@@ -89,8 +89,8 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(ESTOP_RESET_GPIO_Port, ESTOP_RESET_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LTC2955_INT_Pin PWR_DCOK_Pin */
-  GPIO_InitStruct.Pin = LTC2955_INT_Pin|PWR_DCOK_Pin;
+  /*Configure GPIO pins : POWER_INT_Pin PWR_DCOK_Pin */
+  GPIO_InitStruct.Pin = POWER_INT_Pin|PWR_DCOK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
@@ -186,10 +186,10 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : LAS7_PWM_Pin LAS6_PWM_Pin LAS5_PWM_Pin LAS4_PWM_Pin
                            LAS3_PWM_Pin LAS2_PWM_Pin LAS1_PWM_Pin LAS0_PWM_Pin
-                           TEC_BREAK_Pin LTC2955_KILL_Pin */
+                           TEC_BREAK_Pin POWER_KILL_Pin */
   GPIO_InitStruct.Pin = LAS7_PWM_Pin|LAS6_PWM_Pin|LAS5_PWM_Pin|LAS4_PWM_Pin
                           |LAS3_PWM_Pin|LAS2_PWM_Pin|LAS1_PWM_Pin|LAS0_PWM_Pin
-                          |TEC_BREAK_Pin|LTC2955_KILL_Pin;
+                          |TEC_BREAK_Pin|POWER_KILL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

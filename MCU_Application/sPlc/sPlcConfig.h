@@ -221,8 +221,8 @@
 #define SPREG_DAC_3																		(SPREG_START + 73)//DAC设定值 激光通道 CH3
 #define SPREG_DAC_4																		(SPREG_START + 74)//DAC设定值 激光通道 CH4
 #define SPREG_DAC_5																		(SPREG_START + 75)//DAC设定值 激光通道 CH5
-#define SPREG_DAC_6																		(SPREG_START + 76)//DAC设定值 激光通道 CH6 -> 635 PWM 占空比
-#define SPREG_DAC_7																		(SPREG_START + 77)//DAC设定值 激光通道 CH7 
+#define SPREG_DAC_6																		(SPREG_START + 76)//DAC设定值 激光通道 CH6 
+#define SPREG_DAC_7																		(SPREG_START + 77)//DAC设定值 激光通道 CH7
 /*****************************************************************************/
 #define SPREG_DAC_8																		(SPREG_START + 78)//DAC设定值 激光通道 CH8 ->TEC0
 #define SPREG_DAC_9																		(SPREG_START + 79)//DAC设定值 激光通道 CH9 ->TEC1
@@ -526,19 +526,21 @@
 #define DM_SCHEME_CLASSIFY														(DM_START + 0)//选择的方案分类 
 #define DM_SCHEME_INDEX																(DM_START + 1)//选择的方案索引
 #define DM_BEEM_VOLUME																(DM_START + 2)//蜂鸣器音量 0-100% 32+3=35
-#define DM_AIM_BRG																		(DM_START + 3)//指示激光亮度
-#define DM_LCD_BRG																		(DM_START + 4)//屏幕亮度
-#define DM_DC_OLD_PASSCODE0														(DM_START + 5)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE1														(DM_START + 6)//屏旧密码2-3
-#define DM_DC_OLD_PASSCODE2														(DM_START + 7)//屏旧密码0-1
-#define DM_DC_OLD_PASSCODE3														(DM_START + 8)//屏旧密码2-3
+#define DM_RAIM_BRG																		(DM_START + 3)//红指示激光亮度
+#define DM_GAIM_BRG																		(DM_START + 4)//绿指示激光亮度
+#define DM_LCD_BRG																		(DM_START + 5)//屏幕亮度
+#define DM_DC_OLD_PASSCODE0														(DM_START + 6)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE1														(DM_START + 7)//屏旧密码2-3
+#define DM_DC_OLD_PASSCODE2														(DM_START + 8)//屏旧密码0-1
+#define DM_DC_OLD_PASSCODE3														(DM_START + 9)//屏旧密码2-3
 /*****************************************************************************/
 #define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC																(X_START * 16 + 1)//XIN1 安全连锁
 #define X_FOOTSWITCH_NO																(X_START * 16 + 2)//XIN2 脚踏常开
 #define X_FOOTSWITCH_NC																(X_START * 16 + 3)//XIN3 脚踏常闭
-#define X_FIBER_PROBE																	(X_START * 16 + 4)//XIN5 光纤探测
-#define X_PWR_KEY																			(X_START * 16 + 5)//XIN6 电源开关
+#define X_FIBER_PROBE																	(X_START * 16 + 4)//XIN4 光纤探测
+#define X_PWR_KEY																			(X_START * 16 + 5)//XIN5 电源开关
+#define X_PWR_INT																			(X_START * 16 + 6)//XIN6 软关机信号	
 /*****************************************************************************/
 #define Y_GREEN_LED																		(Y_START * 16 + 0)//YOUT0 绿灯开关
 #define Y_RED_LED																			(Y_START * 16 + 1)//YOUT1 红灯开关
@@ -550,6 +552,7 @@
 #define Y_VN5016_INPUT																(Y_START * 16 + 7)//YOUT7 VN5016开通	
 #define Y_VN5016_CSDIS																(Y_START * 16 + 8)//YOUT8 电源电流采集	
 #define Y_PWR_LED																			(Y_START * 16 + 9)//YOUT9 电源指示灯
+#define Y_PWR_SOFTKILL																(Y_START * 16 + 10)//YOUT10 电源管理软关机信号	
 /*****************************************************************************/
 #define R_ESTOP																				(R_START * 16 + 0)//急停标志
 #define R_INTERLOCK																		(R_START * 16 + 1)//连锁标志

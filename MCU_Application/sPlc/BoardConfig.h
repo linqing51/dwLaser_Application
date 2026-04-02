@@ -88,7 +88,10 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #endif
 /*****************************************************************************/
 //引脚功能定义
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
 #define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
 #define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
@@ -152,18 +155,37 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 
 #define SET_LASER_CH0_ON											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_SET)
 #define SET_LASER_CH0_OFF											HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET)
-
 #define SET_LASER_CH1_ON											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_SET)
 #define SET_LASER_CH1_OFF											HAL_GPIO_WritePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin, GPIO_PIN_RESET)
+#define SET_LASER_CH2_ON											__nop()
+#define SET_LASER_CH2_OFF											__nop()
+#define SET_LASER_CH3_ON											__nop()
+#define SET_LASER_CH3_OFF											__nop()
+#define SET_LASER_CH4_ON											__nop()
+#define SET_LASER_CH4_OFF											__nop()
+#define SET_LASER_CH5_ON											__nop()
+#define SET_LASER_CH5_OFF											__nop()
+#define SET_LASER_CH6_ON											__nop()
+#define SET_LASER_CH6_OFF											__nop()
+#define SET_LASER_CH7_ON											__nop()
+#define SET_LASER_CH7_OFF											__nop()
 
-#define SET_LASER_CH2_ON
-#define SET_LASER_CH2_OFF
-
-#define SET_LASER_CH3_ON
-#define SET_LASER_CH3_OFF
-
-#define SET_LASER_CH7_ON											HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH7_OFF											HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_RESET)
+#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH0_OFF												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_RESET)
+#define SET_TEC_CH1_ON												__nop()
+#define SET_TEC_CH1_OFF												__nop()
+#define SET_TEC_CH2_ON												__nop()
+#define SET_TEC_CH2_OFF												__nop()
+#define SET_TEC_CH3_ON												__nop()
+#define SET_TEC_CH3_OFF												__nop()
+#define SET_TEC_CH4_ON												__nop()
+#define SET_TEC_CH4_OFF												__nop()
+#define SET_TEC_CH5_ON												__nop()
+#define SET_TEC_CH5_OFF												__nop()
+#define SET_TEC_CH6_ON												__nop()
+#define SET_TEC_CH6_OFF												__nop()
+#define SET_TEC_CH7_ON												__nop()
+#define SET_TEC_CH7_OFF												__nop()
 
 #define FLIP_LASER_CH0												HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
 #define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
@@ -174,6 +196,30 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define GET_LASER_CH1													HAL_GPIO_ReadPin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
 #define GET_LASER_CH2													0
 #define GET_LASER_CH3													0
+
+#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH0_OFF												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_RESET)
+
+#define SET_TEC_CH1_ON												__nop()
+#define SET_TEC_CH1_OFF												__nop()
+
+#define SET_TEC_CH2_ON												__nop()												
+#define SET_TEC_CH2_OFF												__nop()
+
+#define SET_TEC_CH3_ON												__nop()
+#define SET_TEC_CH3_OFF												__nop()
+
+#define SET_TEC_CH4_ON												__nop()
+#define SET_TEC_CH4_OFF												__nop()
+
+#define SET_TEC_CH5_ON												__nop()
+#define SET_TEC_CH5_OFF												__nop()
+
+#define SET_TEC_CH6_ON												__nop()
+#define SET_TEC_CH6_OFF												__nop()
+
+#define SET_TEC_CH7_ON												__nop()
+#define SET_TEC_CH7_OFF												__nop()
 
 #define SET_FAN0_ON														HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2)
 #define SET_FAN0_OFF													HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2)
@@ -210,6 +256,15 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 //POWER SWITCH
 #define GET_PWR_KEY														HAL_GPIO_ReadPin(PWR_KEY_GPIO_Port, PWR_KEY_Pin)
 
+//POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
+#define GET_PWR_INT														0
+//POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
+#define SET_PWR_KILL(b)												__nop()
+#define SET_PWR_KILL_ON												__nop()
+#define SET_PWR_KILL_OFF											__nop()
+#define FLIP_PWR_KILL													__nop()
+#define GET_PWR_KILL													__nop()
+
 //POWER LED
 #define SET_PWR_LED(b)												HAL_GPIO_WritePin(PWR_LED_GPIO_Port, PWR_LED_Pin, b)
 #define SET_PWR_LED_ON												HAL_GPIO_WritePin(PWR_LED_GPIO_Port, PWR_LED_Pin, GPIO_PIN_SET)
@@ -222,7 +277,8 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_TEC_OFF														SET_ERR_LED_OFF
 
 //定义USB 切换功能引脚
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP)
 //USB FS LEGACY MUX MCU/MPU 选择							0:MCU USB 1:MPU USB
 #define SET_USB_FS_SEL_LEGACY(b)							HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, b)
 #define GET_USB_FS_SEL_LEGACY									HAL_GPIO_ReadPin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin)
@@ -245,7 +301,8 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define FLIP_USB_HS_PSON_LEGACY								HAL_GPIO_TogglePin(USB_HS_PSON_LEGACY_GPIO_Port, USB_HS_PSON_LEGACY_Pin)
 #endif
 
-#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined (LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
 //USBA MCU/MPU 选择														0:MPU USB 1:MCU USB
 #define SET_USBA0_SEL(b)											HAL_GPIO_WritePin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin, b)
 #define GET_USBA0_SEL													HAL_GPIO_ReadPin(USBA0_SEL_GPIO_Port, USBA0_SEL_Pin)
@@ -493,15 +550,24 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define GET_VN5016_CSDIS											__nop()
 #define FLIP_VN5016_CSDIS											__nop()
 
-//POWER SWITCH
+//POWER SWITCH 硬关机信号->MCU最为MPU单元
 #define GET_PWR_KEY														0
+
+//POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
+#define GET_PWR_INT														HAL_GPIO_ReadPin(POWER_INT_GPIO_Port, POWER_INT_Pin)
+//POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
+#define SET_PWR_KILL(b)												HAL_GPIO_WritePin(POWER_KILL_GPIO_Port, POWER_KILL_Pin, b)
+#define SET_PWR_KILL_ON												HAL_GPIO_WritePin(POWER_KILL_GPIO_Port, POWER_KILL_Pin, GPIO_PIN_SET)
+#define SET_PWR_KILL_OFF											HAL_GPIO_WritePin(POWER_KILL_GPIO_Port, POWER_KILL_Pin, GPIO_PIN_RESET)
+#define FLIP_PWR_KILL													HAL_GPIO_ReadPin(POWER_KILL_GPIO_Port, POWER_KILL_Pin)
+#define GET_PWR_KILL													HAL_GPIO_ReadPin(POWER_KILL_GPIO_Port, POWER_KILL_Pin)
 
 //POWER LED
 #define SET_PWR_LED(b)												__nop()
 #define SET_PWR_LED_ON												__nop()
 #define SET_PWR_LED_OFF												__nop()
-#define GET_PWR_LED														__nop()
 #define FLIP_PWR_LED													__nop()
+#define GET_PWR_LED														__nop()
 
 //TEC OUT
 #define SET_TEC_ON														__nop()											
@@ -543,7 +609,8 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define EPROM_SPI_NSS_SEL											HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET)
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1)
 #define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
 #define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
@@ -706,7 +773,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_GDDC_UART_INSTANCE							USART2//GDDC串口中断
 #endif
 
-#if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
+#if defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1)
 #define CONFIG_LASER_TIM_HANDLE								htim10//LASER 定时器
 #define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
 #define CONFIG_RPROM_BUS											hi2c1//SPLC NVRAM接口定义
@@ -797,11 +865,11 @@ extern uint16_t audioSineTable[];
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
-#define CONFIG_ADC1_CHANNEL										7//ADC采集通道
-#define CONFIG_ADC3_CHANNEL										
-#define CONFIG_ADC_AVERAGE_NUM								10//ADC平均值次数		
+#define CONFIG_ADC1_CHANNEL										13//ADC采集通道
+#define CONFIG_ADC3_CHANNEL										0
+#define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数		
 #define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_ADC1_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
-#define CONFIG_ADC3_DMA_BUFFER_SIZE						
+#define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 
 #define CONFIG_VREF_ADC												SPREG_ADC_59
 #define CONFIG_MCU_VREF												2500.0F
@@ -971,7 +1039,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_LOGINFO_START						(8064L)//128B 记录信息区 
 #define CONFIG_EPROM_LOGINFO_END							(8191L)
 #endif
-
+	
 #endif
 
 

@@ -26,7 +26,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						}
 						NVRAM0[EM_LASER_POWER_CH1] = (int16_t)fpwr;
 					}
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RED){//635
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//635
 						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_RED;
 						if(fpwr < CONFIG_MIN_LASER_POWER_RED){
 							fpwr = CONFIG_MIN_LASER_POWER_RED;
@@ -74,10 +74,10 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					break;
 				}
 				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM:{
-					if(value > CONFIG_MAX_LASER_POWER_AIM){
-						value = CONFIG_MAX_LASER_POWER_AIM;
+					if(value > CONFIG_MAX_LASER_POWER_RAIM){
+						value = CONFIG_MAX_LASER_POWER_RAIM;
 					}
-					NVRAM0[DM_AIM_BRG] = (int16_t)value;
+					NVRAM0[DM_RAIM_BRG] = (int16_t)value;
 					updateStandbyDisplay();
 					break;
 				}				

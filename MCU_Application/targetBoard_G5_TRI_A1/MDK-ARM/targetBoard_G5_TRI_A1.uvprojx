@@ -2273,6 +2273,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcPMU_LTC2955.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_STM32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4797,6 +4807,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcPMU_LTC2955.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_STM32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -7301,6 +7321,16 @@
               <FileName>sPlcTimer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_LTC2955.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_STM32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -9807,6 +9837,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcPMU_LTC2955.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_STM32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -12311,6 +12351,16 @@
               <FileName>sPlcTimer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_LTC2955.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_STM32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
             </File>
           </Files>
         </Group>

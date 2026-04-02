@@ -210,7 +210,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					if(sValue < 1){
 						sValue = 1;
 					}
-					deviceConfig.aimGain = sValue;	
+					deviceConfig.redAimGain = sValue;	
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIBER_DETECT:{

@@ -71,7 +71,8 @@ typedef struct{
 	int8_t redLedDc;//红灯亮度
 	int8_t greenLedDc;//绿灯亮度
 	int8_t blueLedDc;//蓝灯亮度
-	int8_t aimGain;//指示光增益
+	int8_t redAimGain;//红指示光增益
+	int8_t greenAimGain;//绿指示光增益
 	int16_t fiberDetect;//光纤探测阈值
 	char normalOpenInterLock;
 }deviceConfig_t;
@@ -246,6 +247,8 @@ extern void UPDAC12(void);//立即更新TEC DAC12
 extern void UPDAC13(void);//立即更新TEC DAC13
 extern void UPDAC14(void);//立即更新TEC DAC14
 extern void UPDAC15(void);//立即更新TEC DAC15
+extern void UPDAC16(void);//立即更新650 DAC16
+extern void UPDAC17(void);//立即更行532 DAC17
 extern void CLDAC(void);//立即清空全部DAC
 extern void IMDIO(void) ;//立即更新IO点状态含输入输出
 extern void NVSAVE(void);//强制立即更新NVRAM

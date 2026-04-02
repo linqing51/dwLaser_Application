@@ -21,6 +21,7 @@
         <page name="GDDC_PAGE_RENAME" id="18" />
         <page name="GDDC_PAGE_RESTORE" id="19" />
         <page name="GDDC_PAGE_WEAR_SAFETY" id="20" />
+        <page name="GDDC_PAGE_POWEROFF" id="21" />
     </pages>
     <images>
         <image id="0" url="d:\github\dwlaser_application\vtft_hmi\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />
@@ -65,6 +66,7 @@
         <image id="39" url="d:\github\dwlaser_application\vtft_hmi\Images\Cancel.png" effect_width="205" effect_height="62" />
         <image id="40" url="d:\github\dwlaser_application\vtft_hmi\Images\Yes.png" effect_width="212" effect_height="62" />
         <image id="41" url="d:\github\dwlaser_application\vtft_hmi\Images\27_GDDC_PAGE_WEAR_SAFETY.jpg" effect_width="330" effect_height="168" />
+        <image id="42" url="d:\github\dwlaser_application\vtft_hmi\Images\32_GDDC_PAGE_POWEROFF_0.jpg" effect_width="580" effect_height="240" />
     </images>
     <waves />
 </Resource>

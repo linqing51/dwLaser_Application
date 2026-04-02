@@ -15,108 +15,17 @@
 /*****************************************************************************/
 #define CONFIG_GDDC_UART_BAUDRATE											115200//LCD通信波特率
 /*****************************************************************************/
-#define POWER_REAL_CH0_5P															200
-#define POWER_REAL_CH0_10P														400
-#define POWER_REAL_CH0_15P														600
-#define POWER_REAL_CH0_20P														800
-#define POWER_REAL_CH0_25P														1000
-#define POWER_REAL_CH0_30P														1200
-#define POWER_REAL_CH0_35P														1400
-#define POWER_REAL_CH0_40P														1600
-#define POWER_REAL_CH0_45P														1800
-#define POWER_REAL_CH0_50P														2000
-#define POWER_REAL_CH0_55P														2200
-#define POWER_REAL_CH0_60P														2400
-#define POWER_REAL_CH0_65P														2600
-#define POWER_REAL_CH0_70P														2800
-#define POWER_REAL_CH0_75P														3000
-#define POWER_REAL_CH0_80P														3200
-#define POWER_REAL_CH0_85P														3400
-#define POWER_REAL_CH0_90P														3600
-#define POWER_REAL_CH0_95P														3800
-#define POWER_REAL_CH0_100P														4000
-/*****************************************************************************/
-#define POWER_REAL_CH1_5P															150
-#define POWER_REAL_CH1_10P														300
-#define POWER_REAL_CH1_15P														450
-#define POWER_REAL_CH1_20P														800
-#define POWER_REAL_CH1_25P														1000
-#define POWER_REAL_CH1_30P														1200
-#define POWER_REAL_CH1_35P														1400
-#define POWER_REAL_CH1_40P														1600
-#define POWER_REAL_CH1_45P														1800
-#define POWER_REAL_CH1_50P														2000
-#define POWER_REAL_CH1_55P														2200
-#define POWER_REAL_CH1_60P														2400
-#define POWER_REAL_CH1_65P														2600
-#define POWER_REAL_CH1_70P														2800
-#define POWER_REAL_CH1_75P														3000
-#define POWER_REAL_CH1_80P														3200
-#define POWER_REAL_CH1_85P														3400
-#define POWER_REAL_CH1_90P														3600
-#define POWER_REAL_CH1_95P														3800
-#define POWER_REAL_CH1_100P														4000
-/*****************************************************************************/
-#define POWER_REAL_CH2_5P															150
-#define POWER_REAL_CH2_10P														300
-#define POWER_REAL_CH2_15P														450
-#define POWER_REAL_CH2_20P														800
-#define POWER_REAL_CH2_25P														1000
-#define POWER_REAL_CH2_30P														1200
-#define POWER_REAL_CH2_35P														1400
-#define POWER_REAL_CH2_40P														1600
-#define POWER_REAL_CH2_45P														1800
-#define POWER_REAL_CH2_50P														2000
-#define POWER_REAL_CH2_55P														2200
-#define POWER_REAL_CH2_60P														2400
-#define POWER_REAL_CH2_65P														2600
-#define POWER_REAL_CH2_70P														2800
-#define POWER_REAL_CH2_75P														3000
-#define POWER_REAL_CH2_80P														3200
-#define POWER_REAL_CH2_85P														3400
-#define POWER_REAL_CH2_90P														3600
-#define POWER_REAL_CH2_95P														3800
-#define POWER_REAL_CH2_100P														4000
-/*****************************************************************************/
-#define POWER_REAL_CH3_5P															150
-#define POWER_REAL_CH3_10P														300
-#define POWER_REAL_CH3_15P														450
-#define POWER_REAL_CH3_20P														800
-#define POWER_REAL_CH3_25P														1000
-#define POWER_REAL_CH3_30P														1200
-#define POWER_REAL_CH3_35P														1400
-#define POWER_REAL_CH3_40P														1600
-#define POWER_REAL_CH3_45P														1800
-#define POWER_REAL_CH3_50P														2000
-#define POWER_REAL_CH3_55P														2200
-#define POWER_REAL_CH3_60P														2400
-#define POWER_REAL_CH3_65P														2600
-#define POWER_REAL_CH3_70P														2800
-#define POWER_REAL_CH3_75P														3000
-#define POWER_REAL_CH3_80P														3200
-#define POWER_REAL_CH3_85P														3400
-#define POWER_REAL_CH3_90P														3600
-#define POWER_REAL_CH3_95P														3800
-#define POWER_REAL_CH3_100P														4000
-/*****************************************************************************/
 //定义逻辑激光通道使能编码
-#define LASER_CHANNEL_CH0															0x01//1470/1940/450
-#define LASER_CHANNEL_CH1															0x02//980/       
-#define LASER_CHANNEL_CH2															0x03//           
-#define LASER_CHANNEL_CH3															0x04//          
-#define LASER_CHANNEL_CH4															0x05//          
-#define LASER_CHANNEL_CH5															0x06
-#define LASER_CHANNEL_CH6															0x07
-#define LASER_CHANNEL_CH7															0x08
-#define LASER_CHANNEL_RED															0x09//红激光
-#define LASER_CHANNEL_CH0_RED													0x10
-#define LASER_CHANNEL_CH1_RED													0x11
-#define LASER_CHANNEL_CH2_RED													0x12
-#define LASER_CHANNEL_CH3_RED													0x13
-#define LASER_CHANNEL_CH4_RED													0x14
-#define LASER_CHANNEL_CH5_RED													0x15
-#define LASER_CHANNEL_CH6_RED													0x16
-#define LASER_CHANNEL_CH7_RED													0x17
+#define LASER_CHANNEL_CH0															(1 << 0)//1470/1940/450
+#define LASER_CHANNEL_CH1															(1 << 1)//980/       
+#define LASER_CHANNEL_CH2															(1 << 2)//           
+#define LASER_CHANNEL_CH3															(1 << 3)//          
+#define LASER_CHANNEL_CH4															(1 << 4)//          
+#define LASER_CHANNEL_CH5															(1 << 5)
+#define LASER_CHANNEL_CH6															(1 << 6)
+#define LASER_CHANNEL_CH7															(1 << 7)
+#define LASER_CHANNEL_RAIM														(1 << 8)//红激光指示光
+#define LASER_CHANNEL_GAIM														(1 << 9)//绿激光指示光
 /*****************************************************************************/
 //定义物理激光DAC通道编码
 #define LASER_DAC_CHANNEL_CH0													(1 << 0)
@@ -189,6 +98,21 @@
 #endif
 #if defined(LYPE_MCU_1V0_20260106)
 #define HW_VERSION																		"LYPE_MCU_1V0_20260106"
+#endif
+/*****************************************************************************/
+//定义电源管理
+#if defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+    defined(LDR2P1_G5_A1_20250731_TRIP)
+		//STM32作为PMU
+#define CONFIG_PMU_STM32					
+#elif defined(LYPE_MCU_1V0_20260106)
+	//LTC2955作为PMU
+#define CONFIG_PMU_LTC2955
+#else
+	//无PMU 硬开关
+#define CONFIG_PMU_NULL
 #endif
 /*****************************************************************************/
 //波长配置
@@ -299,7 +223,6 @@
 #define CONFIG_MIN_SPL_FREQ														500//喇叭最低频率
 #define CONFIG_DEFAULT_SPK_FREQ												1100//蜂鸣器默认频率
 #define CONFIG_ACOUSITC_SPK_FREQ											1400//蜂鸣器变声频率
-
 /*****************************************************************************/
 #define CONFIG_WAIT_HMI_DELAY_TIME										20
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								90
@@ -380,25 +303,35 @@
 #if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_MAX_LASER_POWER_CH0										150//通道1470最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH1										300//通道980最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH2										0//通道2最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH3										0//通道3最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH4										0//通道4最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH5										0//通道5最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH6										0//通道6最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH7										0//通道7最大激光功率
+
+
 #define CONFIG_MIN_LASER_POWER_CH0										1//通道1470最小激光功率		
 #define CONFIG_MIN_LASER_POWER_CH1										1//通道980最小激光功率		
-#define CONFIG_MAX_LASER_DAC_CH0											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH1											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH2											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH3											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH4											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH5											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH6											0xFFF//
-#define CONFIG_MAX_LASER_DAC_CH7											0xFFF//
+#define CONFIG_MIN_LASER_POWER_CH2										0//通道2最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH3										0//通道3最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH4										0//通道4最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH5										0//通道5最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH6										0//通道6最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH7										0//通道7最小激光功率
 
 #define CONFIG_MAX_LASER_POWER_RED                    5//红激光最大功率 5档
-#define CONFIG_MAX_LASER_POWER_AIM                    10//指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_RAIM                   10//红指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_GAIM										0//绿指示激光最大功率档
 
 #define CONFIG_MIN_LASER_POWER_RED                    1//红激光最小功率
-#define CONFIG_MIN_LASER_POWER_AIM                    0//指示激光最小功率
+#define CONFIG_MIN_LASER_POWER_RAIM                   0//指示激光最小功率
+#define CONFIG_MIN_LASER_POWER_GAIM                   0//指示激光最小功率
 
-#define CONFIG_LASER_AIM_OFFSET												100
-#define CONFIG_LASER_AIM_DEFAULT_GAIN												60
+#define CONFIG_LASER_RAIM_OFFSET											100
+#define CONFIG_LASER_GAIM_OFFSET											100
+#define CONFIG_LASER_RAIM_DEFAULT_GAIN								60
+#define CONFIG_LASER_GAIM_DEFAULT_GAIN								60
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1
@@ -434,8 +367,10 @@
 #define CONFIG_MIN_LASER_POWER_RED                    1//红激光最小功率
 #define CONFIG_MIN_LASER_POWER_AIM                    0//指示激光最小功率
 
-#define CONFIG_LASER_AIM_OFFSET												100
-#define CONFIG_LASER_AIM_DEFAULT_GAIN												60
+#define CONFIG_LASER_RAIM_OFFSET											100
+#define CONFIG_LASER_GAIM_OFFSET											100
+#define CONFIG_LASER_RAIM_DEFAULT_GAIN								60
+#define CONFIG_LASER_GAIM_DEFAULT_GAIN								60
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1
@@ -466,13 +401,17 @@
 #define CONFIG_MAX_LASER_DAC_CH7											0xFFF//
 
 #define CONFIG_MAX_LASER_POWER_RED                    5//红激光最大功率 5档
-#define CONFIG_MAX_LASER_POWER_AIM                    10//指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_RAIM                   10//指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_GAIM                   10//指示激光最大功率 10档
 
 #define CONFIG_MIN_LASER_POWER_RED                    1//红激光最小功率
-#define CONFIG_MIN_LASER_POWER_AIM                    0//指示激光最小功率
+#define CONFIG_MIN_LASER_POWER_RAIM                   0//指示激光最小功率
+#define CONFIG_MIN_LASER_POWER_GAIM                   0//指示激光最小功率
 
-#define CONFIG_LASER_AIM_OFFSET												100
-#define CONFIG_LASER_AIM_DEFAULT_GAIN												60
+#define CONFIG_LASER_RAIM_OFFSET											100
+#define CONFIG_LASER_GAIM_OFFSET											100
+#define CONFIG_LASER_RAIM_DEFAULT_GAIN								60
+#define CONFIG_LASER_GAIM_DEFAULT_GAIN								60
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1
@@ -518,13 +457,17 @@
 #define CONFIG_MAX_LASER_DAC_CH7											0xFFF//
 
 #define CONFIG_MAX_LASER_POWER_RED                    5//红激光最大功率 5档
-#define CONFIG_MAX_LASER_POWER_AIM                    10//指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_RAIM                   10//指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_GAIM                   10//指示激光最大功率 10档
 
 #define CONFIG_MIN_LASER_POWER_RED                    1//红激光最小功率
-#define CONFIG_MIN_LASER_POWER_AIM                    0//指示激光最小功率
+#define CONFIG_MIN_LASER_POWER_RAIM                   0//指示激光最小功率
+#define CONFIG_MIN_LASER_POWER_GAIM                   0//指示激光最小功率
 
-#define CONFIG_LASER_AIM_OFFSET												100
-#define CONFIG_LASER_AIM_DEFAULT_GAIN												60
+#define CONFIG_LASER_RAIM_OFFSET												100
+#define CONFIG_LASER_GAIM_OFFSET												100
+#define CONFIG_LASER_RAIM_DEFAULT_GAIN									60
+#define CONFIG_LASER_GAIM_DEFAULT_GAIN									60
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1
@@ -586,6 +529,13 @@
 #endif
 /*****************************************************************************/
 //定义蜂鸣器音量/频率
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) ||defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
+#define CONFIG_BEEM_MAX_LIMIT													0.7F//
+#define CONFIG_BEEM_MAX_FREQ													4500L//喇叭最高频率
+#define CONFIG_BEEM_MIN_FREQ													500//喇叭最低频率
+#endif
+
 #if defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
 #define CONFIG_BEEM_MAX_LIMIT													0.7F//
@@ -594,12 +544,24 @@
 #endif
 /*****************************************************************************/
 //定义屏幕亮度
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
+#define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
+#define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
+#endif
 #if defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #endif
 /*****************************************************************************/
 //定义风扇转速
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) ||defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#define CONFIG_FAN_MAX_DC															100
+#define CONFIG_FAN_MIN_DC															0
+#endif
+
 #if defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_FAN_MAX_DC															100
 #define CONFIG_FAN_MIN_DC															0

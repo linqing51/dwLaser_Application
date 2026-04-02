@@ -18,7 +18,8 @@
 #include "MainAppLib.h"
 #include "fan_controller.h"
 /*****************************************************************************/
-#define FSMSTEP_IDLE																0//待机
+#define FSMSTEP_HIBERNATE														0//休眠->软关机
+#define FSMSTEP_IDLE																1//待机
 #define FSMSTEP_POWERUP															10//上电
 //HMI初始操作	
 #define FSMSTEP_RESTORE_HMI													100//HMI 恢复储存数据
@@ -43,7 +44,10 @@
 #define FSMSTEP_DIAGNOSIS  													800//诊断菜单
 #define FSMSTEP_DIAGNOSIS_RAW												801//诊断菜单-RAW数据
 #define FSMSTEP_RENAME															900
-#define FSMSTEP_CORRECTION													1000//功率校正
+//关机状态
+#define FSMSTEP_POWEROFF_CONFIRM										1000
+//功率校准状态
+#define FSMSTEP_CORRECTION													1100//功率校正
 /*****************************************************************************/
 #define FLASH_DATA_VERSION  												0XAABB0000
 #define FLASH_DATA_ADDR     												0X00000000
@@ -99,8 +103,8 @@ void updateExtralDisplay(void);//更新额外显示
 void standbyDebugInfoVisiable(int8_t enable);
 void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/
-static void powerDown(void);//待机->休眠
-static void powerUp(void);//休眠->待机
+extern void PmuPowerUp(void);//开机函数
+extern void PmuPowerDown(void);//关机函数
 #endif
 
 
