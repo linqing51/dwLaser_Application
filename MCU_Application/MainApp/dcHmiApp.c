@@ -2567,7 +2567,7 @@ void dcHmiLoopInit(void){//初始化模块
 	else{
 		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
 	}
-  PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_A_SET_TEMP, 500);  
+ 
 	FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
@@ -3139,18 +3139,12 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	//状态机
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
-//		if(LDB(X_PWR_KEY)){
-//			powerDown();
-//			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
-//			return;
-//		}	
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-		SET_SPK_TIM_ON;//打开蜂鸣器定时器
-		PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_A_SET_TEMP, 500);
-		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器		
+		//sPlcSpeakerEnable();
+		FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+		PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_A_SET_TEMP, 500);		
 		NVRAM0[DM_DC_OLD_PASSCODE2] = 0;
 		NVRAM0[DM_DC_OLD_PASSCODE3] = 0;
-	
 		NVRAM0[EM_DC_NEW_PASSCODE2] = 0;
 		NVRAM0[EM_DC_NEW_PASSCODE3] = 0;
 		//检查储存密码是否合规
@@ -3174,11 +3168,6 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RESTORE_HMI){//等待HMI复位
-//		if(LDB(X_PWR_KEY)){
-//			powerDown();
-//			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
-//			return;
-//		}
 		T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_WAIT_HMI_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
 			printf("%s,%d,%s:hmi delay done......\n",__FILE__, __LINE__, __func__);
@@ -3247,7 +3236,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			//打开蜂鸣器
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
 			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-			//SSET(SPCOIL_BEEM_ENABLE);
 		}
 		else{
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;	

@@ -1,5 +1,6 @@
 //适用于FRAM不适用于EEPROM
 //FM25V02测试通过
+#include "sPlc.h"
 #include "sPlcEprom.h"
 /*****************************************************************************/
 extern I2C_HandleTypeDef hi2c1;
@@ -135,14 +136,7 @@ HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat){//在指定地
 	__asm volatile ("nop");
 	EPROM_SPI_NSS_DESEL;
 	return status;
-	
-	
-	
-	
-	
-	
-	
-	
+		
 }
 
 HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat){//向FM25W256指定地址写入一个字节
@@ -689,20 +683,32 @@ HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumT
 #endif
 /*****************************************************************************/
 void listEpromTable(void){//输出EPROM分布表
+	int32_t tmp;
+	printf("************************EPROM MAP****************************\n\n");
 	printf("MR EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
 	printf("DM EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
 	printf("FD EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
 	
-	
-	
 	printf("MR CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MR_CRC, (uint32_t)(CONFIG_EPROM_MR_CRC + 3));
 	printf("DM CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_DM_CRC, (uint32_t)(CONFIG_EPROM_DM_CRC + 3));
 	printf("FD CRC EPROM:0x%04X---0x%04X,(unuse)\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3));	
-	printf("MCU CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3));
-	printf("LCD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3));
+	printf("MCU FW CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3));
+	printf("LCD FW CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3));
 	
 	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
 	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
+		
+	printf("deviceConfig size:%d\n)", sizeof(deviceConfig));
+	printf("deviceLogInfo size:%d\n", sizeof(deviceLogInfo));
+	
+	tmp = CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1;
+	if(sizeof(deviceConfig) > tmp){
+		printf("WARNING:struce deviceConfig size overflow!!!\n");
+	}
+	tmp = CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1;
+	if(sizeof(deviceLogInfo) > tmp){
+		printf("WARNING:struce devideInfo size overflow!!!\n");
+	}
 }
 
 void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容

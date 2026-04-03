@@ -2536,6 +2536,36 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Middlewares/CLI</GroupName>
+          <Files>
+            <File>
+              <FileName>CLI_Serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_fun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usart5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
+            </File>
+            <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
+            </File>
+            <File>
+              <FileName>UARTCommandConsole.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -4978,6 +5008,36 @@
               <FileName>arm_cortexM4lf_math.lib</FileName>
               <FileType>4</FileType>
               <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/CLI</GroupName>
+          <Files>
+            <File>
+              <FileName>CLI_Serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_fun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usart5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
+            </File>
+            <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
+            </File>
+            <File>
+              <FileName>UARTCommandConsole.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -7497,6 +7557,36 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Middlewares/CLI</GroupName>
+          <Files>
+            <File>
+              <FileName>CLI_Serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_fun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usart5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
+            </File>
+            <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
+            </File>
+            <File>
+              <FileName>UARTCommandConsole.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -7574,7 +7664,7 @@
       <TargetName>G5_DUAL_A1_20250910</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -10008,6 +10098,36 @@
               <FileName>arm_cortexM4lf_math.lib</FileName>
               <FileType>4</FileType>
               <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/CLI</GroupName>
+          <Files>
+            <File>
+              <FileName>CLI_Serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_fun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usart5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
+            </File>
+            <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
+            </File>
+            <File>
+              <FileName>UARTCommandConsole.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -12523,6 +12643,36 @@
               <FileName>arm_cortexM4lf_math.lib</FileName>
               <FileType>4</FileType>
               <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/CLI</GroupName>
+          <Files>
+            <File>
+              <FileName>CLI_Serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_fun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usart5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
+            </File>
+            <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
+            </File>
+            <File>
+              <FileName>UARTCommandConsole.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
             </File>
           </Files>
         </Group>
