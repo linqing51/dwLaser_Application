@@ -3108,16 +3108,29 @@ static void gddcHmiLoop(void){//大彩触摸屏轮询程序
 }
 static void powerManagementLoop(void){//电源管理轮询程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] != FSMSTEP_HIBERNATE){	
-		if(LDB(X_PWR_KEY)){
+		if(LDB(X_PWR_KEY)){//STM32软关机按键
 			PmuPowerDown();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
 			return;
+		}
+		if(LDB(X_PWR_INT)){//PMU单元软关机信号
+			//关闭激光器
+			EDLAR();//停止发射
+			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
+			NVRAM0[SPREG_DAC_4] = 0;NVRAM0[SPREG_DAC_5] = 0;NVRAM0[SPREG_DAC_6] = 0;NVRAM0[SPREG_DAC_7] = 0;
+			UPDAC0();UPDAC1();UPDAC2();UPDAC3();UPDAC4();UPDAC5();UPDAC6();UPDAC7();
+			NVRAM0[SPREG_DAC_16] = 0;NVRAM0[SPREG_DAC_17] = 0;
+			UPDAC16();UPDAC17();
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_POWEROFF_CONFIRM;//进入关机确认状态
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWEROFF_CONFIRM;	
+			SetScreen(NVRAM0[EM_DC_PAGE]);
 		}
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){
 		if(LD(X_PWR_KEY)){
 			PmuPowerUp();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
+			return;
 		}
 	}
 }
@@ -3140,7 +3153,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	//状态机
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
-		//sPlcSpeakerEnable();
+		sPlcSpeakerEnable();
 		FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 		PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_A_SET_TEMP, 500);		
 		NVRAM0[DM_DC_OLD_PASSCODE2] = 0;
@@ -3781,9 +3794,11 @@ void dcHmiLoop(void){//HMI轮训程序
 		}		
 		if(LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//回到等待状态
 			EDLAR();//停止发射
-			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;
-			UPDAC0();UPDAC1();
-			setRedLaserPwm(0);
+			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
+			NVRAM0[SPREG_DAC_4] = 0;NVRAM0[SPREG_DAC_5] = 0;NVRAM0[SPREG_DAC_6] = 0;NVRAM0[SPREG_DAC_7] = 0;
+			UPDAC0();UPDAC1();UPDAC2();UPDAC3();UPDAC4();UPDAC5();UPDAC6();UPDAC7();
+			NVRAM0[SPREG_DAC_16] = 0;NVRAM0[SPREG_DAC_17] = 0;
+			UPDAC16();UPDAC17();
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
 			SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
 			updateStandbyDisplay();
@@ -4217,6 +4232,15 @@ void dcHmiLoop(void){//HMI轮训程序
 		}
 		return;
 	}
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION){//8通道功率校准
+		
+		return;
+	}
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWEROFF_CONFIRM){//关机确认
+		
+		return;
+	}
+	
 /*****************************************************************************/
 }
 

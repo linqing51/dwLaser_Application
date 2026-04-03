@@ -522,12 +522,14 @@
 #define GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P90						207
 #define GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P95						208
 #define GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P100					209
-
 #define GDDC_PAGE_DIAGNOSIS_CALI_KEY_ENTER_OK								900
 /*****************************************************************************/
 #define GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME								1
 #define GDDC_PAGE_RENAME_KEY_ENTER													2
 #define GDDC_PAGE_RENAME_KEY_EXIT														3
+/*****************************************************************************/
+#define GDDC_PAGE_POWEROFF_BUTTON_YES												10
+#define GDDC_PAGE_POWEROFF_BUTTON_CANCEL										11
 /*****************************************************************************/
 #endif
 
