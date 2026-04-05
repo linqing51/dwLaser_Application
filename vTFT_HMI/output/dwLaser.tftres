@@ -66,7 +66,7 @@
         <image id="39" url="d:\github\dwlaser_application\vtft_hmi\Images\Cancel.png" effect_width="205" effect_height="62" />
         <image id="40" url="d:\github\dwlaser_application\vtft_hmi\Images\Yes.png" effect_width="212" effect_height="62" />
         <image id="41" url="d:\github\dwlaser_application\vtft_hmi\Images\27_GDDC_PAGE_WEAR_SAFETY.jpg" effect_width="330" effect_height="168" />
-        <image id="42" url="d:\github\dwlaser_application\vtft_hmi\Images\32_GDDC_PAGE_POWEROFF_0.jpg" effect_width="580" effect_height="240" />
+        <image id="42" url="d:\github\dwlaser_application\vtft_hmi\Images\32_GDDC_PAGE_POWEROFF_0.jpg" effect_width="431" effect_height="200" />
     </images>
     <waves />
 </Resource>

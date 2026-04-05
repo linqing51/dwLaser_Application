@@ -1686,18 +1686,18 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_POWEROFF_BUTTON_CANCEL:{
-					NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//进入关机确认状态
+					NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//进入关机确认状态												
 					#if defined(APP_CONFIG_WAVE_1470_650)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1470;												
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;												
 					#endif
 					#if defined(APP_CONFIG_WAVE_1470_980_650)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_TRI;								
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;								
 					#endif
 					#if defined(APP_CONFIG_WAVE_1940_650)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1940;	
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;	
 					#endif
 					#if defined(APP_CONFIG_WAVE_450_980)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_450;	
+					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;	
 					#endif
 					SetScreen(NVRAM0[EM_DC_PAGE]);
 					break;

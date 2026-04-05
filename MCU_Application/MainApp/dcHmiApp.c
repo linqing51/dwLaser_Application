@@ -3108,12 +3108,14 @@ static void gddcHmiLoop(void){//大彩触摸屏轮询程序
 }
 static void powerManagementLoop(void){//电源管理轮询程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] != FSMSTEP_HIBERNATE){	
+#if defined(CONFIG_PMU_STM32)
 		if(LDB(X_PWR_KEY)){//STM32软关机按键
 			PmuPowerDown();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
-			return;
 		}
-		if(LDB(X_PWR_INT)){//PMU单元软关机信号
+#endif
+#if defined(CONFIG_PMU_LTC2955)
+		if(LDN(X_PWR_INT)){//PMU单元软关机信号
 			//关闭激光器
 			EDLAR();//停止发射
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
@@ -3125,13 +3127,17 @@ static void powerManagementLoop(void){//电源管理轮询程序
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWEROFF_CONFIRM;	
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 		}
+#endif
+		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){
+#if defined(CONFIG_PMU_STM32)
 		if(LD(X_PWR_KEY)){
 			PmuPowerUp();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
-			return;
 		}
+#endif
+		return;
 	}
 }
 

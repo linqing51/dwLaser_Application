@@ -58,8 +58,7 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, STA0_LED_Pin|STA1_LED_Pin|LAS7_PWM_Pin|LAS6_PWM_Pin
                           |LAS5_PWM_Pin|LAS4_PWM_Pin|LAS3_PWM_Pin|LAS2_PWM_Pin
-                          |LAS1_PWM_Pin|LAS0_PWM_Pin|TEC_BREAK_Pin|PUMP1_PWM_Pin
-                          |POWER_KILL_Pin, GPIO_PIN_RESET);
+                          |LAS1_PWM_Pin|LAS0_PWM_Pin|TEC_BREAK_Pin|PUMP1_PWM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOI, STA2_LED_Pin|MCP41010_SCK_Pin|MCP41010_CS_Pin|RED_LED_Pin
@@ -89,14 +88,17 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(ESTOP_RESET_GPIO_Port, ESTOP_RESET_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(POWER_KILL_GPIO_Port, POWER_KILL_Pin, GPIO_PIN_SET);
+
   /*Configure GPIO pins : POWER_INT_Pin PWR_DCOK_Pin */
   GPIO_InitStruct.Pin = POWER_INT_Pin|PWR_DCOK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : STA0_LED_Pin STA1_LED_Pin */
-  GPIO_InitStruct.Pin = STA0_LED_Pin|STA1_LED_Pin;
+  /*Configure GPIO pins : STA0_LED_Pin STA1_LED_Pin POWER_KILL_Pin */
+  GPIO_InitStruct.Pin = STA0_LED_Pin|STA1_LED_Pin|POWER_KILL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -186,10 +188,10 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : LAS7_PWM_Pin LAS6_PWM_Pin LAS5_PWM_Pin LAS4_PWM_Pin
                            LAS3_PWM_Pin LAS2_PWM_Pin LAS1_PWM_Pin LAS0_PWM_Pin
-                           TEC_BREAK_Pin POWER_KILL_Pin */
+                           TEC_BREAK_Pin */
   GPIO_InitStruct.Pin = LAS7_PWM_Pin|LAS6_PWM_Pin|LAS5_PWM_Pin|LAS4_PWM_Pin
                           |LAS3_PWM_Pin|LAS2_PWM_Pin|LAS1_PWM_Pin|LAS0_PWM_Pin
-                          |TEC_BREAK_Pin|POWER_KILL_Pin;
+                          |TEC_BREAK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
