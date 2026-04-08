@@ -379,6 +379,11 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define FLIP_MPU_RESET												HAL_GPIO_TogglePin(MPU_RESET_GPIO_Port, MPU_RESET_Pin)
 #endif
 
+//模拟HDC1080 I2C定义
+#define SET_HDC1080_SCL(b)										__NOP()												
+#define SET_HDC1080_SDA(b)										__NOP()
+#define GET_HDC1080_SDA												0
+
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
@@ -607,6 +612,12 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define EPROM_SPI_NSS(b)											HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, b)
 #define EPROM_SPI_NSS_DESEL										HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_SET)
 #define EPROM_SPI_NSS_SEL											HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET)
+
+//模拟HDC1080 I2C定义
+#define SET_HDC1080_SCL(b)										HAL_GPIO_WritePin(HDC1080_SCL_GPIO_Port, HDC1080_SCL_Pin, b)										
+#define SET_HDC1080_SDA(b)										HAL_GPIO_WritePin(HDC1080_SDA_GPIO_Port, HDC1080_SDA_Pin, b)
+#define GET_HDC1080_SDA												HAL_GPIO_ReadPin(HDC1080_SDA_GPIO_Port, HDC1080_SDA_Pin)
+
 #endif
 
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
@@ -769,8 +780,14 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_BUS											I2C1
 
 #define CONFIG_DEBUG_UART											huart1//调试串口
+#define CONFIG_DEBUG																			DMA_HandleTypeDef hdma_uart5_rx;
+
+
 #define CONFIG_GDDC_UART											huart2//GDDC串口
 #define CONFIG_GDDC_UART_INSTANCE							USART2//GDDC串口中断
+
+
+
 #endif
 
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
@@ -830,7 +847,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_GDDC_UART_INSTANCE							USART3//GDDC串口中断
 #endif
 
-//配置EPROM
+//配置EPROM规格
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
@@ -900,6 +917,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF												3300L//
 #define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
+
+#define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
@@ -939,7 +958,20 @@ extern uint16_t audioSineTable[];
 #define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF												3300L//
 #define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
+
+#define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
 #endif
+/*****************************************************************************/
+//配置DAC
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
+#define CONFIG_DAC_CH0_MAXBIT									4095//12BIT STM32
+#define CONFIG_DAC_CH1_MAXBIT									4095//12BIT STM32
+#define CONFIG_DAC_CH8_MAXBIT									4095//12BIT DAC7311
+#define CONFIG_DAC_CH16_MAXBIT								5000
+#endif	
 
 /*****************************************************************************/
 //配置EPROM数据地址

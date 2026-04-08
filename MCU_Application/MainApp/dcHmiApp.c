@@ -271,17 +271,47 @@ void updateDiognosisTextBox(void){//更新诊断信息文本框
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	//从NVRAM中更新文本框
 	//更新功率校正表
-	for(i = 0;i < 10; i++){
+	for(i = 0;i < 20; i++){//CH0
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr0[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, (GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR0_0P1 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P5 + i), (uint8_t*)dispBuf);
 	}
-	for(i = 0;i < 10; i++){
+	for(i = 0;i < 20; i++){//CH1
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr1[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, (GDDC_PAGE_DISGNOSIS_TEXTDISPLAY_PWR1_0P1 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P5 + i), (uint8_t*)dispBuf);
 	}
-	//
+	for(i = 0;i < 20; i++){//CH2
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr2[i] / 10.0F);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P5 + i), (uint8_t*)dispBuf);
+	}
+	for(i = 0;i < 20; i++){//CH3
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr3[i] / 10.0F);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P5 + i), (uint8_t*)dispBuf);
+	}	
+	for(i = 0;i < 20; i++){//CH4
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr4[i] / 10.0F);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P5 + i), (uint8_t*)dispBuf);
+	}
+	for(i = 0;i < 20; i++){//CH5
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr5[i] / 10.0F);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P5 + i), (uint8_t*)dispBuf);
+	}
+	for(i = 0;i < 20; i++){//CH6
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr6[i] / 10.0F);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P5 + i), (uint8_t*)dispBuf);
+	}
+	for(i = 0;i < 20; i++){//CH7
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr7[i] / 10.0F);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P5 + i), (uint8_t*)dispBuf);
+	}
+	
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_YEAR , deviceConfig.mfg_year, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_MONTH , deviceConfig.mfg_month, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DAY , deviceConfig.mfg_day, 1, 0);
@@ -361,8 +391,7 @@ void updateDiognosisInfoRaw(void){//更新诊断信息-RAW值
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO5, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "X0-31:%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,\
-	%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d", \
+	sprintf(dispBuf, "X0-31:%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d", \
 	LD(X_START * 16 +  0), LD(X_START * 16 +  1), LD(X_START * 16 +  2) ,LD(X_START * 16 +  3), \
 	LD(X_START * 16 +  4), LD(X_START * 16 +  5), LD(X_START * 16 +  6) ,LD(X_START * 16 +  7), \
 	LD(X_START * 16 +  8), LD(X_START * 16 +  9), LD(X_START * 16 + 10) ,LD(X_START * 16 + 11), \
@@ -374,8 +403,7 @@ void updateDiognosisInfoRaw(void){//更新诊断信息-RAW值
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO6, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "Y0-31:%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,\
-	%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d", \
+	sprintf(dispBuf, "Y0-31:%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d", \
 	LD(Y_START * 16 +  0), LD(Y_START * 16 +  1), LD(Y_START * 16 +  2) ,LD(Y_START * 16 +  3), \
 	LD(Y_START * 16 +  4), LD(Y_START * 16 +  5), LD(Y_START * 16 +  6) ,LD(Y_START * 16 +  7), \
 	LD(Y_START * 16 +  8), LD(Y_START * 16 +  9), LD(Y_START * 16 + 10) ,LD(Y_START * 16 + 11), \
@@ -1714,7 +1742,7 @@ void updateInformationDisplay(void){//更新信息界面显示
 	pMain = (char*)(BOOTLOAD_MAIN_ADDRESS);
 	pMonir = (char*)(BOOTLAOD_MINOR_ADDRESS);
 	if((*pMain >='0' && *pMain <= '9') && (*pMonir >= '0' && *pMonir <= '9')){
-		sprintf(dispBuf, "%s; Bootload Ver: %c.%c", (char*)INFO_MSG_SW_VERSION, *pMain, *pMonir);
+		sprintf(dispBuf, "%s-%s:%s  Bootload Ver: %c.%c", (char*)INFO_MSG_SW_VERSION, __DATE__, __TIME__, *pMain, *pMonir);
 		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SOFTWARE_VERSION, (uint8_t*)dispBuf);
 	}
 	else{
@@ -2575,7 +2603,7 @@ void dcHmiLoopInit(void){//初始化模块
 	schemeInit(0);//不恢复自定义方案
 	loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
 	//NVRAM0[EM_HMI_OPERA_STEP] = 0;
-	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
+	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
 	//检查VOLUME储存值是否合规
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = CONFIG_BEEM_MAX_VOLUME;
@@ -2627,7 +2655,7 @@ static void statusLoop(void){//温度轮询轮询
 	TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_DIODE_NTC_RS, CONFIG_HT0_NTC_B);
 	TNTLC(EM_MBAT_TEMP, SPREG_ADC_46, CONFIG_MBAT_NTC_RS, CONFIG_MBAT_NTC_B);
 	TENV(EM_MCU_TEMP, SPREG_ADC_49);//CODE转换为MCU温度
-	
+		
 	//环境温度检测
 	if(NVRAM0[EM_LASER_A_DIODE_TEMP] >= CONFIG_DIODE_A_HIGH_TEMP){//激光器过热
 		SSET(R_LASER_DIODE_TEMP_HIGH);
@@ -2663,6 +2691,10 @@ static void statusLoop(void){//温度轮询轮询
 	TNTLC(EM_AMBIENT0_TEMP, SPREG_ADC_56, CONFIG_AMBIENT_NTC_RS, CONFIG_AMBIENT_NTC_B);//模拟环境温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_58);//CODE转换为MCU温度
 
+	if(LDP(SPCOIL_PS1000MS)){//2秒刷新一次板载的环境温度/湿度
+		hdc1080_read(&(NVRAM0[EM_AMBIENT2_TEMP]), &(NVRAM0[EM_RELATIVE0_HUMIDITY]));
+	}
+	
 	//判断二极管温度
 	if(NVRAM0[EM_LASER_A_DIODE_TEMP] >= CONFIG_DIODE_A_HIGH_TEMP){//激光器过热
 		SSET(R_LASER_DIODE_TEMP_HIGH);
@@ -3112,7 +3144,7 @@ static void powerManagementLoop(void){//电源管理轮询程序
 		if(LDB(X_PWR_KEY)){//STM32软关机按键
 			PmuPowerDown();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
-		}
+		}		
 #endif
 #if defined(CONFIG_PMU_LTC2955)
 		if(LDN(X_PWR_INT)){//PMU单元软关机信号
@@ -3131,13 +3163,10 @@ static void powerManagementLoop(void){//电源管理轮询程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){
-#if defined(CONFIG_PMU_STM32)
 		if(LD(X_PWR_KEY)){
 			PmuPowerUp();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
 		}
-#endif
-		return;
 	}
 }
 
@@ -3221,7 +3250,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE, false);	
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK, false);		
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION_MODE, false);
 			
 			SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
@@ -3539,7 +3567,8 @@ void dcHmiLoop(void){//HMI轮训程序
 		defined(MODEL_PVGLS_15W_1470_A0) ||\
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL)
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_RASPI_G9_A1_20260322)
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig);
 				UPDAC0();
@@ -3562,7 +3591,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			UPDAC16();//打开红光
 			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;
 			UPDAC17();//打开绿光
-			//setRedLaserPwm(NVRAM0[DM_AIM_BRG] * deviceConfig.aimGain + CONFIG_LASER_AIM_OFFSET);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);
@@ -4220,12 +4248,19 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
 			RRES(R_UPDATE_BOOTLOAD_NO);
 		}
+		else if(LDP(R_DIAGNOSIS_GOTO_CORRECTION_DOWN)){//进入校正页面
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_CORRECTION;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS_CALI;
+			SetScreen(NVRAM0[EM_DC_PAGE]);
+			RRES(R_DIAGNOSIS_GOTO_CORRECTION_DOWN);
+		
+		}
 		else if(LDP(SPCOIL_PS200MS)){
 			updateDiognosisInfo();
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS_RAW){
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_DIAGNOSIS_RAW){//进入原始参数显示页面
 		if(LD(R_DIAGNOSIS_RAW_RETURN_DOWN)){//返回DIAGNOSIS页面
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
@@ -4239,7 +4274,13 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION){//8通道功率校准
-		
+		if(LD(R_DIAGNOSIS_CORRECTION_RETURN_DOWN)){//返回DIAGNOSIS页面
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
+			SetScreen(NVRAM0[EM_DC_PAGE]);	
+			updateDiognosisTextBox();//更新文本输入值
+			RRES(R_DIAGNOSIS_CORRECTION_RETURN_DOWN);
+		}
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWEROFF_CONFIRM){//关机确认

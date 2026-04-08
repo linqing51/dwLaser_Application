@@ -32,17 +32,13 @@
  *
  ******************************************************************************/
 #include "cmd_fun.h"
-//#include "easyflash.h"
-
-#include "FreeRTOSConfig.h"
+#include "boardConfig.h"
 
 
 
-EfErrCode ef_env_set_default(void) {return EF_NO_ERR; }
-char * ef_get_env(const char *key) { return  NULL;}
-EfErrCode ef_set_env(const char *key, const char *val) { return EF_NO_ERR; }
-EfErrCode ef_del_env(const char *key) { return EF_NO_ERR; }
-void ef_print_env(void) { }
+
+
+
 
 
 /* CLI Command Structure define */
@@ -130,6 +126,20 @@ static const CLI_Command_Definition_t CLI_Definition_All[] = {
         0
     },        
 
+		{
+				"led_ctrl",                      /* 命令名称 */
+				"\r\nled_ctrl <on|off>:\r\n Controls the LED state (on/off)\r\n\r\n", /* 帮助信息 */
+				prvLedCtrlCommand,               /* 命令处理函数 */
+				1                                /* 参数数量（1个参数：on或off） */
+		},
+
+		{
+				"system_info",                   /* 命令名称 */
+				"\r\nsystem_info:\r\n Displays system information (version, uptime, etc.)\r\n\r\n", /* 帮助信息 */
+				prvSystemInfoCommand,            /* 命令处理函数 */
+				0                                /* 无参数 */
+		},	
+		
 };
 
 
@@ -474,9 +484,6 @@ static UBaseType_t uxParameterNumber = 0;
 
 	return xReturn;
 }
-
-
-
 /*-----------------------------------------------------------*/
 
 #if configINCLUDE_TRACE_RELATED_CLI_COMMANDS == 1
@@ -542,7 +549,7 @@ static BaseType_t prvPrintEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const
 	( void ) xWriteBufferLen;
 	configASSERT( pcWriteBuffer );     
     
-    ef_print_env();
+//    ef_print_env();
 
     
     sprintf( pcWriteBuffer, "Display parameters list\r\n");
@@ -578,7 +585,7 @@ static BaseType_t prvGetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const c
 	strncat( pcWriteBuffer, pcParameter, ( size_t ) xParameterStringLength );
 	strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );
 
-    xReturn = ef_get_env(pcParameter);  
+//    xReturn = ef_get_env(pcParameter);  
 
 	
 	if(xReturn == NULL)
@@ -633,7 +640,7 @@ static BaseType_t prvSetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const c
     strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );    
 
 
-    xReturn = ef_set_env(pcParameter1, pcParameter2);  
+//    xReturn = ef_set_env(pcParameter1, pcParameter2);  
 	
 	if(xReturn != EF_NO_ERR)
 	{
@@ -675,7 +682,7 @@ static BaseType_t prvDelEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const c
     strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );
     
 
-    xReturn = ef_del_env(pcParameter);  
+//    xReturn = ef_del_env(pcParameter);  
 
 	
 	if(xReturn != EF_NO_ERR)
@@ -701,7 +708,7 @@ static BaseType_t prvResetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const
     ( void ) xWriteBufferLen;
     configASSERT( pcWriteBuffer );
     
-    xReturn = ef_env_set_default();
+//    xReturn = ef_env_set_default();
 
     if(xReturn != EF_NO_ERR)
 	{
@@ -723,6 +730,50 @@ static BaseType_t prvResetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const
 
 
 
+static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString )
+{
+    const char * pcParameter;
+    BaseType_t lParameterStringLength;
+ 
+    /* 获取参数 */
+    pcParameter = FreeRTOS_CLIGetParameter(pcCommandString, 1, &lParameterStringLength);
+    configASSERT(pcParameter);
+ 
+    /* 解析参数并控制LED */
+    if( strncmp(pcParameter, "on", lParameterStringLength) == 0 )
+    {
+        /* 打开LED的代码 */
+        sprintf(pcWriteBuffer, "LED turned on\r\n");
+				SET_BLUE_LED_ON;
+    }
+    else if( strncmp(pcParameter, "off", lParameterStringLength) == 0 )
+    {
+        /* 关闭LED的代码 */
+        sprintf(pcWriteBuffer, "LED turned off\r\n");
+				SET_BLUE_LED_OFF;
+    }
+    else
+    {
+        sprintf(pcWriteBuffer, "Invalid parameter. Usage: led_ctrl <on|off>\r\n");
+    }
+ 
+    return pdFALSE; /* 没有更多输出数据 */
+}
+
+
+
+static BaseType_t prvSystemInfoCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString )
+{
+    const char * const pcSystemInfo = "FreeRTOS Version: V202212.00\r\n"
+                                      "System Uptime: %d seconds\r\n"
+                                      "CPU Frequency: 100 MHz\r\n";
+    uint32_t ulUptimeSeconds = xTaskGetTickCount() / configTICK_RATE_HZ;
+ 
+    /* 输出系统信息 */
+    sprintf(pcWriteBuffer, pcSystemInfo, ulUptimeSeconds);
+ 
+    return pdFALSE;
+}
 
 
 

@@ -45,6 +45,7 @@ typedef enum {
     EF_ENV_INIT_FAILED,
 } EfErrCode;
 
+
 /*----------------------------------------------*
  * ∫Í∂®“Â                                       *
  *----------------------------------------------*/
@@ -132,6 +133,8 @@ static BaseType_t prvResetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const
 
 
 
+static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString );
+static BaseType_t prvSystemInfoCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString );
 
 
 

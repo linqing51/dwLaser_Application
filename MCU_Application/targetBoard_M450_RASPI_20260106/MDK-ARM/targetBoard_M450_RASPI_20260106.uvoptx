@@ -203,7 +203,7 @@
 
   <Group>
     <GroupName>Application/MDK-ARM</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -223,7 +223,7 @@
 
   <Group>
     <GroupName>Application/User/Core</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1263,7 +1263,7 @@
 
   <Group>
     <GroupName>sPlc</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1414,8 +1414,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\sPlcPort\splcSmbus.c</PathWithFileName>
-      <FilenameWithoutPath>splcSmbus.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\sPlcPort\sPlcPMU_LTC2955.c</PathWithFileName>
+      <FilenameWithoutPath>sPlcPMU_LTC2955.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1426,8 +1426,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\sPlcPort\sPlcPMU_LTC2955.c</PathWithFileName>
-      <FilenameWithoutPath>sPlcPMU_LTC2955.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\sPlcPort\sPlcPMU_STM32.c</PathWithFileName>
+      <FilenameWithoutPath>sPlcPMU_STM32.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1438,8 +1438,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\sPlcPort\sPlcPMU_STM32.c</PathWithFileName>
-      <FilenameWithoutPath>sPlcPMU_STM32.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\sPlcPort\sPlcI2C_HDC1080.c</PathWithFileName>
+      <FilenameWithoutPath>sPlcI2C_HDC1080.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

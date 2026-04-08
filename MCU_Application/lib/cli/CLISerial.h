@@ -117,6 +117,12 @@ typedef enum
 
 
 
+
+
+#define USART5_RX_BUF_SIZE    128    /* 接收缓冲区大小 */
+
+
+
 #define vUARTInterruptHandler UART5_IRQHandler
 
 xComPortHandle xSerialPortInitMinimal( unsigned long ulWantedBaud, unsigned portBASE_TYPE uxQueueLength );
@@ -127,7 +133,8 @@ signed portBASE_TYPE xSerialPutChar( xComPortHandle pxPort, signed char cOutChar
 portBASE_TYPE xSerialWaitForSemaphore( xComPortHandle xPort );
 void vSerialClose( xComPortHandle xPort );
 
-void xUsart2Init (uint32_t BaudRate);
+extern void xUsart5Init(uint32_t BaudRate);
+extern UART_HandleTypeDef huart5;
 
 
 #endif

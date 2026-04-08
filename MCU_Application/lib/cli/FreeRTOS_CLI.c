@@ -28,8 +28,6 @@
 /* Standard includes. */
 #include <string.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
@@ -59,7 +57,6 @@ typedef struct xCOMMAND_INPUT_LIST
  * only default command that is always present.
  */
 static BaseType_t prvHelpCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
-static BaseType_t prvLedCommand( char *pcWriteBuffer,  size_t xWriteBufferLen, const char *pcCommandString );
 
 /*
  * Return the number of parameters that follow the command name.
@@ -75,17 +72,6 @@ static const CLI_Command_Definition_t xHelpCommand =
 	prvHelpCommand,
 	0
 };
-
-
-
-static const CLI_Command_Definition_t xLedCommand = {
-    "led",
-    "led : <led num> <on | off>",
-    prvLedCommand,
-    2
-};
-
-
 
 /* The definition of the list of commands.  Commands that are registered are
 added to this list. */
@@ -326,56 +312,6 @@ BaseType_t xReturn;
 	return xReturn;
 }
 /*-----------------------------------------------------------*/
-
-#define LED_TOTAL_NUM 2
-void LED_On(uint8_t id)
-{
-}
-
-void LED_Off(uint8_t id)
-{
-}
-static BaseType_t prvLedCommand( char *pcWriteBuffer,
-                                     size_t xWriteBufferLen,
-                                     const char  *pcCommandString ) {
-    char *pcParameter1, *pcParameter2;
-    BaseType_t xParameter1StringLength;
-    BaseType_t xParameter2StringLength;
-    BaseType_t xResult;
-  
-    pcParameter1 = (char*)FreeRTOS_CLIGetParameter(pcCommandString, 1, &xParameter1StringLength);
-		pcParameter2 = (char*)FreeRTOS_CLIGetParameter(pcCommandString, 2, &xParameter2StringLength );
-
-    /* Terminate both file names. */
-    pcParameter1[ xParameter1StringLength ] = 0x00;
-    pcParameter2[ xParameter2StringLength ] = 0x00;
-
-    /* Perform the copy operation itself. */
-        uint8_t tmp_num = (uint8_t)atoi(pcParameter1);
-        if(tmp_num >= LED_TOTAL_NUM) {
-            tmp_num = 0;
-        }
-        
-        if (strcmp(pcParameter2, "on") == 0) {
-            LED_On(tmp_num);    
-        }    else if (strcmp(pcParameter2, "off") == 0) {
-            LED_Off(tmp_num);    
-        } else {
-            sprintf(pcWriteBuffer, "Argument not supported");
-            return pdFALSE;
-        }
-        
-        *pcWriteBuffer = NULL;
-    return pdFALSE;
-}
-
-/*-----------------------------------------------------------*/
-
-
-
-
-
-
 
 static int8_t prvGetNumberOfParameters( const char *pcCommandString )
 {

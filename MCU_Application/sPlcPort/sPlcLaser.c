@@ -229,7 +229,7 @@ void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
 	}
 }
 	
-void setRedLaserPwm(int16_t pwm){//设置红激光占空比
+void setRedLaserPwm(int16_t pwm){//设置红激光占空比 0-100
 	if(pwm < 0){
 		pwm = 0;
 	}

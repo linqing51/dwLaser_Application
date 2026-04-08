@@ -49,7 +49,8 @@
 
 /* Dimentions a buffer to be used by the UART driver, if the UART driver uses a
 buffer at all. */
-#define cmdQUEUE_LENGTH			25
+//#define cmdQUEUE_LENGTH			25
+#define cmdQUEUE_LENGTH			64
 
 /* DEL acts as a backspace. */
 #define cmdASCII_DEL		( 0x7F )
@@ -120,6 +121,7 @@ xComPortHandle xPort;
 
 	/* Initialise the UART. */
 	xPort = xSerialPortInitMinimal( configCLI_BAUD_RATE, cmdQUEUE_LENGTH );
+	
 
 	/* Send the welcome message. */
 	vSerialPutString( xPort, ( signed char * ) pcWelcomeMessage, ( unsigned short ) strlen( pcWelcomeMessage ) );

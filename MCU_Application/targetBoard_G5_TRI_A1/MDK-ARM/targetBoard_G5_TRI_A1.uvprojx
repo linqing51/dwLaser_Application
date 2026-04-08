@@ -2283,6 +2283,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcI2C_HDC1080.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcI2C_HDC1080.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2537,33 +2542,6 @@
         </Group>
         <Group>
           <GroupName>Middlewares/CLI</GroupName>
-          <Files>
-            <File>
-              <FileName>CLI_Serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>cmd_fun.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_usart5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOS_CLI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
-            </File>
-            <File>
-              <FileName>UARTCommandConsole.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
@@ -4847,6 +4825,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcI2C_HDC1080.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcI2C_HDC1080.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -5013,33 +4996,6 @@
         </Group>
         <Group>
           <GroupName>Middlewares/CLI</GroupName>
-          <Files>
-            <File>
-              <FileName>CLI_Serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>cmd_fun.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_usart5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOS_CLI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
-            </File>
-            <File>
-              <FileName>UARTCommandConsole.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
@@ -7392,6 +7348,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcI2C_HDC1080.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcI2C_HDC1080.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -7558,33 +7519,6 @@
         </Group>
         <Group>
           <GroupName>Middlewares/CLI</GroupName>
-          <Files>
-            <File>
-              <FileName>CLI_Serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>cmd_fun.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_usart5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOS_CLI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
-            </File>
-            <File>
-              <FileName>UARTCommandConsole.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
@@ -9937,6 +9871,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcI2C_HDC1080.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcI2C_HDC1080.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -10103,33 +10042,6 @@
         </Group>
         <Group>
           <GroupName>Middlewares/CLI</GroupName>
-          <Files>
-            <File>
-              <FileName>CLI_Serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>cmd_fun.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_usart5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOS_CLI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
-            </File>
-            <File>
-              <FileName>UARTCommandConsole.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
@@ -12482,6 +12394,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcI2C_HDC1080.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcI2C_HDC1080.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -12648,33 +12565,6 @@
         </Group>
         <Group>
           <GroupName>Middlewares/CLI</GroupName>
-          <Files>
-            <File>
-              <FileName>CLI_Serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\CLI_Serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>cmd_fun.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_usart5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\drv_usart5.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOS_CLI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
-            </File>
-            <File>
-              <FileName>UARTCommandConsole.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\cli\UARTCommandConsole.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>

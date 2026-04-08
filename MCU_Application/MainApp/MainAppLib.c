@@ -68,7 +68,7 @@ void restoreDefault(void){//恢复默认值
 	RRES(R_DISABLE_RFID);
 	RRES(R_DISABLE_FIBER_PROBE);
 	RRES(R_DISABLE_FAN_SPEED);
-	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 2;
+	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 4;
 	NVRAM0[DM_RAIM_BRG] = CONFIG_MAX_LASER_POWER_RAIM;
 	NVRAM0[DM_GAIM_BRG] = CONFIG_MAX_LASER_POWER_GAIM;
 	NVRAM0[DM_LCD_BRG] = CONFIG_LCD_MAX_DC;
@@ -129,7 +129,7 @@ uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power){//功率->DAC CODE 使用
 	return tmp;
 }
 uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功率->DAC CODE 使用校正表
-	double fpower, fout, fk, fb;
+	double fpower, fout, fk, fb, dacmax, dacmin;
 	int16_t pmax, pmin;
 	uint16_t *pCal;
 	uint16_t out;
@@ -137,12 +137,16 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功�
 		case LASER_DAC_CHANNEL_CH0:{
 			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH0;
 			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH0;
+			dacmax = (float)(CONFIG_DAC_CH0_MAXBIT);
+			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr0;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH1:{
 			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH1;
 			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH1;
+			dacmax = (float)(CONFIG_DAC_CH1_MAXBIT);
+			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr1;
 			break;
 		}
@@ -203,41 +207,81 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功�
 			fb = 0.0F;
 			//fb = pCal[0] - fk * 0.1;
 		}
-		else if((power > pCal[0]) && (power <= pCal[1])){//10-20%
-			fk = (pCal[1] - pCal[0]) / 0.1F;
-			fb = pCal[0] - fk * 0.1;
+		else if((power > pCal[0]) && (power <= pCal[1])){//5-10%
+			fk = (pCal[1] - pCal[0]) / 0.05F;
+			fb = pCal[0] - fk * 0.05F;
 		}
-		else if((power > pCal[1]) && (power <= pCal[2])){//20-30%
-			fk = (pCal[2] - pCal[1]) / 0.1F;
-			fb = pCal[1] - fk * 0.2;
+		else if((power > pCal[1]) && (power <= pCal[2])){//10-15%
+			fk = (pCal[2] - pCal[1]) / 0.05F;
+			fb = pCal[1] - fk * 0.1F;
 		}
-		else if((power > pCal[2]) && (power <= pCal[3])){
-			fk = (pCal[3] - pCal[2]) / 0.1F;
-			fb = pCal[2] - fk * 0.3;
+		else if((power > pCal[2]) && (power <= pCal[3])){//15-20%
+			fk = (pCal[3] - pCal[2]) / 0.05F;
+			fb = pCal[2] - fk * 0.15F;
 		}
-		else if((power > pCal[3]) && (power <= pCal[4])){
-			fk = (pCal[4] - pCal[3]) / 0.1F;
-			fb = pCal[3] - fk * 0.4;
+		else if((power > pCal[3]) && (power <= pCal[4])){//20-25%
+			fk = (pCal[4] - pCal[3]) / 0.05F;
+			fb = pCal[3] - fk * 0.20F;
 		}
-		else if((power > pCal[4]) && (power <= pCal[5])){
-			fk = (pCal[5] - pCal[4]) / 0.1F;
-			fb = pCal[4] - fk * 0.5;
+		else if((power > pCal[4]) && (power <= pCal[5])){//25-30%
+			fk = (pCal[5] - pCal[4]) / 0.05F;
+			fb = pCal[4] - fk * 0.25F;
 		}
-		else if((power > pCal[5]) && (power <= pCal[6])){
-			fk = (pCal[6] - pCal[5]) / 0.1F;
-			fb = pCal[5] - fk * 0.6;
+		else if((power > pCal[5]) && (power <= pCal[6])){//30-35%
+			fk = (pCal[6] - pCal[5]) / 0.05F;
+			fb = pCal[5] - fk * 0.30F;
 		}
-		else if((power > pCal[6]) && (power <= pCal[7])){
-			fk = (pCal[7] - pCal[6]) / 0.1F;
-			fb = pCal[6] - fk * 0.7;
+		else if((power > pCal[6]) && (power <= pCal[7])){//35-40%
+			fk = (pCal[7] - pCal[6]) / 0.05F;
+			fb = pCal[6] - fk * 0.35F;
 		}
-		else if((power > pCal[7]) && (power <= pCal[8])){
-			fk = (pCal[8] - pCal[7]) / 0.1F;
-			fb = pCal[7] - fk * 0.8;
+		else if((power > pCal[7]) && (power <= pCal[8])){//40-45%
+			fk = (pCal[8] - pCal[7]) / 0.05F;
+			fb = pCal[7] - fk * 0.40F;
 		}
-		else if((power > pCal[8]) && (power <= pCal[9])){
-			fk = (pCal[9] - pCal[8]) / 0.1F;
-			fb = pCal[8] - fk * 0.9;
+		else if((power > pCal[8]) && (power <= pCal[9])){//45%-50%
+			fk = (pCal[9] - pCal[8]) / 0.05F;
+			fb = pCal[8] - fk * 0.45F;
+		}
+		else if((power > pCal[9]) && (power <= pCal[10])){//50-55%
+			fk = (pCal[10] - pCal[9]) / 0.05F;
+			fb = pCal[9] - fk * 0.50F;
+		}
+		else if((power > pCal[10]) && (power <= pCal[11])){//55-60%
+			fk = (pCal[11] - pCal[10]) / 0.05F;
+			fb = pCal[10] - fk * 0.55F;
+		}
+		else if((power > pCal[11]) && (power <= pCal[12])){//60-65%
+			fk = (pCal[12] - pCal[11]) / 0.05F;
+			fb = pCal[11] - fk * 0.60F;
+		}
+		else if((power > pCal[12]) && (power <= pCal[13])){//65-70%
+			fk = (pCal[13] - pCal[12]) / 0.05F;
+			fb = pCal[12] - fk * 0.65F;
+		}
+		else if((power > pCal[13]) && (power <= pCal[14])){//70-75%
+			fk = (pCal[14] - pCal[13]) / 0.05F;
+			fb = pCal[13] - fk * 0.70F;
+		}
+		else if((power > pCal[14]) && (power <= pCal[15])){//75-80%
+			fk = (pCal[15] - pCal[14]) / 0.05F;
+			fb = pCal[14] - fk * 0.75F;
+		}
+		else if((power > pCal[15]) && (power <= pCal[16])){//80-85%
+			fk = (pCal[16] - pCal[15]) / 0.05F;
+			fb = pCal[15] - fk * 0.80F;
+		}
+		else if((power > pCal[16]) && (power <= pCal[17])){//85-90%
+			fk = (pCal[17] - pCal[16]) / 0.05F;
+			fb = pCal[16] - fk * 0.85F;
+		}
+		else if((power > pCal[17]) && (power <= pCal[18])){//90-95%
+			fk = (pCal[18] - pCal[17]) / 0.05F;
+			fb = pCal[17] - fk * 0.90F;
+		}
+		else if((power > pCal[18]) && (power <= pCal[19])){//95-100%
+			fk = (pCal[19] - pCal[18]) / 0.05F;
+			fb = pCal[18] - fk * 0.95F;
 		}
 		fout = (power - fb) / fk;
 		printf("%s,%d,%s:Enable calibration mode\n", __FILE__, __LINE__, __func__);
@@ -248,12 +292,13 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg){//功�
 		printf("%s,%d,%s:Disable calibration mode\n", __FILE__, __LINE__, __func__);
 		fout = fpower / pmax;			
 	}
-	fout = fout * 4095.0F;
-	if(fout > 4095.0F){
-		fout = 4095;
+	
+	fout = fout * dacmax;
+	if(fout > dacmax){
+		fout = dacmax;
 	}
-	if(fout < 0.0F){
-		fout = 0;
+	if(fout < dacmin){
+		fout = dacmin;
 	}
 	out = (uint16_t)fout;
 	printf("%s,%d,%s:Calibration fOut=%d\n", __FILE__, __LINE__, __func__, out);

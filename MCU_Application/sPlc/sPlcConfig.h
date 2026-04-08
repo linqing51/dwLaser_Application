@@ -209,8 +209,8 @@
 #define SPREG_ADC_53																	(SPREG_START + 53)//采集值 BAT NTC
 #define SPREG_ADC_54																	(SPREG_START + 54)//采集值 LASER_FPD
 #define SPREG_ADC_55																	(SPREG_START + 55)//采集值 LASER_LPD
-#define SPREG_ADC_56																	(SPREG_START + 56)//采集值 AMB0_TEMP环境温度
-#define SPREG_ADC_57																	(SPREG_START + 57)//采集值 AMB1_TEMP环境温度
+#define SPREG_ADC_56																	(SPREG_START + 56)//采集值 AMB0_TEMP环境温度 NTC
+#define SPREG_ADC_57																	(SPREG_START + 57)//采集值 AMB1_TEMP环境温度 NTC
 #define SPREG_ADC_58																	(SPREG_START + 58)//CHIP TEMP片内温度传感器
 #define SPREG_ADC_59																	(SPREG_START + 59)//CHIP VREFINT片内基准源
 #define SPREG_ADC_60																	(SPREG_START + 60)//VBAT 掉电存储电池 
@@ -304,12 +304,12 @@
 #define EM_HT3_TEMP																		(EM_START + 111)//散热器4温度
 #define EM_WATER_HOT_TEMP															(EM_START + 112)//冷却水温度->冷水
 #define EM_WATER_COOL_TEMP														(EM_START + 113)//冷却水温度->热水
-#define EM_AMBIENT0_TEMP															(EM_START + 114)//环境温度
-#define EM_AMBIENT1_TEMP															(EM_START + 115)//环境温度
-#define EM_AMBIENT2_TEMP															(EM_START + 116)//环境温度
+#define EM_AMBIENT0_TEMP															(EM_START + 114)//环境温度 风道 NTC
+#define EM_AMBIENT1_TEMP															(EM_START + 115)//环境温度 风道 NTC
+#define EM_AMBIENT2_TEMP															(EM_START + 116)//环境温度 板载
 #define EM_AMBIENT3_TEMP															(EM_START + 117)//环境温度
-#define EM_RELATIVE0_HUMIDITY													(EM_START + 118)//相对湿度
-#define EM_RELATIVE1_HUMIDITY													(EM_START + 119)//相对湿度
+#define EM_RELATIVE0_HUMIDITY													(EM_START + 118)//相对湿度 板载
+#define EM_RELATIVE1_HUMIDITY													(EM_START + 119)//相对湿度 风道
 #define EM_MCU_TEMP																		(EM_START + 120)//处理器温度
 #define EM_MBAT_TEMP																	(EM_START + 121)//电池温度
 
@@ -693,13 +693,16 @@
 #define R_DIAGNOSIS_OK_UP															(R_START * 16 + 201)
 #define R_DIAGNOSIS_GOTO_RAW_DOWN											(R_START * 16 + 202)
 #define R_DIAGNOSIS_GOTO_RAW_UP												(R_START * 16 + 203)
+#define R_DIAGNOSIS_GOTO_CORRECTION_DOWN							(R_START * 16 + 204)
 /*****************************************************************************/
 #define R_DIAGNOSIS_RAW_RETURN_DOWN										(R_START * 16 + 210)
 #define R_DIAGNOSIS_RAW_RETURN_UP											(R_START * 16 + 211)
 /*****************************************************************************/
-#define R_RENAME_KEY_ENTER_DOWN												(R_START * 16 + 220)
-#define R_RENAME_KEY_EXIT_DOWN												(R_START * 16 + 221)
-#define R_RENAME_TEXTDISPLAY_READ_DONE								(R_START * 16 + 222)
+#define R_DIAGNOSIS_CORRECTION_RETURN_DOWN						(R_START * 16 + 220)
+/*****************************************************************************/
+#define R_RENAME_KEY_ENTER_DOWN												(R_START * 16 + 300)
+#define R_RENAME_KEY_EXIT_DOWN												(R_START * 16 + 301)
+#define R_RENAME_TEXTDISPLAY_READ_DONE								(R_START * 16 + 302)
 /*****************************************************************************/
 #define MR_FOOSWITCH_HAND_SWITCH											(MR_START * 16 + 10)//脚踏HandSwitch 脉冲控制
 #define MR_BEEP_TONE																	(MR_START * 16 + 11)//蜂鸣器模式 0:SYNC 1:BEEP

@@ -1590,12 +1590,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION_MODE:{
+				case GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION:{//切换入功率校正页面
 					if(state){
-						SSET(R_CALIBRATION_MODE);
-					}
-					else{
-						RRES(R_CALIBRATION_MODE);
+						SSET(R_DIAGNOSIS_GOTO_CORRECTION_DOWN);
 					}
 					break;
 				}
@@ -1677,6 +1674,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			break;
 		}
 		case GDDC_PAGE_DIAGNOSIS_CALI:{
+			switch(control_id){
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_ENTER_OK:{
+					if(state){
+						SSET(R_DIAGNOSIS_CORRECTION_RETURN_DOWN);
+					}
+					break;
+				}
+				default:break;
+			}
 			break;
 		}
 		case GDDC_PAGE_POWEROFF_CONFIRM:{

@@ -81,30 +81,28 @@ void UPDAC3(void){}
 void UPDAC4(void){}
 void UPDAC5(void){}
 void UPDAC6(void){}
-void UPDAC7(void){//立即从SPREG_DAC_0中更新DAC0
+void UPDAC7(void){}
+void UPDAC8(void){
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_7] & 0x0FFF;
 	writeDac7311(temp);
 }
-void UPDAC8(void){
-}
-void UPDAC9(void){
-}
-void UPDAC10(void){
-}
-void UPDAC11(void){
-}
-void UPDAC12(void){
-}
-void UPDAC13(void){
-}
-void UPDAC14(void){
-}
-void UPDAC15(void){
-}
+void UPDAC9(void){}
+void UPDAC10(void){}
+void UPDAC11(void){}
+void UPDAC12(void){}
+void UPDAC13(void){}
+void UPDAC14(void){}
+void UPDAC15(void){}
 void UPDAC16(void){
+	if(NVRAM0[SPREG_DAC_16] > CONFIG_DAC_CH16_MAXBIT){
+		NVRAM0[SPREG_DAC_16] = CONFIG_DAC_CH16_MAXBIT;
+	}
+	setRedLaserPwm(NVRAM0[SPREG_DAC_16]);
 }
 void UPDAC17(void){
+
+
 }
 
 void CLDAC(void){//立即清空全部DAC

@@ -31,9 +31,7 @@
 
 /* Demo application includes. */
 #include "CLISerial.h"
-#include "usart.h"
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_uart.h"
+
 
 /*-----------------------------------------------------------*/
 
@@ -54,6 +52,19 @@ static QueueHandle_t xCharsForTx;
 void vUARTInterruptHandler( void );
 
 /*-----------------------------------------------------------*/
+extern UART_HandleTypeDef huart5;
+DMA_HandleTypeDef hdma_uart5_rx;
+
+
+#define CONFIG_DEBUG_UART											huart1//调试串口
+#define CONFIG_GDDC_UART											huart2//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART2//GDDC串口中断
+
+
+
+uint8_t UART5_Rx_Buf[USART5_RX_BUF_SIZE];
+uint16_t UART5_Rx_Len = 0;
+
 
 
 #if 1
@@ -64,130 +75,82 @@ struct __FILE
 	int handle; 
 }; 
 
-//FILE __stdout;       
-//定义_sys_exit()以避免使用半主机模式    
-//void _sys_exit(int x) 
-//{ 
-//	x = x; 
-//} 
-//重定义fputc函数 
-//int fputc(int ch, FILE *f)
-//{ 	
-//	while((USART2->SR&0X40)==0);//循环发送,直到发送完毕   
-//	USART2->DR = (u8) ch;      
-//	return ch;
-//}
+
+
+
 #endif
 
-//void xUsart2Init (uint32_t BaudRate)
-//{
-//    USART_InitTypeDef USART_InitStructure;
-//    NVIC_InitTypeDef NVIC_InitStructure;
-//    GPIO_InitTypeDef GPIO_InitStructure;
 
-//     RCC_AHB1PeriphClockCmd(USART2_GPIO_CLK,ENABLE); //使能GPIOA时钟
-//     RCC_APB1PeriphClockCmd(USART2_CLK,ENABLE);//使能Usart2时钟
+void xUsart5Init(uint32_t BaudRate)
+{
+    /* 1. 开启时钟 */
+    __HAL_RCC_UART5_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    __HAL_RCC_DMA1_CLK_ENABLE();  // UART5 RX DMA 属于 DMA1 流5 通道4
 
-//     //串口1对应引脚复用映射
-//     GPIO_PinAFConfig(USART2_GPIO_PORT,USART2_TX_SOURCE,USART2_TX_AF); //GPIOA2复用为USART2
-//     GPIO_PinAFConfig(USART2_GPIO_PORT,USART2_RX_SOURCE,USART2_RX_AF); //GPIOA3复用为USART2
-//     
-//     //Usart2端口配置
-//     GPIO_InitStructure.GPIO_Pin = USART2_TX_PIN | USART2_RX_PIN; //GPIOA9与GPIOA10
-//     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
-//     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;   //速度50MHz
-//     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽复用输出
-//     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
-//     GPIO_Init(USART2_GPIO_PORT,&GPIO_InitStructure); //初始化PA2，PA3
+    /* 2. GPIO 初始化：TX=PC12, RX=PD2 */
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-//    //Usart2 初始化设置
-//     USART_InitStructure.USART_BaudRate = BaudRate;//波特率设置
-//     USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
-//     USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
-//     USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
-//     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
-//     USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx; //收发模式
-//     USART_Init(USART2, &USART_InitStructure); //初始化串口2    
+    GPIO_InitStruct.Pin = GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-//     //Usart2 NVIC 配置
-//     NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;//串口2中断通道
-//     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=10;//抢占优先级3
-//     NVIC_InitStructure.NVIC_IRQChannelSubPriority =5;       //子优先级3
-//     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;         //IRQ通道使能
-//     NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化VIC寄存器
-//     
-//     USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);//开启相关中断    
-//     
-//     USART_Cmd(USART2, ENABLE);  //使能串口1     
-//}
+    GPIO_InitStruct.Pin = GPIO_PIN_2;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;  // RX 上拉
+    GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+    /* 3. DMA 接收配置 */
+    hdma_uart5_rx.Instance = DMA1_Stream5;
+    hdma_uart5_rx.Init.Channel = DMA_CHANNEL_4;
+    hdma_uart5_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_uart5_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_uart5_rx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_uart5_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_uart5_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_uart5_rx.Init.Mode = DMA_NORMAL;
+    hdma_uart5_rx.Init.Priority = DMA_PRIORITY_MEDIUM;
+    hdma_uart5_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_uart5_rx) != HAL_OK)
+    {
+//        Error_Handler();
+    }
+    __HAL_LINKDMA(&huart5, hdmarx, hdma_uart5_rx);
+
+    /* 4. UART5 初始化 */
+    huart5.Instance = UART5;
+    huart5.Init.BaudRate = BaudRate;
+    huart5.Init.WordLength = UART_WORDLENGTH_8B;
+    huart5.Init.StopBits = UART_STOPBITS_1;
+    huart5.Init.Parity = UART_PARITY_NONE;
+    huart5.Init.Mode = UART_MODE_TX_RX;
+    huart5.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    huart5.Init.OverSampling = UART_OVERSAMPLING_16;
+    if (HAL_UART_Init(&huart5) != HAL_OK)
+    {
+//        Error_Handler();
+    }
+
+    /* 5. NVIC 中断配置 */
+    HAL_NVIC_SetPriority(UART5_IRQn, 5, 0);  // 适配FreeRTOS优先级
+    HAL_NVIC_EnableIRQ(UART5_IRQn);
+    HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
+
+    /* 6. 启动 DMA 接收 + 开启 IDLE 中断 */
+    HAL_UART_Receive_DMA(&huart5, UART5_Rx_Buf, USART5_RX_BUF_SIZE);
+    __HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
 
 
+				
+}
 
-/*
- * See the serial2.h header file.
- */
-//xComPortHandle xSerialPortInitMinimal( unsigned long ulWantedBaud, unsigned portBASE_TYPE uxQueueLength )
-//{
-//xComPortHandle xReturn;
-//USART_InitTypeDef USART_InitStructure;
-//NVIC_InitTypeDef NVIC_InitStructure;
-//GPIO_InitTypeDef GPIO_InitStructure;
 
-//	/* Create the queues used to hold Rx/Tx characters. */
-//	xRxedChars = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
-//	xCharsForTx = xQueueCreate( uxQueueLength + 1, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
-//	
-//	/* If the queue/semaphore was created correctly then setup the serial port
-//	hardware. */
-//	if( ( xRxedChars != serINVALID_QUEUE ) && ( xCharsForTx != serINVALID_QUEUE ) )
-//	{
-//        USART_DeInit(USART2);
-//    
-//    	RCC_AHB1PeriphClockCmd(USART2_GPIO_CLK,ENABLE); //使能GPIOA时钟
-//    	RCC_APB1PeriphClockCmd(USART2_CLK,ENABLE);//使能Usart2时钟
-//     
-//    	//串口1对应引脚复用映射
-//    	GPIO_PinAFConfig(USART2_GPIO_PORT,USART2_TX_SOURCE,USART2_TX_AF); //GPIOA2复用为USART2
-//    	GPIO_PinAFConfig(USART2_GPIO_PORT,USART2_RX_SOURCE,USART2_RX_AF); //GPIOA3复用为USART2
-//    	
-//    	//Usart2端口配置
-//    	GPIO_InitStructure.GPIO_Pin = USART2_TX_PIN | USART2_RX_PIN; //GPIOA9与GPIOA10
-//    	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
-//    	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//速度50MHz
-//    	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽复用输出
-//    	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
-//    	GPIO_Init(USART2_GPIO_PORT,&GPIO_InitStructure); //初始化PA2，PA3
-
-//       //Usart2 初始化设置
-//    	USART_InitStructure.USART_BaudRate = ulWantedBaud;//波特率设置
-//    	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
-//    	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
-//    	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
-//    	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
-//    	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
-//    	USART_Init(USART2, &USART_InitStructure); //初始化串口2    
-
-//    	//Usart2 NVIC 配置
-//    	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;//串口2中断通道
-//    	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=10;//抢占优先级3
-//    	NVIC_InitStructure.NVIC_IRQChannelSubPriority =5;		//子优先级3
-//    	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
-//    	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
-//    	
-//    	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);//开启相关中断    
-//    	
-//    	USART_Cmd(USART2, ENABLE);  //使能串口1   	
-//__HAL_UART_ENABLE(&huart5);
-//	}
-//	else
-//	{
-//		xReturn = ( xComPortHandle ) 0;
-//	}
-
-//	/* This demo file only supports a single port but we have to return
-//	something to comply with the standard demo header file. */
-//	return xReturn;
-//}
 
 
 
@@ -204,51 +167,71 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 	hardware. */
 	if( ( xRxedChars != serINVALID_QUEUE ) && ( xCharsForTx != serINVALID_QUEUE ) )
 	{
-    /* UART5 clock enable */
+    /* 1. 开启时钟 */
     __HAL_RCC_UART5_CLK_ENABLE();
-
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOD_CLK_ENABLE();
-    /**UART5 GPIO Configuration
-    PC12     ------> UART5_TX
-    PD2     ------> UART5_RX
-    */
-    GPIO_InitStruct.Pin = DBG_TX_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
-    HAL_GPIO_Init(DBG_TX_GPIO_Port, &GPIO_InitStruct);
+    __HAL_RCC_DMA1_CLK_ENABLE();  // UART5 RX DMA 属于 DMA1 流5 通道4
 
-    GPIO_InitStruct.Pin = DBG_RX_Pin;
+    /* 2. GPIO 初始化：TX=PC12, RX=PD2 */
+//    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    GPIO_InitStruct.Pin = GPIO_PIN_12;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
-    HAL_GPIO_Init(DBG_RX_GPIO_Port, &GPIO_InitStruct);
-		
-		
-		huart5.Instance = UART5;
-		huart5.Init.BaudRate = ulWantedBaud;
-		huart5.Init.WordLength = UART_WORDLENGTH_8B;
-		huart5.Init.StopBits = UART_STOPBITS_1;
-		huart5.Init.Parity = UART_PARITY_NONE;
-		huart5.Init.Mode = UART_MODE_TX_RX;
-		huart5.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-		huart5.Init.OverSampling = UART_OVERSAMPLING_16;
-		if (HAL_UART_Init(&huart5) != HAL_OK)
-		{
-			Error_Handler();
-		}
-			
-    HAL_NVIC_SetPriority(UART5_IRQn, 5, 0);
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_2;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;  // RX 上拉
+    GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+    /* 3. DMA 接收配置 */
+    hdma_uart5_rx.Instance = DMA1_Stream0;
+    hdma_uart5_rx.Init.Channel = DMA_CHANNEL_4;
+    hdma_uart5_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_uart5_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_uart5_rx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_uart5_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_uart5_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_uart5_rx.Init.Mode = DMA_NORMAL;
+    hdma_uart5_rx.Init.Priority = DMA_PRIORITY_MEDIUM;
+    hdma_uart5_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_uart5_rx) != HAL_OK)
+    {
+//        Error_Handler();
+    }
+    __HAL_LINKDMA(&huart5, hdmarx, hdma_uart5_rx);
+
+    /* 4. UART5 初始化 */
+    huart5.Instance = UART5;
+    huart5.Init.BaudRate = ulWantedBaud;
+    huart5.Init.WordLength = UART_WORDLENGTH_8B;
+    huart5.Init.StopBits = UART_STOPBITS_1;
+    huart5.Init.Parity = UART_PARITY_NONE;
+    huart5.Init.Mode = UART_MODE_TX_RX;
+    huart5.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    huart5.Init.OverSampling = UART_OVERSAMPLING_16;
+    if (HAL_UART_Init(&huart5) != HAL_OK)
+    {
+//        Error_Handler();
+    }
+
+    /* 5. NVIC 中断配置 */
+    HAL_NVIC_SetPriority(UART5_IRQn, 6, 0);  // 适配FreeRTOS优先级
     HAL_NVIC_EnableIRQ(UART5_IRQn);
-		
-		
-		/* 使能接收，进入中断回调函数 */
-//		HAL_UART_Receive_IT(&huart5,&aRxBuffer,1);
+    HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 6, 0);
+    HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
+
+    /* 6. 启动 DMA 接收 + 开启 IDLE 中断 */
+    HAL_UART_Receive_DMA(&huart5, UART5_Rx_Buf, USART5_RX_BUF_SIZE);
+    __HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
 			
-		
+			
+			xReturn = ( xComPortHandle ) 4;
 	}
 	else
 	{
@@ -259,10 +242,6 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 	something to comply with the standard demo header file. */
 	return xReturn;
 }
-
-
-
-
 /*-----------------------------------------------------------*/
 
 signed portBASE_TYPE xSerialGetChar( xComPortHandle pxPort, signed char *pcRxedChar, TickType_t xBlockTime )
@@ -314,7 +293,7 @@ signed portBASE_TYPE xReturn;
 	if( xQueueSend( xCharsForTx, &cOutChar, xBlockTime ) == pdPASS )
 	{
 		xReturn = pdPASS;
-		__HAL_UART_ENABLE_IT(&huart5, UART_IT_RXNE);
+		__HAL_UART_ENABLE_IT(&huart5, UART_IT_TXE);
 	}
 	else
 	{
@@ -331,11 +310,63 @@ void vSerialClose( xComPortHandle xPort )
 }
 /*-----------------------------------------------------------*/
 
+
+
+void DMA1_Stream5_IRQHandler(void)
+{
+    HAL_DMA_IRQHandler(&hdma_uart5_rx);
+}
+
+
+void UART5_IDLE_Callback(UART_HandleTypeDef *huart)
+{
+    uint32_t temp;
+    if(huart->Instance == UART5)
+    {
+        /* 关闭DMA + 清除中断标志 */
+        __HAL_UART_DISABLE_IT(huart, UART_IT_IDLE);
+        HAL_UART_DMAStop(huart);
+
+        /* 计算接收到的数据长度 */
+        temp  =  __HAL_DMA_GET_COUNTER(&hdma_uart5_rx);
+				UART5_Rx_Len = USART5_RX_BUF_SIZE - temp;
+        /* ============================================== */
+        /* 关键：将接收到的数据送入 FreeRTOS+CLI 处理队列 */
+        /* ============================================== */
+        for(uint16_t i=0; i<UART5_Rx_Len; i++)
+        {
+            BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+            xQueueSendFromISR( xRxedChars, &UART5_Rx_Buf[i], &xHigherPriorityTaskWoken );
+//						portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+						portEND_SWITCHING_ISR( xHigherPriorityTaskWoken );					
+        }
+
+        /* 重新启动DMA接收，等待下一包数据 */
+        HAL_UART_Receive_DMA(&huart5, UART5_Rx_Buf, USART5_RX_BUF_SIZE);
+        __HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
+
+        /* 清空接收缓冲区 */
+        UART5_Rx_Len = 0;
+        memset(UART5_Rx_Buf, 0, USART5_RX_BUF_SIZE);
+    }
+}
+
+
+
+
+
+
 void vUARTInterruptHandler( void )
 {
 portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 char cChar;
-	
+
+	/* IDLE 空闲中断处理 */
+	if(__HAL_UART_GET_FLAG(&huart5, UART_FLAG_IDLE) != RESET)
+	{
+			UART5_IDLE_Callback(&huart5);
+	}	
+
 	if (__HAL_UART_GET_FLAG(&huart5, UART_FLAG_TXE) != RESET)
 	{
 		/* The interrupt was caused by the THR becoming empty.  Are there any
@@ -344,21 +375,17 @@ char cChar;
 		{
 			/* A character was retrieved from the queue so can be sent to the
 			THR now. */
-			HAL_UART_Transmit_IT(&huart5, (uint8_t *)&cChar, 1);
+			HAL_UART_Transmit(&huart5,(uint8_t *)&cChar,1,100);
 		}
 		else
 		{
 			__HAL_UART_DISABLE_IT(&huart5, UART_IT_TXE);
-		}		
+		};
 	}
-	if(__HAL_UART_GET_FLAG(&huart5, UART_FLAG_RXNE) == SET)
-	{
-		cChar = (uint8_t)(UART5->DR);  // 直接读取DR寄存器，效率最高
-// HAL_UART_Receive(&huart2, &cChar, 1, HAL_MAX_DELAY);		
-		xQueueSendFromISR( xRxedChars, &cChar, &xHigherPriorityTaskWoken );
-	}	
-	
+
 	portEND_SWITCHING_ISR( xHigherPriorityTaskWoken );
+	
+	
 }
 
 

@@ -30,12 +30,14 @@ FILE __stdin;
 int fputc(int ch,FILE *f){
 	uint8_t dat;
 	dat = (ch & 0xFF);
-	HAL_UART_Transmit(&CONFIG_DEBUG_UART, &dat, 1, 1000);
+  while(__HAL_UART_GET_FLAG(&CONFIG_DEBUG_UART, UART_FLAG_TXE) == RESET);//等待 UART5 发送寄存器为空
+	HAL_UART_Transmit(&CONFIG_DEBUG_UART, &dat, 1, HAL_MAX_DELAY);
 	return ch;
 }
 
 int fgetc(FILE *f) {
 	uint8_t dat;
+	while(__HAL_UART_GET_FLAG(&CONFIG_DEBUG_UART, UART_FLAG_RXNE) == SET);
 	HAL_UART_Receive(&CONFIG_DEBUG_UART, &dat, 1, 100);
 	return (dat);
 }

@@ -9,6 +9,7 @@
 //cdev
 #include "math.h"
 #include <stdio.h>
+#include <stddef.h> 
 #include <stdlib.h> 
 #include <string.h>
 #include <ctype.h>
@@ -27,6 +28,9 @@
 #include "flash_if.h"
 #include "pid_temp_control.h"
 #include "fuzzy_pid.h"
+#if defined(LYPE_MCU_1V0_20260106)
+#include "sPlcI2C_HDC1080.h"
+#endif
 /*****************************************************************************/
 //usb
 #include "usbh_msc.h"
@@ -54,16 +58,14 @@
 #define LASER_MODE_MP													0x02//多脉冲模式
 /*****************************************************************************/
 typedef struct{
-	uint16_t calibrationPwr0[10];//通道0功率校正表
-	uint16_t calibrationPwr1[10];//通道1功率校正表
-	uint16_t calibrationPwr2[10];//通道1功率校正表
-	uint16_t calibrationPwr3[10];//通道1功率校正表
-	uint16_t calibrationPwr4[10];//通道1功率校正表
-	uint16_t calibrationPwr5[10];//通道1功率校正表
-	uint16_t calibrationPwr6[10];//通道1功率校正表
-	uint16_t calibrationPwr7[10];//通道1功率校正表
-	uint16_t calibrationPwr8[10];//通道1功率校正表
-	uint16_t calibrationPwr9[10];//通道1功率校正表
+	uint16_t calibrationPwr0[20];//通道0功率校正表
+	uint16_t calibrationPwr1[20];//通道1功率校正表
+	uint16_t calibrationPwr2[20];//通道2功率校正表
+	uint16_t calibrationPwr3[20];//通道3功率校正表
+	uint16_t calibrationPwr4[20];//通道4功率校正表
+	uint16_t calibrationPwr5[20];//通道5功率校正表
+	uint16_t calibrationPwr6[20];//通道6功率校正表
+	uint16_t calibrationPwr7[20];//通道7功率校正表
 	char serialNumber[16];//序列号
 	int16_t mfg_year;//生产年
 	int16_t mfg_month;//生产月

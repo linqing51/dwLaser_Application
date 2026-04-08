@@ -72,8 +72,7 @@ void MX_GPIO_Init(void)
                           |DAC8568_NSS_Pin|DAC8568_SCK_Pin|DAC8568_DOUT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOG, DAC8568_CLEAR_Pin|LAS_BREAK_Pin|YOUT1_Pin|HDC1080_SDA_Pin
-                          |HDC1080_SCL_Pin|PUMP0_PWM_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOG, DAC8568_CLEAR_Pin|LAS_BREAK_Pin|YOUT1_Pin|PUMP0_PWM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, TEC1_PWM_Pin|TEC0_PWM_Pin, GPIO_PIN_RESET);
@@ -87,6 +86,9 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(ESTOP_RESET_GPIO_Port, ESTOP_RESET_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOG, HDC1080_SDA_Pin|HDC1080_SCL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(POWER_KILL_GPIO_Port, POWER_KILL_Pin, GPIO_PIN_SET);
@@ -264,7 +266,7 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = HDC1080_SDA_Pin|HDC1080_SCL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PUMP1_PWM_Pin */
