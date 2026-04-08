@@ -85,6 +85,10 @@ typedef struct{
 	int16_t mucMaxTemper;//处理器最高温度
 }deviceLogInfo_t;
 /*****************************************************************************/
+// 封装一个简化调用的宏
+#define OFFSET(type, member)  ((uint32_t)&(((type *)0)->member))
+
+/*****************************************************************************/
 extern deviceConfig_t deviceConfig;
 extern deviceLogInfo_t deviceLogInfo;
 extern uint32_t	UniqueId[3];//处理器序列号 

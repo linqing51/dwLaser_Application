@@ -3,9 +3,24 @@
 #include "appConfig.h"
 #include "usbh_core.h"
 /*****************************************************************************/
+#define OFFSET_OF(type, member)  ((uint32_t)&(((type *)0)->member))
 extern deviceConfig_t deviceConfig;
 static int16_t FanSpeed = -1;
 /*****************************************************************************/
+/**
+ * @brief 通用结构体成员偏移量计算函数
+ * @param type_size  结构体总大小（用 sizeof(结构体) 传入）
+ * @param member_ptr 结构体成员的地址
+ * @return 成员相对于结构体起始地址的偏移量
+ */
+size_t get_offset(size_t type_size, void *member_ptr) {
+    // 利用 0 地址结构体指针计算偏移
+    return (size_t)member_ptr;
+}
+
+
+
+
 void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	vTaskDelay(delayMs);
 }
@@ -261,16 +276,48 @@ void saveDeviceConfig(void){//将配置写入EPROM
 	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
 	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
 }
-//void saveCalibrationTable(uint8_t channel){//储存选定通道的功率校准表
-//	uint32_t strAddr,ave;
-//	switch(channel){
-//		case 0:{
-//			strAddr = offsetof(struct deviceConfig, calibrationPwr0);
-//			break;
-//		}
-//		default:break;
-//	}
-
-//}
+void saveCalibrationTable(uint8_t channel){//储存选定通道的功率校准表
+	uint32_t crc32_cfg;
+	uint8_t *strAddr, structAddr;
+	switch(channel){
+		case 0:{	
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr0;
+			break;
+		}
+		case 1:{
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr1;
+			break;
+		}
+		case 2:{
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr2;
+			break;
+		}
+		case 3:{
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr3;
+			break;
+		}
+		case 4:{
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr4;
+			break;
+		}
+		case 5:{
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr5;
+			break;
+		}
+		case 6:{
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr6;
+			break;
+		}
+		case 7:{
+			strAddr = (uint8_t*)deviceConfig.calibrationPwr7;
+			break;
+		}
+		default:break;
+	}
+	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM	
+	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
+	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
+	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
+}
 
 
