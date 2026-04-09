@@ -481,19 +481,19 @@ void UPDAC7(void){
 }
 void UPDAC8(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_0];
+	temp = NVRAM0[SPREG_DAC_8];
 	if(temp > 0xFFF){
 		temp = 0xFFF;
 	}
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, 0xFF); // 设置DAC输出值	
 }
 void UPDAC9(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_1];
+	temp = NVRAM0[SPREG_DAC_9];
 	if(temp > 0xFFF){
 		temp = 0xFFF;
 	}
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_8B_R, 0xFF); // 设置DAC输出值	
 }
 void UPDAC10(void){
 }

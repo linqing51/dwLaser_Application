@@ -249,7 +249,7 @@
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
-#define CONFIG_DIODE_A_SET_TEMP												250//激光器冷却温度
+#define CONFIG_DIODE_A_SET_TEMP												200//激光器冷却温度
 #define CONFIG_DIODE_A_HIGH_TEMP											350//激光器高温极限 40.0C
 #define CONFIG_DIODE_A_LOW_TEMP												50//激光器低温极限  5.0C
 #define CONFIG_WATER_HOT_HIGH_TEMP										650//热水端高温报警温度

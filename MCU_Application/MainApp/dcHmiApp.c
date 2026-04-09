@@ -2595,8 +2595,9 @@ void dcHmiLoopInit(void){//初始化模块
 	else{
 		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
 	}
- 
+	PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_A_SET_TEMP, 500);
 	FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+	
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
 	hmiUartInit();
@@ -2737,6 +2738,9 @@ static void statusLoop(void){//温度轮询轮询
 		}
 		setFanSpeed(NVRAM0[EM_FAN0_SET_SPEED]);
 		LaserTecOut = PID_Compute(&temp_controller, NVRAM0[EM_LASER_A_DIODE_TEMP]);	
+		
+		NVRAM0[EM_TPID0_OUT] = LaserTecOut;
+		NVRAM0[EM_TPID1_OUT] = LaserTecOut;
 		NVRAM0[SPREG_DAC_8] = LaserTecOut;
 		NVRAM0[SPREG_DAC_9] = LaserTecOut;
 		if(LaserTecOut <= 0 ){
@@ -3548,16 +3552,16 @@ void dcHmiLoop(void){//HMI轮训程序
 			//校正输出功率
 #if defined(LYPE_MCU_1V0_20260106)
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//->450nm  0-3CH 
-				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
-				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
-				NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
-				NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig);
+				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig, true);
+				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig, true);
+				NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig, true);
+				NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, (NVRAM0[EM_LASER_POWER_CH0] / 4), &deviceConfig, true);
 				UPDAC0();UPDAC1();UPDAC2();UPDAC3();
 			}
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//->980nm 4CH
 				NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
 				UPDAC0();UPDAC1();UPDAC2();UPDAC3();
-				NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig);
+				NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig, true);
 				UPDAC4();
 			}
 #endif
@@ -4275,6 +4279,12 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION){//8通道功率校准
 		if(LD(R_DIAGNOSIS_CORRECTION_RETURN_DOWN)){//返回DIAGNOSIS页面
+			SET_LASER_CH0_OFF;SET_LASER_CH1_OFF;SET_LASER_CH2_OFF;SET_LASER_CH3_OFF;
+			SET_LASER_CH4_OFF;SET_LASER_CH5_OFF;SET_LASER_CH6_OFF;SET_LASER_CH7_OFF;
+			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;//关闭激光
+			NVRAM0[SPREG_DAC_4] = 0;NVRAM0[SPREG_DAC_5] = 0;NVRAM0[SPREG_DAC_6] = 0;NVRAM0[SPREG_DAC_8] = 0;
+			UPDAC0();UPDAC1();UPDAC2();UPDAC3();UPDAC4();
+			UPDAC4();UPDAC5();UPDAC6();UPDAC6();UPDAC7();
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
@@ -4500,7 +4510,6 @@ int str2int(const char *str){
 
     return temp;   
 }
-
 
 
 

@@ -1729,6 +1729,64 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
+				
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH0:{
+					if(state){
+						NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, NVRAM0[EM_CALI_CUR_SET_CH0], &deviceConfig, true);
+						UPDAC0();
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH1:{
+					if(state){
+						NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, NVRAM0[EM_CALI_CUR_SET_CH1], &deviceConfig, true);
+						UPDAC0();
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH2:{
+					if(state){
+						NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, NVRAM0[EM_CALI_CUR_SET_CH2], &deviceConfig, true);
+						UPDAC0();
+					}					
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH3:{
+					if(state){
+						NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, NVRAM0[EM_CALI_CUR_SET_CH3], &deviceConfig, true);
+						UPDAC0();
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH4:{
+					if(state){
+						NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_CALI_CUR_SET_CH4], &deviceConfig, true);
+						UPDAC0();
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH5:{
+					if(state){
+						NVRAM0[SPREG_DAC_5] = fitLaserToCode(LASER_DAC_CHANNEL_CH5, NVRAM0[EM_CALI_CUR_SET_CH5], &deviceConfig, true);
+						UPDAC0();
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH6:{
+					if(state){
+						NVRAM0[SPREG_DAC_6] = fitLaserToCode(LASER_DAC_CHANNEL_CH6, NVRAM0[EM_CALI_CUR_SET_CH6], &deviceConfig, true);
+						UPDAC0();
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH7:{
+					if(state){
+						NVRAM0[SPREG_DAC_7] = fitLaserToCode(LASER_DAC_CHANNEL_CH7, NVRAM0[EM_CALI_CUR_SET_CH7], &deviceConfig, true);
+						UPDAC0();
+					}
+					break;
+				}
+				
 				default:break;
 			}
 			break;
@@ -1736,24 +1794,31 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		case GDDC_PAGE_POWEROFF_CONFIRM:{
 			switch(control_id){
 				case GDDC_PAGE_POWEROFF_BUTTON_YES:{
-					PmuPowerDown();
+					if(state){
+						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;//进入关机确认状态
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_START;	
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+						PmuPowerDown();
+					}
 					break;
 				}
 				case GDDC_PAGE_POWEROFF_BUTTON_CANCEL:{
-					NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//进入关机确认状态												
-					#if defined(APP_CONFIG_WAVE_1470_650)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;												
-					#endif
-					#if defined(APP_CONFIG_WAVE_1470_980_650)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;								
-					#endif
-					#if defined(APP_CONFIG_WAVE_1940_650)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;	
-					#endif
-					#if defined(APP_CONFIG_WAVE_450_980)
-					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;	
-					#endif
-					SetScreen(NVRAM0[EM_DC_PAGE]);
+					if(state){
+						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//进入关机确认状态												
+						#if defined(APP_CONFIG_WAVE_1470_650)
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;												
+						#endif
+						#if defined(APP_CONFIG_WAVE_1470_980_650)
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;								
+						#endif
+						#if defined(APP_CONFIG_WAVE_1940_650)
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;	
+						#endif
+						#if defined(APP_CONFIG_WAVE_450_980)
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;	
+						#endif
+						SetScreen(NVRAM0[EM_DC_PAGE]);
+					}
 					break;
 				}
 				default:break;

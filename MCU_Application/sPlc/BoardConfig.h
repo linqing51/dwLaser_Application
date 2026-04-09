@@ -472,29 +472,29 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_LASER_CH7_ON											HAL_GPIO_WritePin(LAS7_PWM_GPIO_Port, LAS7_PWM_Pin, GPIO_PIN_SET)
 #define SET_LASER_CH7_OFF											HAL_GPIO_WritePin(LAS7_PWM_GPIO_Port, LAS7_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_SET)
-#define SET_TEC_CH0_OFF												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_RESET)
+#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC0_PWM_GPIO_Port, TEC0_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH0_OFF												HAL_GPIO_WritePin(TEC0_PWM_GPIO_Port, TEC0_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH1_ON												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_SET)
-#define SET_TEC_CH1_OFF												HAL_GPIO_WritePin(TEC_BREAK_GPIO_Port, TEC_BREAK_Pin, GPIO_PIN_RESET)
+#define SET_TEC_CH1_ON												HAL_GPIO_WritePin(TEC1_PWM_GPIO_Port, TEC1_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH1_OFF												HAL_GPIO_WritePin(TEC1_PWM_GPIO_Port, TEC1_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH2_ON												__nop()												
-#define SET_TEC_CH2_OFF												__nop()
+#define SET_TEC_CH2_ON												HAL_GPIO_WritePin(TEC2_PWM_GPIO_Port, TEC2_PWM_Pin, GPIO_PIN_SET)												
+#define SET_TEC_CH2_OFF												HAL_GPIO_WritePin(TEC2_PWM_GPIO_Port, TEC2_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH3_ON												__nop()
-#define SET_TEC_CH3_OFF												__nop()
+#define SET_TEC_CH3_ON												HAL_GPIO_WritePin(TEC3_PWM_GPIO_Port, TEC3_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH3_OFF												HAL_GPIO_WritePin(TEC3_PWM_GPIO_Port, TEC3_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH4_ON												__nop()
-#define SET_TEC_CH4_OFF												__nop()
+#define SET_TEC_CH4_ON												HAL_GPIO_WritePin(TEC4_PWM_GPIO_Port, TEC4_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH4_OFF												HAL_GPIO_WritePin(TEC4_PWM_GPIO_Port, TEC4_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH5_ON												__nop()
-#define SET_TEC_CH5_OFF												__nop()
+#define SET_TEC_CH5_ON												HAL_GPIO_WritePin(TEC5_PWM_GPIO_Port, TEC5_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH5_OFF												HAL_GPIO_WritePin(TEC5_PWM_GPIO_Port, TEC5_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH6_ON												__nop()
-#define SET_TEC_CH6_OFF												__nop()
+#define SET_TEC_CH6_ON												HAL_GPIO_WritePin(TEC6_PWM_GPIO_Port, TEC6_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH6_OFF												HAL_GPIO_WritePin(TEC6_PWM_GPIO_Port, TEC6_PWM_Pin, GPIO_PIN_RESET)
 
-#define SET_TEC_CH7_ON												__nop()
-#define SET_TEC_CH7_OFF												__nop()
+#define SET_TEC_CH7_ON												HAL_GPIO_WritePin(TEC7_PWM_GPIO_Port, TEC7_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH7_OFF												HAL_GPIO_WritePin(TEC7_PWM_GPIO_Port, TEC7_PWM_Pin, GPIO_PIN_RESET)
 
 #define FLIP_LASER_CH0												HAL_GPIO_TogglePin(LAS0_PWM_GPIO_Port, LAS0_PWM_Pin)
 #define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LAS1_PWM_GPIO_Port, LAS1_PWM_Pin)
@@ -976,8 +976,41 @@ extern uint16_t audioSineTable[];
 #define CONFIG_DAC_MAXBIT_CH6									0xFFFF//NULL
 #define CONFIG_DAC_MAXBIT_CH7									0xFFFF//NULL
 #define CONFIG_DAC_MAXBIT_CH8									0xFFF//12BIT DAC7311
+
+#define CONFIG_DAC_MAXBIT_CH9									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH10                0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH11								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH12								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH13								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH14								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH15								0xFFFF//NULL
+
 #define CONFIG_DAC_MAXBIT_CH16								5000
+#define CONFIG_DAC_MAXBIT_CH17								0xFFFF//NULL
 #endif	
+
+#if defined(LYPE_MCU_1V0_20260106)
+#define CONFIG_DAC_MAXBIT_CH0									0xFFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH1									0xFFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH2									0xFFFF//12BIT DAC8569
+#define CONFIG_DAC_MAXBIT_CH3									0xFFFF//12BIT DAC8568
+#define CONFIG_DAC_MAXBIT_CH4									0xFFFF//12BIT DAC8568
+#define CONFIG_DAC_MAXBIT_CH5									0xFFFF//12BIT DAC8568
+#define CONFIG_DAC_MAXBIT_CH6									0xFFFF//12BIT DAC8568
+#define CONFIG_DAC_MAXBIT_CH7									0xFFFF//12BIT DAC
+
+#define CONFIG_DAC_MAXBIT_CH8									0xFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH9									0xFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH10                0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH11								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH12								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH13								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH14								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH15								0xFFFF//NULL
+
+#define CONFIG_DAC_MAXBIT_CH16								5000//RED
+#define CONFIG_DAC_MAXBIT_CH17								5000//GREEN
+#endif
 
 /*****************************************************************************/
 //配置EPROM数据地址
