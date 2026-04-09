@@ -1732,56 +1732,56 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH0:{
 					if(state){
-						NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, NVRAM0[EM_CALI_CUR_SET_CH0], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, NVRAM0[EM_CALI_CUR_SET_CH0], &deviceConfig, false);
 						UPDAC0();
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH1:{
 					if(state){
-						NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, NVRAM0[EM_CALI_CUR_SET_CH1], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, NVRAM0[EM_CALI_CUR_SET_CH1], &deviceConfig, false);
 						UPDAC0();
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH2:{
 					if(state){
-						NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, NVRAM0[EM_CALI_CUR_SET_CH2], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, NVRAM0[EM_CALI_CUR_SET_CH2], &deviceConfig, false);
 						UPDAC0();
 					}					
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH3:{
 					if(state){
-						NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, NVRAM0[EM_CALI_CUR_SET_CH3], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, NVRAM0[EM_CALI_CUR_SET_CH3], &deviceConfig, false);
 						UPDAC0();
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH4:{
 					if(state){
-						NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_CALI_CUR_SET_CH4], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_CALI_CUR_SET_CH4], &deviceConfig, false);
 						UPDAC0();
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH5:{
 					if(state){
-						NVRAM0[SPREG_DAC_5] = fitLaserToCode(LASER_DAC_CHANNEL_CH5, NVRAM0[EM_CALI_CUR_SET_CH5], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_5] = fitLaserToCode(LASER_DAC_CHANNEL_CH5, NVRAM0[EM_CALI_CUR_SET_CH5], &deviceConfig, false);
 						UPDAC0();
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH6:{
 					if(state){
-						NVRAM0[SPREG_DAC_6] = fitLaserToCode(LASER_DAC_CHANNEL_CH6, NVRAM0[EM_CALI_CUR_SET_CH6], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_6] = fitLaserToCode(LASER_DAC_CHANNEL_CH6, NVRAM0[EM_CALI_CUR_SET_CH6], &deviceConfig, false);
 						UPDAC0();
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH7:{
 					if(state){
-						NVRAM0[SPREG_DAC_7] = fitLaserToCode(LASER_DAC_CHANNEL_CH7, NVRAM0[EM_CALI_CUR_SET_CH7], &deviceConfig, true);
+						NVRAM0[SPREG_DAC_7] = fitLaserToCode(LASER_DAC_CHANNEL_CH7, NVRAM0[EM_CALI_CUR_SET_CH7], &deviceConfig, false);
 						UPDAC0();
 					}
 					break;

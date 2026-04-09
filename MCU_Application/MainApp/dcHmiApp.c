@@ -226,6 +226,63 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 	SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 }
+
+void updateDiagnosisCalibrationInfo(void){//更新功率校准信息
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_LASER_A_DIODE_TEMP] / 10.0F));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_DIODE_TEMP, (uint8_t*)dispBuf);
+
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_WATER_HOT_TEMP] / 10.0F));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_HWATER_TEMP, (uint8_t*)dispBuf);
+
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_WATER_COOL_TEMP] / 10.0F));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CWATER_TEMP, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1f%%", NVRAM0[EM_TPID0_OUT] * 100.0F / CONFIG_DAC_MAXBIT_CH8);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_PID0, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1f%%", NVRAM0[EM_TPID1_OUT] * 100.0F / CONFIG_DAC_MAXBIT_CH9);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_PID1, (uint8_t*)dispBuf);
+		
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH0_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH0, (uint8_t*)dispBuf);
+
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH1_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH1, (uint8_t*)dispBuf);
+
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH2_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH2, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH3_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH3, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH4_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH4, (uint8_t*)dispBuf);
+
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH5_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH5, (uint8_t*)dispBuf);
+
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH6_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH6, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH7_CURRENT] / 10.0F);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH7, (uint8_t*)dispBuf);
+
+}
+
 void updateDebugInfo(void){//更新Standby调试信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -266,7 +323,7 @@ void updateDebugInfo(void){//更新Standby调试信息
 	}
 #endif
 }
-void updateDiognosisTextBox(void){//更新诊断信息文本框
+void updateDiagnosisTextBox(void){//更新诊断信息文本框
 	uint8_t i;
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	//从NVRAM中更新文本框
@@ -343,7 +400,7 @@ void updateDiognosisTextBox(void){//更新诊断信息文本框
 	}
 	
 }
-void updateDiognosisInfoRaw(void){//更新诊断信息-RAW值
+void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "A00-A15:%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d", \
@@ -441,7 +498,7 @@ void updateDiognosisInfoRaw(void){//更新诊断信息-RAW值
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO12, (uint8_t*)dispBuf);
 }
 
-void updateDiognosisInfo(void){//更新诊断信息
+void updateDiagnosisInfo(void){//更新诊断信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "FSNC:%1d,FSNO:%1d,ESTOP:%d,ILOCK:%1d,FB:%1d,FPD:%05d,LPD:%05d", \
@@ -3929,7 +3986,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiognosisTextBox();//更新文本输入值
+			updateDiagnosisTextBox();//更新文本输入值
 			RRES(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN);
 		}
 		return;
@@ -4260,7 +4317,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		
 		}
 		else if(LDP(SPCOIL_PS200MS)){
-			updateDiognosisInfo();
+			updateDiagnosisInfo();
 		}
 		return;
 	}
@@ -4269,15 +4326,15 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiognosisTextBox();//更新文本输入值
+			updateDiagnosisTextBox();//更新文本输入值
 			RRES(R_DIAGNOSIS_RAW_RETURN_DOWN);
 		}
 		else if(LDP(SPCOIL_PS200MS)){
-			updateDiognosisInfoRaw();
+			updateDiagnosisInfoRaw();
 		}
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION){//8通道功率校准
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION){//8通道功率校准	
 		if(LD(R_DIAGNOSIS_CORRECTION_RETURN_DOWN)){//返回DIAGNOSIS页面
 			SET_LASER_CH0_OFF;SET_LASER_CH1_OFF;SET_LASER_CH2_OFF;SET_LASER_CH3_OFF;
 			SET_LASER_CH4_OFF;SET_LASER_CH5_OFF;SET_LASER_CH6_OFF;SET_LASER_CH7_OFF;
@@ -4288,8 +4345,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiognosisTextBox();//更新文本输入值
+			updateDiagnosisTextBox();//更新文本输入值
 			RRES(R_DIAGNOSIS_CORRECTION_RETURN_DOWN);
+		}
+		else if(LDP(SPCOIL_PS200MS)){
+			updateDiagnosisCalibrationInfo();
 		}
 		return;
 	}

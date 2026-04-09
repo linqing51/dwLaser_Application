@@ -436,6 +436,10 @@ static void dac8568_SoftReset(void){//软件复位DAC8568
 }
 
 void sPlcDacInit(void){//DAC初始化
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // 开启DAC输出
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_2); // 开启DAC输出
 	dac8568_SoftReset();
 	dac8568_Init();	
 }

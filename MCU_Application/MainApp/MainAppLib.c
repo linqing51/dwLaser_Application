@@ -161,8 +161,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			pmax = (int16_t)CONFIG_MAX_LASER_POWER_CH5;
 			pmin = (int16_t)CONFIG_MIN_LASER_POWER_CH5;
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH5);
-			dacmin = 0;
-			
+			dacmin = 0;	
 			pCal = deviceConfig.calibrationPwr5;
 			break;
 		}

@@ -58,7 +58,7 @@ void setFanSpeed(int16_t speed){//设置风扇转速
 }
 
 void loadDeviceConfig(void){//从EPROM载入配置文件
-	uint32_t crc32_eprom_cfg, crc32_cfg;
+	uint32_t crc32_eprom_cfg, crc32_cfg, i;
 	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//从EPROM载入设备配置
 	epromReadDword(CONFIG_EPROM_CFG_CRC, &crc32_eprom_cfg);
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
@@ -87,8 +87,19 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.calibrationPwr0[17] = 144;
 		deviceConfig.calibrationPwr0[18] = 149;
 		deviceConfig.calibrationPwr0[19] = 153;
-		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;		
-#endif	
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
+		
+#endif
+
 #if defined(MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK) //1470-980 V1
 		//1470nm
 		deviceConfig.calibrationPwr0[0] = 6;
@@ -132,8 +143,16 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.calibrationPwr1[17] = 140;
 		deviceConfig.calibrationPwr1[0] = 145;
 		deviceConfig.calibrationPwr1[19] = 150;
-		
-		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			//deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
 #endif
 
 #if defined(MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK)//1470-980-650 V2
@@ -179,7 +198,16 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.calibrationPwr1[17] = 144;
 		deviceConfig.calibrationPwr1[18] = 149;
 		deviceConfig.calibrationPwr1[19] = 153;
-		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
+		
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			//deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
 #endif
 
 #if defined(MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK)
@@ -226,6 +254,16 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.calibrationPwr1[17] = 144;
 		deviceConfig.calibrationPwr1[18] = 149;
 		deviceConfig.calibrationPwr1[19] = 153;
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			//deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
 #endif
 
 #if defined(MODLE_M12_1920_10_400S)
@@ -249,9 +287,171 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.calibrationPwr0[17] = 87;
 		deviceConfig.calibrationPwr0[18] = 94;
 		deviceConfig.calibrationPwr0[19] = 100;
-		
-		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
 #endif		
+
+#if defined(MODLE_M1470_640_10_30_05_D200_22_G9_PK)
+		//1470
+		deviceConfig.calibrationPwr0[0] = 9;
+		deviceConfig.calibrationPwr0[1] = 15;
+		deviceConfig.calibrationPwr0[2] = 21;
+		deviceConfig.calibrationPwr0[3] = 28;
+		deviceConfig.calibrationPwr0[4] = 38;
+		deviceConfig.calibrationPwr0[5] = 48;
+		deviceConfig.calibrationPwr0[6] = 58;
+		deviceConfig.calibrationPwr0[7] = 68;
+		deviceConfig.calibrationPwr0[8] = 77;
+		deviceConfig.calibrationPwr0[9] = 87;
+		deviceConfig.calibrationPwr0[10] = 96;
+		deviceConfig.calibrationPwr0[11] = 105;
+		deviceConfig.calibrationPwr0[12] = 113;
+		deviceConfig.calibrationPwr0[13] = 120;
+		deviceConfig.calibrationPwr0[14] = 127;
+		deviceConfig.calibrationPwr0[15] = 133;
+		deviceConfig.calibrationPwr0[16] = 139;
+		deviceConfig.calibrationPwr0[17] = 144;
+		deviceConfig.calibrationPwr0[18] = 149;
+		deviceConfig.calibrationPwr0[19] = 153;
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
+#endif
+
+#if defined(MODLE_M450_980_200_60_D275_22_VI1_GP)
+		//CH0-1470
+		deviceConfig.calibrationPwr0[0] = 25;
+		deviceConfig.calibrationPwr0[1] = 50;
+		deviceConfig.calibrationPwr0[2] = 75;
+		deviceConfig.calibrationPwr0[3] = 100;
+		deviceConfig.calibrationPwr0[4] = 125;
+		deviceConfig.calibrationPwr0[5] = 150;
+		deviceConfig.calibrationPwr0[6] = 175;
+		deviceConfig.calibrationPwr0[7] = 200;
+		deviceConfig.calibrationPwr0[8] = 225;
+		deviceConfig.calibrationPwr0[9] = 250;
+		deviceConfig.calibrationPwr0[10] = 275;
+		deviceConfig.calibrationPwr0[11] = 300;
+		deviceConfig.calibrationPwr0[12] = 325;
+		deviceConfig.calibrationPwr0[13] = 350;
+		deviceConfig.calibrationPwr0[14] = 375;
+		deviceConfig.calibrationPwr0[15] = 400;
+		deviceConfig.calibrationPwr0[16] = 425;
+		deviceConfig.calibrationPwr0[17] = 450;
+		deviceConfig.calibrationPwr0[18] = 470;
+		deviceConfig.calibrationPwr0[19] = 500;
+		//CH1-1470
+		deviceConfig.calibrationPwr1[0] = 25;
+		deviceConfig.calibrationPwr1[1] = 50;
+		deviceConfig.calibrationPwr1[2] = 75;
+		deviceConfig.calibrationPwr1[3] = 100;
+		deviceConfig.calibrationPwr1[4] = 125;
+		deviceConfig.calibrationPwr1[5] = 150;
+		deviceConfig.calibrationPwr1[6] = 175;
+		deviceConfig.calibrationPwr1[7] = 200;
+		deviceConfig.calibrationPwr1[8] = 225;
+		deviceConfig.calibrationPwr1[9] = 250;
+		deviceConfig.calibrationPwr1[10] = 275;
+		deviceConfig.calibrationPwr1[11] = 300;
+		deviceConfig.calibrationPwr1[12] = 325;
+		deviceConfig.calibrationPwr1[13] = 350;
+		deviceConfig.calibrationPwr1[14] = 375;
+		deviceConfig.calibrationPwr1[15] = 400;
+		deviceConfig.calibrationPwr1[16] = 425;
+		deviceConfig.calibrationPwr1[17] = 450;
+		deviceConfig.calibrationPwr1[18] = 470;
+		deviceConfig.calibrationPwr1[19] = 500;	
+		//CH2-1470
+		deviceConfig.calibrationPwr2[0] = 25;
+		deviceConfig.calibrationPwr2[1] = 50;
+		deviceConfig.calibrationPwr2[2] = 75;
+		deviceConfig.calibrationPwr2[3] = 100;
+		deviceConfig.calibrationPwr2[4] = 125;
+		deviceConfig.calibrationPwr2[5] = 150;
+		deviceConfig.calibrationPwr2[6] = 175;
+		deviceConfig.calibrationPwr2[7] = 200;
+		deviceConfig.calibrationPwr2[8] = 225;
+		deviceConfig.calibrationPwr2[9] = 250;
+		deviceConfig.calibrationPwr2[10] = 275;
+		deviceConfig.calibrationPwr2[11] = 300;
+		deviceConfig.calibrationPwr2[12] = 325;
+		deviceConfig.calibrationPwr2[13] = 350;
+		deviceConfig.calibrationPwr2[14] = 375;
+		deviceConfig.calibrationPwr2[15] = 400;
+		deviceConfig.calibrationPwr2[16] = 425;
+		deviceConfig.calibrationPwr2[17] = 450;
+		deviceConfig.calibrationPwr2[18] = 470;
+		deviceConfig.calibrationPwr2[19] = 500;
+		//CH3-1470
+		deviceConfig.calibrationPwr3[0] = 25;
+		deviceConfig.calibrationPwr3[1] = 50;
+		deviceConfig.calibrationPwr3[2] = 75;
+		deviceConfig.calibrationPwr3[3] = 100;
+		deviceConfig.calibrationPwr3[4] = 125;
+		deviceConfig.calibrationPwr3[5] = 150;
+		deviceConfig.calibrationPwr3[6] = 175;
+		deviceConfig.calibrationPwr3[7] = 200;
+		deviceConfig.calibrationPwr3[8] = 225;
+		deviceConfig.calibrationPwr3[9] = 250;
+		deviceConfig.calibrationPwr3[10] = 275;
+		deviceConfig.calibrationPwr3[11] = 300;
+		deviceConfig.calibrationPwr3[12] = 325;
+		deviceConfig.calibrationPwr3[13] = 350;
+		deviceConfig.calibrationPwr3[14] = 375;
+		deviceConfig.calibrationPwr3[15] = 400;
+		deviceConfig.calibrationPwr3[16] = 425;
+		deviceConfig.calibrationPwr3[17] = 450;
+		deviceConfig.calibrationPwr3[18] = 470;
+		deviceConfig.calibrationPwr3[19] = 500;
+		//CH4-980
+		deviceConfig.calibrationPwr4[0] = 25;
+		deviceConfig.calibrationPwr4[1] = 50;
+		deviceConfig.calibrationPwr4[2] = 75;
+		deviceConfig.calibrationPwr4[3] = 100;
+		deviceConfig.calibrationPwr4[4] = 125;
+		deviceConfig.calibrationPwr4[5] = 150;
+		deviceConfig.calibrationPwr4[6] = 175;
+		deviceConfig.calibrationPwr4[7] = 200;
+		deviceConfig.calibrationPwr4[8] = 225;
+		deviceConfig.calibrationPwr4[9] = 250;
+		deviceConfig.calibrationPwr4[10] = 275;
+		deviceConfig.calibrationPwr4[11] = 300;
+		deviceConfig.calibrationPwr4[12] = 325;
+		deviceConfig.calibrationPwr4[13] = 350;
+		deviceConfig.calibrationPwr4[14] = 375;
+		deviceConfig.calibrationPwr4[15] = 400;
+		deviceConfig.calibrationPwr4[16] = 425;
+		deviceConfig.calibrationPwr4[17] = 450;
+		deviceConfig.calibrationPwr4[18] = 470;
+		deviceConfig.calibrationPwr4[19] = 500;
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			//deviceConfig.calibrationPwr1[i] = i;
+			//deviceConfig.calibrationPwr2[i] = i;
+			//deviceConfig.calibrationPwr3[i] = i;
+			//deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
+#endif
+
+		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 		deviceConfig.mfg_year = 2026;
 		deviceConfig.mfg_month = 04;
 		deviceConfig.mfg_day = 06;

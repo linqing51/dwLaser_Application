@@ -975,8 +975,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_DAC_MAXBIT_CH5									0xFFFF//NULL
 #define CONFIG_DAC_MAXBIT_CH6									0xFFFF//NULL
 #define CONFIG_DAC_MAXBIT_CH7									0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH8									0xFFF//12BIT DAC7311
 
+#define CONFIG_DAC_MAXBIT_CH8									0xFFF//12BIT DAC7311
 #define CONFIG_DAC_MAXBIT_CH9									0xFFFF//NULL
 #define CONFIG_DAC_MAXBIT_CH10                0xFFFF//NULL
 #define CONFIG_DAC_MAXBIT_CH11								0xFFFF//NULL
