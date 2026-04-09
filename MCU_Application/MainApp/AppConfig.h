@@ -303,12 +303,12 @@
 #if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_MAX_LASER_POWER_CH0										150//通道1470最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH1										300//通道980最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH2										0//通道2最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH3										0//通道3最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH4										0//通道4最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH5										0//通道5最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH6										0//通道6最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH7										0//通道7最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH2										1//通道2最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH3										1//通道3最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH4										1//通道4最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH5										1//通道5最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH6										1//通道6最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH7										1//通道7最大激光功率
 
 
 #define CONFIG_MIN_LASER_POWER_CH0										1//通道1470最小激光功率		

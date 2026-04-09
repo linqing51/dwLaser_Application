@@ -1681,6 +1681,54 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH0:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH0);
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH1:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH1);
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH2:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH2);
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH3:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH3);
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH4:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH4);
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH5:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH5);
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH6:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH6);
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7:{
+					if(state){
+						saveCalibrationTable(LASER_DAC_CHANNEL_CH7);
+					}
+					break;
+				}
 				default:break;
 			}
 			break;

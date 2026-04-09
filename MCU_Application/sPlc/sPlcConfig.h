@@ -266,8 +266,8 @@
 #define EM_LASER_SCHEME_NAME													(EM_START + 0)//方案名称
 #define EM_LASER_CHANNEL_SELECT												(EM_START + 51)//激光通道选择
 #define EM_LASER_PULSE_MODE														(EM_START + 52)//脉冲模式
-#define EM_LASER_POWER_CH0														(EM_START + 53)//通道1470/1940功率
-#define EM_LASER_POWER_CH1														(EM_START + 54)//通道980功率
+#define EM_LASER_POWER_CH0														(EM_START + 53)//通道0->1470/1940功率
+#define EM_LASER_POWER_CH1														(EM_START + 54)//通道1->980功率
 #define EM_LASER_POWER_CH2														(EM_START + 55)//备用通道2
 #define EM_LASER_POWER_CH3														(EM_START + 56)//备用通道3
 #define EM_LASER_POWER_CH4														(EM_START + 57)//备用通道4
@@ -394,6 +394,15 @@
 #define EM_LASER_RELEASE_TIME													(EM_START + 240)//实际激光发射累计时间	
 #define EM_LASER_RELEASE_ENERGY												(EM_START + 241)//实际激光发射累计能量
 #define EM_LASER_TRIG_TIME														(EM_START + 242)//激光触发时间
+/*****************************************************************************/
+#define EM_CALI_CUR_SET_CH0														(EM_START + 250)//通道0校准设置电流
+#define EM_CALI_CUR_SET_CH1														(EM_START + 251)//通道1校准设置电流
+#define EM_CALI_CUR_SET_CH2														(EM_START + 252)//通道2校准设置电流
+#define EM_CALI_CUR_SET_CH3														(EM_START + 253)//通道3校准设置电流
+#define EM_CALI_CUR_SET_CH4														(EM_START + 254)//通道4校准设置电流
+#define EM_CALI_CUR_SET_CH5														(EM_START + 255)//通道5校准设置电流
+#define EM_CALI_CUR_SET_CH6														(EM_START + 256)//通道6校准设置电流
+#define EM_CALI_CUR_SET_CH7														(EM_START + 257)//通道7校准设置电流
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME													(FD_START +  0)//方案名称
 #define FD_LASER_CHANNEL_SELECT												(FD_START +  51)//激光通道选择
@@ -585,7 +594,7 @@
 #define R_CLEAR_EPROM																	(R_START * 16 + 63)//完全清空EPROM
 #define R_SAVE_EPROM																	(R_START * 16 + 64)//储存SAVE
 #define R_ENGINEER_MODE																(R_START * 16 + 65)//工程师模式
-#define R_CALIBRATION_MODE														(R_START * 16 + 66)//功率校正模式
+//#define R_CALIBRATION_MODE														(R_START * 16 + 66)//功率校正模式
 #define R_ACOUSTIC_ENABLE															(R_START * 16 + 67)//使能提示音
 #define R_CLEAR_CRC																		(R_START * 16 + 68)//清除固件CRC
 #define R_UPDATE_BOOTLOAD_REQ													(R_START * 16 + 69)//请求更新引导固件

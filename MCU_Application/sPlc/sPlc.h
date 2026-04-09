@@ -172,6 +172,7 @@ extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
 extern void saveDeviceConfig(void);//将配置写入EPROM
 extern void loadDeviceConfig(void);//从EPROM载入配置文件
+extern void saveCalibrationTable(uint8_t channel);//储存选定通道的功率校准表
 extern HAL_StatusTypeDef epromWriteEnable(bool en);//ERPOM写保护
 extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//指定地址读出一个数据
 extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//指定地址开始读出16位数

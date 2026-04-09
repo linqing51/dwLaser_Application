@@ -278,46 +278,58 @@ void saveDeviceConfig(void){//将配置写入EPROM
 }
 void saveCalibrationTable(uint8_t channel){//储存选定通道的功率校准表
 	uint32_t crc32_cfg;
-	uint8_t *strAddr, structAddr;
+	uint8_t *memberAddr;//成员地址
+	uint8_t *structAddr;//结构体地址
+	uint32_t writeSize, epromWriteAddr;
+	structAddr = (uint8_t*)&deviceConfig;
 	switch(channel){
-		case 0:{	
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr0;
+		case LASER_DAC_CHANNEL_CH0:{	
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr0;
+			writeSize = sizeof(deviceConfig.calibrationPwr0);
 			break;
 		}
-		case 1:{
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr1;
+		case LASER_DAC_CHANNEL_CH1:{
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr1;
+			writeSize = sizeof(deviceConfig.calibrationPwr1);
 			break;
 		}
-		case 2:{
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr2;
+		case LASER_DAC_CHANNEL_CH2:{
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr2;
+			writeSize = sizeof(deviceConfig.calibrationPwr2);
 			break;
 		}
-		case 3:{
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr3;
+		case LASER_DAC_CHANNEL_CH3:{
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr3;
+			writeSize = sizeof(deviceConfig.calibrationPwr3);
 			break;
 		}
-		case 4:{
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr4;
+		case LASER_DAC_CHANNEL_CH4:{
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr4;
+			writeSize = sizeof(deviceConfig.calibrationPwr4);
 			break;
 		}
-		case 5:{
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr5;
+		case LASER_DAC_CHANNEL_CH5:{
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr5;
+			writeSize = sizeof(deviceConfig.calibrationPwr5);
 			break;
 		}
-		case 6:{
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr6;
+		case LASER_DAC_CHANNEL_CH6:{
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr6;
+			writeSize = sizeof(deviceConfig.calibrationPwr6);
 			break;
 		}
-		case 7:{
-			strAddr = (uint8_t*)deviceConfig.calibrationPwr7;
+		case LASER_DAC_CHANNEL_CH7:{
+			memberAddr = (uint8_t*)deviceConfig.calibrationPwr7;
+			writeSize = sizeof(deviceConfig.calibrationPwr7);
 			break;
 		}
 		default:break;
 	}
-	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM	
+	epromWriteAddr = CONFIG_EPROM_CONFIG_START + structAddr - memberAddr;//计算EPROM
+	epromWrite(epromWriteAddr, memberAddr, writeSize);//写入EPROM	
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
 	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
-	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
+	printf("%s,%d,%s:save laser channle:%d calibration table to eprom done...(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, channel,crc32_cfg);
 }
 
 

@@ -29,7 +29,7 @@ void updateCustomScheme(uint8_t index);//FD->EM
 int8_t checkScheme(int8_t cn);//方案检测
 void defaultScheme(void);//恢复默认设置
 void restoreDefault(void);
-uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg);
+uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool caliEna);
 uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power);
 uint8_t saveSchemeToUdisk(void);//将FDRAM写入USB DISK
 uint8_t loadSchemeFromUdisk(void);//从USB DISK载入FDRAM

@@ -967,10 +967,16 @@ extern uint16_t audioSineTable[];
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP)
-#define CONFIG_DAC_CH0_MAXBIT									4095//12BIT STM32
-#define CONFIG_DAC_CH1_MAXBIT									4095//12BIT STM32
-#define CONFIG_DAC_CH8_MAXBIT									4095//12BIT DAC7311
-#define CONFIG_DAC_CH16_MAXBIT								5000
+#define CONFIG_DAC_MAXBIT_CH0									0xFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH1									0xFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH2									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH3									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH4									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH5									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH6									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH7									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH8									0xFFF//12BIT DAC7311
+#define CONFIG_DAC_MAXBIT_CH16								5000
 #endif	
 
 /*****************************************************************************/
