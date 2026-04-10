@@ -79,7 +79,7 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOH, TEC3_PWM_Pin|TEC2_PWM_Pin|TEC5_PWM_Pin|TEC4_PWM_Pin
-                          |TEC7_PWN_Pin|TEC6_PWM_Pin|IBUS_RESET_Pin|INTERLOCK_RESET_Pin, GPIO_PIN_RESET);
+                          |TEC7_PWM_Pin|TEC6_PWM_Pin|IBUS_RESET_Pin|INTERLOCK_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET);
@@ -207,9 +207,9 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : TEC3_PWM_Pin TEC2_PWM_Pin TEC5_PWM_Pin TEC4_PWM_Pin
-                           TEC7_PWN_Pin TEC6_PWM_Pin */
+                           TEC7_PWM_Pin TEC6_PWM_Pin */
   GPIO_InitStruct.Pin = TEC3_PWM_Pin|TEC2_PWM_Pin|TEC5_PWM_Pin|TEC4_PWM_Pin
-                          |TEC7_PWN_Pin|TEC6_PWM_Pin;
+                          |TEC7_PWM_Pin|TEC6_PWM_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

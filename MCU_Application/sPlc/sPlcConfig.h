@@ -570,10 +570,10 @@
 																										
 #define R_LASER_DIODE_TEMP_HIGH												(R_START * 16 + 10)//激光二极管激光模块高温标志
 #define R_LASER_DIODE_TEMP_LOW												(R_START * 16 + 11)//激光二极管激光模块低温标志
-#define R_WATER_HOT_HIGH															(R_START * 16 + 12)//热水高温报警标志
-#define R_WATER_HOT_LOW																(R_START * 16 + 13)//热水低温报警标志
-#define R_WATER_COOL_HIGH															(R_START * 16 + 14)//冷水高温报警标志
-#define R_WATER_COOL_LOW															(R_START * 16 + 15)//冷水低温报警标志
+#define R_HWATER_HIGH																	(R_START * 16 + 12)//热水高温报警标志
+#define R_HWATER_LOW																	(R_START * 16 + 13)//热水低温报警标志
+#define R_CWATER_HIGH																	(R_START * 16 + 14)//冷水高温报警标志
+#define R_CWATER_LOW																	(R_START * 16 + 15)//冷水低温报警标志
 #define R_AMBIENT_HIGH																(R_START * 16 + 16)//环境高温报警标志
 #define R_AMBIENT_LOW																	(R_START * 16 + 17)//环境低温报警标志
 #define R_HUMIDITY_HIGH																(R_START * 16 + 18)//环境高湿度报警标志

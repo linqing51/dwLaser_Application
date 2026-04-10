@@ -4,28 +4,26 @@ uint32_t	UniqueId[3];//处理器序列号
 /*****************************************************************************/
 void softDelayMs(uint32_t ms){// 同样使用易变变量防止外层循环被优化
 	volatile uint32_t ms_count = ms;
-	__DSB();  
 	for(; ms_count > 0; ms_count--){
 		softDelayUs(1000);
-		__ISB();
 	}
-	__DSB();
 }
 
 void softDelayUs(uint32_t us){
-	// 1. 易变变量：告诉编译器该变量可能被外部修改，禁止优化访问
-	volatile uint32_t nop_count = us * 168;
-	// 2. 内存屏障：强制编译器按顺序执行指令，禁止指令重排
-	__DSB(); // 数据同步屏障，确保前面的计算完成后再执行循环
-	// 3. 循环执行nop，引入内存操作防止循环被优化
-	for(; nop_count > 0; nop_count--){
-		__nop();
-		// 额外内存屏障：防止编译器将循环展开/合并
-		__ISB(); // 指令同步屏障，确保nop指令被执行
+	// 粗略估算：1us 大约需要 hclk_mhz 个周期
+	// 这里的 0.9 是经验修正系数，用于补偿 Flash 预取和流水线带来的加速效应
+	// 具体系数需根据实际示波器测量调整
+	uint32_t loops = us * 168; 
+	// 使用 volatile 防止优化
+	volatile uint32_t count = loops;
+	while(count--){
+			__NOP(); // 插入空指令，强制消耗时钟周期
+			__NOP(); // 可以多加几个来增加精度
 	}
-	// 4. 最终内存屏障：确保所有nop执行完毕
-	__DSB();
 }
+
+
+
 
 
 uint16_t cpuGetFlashSize(void){//获取处理器程序容量

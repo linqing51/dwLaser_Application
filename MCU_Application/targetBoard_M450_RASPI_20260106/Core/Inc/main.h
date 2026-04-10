@@ -149,8 +149,8 @@ void Error_Handler(void);
 #define TEC5_PWM_GPIO_Port GPIOH
 #define TEC4_PWM_Pin GPIO_PIN_9
 #define TEC4_PWM_GPIO_Port GPIOH
-#define TEC7_PWN_Pin GPIO_PIN_10
-#define TEC7_PWN_GPIO_Port GPIOH
+#define TEC7_PWM_Pin GPIO_PIN_10
+#define TEC7_PWM_GPIO_Port GPIOH
 #define TEC6_PWM_Pin GPIO_PIN_11
 #define TEC6_PWM_GPIO_Port GPIOH
 #define GAIM_PWM_Pin GPIO_PIN_12

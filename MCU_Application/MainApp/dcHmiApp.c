@@ -227,7 +227,7 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 }
 
-void updateDiagnosisCalibrationInfo(void){//更新功率校准信息
+void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_LASER_A_DIODE_TEMP] / 10.0F));
@@ -323,10 +323,9 @@ void updateDebugInfo(void){//更新Standby调试信息
 	}
 #endif
 }
-void updateDiagnosisTextBox(void){//更新诊断信息文本框
+void updateDiagnosisCali(void){//跟新诊断-校准页面静态信息
 	uint8_t i;
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	//从NVRAM中更新文本框
 	//更新功率校正表
 	for(i = 0;i < 20; i++){//CH0
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -369,6 +368,45 @@ void updateDiagnosisTextBox(void){//更新诊断信息文本框
 		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P5 + i), (uint8_t*)dispBuf);
 	}
 	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH0, (uint8_t*)dispBuf);
+	
+		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH1, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH2, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH3, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH4, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH5, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH6, (uint8_t*)dispBuf);
+	
+	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+	sprintf(dispBuf, "000");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH7, (uint8_t*)dispBuf);
+}
+
+
+
+void updateDiagnosis(void){//更新诊断信信息
+	uint8_t i;
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	//从NVRAM中更新文本框	
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_YEAR , deviceConfig.mfg_year, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_MONTH , deviceConfig.mfg_month, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DAY , deviceConfig.mfg_day, 1, 0);
@@ -2336,9 +2374,9 @@ void updateStandbyDisplay(void){//更新方案显示
 	}
 
 #if defined(APP_CONFIG_WAVE_1470_980_650)
-		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_MAX_LASER_POWER_CH0;
+		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_LOGIC_MAX_LASER_POWER_CH0;
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0, (uint32_t)barValue);
-		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_MAX_LASER_POWER_CH1;
+		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_LOGIC_MAX_LASER_POWER_CH1;
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1, (uint32_t)barValue);
 		barValue = NVRAM0[EM_LASER_POWER_635] * 100.0F / CONFIG_MAX_LASER_POWER_RED;
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED, (uint32_t)barValue);
@@ -2348,7 +2386,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//1470
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);		
-		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_MAX_LASER_POWER_CH0;
+		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_LOGIC_MAX_LASER_POWER_CH0;
 		if(barValue <= 2){
 			barValue = 2;
 		}
@@ -2436,7 +2474,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//980
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH1]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
-		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_MAX_LASER_POWER_CH1;
+		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_LOGIC_MAX_LASER_POWER_CH1;
 		if(barValue <= 2){
 			barValue = 2;
 		}
@@ -2744,7 +2782,7 @@ static void statusLoop(void){//温度轮询轮询
 	
 #if defined(LYPE_MCU_1V0_20260106)
 	TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS , CONFIG_DIODE_NTC_B);//激光器芯片温度
-	TNTLC(EM_WATER_HOT_TEMP, SPREG_ADC_36, CONFIG_WATER_HOT_NTC_RS, CONFIG_WATER_HOT_NTC_B);//水冷热端温度
+	TNTUC(EM_WATER_HOT_TEMP, SPREG_ADC_36, CONFIG_WATER_HOT_NTC_RS, CONFIG_WATER_HOT_NTC_B);//水冷热端温度
 	TNTUC(EM_WATER_COOL_TEMP, SPREG_ADC_37, CONFIG_WATER_COOL_NTC_RS, CONFIG_WATER_COOL_NTC_B);//水冷冷端温度
 	TNTLC(EM_AMBIENT0_TEMP, SPREG_ADC_56, CONFIG_AMBIENT_NTC_RS, CONFIG_AMBIENT_NTC_B);//模拟环境温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_58);//CODE转换为MCU温度
@@ -2766,18 +2804,62 @@ static void statusLoop(void){//温度轮询轮询
 	if(NVRAM0[EM_LASER_A_DIODE_TEMP] >= CONFIG_DIODE_A_LOW_TEMP + 50){//激光器恢复正常温度
 		RRES(R_LASER_DIODE_TEMP_LOW);
 	}
-	//判断环境温度
-	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_HIGH_TEMP){//环境温度过热
+
+	//判断水温
+	if(NVRAM0[EM_WATER_HOT_TEMP] > CONFIG_WATER_HOT_HIGH_TEMP){//热端冷却水过热
+		SSET(R_HWATER_HIGH);
+	}
+	if(NVRAM0[EM_WATER_HOT_TEMP] < (CONFIG_WATER_HOT_HIGH_TEMP - 50)){//热端冷却水温度恢复
+		RRES(R_HWATER_HIGH);
+	}       
+	
+	if(NVRAM0[EM_WATER_HOT_TEMP] < CONFIG_WATER_HOT_LOW_TEMP){//热端冷却水结冰
+		SSET(R_HWATER_LOW);
+	}
+	if(NVRAM0[EM_WATER_HOT_TEMP] > (CONFIG_WATER_HOT_LOW_TEMP + 50)){//热端冷却水恢复
+		RRES(R_HWATER_LOW);
+	}
+	
+	if(NVRAM0[EM_WATER_COOL_TEMP] >  CONFIG_WATER_COOL_HIGH_TEMP ){//冷端冷却水过热
+		SSET(R_CWATER_HIGH);
+	}	
+	if(NVRAM0[EM_WATER_COOL_TEMP] < (CONFIG_WATER_COOL_HIGH_TEMP - 50)){//冷端冷却水恢复
+		RRES(R_CWATER_HIGH);
+	}
+	
+	if(NVRAM0[EM_WATER_COOL_TEMP] <  CONFIG_WATER_COOL_LOW_TEMP ){//冷端冷却水结冰
+		SSET(R_CWATER_LOW);
+	}
+	if(NVRAM0[EM_WATER_COOL_TEMP] > (CONFIG_WATER_COOL_HIGH_TEMP + 50)){//冷端冷却水恢复
+		RRES(R_CWATER_LOW);
+	}
+	
+	//判断处理器温度
+	if(NVRAM0[EM_MCU_TEMP] > CONFIG_CHIP_HIGH_TEMP){//环境温度过热
 		SSET(R_MCU_TEMP_HIGH);
 	}
-	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_HIGH_TEMP - 50){
+	if(NVRAM0[EM_MCU_TEMP] < (CONFIG_CHIP_HIGH_TEMP - 50)){
 		RRES(R_MCU_TEMP_HIGH);
 	}
-	if(NVRAM0[EM_MCU_TEMP] <= CONFIG_ENVI_LOW_TEMP){
+	if(NVRAM0[EM_MCU_TEMP] < CONFIG_CHIP_LOW_TEMP){
 		SSET(R_MCU_TEMP_LOW);
 	}
-	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_LOW_TEMP + 50){
+	if(NVRAM0[EM_MCU_TEMP] > (CONFIG_CHIP_LOW_TEMP + 50)){
 		RRES(R_MCU_TEMP_LOW);
+	}
+	//判断环境温度
+	if(NVRAM0[EM_AMBIENT0_TEMP] > CONFIG_ENVI_HIGH_TEMP){//环境温度过热
+		SSET(R_AMBIENT_HIGH);
+	}
+	if(NVRAM0[EM_AMBIENT0_TEMP] < (CONFIG_ENVI_HIGH_TEMP - 50)){//环境温度过热恢复
+		RRES(R_AMBIENT_HIGH);
+	}
+	
+	if(NVRAM0[EM_AMBIENT0_TEMP] < CONFIG_ENVI_LOW_TEMP){//环境温度低温
+		SSET(R_AMBIENT_LOW);
+	}
+	if(NVRAM0[EM_AMBIENT0_TEMP] > (CONFIG_ENVI_LOW_TEMP + 50)){//环境温度低温
+		RRES(R_AMBIENT_LOW);
 	}
 	
 #endif
@@ -2803,10 +2885,23 @@ static void statusLoop(void){//温度轮询轮询
 		if(LaserTecOut <= 0 ){
 			SET_TEC_CH0_OFF;
 			SET_TEC_CH1_OFF;
+			SET_TEC_CH2_OFF;
+			SET_TEC_CH3_OFF;
+			SET_TEC_CH4_OFF;
+			SET_TEC_CH5_OFF;
+			SET_TEC_CH6_OFF;
+			SET_TEC_CH7_OFF;
 		}
 		else{
 			SET_TEC_CH0_ON;
 			SET_TEC_CH1_ON;
+			SET_TEC_CH2_ON;
+			SET_TEC_CH3_ON;
+			SET_TEC_CH4_ON;
+			SET_TEC_CH5_ON;
+			SET_TEC_CH6_ON;
+			SET_TEC_CH7_ON;
+			
 		}
 		UPDAC8();UPDAC9();
 		LaserTecOut = LaserTecOut / 20;
@@ -2901,10 +2996,10 @@ static void faultLoop(void){//故障轮询
 	if(LD(R_DISABLE_TEMPERATURE)){//屏蔽高温报警
 		RRES(R_LASER_DIODE_TEMP_HIGH);
 		RRES(R_LASER_DIODE_TEMP_LOW);		
-		RRES(R_WATER_HOT_HIGH);
-		RRES(R_WATER_HOT_LOW);
-		RRES(R_WATER_COOL_HIGH);
-		RRES(R_WATER_COOL_LOW);
+		RRES(R_HWATER_HIGH);
+		RRES(R_HWATER_LOW);
+		RRES(R_CWATER_HIGH);
+		RRES(R_CWATER_LOW);
 		RRES(R_AMBIENT_HIGH);
 		RRES(R_AMBIENT_LOW);
 		RRES(R_HUMIDITY_HIGH);
@@ -3986,7 +4081,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiagnosisTextBox();//更新文本输入值
+			updateDiagnosis();//更新文本输入值
 			RRES(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN);
 		}
 		return;
@@ -4238,7 +4333,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcFdramClear();//清空FDRAM
 			sPlcDeviceConfigClear();//清空config
 			resetGddcHmi();
-			softDelayMs(4000);//等待4秒
+			softDelayMs(40);//等待4秒
 			REBOOT();	
 		}
 		else if(LD(R_SAVE_EPROM)){//储存配制到EPROM
@@ -4312,7 +4407,11 @@ void dcHmiLoop(void){//HMI轮训程序
 		else if(LDP(R_DIAGNOSIS_GOTO_CORRECTION_DOWN)){//进入校正页面
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_CORRECTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS_CALI;
+			NVRAM0[EM_CALI_CUR_SET_CH0] = 0;NVRAM0[EM_CALI_CUR_SET_CH1] = 0;NVRAM0[EM_CALI_CUR_SET_CH2] = 0;NVRAM0[EM_CALI_CUR_SET_CH3] = 0;
+			NVRAM0[EM_CALI_CUR_SET_CH4] = 0;NVRAM0[EM_CALI_CUR_SET_CH5] = 0;NVRAM0[EM_CALI_CUR_SET_CH6] = 0;NVRAM0[EM_CALI_CUR_SET_CH7] = 0;
 			SetScreen(NVRAM0[EM_DC_PAGE]);
+			updateDiagnosisCali();
+			//刷新页面数据
 			RRES(R_DIAGNOSIS_GOTO_CORRECTION_DOWN);
 		
 		}
@@ -4326,7 +4425,6 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiagnosisTextBox();//更新文本输入值
 			RRES(R_DIAGNOSIS_RAW_RETURN_DOWN);
 		}
 		else if(LDP(SPCOIL_PS200MS)){
@@ -4345,11 +4443,10 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiagnosisTextBox();//更新文本输入值
 			RRES(R_DIAGNOSIS_CORRECTION_RETURN_DOWN);
 		}
 		else if(LDP(SPCOIL_PS200MS)){
-			updateDiagnosisCalibrationInfo();
+			updateDiagnosisCaliInfo();
 		}
 		return;
 	}

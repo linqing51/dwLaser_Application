@@ -489,7 +489,7 @@ void UPDAC8(void){
 	if(temp > 0xFFF){
 		temp = 0xFFF;
 	}
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, 0xFF); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, temp); // 设置DAC输出值	
 }
 void UPDAC9(void){
 	uint16_t temp;
@@ -497,7 +497,7 @@ void UPDAC9(void){
 	if(temp > 0xFFF){
 		temp = 0xFFF;
 	}
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_8B_R, 0xFF); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_8B_R, temp); // 设置DAC输出值	
 }
 void UPDAC10(void){
 }

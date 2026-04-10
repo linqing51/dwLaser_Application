@@ -13,16 +13,16 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						value = 1;
 					}
 					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH0;
-						if(fpwr < CONFIG_MIN_LASER_POWER_CH0){
-							fpwr = CONFIG_MIN_LASER_POWER_CH0;
+						fpwr = (float)value / 100 * CONFIG_LOGIC_MAX_LASER_POWER_CH0;
+						if(fpwr < CONFIG_LOGIC_MIN_LASER_POWER_CH0){
+							fpwr = CONFIG_LOGIC_MIN_LASER_POWER_CH0;
 						}
 						NVRAM0[EM_LASER_POWER_CH0] = (int16_t)fpwr;
 					}
 					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
-						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH1;
-						if(fpwr < CONFIG_MIN_LASER_POWER_CH1){
-							fpwr = CONFIG_MIN_LASER_POWER_CH1;
+						fpwr = (float)value / 100 * CONFIG_LOGIC_MAX_LASER_POWER_CH1;
+						if(fpwr < CONFIG_LOGIC_MIN_LASER_POWER_CH1){
+							fpwr = CONFIG_LOGIC_MIN_LASER_POWER_CH1;
 						}
 						NVRAM0[EM_LASER_POWER_CH1] = (int16_t)fpwr;
 					}
@@ -44,7 +44,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value <= 0){
 						value = 1;
 					}
-					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH0 * 10.0F;
+					fpwr = (float)value / 100 * CONFIG_LOGIC_MAX_LASER_POWER_CH0 * 10.0F;
 					NVRAM0[EM_LASER_AVERAGE_POWER_CH0] = (int16_t)fpwr;
 					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 					updateStandbyDisplay();					
@@ -57,7 +57,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value <= 0){
 						value = 1;
 					}
-					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH1 * 10.0F;
+					fpwr = (float)value / 100 * CONFIG_LOGIC_MAX_LASER_POWER_CH1 * 10.0F;
 					NVRAM0[EM_LASER_AVERAGE_POWER_CH1] = (int16_t)fpwr;
 					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 					updateStandbyDisplay();
