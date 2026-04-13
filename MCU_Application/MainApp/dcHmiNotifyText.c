@@ -122,6 +122,27 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.fiberDetect = sValue;
 					break;
 				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_A_TEMP:{
+					sscanf((const char*)str, "%d", &sValue);
+					if(sValue > 400){
+						sValue = 400;
+					}
+					if(sValue < 150){
+						sValue = 150;
+					}
+					deviceConfig.laserDiodeA_Temp = sValue;
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_B_TEMP:{
+					if(sValue > 400){
+						sValue = 400;
+					}
+					if(sValue < 150){
+						sValue = 150;
+					}
+					deviceConfig.laserDiodeB_Temp = sValue;
+					break;
+				}
 				default:break;
 			}
 			break;

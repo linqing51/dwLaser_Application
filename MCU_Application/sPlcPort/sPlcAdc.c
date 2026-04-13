@@ -62,19 +62,19 @@ void sPlcAdcProcessBufferA(void){//循环采集ADC
 			}
 		}			
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
-		NVRAM0[SPREG_ADC_45] = (uint16_t)((float)sum[0] / (float)CONFIG_ADC_AVERAGE_NUM);//IN6 VIN VOLTAGE
+		NVRAM0[SPREG_ADC_52] = (uint16_t)((float)sum[0] / (float)CONFIG_ADC_AVERAGE_NUM);//IN6 VIN VOLTAGE
 		NVRAM0[SPREG_ADC_40] = (uint16_t)((float)sum[1] / (float)CONFIG_ADC_AVERAGE_NUM);//IN7 LASER_NTC
-		NVRAM0[SPREG_ADC_32] = (uint16_t)((float)sum[2] / (float)CONFIG_ADC_AVERAGE_NUM);//IN8 HT1_NTC
-		NVRAM0[SPREG_ADC_33] = (uint16_t)((float)sum[3] / (float)CONFIG_ADC_AVERAGE_NUM);//IN9 HT2_NTC
-		NVRAM0[SPREG_ADC_44] = (uint16_t)((float)sum[4] / (float)CONFIG_ADC_AVERAGE_NUM);//IN10 PWR_CUR		
+		NVRAM0[SPREG_ADC_32] = (uint16_t)((float)sum[2] / (float)CONFIG_ADC_AVERAGE_NUM);//IN8 HT0_NTC
+		NVRAM0[SPREG_ADC_33] = (uint16_t)((float)sum[3] / (float)CONFIG_ADC_AVERAGE_NUM);//IN9 HT1_NTC
+		NVRAM0[SPREG_ADC_51] = (uint16_t)((float)sum[4] / (float)CONFIG_ADC_AVERAGE_NUM);//IN10 PWR_CUR		
 		NVRAM0[SPREG_ADC_1] = (uint16_t)((float)sum[5] / (float)CONFIG_ADC_AVERAGE_NUM);//IN11 CH1_CUR
 		NVRAM0[SPREG_ADC_0] = (uint16_t)((float)sum[6] / (float)CONFIG_ADC_AVERAGE_NUM);//IN12 CH0_CUR		
 		NVRAM0[SPREG_ADC_16] = (uint16_t)((float)sum[7] / (float)CONFIG_ADC_AVERAGE_NUM);//IN13 TEC_CUR
-		NVRAM0[SPREG_ADC_48] = (uint16_t)((float)sum[8] / (float)CONFIG_ADC_AVERAGE_NUM);//IN14 LPD		
-		NVRAM0[SPREG_ADC_47] = (uint16_t)((float)sum[9] / (float)CONFIG_ADC_AVERAGE_NUM);//IN15 FPD	
-		NVRAM0[SPREG_ADC_50] = (uint16_t)((float)sum[10] / (float)CONFIG_ADC_AVERAGE_NUM);//CHIP TEMP
-		NVRAM0[SPREG_ADC_51] = (uint16_t)((float)sum[11] / (float)CONFIG_ADC_AVERAGE_NUM);//VREFINT
-		NVRAM0[SPREG_ADC_52] = (uint16_t)((float)sum[12] / (float)CONFIG_ADC_AVERAGE_NUM);//VBAT
+		NVRAM0[SPREG_ADC_55] = (uint16_t)((float)sum[8] / (float)CONFIG_ADC_AVERAGE_NUM);//IN14 LPD		
+		NVRAM0[SPREG_ADC_54] = (uint16_t)((float)sum[9] / (float)CONFIG_ADC_AVERAGE_NUM);//IN15 FPD	
+		NVRAM0[SPREG_ADC_58] = (uint16_t)((float)sum[10] / (float)CONFIG_ADC_AVERAGE_NUM);//CHIP TEMP
+		NVRAM0[SPREG_ADC_59] = (uint16_t)((float)sum[11] / (float)CONFIG_ADC_AVERAGE_NUM);//VREFINT
+		NVRAM0[SPREG_ADC_60] = (uint16_t)((float)sum[12] / (float)CONFIG_ADC_AVERAGE_NUM);//VBAT
 #endif	
 
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
@@ -122,19 +122,19 @@ void sPlcAdcProcessBufferA(void){//循环采集ADC
 			}
 		}		
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
-		NVRAM0[SPREG_ADC_45] = (uint16_t)((float)sum[0] / (float)CONFIG_ADC_AVERAGE_NUM);//IN6 VIN VOLTAGE
+		NVRAM0[SPREG_ADC_52] = (uint16_t)((float)sum[0] / (float)CONFIG_ADC_AVERAGE_NUM);//IN6 VIN VOLTAGE
 		NVRAM0[SPREG_ADC_40] = (uint16_t)((float)sum[1] / (float)CONFIG_ADC_AVERAGE_NUM);//IN7 LASER_NTC
 		NVRAM0[SPREG_ADC_32] = (uint16_t)((float)sum[2] / (float)CONFIG_ADC_AVERAGE_NUM);//IN8 HT1_NTC
 		NVRAM0[SPREG_ADC_33] = (uint16_t)((float)sum[3] / (float)CONFIG_ADC_AVERAGE_NUM);//IN9 HT2_NTC
-		NVRAM0[SPREG_ADC_44] = (uint16_t)((float)sum[4] / (float)CONFIG_ADC_AVERAGE_NUM);//IN10 PWR_CUR		
+		NVRAM0[SPREG_ADC_51] = (uint16_t)((float)sum[4] / (float)CONFIG_ADC_AVERAGE_NUM);//IN10 PWR_CUR		
 		NVRAM0[SPREG_ADC_1] = (uint16_t)((float)sum[5] / (float)CONFIG_ADC_AVERAGE_NUM);//IN11 CH1_CUR
 		NVRAM0[SPREG_ADC_0] = (uint16_t)((float)sum[6] / (float)CONFIG_ADC_AVERAGE_NUM);//IN12 CH0_CUR		
 		NVRAM0[SPREG_ADC_16] = (uint16_t)((float)sum[7] / (float)CONFIG_ADC_AVERAGE_NUM);//IN13 TEC_CUR
-		NVRAM0[SPREG_ADC_48] = (uint16_t)((float)sum[8] / (float)CONFIG_ADC_AVERAGE_NUM);//IN14 LPD		
-		NVRAM0[SPREG_ADC_47] = (uint16_t)((float)sum[9] / (float)CONFIG_ADC_AVERAGE_NUM);//IN15 FPD	
-		NVRAM0[SPREG_ADC_50] = (uint16_t)((float)sum[10] / (float)CONFIG_ADC_AVERAGE_NUM);//CHIP TEMP
-		NVRAM0[SPREG_ADC_51] = (uint16_t)((float)sum[11] / (float)CONFIG_ADC_AVERAGE_NUM);//VREFINT
-		NVRAM0[SPREG_ADC_52] = (uint16_t)((float)sum[12] / (float)CONFIG_ADC_AVERAGE_NUM);//VBAT
+		NVRAM0[SPREG_ADC_55] = (uint16_t)((float)sum[8] / (float)CONFIG_ADC_AVERAGE_NUM);//IN14 LPD		
+		NVRAM0[SPREG_ADC_54] = (uint16_t)((float)sum[9] / (float)CONFIG_ADC_AVERAGE_NUM);//IN15 FPD	
+		NVRAM0[SPREG_ADC_58] = (uint16_t)((float)sum[10] / (float)CONFIG_ADC_AVERAGE_NUM);//CHIP TEMP
+		NVRAM0[SPREG_ADC_59] = (uint16_t)((float)sum[11] / (float)CONFIG_ADC_AVERAGE_NUM);//VREFINT
+		NVRAM0[SPREG_ADC_60] = (uint16_t)((float)sum[12] / (float)CONFIG_ADC_AVERAGE_NUM);//VBAT
 #endif		
 		
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)

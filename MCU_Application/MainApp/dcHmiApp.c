@@ -6,8 +6,6 @@ uint16_t hmiCmdSize;//已缓冲的指令数
 static uint8_t MsgId = 0xFF;//当前显示的信息ID
 uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
 uint32_t newBootloadCrc32;
-int16_t LaserTecOutCounter, LaserTecOut;
-PID_Controller temp_controller;
 // 创建风扇控制器实例
 FanController FanTec;
 /*****************************************************************************/
@@ -234,11 +232,11 @@ void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_DIODE_TEMP, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_WATER_HOT_TEMP] / 10.0F));
+	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_HWATER_TEMP] / 10.0F));
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_HWATER_TEMP, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_WATER_COOL_TEMP] / 10.0F));
+	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_CWATER_TEMP] / 10.0F));
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CWATER_TEMP, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -404,8 +402,8 @@ void updateDiagnosisCali(void){//跟新诊断-校准页面静态信息
 
 
 void updateDiagnosis(void){//更新诊断信信息
-	uint8_t i;
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	//uint8_t i;
+	//char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	//从NVRAM中更新文本框	
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_YEAR , deviceConfig.mfg_year, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_MONTH , deviceConfig.mfg_month, 1, 0);
@@ -418,6 +416,9 @@ void updateDiagnosis(void){//更新诊断信信息
 	
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SET_AIM_GAIN, deviceConfig.redAimGain, 1, 0);
 	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIBER_DETECT, deviceConfig.fiberDetect, 1, 0);
+	
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_A_TEMP, deviceConfig.laserDiodeA_Temp, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_B_TEMP, deviceConfig.laserDiodeB_Temp, 1, 0);
 	
 	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);	
 	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
@@ -521,7 +522,7 @@ void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "HT1:%05d,HT2:%05d,HT3:%05d,WHT:%05d,WCT:%05d", \
-	NVRAM0[EM_HT1_TEMP], NVRAM0[EM_HT2_TEMP], NVRAM0[EM_HT3_TEMP], NVRAM0[EM_WATER_HOT_TEMP], NVRAM0[EM_WATER_COOL_TEMP]);
+	NVRAM0[EM_HT1_TEMP], NVRAM0[EM_HT2_TEMP], NVRAM0[EM_HT3_TEMP], NVRAM0[EM_HWATER_TEMP], NVRAM0[EM_CWATER_TEMP]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO10, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -551,7 +552,7 @@ void updateDiagnosisInfo(void){//更新诊断信息
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "WHOTT:%05d,WCOLT:%05d,MCUT:%05d,BATT:%05d", \
-	NVRAM0[EM_WATER_HOT_TEMP], NVRAM0[EM_WATER_COOL_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_MBAT_TEMP]);
+	NVRAM0[EM_HWATER_TEMP], NVRAM0[EM_CWATER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_MBAT_TEMP]);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
 		
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
@@ -1983,6 +1984,19 @@ void updateWarnMsgDisplay(uint8_t id){//更新警号显示框
 				pstr = WARN_MSG_FIBER_MISSMATE;
 				break;
 			}
+			
+			case MSG_HUMIDITY_ABNORMAL:{
+				pstr = WARM_MSG_HUMIDITY_ABNORMAL;
+				break;
+			}	
+			case MSG_HWATER_ABNORMAL:{
+				pstr = WARM_MSG_HWATER_ABNORMAL;
+				break;
+			}
+			case MSG_CWATER_ABNORMAL:{
+				pstr = WARM_MSG_CWATER_ABNORMAL;
+				break;
+			}
 			default:{
 				pstr = WARN_MSG_NO_ERROR;
 				break;
@@ -2690,9 +2704,7 @@ void dcHmiLoopInit(void){//初始化模块
 	else{
 		SET_BLUE_LED_DC(deviceConfig.blueLedDc);
 	}
-	PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_A_SET_TEMP, 500);
-	FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
-	
+	tempControlInit();
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
 	hmiUartInit();
@@ -2716,11 +2728,59 @@ void dcHmiLoopInit(void){//初始化模块
 	NVRAM0[EM_FAN0_SET_SPEED] = 0;
 	NVRAM0[EM_FAN0_GET_SPEED] = 0;
 	SSET(R_RFID_PASS);
-	//屏蔽报警
-	RRES(R_LASER_DIODE_TEMP_HIGH);							
-	RRES(R_LASER_DIODE_TEMP_LOW);								
-	RRES(R_MCU_TEMP_HIGH);										
-	RRES(R_MCU_TEMP_LOW);									
+	//屏蔽报警	
+	RRES(R_LASER_A_DIODE_TEMP_HIGH);
+	RRES(R_LASER_A_DIODE_TEMP_LOW);
+	RRES(R_LASER_B_DIODE_TEMP_HIGH);
+	RRES(R_LASER_B_DIODE_TEMP_LOW);
+
+	RRES(R_LASER_A_COUPLER_TEMP_HIGH);
+	RRES(R_LASER_A_COUPLER_TEMP_LOW);
+	RRES(R_LASER_B_COUPLER_TEMP_HIGH);
+	RRES(R_LASER_B_COUPLER_TEMP_LOW);
+
+	RRES(R_LASER_A_CRYST0_TEMP_HIGH);
+	RRES(R_LASER_A_CRYST0_TEMP_LOW);
+	RRES(R_LASER_A_CRYST1_TEMP_HIGH);
+	RRES(R_LASER_A_CRYST1_TEMP_LOW);
+
+	RRES(R_LASER_B_CRYST0_TEMP_HIGH);
+	RRES(R_LASER_B_CRYST0_TEMP_LOW);
+	RRES(R_LASER_B_CRYST1_TEMP_HIGH);
+	RRES(R_LASER_B_CRYST1_TEMP_LOW);
+
+	RRES(R_HT0_TEMP_HIGH);
+	RRES(R_HT1_TEMP_HIGH);
+	RRES(R_HT2_TEMP_HIGH);
+	RRES(R_HT3_TEMP_HIGH);
+
+	RRES(R_HWATER_TEMP_HIGH);
+	RRES(R_HWATER_TEMP_LOW);
+	RRES(R_CWATER_TEMP_HIGH);
+	RRES(R_CWATER_TEMP_LOW);
+	RRES(R_AMBIENT0_TEMP_HIGH);
+	RRES(R_AMBIENT0_TEMP_LOW);
+	RRES(R_AMBIENT1_TEMP_HIGH);
+	RRES(R_AMBIENT1_TEMP_LOW);
+	RRES(R_AMBIENT2_TEMP_HIGH);
+	RRES(R_AMBIENT2_TEMP_LOW);
+	RRES(R_AMBIENT3_TEMP_HIGH);
+	RRES(R_AMBIENT3_TEMP_LOW);
+	RRES(R_HDC1080_TEMP_HIGH);
+	RRES(R_HDC1080_TEMP_LOW);
+	RRES(R_HDC1080_HUMIDITY_HIGH);
+	RRES(R_HDC1080_HUMIDITY_LOW);
+	RRES(R_DHT11_TEMP_HIGH);			
+	RRES(R_DHT11_TEMP_LOW);
+	RRES(R_DHT11_HUMIDITY_HIGH);
+	RRES(R_DHT11_HUMIDITY_LOW);
+	RRES(R_MCU_TEMP_HIGH);		
+	RRES(R_MCU_TEMP_LOW);		
+	RRES(R_MBAT_TEMP_HIGH);	
+	RRES(R_MBAT_TEMP_LOW);		
+	RRES(R_HWATER_FLOW_LOW);
+	RRES(R_CWATER_FLOW_LOW);
+									
 	RRES(R_FAULT);
 	//脚踏插入
 	//SSET(R_FOOTSWITCH_PLUG);
@@ -2739,314 +2799,40 @@ void dcHmiLoopInit(void){//初始化模块
 #endif
 }
 
-static void statusLoop(void){//温度轮询轮询
-#if defined(MODEL_PVGLS_7W_1940_A0) ||\
-		defined(MODEL_PVGLS_10W_1940_A1) ||\
-		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP)
-	
-	TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS, CONFIG_DIODE_NTC_B);
-	TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_DIODE_NTC_RS, CONFIG_HT0_NTC_B);
-	TNTLC(EM_MBAT_TEMP, SPREG_ADC_46, CONFIG_MBAT_NTC_RS, CONFIG_MBAT_NTC_B);
-	TENV(EM_MCU_TEMP, SPREG_ADC_49);//CODE转换为MCU温度
-		
-	//环境温度检测
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] >= CONFIG_DIODE_A_HIGH_TEMP){//激光器过热
-		SSET(R_LASER_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] <= (CONFIG_DIODE_A_HIGH_TEMP - 50)){//激光器恢复正常温度
-		RRES(R_LASER_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] <= CONFIG_DIODE_A_LOW_TEMP){//激光器低温保护
-		SSET(R_LASER_DIODE_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] >= CONFIG_DIODE_A_LOW_TEMP + 50){//激光器恢复正常温度
-		RRES(R_LASER_DIODE_TEMP_LOW);
-	}
-	//判断环境温度
-	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_HIGH_TEMP){//环境温度过热
-		SSET(R_MCU_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_HIGH_TEMP - 50){
-		RRES(R_MCU_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MCU_TEMP] <= CONFIG_ENVI_LOW_TEMP){
-		SSET(R_MCU_TEMP_LOW);
-	}
-	if(NVRAM0[EM_MCU_TEMP] >= CONFIG_ENVI_LOW_TEMP + 50){
-		RRES(R_MCU_TEMP_LOW);
-	}
-#endif	
-	
-#if defined(LYPE_MCU_1V0_20260106)
-	TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS , CONFIG_DIODE_NTC_B);//激光器芯片温度
-	TNTUC(EM_WATER_HOT_TEMP, SPREG_ADC_36, CONFIG_WATER_HOT_NTC_RS, CONFIG_WATER_HOT_NTC_B);//水冷热端温度
-	TNTUC(EM_WATER_COOL_TEMP, SPREG_ADC_37, CONFIG_WATER_COOL_NTC_RS, CONFIG_WATER_COOL_NTC_B);//水冷冷端温度
-	TNTLC(EM_AMBIENT0_TEMP, SPREG_ADC_56, CONFIG_AMBIENT_NTC_RS, CONFIG_AMBIENT_NTC_B);//模拟环境温度
-	TENV(EM_MCU_TEMP, SPREG_ADC_58);//CODE转换为MCU温度
-
-	if(LDP(SPCOIL_PS1000MS)){//2秒刷新一次板载的环境温度/湿度
-		hdc1080_read(&(NVRAM0[EM_AMBIENT2_TEMP]), &(NVRAM0[EM_RELATIVE0_HUMIDITY]));
-	}
-	
-	//判断二极管温度
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] >= CONFIG_DIODE_A_HIGH_TEMP){//激光器过热
-		SSET(R_LASER_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] <= (CONFIG_DIODE_A_HIGH_TEMP - 50)){//激光器恢复正常温度
-		RRES(R_LASER_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] <= CONFIG_DIODE_A_LOW_TEMP){//激光器低温保护
-		SSET(R_LASER_DIODE_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] >= CONFIG_DIODE_A_LOW_TEMP + 50){//激光器恢复正常温度
-		RRES(R_LASER_DIODE_TEMP_LOW);
-	}
-
-	//判断水温
-	if(NVRAM0[EM_WATER_HOT_TEMP] > CONFIG_WATER_HOT_HIGH_TEMP){//热端冷却水过热
-		SSET(R_HWATER_HIGH);
-	}
-	if(NVRAM0[EM_WATER_HOT_TEMP] < (CONFIG_WATER_HOT_HIGH_TEMP - 50)){//热端冷却水温度恢复
-		RRES(R_HWATER_HIGH);
-	}       
-	
-	if(NVRAM0[EM_WATER_HOT_TEMP] < CONFIG_WATER_HOT_LOW_TEMP){//热端冷却水结冰
-		SSET(R_HWATER_LOW);
-	}
-	if(NVRAM0[EM_WATER_HOT_TEMP] > (CONFIG_WATER_HOT_LOW_TEMP + 50)){//热端冷却水恢复
-		RRES(R_HWATER_LOW);
-	}
-	
-	if(NVRAM0[EM_WATER_COOL_TEMP] >  CONFIG_WATER_COOL_HIGH_TEMP ){//冷端冷却水过热
-		SSET(R_CWATER_HIGH);
-	}	
-	if(NVRAM0[EM_WATER_COOL_TEMP] < (CONFIG_WATER_COOL_HIGH_TEMP - 50)){//冷端冷却水恢复
-		RRES(R_CWATER_HIGH);
-	}
-	
-	if(NVRAM0[EM_WATER_COOL_TEMP] <  CONFIG_WATER_COOL_LOW_TEMP ){//冷端冷却水结冰
-		SSET(R_CWATER_LOW);
-	}
-	if(NVRAM0[EM_WATER_COOL_TEMP] > (CONFIG_WATER_COOL_HIGH_TEMP + 50)){//冷端冷却水恢复
-		RRES(R_CWATER_LOW);
-	}
-	
-	//判断处理器温度
-	if(NVRAM0[EM_MCU_TEMP] > CONFIG_CHIP_HIGH_TEMP){//环境温度过热
-		SSET(R_MCU_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MCU_TEMP] < (CONFIG_CHIP_HIGH_TEMP - 50)){
-		RRES(R_MCU_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MCU_TEMP] < CONFIG_CHIP_LOW_TEMP){
-		SSET(R_MCU_TEMP_LOW);
-	}
-	if(NVRAM0[EM_MCU_TEMP] > (CONFIG_CHIP_LOW_TEMP + 50)){
-		RRES(R_MCU_TEMP_LOW);
-	}
-	//判断环境温度
-	if(NVRAM0[EM_AMBIENT0_TEMP] > CONFIG_ENVI_HIGH_TEMP){//环境温度过热
-		SSET(R_AMBIENT_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT0_TEMP] < (CONFIG_ENVI_HIGH_TEMP - 50)){//环境温度过热恢复
-		RRES(R_AMBIENT_HIGH);
-	}
-	
-	if(NVRAM0[EM_AMBIENT0_TEMP] < CONFIG_ENVI_LOW_TEMP){//环境温度低温
-		SSET(R_AMBIENT_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT0_TEMP] > (CONFIG_ENVI_LOW_TEMP + 50)){//环境温度低温
-		RRES(R_AMBIENT_LOW);
-	}
-	
-#endif
-		
-	NVRAM0[EM_LASER_FPD] = NVRAM0[SPREG_ADC_54];
-	//温控执行 激光等待发射及错误状态启动温控
-	if(LDP(SPCOIL_PS100MS)){//0.2秒间隔
-		if(LD(R_LASER_DIODE_TEMP_HIGH) || LD(R_MCU_TEMP_HIGH)){//过热状态无条件打开风扇
-			 	NVRAM0[EM_FAN0_SET_SPEED] = 100;
-		}
-		else{
-			FanTec.current_temp = ((float)NVRAM0[EM_HT0_TEMP] / 10.0F);
-			FanController_Run(&FanTec);// 更新风扇控制
-			NVRAM0[EM_FAN0_SET_SPEED] = FanTec.current_speed;
-		}
-		setFanSpeed(NVRAM0[EM_FAN0_SET_SPEED]);
-		LaserTecOut = PID_Compute(&temp_controller, NVRAM0[EM_LASER_A_DIODE_TEMP]);	
-		
-		NVRAM0[EM_TPID0_OUT] = LaserTecOut;
-		NVRAM0[EM_TPID1_OUT] = LaserTecOut;
-		NVRAM0[SPREG_DAC_8] = LaserTecOut;
-		NVRAM0[SPREG_DAC_9] = LaserTecOut;
-		if(LaserTecOut <= 0 ){
-			SET_TEC_CH0_OFF;
-			SET_TEC_CH1_OFF;
-			SET_TEC_CH2_OFF;
-			SET_TEC_CH3_OFF;
-			SET_TEC_CH4_OFF;
-			SET_TEC_CH5_OFF;
-			SET_TEC_CH6_OFF;
-			SET_TEC_CH7_OFF;
-		}
-		else{
-			SET_TEC_CH0_ON;
-			SET_TEC_CH1_ON;
-			SET_TEC_CH2_ON;
-			SET_TEC_CH3_ON;
-			SET_TEC_CH4_ON;
-			SET_TEC_CH5_ON;
-			SET_TEC_CH6_ON;
-			SET_TEC_CH7_ON;
-			
-		}
-		UPDAC8();UPDAC9();
-		LaserTecOut = LaserTecOut / 20;
-		LaserTecOutCounter = 0;
-	}	
-	if(LaserTecOutCounter == 0){
-		SSET(Y_TEC);
-	}
-	if(LDP(SPCOIL_PS10MS)){
-		if(LaserTecOutCounter >= LaserTecOut){
-			RRES(Y_TEC);
-		}
-		LaserTecOutCounter ++;
-	}
-}
-
 static void faultLoop(void){//故障轮询
-	uint8_t temp;
-	temp = 0;
-	if(LD(R_DISABLE_FIBER_PROBE)){//屏蔽光纤探测器
-		SSET(R_FIBER_PROBE);
+	uint8_t flag = 0;		
+	flag |= LDB(R_ESTOP);//
+	if(LDB(R_DISABLE_TEMPERATURE_CHECK)){//屏蔽温度报警
+		flag |= LD(R_TEMP_FAULT);//正常0
 	}
 	else{
-		if(LD(X_FIBER_PROBE)){
-			SSET(R_FIBER_PROBE);
-		}
-		else{
-			RRES(R_FIBER_PROBE);
-		}
+		RRES(R_TEMP_FAULT);
 	}
-	if(LD(R_DISABLE_RFID)){//屏蔽光纤RFID探测
-		SSET(R_RFID_PASS);
-	}
-	if(LD(R_DISABLE_ESTOP)){//屏蔽紧急停止开关
-		SSET(R_ESTOP);
+	
+	if(LDB(R_DISABLE_HUMIDITY_CHECK)){//屏蔽湿度报警
+		flag |= LD(R_HUMIDITY_FALUT);//正常0
 	}
 	else{
-		if(LD(X_ESTOP_NC)){
-			SSET(R_ESTOP);
-		}
-		else{
-			RRES(R_ESTOP);
-		}
+		RRES(R_HUMIDITY_FALUT);
 	}
-	if(LD(R_DISABLE_INTERLOCK)){
-		SSET(R_INTERLOCK);
+	
+	if(LDB(R_DISABLE_FLOW_CHECK)){//屏蔽流量报警
+		flag |= LD(R_FLOW_FAULT);
 	}
 	else{
-		if(deviceConfig.normalOpenInterLock == 1){//常开连锁			
-#if defined(MODEL_PVGLS_15W_1470_A0) ||\
-		defined(MODEL_PVGLS_10W_1940_A1) ||\
-		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP)
-			if(LD(X_INTERLOCK_NC)){
-				RRES(R_INTERLOCK);
-			}
-			else{
-				SSET(R_INTERLOCK);
-			}
-		}
-		else{//常闭连锁
-			if(LD(X_INTERLOCK_NC)){
-				SSET(R_INTERLOCK);
-			}
-			else{
-				RRES(R_INTERLOCK);
-			}
-		}
-#endif
-
-#if defined(MODEL_PVGLS_15W_1470_A1) ||\
-		defined(LYPE_MCU_1V0_20260106)
-			if(LD(X_INTERLOCK_NC)){
-				SSET(R_INTERLOCK);
-			}
-			else{
-				RRES(R_INTERLOCK);
-			}
-		}
-		else{//常闭连锁
-			if(LD(X_INTERLOCK_NC)){
-				RRES(R_INTERLOCK);
-			}
-			else{
-				SSET(R_INTERLOCK);
-			}
-		}
-#endif	
+		RRES(R_FLOW_FAULT);
 	}
-	if(LD(R_DISABLE_TEMPERATURE)){//屏蔽高温报警
-		RRES(R_LASER_DIODE_TEMP_HIGH);
-		RRES(R_LASER_DIODE_TEMP_LOW);		
-		RRES(R_HWATER_HIGH);
-		RRES(R_HWATER_LOW);
-		RRES(R_CWATER_HIGH);
-		RRES(R_CWATER_LOW);
-		RRES(R_AMBIENT_HIGH);
-		RRES(R_AMBIENT_LOW);
-		RRES(R_HUMIDITY_HIGH);
-		RRES(R_MCU_TEMP_HIGH);
-		RRES(R_MCU_TEMP_LOW);
-	}
-	if(LD(R_DISABLE_FOOTSWITCH)){//屏蔽脚踏插入探测、使能屏幕激光发射控制
-		SSET(R_FOOTSWITCH_PLUG);
-		if(LD(R_HMI_FOOTSWITCH_PRESS)){
-			SSET(R_FOOTSWITCH_PRESS);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PRESS);
-		}
-	}
-	else if(LD(SPCOIL_WFSWITCH_PLUG)){//无线脚踏插入、屏蔽有线脚踏
-		SSET(R_FOOTSWITCH_PLUG);
-		if(LD(SPCOIL_WFSWITCH_NO)){
-			SSET(R_FOOTSWITCH_PRESS);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PRESS);
-		}
-	}
-	else{
-		if(LD(X_FOOTSWITCH_NC)){//常闭
-			SSET(R_FOOTSWITCH_PLUG);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PLUG);
-		}
-		if(LD(X_FOOTSWITCH_NO)){//常开
-			SSET(R_FOOTSWITCH_PRESS);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PRESS);
-		}
-	}
-	temp |= LDB(R_ESTOP);//正常1 
-	temp |=	LDB(R_INTERLOCK);//正常1
-	temp |= LDB(R_FOOTSWITCH_PLUG);//正常1
-	temp |= LDB(R_FIBER_PROBE);//正常1
-	temp |= LDB(R_RFID_PASS);//正常1
-	temp |= LD(R_LASER_DIODE_TEMP_HIGH);//正常0
-	temp |= LD(R_LASER_DIODE_TEMP_LOW);//正常0
-	temp |= LD(R_MCU_TEMP_LOW);//正常0
-	if(temp){
+	
+	flag |= LDB(R_ESTOP);//
+	flag |=	LDB(R_INTERLOCK);//正常1
+	flag |= LDB(R_FOOTSWITCH_PLUG);//正常1
+	flag |= LDB(R_FIBER_PROBE);//正常1
+	flag |= LDB(R_RFID_PASS);//正常1
+	flag |= LD(R_TEMP_FAULT);
+	flag |= LD(R_HUMIDITY_FALUT);
+	flag |= LD(R_FLOW_FAULT);
+	
+	if(flag){
 		SSET(R_FAULT);
 	}
 	else{
@@ -3345,8 +3131,6 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 		sPlcSpeakerEnable();
-		FanController_Init(&FanTec, fan_curve, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
-		PID_Init(&temp_controller, 5.0f, 0.6f, 2.0f, CONFIG_DIODE_A_SET_TEMP, 500);		
 		NVRAM0[DM_DC_OLD_PASSCODE2] = 0;
 		NVRAM0[DM_DC_OLD_PASSCODE3] = 0;
 		NVRAM0[EM_DC_NEW_PASSCODE2] = 0;
@@ -3392,20 +3176,19 @@ void dcHmiLoop(void){//HMI轮训程序
 			
 			SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, false);					
 			SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
-			
-			//SetTextValue(GDDC_PAGE_PASSCODE, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
-			//SetTextValue(GDDC_PAGE_NEW_PASSCODE, GDDC_PAGE_NEWPASSCODE_TEXTDISPLAY, (uint8_t*)(&(NVRAM0[EM_DC_NEW_PASSCODE0])));
 
 			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
 			
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FAN_CONTRAL, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_AUTO_FAN, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE, false);	
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK, false);		
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW, false);	
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY, false);	
 			
 			SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
@@ -3572,17 +3355,25 @@ void dcHmiLoop(void){//HMI轮训程序
 		
 		if(LDP(SPCOIL_PS200MS)){
 			if(LD(R_FAULT)){
-				if(LD(R_LASER_DIODE_TEMP_HIGH)){//激光器高温保护
-					updateWarnMsgDisplay(MSG_DIODE_HTEMP);
-				}
-				else if(LD(R_LASER_DIODE_TEMP_LOW)){//激光器低温NTC开路保护
-					updateWarnMsgDisplay(MSG_DIODE_LTEMP);
-				}
-				else if(LD(R_MCU_TEMP_HIGH)){//环境高温保护
-					updateWarnMsgDisplay(MSG_ENVI_HTEMP);
-				}
-				else if(LD(R_MCU_TEMP_LOW)){//环境低温保护
-					updateWarnMsgDisplay(MSG_ENVI_LTEMP);
+				if(LD(R_TEMP_FAULT)){
+					if(LD(R_LASER_A_DIODE_TEMP_HIGH) || LD(R_LASER_B_DIODE_TEMP_HIGH)){//激光器高温保护
+						updateWarnMsgDisplay(MSG_DIODE_HTEMP);
+					}
+					else if(LD(R_LASER_A_DIODE_TEMP_LOW) || LD(R_LASER_B_DIODE_TEMP_LOW)){//激光器低温NTC开路保护
+						updateWarnMsgDisplay(MSG_DIODE_LTEMP);
+					}
+					else if(LD(R_MCU_TEMP_HIGH)){//环境高温保护
+						updateWarnMsgDisplay(MSG_ENVI_HTEMP);
+					}
+					else if(LD(R_MCU_TEMP_LOW)){//环境低温保护
+						updateWarnMsgDisplay(MSG_ENVI_LTEMP);
+					}
+					else if(LD(R_HWATER_TEMP_HIGH) || LD(R_HWATER_TEMP_LOW)){//热水温度异常
+						updateWarnMsgDisplay(MSG_HWATER_ABNORMAL);
+					}
+					else if(LD(R_CWATER_TEMP_HIGH) || LD(R_CWATER_TEMP_LOW)){//冷水温度异常
+						updateWarnMsgDisplay(MSG_CWATER_ABNORMAL);
+					}
 				}
 				else if(LDB(R_ESTOP)){//急停按下
 					updateWarnMsgDisplay(MSG_ESTOP_PRESS);		
@@ -3598,6 +3389,12 @@ void dcHmiLoop(void){//HMI轮训程序
 				}
 				else if(LDB(R_RFID_PASS)){//光纤ID不匹配
 					updateWarnMsgDisplay(MSG_FIBER_MISSMATE);
+				}
+				else if(LD(R_FLOW_FAULT)){//流量报警
+					updateWarnMsgDisplay(MSG_FLOW_ABNORMAL);
+				}
+				else if(LD(R_HUMIDITY_FALUT)){//湿度报警
+					updateWarnMsgDisplay(MSG_HUMIDITY_ABNORMAL);
 				}
 				standbyKeyTouchEnable(false);//禁止Standby触摸
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//设置喇叭声音模式
@@ -3716,6 +3513,8 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig, true);
 				UPDAC4();
 			}
+			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;
+			UPDAC17();//打开绿光
 #endif
 			
 #if defined(MODEL_PVGLS_7W_1940_A0) ||\
@@ -3740,13 +3539,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
+				//打开指示激光
+				NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
+				UPDAC16();//打开红光
 			}
 #endif
-			//打开指示激光
-			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
-			UPDAC16();//打开红光
-			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;
-			UPDAC17();//打开绿光
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);

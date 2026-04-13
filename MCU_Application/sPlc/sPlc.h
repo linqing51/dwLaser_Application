@@ -76,6 +76,8 @@ typedef struct{
 	int8_t redAimGain;//红指示光增益
 	int8_t greenAimGain;//绿指示光增益
 	int16_t fiberDetect;//光纤探测阈值
+	int16_t laserDiodeA_Temp;//激光器A设置温度
+	int16_t laserDiodeB_Temp;//激光器B设置温度
 	char normalOpenInterLock;
 }deviceConfig_t;
 typedef struct{

@@ -20,6 +20,10 @@ extern const char WARN_MSG_FOOT_DEPRESSED[];//脚踏按下去没弹起来
 extern const char WARN_MSG_LASER_EMIT[];//激光正在发射
 extern const char WARN_MSG_WAIT_TRIGGER[];//等待激光触发
 extern const char WARN_MSG_FIBER_MISSMATE[];
+extern const char WARM_MSG_FLOW_LOW[];//流量异常信息
+extern const char WARM_MSG_HUMIDITY_ABNORMAL[];//湿度异常	
+extern const char WARM_MSG_HWATER_ABNORMAL[];//热水温度异常
+extern const char WARM_MSG_CWATER_ABNORMAL[];//冷水温度异常
 extern const char INFO_MSG_TYPE[];
 extern const char INFO_MSG_SN[];
 extern const char INFO_MSG_WAVELENGTH[];

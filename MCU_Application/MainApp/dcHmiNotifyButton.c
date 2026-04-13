@@ -1109,12 +1109,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_RESTORE_KEY_YES:{
 					if(state){
 						restoreDefault();
-						NVFSAVE();//强制更新NVRAM
-						FDSAV();
-						//updateOptionDisplay();//更新Option显示
-						//SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));//更新背光亮度
-						//NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
-						//SetScreen(NVRAM0[EM_DC_PAGE]);
 						REBOOT();
 					}
 					break;
@@ -1529,64 +1523,82 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH:{
 					if(state){
-						SSET(R_DISABLE_FOOTSWITCH);
+						SSET(R_DISABLE_FOOTSWITCH_CHECK);
 					}
 					else{
-						RRES(R_DISABLE_FOOTSWITCH);
+						RRES(R_DISABLE_FOOTSWITCH_CHECK);
 					}
 					break;
 				}					
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE:{
 					if(state){
-						SSET(R_DISABLE_TEMPERATURE);
+						SSET(R_DISABLE_TEMPERATURE_CHECK);
 					}
 					else{
-						RRES(R_DISABLE_TEMPERATURE);
+						RRES(R_DISABLE_TEMPERATURE_CHECK);
 					}
 					break;
 				}					
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP:{
 					if(state){
-						SSET(R_DISABLE_ESTOP);
+						SSET(R_DISABLE_ESTOP_CHECK);
 					}
 					else{
-						RRES(R_DISABLE_ESTOP);
+						RRES(R_DISABLE_ESTOP_CHECK);
 					}
 					break;
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK:{
 					if(state){
-						SSET(R_DISABLE_INTERLOCK);
+						SSET(R_DISABLE_INTERLOCK_CHECK);
 					}
 					else{
-						RRES(R_DISABLE_INTERLOCK);
+						RRES(R_DISABLE_INTERLOCK_CHECK);
 					}
 					break;
 				}					
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID:{
 					if(state){
-						SSET(R_DISABLE_RFID);
+						SSET(R_DISABLE_RFID_CHECK);
 					}
 					else{
-						RRES(R_DISABLE_RFID);
+						RRES(R_DISABLE_RFID_CHECK);
 					}
 					break;
 				}
 				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE:{
 					if(state){
-						SSET(R_DISABLE_FIBER_PROBE);
+						SSET(R_DISABLE_FIBER_PROBE_CHECK);
 					}
 					else{
-						RRES(R_DISABLE_FIBER_PROBE);
+						RRES(R_DISABLE_FIBER_PROBE_CHECK);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FAN_CONTRAL:{
+				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY:{
 					if(state){
-						SSET(R_DISABLE_FAN_SPEED);
+						SSET(R_DISABLE_HUMIDITY_CHECK);
 					}
 					else{
-						RRES(R_DISABLE_FAN_SPEED);
+						RRES(R_DISABLE_HUMIDITY_CHECK);
+					}
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_AUTO_FAN:{
+					if(state){
+						SSET(R_DISABLE_AUTO_FAN);
+					}
+					else{
+						RRES(R_DISABLE_AUTO_FAN);
+					}
+					break;
+				}				
+				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW:{
+					if(state){
+						SSET(R_DISABLE_FLOW_CHECK);
+					}
+					else{
+						RRES(R_DISABLE_FLOW_CHECK);
 					}
 					break;
 				}

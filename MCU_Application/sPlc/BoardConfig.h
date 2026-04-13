@@ -889,7 +889,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 
 #define CONFIG_VREF_ADC												SPREG_ADC_59
-#define CONFIG_MCU_VREF												2500.0F
+#define CONFIG_MCU_VREF												3300.0F
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25												760.0F//0.76V@25D
 

@@ -1,6 +1,6 @@
 #include "pid_temp_control.h"
 // 初始化PID控制器
-void PID_Init(PID_Controller *pid, float kp, float ki, float kd, 
+void PID_Init(PID_Controller_t *pid, float kp, float ki, float kd, 
              int16_t setpoint, int32_t integral_limit) {
     pid->Kp = kp;
     pid->Ki = ki;
@@ -15,19 +15,19 @@ void PID_Init(PID_Controller *pid, float kp, float ki, float kd,
 }
 
 // 设置PID参数
-void PID_SetParams(PID_Controller *pid, float kp, float ki, float kd) {
+void PID_SetParams(PID_Controller_t *pid, float kp, float ki, float kd) {
     pid->Kp = kp;
     pid->Ki = ki;
     pid->Kd = kd;
 }
 
 // 设置温度目标值
-void PID_SetSetpoint(PID_Controller *pid, int16_t setpoint) {
+void PID_SetSetpoint(PID_Controller_t *pid, int16_t setpoint) {
     pid->setpoint = setpoint;
 }
 
 // 增量式PID计算
-int32_t PID_Compute(PID_Controller *pid, int16_t current_temp) {
+int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
     // 计算当前误差 (测量温度越高，输出越大，因此误差 = 当前温度 - 设定值)
     int16_t error = current_temp - pid->setpoint;
     

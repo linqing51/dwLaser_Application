@@ -182,8 +182,8 @@
 #define SPREG_ADC_30																	(SPREG_START + 30)//采集值 TEC7 VOLTAGE
 #define SPREG_ADC_31																	(SPREG_START + 31)//采集值 TEC8 VOLTAGE
 
-#define SPREG_ADC_32																	(SPREG_START + 32)//采集值 散热器HT1_NTC 
-#define SPREG_ADC_33																	(SPREG_START + 33)//采集值 散热器HT2_NTC 
+#define SPREG_ADC_32																	(SPREG_START + 32)//采集值 散热器HT0_NTC 
+#define SPREG_ADC_33																	(SPREG_START + 33)//采集值 散热器HT1_NTC 
 #define SPREG_ADC_34																	(SPREG_START + 34)//采集值 散热器HT2_NTC 
 #define SPREG_ADC_35																	(SPREG_START + 35)//采集值 散热器HT3_NTC
 #define SPREG_ADC_36																	(SPREG_START + 36)//采集值 冷却液WATER1_NTC->HOT  
@@ -191,18 +191,18 @@
 #define SPREG_ADC_38																	(SPREG_START + 38)//采集值 冷却液WATER3_NTC 
 #define SPREG_ADC_39																	(SPREG_START + 39)//采集值 冷却液WATER4_NTC
 
-#define SPREG_ADC_40																	(SPREG_START + 40)//采集值 激光器DIODE0 LASER_NTC
-#define SPREG_ADC_41																	(SPREG_START + 41)//采集值 激光器DIODE1 LASER_NTC
-#define SPREG_ADC_42																	(SPREG_START + 42)//采集值 激光器DIODE2 LASER_NTC
-#define SPREG_ADC_43																	(SPREG_START + 43)//采集值 激光器DIODE3 LASER_NTC
-#define SPREG_ADC_44																	(SPREG_START + 44)//采集值 激光器DIODE4 LASER_NTC
-#define SPREG_ADC_45																	(SPREG_START + 45)//采集值 激光器DIODE5 LASER_NTC
-#define SPREG_ADC_46																	(SPREG_START + 46)//采集值 激光器DIODE6 LASER_NTC
-#define SPREG_ADC_47																	(SPREG_START + 47)//采集值 激光器DIODE7 LASER_NTC
+#define SPREG_ADC_40																	(SPREG_START + 40)//采集值 激光器 A DIODE NTC
+#define SPREG_ADC_41																	(SPREG_START + 41)//采集值 激光器 B DIODE NTC
+#define SPREG_ADC_42																	(SPREG_START + 42)//采集值 激光器 A COUPLER NTC
+#define SPREG_ADC_43																	(SPREG_START + 43)//采集值 激光器 B COUPLER NTC
+#define SPREG_ADC_44																	(SPREG_START + 44)//采集值 激光器 A CRYST0 NTC
+#define SPREG_ADC_45																	(SPREG_START + 45)//采集值 激光器 A CRYST1 NTC
+#define SPREG_ADC_46																	(SPREG_START + 46)//采集值 激光器 B CRYST0 NTC
+#define SPREG_ADC_47																	(SPREG_START + 47)//采集值 激光器 B CRYST1 NTC
 
-#define SPREG_ADC_48																	(SPREG_START + 48)//采集值 激光器耦合 FIBER_NTC
-#define SPREG_ADC_49																	(SPREG_START + 49)//采集值 激光器晶体1
-#define SPREG_ADC_50																	(SPREG_START + 50)//采集值 激光器晶体2
+#define SPREG_ADC_48																	(SPREG_START + 48)//采集值 NC
+#define SPREG_ADC_49																	(SPREG_START + 49)//采集值 NC
+#define SPREG_ADC_50																	(SPREG_START + 50)//采集值 NC
 
 #define SPREG_ADC_51																	(SPREG_START + 51)//采集值 PWR CURRENT 母线电流
 #define SPREG_ADC_52																	(SPREG_START + 52)//采集值 VIN VOLTAGE 母线电压
@@ -302,16 +302,20 @@
 #define EM_HT1_TEMP																		(EM_START + 109)//散热器2温度
 #define EM_HT2_TEMP																		(EM_START + 110)//散热器3温度
 #define EM_HT3_TEMP																		(EM_START + 111)//散热器4温度
-#define EM_WATER_HOT_TEMP															(EM_START + 112)//冷却水温度->冷水
-#define EM_WATER_COOL_TEMP														(EM_START + 113)//冷却水温度->热水
+#define EM_HWATER_TEMP																(EM_START + 112)//冷却水温度->热水
+#define EM_CWATER_TEMP																(EM_START + 113)//冷却水温度->冷水
 #define EM_AMBIENT0_TEMP															(EM_START + 114)//环境温度 风道 NTC
 #define EM_AMBIENT1_TEMP															(EM_START + 115)//环境温度 风道 NTC
 #define EM_AMBIENT2_TEMP															(EM_START + 116)//环境温度 板载
 #define EM_AMBIENT3_TEMP															(EM_START + 117)//环境温度
-#define EM_RELATIVE0_HUMIDITY													(EM_START + 118)//相对湿度 板载
-#define EM_RELATIVE1_HUMIDITY													(EM_START + 119)//相对湿度 风道
-#define EM_MCU_TEMP																		(EM_START + 120)//处理器温度
-#define EM_MBAT_TEMP																	(EM_START + 121)//电池温度
+#define EM_HDC1080_HUMIDITY														(EM_START + 118)//板载HDC1080湿度
+#define EM_HDC1080_TEMP																(EM_START + 119)//板载HDC1080温度
+
+#define EM_DHT11_HUMIDITY															(EM_START + 120)//外置DHT11湿度
+#define EM_DHT11_TEMP																	(EM_START + 121)//外置DHT11温度
+
+#define EM_MCU_TEMP																		(EM_START + 122)//处理器温度
+#define EM_MBAT_TEMP																	(EM_START + 123)//电池温度
 
 #define EM_LD_CH0_CURRENT															(EM_START + 130)//激光通道0->电流																
 #define EM_LD_CH1_CURRENT															(EM_START + 131)//激光通道1->电流
@@ -567,40 +571,83 @@
 #define R_INTERLOCK																		(R_START * 16 + 1)//连锁标志
 #define R_FIBER_PROBE																	(R_START * 16 + 2)//光纤插入标志
 #define R_RFID_PASS																		(R_START * 16 + 3)//NFC光纤插入标志
-																										
-#define R_LASER_DIODE_TEMP_HIGH												(R_START * 16 + 10)//激光二极管激光模块高温标志
-#define R_LASER_DIODE_TEMP_LOW												(R_START * 16 + 11)//激光二极管激光模块低温标志
-#define R_HWATER_HIGH																	(R_START * 16 + 12)//热水高温报警标志
-#define R_HWATER_LOW																	(R_START * 16 + 13)//热水低温报警标志
-#define R_CWATER_HIGH																	(R_START * 16 + 14)//冷水高温报警标志
-#define R_CWATER_LOW																	(R_START * 16 + 15)//冷水低温报警标志
-#define R_AMBIENT_HIGH																(R_START * 16 + 16)//环境高温报警标志
-#define R_AMBIENT_LOW																	(R_START * 16 + 17)//环境低温报警标志
-#define R_HUMIDITY_HIGH																(R_START * 16 + 18)//环境高湿度报警标志
 
+#define R_LASER_A_DIODE_TEMP_HIGH											(R_START * 16 + 10)//激光二极管A激光模块高温标志
+#define R_LASER_A_DIODE_TEMP_LOW											(R_START * 16 + 11)//激光二极管A激光模块低温标志
+#define R_LASER_B_DIODE_TEMP_HIGH											(R_START * 16 + 12)//激光二极管B激光模块高温标志
+#define R_LASER_B_DIODE_TEMP_LOW											(R_START * 16 + 13)//激光二极管B激光模块低温标志
+
+#define R_LASER_A_COUPLER_TEMP_HIGH										(R_START * 16 + 14)//激光二极管A耦合器低温标志
+#define R_LASER_A_COUPLER_TEMP_LOW										(R_START * 16 + 15)//激光二极管A耦合器低温标志
+#define R_LASER_B_COUPLER_TEMP_HIGH										(R_START * 16 + 16)//激光二极管B耦合器低温标志
+#define R_LASER_B_COUPLER_TEMP_LOW										(R_START * 16 + 17)//激光二极管B耦合器低温标志
+
+#define R_LASER_A_CRYST0_TEMP_HIGH										(R_START * 16 + 18)//激光二极管A晶体0高温标志
+#define R_LASER_A_CRYST0_TEMP_LOW											(R_START * 16 + 19)//激光二极管A晶体0低温标志
+#define R_LASER_A_CRYST1_TEMP_HIGH										(R_START * 16 + 20)//激光二极管A晶体1高温标志
+#define R_LASER_A_CRYST1_TEMP_LOW											(R_START * 16 + 21)//激光二极管A晶体1低温标志
+
+#define R_LASER_B_CRYST0_TEMP_HIGH										(R_START * 16 + 22)//激光二极管B晶体0高温标志
+#define R_LASER_B_CRYST0_TEMP_LOW											(R_START * 16 + 23)//激光二极管B晶体0低温标志
+#define R_LASER_B_CRYST1_TEMP_HIGH										(R_START * 16 + 24)//激光二极管B晶体1高温标志
+#define R_LASER_B_CRYST1_TEMP_LOW											(R_START * 16 + 25)//激光二极管B晶体1低温标志
+
+#define R_HT0_TEMP_HIGH																(R_START * 16 + 26)//散热器0高温标志
+#define R_HT1_TEMP_HIGH																(R_START * 16 + 27)//散热器1高温标志
+#define R_HT2_TEMP_HIGH																(R_START * 16 + 28)//散热器2高温标志
+#define R_HT3_TEMP_HIGH																(R_START * 16 + 29)//散热器3高温标志
+
+#define R_HWATER_TEMP_HIGH														(R_START * 16 + 30)//热水高温报警标志
+#define R_HWATER_TEMP_LOW															(R_START * 16 + 31)//热水低温报警标志
+#define R_CWATER_TEMP_HIGH														(R_START * 16 + 32)//冷水高温报警标志
+#define R_CWATER_TEMP_LOW															(R_START * 16 + 33)//冷水低温报警标志
+#define R_AMBIENT0_TEMP_HIGH													(R_START * 16 + 34)//环境0高温报警标志
+#define R_AMBIENT0_TEMP_LOW														(R_START * 16 + 35)//环境0低温报警标志
+#define R_AMBIENT1_TEMP_HIGH													(R_START * 16 + 36)//环境1高温报警标志
+#define R_AMBIENT1_TEMP_LOW														(R_START * 16 + 37)//环境1低温报警标志
+#define R_AMBIENT2_TEMP_HIGH													(R_START * 16 + 38)//环境0高温报警标志
+#define R_AMBIENT2_TEMP_LOW														(R_START * 16 + 39)//环境0低温报警标志
+#define R_AMBIENT3_TEMP_HIGH													(R_START * 16 + 40)//环境1高温报警标志
+#define R_AMBIENT3_TEMP_LOW														(R_START * 16 + 41)//环境1低温报警标志
+#define R_HDC1080_TEMP_HIGH														(R_START * 16 + 42)//板载环境高温报警标志
+#define R_HDC1080_TEMP_LOW														(R_START * 16 + 43)//板载环境低温报警标志
+#define R_HDC1080_HUMIDITY_HIGH												(R_START * 16 + 44)//板载环境高湿度报警标志
+#define R_HDC1080_HUMIDITY_LOW												(R_START * 16 + 45)//板载环境低温报警标志
+#define R_DHT11_TEMP_HIGH															(R_START * 16 + 46)//远程环境高温报警标志			
+#define R_DHT11_TEMP_LOW															(R_START * 16 + 47)//远程环境低温报警标志
+#define R_DHT11_HUMIDITY_HIGH													(R_START * 16 + 48)//远程高湿度报警标志
+#define R_DHT11_HUMIDITY_LOW													(R_START * 16 + 49)//远程低湿度报警标志
 #define R_MCU_TEMP_HIGH																(R_START * 16 + 50)//处理器高温标志
 #define R_MCU_TEMP_LOW																(R_START * 16 + 51)//处理器低温标志
-#define R_FOOTSWITCH_PLUG															(R_START * 16 + 52)//脚踏插入标志
-#define R_FOOTSWITCH_PRESS														(R_START * 16 + 53)//脚踏按下标志
-#define R_HMI_FOOTSWITCH_PRESS												(R_START * 16 + 54)//屏幕模拟脚踏按下标志
-#define R_FAULT																				(R_START * 16 + 55)//故障标志
-#define R_DISABLE_ESTOP																(R_START * 16 + 56)//屏蔽急停开关检测
-#define R_DISABLE_TEMPERATURE													(R_START * 16 + 57)//屏蔽温度检测
-#define	R_DISABLE_FOOTSWITCH													(R_START * 16 + 58)//屏蔽脚踏开关检测
-#define R_DISABLE_RFID																(R_START * 16 + 59)//屏蔽NFC检测
-#define R_DISABLE_FIBER_PROBE													(R_START * 16 + 60)//屏蔽光纤探测
-#define R_DISABLE_FAN_SPEED														(R_START * 16 + 61)//屏蔽风扇控制
-#define R_DISABLE_INTERLOCK														(R_START * 16 + 62)//屏蔽安全连锁
-#define R_CLEAR_EPROM																	(R_START * 16 + 63)//完全清空EPROM
-#define R_SAVE_EPROM																	(R_START * 16 + 64)//储存SAVE
-#define R_ENGINEER_MODE																(R_START * 16 + 65)//工程师模式
-//#define R_CALIBRATION_MODE														(R_START * 16 + 66)//功率校正模式
-#define R_ACOUSTIC_ENABLE															(R_START * 16 + 67)//使能提示音
-#define R_CLEAR_CRC																		(R_START * 16 + 68)//清除固件CRC
-#define R_UPDATE_BOOTLOAD_REQ													(R_START * 16 + 69)//请求更新引导固件
-#define R_UPDATE_BOOTLOAD_YES													(R_START * 16 + 70)//同意更新固件
-#define R_UPDATE_BOOTLOAD_NO													(R_START * 16 + 71)//否定更新固件
-#define R_BURNING_MODE																(R_START * 16 + 72)//老化模式
+#define R_MBAT_TEMP_HIGH															(R_START * 16 + 52)//主电池高温标志
+#define R_MBAT_TEMP_LOW																(R_START * 16 + 53)//主电池低温标志
+#define R_HWATER_FLOW_LOW															(R_START * 16 + 54)//热水低流量报警
+#define R_CWATER_FLOW_LOW															(R_START * 16 + 55)//冷水低流量报警
+
+#define R_FOOTSWITCH_PLUG															(R_START * 16 + 56)//脚踏插入标志
+#define R_FOOTSWITCH_PRESS														(R_START * 16 + 57)//脚踏按下标志
+#define R_HMI_FOOTSWITCH_PRESS												(R_START * 16 + 58)//屏幕模拟脚踏按下标志
+#define R_FAULT																				(R_START * 16 + 59)//故障标志
+#define R_TEMP_FAULT																	(R_START * 16 + 60)//温度故障标志
+#define R_FLOW_FAULT																	(R_START * 16 + 61)//流量故障标志
+#define R_HUMIDITY_FALUT															(R_START * 16 + 62)//湿度故障标志
+#define R_DISABLE_ESTOP_CHECK													(R_START * 16 + 63)//屏蔽急停开关检测
+#define R_DISABLE_TEMPERATURE_CHECK										(R_START * 16 + 64)//屏蔽温度检测
+#define R_DISABLE_FLOW_CHECK													(R_START * 16 + 65)//屏蔽流量检测
+#define R_DISABLE_HUMIDITY_CHECK											(R_START * 16 + 66)//屏蔽湿度检测
+#define	R_DISABLE_FOOTSWITCH_CHECK										(R_START * 16 + 67)//屏蔽脚踏开关检测
+#define R_DISABLE_RFID_CHECK													(R_START * 16 + 68)//屏蔽NFC检测
+#define R_DISABLE_FIBER_PROBE_CHECK										(R_START * 16 + 69)//屏蔽光纤探测
+#define R_DISABLE_AUTO_FAN														(R_START * 16 + 70)//屏蔽自动风扇控制
+#define R_DISABLE_INTERLOCK_CHECK											(R_START * 16 + 71)//屏蔽安全连锁
+#define R_CLEAR_EPROM																	(R_START * 16 + 72)//完全清空EPROM
+#define R_SAVE_EPROM																	(R_START * 16 + 73)//储存SAVE
+#define R_ENGINEER_MODE																(R_START * 16 + 74)//工程师模式
+#define R_ACOUSTIC_ENABLE															(R_START * 16 + 75)//使能提示音
+#define R_CLEAR_CRC																		(R_START * 16 + 76)//清除固件CRC
+#define R_UPDATE_BOOTLOAD_REQ													(R_START * 16 + 77)//请求更新引导固件
+#define R_UPDATE_BOOTLOAD_YES													(R_START * 16 + 78)//同意更新固件
+#define R_UPDATE_BOOTLOAD_NO													(R_START * 16 + 79)//否定更新固件
 //HMI相关状态
 #define R_DCHMI_RESET_REQ															(R_START * 16 + 80)//HMI复位请求
 #define R_DCHMI_RESET_DOING														(R_START * 16 + 81)//HMI复位中

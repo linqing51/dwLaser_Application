@@ -463,6 +463,8 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.redAimGain = CONFIG_LASER_RAIM_DEFAULT_GAIN;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 		deviceConfig.normalOpenInterLock = 1;//默认常开联锁 
+		deviceConfig.laserDiodeA_Temp = CONFIG_LASER_A_DIODE_SET_TEMP;
+		deviceConfig.laserDiodeB_Temp = CONFIG_LASER_B_DIODE_SET_TEMP;
 		saveDeviceConfig();
 	}
 	else{

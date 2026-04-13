@@ -12,11 +12,13 @@
 #include "dcHmiNotifyProgress.h"
 #include "dcHmiNotifyReadRTC.h"
 #include "dcHmiNotifyText.h"
+#include "tempCtrLoop.h"
 /*****************************************************************************/
 #include "hmiLib.h"
 #include "dcHmiRes.h"
 #include "MainAppLib.h"
-#include "fan_controller.h"
+//#include "fan_controller.h"
+//#
 /*****************************************************************************/
 #define FSMSTEP_HIBERNATE														0//休眠->软关机
 #define FSMSTEP_IDLE																1//待机
@@ -69,9 +71,15 @@
 #define	MSG_LASER_EMIT															14
 #define	MSG_WAIT_TRIGGER														15
 #define	MSG_FIBER_MISSMATE													16
+#define MSG_FLOW_ABNORMAL														17									
+#define MSG_HUMIDITY_ABNORMAL												18	
+#define MSG_HWATER_ABNORMAL													19						
+#define MSG_CWATER_ABNORMAL													20
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);
+void statusLoop(void);
+void temperatureControlLoop(void);
 void updateStandbyDisplay(void);
 void standbyTouchEnable(int8_t enable);
 void updatePowerDisplay(void);

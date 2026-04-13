@@ -17,6 +17,10 @@ const char WARN_MSG_FOOT_DEPRESSED[] 			 	= {"Foot/finger switch is depressed"};
 const char WARN_MSG_LASER_EMIT[] 				 		= {"Laser is firing"};//激光正在发射
 const char WARN_MSG_WAIT_TRIGGER[] 				 	= {"Wait Laser Trigger"};//等待激光触发
 const char WARN_MSG_FIBER_MISSMATE[] 			 	= {"Fiber not mate"};
+const char WARM_MSG_FLOW_LOW[]							= {"Water Flow Low"};//流量异常信息
+const char WARM_MSG_HUMIDITY_ABNORMAL[]			= {"Humidity abnormal"};//湿度异常	
+const char WARM_MSG_HWATER_ABNORMAL[]				= {"Hot water temperature abnormal"};//热水高温报警
+const char WARM_MSG_CWATER_ABNORMAL[]				=	{"Cool water temperature abnormal"};//冷水高温报警
 const char INFO_MSG_SN[] 						 				= {"SN: "};
 /*****************************************************************************/
 const char INFO_MSG_HW_VERSION[] 					 	= {"HW:"HW_VERSION""};

@@ -23,20 +23,20 @@ typedef struct {
     
     // 积分限幅，防止积分饱和
     int32_t integral_limit;
-} PID_Controller;
+}PID_Controller_t;
 
 // 初始化PID控制器
-void PID_Init(PID_Controller *pid, float kp, float ki, float kd, 
+void PID_Init(PID_Controller_t *pid, float kp, float ki, float kd, 
              int16_t setpoint, int32_t integral_limit);
 
 // 设置PID参数
-void PID_SetParams(PID_Controller *pid, float kp, float ki, float kd);
+void PID_SetParams(PID_Controller_t *pid, float kp, float ki, float kd);
 
 // 设置温度目标值
-void PID_SetSetpoint(PID_Controller *pid, int16_t setpoint);
+void PID_SetSetpoint(PID_Controller_t *pid, int16_t setpoint);
 
 // 增量式PID计算
-int32_t PID_Compute(PID_Controller *pid, int16_t current_temp);
+int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp);
 
 // 半导体制冷片控制初始化
 void Thermoelectric_Init(void);

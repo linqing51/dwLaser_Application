@@ -10,7 +10,7 @@
       <TargetName>targetBoard_G5_TRI_A1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -2368,6 +2368,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
             </File>
+            <File>
+              <FileName>statusLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\statusLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>tempCtrLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2552,7 +2562,7 @@
       <TargetName>G5_TRIP_A1_20250910</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -4910,6 +4920,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
             </File>
+            <File>
+              <FileName>statusLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\statusLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>tempCtrLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -5075,7 +5095,7 @@
       <TargetName>G5_DUAL_A1_20250731</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -7432,6 +7452,16 @@
               <FileName>preSchemeTrip.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
+            </File>
+            <File>
+              <FileName>statusLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\statusLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>tempCtrLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -9956,6 +9986,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
             </File>
+            <File>
+              <FileName>statusLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\statusLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>tempCtrLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -12478,6 +12518,16 @@
               <FileName>preSchemeTrip.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
+            </File>
+            <File>
+              <FileName>statusLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\statusLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>tempCtrLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -235,21 +235,65 @@
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
-//配置环境报警阈值
+//配置环境信息
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP)
-#define CONFIG_DIODE_A_SET_TEMP												240//
-#define CONFIG_DIODE_A_HIGH_TEMP											450//激光器高温极限 46.0C
-#define CONFIG_DIODE_A_LOW_TEMP												-250//激光器低温极限 -25.0C
-#define CONFIG_WATER_HOT_HIGH_TEMP										750//热水端高温报警温度
-#define CONFIG_WATER_HOT_LOW_TEMP											50//热水端低温报警温度
-#define CONFIG_WATER_COOL_HIGH_TEMP										400//冷水端高温报警温度
-#define CONFIG_WATER_COOL_LOW_TEMP										50//冷水管低温报警温度
-#define CONFIG_ENVI_HIGH_TEMP													750//处理器高温极限 75.0C
-#define CONFIG_ENVI_LOW_TEMP													-200//处理器低温极限 -20.0C
-#define CONFIG_HUMIDITY_HIGH_PER											85//湿度上限 85%
+						
+#define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
+#define CONFIG_LASER_B_DIODE_SET_TEMP									250//激光器温度设定
+
+#define CONFIG_LASER_A_DIODE_TEMP_HIGH								450//激光器高温极限 46.0C
+#define CONFIG_LASER_A_DIODE_TEMP_LOW									0//激光器低温极限 -25.0C
+#define CONFIG_LASER_A_COUPLER_TEMP_HIGH							600//耦合器高温报警
+#define CONFIG_LASER_A_COUPLER_TEMP_LOW								0//耦合器低温报警
+#define CONFIG_LASER_A_CRYST0_TEMP_HIGH								0
+#define CONFIG_LASER_A_CRYST0_TEMP_LOW								0
+#define CONFIG_LASER_A_CRYST1_TEMP_HIGH								0
+#define CONFIG_LASER_A_CRYST1_TEMP_LOW								0
+
+#define CONFIG_LASER_B_DIODE_TEMP_HIGH								450//激光器高温极限 46.0C
+#define CONFIG_LASER_B_DIODE_TEMP_LOW									0//激光器低温极限 -25.0C
+#define CONFIG_LASER_B_COUPLER_TEMP_HIGH							600//耦合器高温报警
+#define CONFIG_LASER_B_COUPLER_TEMP_LOW								0//耦合器低温报警
+#define CONFIG_LASER_B_CRYST0_TEMP_HIGH								0
+#define CONFIG_LASER_B_CRYST0_TEMP_LOW								0
+#define CONFIG_LASER_B_CRYST1_TEMP_HIGH								0
+#define CONFIG_LASER_B_CRYST1_TEMP_LOW								0
+
+#define CONFIG_HT0_TEMP_HIGH													600//散热器0高温报警
+#define CONFIG_HT1_TEMP_HIGH													600//散热器1高温报警
+#define CONFIG_HT2_TEMP_HIGH													600//散热器2高温报警
+#define CONFIG_HT3_TEMP_HIGH													600//散热器3高温报警
+
+#define CONFIG_HWATER_TEMP_HIGH												650//热水端高温报警温度
+#define CONFIG_HWATER_TEMP_LOW												50//热水端低温报警温度
+#define CONFIG_CWATER_TEMP_HIGH												400//冷水端高温报警温度
+#define CONFIG_CWATER_TEMP_LOW												50//冷水管低温报警温度
+#define CONFIG_AMBIENT0_TEMP_HIGH											450//环境0高温报警
+#define CONFIG_AMBIENT0_TEMP_LOW											50//环境0低温报警
+#define CONFIG_AMBIENT1_TEMP_HIGH											450//环境1高温报警
+#define CONFIG_AMBIENT1_TEMP_LOW											50//环境1低温报警
+#define CONFIG_AMBIENT2_TEMP_HIGH											450//环境2高温报警
+#define CONFIG_AMBIENT2_TEMP_LOW											50//环境2低温报警
+#define CONFIG_AMBIENT3_TEMP_HIGH											450//环境3高温报警
+#define CONFIG_AMBIENT3_TEMP_LOW											50//环境3低温报警
+
+#define CONFIG_HDC1080_TEMP_HIGH											650//板载环境高温报警
+#define CONFIG_HDC1080_TEMP_LOW												0//板载环境低温报警
+#define CONFIG_HDC1080_HUMIDITY_HIGH									850//板载环境高湿度报警
+#define CONFIG_HDC1080_HUMIDITY_LOW										0//板载环境低温报警
+#define CONFIG_DHT11_TEMP_HIGH												500//远程环境高温报警		
+#define CONFIG_DHT11_TEMP_LOW													0//远程环境低温报警
+#define CONFIG_DHT11_HUMIDITY_HIGH										850//远程高湿度报警标志
+#define CONFIG_DHT11_HUMIDITY_LOW											0//远程低湿度报警标志
+#define CONFIG_MCU_TEMP_HIGH													650//处理器高温标志
+#define CONFIG_MCU_TEMP_LOW														50//处理器低温标志
+#define CONFIG_MBAT_TEMP_HIGH													550//主电池高温标志
+#define CONFIG_MBAT_TEMP_LOW													-100//主电池低温标志
+
+
 #define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
 #endif
 
@@ -308,24 +352,42 @@
 #endif
 
 #if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
-#define CONFIG_MAX_LASER_POWER_CH0										150//通道1470最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH1										300//通道980最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH2										1//通道2最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH3										1//通道3最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH4										1//通道4最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH5										1//通道5最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH6										1//通道6最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH7										1//通道7最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH0							150//逻辑通道1470最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH1							300//逻辑通道980最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH2							1//逻辑通道2最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH3							1//逻辑通道3最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH4							1//逻辑通道4最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH5							1//逻辑通道5最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH6							1//逻辑通道6最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH7							1//逻辑通道7最大激光功率
 
 
-#define CONFIG_MIN_LASER_POWER_CH0										1//通道1470最小激光功率		
-#define CONFIG_MIN_LASER_POWER_CH1										1//通道980最小激光功率		
-#define CONFIG_MIN_LASER_POWER_CH2										0//通道2最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH3										0//通道3最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH4										0//通道4最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH5										0//通道5最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH6										0//通道6最小激光功率
-#define CONFIG_MIN_LASER_POWER_CH7										0//通道7最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH0							1//逻辑通道1470最小激光功率		
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH1							1//逻辑通道980最小激光功率		
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH2							0//逻辑通道2最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH3							0//逻辑通道3最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH4							0//逻辑通道4最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH5							0//逻辑通道5最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH6							0//逻辑通道6最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH7							0//逻辑通道7最小激光功率
+
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH0						150//硬件通道0最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH1						300//硬件通道1最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH2						1//硬件通道2最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH3						1//硬件通道3最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH4						1//硬件通道4最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH5						1//硬件通道5最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH6						1//硬件通道6最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH7						1//硬件通道7最大激光功率
+
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH0						1//硬件通道0最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH1						1//硬件通道1最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH2						1//硬件通道2最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH3						1//硬件通道3最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH4						1//硬件通道4最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH5						1//硬件通道5最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH6						1//硬件通道6最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH7						1//硬件通道7最小激光功率
 
 #define CONFIG_MAX_LASER_POWER_RED                    5//红激光最大功率 5档
 #define CONFIG_MAX_LASER_POWER_RAIM                   10//红指示激光最大功率 10档
