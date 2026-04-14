@@ -281,158 +281,104 @@ void CLDAC(void){//立即清空全部DAC
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
-#define POWER_DOWN_INTERNAL_REFERENCE 					0
-#define POWER_UP 																1
-#define DAC8568_RESET 													2
-typedef enum {//通道定义
-    DAC8568_CH_A = 0x0,  // 通道A
-    DAC8568_CH_B = 0x1,  // 通道B
-    DAC8568_CH_C = 0x2,  // 通道C
-    DAC8568_CH_D = 0x3,  // 通道D
-    DAC8568_CH_E = 0x4,  // 通道E
-    DAC8568_CH_F = 0x5,  // 通道F
-    DAC8568_CH_G = 0x6,  // 通道G
-    DAC8568_CH_H = 0x7,  // 通道H
-    DAC8568_CH_ALL = 0xF // 所有通道
-} DAC8568_ChannelDef;
-
-typedef enum {//命令定义
-    DAC8568_CMD_WRITE_INPUT_REG      = 0x0,  // 写入输入寄存器（无更新）
-    DAC8568_CMD_UPDATE_DAC_REG       = 0x1,  // 更新DAC寄存器（从输入寄存器）
-    DAC8568_CMD_WRITE_INPUT_REG_UPDATE_ALL = 0x2,  // 写入输入寄存器并更新所有DAC
-    DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH  = 0x3,  // 写入输入寄存器并更新指定DAC
-    DAC8568_CMD_POWER_DOWN_UP        = 0x4,  // 掉电/上电控制
-    DAC8568_CMD_HW_LDAC_MASK         = 0x5,  // 硬件LDAC屏蔽控制
-    DAC8568_CMD_SW_RESET             = 0x6,  // 软件复位
-    DAC8568_CMD_SW_LDAC              = 0x7,  // 软件LDAC
-    DAC8568_CMD_READ_BACK            = 0x8   // 读回寄存器（仅输入寄存器）
-} DAC8568_CmdDef;
-
-static void softSpiWrite(uint32_t dat){//DAC8568 SPI写入
-	uint8_t tmp, i;
-	DAC8568_SYNC_HIGH;
+static void dac8568_WriteDacRegister(uint8_t ch, uint16_t dat);
+static void dac8568SpiWrite(uint32_t dat){//DAC8568 SPI写入
+  volatile	uint8_t tmp, i;
+	SET_DAC8568_SYNC(GPIO_PIN_SET);
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	DAC8568_SCK_HIGH;
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	DAC8568_SYNC_LOW;
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_DAC8568_SCK(GPIO_PIN_SET);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_DAC8568_SYNC(GPIO_PIN_RESET);
 	for(i = 0;i < 32;i ++){
 		tmp = (uint8_t)(dat >> (31 - i)) & 0x01;
-		if (tmp == 0x01)
-		   DAC8568_DIN_HIGH;
-		else
-			 DAC8568_DIN_LOW;
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	DAC8568_SCK_LOW;
-	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	DAC8568_SCK_HIGH;
+		SET_DAC8568_DOUT((GPIO_PinState)tmp);
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_DAC8568_SCK(GPIO_PIN_RESET);
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		SET_DAC8568_SCK(GPIO_PIN_SET);
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	}
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	DAC8568_SYNC_HIGH;
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	SET_DAC8568_SYNC(GPIO_PIN_SET);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 }
 
-static void dac8568_Init(void){//DAC8568初始化
+void dac8568_Init(void){//DAC8568初始化
 	uint32_t tmp;
+	SET_DAC8568_CLR(GPIO_PIN_SET);
+	SET_DAC8568_LDAC(GPIO_PIN_RESET);
+	//setCLR0(true);
+	//setLDAC0(true);
 	tmp = 0x07000000;//Software Reset
-	softSpiWrite(tmp);
+	dac8568SpiWrite(tmp);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	tmp = 0x08000001;//Write Sequence for Enabling Internal Reference (Static Mode)
-	softSpiWrite(tmp);
+	dac8568SpiWrite(tmp);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	//覆盖LDAC引脚
 	tmp = 0x0600000F;
-	softSpiWrite(tmp);
+	dac8568SpiWrite(tmp);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	//覆盖CLR引脚
 	tmp = 0x05000003;
-	softSpiWrite(tmp);
-}
+	dac8568SpiWrite(tmp);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 
-static void dac8568_InitNoReset(void){//DAC8568初始化
+}
+void dac8568_InitNoReset(void){//DAC8568 无复位初始化
 	uint32_t tmp;
+	//setCLR0(true);
+	//setLDAC0(true);
 	tmp = 0x08000001;//Write Sequence for Enabling Internal Reference (Static Mode)
-	softSpiWrite(tmp);
+	dac8568SpiWrite(tmp);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	//覆盖LDAC引脚
 	tmp = 0x0600000F;
-	softSpiWrite(tmp);
+	dac8568SpiWrite(tmp);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	//覆盖CLR引脚
 	tmp = 0x05000003;
-	softSpiWrite(tmp);
+	dac8568SpiWrite(tmp);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 }
-
 static void dac8568_WriteDacRegister(uint8_t ch, uint16_t dat){//写入输入寄存器并更新输出
 	uint32_t tmp;
 	ch &= 0x0F;
 	tmp = 0x03000000;
 	tmp |= (uint32_t)((uint32_t)ch << 20);
 	tmp |= (uint32_t)((uint32_t)dat << 4);
-	softSpiWrite(tmp);
-}
-
-static void dac8568_Send32BitData(DAC8568_CmdDef cmd, DAC8568_ChannelDef ch, uint16_t data){//////////组装32bit数据并通过模拟SPI发送
-    uint32_t tx_data = 0;
-    // 组装32bit数据
-    tx_data |= (0x0 << 28);          // 前4bit：0
-    tx_data |= ((uint32_t)cmd << 24); // 4bit命令
-    tx_data |= ((uint32_t)ch << 20);  // 4bit地址
-    tx_data |= ((uint32_t)data << 4); // 16bit数据
-    tx_data |= 0x0;                  // 后4bit：0
-    
-    // 开始发送数据
-    DAC8568_SYNC_LOW;  // 拉低SYNC，选通DAC
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	
-    // 分4个字节发送32bit数据（高位先行）
-    softSpiWrite((tx_data >> 24) & 0xFF); // 第1字节：0 + cmd
-    softSpiWrite((tx_data >> 16) & 0xFF); // 第2字节：addr + data高8位
-    softSpiWrite((tx_data >> 8) & 0xFF);  // 第3字节：data低8位
-    softSpiWrite(tx_data & 0xFF);         // 第4字节：0
-    
-    DAC8568_SYNC_HIGH; // 拉高SYNC，结束发送
-		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-}
-
-static void dac8568_SendCommand(uint8_t command){
-	switch(command){
-		case POWER_DOWN_INTERNAL_REFERENCE:{
-			DAC8568_SYNC_LOW;  // 拉低SYNC，选通DAC
-			__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-			softSpiWrite(0x09); //发送DB31-DB24位
-			softSpiWrite(0x0c); //发送DB23-DB16位
-			softSpiWrite(0); //发送DB15-DB8位
-			softSpiWrite(0x00); //发送DB7-DB0位
-			DAC8568_SYNC_HIGH; // 拉高SYNC，结束发送
-			__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-			break;
-		}
-		//通过将相应位设置为“1”，为DAC A、B、C、D、E、F、G、H通电
-		case POWER_UP:{
-			DAC8568_SYNC_LOW;  // 拉低SYNC，选通DAC
-			softDelayUs(1);
-			softSpiWrite(0x04); //发送DB31-DB24位
-			softSpiWrite(0); //发送DB23-DB16位
-			softSpiWrite(0); //发送DB15-DB8位
-			softSpiWrite(0xff); //发送DB7-DB0位
-			DAC8568_SYNC_HIGH; // 拉高SYNC，结束发送
-			softDelayUs(1);
-			break;
-		}
-		//重启
-		case DAC8568_RESET:{
-			DAC8568_SYNC_LOW;  // 拉低SYNC，选通DAC
-			softDelayUs(1);
-			softSpiWrite(0x07); //发送DB31-DB24位
-			softSpiWrite(0); //发送DB23-DB16位
-			softSpiWrite(0); //发送DB15-DB8位
-			softSpiWrite(0); //发送DB7-DB0位
-			DAC8568_SYNC_HIGH; // 拉高SYNC，结束发送
-			softDelayUs(1);
-			break;
-		};
-	}
-}
-
-static void dac8568_SoftReset(void){//软件复位DAC8568
-	// 发送软件复位命令，地址位无意义，数据位填0
-	dac8568_Send32BitData(DAC8568_CMD_SW_RESET, DAC8568_CH_ALL, 0x0000);
-	HAL_Delay(1);//保持低电平至少100ns（延时1ms确保稳定）
+	dac8568SpiWrite(tmp);
 }
 
 void sPlcDacInit(void){//DAC初始化
@@ -440,48 +386,47 @@ void sPlcDacInit(void){//DAC初始化
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // 开启DAC输出
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_2); // 开启DAC输出
-	dac8568_SoftReset();
 	dac8568_Init();	
 }
 void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_A, temp);
+	dac8568_WriteDacRegister(0x0, temp);
 }
 void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_B, temp);
+	dac8568_WriteDacRegister(0x01, temp);
 }
 void UPDAC2(void){
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_C, temp);
+	dac8568_WriteDacRegister(0x2, temp);
 }
 void UPDAC3(void){
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_D, temp);
+	dac8568_WriteDacRegister(0x03, temp);
 }
 void UPDAC4(void){
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_E, temp);
+	dac8568_WriteDacRegister(0x04, temp);
 }
 void UPDAC5(void){
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_F, temp);
+	dac8568_WriteDacRegister(0x05, temp);
 }
 void UPDAC6(void){
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_G, temp);
+	dac8568_WriteDacRegister(0x06, temp);
 }
 void UPDAC7(void){
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, DAC8568_CH_H, temp);
+	dac8568_WriteDacRegister(0x07, temp);
 }
 void UPDAC8(void){
 	uint16_t temp;
@@ -518,7 +463,24 @@ void UPDAC17(void){
 }
 
 void CLDAC(void){//立即清空全部DAC
-	dac8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_ALL, DAC8568_CH_ALL, 0x0);
+	SET_DAC8568_CLR(GPIO_PIN_RESET);
+	dac8568_WriteDacRegister(0x00, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	dac8568_WriteDacRegister(0x01, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	dac8568_WriteDacRegister(0x02, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	dac8568_WriteDacRegister(0x03, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	dac8568_WriteDacRegister(0x04, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	dac8568_WriteDacRegister(0x05, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	dac8568_WriteDacRegister(0x06, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
+	dac8568_WriteDacRegister(0x07, 0x0);
+	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();	
+	SET_DAC8568_CLR(GPIO_PIN_SET);
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // 设置DAC输出值
 }

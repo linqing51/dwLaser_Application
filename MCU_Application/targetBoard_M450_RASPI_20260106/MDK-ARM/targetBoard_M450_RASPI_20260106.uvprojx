@@ -984,6 +984,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\preSchemeDual_450.c</FilePath>
             </File>
+            <File>
+              <FileName>statusLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\statusLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>tempCtrLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

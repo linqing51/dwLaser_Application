@@ -12,6 +12,7 @@
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
 #define CONFIG_DEBUG_IIC_EXPAND												0//调试I2C总线扩展器
+#define CONFIG_DEBUG_IIC_HDC1080											0//调试I2C 板载温湿度传感器
 #define CONFIG_INPUT_FILTER_TIME											10//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
@@ -306,8 +307,8 @@
 #define EM_CWATER_TEMP																(EM_START + 113)//冷却水温度->冷水
 #define EM_AMBIENT0_TEMP															(EM_START + 114)//环境温度 风道 NTC
 #define EM_AMBIENT1_TEMP															(EM_START + 115)//环境温度 风道 NTC
-#define EM_AMBIENT2_TEMP															(EM_START + 116)//环境温度 板载
-#define EM_AMBIENT3_TEMP															(EM_START + 117)//环境温度
+#define EM_AMBIENT2_TEMP															(EM_START + 116)//环境温度 风道 NTC
+#define EM_AMBIENT3_TEMP															(EM_START + 117)//环境温度 风道 NTC
 #define EM_HDC1080_HUMIDITY														(EM_START + 118)//板载HDC1080湿度
 #define EM_HDC1080_TEMP																(EM_START + 119)//板载HDC1080温度
 
