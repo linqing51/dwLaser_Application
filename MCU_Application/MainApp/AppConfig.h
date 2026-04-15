@@ -96,6 +96,9 @@
 #if defined(LDR2P1_G5_A1_20250910_TRIP)
 #define HW_VERSION																		"LDR2P1G5A1_20250910_TRIP"
 #endif
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+#define HW_VERSION																		"LDR2P1G9A1_20260322_DUAL"
+#endif
 #if defined(LYPE_MCU_1V0_20260106)
 #define HW_VERSION																		"LYPE_MCU_1V0_20260106"
 #endif
@@ -107,7 +110,8 @@
     defined(LDR2P1_G5_A1_20250731_TRIP)
 		//STM32作为PMU
 #define CONFIG_PMU_STM32					
-#elif defined(LYPE_MCU_1V0_20260106)
+#elif defined(LYPE_MCU_1V0_20260106) ||\
+			defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 	//LTC2955作为PMU
 #define CONFIG_PMU_LTC2955
 #else
@@ -124,7 +128,7 @@
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_RASPI_G9_A1_20260322)
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define APP_CONFIG_WAVE_1470_650//APP为双波长 1470+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
@@ -166,7 +170,7 @@
 #define MODLE_M12_1920_10_400S//吉光1940
 #endif
 
-#if defined(LDR2P1_RASPI_G9_A1_20260322)
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define MODLE_M1470_640_10_30_05_D200_22_G9_PK//1470+650 30W 
 #endif
 
@@ -179,7 +183,8 @@
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(LYPE_MCU_1V0_20260106)
+		defined(LYPE_MCU_1V0_20260106) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #define CONFIG_FSWITCH_USB_VID												0x16C0
 #define CONFIG_FSWITCH_USB_PID												0x05E2
@@ -201,7 +206,8 @@
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL)
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define CONFIG_NEUROSURGERY_SIZE											3
 #endif
 
@@ -219,7 +225,8 @@
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL)
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define CONFIG_THERAPY_SIZE														3
 #endif
 
@@ -239,7 +246,8 @@
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP)
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 						
 #define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP									250//激光器温度设定
@@ -538,6 +546,71 @@
 #define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//变音持续时间
 #endif
 
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH0							300//逻辑通道1470最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH1							1//逻辑通道980最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH2							1//逻辑通道2最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH3							1//逻辑通道3最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH4							1//逻辑通道4最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH5							1//逻辑通道5最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH6							1//逻辑通道6最大激光功率
+#define CONFIG_LOGIC_MAX_LASER_POWER_CH7							1//逻辑通道7最大激光功率
+
+
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH0							1//逻辑通道1470最小激光功率		
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH1							1//逻辑通道980最小激光功率		
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH2							0//逻辑通道2最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH3							0//逻辑通道3最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH4							0//逻辑通道4最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH5							0//逻辑通道5最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH6							0//逻辑通道6最小激光功率
+#define CONFIG_LOGIC_MIN_LASER_POWER_CH7							0//逻辑通道7最小激光功率
+
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH0						300//硬件通道0最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH1						1//硬件通道1最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH2						1//硬件通道2最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH3						1//硬件通道3最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH4						1//硬件通道4最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH5						1//硬件通道5最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH6						1//硬件通道6最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH7						1//硬件通道7最大激光功率
+
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH0						1//硬件通道0最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH1						1//硬件通道1最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH2						1//硬件通道2最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH3						1//硬件通道3最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH4						1//硬件通道4最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH5						1//硬件通道5最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH6						1//硬件通道6最小激光功率
+#define CONFIG_HARDWARE_MIN_LASER_POWER_CH7						1//硬件通道7最小激光功率
+
+#define CONFIG_MAX_LASER_POWER_RED                    5//红激光最大功率 5档
+#define CONFIG_MAX_LASER_POWER_RAIM                   10//红指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_GAIM										0//绿指示激光最大功率档
+
+#define CONFIG_MIN_LASER_POWER_RED                    1//红激光最小功率
+#define CONFIG_MIN_LASER_POWER_RAIM                   0//指示激光最小功率
+#define CONFIG_MIN_LASER_POWER_GAIM                   0//指示激光最小功率
+
+#define CONFIG_LASER_RAIM_OFFSET											100
+#define CONFIG_LASER_GAIM_OFFSET											100
+#define CONFIG_LASER_RAIM_DEFAULT_GAIN								60
+#define CONFIG_LASER_GAIM_DEFAULT_GAIN								60
+
+#define CONFIG_MAX_LASER_POSWIDTH											16000
+#define CONFIG_MIN_LASER_POSWIDTH											1
+#define CONFIG_MAX_LASER_NEGWIDTH											16000
+#define CONFIG_MIN_LASER_NEGWIDTH											1
+#define CONFIG_MAX_LASER_TIMES												10//最大可计数脉冲数
+#define CONFIG_MIN_LASER_TIMES												1//最小可计数脉冲数
+#define CONFIG_MAX_LASER_GROUP_OFF										1000
+#define CONFIG_MIN_LASER_GROUP_OFF										10
+#define CONFIG_MAX_LASER_ENERGY_INTERVAL							200
+#define CONFIG_MIN_LASER_ENERGY_INTERVAL							30
+#define CONFIG_STEP_LASER_ENERGY_INTERVAL							109
+#define CONFIG_BEEM_ENERGY_INTERVAL_TIME							1000//变音持续时间
+#endif
+
 #if defined(LYPE_MCU_1V0_20260106)
 //定义逻辑通道
 #define CONFIG_LOGIC_MAX_LASER_POWER_CH0										2000//通道0-450最大激光功率
@@ -614,7 +687,11 @@
 
 /*****************************************************************************/
 //定义指示灯亮度
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) ||defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define CONFIG_BLUE_LED_MAX_DC												100
 #define CONFIG_BLUE_LED_DEFAULT_DC										25
 #define CONFIG_RED_LED_MAX_DC													100	
@@ -658,7 +735,11 @@
 #endif
 /*****************************************************************************/
 //定义蜂鸣器音量/频率
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) ||defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define CONFIG_BEEM_MAX_VOLUME												100//蜂鸣器最大音量
 #define CONFIG_BEEM_MAX_LIMIT													0.7F//
 #define CONFIG_BEEM_MAX_FREQ													4500L//喇叭最高频率
@@ -676,7 +757,8 @@
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP)
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define CONFIG_LCD_MAX_DC															100//屏幕亮度最大值
 #define CONFIG_LCD_MIN_DC															1//屏幕亮度最小值
 #endif
@@ -686,7 +768,11 @@
 #endif
 /*****************************************************************************/
 //定义风扇转速
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) ||defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define CONFIG_FAN_MAX_DC															100
 #define CONFIG_FAN_MIN_DC															0
 #endif
