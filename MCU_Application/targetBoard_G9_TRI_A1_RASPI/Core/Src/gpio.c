@@ -53,18 +53,21 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LAS0_PWM_GPIO_Port, LAS0_PWM_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, MPU_PWR_Pin|TEC_GATE_Pin|SPK_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, BEEM_LED_Pin|MPU_INT1_Pin|MPU_INT0_Pin|TEC_PWM_Pin
-                          |LD1_PWM_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, BEEM_LED_Pin|MPU_INT1_Pin|MPU_INT0_Pin|TEC0_PWM_Pin
+                          |LAS1_PWM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, USBH_EXT_PSON_Pin|PWR_KILL_Pin|PWR_LED_Pin|MCP41010_SDI_Pin
+  HAL_GPIO_WritePin(GPIOD, USBH_EXT_PSON_Pin|POWER_KILL_Pin|PWR_LED_Pin|MCP41010_SDI_Pin
                           |MCP41010_SCK_Pin|ERR_LED_Pin|TICK_LED_Pin|MCP41010_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, EPROM_NSS_Pin|TEC_OUT_Pin|TEC_SCK_Pin|TEC_SYNC_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, EPROM_NSS_Pin|DAC7311_SDI_Pin|DAC7311_SCK_Pin|DAC7311_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : FS_NO_Pin FS_NC_Pin BT_LED_Pin MPU_SAT2_Pin
                            MPU_SAT1_Pin MPU_SAT0_Pin */
@@ -80,6 +83,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(ESTOP_NC_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : LAS0_PWM_Pin */
+  GPIO_InitStruct.Pin = LAS0_PWM_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LAS0_PWM_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : MPU_PWR_Pin TEC_GATE_Pin SPK_EN_Pin */
   GPIO_InitStruct.Pin = MPU_PWR_Pin|TEC_GATE_Pin|SPK_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -87,18 +97,18 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : BEEM_LED_Pin MPU_INT1_Pin MPU_INT0_Pin TEC_PWM_Pin
-                           LD1_PWM_Pin */
-  GPIO_InitStruct.Pin = BEEM_LED_Pin|MPU_INT1_Pin|MPU_INT0_Pin|TEC_PWM_Pin
-                          |LD1_PWM_Pin;
+  /*Configure GPIO pins : BEEM_LED_Pin MPU_INT1_Pin MPU_INT0_Pin TEC0_PWM_Pin
+                           LAS1_PWM_Pin */
+  GPIO_InitStruct.Pin = BEEM_LED_Pin|MPU_INT1_Pin|MPU_INT0_Pin|TEC0_PWM_Pin
+                          |LAS1_PWM_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : USBH_EXT_PSON_Pin PWR_KILL_Pin PWR_LED_Pin MCP41010_SDI_Pin
+  /*Configure GPIO pins : USBH_EXT_PSON_Pin POWER_KILL_Pin PWR_LED_Pin MCP41010_SDI_Pin
                            MCP41010_SCK_Pin ERR_LED_Pin TICK_LED_Pin MCP41010_CS_Pin */
-  GPIO_InitStruct.Pin = USBH_EXT_PSON_Pin|PWR_KILL_Pin|PWR_LED_Pin|MCP41010_SDI_Pin
+  GPIO_InitStruct.Pin = USBH_EXT_PSON_Pin|POWER_KILL_Pin|PWR_LED_Pin|MCP41010_SDI_Pin
                           |MCP41010_SCK_Pin|ERR_LED_Pin|TICK_LED_Pin|MCP41010_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -111,14 +121,14 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(INTERLOCK_NC_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  /*Configure GPIO pin : POWER_INT_Pin */
+  GPIO_InitStruct.Pin = POWER_INT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(POWER_INT_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EPROM_NSS_Pin TEC_OUT_Pin TEC_SCK_Pin TEC_SYNC_Pin */
-  GPIO_InitStruct.Pin = EPROM_NSS_Pin|TEC_OUT_Pin|TEC_SCK_Pin|TEC_SYNC_Pin;
+  /*Configure GPIO pins : EPROM_NSS_Pin DAC7311_SDI_Pin DAC7311_SCK_Pin DAC7311_CS_Pin */
+  GPIO_InitStruct.Pin = EPROM_NSS_Pin|DAC7311_SDI_Pin|DAC7311_SCK_Pin|DAC7311_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

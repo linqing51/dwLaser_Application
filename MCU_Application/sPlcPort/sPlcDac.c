@@ -4,10 +4,11 @@
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP)
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 __IO static void writeDac7311(uint16_t dat){
 	uint8_t tmp, i;
-	SET_EDAC7_CS(GPIO_PIN_RESET);//CS = 0
+	SET_DAC7311_CS(GPIO_PIN_RESET);//CS = 0
 	dat = dat << 2;
 	dat &= 0x3FFC;
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
@@ -20,7 +21,7 @@ __IO static void writeDac7311(uint16_t dat){
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	for(i = 0;i < 16;i ++){
 		tmp = (uint8_t)(dat >> (15 - i)) & 0x01;
-		SET_EDAC7_SDI((GPIO_PinState)tmp);//dat -> SDI
+		SET_DAC7311_SDI((GPIO_PinState)tmp);//dat -> SDI
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
@@ -29,7 +30,7 @@ __IO static void writeDac7311(uint16_t dat){
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		SET_EDAC7_SCK(GPIO_PIN_SET);//SCK -> 1
+		SET_DAC7311_SCK(GPIO_PIN_SET);//SCK -> 1
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
@@ -38,7 +39,7 @@ __IO static void writeDac7311(uint16_t dat){
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-		SET_EDAC7_SCK(GPIO_PIN_RESET);//SCK -> 0
+		SET_DAC7311_SCK(GPIO_PIN_RESET);//SCK -> 0
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 		__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
@@ -56,7 +57,7 @@ __IO static void writeDac7311(uint16_t dat){
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
 	__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();__nop();
-	SET_EDAC7_CS(GPIO_PIN_SET);
+	SET_DAC7311_CS(GPIO_PIN_SET);
 }
 
 void sPlcDacInit(void){//DAC初始化

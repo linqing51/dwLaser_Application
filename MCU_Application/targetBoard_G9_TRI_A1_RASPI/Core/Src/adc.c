@@ -99,7 +99,7 @@ void MX_ADC1_Init(void)
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
-  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Channel = ADC_CHANNEL_7;
   sConfig.Rank = 5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -108,7 +108,6 @@ void MX_ADC1_Init(void)
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
-  sConfig.Channel = ADC_CHANNEL_7;
   sConfig.Rank = 6;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -206,16 +205,15 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     PA1     ------> ADC1_IN1
     PA2     ------> ADC1_IN2
     PA3     ------> ADC1_IN3
-    PA6     ------> ADC1_IN6
     PA7     ------> ADC1_IN7
     */
-    GPIO_InitStruct.Pin = LD1_CUR_Pin|LD0_CUR_Pin|TEC_CUR_Pin|LAS_NTC_Pin;
+    GPIO_InitStruct.Pin = LAS1_CUR_Pin|LAS0_CUR_Pin|TEC0_CUR_Pin|LAS0_NTC_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = LAS_LPD_Pin|LAS_FPD_Pin|HT1_NTC_Pin|HT2_NTC_Pin
-                          |IVIN_IS_Pin|GPIO_PIN_7;
+    GPIO_InitStruct.Pin = LAS0_LPD_Pin|LAS0_FPD_Pin|HT1_NTC_Pin|HT2_NTC_Pin
+                          |IVIN_IS_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -265,13 +263,12 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     PA1     ------> ADC1_IN1
     PA2     ------> ADC1_IN2
     PA3     ------> ADC1_IN3
-    PA6     ------> ADC1_IN6
     PA7     ------> ADC1_IN7
     */
-    HAL_GPIO_DeInit(GPIOC, LD1_CUR_Pin|LD0_CUR_Pin|TEC_CUR_Pin|LAS_NTC_Pin);
+    HAL_GPIO_DeInit(GPIOC, LAS1_CUR_Pin|LAS0_CUR_Pin|TEC0_CUR_Pin|LAS0_NTC_Pin);
 
-    HAL_GPIO_DeInit(GPIOA, LAS_LPD_Pin|LAS_FPD_Pin|HT1_NTC_Pin|HT2_NTC_Pin
-                          |IVIN_IS_Pin|GPIO_PIN_7);
+    HAL_GPIO_DeInit(GPIOA, LAS0_LPD_Pin|LAS0_FPD_Pin|HT1_NTC_Pin|HT2_NTC_Pin
+                          |IVIN_IS_Pin);
 
     /* ADC1 DMA DeInit */
     HAL_DMA_DeInit(adcHandle->DMA_Handle);

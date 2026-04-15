@@ -20,7 +20,8 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 	return true;
 }
 //SPI EPROM接口
-#if defined(LYPE_MCU_1V0_20260106)
+#if defined(LYPE_MCU_1V0_20260106) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 typedef enum {//FM25W256 指令定义
 	FM25W256_WREN = 0x06,// 写使能（写操作前必须调用）
 	FM25W256_WRDI = 0x04,// 写禁止
