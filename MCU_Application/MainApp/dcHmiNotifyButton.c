@@ -1798,7 +1798,78 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH0:{
+					if(state){
+						SET_LASER_CH0_ON;
+					}
+					else{
+						SET_LASER_CH0_OFF;
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH1:{
+					if(state){
+						SET_LASER_CH1_ON;
+					}
+					else{
+						SET_LASER_CH1_OFF;
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH2:{
+					if(state){
+						SET_LASER_CH2_ON;
+					}
+					else{
+						SET_LASER_CH2_OFF;
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH3:{
+					if(state){
+						SET_LASER_CH3_ON;
+					}
+					else{
+						SET_LASER_CH3_OFF;
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4:{
+					if(state){
+						SET_LASER_CH4_ON;
+					}
+					else{
+						SET_LASER_CH4_OFF;
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5:{
+					if(state){
+						SET_LASER_CH5_ON;
+					}
+					else{
+						SET_LASER_CH5_OFF;
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6:{
+					if(state){
+						SET_LASER_CH6_ON;
+					}
+					else{
+						SET_LASER_CH6_OFF;
+					}
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7:{
+					if(state){
+						SET_LASER_CH7_ON;
+					}
+					else{
+						SET_LASER_CH7_OFF;
+					}
+					break;
+				}
 				default:break;
 			}
 			break;

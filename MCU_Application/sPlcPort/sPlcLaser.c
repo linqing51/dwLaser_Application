@@ -181,10 +181,42 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 static void laserStart(void){//按通道选择打开激光
 	if(LaserFlag_Emiting == false){
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(MODEL_PVGLS_10W_1940_A1)
 			SET_LASER_CH0_ON;
+#endif
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+			SET_LASER_CH0_ON;
+			SET_LASER_CH1_ON;
+#endif
+#if defined(LYPE_MCU_1V0_20260106)
+			SET_LASER_CH0_ON;
+			SET_LASER_CH1_ON;
+			SET_LASER_CH2_ON;
+			SET_LASER_CH3_ON;
+#endif			
 		}
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(MODEL_PVGLS_15W_1470_A0) ||\
+		defined(MODEL_PVGLS_15W_1470_A1) ||\
+		defined(MODEL_PVGLS_10W_1940_A1)
 			SET_LASER_CH1_ON;
+#endif
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+			SET_LASER_CH2_ON;
+#endif
+#if defined(LYPE_MCU_1V0_20260106)
+			SET_LASER_CH4_ON;
+#endif
 		}
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//打开红激光
 			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
@@ -197,6 +229,12 @@ static void laserStop(void){//按通道选择关闭激光
 	if(LaserFlag_Emiting == true){
 		SET_LASER_CH0_OFF;		
 		SET_LASER_CH1_OFF;
+		SET_LASER_CH2_OFF;
+		SET_LASER_CH3_OFF;
+		SET_LASER_CH4_OFF;
+		SET_LASER_CH5_OFF;
+		SET_LASER_CH6_OFF;
+		SET_LASER_CH7_OFF;
 		NVRAM0[SPREG_DAC_16] = NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain;
 		UPDAC16();	
 		LaserFlag_Emiting = false;

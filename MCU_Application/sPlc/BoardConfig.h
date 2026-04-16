@@ -95,10 +95,11 @@ extern UART_HandleTypeDef huart6;//DEBUG
 extern SPI_HandleTypeDef hspi3;
 extern I2C_HandleTypeDef hi2c2;//MPU I2C
 
-extern TIM_HandleTypeDef htim5;//GAIM TIM
-extern TIM_HandleTypeDef htim3;//FAN TIM
-extern TIM_HandleTypeDef htim7;//LASER TIM
 extern TIM_HandleTypeDef htim2;//SKP TIM
+extern TIM_HandleTypeDef htim3;//FAN TIM
+extern TIM_HandleTypeDef htim4;//RGB LED
+extern TIM_HandleTypeDef htim5;//GAIM TIM
+extern TIM_HandleTypeDef htim7;//LASER TIM
 extern TIM_HandleTypeDef htim9;//RAIM  TIM
 extern TIM_HandleTypeDef htim14;//SPLC  TIM
 extern ADC_HandleTypeDef hadc1;
@@ -782,16 +783,16 @@ extern uint16_t audioSineTable[];
 #define SET_DAC7311_SCK(b)                    HAL_GPIO_WritePin(DAC7311_SCK_GPIO_Port, DAC7311_SCK_Pin, b)
 #define SET_DAC7311_SDI(b)										HAL_GPIO_WritePin(DAC7311_SDI_GPIO_Port, DAC7311_SDI_Pin, b)								
 
-#define SET_RED_LED_ON												HAL_GPIO_WritePin(RED_LED_GPIO_Port, RED_LED_Pin, GPIO_PIN_SET)
-#define SET_RED_LED_OFF												HAL_GPIO_WritePin(RED_LED_GPIO_Port, RED_LED_Pin, GPIO_PIN_RESET)
-#define SET_GREEN_LED_ON											
-#define SET_GREEN_LED_OFF											
-#define SET_BLUE_LED_ON												HAL_GPIO_WritePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin, GPIO_PIN_SET)
-#define SET_BLUE_LED_OFF											HAL_GPIO_WritePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin, GPIO_PIN_RESET)
+#define SET_RED_LED_ON												HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2)
+#define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2)
+#define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1)
+#define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1)
+#define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3)
+#define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_3)
 
-#define SET_RED_LED_DC(b)											__nop()											
-#define SET_GREEN_LED_DC(b)										__nop()
-#define SET_BLUE_LED_DC(b)										__nop()
+#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, b)
+#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, b)
+#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, b)
 
 #define SET_BEEM_LED_ON												HAL_GPIO_WritePin(BEEM_LED_GPIO_Port, BEEM_LED_Pin, GPIO_PIN_RESET)
 #define SET_BEEM_LED_OFF											HAL_GPIO_WritePin(BEEM_LED_GPIO_Port, BEEM_LED_Pin, GPIO_PIN_SET)
@@ -867,12 +868,12 @@ extern uint16_t audioSineTable[];
 
 #define GET_LASER_CH0													HAL_GPIO_ReadPin(LAS0_PWM_GPIO_Port, LAS0_PWM_Pin)
 #define GET_LASER_CH1													HAL_GPIO_ReadPin(LAS1_PWM_GPIO_Port, LAS1_PWM_Pin)
-#define GET_LASER_CH2													__nop()
-#define GET_LASER_CH3													__nop()
-#define GET_LASER_CH4													__nop()
-#define GET_LASER_CH5													__nop()
-#define GET_LASER_CH6													__nop()
-#define GET_LASER_CH7													__nop()
+#define GET_LASER_CH2													0
+#define GET_LASER_CH3													0
+#define GET_LASER_CH4													0
+#define GET_LASER_CH5													0
+#define GET_LASER_CH6													0
+#define GET_LASER_CH7													0
 
 #define SET_FAN0_ON														HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4)
 #define SET_FAN0_OFF													HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_4)
@@ -957,9 +958,9 @@ extern uint16_t audioSineTable[];
 #define EPROM_SPI_NSS_SEL											HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET)
 
 //模拟HDC1080 I2C定义
-#define SET_HDC1080_SCL(b)										HAL_GPIO_WritePin(HDC1080_SCL_GPIO_Port, HDC1080_SCL_Pin, b)										
-#define SET_HDC1080_SDA(b)										HAL_GPIO_WritePin(HDC1080_SDA_GPIO_Port, HDC1080_SDA_Pin, b)
-#define GET_HDC1080_SDA												HAL_GPIO_ReadPin(HDC1080_SDA_GPIO_Port, HDC1080_SDA_Pin)
+#define SET_HDC1080_SCL(b)										__nop()									
+#define SET_HDC1080_SDA(b)										__nop()
+#define GET_HDC1080_SDA												0
 
 #endif
 /*****************************************************************************/

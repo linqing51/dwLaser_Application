@@ -139,8 +139,8 @@ void Error_Handler(void);
 #define DBG_TX_GPIO_Port GPIOC
 #define DBG_RX_Pin GPIO_PIN_7
 #define DBG_RX_GPIO_Port GPIOC
-#define FAN_FG_Pin GPIO_PIN_8
-#define FAN_FG_GPIO_Port GPIOC
+#define FAN0_FG_Pin GPIO_PIN_8
+#define FAN0_FG_GPIO_Port GPIOC
 #define FAN0_PWM_Pin GPIO_PIN_9
 #define FAN0_PWM_GPIO_Port GPIOC
 #define POWER_INT_Pin GPIO_PIN_8
