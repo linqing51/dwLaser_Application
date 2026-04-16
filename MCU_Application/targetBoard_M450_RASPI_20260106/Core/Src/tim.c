@@ -47,11 +47,11 @@ void MX_TIM5_Init(void)
 
   /* USER CODE END TIM5_Init 1 */
   htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 0;
+  htim5.Init.Prescaler = 96;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim5.Init.Period = 4294967295;
+  htim5.Init.Period = 5000;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
   {
     Error_Handler();
@@ -252,7 +252,6 @@ void MX_TIM12_Init(void)
   /* USER CODE END TIM12_Init 0 */
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_OC_InitTypeDef sConfigOC = {0};
 
   /* USER CODE BEGIN TIM12_Init 1 */
 
@@ -272,22 +271,9 @@ void MX_TIM12_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_Init(&htim12) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim12, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN TIM12_Init 2 */
 
   /* USER CODE END TIM12_Init 2 */
-  HAL_TIM_MspPostInit(&htim12);
 
 }
 /* TIM14 init function */
@@ -464,27 +450,6 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
   /* USER CODE BEGIN TIM9_MspPostInit 1 */
 
   /* USER CODE END TIM9_MspPostInit 1 */
-  }
-  else if(timHandle->Instance==TIM12)
-  {
-  /* USER CODE BEGIN TIM12_MspPostInit 0 */
-
-  /* USER CODE END TIM12_MspPostInit 0 */
-
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**TIM12 GPIO Configuration
-    PB14     ------> TIM12_CH1
-    */
-    GPIO_InitStruct.Pin = RAIM_PWM_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF9_TIM12;
-    HAL_GPIO_Init(RAIM_PWM_GPIO_Port, &GPIO_InitStruct);
-
-  /* USER CODE BEGIN TIM12_MspPostInit 1 */
-
-  /* USER CODE END TIM12_MspPostInit 1 */
   }
 
 }

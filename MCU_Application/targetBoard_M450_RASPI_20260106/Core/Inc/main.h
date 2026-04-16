@@ -159,8 +159,8 @@ void Error_Handler(void);
 #define ICAN_RX_GPIO_Port GPIOB
 #define ICAN_TX_Pin GPIO_PIN_13
 #define ICAN_TX_GPIO_Port GPIOB
-#define RAIM_PWM_Pin GPIO_PIN_14
-#define RAIM_PWM_GPIO_Port GPIOB
+#define GAIM_SHDN_Pin GPIO_PIN_14
+#define GAIM_SHDN_GPIO_Port GPIOB
 #define IBUS_INT0_Pin GPIO_PIN_15
 #define IBUS_INT0_GPIO_Port GPIOB
 #define GDDC_UART_TX_Pin GPIO_PIN_8

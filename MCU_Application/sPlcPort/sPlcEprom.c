@@ -689,17 +689,23 @@ void listEpromTable(void){//输出EPROM分布表
 	printf("MR EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
 	printf("DM EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
 	printf("FD EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
-	
+
+#if defined(LYPE_MCU_1V0_20260106) ||\
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+	printf("MEDICAL CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MEDICAL_CRC, (uint32_t)(CONFIG_EPROM_MEDICAL_CRC + 3));
+	printf("CALI BAK CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_CALB_CRC, (uint32_t)(CONFIG_EPROM_CALB_CRC + 3));
+	printf("CALI CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_CALB_BK_CRC, (uint32_t)(CONFIG_EPROM_CALB_BK_CRC + 3));	
+#endif	
 	printf("MR CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MR_CRC, (uint32_t)(CONFIG_EPROM_MR_CRC + 3));
 	printf("DM CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_DM_CRC, (uint32_t)(CONFIG_EPROM_DM_CRC + 3));
-	printf("FD CRC EPROM:0x%04X---0x%04X,(unuse)\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3));	
+	printf("FD CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3));	
 	printf("MCU FW CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3));
 	printf("LCD FW CRC EPROM:0x%04X---0x%04X\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3));
 	
 	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
 	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
 		
-	printf("deviceConfig size:%d\n)", sizeof(deviceConfig));
+	printf("deviceConfig size:%d\n", sizeof(deviceConfig));
 	printf("deviceLogInfo size:%d\n", sizeof(deviceLogInfo));
 	
 	tmp = CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1;

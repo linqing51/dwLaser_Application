@@ -551,14 +551,25 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2)
 #define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim9, TIM_CHANNEL_2)
 
-#define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_1)
-#define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1)
-#define SET_RAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, b)
+#define SET_RAIM_TIM_OFF											__nop()
+#define SET_RAIM_TIM_ON												__nop()
+#define SET_RAIM_TIM_PWM(b)										__nop()
+
+#define SET_RAIM_SHDN(b)			                __nop()
+#define SET_RAIM_SHDN_ON                      __nop()
+#define SET_RAIM_SHDN_OFF                     __nop()
+#define FLIP_RAIM_SHDN                        __nop()
+#define GET_RAIM_SHDN													0
 
 #define SET_GAIM_TIM_OFF											HAL_TIM_PWM_Stop(&htim5, TIM_CHANNEL_3)
 #define SET_GAIM_TIM_ON												HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_3)
 #define SET_GAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_3, b)
 
+#define SET_GAIM_SHDN(b)			                HAL_GPIO_WritePin(GAIM_SHDN_GPIO_Port, GAIM_SHDN_Pin, b)
+#define SET_GAIM_SHDN_ON                      HAL_GPIO_WritePin(GAIM_SHDN_GPIO_Port, GAIM_SHDN_Pin, GPIO_PIN_SET)
+#define SET_GAIM_SHDN_OFF                     HAL_GPIO_WritePin(GAIM_SHDN_GPIO_Port, GAIM_SHDN_Pin, GPIO_PIN_RESET)
+#define FLIP_GAIM_SHDN                        HAL_GPIO_TogglePin(GAIM_SHDN_GPIO_Port, GAIM_SHDN_Pin)
+#define GET_GAIM_SHDN													HAL_GPIO_ReadPin(GAIM_SHDN_GPIO_Port, GAIM_SHDN_Pin)
 //MCP41010
 #define SET_MCP41010_CS(b)										HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
@@ -1341,7 +1352,7 @@ extern uint16_t audioSineTable[];
 #define CALIBRATION_FACTOR_CH7_BK_START				(31442L)//通道0激光校准系数表起始
 #define CALIBRATION_FACTOR_CH7_BK_END					(31461L)//通道0激光校准系数表结束
 
-#define CONFIG_EPROM_MEDICAL_CRC_START				(31458L)//4B 治疗历史 CRC32 硬件计算
+#define CONFIG_EPROM_MEDICAL_CRC							(31458L)//4B 治疗历史 CRC32 硬件计算
 #define CONFIG_EPROM_CALB_CRC									(31462L)//4B 功率校准表 CRC32 硬件计算
 #define CONFIG_EPROM_CALB_BK_CRC							(31466L)//4B 备份功率校准表 CRC32 硬件计算
 #define CONFIG_EPROM_MR_CRC										(31470L)//4B MR NVRAM CRC32 硬件计算

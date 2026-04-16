@@ -169,6 +169,7 @@ extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
 extern void UsbGpioReset(void);
 extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
+extern void setGreenLaserPwm(int16_t pwm);//设置绿激光占空比
 extern void setPower_635(int16_t pwr);//设置红激光功率
 extern void setFanSpeed(int16_t speed);//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码

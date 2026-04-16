@@ -75,7 +75,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOG, DAC8568_CLEAR_Pin|LAS_BREAK_Pin|YOUT1_Pin|PUMP0_PWM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, TEC1_PWM_Pin|TEC0_PWM_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, TEC1_PWM_Pin|TEC0_PWM_Pin|GAIM_SHDN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOH, TEC3_PWM_Pin|TEC2_PWM_Pin|TEC5_PWM_Pin|TEC4_PWM_Pin
@@ -214,6 +214,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : GAIM_SHDN_Pin */
+  GPIO_InitStruct.Pin = GAIM_SHDN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GAIM_SHDN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : IBUS_INT0_Pin */
   GPIO_InitStruct.Pin = IBUS_INT0_Pin;

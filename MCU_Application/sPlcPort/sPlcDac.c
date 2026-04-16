@@ -461,6 +461,7 @@ void UPDAC16(void){
 	setRedLaserPwm(NVRAM0[SPREG_DAC_16]);
 }
 void UPDAC17(void){
+	setGreenLaserPwm(NVRAM0[SPREG_DAC_17]);
 }
 
 void CLDAC(void){//立即清空全部DAC
