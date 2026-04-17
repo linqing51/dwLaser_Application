@@ -155,10 +155,12 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 }
 
 void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM		
+	int16_t tmp16;
 	if(index > (CONFIG_CUSTIOM_SIZE - 1)){
 		index = (CONFIG_CUSTIOM_SIZE - 1);
 	}
-	memcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(&FDRAM0[index * 64 + FD_LASER_SCHEME_NAME]) , 112);
+	tmp16 = ((EM_LASER_CHANNEL_SELECT - EM_LASER_SCHEME_NAME + 1) * 2);
+	memcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(&FDRAM0[index * 64 + FD_LASER_SCHEME_NAME]) , tmp16);
 	NVRAM0[EM_LASER_CHANNEL_SELECT] = FDRAM0[index * 64 + FD_LASER_CHANNEL_SELECT];
 	NVRAM0[EM_LASER_PULSE_MODE] = FDRAM0[index * 64 + FD_LASER_PULSE_MODE];
 	NVRAM0[EM_LASER_POWER_CH0] = FDRAM0[index * 64 + FD_LASER_POWER_CH0];

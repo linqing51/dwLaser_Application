@@ -905,9 +905,21 @@ extern uint16_t audioSineTable[];
 #define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2)
 #define SET_RAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, b)
 
+#define SET_RAIM_SHDN(b)			                __nop()
+#define SET_RAIM_SHDN_ON                      __nop()
+#define SET_RAIM_SHDN_OFF                     __nop()
+#define FLIP_RAIM_SHDN                        __nop()
+#define GET_RAIM_SHDN													0
+
 #define SET_GAIM_TIM_OFF											__nop()
 #define SET_GAIM_TIM_ON												__nop()
 #define SET_GAIM_TIM_PWM(b)										__nop()
+
+#define SET_GAIM_SHDN(b)			                __nop()
+#define SET_GAIM_SHDN_ON                      __nop()
+#define SET_GAIM_SHDN_OFF                     __nop()
+#define FLIP_GAIM_SHDN                        __nop()
+#define GET_GAIM_SHDN													__nop()
 
 //MCP41010
 #define SET_MCP41010_CS(b)										HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)

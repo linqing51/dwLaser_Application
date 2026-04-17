@@ -171,6 +171,7 @@
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_THERAPY						9
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM						10
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN						11
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENDOLIFT					12
 /*****************************************************************************/
 //方案页面
 #define GDDC_PAGE_SCHEME_KEY_RENAME											1//更名按键

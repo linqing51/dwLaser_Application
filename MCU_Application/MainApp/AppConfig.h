@@ -47,6 +47,7 @@
 #define SCHEME_LIPOSUCTION														0x0007
 #define SCHEME_DENTISTRY															0x0008
 #define SCHMEM_THERAPY																0x0009
+#define SCHEME_ENDOLIFT																0x000A
 #define SCHEME_CUSTIOM																0x0000
 /*****************************************************************************/
 //BOOTLOAD配置
@@ -196,6 +197,7 @@
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												23
 #define CONFIG_ENT_SIZE																16
+#define CONFIG_ENDOLIFT_SIZE													18
 #if defined(MODEL_PVGLS_TRI_A0) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined (LDR2P1_G5_A1_20250910_TRIP) ||\

@@ -54,7 +54,7 @@ void sPlcAssertRegisterAddress(uint16_t adr){//检查寄存器地址
 #endif
 }
 void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
-	uint32_t crc32_mr, crc32_dm;
+	uint32_t crc32_mr, crc32_dm, crc32;
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
 	//从EPROM中恢复MR NVRAM
@@ -70,18 +70,6 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
 	printf("%s,%d,%s:MR EPROM CRC:0x%08X,MR CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_mr, crc32_mr);
 	printf("%s,%d,%s:DM EPROM CRC:0x%08X,DM CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_dm, crc32_dm);
-	
-//	#define CONFIG_EPROM_MEDICAL_CRC							(31458L)//4B 治疗历史 CRC32 硬件计算
-//#define CONFIG_EPROM_CALB_CRC									(31462L)//4B 功率校准表 CRC32 硬件计算
-//#define CONFIG_EPROM_CALB_BK_CRC							(31466L)//4B 备份功率校准表 CRC32 硬件计算
-//#define CONFIG_EPROM_MR_CRC										(31470L)//4B MR NVRAM CRC32 硬件计算
-//#define CONFIG_EPROM_DM_CRC										(31474L)//4B DM NVRAM CRC32 硬件计算
-//#define CONFIG_EPROM_FD_CRC										(31478L)//4B FD NVRAM CRC32 硬件计算
-//#define CONFIG_EPROM_MCU_FW_CRC								(31482L)//4B MCU固件CRC32值 软件计算
-//#define CONFIG_EPROM_LCD_FW_CRC								(31486L)//4B LCD固件CRC32值 软件计算
-//#define CONFIG_EPROM_CFG_CRC									(31480L)//4B deviceConfig CRC32值 硬件计算
-//#define CONFIG_EPROM_LOG_CRC									(31484L)//4B logInfo CRC32值 硬件计算
-	printf("%s,%d,%s:DM EPROM CRC:0x%08X\n")
 	if((crc32_eprom_mr != crc32_mr) && (crc32_eprom_dm != crc32_dm)){
 		printf("%s,%d,%s:load NVRAM crc fail...\n",__FILE__, __LINE__, __func__);
 	}
