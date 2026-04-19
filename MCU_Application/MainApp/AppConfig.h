@@ -197,7 +197,7 @@
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												23
 #define CONFIG_ENT_SIZE																16
-#define CONFIG_ENDOLIFT_SIZE													18
+#define CONFIG_ENDOLIFT_SIZE													11
 #if defined(MODEL_PVGLS_TRI_A0) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined (LDR2P1_G5_A1_20250910_TRIP) ||\

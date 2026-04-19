@@ -62,10 +62,10 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOF, TEC_PWM_Pin|EDAC7_SCK_Pin|EDAC7_CS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOF, TEC_PWM_Pin|DAC7311_SCK_Pin|DAC7311_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, EDAC7_SDI_Pin|MPU_USB1_PSON_LEGACY_Pin|USB_HS_PSON_LEGACY_Pin|USBA1_PSON_Pin
+  HAL_GPIO_WritePin(GPIOB, DAC7311_SDI_Pin|MPU_USB1_PSON_LEGACY_Pin|USB_HS_PSON_LEGACY_Pin|USBA1_PSON_Pin
                           |USBA1_SEL_Pin|ERR_LED_Pin|TICK_LED_Pin|BEEM_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
@@ -120,26 +120,26 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(TEC_PWM_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : EDAC7_SDI_Pin */
-  GPIO_InitStruct.Pin = EDAC7_SDI_Pin;
+  /*Configure GPIO pin : DAC7311_SDI_Pin */
+  GPIO_InitStruct.Pin = DAC7311_SDI_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(EDAC7_SDI_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(DAC7311_SDI_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : EDAC7_SCK_Pin */
-  GPIO_InitStruct.Pin = EDAC7_SCK_Pin;
+  /*Configure GPIO pin : DAC7311_SCK_Pin */
+  GPIO_InitStruct.Pin = DAC7311_SCK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(EDAC7_SCK_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(DAC7311_SCK_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : EDAC7_CS_Pin */
-  GPIO_InitStruct.Pin = EDAC7_CS_Pin;
+  /*Configure GPIO pin : DAC7311_CS_Pin */
+  GPIO_InitStruct.Pin = DAC7311_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(EDAC7_CS_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(DAC7311_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : MPU_POLL_Pin DEV_SPI_INT0_Pin DEV_SPI_INT1_Pin */
   GPIO_InitStruct.Pin = MPU_POLL_Pin|DEV_SPI_INT0_Pin|DEV_SPI_INT1_Pin;

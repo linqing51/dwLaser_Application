@@ -1109,9 +1109,16 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		case GDDC_PAGE_RESTORE:{
 			switch(control_id){
 				case GDDC_PAGE_RESTORE_KEY_YES:{
-					if(state){
+					if(state){				
 						restoreDefault();
 						REBOOT();
+					}
+					break;
+				}
+				case GDDC_PAGE_RESTORE_KEY_CANCEL:{
+					if(state){				
+						updateOptionDisplay();
+						
 					}
 					break;
 				}
@@ -1233,7 +1240,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 					}
 					break;
-				}
+				}				
 				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM:{
 					if(state){		
 						memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));						
@@ -1322,6 +1329,17 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SetScreen(NVRAM0[EM_DC_PAGE]);						
 						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 						seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
+					}
+					break;
+				}
+				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENDOLIFT:{
+					if(state){
+						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_ENDOLIFT;	
+						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;
+						SetScreen(NVRAM0[EM_DC_PAGE]);						
+						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
+						seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);						
 					}
 					break;
 				}
@@ -1698,48 +1716,56 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH0:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH0);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH0, false);
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH1:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH1);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH1, false);
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH2:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH2);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH2, false);
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH3:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH3);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH3, false);
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH4:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH4);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH4, false);
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH5:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH5);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH5, false);
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH6:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH6);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH6, false);
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH7);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7, false);
 					}
 					break;
 				}

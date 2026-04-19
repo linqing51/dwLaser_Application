@@ -226,13 +226,13 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 				index = (CONFIG_ENDOLIFT_SIZE - 1);
 			}
 			strcpy((char*)(&NVRAM0[EM_LASER_SCHEME_NAME]), (char*)(sEndolift[index].name));
-			NVRAM0[EM_LASER_CHANNEL_SELECT] = FDRAM0[index * 64 + FD_LASER_CHANNEL_SELECT];
-			NVRAM0[EM_LASER_PULSE_MODE] = FDRAM0[index * 64 + FD_LASER_PULSE_MODE];
-			NVRAM0[EM_LASER_POWER_CH0] = FDRAM0[index * 64 + FD_LASER_POWER_CH0];
-			NVRAM0[EM_LASER_POWER_CH1] = FDRAM0[index * 64 + FD_LASER_POWER_CH1];
-			NVRAM0[EM_LASER_POWER_635] = FDRAM0[index * 64 + FD_LASER_POWER_RED];
-			NVRAM0[EM_LASER_POSWIDTH] = FDRAM0[index * 64 + FD_LASER_POSWIDTH];
-			NVRAM0[EM_LASER_NEGWIDTH] = FDRAM0[index * 64 + FD_LASER_NEGWIDTH];				
+			NVRAM0[EM_LASER_CHANNEL_SELECT] = sEndolift[index].channel;
+			NVRAM0[EM_LASER_PULSE_MODE] = sEndolift[index].pulse_mode;
+			NVRAM0[EM_LASER_POWER_CH0] = sEndolift[index].power_ch0;
+			NVRAM0[EM_LASER_POWER_CH1] = sEndolift[index].power_ch1;
+			NVRAM0[EM_LASER_POWER_635] = sEndolift[index].power_red;
+			NVRAM0[EM_LASER_POSWIDTH] = sEndolift[index].poswidth;
+			NVRAM0[EM_LASER_NEGWIDTH] = sEndolift[index].negwidth;					
 			break;
 		}
 		case SCHEME_CUSTIOM:{
@@ -682,128 +682,111 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p->negwidth = 5000;	
 	
 	//1470nm Endolift
+	//1470nm Pulse 0.5W, 50ms,50ms
 	p = &sEndolift[0];
-	p->name = "Face Lower eyelids Lev1";
+	p->name = "Face Lower eyelids";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 6;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;	
 	
 	p = &sEndolift[1];
-	p->name = "Face Lower eyelids Lev2";
-	
+	p->name = "Face Cheeks";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 15;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;	
+		
 	p = &sEndolift[2];
-	p->name = "Face Lower eyelids Lev3";
-	
+	p->name = "Face Mandib bord";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 13;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
+		
 	p = &sEndolift[3];
-	p->name = "Face Cheeks Lev1";
+	p->name = "Face Under chin";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP;
+	p->power_ch0 = 15;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
 	
 	p = &sEndolift[4];
-	p->name = "Face Cheeks Lev2";
+	p->name = "Face Neck";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 15;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
 	
 	p = &sEndolift[5];
-	p->name = "Face Cheeks Lev3";
+	p->name = "Body Arms";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 30;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
 	
 	p = &sEndolift[6];
-	p->name = "Face Mandib bord Lev1";
-	
+	p->name = "Body Abdomen";
+	p->channel = LASER_CHANNEL_CH0;
+	p->power_ch0 = 30;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
+
 	p = &sEndolift[7];
-	p->name = "Face Mandib bord Lev2";
-	
+	p->name = "Body Sides";
+	p->channel = LASER_CHANNEL_CH0;
+	p->power_ch0 = 30;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
+		
 	p = &sEndolift[8];
-	p->name = "Face Mandib bord Lev3";
+	p->name = "Body Trochanter";
+	p->channel = LASER_CHANNEL_CH0;
+	p->power_ch0 = 30;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
 	
 	p = &sEndolift[9];
-	p->name = "Face Under chin Lev1";
+	p->name = "Body Inside led";
+	p->channel = LASER_CHANNEL_CH0;
+	p->power_ch0 = 30;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
 	
 	p = &sEndolift[10];
-	p->name = "Face Under chin Lev2";
-	
-	p = &sEndolift[11];
-	p->name = "Face Under chin Lev3";
-	
-	p = &sEndolift[12];
-	p->name = "Face Neck Lev1";
-	
-	p = &sEndolift[13];
-	p->name = "Face Neck Lev2";
-	
-	p = &sEndolift[14];
-	p->name = "Face Neck Lev3";
-	
-	p = &sEndolift[15];
-	p->name = "Body Arms Lev1";
-	
-	p = &sEndolift[16];
-	p->name = "Body Arms Lev2";
-	
-	p = &sEndolift[17];
-	p->name = "Body Arms Lev3";
-	
-	p = &sEndolift[18];
-	p->name = "Body Abdomen Lev1";
-	
-	p = &sEndolift[19];
-	p->name = "Body Abdomen Lev2";
-	
-	p = &sEndolift[20];
-	p->name = "Body Abdomen Lev3";
-	
-	p = &sEndolift[21];
-	p->name = "Body Sides Lev1";
-	
-	p = &sEndolift[22];
-	p->name = "Body Sides Lev2";
-	
-	p = &sEndolift[23];
-	p->name = "Body Sides Lev3";
-	
-	p = &sEndolift[24];
-	p->name = "Body Trochanter Lev1";
-	
-	p = &sEndolift[25];
-	p->name = "Body Trochanter Lev2";
-	
-	p = &sEndolift[26];
-	p->name = "Body Trochanter Lev3";
-	
-	p = &sEndolift[27];
-	p->name = "Body Inside led Lev1";
-	
-	p = &sEndolift[28];
-	p->name = "Body Inside led Lev2";
-	
-	p = &sEndolift[29];
-	p->name = "Body Inside led Lev3";
-	
-	p = &sEndolift[30];
-	p->name = "Body Anckle Lev1";
-	
-	p = &sEndolift[31];
-	p->name = "Body Anckle Lev2";
-	
-	p = &sEndolift[32];
-	p->name = "Body Anckle Lev3";
-	
-	
-	p = &sEndolift[1];
-	p = &sEndolift[2];
-	p = &sEndolift[3];
-	p = &sEndolift[4];
-	p = &sEndolift[5];
-	p = &sEndolift[6];
-	p = &sEndolift[7];
-	p = &sEndolift[8];
-	p = &sEndolift[9];
-	p = &sEndolift[10];
-	p = &sEndolift[11];
-	p = &sEndolift[12];
-	p = &sEndolift[13];
-	p = &sEndolift[14];
-	p = &sEndolift[15];
-	p = &sEndolift[16];
-	p = &sEndolift[17];
-	p = &sEndolift[18];
-	p = &sEndolift[19];
-	p = &sEndolift[20];
-	p = &sEndolift[21];
-	
+	p->name = "Body Anckle";
+	p->channel = LASER_CHANNEL_CH0;
+	p->power_ch0 = 30;
+	p->power_ch1 = 1;
+	p->power_red = 1;
+	p->poswidth = 50;
+	p->negwidth = 50;
 	
 	//Liposuction
 	//1470nm, 3w CW

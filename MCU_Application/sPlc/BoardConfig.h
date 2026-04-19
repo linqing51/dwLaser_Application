@@ -122,32 +122,36 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
 #define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
 
-#define SET_EDAC0_CS(b)												
-#define SET_EDAC1_CS(b)												
-#define SET_EDAC2_CS(b)												
-#define SET_EDAC3_CS(b)											
-#define SET_EDAC4_CS(b)												
-#define SET_EDAC5_CS(b)												
-#define SET_EDAC6_CS(b)												
-#define SET_EDAC7_CS(b)												HAL_GPIO_WritePin(EDAC7_CS_GPIO_Port, EDAC7_CS_Pin, b)											
+#define SET_DAC7311_CS(b)											HAL_GPIO_WritePin(DAC7311_CS_GPIO_Port, DAC7311_CS_Pin, b)												
+#define SET_DAC7311_SCK(b)                    HAL_GPIO_WritePin(DAC7311_SCK_GPIO_Port, DAC7311_SCK_Pin, b)
+#define SET_DAC7311_SDI(b)										HAL_GPIO_WritePin(DAC7311_SDI_GPIO_Port, DAC7311_SDI_Pin, b)	
 
-#define SET_EDAC0_SCK(b)
-#define SET_EDAC1_SCK(b)											
-#define SET_EDAC2_SCK(b)											
-#define SET_EDAC3_SCK(b)			
-#define SET_EDAC4_SCK(b)
-#define SET_EDAC5_SCK(b)											
-#define SET_EDAC6_SCK(b)											
-#define SET_EDAC7_SCK(b)											HAL_GPIO_WritePin(EDAC7_SCK_GPIO_Port, EDAC7_SCK_Pin, b)				
+#define SET_EDAC0_CS(b)												__nop()		
+#define SET_EDAC1_CS(b)												__nop()
+#define SET_EDAC2_CS(b)												__nop()
+#define SET_EDAC3_CS(b)												__nop()
+#define SET_EDAC4_CS(b)												__nop()
+#define SET_EDAC5_CS(b)												__nop()
+#define SET_EDAC6_CS(b)												__nop()
+#define SET_EDAC7_CS(b)												__nop()											
 
-#define SET_EDAC0_SDI(b)											
-#define SET_EDAC1_SDI(b)											
-#define SET_EDAC2_SDI(b)											
-#define SET_EDAC3_SDI(b)											
-#define SET_EDAC4_SDI(b)											
-#define SET_EDAC5_SDI(b)											
-#define SET_EDAC6_SDI(b)											
-#define SET_EDAC7_SDI(b)											HAL_GPIO_WritePin(EDAC7_SDI_GPIO_Port, EDAC7_SDI_Pin, b)
+#define SET_EDAC0_SCK(b)											__nop()
+#define SET_EDAC1_SCK(b)											__nop()
+#define SET_EDAC2_SCK(b)											__nop()
+#define SET_EDAC3_SCK(b)											__nop()
+#define SET_EDAC4_SCK(b)											__nop()
+#define SET_EDAC5_SCK(b)											__nop()
+#define SET_EDAC6_SCK(b)											__nop()
+#define SET_EDAC7_SCK(b)											__nop()			
+
+#define SET_EDAC0_SDI(b)											__nop()
+#define SET_EDAC1_SDI(b)											__nop()
+#define SET_EDAC2_SDI(b)											__nop()
+#define SET_EDAC3_SDI(b)											__nop()
+#define SET_EDAC4_SDI(b)											__nop()
+#define SET_EDAC5_SDI(b)											__nop()
+#define SET_EDAC6_SDI(b)											__nop()
+#define SET_EDAC7_SDI(b)											__nop()
 
 #define SET_RED_LED_ON												HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3)
 #define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_3)
@@ -211,37 +215,21 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 
 #define FLIP_LASER_CH0												HAL_GPIO_TogglePin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
 #define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
-#define FLIP_LASER_CH2
-#define FLIP_LASER_CH3
+#define FLIP_LASER_CH2												__nop()
+#define FLIP_LASER_CH3												__nop()
+#define FLIP_LASER_CH4												__nop()
+#define FLIP_LASER_CH5												__nop()
+#define FLIP_LASER_CH6												__nop()
+#define FLIP_LASER_CH7												__nop()
 
 #define GET_LASER_CH0													HAL_GPIO_ReadPin(LAS_PWM0_GPIO_Port, LAS_PWM0_Pin)
 #define GET_LASER_CH1													HAL_GPIO_ReadPin(LAS_PWM1_GPIO_Port, LAS_PWM1_Pin)
 #define GET_LASER_CH2													0
 #define GET_LASER_CH3													0
-
-#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_SET)
-#define SET_TEC_CH0_OFF												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_RESET)
-
-#define SET_TEC_CH1_ON												__nop()
-#define SET_TEC_CH1_OFF												__nop()
-
-#define SET_TEC_CH2_ON												__nop()												
-#define SET_TEC_CH2_OFF												__nop()
-
-#define SET_TEC_CH3_ON												__nop()
-#define SET_TEC_CH3_OFF												__nop()
-
-#define SET_TEC_CH4_ON												__nop()
-#define SET_TEC_CH4_OFF												__nop()
-
-#define SET_TEC_CH5_ON												__nop()
-#define SET_TEC_CH5_OFF												__nop()
-
-#define SET_TEC_CH6_ON												__nop()
-#define SET_TEC_CH6_OFF												__nop()
-
-#define SET_TEC_CH7_ON												__nop()
-#define SET_TEC_CH7_OFF												__nop()
+#define GET_LASER_CH4													0
+#define GET_LASER_CH5													0
+#define GET_LASER_CH6													0
+#define GET_LASER_CH7													0
 
 #define SET_FAN0_ON														HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2)
 #define SET_FAN0_OFF													HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2)
@@ -254,9 +242,22 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1)
 #define SET_RAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim10, TIM_CHANNEL_1, b)
 
+#define SET_RAIM_SHDN(b)			                __nop()
+#define SET_RAIM_SHDN_ON                      __nop()
+#define SET_RAIM_SHDN_OFF                     __nop()
+#define FLIP_RAIM_SHDN                        __nop()
+#define GET_RAIM_SHDN													0
+
 #define SET_GAIM_TIM_OFF											__nop()
 #define SET_GAIM_TIM_ON												__nop()
 #define SET_GAIM_TIM_PWM(b)										__nop()
+
+#define SET_GAIM_SHDN(b)			                __nop()
+#define SET_GAIM_SHDN_ON                      __nop()
+#define SET_GAIM_SHDN_OFF                     __nop()
+#define FLIP_GAIM_SHDN                        __nop()
+#define GET_GAIM_SHDN													0
+
 //MCP41010
 #define SET_MCP41010_CS(b)										HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
@@ -405,7 +406,10 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_HDC1080_SCL(b)										__NOP()												
 #define SET_HDC1080_SDA(b)										__NOP()
 #define GET_HDC1080_SDA												0
-
+//安全锁接触
+#define SET_SAFE_RESET(b)											__nop()
+#define SET_SAFE_RESET_ON                    	__nop()
+#define SET_SAFE_RESET_OFF                   	__nop()
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
@@ -987,6 +991,10 @@ extern uint16_t audioSineTable[];
 #define SET_HDC1080_SCL(b)										__nop()									
 #define SET_HDC1080_SDA(b)										__nop()
 #define GET_HDC1080_SDA												0
+//安全锁接触
+#define SET_SAFE_RESET(b)											__nop()
+#define SET_SAFE_RESET_ON                    	__nop()
+#define SET_SAFE_RESET_OFF                   	__nop()
 
 #endif
 /*****************************************************************************/
@@ -1299,6 +1307,9 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
+#define CONFIG_EPROM_MEDICAL_CRC							(7512L)//4B 治疗历史 CRC32 硬件计算
+#define CONFIG_EPROM_CALB_CRC									(7516L)//4B 功率校准表 CRC32 硬件计算
+#define CONFIG_EPROM_CALB_BK_CRC							(7520L)//4B 备份功率校准表 CRC32 硬件计算
 #define CONFIG_EPROM_MR_CRC										(7524L)//4B MR NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_DM_CRC										(7528L)//4B DM NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_FD_CRC										(7532L)//4B FD NVRAM CRC32 硬件计算
@@ -1325,47 +1336,53 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
 //功率校准表地址
-#define CALIBRATION_FACTOR_CH0_START					(7374L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH0_END						(7384L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH0_START					(31132L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH0_END						(CALIBRATION_FACTOR_CH0_START + 3)//通道0激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH1_START					(31182L)//通道1激光校准系数表起始
-#define CALIBRATION_FACTOR_CH1_END						(31201L)//通道1激光校准系数表结束
+#define CALIBRATION_FACTOR_CH1_START					(31152L)//通道1激光校准系数表起始
+#define CALIBRATION_FACTOR_CH1_END						(CALIBRATION_FACTOR_CH1_START + 3)//通道1激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH2_START					(31202L)//通道2激光校准系数表起始
-#define CALIBRATION_FACTOR_CH2_END						(31221L)//通道2激光校准系数表结束
+#define CALIBRATION_FACTOR_CH2_START					(31172L)//通道2激光校准系数表起始
+#define CALIBRATION_FACTOR_CH2_END						(CALIBRATION_FACTOR_CH2_START + 3)//通道2激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH3_START					(31222L)//通道3激光校准系数表起始
-#define CALIBRATION_FACTOR_CH4_END						(31241L)//通道3激光校准系数表结束
+#define CALIBRATION_FACTOR_CH3_START					(31192L)//通道3激光校准系数表起始
+#define CALIBRATION_FACTOR_CH4_END						(CALIBRATION_FACTOR_CH3_START +3)//通道3激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH5_START					(31242L)//通道4激光校准系数表起始
-#define CALIBRATION_FACTOR_CH5_END						(31261L)//通道4激光校准系数表结束
+#define CALIBRATION_FACTOR_CH4_START					(31212L)//通道4激光校准系数表起始
+#define CALIBRATION_FACTOR_CH4_END						(CALIBRATION_FACTOR_CH3_START +4)//通道4激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH6_START					(31262L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH6_END						(31281L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH5_START					(31232L)//通道4激光校准系数表起始
+#define CALIBRATION_FACTOR_CH5_END						(CALIBRATION_FACTOR_CH5_START + 3)//通道4激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH7_START					(31282L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH7_END						(31301L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH6_START					(31252L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH6_END						(CALIBRATION_FACTOR_CH6_START + 3)//通道0激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH7_START					(31272L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH7_END						(CALIBRATION_FACTOR_CH7_START + 3)//通道0激光校准系数表结束
 //功率校准表备份地址
-#define CALIBRATION_FACTOR_CH0_BK_START				(31302L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH0_BK_END					(31321L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH0_BK_START				(31292L)//通道0激光校准系数表起始
+#define CALIBRATION_FACTOR_CH0_BK_END					(CALIBRATION_FACTOR_CH0_BK_START + 3)//通道0激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH1_BK_START				(31322L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH1_BK_END					(31341L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH1_BK_START				(31312L)//通道1激光校准系数表起始
+#define CALIBRATION_FACTOR_CH1_BK_END					(CALIBRATION_FACTOR_CH1_BK_START + 3)//通道1激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH2_BK_START				(31342L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH2_BK_END					(31361L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH2_BK_START				(31332L)//通道2激光校准系数表起始
+#define CALIBRATION_FACTOR_CH2_BK_END					(CALIBRATION_FACTOR_CH2_BK_START + 3)//通道2激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH3_BK_START				(31362L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH4_BK_END					(31401L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH3_BK_START				(31352L)//通道3激光校准系数表起始
+#define CALIBRATION_FACTOR_CH3_BK_END					(CALIBRATION_FACTOR_CH3_BK_START + 3)//通道3激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH5_BK_START				(31402L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH5_BK_END					(31421L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH4_BK_START				(31372L)//通道4激光校准系数表起始
+#define CALIBRATION_FACTOR_CH4_BK_END					(CALIBRATION_FACTOR_CH4_BK_START + 3)//通道4激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH6_BK_START				(31422L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH6_BK_END					(31441L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH5_BK_START				(31392L)//通道5激光校准系数表起始
+#define CALIBRATION_FACTOR_CH5_BK_END					(CALIBRATION_FACTOR_CH5_BK_START + 3)//通道5激光校准系数表结束
 
-#define CALIBRATION_FACTOR_CH7_BK_START				(31442L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH7_BK_END					(31461L)//通道0激光校准系数表结束
+#define CALIBRATION_FACTOR_CH6_BK_START				(31412L)//通道6激光校准系数表起始
+#define CALIBRATION_FACTOR_CH6_BK_END					(CALIBRATION_FACTOR_CH6_BK_START + 3)//通道6激光校准系数表结束
+
+#define CALIBRATION_FACTOR_CH7_BK_START				(31432L)//通道7激光校准系数表起始
+#define CALIBRATION_FACTOR_CH7_BK_END					(CALIBRATION_FACTOR_CH7_BK_START + 3)//通道7激光校准系数表结束
 
 #define CONFIG_EPROM_MEDICAL_CRC							(31458L)//4B 治疗历史 CRC32 硬件计算
 #define CONFIG_EPROM_CALB_CRC									(31462L)//4B 功率校准表 CRC32 硬件计算

@@ -24,6 +24,7 @@ extern myScheme_t sDermatology[32];//5
 extern myScheme_t sLiposuction[32];//6
 extern myScheme_t sDentistry[32];//7
 extern myScheme_t sTherapy[32];//8
+extern myScheme_t sEndolift[32];//11
 /*****************************************************************************/
 void schemeInit(uint8_t reDef);//治疗方案初始化
 void goNextScheme(void);//切换下一个方案

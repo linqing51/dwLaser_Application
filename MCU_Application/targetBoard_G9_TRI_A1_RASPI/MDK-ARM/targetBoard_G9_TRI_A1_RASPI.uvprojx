@@ -904,6 +904,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
             </File>
+            <File>
+              <FileName>preSchemeDual_450.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_450.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -5981,6 +5986,11 @@
               <FileName>tempCtrLoop.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeDual_450.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_450.c</FilePath>
             </File>
           </Files>
         </Group>

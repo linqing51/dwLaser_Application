@@ -398,6 +398,15 @@ void updateDiagnosisCali(void){//跟新诊断-校准页面静态信息
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
 	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH7, (uint8_t*)dispBuf);
+	
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH0, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH1, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH2, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH3, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH4, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH5, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH6, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7, false);
 }
 
 
@@ -1619,7 +1628,104 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
 			break;
+		}	
+		case SCHEME_ENDOLIFT:{
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Endolift");
+			if(strlen((char*)sEndolift[0].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[0].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sEndolift[1].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[1].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sEndolift[2].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[2].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sEndolift[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[3].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sEndolift[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[4].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sEndolift[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[5].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sEndolift[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[6].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+			}
+			if(strlen((char*)sEndolift[7].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[7].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sEndolift[8].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[8].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sEndolift[9].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[9].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+			}	
+			if(strlen((char*)sEndolift[10].name) <= CONFIG_SCHEME_NAME_SIZE){
+					strcpy(dispBuf, (char*)(sEndolift[10].name));
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+			}			
+			//方案8-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+			
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
+				
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_NEXT_PAGE, false);
+			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);		
+
+			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+			break;
+
 		}
+		
+		
 		case SCHEME_CUSTIOM:{
 #if defined(APP_CONFIG_WAVE_1470_980_650)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
@@ -2134,6 +2240,19 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			negWidth = sTherapy[index].negwidth;
 			mode = sTherapy[index].pulse_mode;
 			break;				
+		}
+		case SCHEME_ENDOLIFT:{
+			if(index > (CONFIG_ENDOLIFT_SIZE - 1)){
+				index = (CONFIG_ENDOLIFT_SIZE - 1);
+			}
+			select = sEndolift[index].channel;
+			power_ch0 = sEndolift[index].power_ch0;
+			power_ch1 = sEndolift[index].power_ch1;
+			power_red = sEndolift[index].power_red;
+			posWidth = sEndolift[index].poswidth;
+			negWidth = sEndolift[index].negwidth;
+			mode = sEndolift[index].pulse_mode;
+			break;	
 		}
 #endif
 		case SCHEME_CUSTIOM:{
@@ -2800,63 +2919,6 @@ void dcHmiLoopInit(void){//初始化模块
 #endif
 }
 
-static void faultLoop(void){//故障轮询
-	uint8_t flag = 0;		
-	flag |= LDB(R_ESTOP);//
-	if(LDB(R_DISABLE_TEMPERATURE_CHECK)){//屏蔽温度报警
-		flag |= LD(R_TEMP_FAULT);//正常0
-	}
-	else{
-		RRES(R_TEMP_FAULT);
-	}
-	
-	if(LDB(R_DISABLE_HUMIDITY_CHECK)){//屏蔽湿度报警
-		flag |= LD(R_HUMIDITY_FALUT);//正常0
-	}
-	else{
-		RRES(R_HUMIDITY_FALUT);
-	}
-	
-	if(LDB(R_DISABLE_FLOW_CHECK)){//屏蔽流量报警
-		flag |= LD(R_FLOW_FAULT);
-	}
-	else{
-		RRES(R_FLOW_FAULT);
-	}
-	
-	flag |= LDB(R_ESTOP);//
-	flag |=	LDB(R_INTERLOCK);//正常1
-	flag |= LDB(R_FOOTSWITCH_PLUG);//正常1
-	flag |= LDB(R_FIBER_PROBE);//正常1
-	flag |= LDB(R_RFID_PASS);//正常1
-	flag |= LD(R_TEMP_FAULT);
-	flag |= LD(R_HUMIDITY_FALUT);
-	flag |= LD(R_FLOW_FAULT);
-	
-	if(flag){
-		SSET(R_FAULT);
-	}
-	else{
-		RRES(R_FAULT);
-	}
-	//
-	if(LD(R_FAULT)){
-		RRES(Y_GREEN_LED);//关闭绿灯
-		RRES(Y_YELLOW_LED);//关闭黄灯
-		SSET(Y_RED_LED);//打开红灯
-	}
-	else if(LaserFlag_Emiting){
-		SSET(Y_GREEN_LED);//关闭绿灯
-		RRES(Y_YELLOW_LED);//打开黄灯
-		SSET(Y_RED_LED);//关闭红灯
-	}
-	else{
-		SSET(Y_GREEN_LED);//打开绿灯
-		RRES(Y_YELLOW_LED);//关闭黄灯
-		RRES(Y_RED_LED);//关闭红灯
-	}
-}
-
 static void speakerLoop(void){//蜂鸣器轮询
 	int8_t laserStatus;
 	int32_t temp0;
@@ -3119,7 +3181,6 @@ void dcHmiLoop(void){//HMI轮训程序
 	wfswLoop(&APP_CONFIG_WFSW_PORT);
 	speakerLoop();
 	statusLoop();
-	faultLoop();
 	gddcHmiLoop();
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){//休眠软关机
 		return;
@@ -3915,6 +3976,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(R_INFORMATION_KEY_OK_DOWN)){
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_OPTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
+			updateOptionDisplay();
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_INFORMATION_KEY_OK_DOWN);	
 		}
@@ -4142,6 +4204,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(R_DIAGNOSIS_OK_DOWN)){//返回Option
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_OPTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPTION;
+			updateOptionDisplay();
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_DIAGNOSIS_OK_DOWN);
 		}

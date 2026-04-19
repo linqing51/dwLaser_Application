@@ -375,7 +375,7 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	flag |= LD(R_DHT11_HUMIDITY_HIGH);
 	flag |= LD(R_DHT11_HUMIDITY_LOW);		
 	if(LD(R_DISABLE_INTERLOCK_CHECK)){
-		RRES(R_HUMIDITY_FALUT)
+		RRES(R_HUMIDITY_FALUT);
 	}
 	else{
 		if(flag){
@@ -495,8 +495,6 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 		RRES(R_FAULT);
 	}
 
-
-	
 	if(LD(R_FAULT)){
 		RRES(Y_GREEN_LED);//¹Ø±ÕÂÌµÆ
 		RRES(Y_YELLOW_LED);//¹Ø±Õ»ÆµÆ
@@ -511,21 +509,9 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 		SSET(Y_GREEN_LED);//´ò¿ªÂÌµÆ
 		RRES(Y_YELLOW_LED);//¹Ø±Õ»ÆµÆ
 		RRES(Y_RED_LED);//¹Ø±ÕºìµÆ
-	}
-	
-	
-	
+	}	
 }
 
-
-
-	
-	if(flag){
-		SSET(R_FAULT);
-	}
-	else{
-		RRES(R_FAULT);
-	}
 
 
 
