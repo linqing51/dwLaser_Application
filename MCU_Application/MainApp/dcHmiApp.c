@@ -3376,10 +3376,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						updateWarnMsgDisplay(MSG_CWATER_ABNORMAL);
 					}
 				}
-				else if(LDB(R_ESTOP)){//急停按下
+				else if(LD(R_ESTOP)){//急停按下
 					updateWarnMsgDisplay(MSG_ESTOP_PRESS);		
 				}
-				else if(LDB(R_INTERLOCK)){//安全连锁拔出
+				else if(LD(R_INTERLOCK)){//安全连锁拔出
 					updateWarnMsgDisplay(MSG_INTERLOCK_UNPLUG);
 				}
 				else if(LDB(R_FIBER_PROBE)){//光纤拔出
@@ -3429,8 +3429,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_STANDBY_KEY_ENTER_OPTION_DOWN);
 		}else
-		if(LD(R_STANDBY_KEY_STNADBY_DOWN)){//点击READY
-			SET_LASER_CH7_ON;	
+		if(LD(R_STANDBY_KEY_STNADBY_DOWN) && LD(X_ESTOP_NC)){//点击READY 且急停未按下
+			SET_SAFE_RESET_ON;//复位急停
 			CLRD(EM_LASER_RELEASE_TIME);
 			CLRD(EM_LASER_TRIG_TIME);
 			LaserTimer_Mode = (int8_t)NVRAM0[EM_LASER_PULSE_MODE];
@@ -3578,6 +3578,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			readyPageTouchEnable(0);
 			readyKeyValue(1);
 			updateReadyDisplay();
+			SET_SAFE_RESET_OFF;//复位急停
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_NEXT_DOWN)){
 			goNextScheme();
@@ -3806,7 +3807,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				updateDebugInfo();
 			}
 		}		
-		if(LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//回到等待状态
+		if(LDB(X_ESTOP_NC) || LD(R_STANDBY_KEY_STNADBY_UP) || LD(R_FAULT)){//回到等待状态
 			EDLAR();//停止发射
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
 			NVRAM0[SPREG_DAC_4] = 0;NVRAM0[SPREG_DAC_5] = 0;NVRAM0[SPREG_DAC_6] = 0;NVRAM0[SPREG_DAC_7] = 0;
@@ -4229,6 +4230,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_UPDATE_BOOTLOAD_NO);
 		}
 		else if(LDP(R_DIAGNOSIS_GOTO_CORRECTION_DOWN)){//进入校正页面
+			SET_SAFE_RESET_ON;
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_CORRECTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS_CALI;
 			SET_LASER_CH0_OFF;SET_LASER_CH1_OFF;SET_LASER_CH2_OFF;SET_LASER_CH3_OFF;
@@ -4266,6 +4268,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CORRECTION){//8通道功率校准	
 		if(LD(R_DIAGNOSIS_CORRECTION_RETURN_DOWN)){//返回DIAGNOSIS页面
+			SET_SAFE_RESET_OFF;
 			SET_LASER_CH0_OFF;SET_LASER_CH1_OFF;SET_LASER_CH2_OFF;SET_LASER_CH3_OFF;
 			SET_LASER_CH4_OFF;SET_LASER_CH5_OFF;SET_LASER_CH6_OFF;SET_LASER_CH7_OFF;
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;//关闭激光

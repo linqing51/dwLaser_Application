@@ -1088,9 +1088,11 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON:{
 					if(state){
 						SSET(MR_FOOSWITCH_HAND_SWITCH);
+						updateOptionDisplay();
 					}
 					else{
 						RRES(MR_FOOSWITCH_HAND_SWITCH);
+						updateOptionDisplay();
 					}
 					break;
 				}

@@ -209,8 +209,8 @@ void Error_Handler(void);
 #define SWDIO_GPIO_Port GPIOA
 #define IBUS_RESET_Pin GPIO_PIN_13
 #define IBUS_RESET_GPIO_Port GPIOH
-#define INTERLOCK_RESET_Pin GPIO_PIN_14
-#define INTERLOCK_RESET_GPIO_Port GPIOH
+#define SAFE_RESET_Pin GPIO_PIN_14
+#define SAFE_RESET_GPIO_Port GPIOH
 #define INTERLOCK_NC_Pin GPIO_PIN_15
 #define INTERLOCK_NC_GPIO_Port GPIOH
 #define MPU_SPI_NSS_Pin GPIO_PIN_0
@@ -233,8 +233,6 @@ void Error_Handler(void);
 #define DBG_TX_GPIO_Port GPIOC
 #define ESTOP_NC_Pin GPIO_PIN_0
 #define ESTOP_NC_GPIO_Port GPIOD
-#define ESTOP_RESET_Pin GPIO_PIN_1
-#define ESTOP_RESET_GPIO_Port GPIOD
 #define DBG_RX_Pin GPIO_PIN_2
 #define DBG_RX_GPIO_Port GPIOD
 #define HDC1080_SDA_Pin GPIO_PIN_13

@@ -79,13 +79,10 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOH, TEC3_PWM_Pin|TEC2_PWM_Pin|TEC5_PWM_Pin|TEC4_PWM_Pin
-                          |TEC7_PWM_Pin|TEC6_PWM_Pin|IBUS_RESET_Pin|INTERLOCK_RESET_Pin, GPIO_PIN_RESET);
+                          |TEC7_PWM_Pin|TEC6_PWM_Pin|IBUS_RESET_Pin|SAFE_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(ESTOP_RESET_GPIO_Port, ESTOP_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, HDC1080_SDA_Pin|HDC1080_SCL_Pin, GPIO_PIN_SET);
@@ -242,8 +239,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : IBUS_RESET_Pin INTERLOCK_RESET_Pin */
-  GPIO_InitStruct.Pin = IBUS_RESET_Pin|INTERLOCK_RESET_Pin;
+  /*Configure GPIO pins : IBUS_RESET_Pin SAFE_RESET_Pin */
+  GPIO_InitStruct.Pin = IBUS_RESET_Pin|SAFE_RESET_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -261,13 +258,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(EPROM_NSS_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : ESTOP_RESET_Pin */
-  GPIO_InitStruct.Pin = ESTOP_RESET_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(ESTOP_RESET_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : HDC1080_SDA_Pin HDC1080_SCL_Pin */
   GPIO_InitStruct.Pin = HDC1080_SDA_Pin|HDC1080_SCL_Pin;

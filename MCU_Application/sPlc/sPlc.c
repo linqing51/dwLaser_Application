@@ -54,7 +54,7 @@ void sPlcAssertRegisterAddress(uint16_t adr){//检查寄存器地址
 #endif
 }
 void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
-	uint32_t crc32_mr, crc32_dm, crc32;
+	uint32_t crc32_mr, crc32_dm;
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
 	//从EPROM中恢复MR NVRAM

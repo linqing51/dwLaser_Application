@@ -309,7 +309,7 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_MBAT_TEMP] > (CONFIG_MBAT_TEMP_LOW + 50)){
 		RRES(R_MBAT_TEMP_LOW);
 	}	
-			
+	flag = 0;
 	flag |= LD(R_LASER_A_DIODE_TEMP_HIGH);									
 	flag |= LD(R_LASER_A_DIODE_TEMP_LOW);										
 	flag |= LD(R_LASER_B_DIODE_TEMP_HIGH);									
@@ -356,34 +356,51 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	flag |= LD(R_MCU_TEMP_LOW);
 	flag |= LD(R_MBAT_TEMP_HIGH);
 	flag |= LD(R_MBAT_TEMP_LOW);
-	if(flag){
-		SSET(R_TEMP_FAULT);
-	}
-	else{
+	
+	if(LD(R_DISABLE_TEMPERATURE_CHECK)){//ÆÁ±ÎÎÂ¶È±¨¾¯
 		RRES(R_TEMP_FAULT);
 	}
-	
+	else{
+		if(flag){
+			SSET(R_TEMP_FAULT);
+		}
+		else{
+			RRES(R_TEMP_FAULT);
+		}
+	}
+		
 	flag = 0;
 	flag |= LD(R_HDC1080_HUMIDITY_HIGH);
 	flag |= LD(R_HDC1080_HUMIDITY_LOW);
 	flag |= LD(R_DHT11_HUMIDITY_HIGH);
 	flag |= LD(R_DHT11_HUMIDITY_LOW);		
-	if(flag){
-		SSET(R_HUMIDITY_FALUT);
+	if(LD(R_DISABLE_INTERLOCK_CHECK)){
+		RRES(R_HUMIDITY_FALUT)
 	}
 	else{
-		RRES(R_HUMIDITY_FALUT);
+		if(flag){
+			SSET(R_HUMIDITY_FALUT);
+		}
+		else{
+			RRES(R_HUMIDITY_FALUT);
+		}
 	}
 	
 	flag = 0;
 	flag |= LD(R_HWATER_FLOW_LOW);
 	flag |= LD(R_CWATER_FLOW_LOW);
-	if(flag){
-		SSET(R_FLOW_FAULT);
+	if(LD(R_DISABLE_FLOW_CHECK)){
+				RRES(R_FLOW_FAULT);
 	}
 	else{
-		RRES(R_FLOW_FAULT);
+		if(flag){
+			SSET(R_FLOW_FAULT);
+		}
+		else{
+			RRES(R_FLOW_FAULT);
+		}
 	}
+	
 	//½ÅÌ¤¼ì²â
 	if(LD(R_DISABLE_FOOTSWITCH_CHECK)){//ÆÁ±Î½ÅÌ¤²åÈëÌ½²â¡¢Ê¹ÄÜÆÁÄ»¼¤¹â·¢Éä¿ØÖÆ
 		SSET(R_FOOTSWITCH_PLUG);
@@ -417,6 +434,7 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 			RRES(R_FOOTSWITCH_PRESS);
 		}
 	}
+	
 	//ÆÁ±Î¹âÏËÌ½²âÆ÷
 	if(LD(R_DISABLE_FIBER_PROBE_CHECK)){
 		SSET(R_FIBER_PROBE);
@@ -429,21 +447,24 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 			RRES(R_FIBER_PROBE);
 		}
 	}
-	//ÆÁ±Î¹âÏËRFIDÌ½²â
-	if(LD(R_DISABLE_RFID_CHECK)){
+
+	if(LD(R_DISABLE_RFID_CHECK)){//ÆÁ±Î¹âÏËRFIDÌ½²â
 		SSET(R_RFID_PASS);
 	}
+	
 	if(LD(R_DISABLE_ESTOP_CHECK)){//ÆÁ±Î½ô¼±Í£Ö¹¿ª¹Ø
 		SSET(R_ESTOP);
 	}
 	else{
-		if(LD(X_ESTOP_NC)){
+		if(LDB(X_ESTOP_NC)){
+
 			SSET(R_ESTOP);
 		}
 		else{
 			RRES(R_ESTOP);
 		}
-	}	
+	}
+	
 	//ÆÁ±Î°²È«ÁªËø
 	if(LD(R_DISABLE_INTERLOCK_CHECK)){
 		SSET(R_INTERLOCK);
@@ -451,23 +472,60 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	else{
 		if(deviceConfig.normalOpenInterLock == 1){//³£¿ªÁ¬Ëø			
 			if(LD(X_INTERLOCK_NC)){
-				RRES(R_INTERLOCK);
+				SSET(R_INTERLOCK);
 			}
 			else{
-				SSET(R_INTERLOCK);
+				RRES(R_INTERLOCK);
 			}
 		}
 		else{//³£±ÕÁ¬Ëø
 			if(LD(X_INTERLOCK_NC)){
-				SSET(R_INTERLOCK);
+				RRES(R_INTERLOCK);
 			}
 			else{
-				RRES(R_INTERLOCK);
+				SSET(R_INTERLOCK);
 			}
 		}	
 	}
 	
+	if(flag){
+		SSET(R_FAULT);
+	}
+	else{
+		RRES(R_FAULT);
+	}
+
+
+	
+	if(LD(R_FAULT)){
+		RRES(Y_GREEN_LED);//¹Ø±ÕÂÌµÆ
+		RRES(Y_YELLOW_LED);//¹Ø±Õ»ÆµÆ
+		SSET(Y_RED_LED);//´ò¿ªºìµÆ
+	}
+	else if(LaserFlag_Emiting){
+		SSET(Y_GREEN_LED);//¹Ø±ÕÂÌµÆ
+		RRES(Y_YELLOW_LED);//´ò¿ª»ÆµÆ
+		SSET(Y_RED_LED);//¹Ø±ÕºìµÆ
+	}
+	else{
+		SSET(Y_GREEN_LED);//´ò¿ªÂÌµÆ
+		RRES(Y_YELLOW_LED);//¹Ø±Õ»ÆµÆ
+		RRES(Y_RED_LED);//¹Ø±ÕºìµÆ
+	}
+	
+	
+	
 }
+
+
+
+	
+	if(flag){
+		SSET(R_FAULT);
+	}
+	else{
+		RRES(R_FAULT);
+	}
 
 
 

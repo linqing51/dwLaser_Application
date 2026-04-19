@@ -641,7 +641,10 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_HDC1080_SCL(b)										HAL_GPIO_WritePin(HDC1080_SCL_GPIO_Port, HDC1080_SCL_Pin, b)										
 #define SET_HDC1080_SDA(b)										HAL_GPIO_WritePin(HDC1080_SDA_GPIO_Port, HDC1080_SDA_Pin, b)
 #define GET_HDC1080_SDA												HAL_GPIO_ReadPin(HDC1080_SDA_GPIO_Port, HDC1080_SDA_Pin)
-
+//安全锁接触
+#define SET_SAFE_RESET(b)											HAL_GPIO_WritePin(SAFE_RESET_GPIO_Port, SAFE_RESET_Pin, b)
+#define SET_SAFE_RESET_ON                     HAL_GPIO_WritePin(SAFE_RESET_GPIO_Port, SAFE_RESET_Pin, GPIO_PIN_SET)
+#define SET_SAFE_RESET_OFF                    HAL_GPIO_WritePin(SAFE_RESET_GPIO_Port, SAFE_RESET_Pin, GPIO_PIN_RESET)
 #endif
 
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
