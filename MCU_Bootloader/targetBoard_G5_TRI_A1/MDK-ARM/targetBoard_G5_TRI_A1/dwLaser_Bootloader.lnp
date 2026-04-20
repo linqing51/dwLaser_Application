@@ -37,7 +37,6 @@
 "targetboard_g5_tri_a1\stm32f4xx_hal_exti.o"
 "targetboard_g5_tri_a1\stm32f4xx_hal_adc.o"
 "targetboard_g5_tri_a1\stm32f4xx_hal_adc_ex.o"
-"targetboard_g5_tri_a1\stm32f4xx_ll_adc.o"
 "targetboard_g5_tri_a1\stm32f4xx_hal_crc.o"
 "targetboard_g5_tri_a1\stm32f4xx_hal_dac.o"
 "targetboard_g5_tri_a1\stm32f4xx_hal_dac_ex.o"

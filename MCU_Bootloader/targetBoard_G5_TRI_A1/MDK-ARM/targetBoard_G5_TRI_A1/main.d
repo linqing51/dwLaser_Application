@@ -79,13 +79,10 @@ targetboard_g5_tri_a1\main.o: ../../Bootloader/libcrc.h
 targetboard_g5_tri_a1\main.o: ../USB_HOST/Target/usbh_platform.h
 targetboard_g5_tri_a1\main.o: ../../Bootloader/flash_if.h
 targetboard_g5_tri_a1\main.o: ../../Bootloader/..\..\MCU_Application\sPlcPort\sPlcEprom.h
-targetboard_g5_tri_a1\main.o: ../../../MCU_Application/sPlc/sPlcConfig.h
+targetboard_g5_tri_a1\main.o: ..\..\..\MCU_Application\lib\libcpu.h
 targetboard_g5_tri_a1\main.o: ../../../MCU_Application/sPlc/boardConfig.h
+targetboard_g5_tri_a1\main.o: ..\..\..\MCU_Application\lib\flash_if.h
 targetboard_g5_tri_a1\main.o: ../../../MCU_Application/MainApp/AppConfig.h
-targetboard_g5_tri_a1\main.o: ../../Bootloader/..\..\MCU_Application\lib\libcpu.h
-targetboard_g5_tri_a1\main.o: ../../../MCU_Application/sPlc/boardConfig.h
-targetboard_g5_tri_a1\main.o: ../../Bootloader/..\..\MCU_Application\lib\flash_if.h
-targetboard_g5_tri_a1\main.o: ../../Bootloader/..\..\MCU_Application\lib\libcrc.h
+targetboard_g5_tri_a1\main.o: ..\..\..\MCU_Application\lib\libcrc.h
+targetboard_g5_tri_a1\main.o: ../../../MCU_Application/sPlc/sPlcConfig.h
 targetboard_g5_tri_a1\main.o: ../../Bootloader/..\..\MCU_Application\lib\libdbg.h
-targetboard_g5_tri_a1\main.o: ../../../MCU_Application/sPlc/boardConfig.h
-targetboard_g5_tri_a1\main.o: ../../Bootloader/..\..\MCU_Application\sPlc\BoardConfig.h
