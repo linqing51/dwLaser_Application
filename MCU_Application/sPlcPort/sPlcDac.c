@@ -6,7 +6,7 @@
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-__IO static void writeDac7311(uint16_t dat){
+static void writeDac7311(uint16_t dat){
 	uint8_t tmp, i;
 	SET_DAC7311_CS(GPIO_PIN_RESET);//CS = 0
 	dat = dat << 2;
@@ -85,7 +85,7 @@ void UPDAC6(void){}
 void UPDAC7(void){}
 void UPDAC8(void){
 	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_7] & 0x0FFF;
+	temp = NVRAM0[SPREG_DAC_8] & 0x0FFF;
 	writeDac7311(temp);
 }
 void UPDAC9(void){}

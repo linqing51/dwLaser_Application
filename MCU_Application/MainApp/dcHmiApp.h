@@ -79,7 +79,7 @@
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);
 void statusLoop(void);
-void temperatureControlLoop(void);
+void tempControlLoop(void);//温度风扇控制循环
 void updateStandbyDisplay(void);
 void standbyTouchEnable(int8_t enable);
 void updatePowerDisplay(void);

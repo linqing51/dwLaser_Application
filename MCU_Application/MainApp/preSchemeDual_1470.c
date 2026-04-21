@@ -746,6 +746,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p = &sEndolift[6];
 	p->name = "Body Abdomen";
 	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
 	p->power_red = 1;
@@ -755,6 +756,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p = &sEndolift[7];
 	p->name = "Body Sides";
 	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
 	p->power_red = 1;
@@ -764,6 +766,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p = &sEndolift[8];
 	p->name = "Body Trochanter";
 	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
 	p->power_red = 1;
@@ -773,6 +776,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p = &sEndolift[9];
 	p->name = "Body Inside led";
 	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
 	p->power_red = 1;
@@ -782,6 +786,7 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p = &sEndolift[10];
 	p->name = "Body Anckle";
 	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
 	p->power_red = 1;

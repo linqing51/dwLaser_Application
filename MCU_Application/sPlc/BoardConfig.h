@@ -235,6 +235,14 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_FAN0_OFF													HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2)
 #define SET_FAN0_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, b)
 
+#define SET_FAN1_ON														__nop()
+#define SET_FAN1_OFF													__nop()
+#define SET_FAN1_TIM_PWM(b)										__nop()
+
+#define SET_FAN2_ON														__nop()
+#define SET_FAN2_OFF													__nop()
+#define SET_FAN2_TIM_PWM(b)										__nop()
+
 #define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1)
 #define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim8, TIM_CHANNEL_1)
 
@@ -296,8 +304,8 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define FLIP_PWR_LED													HAL_GPIO_TogglePin(PWR_LED_GPIO_Port, PWR_LED_Pin)
 
 //TEC OUT
-#define SET_TEC_ON														SET_ERR_LED_ON												
-#define SET_TEC_OFF														SET_ERR_LED_OFF
+#define SET_TEC_GATE_ON												__nop()								
+#define SET_TEC_GATE_OFF											__nop()
 
 //定义USB 切换功能引脚
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\

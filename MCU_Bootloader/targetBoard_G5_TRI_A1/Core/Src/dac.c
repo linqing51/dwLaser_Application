@@ -128,3 +128,4 @@ void HAL_DAC_MspDeInit(DAC_HandleTypeDef* dacHandle)
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+

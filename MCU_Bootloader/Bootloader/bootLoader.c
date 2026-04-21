@@ -125,11 +125,23 @@ void bootLoadInit(void){//引导程序初始化
 	forceUpdateLcd = 0;
 	SET_SPK_AP_OFF;//关闭蜂鸣器
 	printf("Bootloader:OUTPUT->SKP_EN       = LOW\n");
-	SET_AIM_TIM_OFF;//关闭指示激光
+	//关闭指示激光
+	SET_RAIM_TIM_OFF;
+	SET_GAIM_TIM_OFF;//关闭指示激光
 	printf("Bootloader:OUTPUT->AIM_PWM      = LOW\n");
-	SET_FAN_OFF;//打开激光器冷却风扇
+	SET_FAN0_OFF;//打开激光器冷却风扇
+	SET_FAN1_OFF;//打开激光器冷却风扇
+	SET_FAN2_OFF;//打开激光器冷却风扇
 	printf("Bootloader:OUTPUT->LAS_FAN      = LOW\n");
-	SET_TEC_OFF;//关闭制冷
+	SET_TEC_CH0_OFF;//关闭制冷
+	SET_TEC_CH1_OFF;//关闭制冷
+	SET_TEC_CH2_OFF;//关闭制冷
+	SET_TEC_CH3_OFF;//关闭制冷
+	SET_TEC_CH4_OFF;//关闭制冷
+	SET_TEC_CH5_OFF;//关闭制冷
+	SET_TEC_CH6_OFF;//关闭制冷
+	SET_TEC_CH7_OFF;//关闭制冷
+	SET_TEC_GATE_OFF;
 	printf("Bootloader:OUTPUT->LAS_TEC      = LOW\n");
 	//关闭所有激光
 	SET_RED_LED_DC(50);										
@@ -140,6 +152,10 @@ void bootLoadInit(void){//引导程序初始化
 	SET_LASER_CH1_OFF;
 	SET_LASER_CH2_OFF;
 	SET_LASER_CH3_OFF;
+	SET_LASER_CH4_OFF;
+	SET_LASER_CH5_OFF;
+	SET_LASER_CH6_OFF;
+	SET_LASER_CH7_OFF;
 	//USB-A切换为MCU
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)	
 	//打开USB FS电源
@@ -265,8 +281,11 @@ void bootLoadProcess(void){//bootload 执行程序
 	crcUdisk = 0;
 	switch(bootLoadState){
 		case BT_STATE_IDLE:{//开机等待U盘识别     
-			SET_AIM_TIM_OFF;
-			SET_FAN_OFF;		
+			SET_RAIM_TIM_OFF;
+			SET_GAIM_TIM_OFF;
+			SET_FAN0_OFF;
+			SET_FAN1_OFF;
+			SET_FAN2_OFF;
 			SET_RED_LED_OFF;
 			SET_GREEN_LED_OFF;
 			SET_BLUE_LED_OFF;
@@ -321,7 +340,9 @@ void bootLoadProcess(void){//bootload 执行程序
 #endif
 				SET_VN5016_INPUT_ON;//打开24V 供电
 				printf("Bootloader:24V ON\n");
-				SET_FAN_ON;
+				SET_FAN0_ON;
+				SET_FAN1_ON;
+				SET_FAN2_ON;
 				SET_RED_LED_ON;
 				SET_GREEN_LED_OFF;
 				SET_BLUE_LED_OFF;	
@@ -624,7 +645,9 @@ void bootLoadProcess(void){//bootload 执行程序
 				SET_RED_LED_OFF;
 				SET_GREEN_LED_OFF;
 				SET_BLUE_LED_OFF;
-				SET_FAN_OFF;
+				SET_FAN0_OFF;
+				SET_FAN1_OFF;
+				SET_FAN2_OFF;
 				__disable_irq();
 				SysTick->CTRL = 0;//关键代码
 				//关闭中断                                    				

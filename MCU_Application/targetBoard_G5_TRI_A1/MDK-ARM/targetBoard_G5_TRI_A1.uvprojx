@@ -2378,6 +2378,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
             </File>
+            <File>
+              <FileName>wfswLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\wfswLoop.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4930,6 +4935,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
             </File>
+            <File>
+              <FileName>wfswLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\wfswLoop.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -7462,6 +7472,11 @@
               <FileName>tempCtrLoop.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>wfswLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\wfswLoop.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -9996,6 +10011,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
             </File>
+            <File>
+              <FileName>wfswLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\wfswLoop.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -12528,6 +12548,11 @@
               <FileName>tempCtrLoop.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\tempCtrLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>wfswLoop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\wfswLoop.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -3,7 +3,15 @@
 /*****************************************************************************/
 void sPlcOutputInit(void){//IO输出初始化
 	NVRAM0[Y_START] = 0x0;
-	SET_TEC_OFF;
+	SET_TEC_CH0_OFF;
+	SET_TEC_CH1_OFF;
+	SET_TEC_CH2_OFF;
+	SET_TEC_CH3_OFF;
+	SET_TEC_CH4_OFF;
+	SET_TEC_CH5_OFF;
+	SET_TEC_CH6_OFF;
+	SET_TEC_CH7_OFF;
+	SET_TEC_GATE_OFF;
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
@@ -60,10 +68,10 @@ void sPlcOutputRefresh(void){//设置输出IO
 	}
 	//YOUT6 TEC
 	if(LDP(Y_TEC)){
-		SET_TEC_ON;
+		SET_TEC_GATE_ON;
 	}
 	if(LDN(Y_TEC)){
-		SET_TEC_OFF;
+		SET_TEC_GATE_OFF;
 	}
 		
 	//YOUT7 PWR ON

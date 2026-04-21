@@ -36,7 +36,6 @@
 #include "usbh_msc.h"
 #include "usb_host.h"
 #include "usbh_core.h"
-#include "usbh_hid.h"
 /*****************************************************************************/
 //fatfs
 #include "ff.h"

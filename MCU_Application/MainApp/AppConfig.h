@@ -254,8 +254,8 @@
 #define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP									250//激光器温度设定
 
-#define CONFIG_LASER_A_DIODE_TEMP_HIGH								450//激光器高温极限 46.0C
-#define CONFIG_LASER_A_DIODE_TEMP_LOW									0//激光器低温极限 -25.0C
+#define CONFIG_LASER_A_DIODE_TEMP_HIGH								200//激光器高温极限 46.0C
+#define CONFIG_LASER_A_DIODE_TEMP_LOW									-100//激光器低温极限 -25.0C
 #define CONFIG_LASER_A_COUPLER_TEMP_HIGH							600//耦合器高温报警
 #define CONFIG_LASER_A_COUPLER_TEMP_LOW								0//耦合器低温报警
 #define CONFIG_LASER_A_CRYST0_TEMP_HIGH								0
@@ -277,18 +277,18 @@
 #define CONFIG_HT2_TEMP_HIGH													600//散热器2高温报警
 #define CONFIG_HT3_TEMP_HIGH													600//散热器3高温报警
 
-#define CONFIG_HWATER_TEMP_HIGH												650//热水端高温报警温度
-#define CONFIG_HWATER_TEMP_LOW												50//热水端低温报警温度
-#define CONFIG_CWATER_TEMP_HIGH												400//冷水端高温报警温度
-#define CONFIG_CWATER_TEMP_LOW												50//冷水管低温报警温度
-#define CONFIG_AMBIENT0_TEMP_HIGH											450//环境0高温报警
-#define CONFIG_AMBIENT0_TEMP_LOW											50//环境0低温报警
-#define CONFIG_AMBIENT1_TEMP_HIGH											450//环境1高温报警
-#define CONFIG_AMBIENT1_TEMP_LOW											50//环境1低温报警
-#define CONFIG_AMBIENT2_TEMP_HIGH											450//环境2高温报警
-#define CONFIG_AMBIENT2_TEMP_LOW											50//环境2低温报警
-#define CONFIG_AMBIENT3_TEMP_HIGH											450//环境3高温报警
-#define CONFIG_AMBIENT3_TEMP_LOW											50//环境3低温报警
+#define CONFIG_HWATER_TEMP_HIGH												2000//热水端高温报警温度
+#define CONFIG_HWATER_TEMP_LOW												-2000//热水端低温报警温度
+#define CONFIG_CWATER_TEMP_HIGH												2000//冷水端高温报警温度
+#define CONFIG_CWATER_TEMP_LOW												-2000//冷水管低温报警温度
+#define CONFIG_AMBIENT0_TEMP_HIGH											2000//环境0高温报警
+#define CONFIG_AMBIENT0_TEMP_LOW											-2000//环境0低温报警
+#define CONFIG_AMBIENT1_TEMP_HIGH											2000//环境1高温报警
+#define CONFIG_AMBIENT1_TEMP_LOW											-2000//环境1低温报警
+#define CONFIG_AMBIENT2_TEMP_HIGH											2000//环境2高温报警
+#define CONFIG_AMBIENT2_TEMP_LOW											-2000//环境2低温报警
+#define CONFIG_AMBIENT3_TEMP_HIGH											2000//环境3高温报警
+#define CONFIG_AMBIENT3_TEMP_LOW											-2000//环境3低温报警
 
 #define CONFIG_HDC1080_TEMP_HIGH											650//板载环境高温报警
 #define CONFIG_HDC1080_TEMP_LOW												0//板载环境低温报警
@@ -299,7 +299,7 @@
 #define CONFIG_DHT11_HUMIDITY_HIGH										850//远程高湿度报警标志
 #define CONFIG_DHT11_HUMIDITY_LOW											0//远程低湿度报警标志
 #define CONFIG_MCU_TEMP_HIGH													650//处理器高温标志
-#define CONFIG_MCU_TEMP_LOW														50//处理器低温标志
+#define CONFIG_MCU_TEMP_LOW														-200//处理器低温标志
 #define CONFIG_MBAT_TEMP_HIGH													550//主电池高温标志
 #define CONFIG_MBAT_TEMP_LOW													-100//主电池低温标志
 
