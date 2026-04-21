@@ -1938,28 +1938,27 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 void updateInformationDisplay(void){//更新信息界面显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	char *pMain, *pMonir;
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE);	
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)INFO_MSG_TYPE);	
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)info_msg.TYPE);		
 
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	sprintf(dispBuf, "SN: %s", (uint8_t*)deviceConfig.serialNumber);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)dispBuf);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)INFO_MSG_WAVELENGTH);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)INFO_MSG_LASER_POWER);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)info_msg.WAVELENGTH);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)info_msg.LASER_POWER);
 	
 	memset(dispBuf, 0x0,sizeof(dispBuf));
-	sprintf(dispBuf, "%s", (char*)INFO_MSG_HW_VERSION);
+	sprintf(dispBuf, "%s", (char*)HW_VERSION);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_HARDWAR_VERSIONE, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	pMain = (char*)(BOOTLOAD_MAIN_ADDRESS);
 	pMonir = (char*)(BOOTLAOD_MINOR_ADDRESS);
 	if((*pMain >='0' && *pMain <= '9') && (*pMonir >= '0' && *pMonir <= '9')){
-		sprintf(dispBuf, "%s-%s:%s  Bootload Ver: %c.%c", (char*)INFO_MSG_SW_VERSION, __DATE__, __TIME__, *pMain, *pMonir);
+		sprintf(dispBuf, "%s-%s:%s  Bootload Ver: %c.%c", (char*)SW_VERSION, __DATE__, __TIME__, *pMain, *pMonir);
 		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SOFTWARE_VERSION, (uint8_t*)dispBuf);
 	}
 	else{
-		sprintf(dispBuf, "%s-%s:%s; No Bootload!!!", (char*)INFO_MSG_SW_VERSION,  __DATE__, __TIME__);
+		sprintf(dispBuf, "%s-%s:%s; No Bootload!!!", (char*)SW_VERSION,  __DATE__, __TIME__);
 		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SOFTWARE_VERSION, (uint8_t*)dispBuf);
 	}
 	
@@ -2030,11 +2029,20 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
 }
 void updateWarnMsgDisplay(uint8_t id){//更新警号显示框
+	switch(NVRAM[DM_LANGUAGE]){
+		case LANGUAGE_CODE_EN:{
+		}
+		case LANGUAGE_CODE_GB:{
+		}
+		default:{
+			break
+		}
+	}
 	const char *pstr;
 	if((MsgId != id) || (NVRAM0[EM_DC_PAGE] != NVRAM1[EM_DC_PAGE])){
 		switch(id){
-			case MSG_NO_ERROR:{
-				pstr = WARN_MSG_NO_ERROR;
+			case  MSG_NO_ERROR:{
+				pstr = warn_msg_en.ERROR;
 				break;
 			}
 			case MSG_INTERLOCK_UNPLUG:{

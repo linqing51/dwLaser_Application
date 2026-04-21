@@ -525,6 +525,7 @@
 #define DM_DC_OLD_PASSCODE1														(DM_START + 7)//屏旧密码2-3
 #define DM_DC_OLD_PASSCODE2														(DM_START + 8)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3														(DM_START + 9)//屏旧密码2-3
+#define DM_LANGUAGE																		(DM_START + 10)//语言代码
 /*****************************************************************************/
 #define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC																(X_START * 16 + 1)//XIN1 安全连锁

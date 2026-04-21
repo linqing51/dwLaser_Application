@@ -20,6 +20,9 @@
 //#include "fan_controller.h"
 //#
 /*****************************************************************************/
+#define LANGUAGE_CODE_EN														01
+#define LANGUAGE_CODE_GB														02
+/*****************************************************************************/
 #define FSMSTEP_HIBERNATE														0//休眠->软关机
 #define FSMSTEP_IDLE																1//待机
 #define FSMSTEP_POWERUP															10//上电

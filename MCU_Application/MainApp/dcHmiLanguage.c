@@ -14,7 +14,7 @@ const WARN_MSG warn_msg_en = {
 	.LASER_DIODE_B_TEMP_HIGH					= "E11:Laser Diode B high temperature",					
 	.LASER_DIODE_A_TEMP_LOW						= "E12:Laser Diode B low temperature",			
 	.LASER_DIODE_B_TEMP_LOW						= "E13:Laser Diode B low temperature",				
-	.LASER_COUPLER_A_TEMP_HIGH  			= "E14:",        
+	.LASER_COUPLER_A_TEMP_HIGH  			= "E14:Laser Couple A high temperature",        
 	.LASER_COUPLER_B_TEMP_HIGH  			= "E15:",       
 	.LASER_CRYST0_A_TEMP_HIGH					= "E16:",				
 	.LASER_CRYST1_A_TEMP_HIGH					= "E17:",		
@@ -60,105 +60,57 @@ const WARN_MSG warn_msg_en = {
 };
 
 const INFO_MSG info_msg = {
-	.INFO_MSG_SN 						 					= "SN: ",
-	.INFO_MSG_HW_VERSION 					 		= "HW:"HW_VERSION"",
-	.INFO_MSG_SW_VERSION 					 		= "App:"SW_VERSION"",
-	.INFO_MSG_MANUFACTURE_DATE 				= "MANUFACTURE DATE: ",
+	.SN 						 									= "SN: ",
+	.HW_VER					 									= "HW:"HW_VERSION"",
+	.SW_VER 					 								= "App:"SW_VERSION"",
+	.MANUFACTURE_DATE 								= "MANUFACTURE DATE: ",
 	
-	#if defined(APP_CONFIG_WAVE_1470_650)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1470/15"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15W+0.5W"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+635nm"};
+#if defined(APP_CONFIG_WAVE_1470_650)
+	.TYPE 						 								= "TYPE: PVGLS 1470/15",
+	.LASER_POWER 				 							= "LASER_POWER: 15W+0.5W",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+635nm"
 #endif
 
-
-
 #if defined(MODEL_PVGLS_7W_1940_A0)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1940/7"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 7W"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1940nm"};
+	.TYPE 						 								= "TYPE: PVGLS 1940/7",
+	.LASER_POWER 				 							= "LASER_POWER: 7W",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1940nm"
 #endif
 
 #if defined(MODEL_PVGLS_10W_1940_A1)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1940/10"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 10W"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1940nm"};
+	.TYPE 						 								= "TYPE: PVGLS 1940/10",
+	.LASER_POWER 				 							= "LASER_POWER: 10W",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1940nm"
 #endif
 
 #if defined(MODEL_PVGLS_TRI_A0)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+15w+0.5w"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
+	.TYPE 						 								= "TYPE: PVGLS - TRI",
+	.LASER_POWER				 							= "LASER_POWER: 15w+15w+0.5w",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+980nm+635nm"
 #endif
 
 #if defined(LDR2P1_G5_A1_20250731_TRIP)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+15w+0.5w"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
+	.TYPE 						 								= "TYPE: PVGLS - TRI",
+	.LASER_POWER 				 							= "LASER_POWER: 15w+15w+0.5w",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+980nm+635nm"
 #endif
 
 #if defined(LDR2P1_G5_A1_20250910_TRIP)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+30w+0.5w"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
+	.TYPE 						 								= "TYPE: PVGLS - TRI",
+	.LASER_POWER 				 							= "LASER_POWER: 15w+30w+0.5w",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+980nm+635nm"
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - DUAL"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 200w+50w+5mw"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 450nm+980nm+635nm"};
+	.INFO_MSG_TYPE 						 				= "TYPE: PVGLS - DUAL",
+	.INFO_MSG_LASER_POWER 				 		= "LASER_POWER: 200w+50w+5mw",
+	.INFO_MSG_WAVELENGTH 				 			= "WAVE LENGTH: 450nm+980nm+635nm"
 #endif
-	
 	
 };
-const char 
-
-/*****************************************************************************/
-#if defined(APP_CONFIG_WAVE_1470_650)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1470/15"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15W+0.5W"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+635nm"};
-#endif
 
 
 
-#if defined(MODEL_PVGLS_7W_1940_A0)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1940/7"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 7W"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1940nm"};
-#endif
-
-#if defined(MODEL_PVGLS_10W_1940_A1)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS 1940/10"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 10W"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1940nm"};
-#endif
-
-#if defined(MODEL_PVGLS_TRI_A0)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+15w+0.5w"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
-#endif
-
-#if defined(LDR2P1_G5_A1_20250731_TRIP)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+15w+0.5w"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
-#endif
-
-#if defined(LDR2P1_G5_A1_20250910_TRIP)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - TRI"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 15w+30w+0.5w"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 1470nm+980nm+635nm"};
-#endif
-
-#if defined(LYPE_MCU_1V0_20260106)
-const char INFO_MSG_TYPE[] 						 			= {"TYPE: PVGLS - DUAL"};
-const char INFO_MSG_LASER_POWER[] 				 	= {"LASER_POWER: 200w+50w+5mw"};
-const char INFO_MSG_WAVELENGTH[] 				 		= {"WAVE LENGTH: 450nm+980nm+635nm"};
-#endif
-
-/*****************************************************************************/
 
 
 

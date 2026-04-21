@@ -304,8 +304,10 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define FLIP_PWR_LED													HAL_GPIO_TogglePin(PWR_LED_GPIO_Port, PWR_LED_Pin)
 
 //TEC OUT
-#define SET_TEC_GATE_ON												__nop()								
-#define SET_TEC_GATE_OFF											__nop()
+#define SET_TEC_GATE_CH0_ON										__nop()								
+#define SET_TEC_GATE_CH0_OFF									__nop()
+#define SET_TEC_GATE_CH1_ON										__nop()								
+#define SET_TEC_GATE_CH1_OFF									__nop()
 
 //定义USB 切换功能引脚
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\

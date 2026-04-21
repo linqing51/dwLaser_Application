@@ -62,18 +62,18 @@ typedef struct{
 }WARN_MSG;
 
 typedef struct{
-	const char *INFO_MSG_TYPE;
-	const char *INFO_MSG_SN;
-	const char *INFO_MSG_WAVELENGTH;
-	const char *INFO_MSG_LASER_POWER;
-	const char *INFO_MSG_SW_VERSION;
-	const char *INFO_MSG_HW_VERSION;
-	const char *INFO_MSG_MANUFACTURE_DATE;
+	const char *TYPE;
+	const char *SN;
+	const char *WAVELENGTH;
+	const char *LASER_POWER;
+	const char *SW_VER;
+	const char *HW_VER;
+	const char *MANUFACTURE_DATE;
 }INFO_MSG;
 /*****************************************************************************/
+extern const WARN_MSG warn_msg_en;
+extern const INFO_MSG info_msg;
 #endif
-
-
 
 
 
