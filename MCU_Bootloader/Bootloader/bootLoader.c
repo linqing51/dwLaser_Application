@@ -61,7 +61,7 @@ static __IO uint32_t LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//文件读写缓冲
 /*****************************************************************************/
 const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   		= '2';
-const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '1';
+const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '2';
 /*****************************************************************************/
 uint8_t cmdShakeHandOp[] = {0xEE,0x04,0xFF,0xFC,0xFF,0xFF};
 uint8_t cmdShakeHandRespondOp[] = {0xEE,0x55,0xFF,0xFC,0xFF,0xFF};
@@ -125,6 +125,7 @@ void bootLoadInit(void){//引导程序初始化
 	forceUpdateLcd = 0;
 	SET_SPK_AP_OFF;//关闭蜂鸣器
 	printf("Bootloader:OUTPUT->SKP_EN       = LOW\n");
+<<<<<<< HEAD
 	//关闭指示激光
 	SET_RAIM_TIM_OFF;
 	SET_GAIM_TIM_OFF;//关闭指示激光
@@ -132,6 +133,14 @@ void bootLoadInit(void){//引导程序初始化
 	SET_FAN0_OFF;//打开激光器冷却风扇
 	SET_FAN1_OFF;//打开激光器冷却风扇
 	SET_FAN2_OFF;//打开激光器冷却风扇
+=======
+	SET_RAIM_TIM_OFF;//关闭指示激光
+	SET_GAIM_TIM_OFF;//关闭指示激光
+	printf("Bootloader:OUTPUT->AIM_PWM      = LOW\n");
+	SET_FAN0_OFF;//打开激光器冷却风扇
+	SET_FAN1_OFF;
+	SET_FAN2_OFF;
+>>>>>>> a0122f4f189deb0cf9562169065f918b2dc7b568
 	printf("Bootloader:OUTPUT->LAS_FAN      = LOW\n");
 	SET_TEC_CH0_OFF;//关闭制冷
 	SET_TEC_CH1_OFF;//关闭制冷
@@ -280,12 +289,40 @@ void bootLoadProcess(void){//bootload 执行程序
 	crcFlash = 0;
 	crcUdisk = 0;
 	switch(bootLoadState){
+<<<<<<< HEAD
 		case BT_STATE_IDLE:{//开机等待U盘识别     
 			SET_RAIM_TIM_OFF;
 			SET_GAIM_TIM_OFF;
 			SET_FAN0_OFF;
 			SET_FAN1_OFF;
 			SET_FAN2_OFF;
+=======
+		case BT_STATE_IDLE:{//开机等待U盘识别
+			//关闭激光
+			SET_LASER_CH0_OFF;
+			SET_LASER_CH1_OFF;
+			SET_LASER_CH2_OFF;
+			SET_LASER_CH3_OFF;
+			SET_LASER_CH4_OFF;
+			SET_LASER_CH5_OFF;
+			SET_LASER_CH6_OFF;
+			SET_LASER_CH7_OFF;
+			//关闭TEC
+			SET_TEC_CH0_OFF;
+			SET_TEC_CH1_OFF;
+			SET_TEC_CH2_OFF;
+			SET_TEC_CH3_OFF;
+			SET_TEC_CH4_OFF;
+			SET_TEC_CH5_OFF;
+			SET_TEC_CH6_OFF;
+			SET_TEC_CH7_OFF;
+			
+			SET_GAIM_TIM_OFF;
+			SET_RAIM_TIM_OFF;
+			SET_FAN0_OFF;
+			SET_FAN1_OFF;
+			SET_FAN2_OFF;			
+>>>>>>> a0122f4f189deb0cf9562169065f918b2dc7b568
 			SET_RED_LED_OFF;
 			SET_GREEN_LED_OFF;
 			SET_BLUE_LED_OFF;
@@ -338,8 +375,13 @@ void bootLoadProcess(void){//bootload 执行程序
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下	
 #endif
+#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP) 
 				SET_VN5016_INPUT_ON;//打开24V 供电
 				printf("Bootloader:24V ON\n");
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> a0122f4f189deb0cf9562169065f918b2dc7b568
 				SET_FAN0_ON;
 				SET_FAN1_ON;
 				SET_FAN2_ON;
