@@ -243,6 +243,10 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_FAN2_OFF													__nop()
 #define SET_FAN2_TIM_PWM(b)										__nop()
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0122f4f189deb0cf9562169065f918b2dc7b568
 #define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1)
 #define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim8, TIM_CHANNEL_1)
 
