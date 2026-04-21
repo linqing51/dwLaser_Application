@@ -243,10 +243,6 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_FAN2_OFF													__nop()
 #define SET_FAN2_TIM_PWM(b)										__nop()
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a0122f4f189deb0cf9562169065f918b2dc7b568
 #define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1)
 #define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim8, TIM_CHANNEL_1)
 
@@ -624,8 +620,11 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define GET_PWR_LED														__nop()
 
 //TEC OUT
-#define SET_TEC_ON														__nop()											
-#define SET_TEC_OFF														__nop()
+#define SET_TEC_GATE_CH0_ON										__nop()											
+#define SET_TEC_GATE_CH0_OFF									__nop()
+
+#define SET_TEC_GATE_CH1_ON										__nop()											
+#define SET_TEC_GATE_CH1_OFF									__nop()
 
 //PUMP
 #define SET_PUMP0(b)													HAL_GPIO_WritePin(PUMP1_PWM_GPIO_Port, PUMP1_PWM_Pin, b)
@@ -978,9 +977,11 @@ extern uint16_t audioSineTable[];
 #define GET_PWR_LED														__nop()
 
 //TEC OUT
-#define SET_TEC_ON														__nop()											
-#define SET_TEC_OFF														__nop()
+#define SET_TEC_GATE_CH0_ON										__nop()											
+#define SET_TEC_GATE_CH0_OFF									__nop()
 
+#define SET_TEC_GATE_CH1_ON										__nop()											
+#define SET_TEC_GATE_CH1_OFF									__nop()
 //PUMP
 #define SET_PUMP0(b)													HAL_GPIO_WritePin(PUMP1_PWM_GPIO_Port, PUMP1_PWM_Pin, b)
 #define SET_PUMP0_ON													HAL_GPIO_WritePin(PUMP1_PWM_GPIO_Port, PUMP1_PWM_Pin, GPIO_PIN_SET)
@@ -1319,9 +1320,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-#define CONFIG_EPROM_MEDICAL_CRC							(7512L)//4B 治疗历史 CRC32 硬件计算
-#define CONFIG_EPROM_CALB_CRC									(7516L)//4B 功率校准表 CRC32 硬件计算
-#define CONFIG_EPROM_CALB_BK_CRC							(7520L)//4B 备份功率校准表 CRC32 硬件计算
+#define CONFIG_EPROM_MEDICAL_CRC							(7520L)//4B 治疗历史 CRC32 硬件计算
 #define CONFIG_EPROM_MR_CRC										(7524L)//4B MR NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_DM_CRC										(7528L)//4B DM NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_FD_CRC										(7532L)//4B FD NVRAM CRC32 硬件计算
@@ -1347,58 +1346,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-//功率校准表地址
-#define CALIBRATION_FACTOR_CH0_START					(31132L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH0_END						(CALIBRATION_FACTOR_CH0_START + 3)//通道0激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH1_START					(31152L)//通道1激光校准系数表起始
-#define CALIBRATION_FACTOR_CH1_END						(CALIBRATION_FACTOR_CH1_START + 3)//通道1激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH2_START					(31172L)//通道2激光校准系数表起始
-#define CALIBRATION_FACTOR_CH2_END						(CALIBRATION_FACTOR_CH2_START + 3)//通道2激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH3_START					(31192L)//通道3激光校准系数表起始
-#define CALIBRATION_FACTOR_CH4_END						(CALIBRATION_FACTOR_CH3_START +3)//通道3激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH4_START					(31212L)//通道4激光校准系数表起始
-#define CALIBRATION_FACTOR_CH4_END						(CALIBRATION_FACTOR_CH3_START +4)//通道4激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH5_START					(31232L)//通道4激光校准系数表起始
-#define CALIBRATION_FACTOR_CH5_END						(CALIBRATION_FACTOR_CH5_START + 3)//通道4激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH6_START					(31252L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH6_END						(CALIBRATION_FACTOR_CH6_START + 3)//通道0激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH7_START					(31272L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH7_END						(CALIBRATION_FACTOR_CH7_START + 3)//通道0激光校准系数表结束
-//功率校准表备份地址
-#define CALIBRATION_FACTOR_CH0_BK_START				(31292L)//通道0激光校准系数表起始
-#define CALIBRATION_FACTOR_CH0_BK_END					(CALIBRATION_FACTOR_CH0_BK_START + 3)//通道0激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH1_BK_START				(31312L)//通道1激光校准系数表起始
-#define CALIBRATION_FACTOR_CH1_BK_END					(CALIBRATION_FACTOR_CH1_BK_START + 3)//通道1激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH2_BK_START				(31332L)//通道2激光校准系数表起始
-#define CALIBRATION_FACTOR_CH2_BK_END					(CALIBRATION_FACTOR_CH2_BK_START + 3)//通道2激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH3_BK_START				(31352L)//通道3激光校准系数表起始
-#define CALIBRATION_FACTOR_CH3_BK_END					(CALIBRATION_FACTOR_CH3_BK_START + 3)//通道3激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH4_BK_START				(31372L)//通道4激光校准系数表起始
-#define CALIBRATION_FACTOR_CH4_BK_END					(CALIBRATION_FACTOR_CH4_BK_START + 3)//通道4激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH5_BK_START				(31392L)//通道5激光校准系数表起始
-#define CALIBRATION_FACTOR_CH5_BK_END					(CALIBRATION_FACTOR_CH5_BK_START + 3)//通道5激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH6_BK_START				(31412L)//通道6激光校准系数表起始
-#define CALIBRATION_FACTOR_CH6_BK_END					(CALIBRATION_FACTOR_CH6_BK_START + 3)//通道6激光校准系数表结束
-
-#define CALIBRATION_FACTOR_CH7_BK_START				(31432L)//通道7激光校准系数表起始
-#define CALIBRATION_FACTOR_CH7_BK_END					(CALIBRATION_FACTOR_CH7_BK_START + 3)//通道7激光校准系数表结束
-
-#define CONFIG_EPROM_MEDICAL_CRC							(31458L)//4B 治疗历史 CRC32 硬件计算
-#define CONFIG_EPROM_CALB_CRC									(31462L)//4B 功率校准表 CRC32 硬件计算
-#define CONFIG_EPROM_CALB_BK_CRC							(31466L)//4B 备份功率校准表 CRC32 硬件计算
+#define CONFIG_EPROM_MEDICAL_CRC							(31466L)//4B 治疗历史 CRC32 硬件计算
 #define CONFIG_EPROM_MR_CRC										(31470L)//4B MR NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_DM_CRC										(31474L)//4B DM NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_FD_CRC										(31478L)//4B FD NVRAM CRC32 硬件计算

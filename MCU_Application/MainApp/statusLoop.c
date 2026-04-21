@@ -487,7 +487,15 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 			}
 		}	
 	}
-	
+	flag = 0;
+	flag |= LD(R_TEMP_FAULT);
+	flag |=	LD(R_HUMIDITY_FALUT);
+	flag |=	LD(R_FLOW_FAULT);
+	flag |=	LD(R_FOOTSWITCH_PLUG);
+	flag |=	LD(R_FIBER_PROBE);
+	flag |=	LD(R_RFID_PASS);
+	flag |=	LD(R_ESTOP);
+	flag |=	LD(R_INTERLOCK);
 	if(flag){
 		SSET(R_FAULT);
 	}

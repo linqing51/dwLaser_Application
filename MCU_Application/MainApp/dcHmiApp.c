@@ -1638,6 +1638,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}	
 		case SCHEME_ENDOLIFT:{
+#if defined(APP_CONFIG_WAVE_1470_650)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Endolift");
 			if(strlen((char*)sEndolift[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[0].name));
@@ -1729,6 +1730,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_NEXT_PAGE,false);		
 
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, false);
+#endif
 			break;
 
 		}

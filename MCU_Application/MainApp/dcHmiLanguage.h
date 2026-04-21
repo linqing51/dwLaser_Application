@@ -3,36 +3,74 @@
 #include "sPlc.h"
 #include "appConfig.h"
 /*****************************************************************************/
-extern const char WARN_MSG_NO_ERROR[];
-extern const char WARN_MSG_INTERLOCK_UNPLUG[];//安全连锁没插
-extern const char WARN_MSG_FOOTSWITCH_UNPLUG[];//脚踏没插
-extern const char WARN_MSG_ESTOP_PRESS[];
-extern const char WARN_MSG_FIBER_UNPLUG[];//光纤没插或者RFID不识别
-extern const char WARN_MSG_OUT_ENERGY[];//功率偏差超20%，预留功能，可以以后实现
-extern const char WARN_MSG_DIODE_HTEMP[];//温度过高
-extern const char WARN_MSG_DIODE_LTEMP[];//温度过低
-extern const char WARN_MSG_DIODE0_OVERCURRENT[];//电流超过限定值，保护激光器
-extern const char WARN_MSG_DIODE1_OVERCURRENT[];//电流超过限定值，保护激光器
-extern const char WARN_MSG_NTC_ERROR[];//热敏电阻故障
-extern const char WARN_MSG_ENVI_HTEMP[];//环境温度过高
-extern const char WARN_MSG_ENVI_LTEMP[];//环境温度过低
-extern const char WARN_MSG_FOOT_DEPRESSED[];//脚踏按下去没弹起来
-extern const char WARN_MSG_LASER_EMIT[];//激光正在发射
-extern const char WARN_MSG_WAIT_TRIGGER[];//等待激光触发
-extern const char WARN_MSG_FIBER_MISSMATE[];
-extern const char WARM_MSG_FLOW_LOW[];//流量异常信息
-extern const char WARM_MSG_HUMIDITY_ABNORMAL[];//湿度异常	
-extern const char WARM_MSG_HWATER_ABNORMAL[];//热水温度异常
-extern const char WARM_MSG_CWATER_ABNORMAL[];//冷水温度异常
-extern const char INFO_MSG_TYPE[];
-extern const char INFO_MSG_SN[];
-extern const char INFO_MSG_WAVELENGTH[];
-extern const char INFO_MSG_LASER_POWER[];
-extern const char INFO_MSG_SW_VERSION[];
-extern const char INFO_MSG_HW_VERSION[];
-extern const char INFO_MSG_MANUFACTURE_DATE[];
-/*****************************************************************************/
+typedef struct{
+	const char *NO_ERROR;			
+	const char *INTERLOCK_UNPLUG;//安全连锁没插													
+	const char *FOOTSWITCH_UNPLUG;//脚踏没插
+	const char *ESTOP_PRESS;//急停按下
+	const char *FIBER_UNPLUG;//光纤没插或者RFID不识别													
+	const char *OUT_ENERGY;//功率偏差超20%，预留功能，可以以后实现
+	const char *LASER_EMIT;//激光正在发射
+	const char *WAIT_TRIGGER;//等待激光触发
+	const char *FIBER_MISSMATE;
+	const char *LASER_DIODE_A_TEMP_HIGH;
+	const char *LASER_DIODE_B_TEMP_HIGH;					
+	const char *LASER_DIODE_A_TEMP_LOW;				
+	const char *LASER_DIODE_B_TEMP_LOW;							
+	const char *LASER_COUPLER_A_TEMP_HIGH;          
+	const char *LASER_COUPLER_B_TEMP_HIGH;         
+	const char *LASER_CRYST0_A_TEMP_HIGH;						
+	const char *LASER_CRYST1_A_TEMP_HIGH;					
+	const char *LASER_CRYST0_B_TEMP_HIGH;					
+	const char *LASER_CRYST1_B_TEMP_HIGH;					
+	const char *LASER_CRYST0_A_TEMP_LOW;     
+	const char *LASER_CRYST0_B_TEMP_LOW;      
+	const char *LASER_CRYST1_A_TEMP_LOW; 
+	const char *LASER_CRYST1_B_TEMP_LOW;  
+	const char *HT0_TEMP_HIGH;				
+	const char *HT1_TEMP_HIGH;				
+	const char *HT2_TEMP_HIGH;				
+	const char *HT3_TEMP_HIGH;			
+	const char *HWATER_TEMP_HIGH;	
+	const char *HWATER_TEMP_LOW;		
+	const char *CWATER_TEMP_HIGH;										
+	const char *CWATER_TEMP_LOW;											
+	const char *AMBIENT0_TEMP_HIGH;									
+	const char *AMBIENT0_TEMP_LOW;											
+	const char *AMBIENT1_TEMP_HIGH;									
+	const char *AMBIENT1_TEMP_LOW;				            
+	const char *AMBIENT2_TEMP_HIGH;			            
+	const char *AMBIENT2_TEMP_LOW;										
+	const char *AMBIENT3_TEMP_HIGH;			            
+	const char *AMBIENT3_TEMP_LOW;				            
+	const char *HDC1080_TEMP_HIGH;													
+	const char *HDC1080_TEMP_LOW;										
+	const char *HDC1080_HUMIDITY_HIGH;									
+	const char *HDC1080_HUMIDITY_LOW;								
+	const char *DHT11_TEMP_HIGH;											
+	const char *DHT11_TEMP_LOW;												
+	const char *DHT11_HUMIDITY_HIGH;										
+	const char *DHT11_HUMIDITY_LOW;											
+	const char *MCU_TEMP_HIGH;													
+	const char *MCU_TEMP_LOW;													
+	const char *MBAT_TEMP_HIGH;												
+	const char *MBAT_TEMP_LOW;													
+	const char *DIODE_A_OVERCURRENT;										
+	const char *DIODE_B_OVERCURRENT;									
+	const char *FLOW_ABNORMAL;																					
+	const char *HUMIDITY_ABNORMAL;	
+}WARN_MSG;
 
+typedef struct{
+	const char *INFO_MSG_TYPE;
+	const char *INFO_MSG_SN;
+	const char *INFO_MSG_WAVELENGTH;
+	const char *INFO_MSG_LASER_POWER;
+	const char *INFO_MSG_SW_VERSION;
+	const char *INFO_MSG_HW_VERSION;
+	const char *INFO_MSG_MANUFACTURE_DATE;
+}INFO_MSG;
+/*****************************************************************************/
 #endif
 
 
