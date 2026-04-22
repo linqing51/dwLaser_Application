@@ -374,9 +374,9 @@
 #define EM_DC_NEW_PASSCODE2														(EM_START + 234)//输入新密码2			
 #define EM_DC_NEW_PASSCODE3														(EM_START + 235)//输入新密码3						
 /*****************************************************************************/
-#define EM_LASER_RELEASE_TIME													(EM_START + 240)//实际激光发射累计时间	
-#define EM_LASER_RELEASE_ENERGY												(EM_START + 241)//实际激光发射累计能量
-#define EM_LASER_TRIG_TIME														(EM_START + 242)//激光触发时间
+#define EM_LASER_RELEASE_TIME													(EM_START + 240)//实际激光发射累计时间32BIT	
+#define EM_LASER_RELEASE_ENERGY												(EM_START + 242)//实际激光发射累计能量32BIT
+#define EM_LASER_TRIG_TIME														(EM_START + 244)//激光触发时间32BIT
 /*****************************************************************************/
 #define EM_CALI_CUR_SET_CH0														(EM_START + 250)//通道0校准设置电流
 #define EM_CALI_CUR_SET_CH1														(EM_START + 251)//通道1校准设置电流

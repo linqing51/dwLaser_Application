@@ -1037,7 +1037,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_BUS											I2C1
 
 #define CONFIG_DEBUG_UART											huart1//调试串口
-#define CONFIG_DEBUG																			DMA_HandleTypeDef hdma_uart5_rx;
+//#define CONFIG_DEBUG_DMA											DMA_HandleTypeDef hdma_uart5_rx;
 
 
 #define CONFIG_GDDC_UART											huart2//GDDC串口

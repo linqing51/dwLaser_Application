@@ -29,7 +29,7 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	}	
 #endif
 	NVRAM0[EM_LASER_FPD] = NVRAM0[SPREG_ADC_54];	
-	//¶þ¼«¹ÜÎÂ¶È¼ì²â
+	//ºËÐÄÎÂ¶È¼ì²â
 	if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_A_DIODE_TEMP_HIGH);
 	}
@@ -42,7 +42,13 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_A_DIODE_TEMP_LOW);
 	}
-	
+	if(LDP(R_LASER_A_DIODE_TEMP_HIGH)){
+		printf("STATUS:LASER A DIODE TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_A_DIODE_TEMP_LOW)){
+		printf("STATUS:LASER A DIODE TEMP LOW\n");
+	}
+	//ºËÐÄÎÂ¶È¼ì²â	
 	if(NVRAM0[EM_LASER_B_DIODE_TEMP] > CONFIG_LASER_B_DIODE_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_B_DIODE_TEMP_HIGH);
 	}
@@ -55,6 +61,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_B_DIODE_TEMP] > CONFIG_LASER_B_DIODE_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_B_DIODE_TEMP_LOW);
 	}
+	if(LDP(R_LASER_B_DIODE_TEMP_HIGH)){
+		printf("STATUS:LASER B DIODE TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_B_DIODE_TEMP_LOW)){
+		printf("STATUS:LASER B DIODE TEMP LOW\n");
+	}	
 	//ñîºÏÎÂ¶È¼ì²â
 	if(NVRAM0[EM_LASER_A_COUPLER_TEMP] > CONFIG_LASER_A_COUPLER_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_A_COUPLER_TEMP_HIGH);
@@ -68,7 +80,13 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_A_COUPLER_TEMP] > CONFIG_LASER_A_COUPLER_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_A_COUPLER_TEMP_LOW);
 	}
-	
+	if(LDP(R_LASER_A_COUPLER_TEMP_HIGH)){
+		printf("STATUS:LASER A COUPLER TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_A_COUPLER_TEMP_LOW)){
+		printf("STATUS:LASER A COUPLER TEMP LOW\n");
+	}
+	//ñîºÏÆ÷ÎÂ¶È¼ì²â
 	if(NVRAM0[EM_LASER_B_COUPLER_TEMP] > CONFIG_LASER_B_COUPLER_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_B_COUPLER_TEMP_HIGH);
 	}
@@ -81,6 +99,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_B_COUPLER_TEMP] > CONFIG_LASER_B_COUPLER_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_B_COUPLER_TEMP_LOW);
 	}
+	if(LDP(R_LASER_B_COUPLER_TEMP_HIGH)){
+		printf("STATUS:LASER B COUPLER TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_B_COUPLER_TEMP_LOW)){
+		printf("STATUS:LASER B COUPLER TEMP LOW\n");
+	}	
 	//¾§ÌåÎÂ¶È¼ì²â
 	if(NVRAM0[EM_LASER_A_CRYST0_TEMP] > CONFIG_LASER_A_CRYST0_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_A_CRYST0_TEMP_HIGH);
@@ -94,7 +118,13 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_A_CRYST0_TEMP] > CONFIG_LASER_A_CRYST0_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_A_CRYST0_TEMP_LOW);
 	}
-	
+	if(LDP(R_LASER_A_CRYST0_TEMP_HIGH)){
+		printf("STATUS:LASER A CRYST0 TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_A_CRYST0_TEMP_LOW)){
+		printf("STATUS:LASER A CRYST0 TEMP LOW\n");
+	}
+	//¾§ÌåÎÂ¶È¼ì²â
 	if(NVRAM0[EM_LASER_A_CRYST1_TEMP] > CONFIG_LASER_A_CRYST1_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_A_CRYST1_TEMP_HIGH);
 	}
@@ -107,7 +137,13 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_A_CRYST1_TEMP] > CONFIG_LASER_A_CRYST1_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_A_CRYST1_TEMP_LOW);
 	}
-	
+	if(LDP(R_LASER_A_CRYST1_TEMP_HIGH)){
+		printf("STATUS:LASER A CRYST1 TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_A_CRYST1_TEMP_LOW)){
+		printf("STATUS:LASER A CRYST1 TEMP LOW\n");
+	}
+	//¾§ÌåÎÂ¶È¼ì²â
 	if(NVRAM0[EM_LASER_B_CRYST0_TEMP] > CONFIG_LASER_B_CRYST0_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_B_CRYST0_TEMP_HIGH);
 	}
@@ -120,7 +156,13 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_B_CRYST0_TEMP] > CONFIG_LASER_B_CRYST0_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_B_CRYST0_TEMP_LOW);
 	}
-	
+	if(LDP(R_LASER_B_CRYST0_TEMP_HIGH)){
+		printf("STATUS:LASER B CRYST0 TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_B_CRYST0_TEMP_LOW)){
+		printf("STATUS:LASER B CRYST0 TEMP LOW\n");
+	}
+	//¾§ÌåÎÂ¶È¼ì²â
 	if(NVRAM0[EM_LASER_B_CRYST1_TEMP] > CONFIG_LASER_B_CRYST1_TEMP_HIGH){//¼¤¹âÆ÷¹ýÈÈ
 		SSET(R_LASER_B_CRYST1_TEMP_HIGH);
 	}
@@ -133,7 +175,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_LASER_B_CRYST1_TEMP] > CONFIG_LASER_B_CRYST1_TEMP_LOW + 50){//¼¤¹âÆ÷»Ö¸´Õý³£ÎÂ¶È
 		RRES(R_LASER_B_CRYST1_TEMP_LOW);
 	}
-	
+	if(LDP(R_LASER_B_CRYST1_TEMP_HIGH)){
+		printf("STATUS:LASER B CRYST1 TEMP HIGH\n");
+	}
+	if(LDP(R_LASER_B_CRYST1_TEMP_LOW)){
+		printf("STATUS:LASER B CRYST1 TEMP LOW\n");
+	}
 	//É¢ÈÈÆ÷ÎÂ¶È¼ì²â
 	if(NVRAM0[EM_HT0_TEMP] > CONFIG_HT0_TEMP_HIGH){
 		SSET(R_HT0_TEMP_HIGH);
@@ -159,7 +206,18 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_HT2_TEMP] < (CONFIG_HT3_TEMP_HIGH - 50)){
 		RRES(R_HT3_TEMP_HIGH);
 	}
-	
+	if(LDP(R_HT0_TEMP_HIGH) || LDN(R_HT0_TEMP_HIGH)){
+		printf("STATUS:HT0 TEMP HIGH\n");
+	}
+	if(LDP(R_HT1_TEMP_HIGH) || LDN(R_HT1_TEMP_HIGH)){
+		printf("STATUS:HT1 TEMP HIGH\n");
+	}
+	if(LDP(R_HT2_TEMP_HIGH) || LDN(R_HT2_TEMP_HIGH)){
+		printf("STATUS:HT2 TEMP HIGH\n");
+	}
+	if(LDP(R_HT3_TEMP_HIGH) || LDN(R_HT3_TEMP_HIGH)){
+		printf("STATUS:HT3 TEMP HIGH\n");
+	}
 	//Ë®ÎÂ¼ì²â
 	if(NVRAM0[EM_HWATER_TEMP] > CONFIG_HWATER_TEMP_HIGH){
 		SSET(R_HWATER_TEMP_HIGH);
@@ -173,7 +231,30 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_HWATER_TEMP] > (CONFIG_HWATER_TEMP_LOW + 50)){
 		RRES(R_HWATER_TEMP_LOW);
 	}
-		
+	if(NVRAM0[EM_CWATER_TEMP] > CONFIG_CWATER_TEMP_HIGH){
+		SSET(R_CWATER_TEMP_HIGH);
+	}
+	if(NVRAM0[EM_CWATER_TEMP] < (CONFIG_CWATER_TEMP_HIGH - 50)){
+		RRES(R_CWATER_TEMP_HIGH);
+	}
+	if(NVRAM0[EM_CWATER_TEMP] < CONFIG_CWATER_TEMP_LOW){
+		SSET(R_CWATER_TEMP_LOW);
+	}
+	if(NVRAM0[EM_CWATER_TEMP] > (CONFIG_CWATER_TEMP_LOW + 50)){
+		RRES(R_CWATER_TEMP_LOW);
+	}
+	if(LDP(R_HWATER_TEMP_HIGH)){
+		printf("STATUS:HWATER TEMP HIGH\n");
+	}
+	if(LDP(R_HWATER_TEMP_LOW)){
+		printf("STATUS:HWATER TEMP LOW\n");
+	}
+	if(LDP(R_CWATER_TEMP_HIGH)){
+		printf("STATUS:CWATER TEMP HIGH\n");
+	}
+	if(LDP(R_CWATER_TEMP_LOW)){
+		printf("STATUS:CWATER TEMP LOW\n");
+	}
 	//»·¾³ÎÂ¶È¼ì²â
 	if(NVRAM0[EM_AMBIENT0_TEMP] > CONFIG_AMBIENT0_TEMP_HIGH){
 		SSET(R_AMBIENT0_TEMP_HIGH);
@@ -187,7 +268,6 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_AMBIENT0_TEMP] > (CONFIG_AMBIENT0_TEMP_LOW + 50)){
 		RRES(R_AMBIENT0_TEMP_LOW);
 	}
-	
 	if(NVRAM0[EM_AMBIENT1_TEMP] > CONFIG_AMBIENT1_TEMP_HIGH){
 		SSET(R_AMBIENT1_TEMP_HIGH);
 	}
@@ -200,7 +280,6 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_AMBIENT1_TEMP] > (CONFIG_AMBIENT1_TEMP_LOW + 50)){
 		RRES(R_AMBIENT1_TEMP_LOW);
 	}
-	
 	if(NVRAM0[EM_AMBIENT2_TEMP] > CONFIG_AMBIENT2_TEMP_HIGH){
 		SSET(R_AMBIENT2_TEMP_HIGH);
 	}
@@ -213,7 +292,6 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_AMBIENT2_TEMP] > (CONFIG_AMBIENT2_TEMP_LOW + 50)){
 		RRES(R_AMBIENT2_TEMP_LOW);
 	}
-	
 	if(NVRAM0[EM_AMBIENT3_TEMP] > CONFIG_AMBIENT3_TEMP_HIGH){
 		SSET(R_AMBIENT3_TEMP_HIGH);
 	}
@@ -226,7 +304,30 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_AMBIENT3_TEMP] > (CONFIG_AMBIENT3_TEMP_LOW + 50)){
 		RRES(R_AMBIENT3_TEMP_LOW);
 	}
-		
+	if(LDP(R_AMBIENT0_TEMP_HIGH)){
+		printf("STATUS:AMBIENT0 TEMP HIGH\n");
+	}
+	if(LDP(R_AMBIENT0_TEMP_LOW)){
+		printf("STATUS:AMBIENT0 TEMP LOW\n");
+	}
+	if(LDP(R_AMBIENT1_TEMP_HIGH)){
+		printf("STATUS:AMBIENT0 TEMP HIGH\n");
+	}
+	if(LDP(R_AMBIENT1_TEMP_LOW)){
+		printf("STATUS:AMBIENT0 TEMP LOW\n");
+	}		
+	if(LDP(R_AMBIENT2_TEMP_HIGH)){
+		printf("STATUS:AMBIENT2 TEMP HIGH\n");
+	}
+	if(LDP(R_AMBIENT2_TEMP_LOW)){
+		printf("STATUS:AMBIENT2 TEMP LOW\n");
+	}
+	if(LDP(R_AMBIENT3_TEMP_HIGH)){
+		printf("STATUS:AMBIENT3 TEMP HIGH\n");
+	}
+	if(LDP(R_AMBIENT3_TEMP_LOW)){
+		printf("STATUS:AMBIENT3 TEMP LOW\n");
+	}
 	//HDC1080 Êª¶È¼ì²â
 	if(NVRAM0[EM_HDC1080_HUMIDITY] > CONFIG_HDC1080_HUMIDITY_HIGH){
 		SSET(R_HDC1080_HUMIDITY_HIGH);
@@ -240,7 +341,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_HDC1080_HUMIDITY] > (CONFIG_HDC1080_HUMIDITY_LOW + 50)){
 		RRES(R_HDC1080_HUMIDITY_LOW);
 	}
-	
+	if(LDP(R_HDC1080_HUMIDITY_HIGH)){
+		printf("STATUS:HDC1080_HUMIDITY HIGH\n");
+	}
+	if(LDP(R_HDC1080_HUMIDITY_LOW)){
+		printf("STATUS:HDC1080_HUMIDITY LOW\n");
+	}
 	//HDC1080 ÎÂ¶È¼ì²â
 	if(NVRAM0[EM_HDC1080_TEMP] > CONFIG_HDC1080_TEMP_HIGH){
 		SSET(R_HDC1080_TEMP_HIGH);
@@ -254,7 +360,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_HDC1080_TEMP] > (CONFIG_HDC1080_TEMP_LOW + 50)){
 		RRES(R_HDC1080_TEMP_LOW);
 	}
-	
+	if(LDP(R_HDC1080_TEMP_HIGH)){
+		printf("STATUS:HDC1080 TEMP HIGH\n");
+	}
+	if(LDP(R_HDC1080_TEMP_LOW)){
+		printf("STATUS:HDC1080 TEMP LOW\n");
+	}
 	//DHT11 Êª¶È¼ì²â
 	if(NVRAM0[EM_DHT11_HUMIDITY] > CONFIG_DHT11_HUMIDITY_HIGH){
 		SSET(R_DHT11_HUMIDITY_HIGH);
@@ -267,6 +378,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	}
 	if(NVRAM0[EM_DHT11_HUMIDITY] > (CONFIG_DHT11_HUMIDITY_LOW + 50)){
 		RRES(R_DHT11_HUMIDITY_LOW);
+	}
+	if(LDP(R_DHT11_HUMIDITY_HIGH)){
+		printf("STATUS:DHT11 HUMIDITY HIGH\n");
+	}
+	if(LDP(R_DHT11_HUMIDITY_LOW)){
+		printf("STATUS:DHT11 HUMIDITY LOW\n");
 	}
 	//DHT11 ÎÂ¶È¼ì²â
 	if(NVRAM0[EM_DHT11_TEMP] > CONFIG_DHT11_TEMP_HIGH){
@@ -281,7 +398,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_DHT11_TEMP] > (CONFIG_DHT11_TEMP_LOW + 50)){
 		RRES(R_DHT11_TEMP_LOW);
 	}	
-	
+	if(LDP(R_DHT11_TEMP_HIGH)){
+		printf("STATUS:DHT11_TEMP HIGH\n");
+	}
+	if(LDP(R_DHT11_TEMP_LOW)){
+		printf("STATUS:DHT11_TEMP LOW\n");
+	}
 	//´¦ÀíÆ÷ÎÂ¶È¼ì²â
 	if(NVRAM0[EM_MCU_TEMP] > CONFIG_MCU_TEMP_HIGH){
 		SSET(R_MCU_TEMP_HIGH);
@@ -295,6 +417,12 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_MCU_TEMP] > (CONFIG_MCU_TEMP_LOW + 50)){
 		RRES(R_MCU_TEMP_LOW);
 	}
+	if(LDP(R_MCU_TEMP_HIGH)){
+		printf("STATUS:MCU TEMP HIGH\n");
+	}
+	if(LDP(R_MCU_TEMP_LOW)){
+		printf("STATUS:MCU TEMP LOW\n");
+	}
 	//Ö÷µç³ØÎÂ¶È
 	if(NVRAM0[EM_MBAT_TEMP] > CONFIG_MBAT_TEMP_HIGH){
 		SSET(R_MBAT_TEMP_HIGH);
@@ -302,13 +430,19 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	if(NVRAM0[EM_MBAT_TEMP] < (CONFIG_MBAT_TEMP_HIGH - 50)){
 		RRES(R_MBAT_TEMP_HIGH);
 	}
-	
 	if(NVRAM0[EM_MBAT_TEMP] < CONFIG_MBAT_TEMP_LOW){
 		SSET(R_MBAT_TEMP_LOW);
 	}
 	if(NVRAM0[EM_MBAT_TEMP] > (CONFIG_MBAT_TEMP_LOW + 50)){
 		RRES(R_MBAT_TEMP_LOW);
-	}	
+	}
+	if(LDP(R_MBAT_TEMP_HIGH)){
+		printf("STATUS:MBAT TEMP HIGH\n");
+	}
+	if(LDP(R_MBAT_TEMP_LOW)){
+		printf("STATUS:MBAT TEMP LOW\n");
+	}
+	
 	flag = 0;
 	flag |= LD(R_LASER_A_DIODE_TEMP_HIGH);									
 	flag |= LD(R_LASER_A_DIODE_TEMP_LOW);										
@@ -491,9 +625,9 @@ void statusLoop(void){//ÎÂ¶ÈÂÖÑ¯ÂÖÑ¯
 	flag |= LD(R_TEMP_FAULT);
 	flag |=	LD(R_HUMIDITY_FALUT);
 	flag |=	LD(R_FLOW_FAULT);
-	flag |=	LD(R_FOOTSWITCH_PLUG);
-	flag |=	LD(R_FIBER_PROBE);
-	flag |=	LD(R_RFID_PASS);
+	flag |=	LDB(R_FOOTSWITCH_PLUG);
+	flag |=	LDB(R_FIBER_PROBE);
+	//flag |=	LDB(R_RFID_PASS);
 	flag |=	LD(R_ESTOP);
 	flag |=	LD(R_INTERLOCK);
 	if(flag){

@@ -2342,6 +2342,10 @@ void updateExtralDisplay(void){//更新额外显示
 			averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
 			break;
 		}
+		case LASER_CHANNEL_RAIM:{
+			averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_635]) / 10.0F;
+			break;
+		}
 		default:{
 			averagePower = dutyCycle * ((float)(NVRAM0[EM_LASER_POWER_CH0]) + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_635]) / 10.0F;
 			break;
@@ -3324,10 +3328,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						updateWarnMsgDisplay(ERR_LASER_A_DIODE_TEMP_LOW);
 					}
 					else if(LD(R_LASER_B_DIODE_TEMP_HIGH)){
-						updateWarnMsgDisplay(ERR_LASER_A_DIODE_TEMP_HIGH);
+						updateWarnMsgDisplay(ERR_LASER_B_DIODE_TEMP_HIGH);
 					}
 					else if(LD(R_LASER_B_DIODE_TEMP_LOW)){
-						updateWarnMsgDisplay(ERR_LASER_A_DIODE_TEMP_LOW);
+						updateWarnMsgDisplay(ERR_LASER_B_DIODE_TEMP_LOW);
 					}
 								
 					else if(LD(R_LASER_A_COUPLER_TEMP_HIGH)){
@@ -3337,10 +3341,10 @@ void dcHmiLoop(void){//HMI轮训程序
 						updateWarnMsgDisplay(ERR_LASER_B_COUPLER_TEMP_HIGH);
 					}
 					else if(LD(R_LASER_A_COUPLER_TEMP_LOW)){
-						updateWarnMsgDisplay(ERR_LASER_B_COUPLER_TEMP_HIGH);
+						updateWarnMsgDisplay(ERR_LASER_A_COUPLER_TEMP_LOW);
 					}
 					else if(LD(R_LASER_B_COUPLER_TEMP_LOW)){
-						updateWarnMsgDisplay(ERR_LASER_B_COUPLER_TEMP_HIGH);
+						updateWarnMsgDisplay(ERR_LASER_B_COUPLER_TEMP_LOW);
 					}
 					else if(LD(R_LASER_A_CRYST0_TEMP_HIGH)){
 						updateWarnMsgDisplay(ERR_LASER_A_CRYST0_TEMP_HIGH);
@@ -3425,8 +3429,7 @@ void dcHmiLoop(void){//HMI轮训程序
 					}
 					else if(LD(R_DHT11_TEMP_LOW)){
 						updateWarnMsgDisplay(ERR_DHT11_TEMP_HIGH);
-					}
-				
+					}			
 					else if(LD(R_MCU_TEMP_HIGH)){
 						updateWarnMsgDisplay(ERR_MCU_TEMP_HIGH);
 					}						
@@ -3465,7 +3468,7 @@ void dcHmiLoop(void){//HMI轮训程序
 						updateWarnMsgDisplay(ERR_HDC1080_HUMIDITY_HIGH);
 					}
 					else if(LD(R_HDC1080_HUMIDITY_LOW)){
-						updateWarnMsgDisplay(ERR_HDC1080_TEMP_LOW);
+						updateWarnMsgDisplay(ERR_HDC1080_HUMIDITY_LOW);
 					}					
 				}
 				else if(LD(R_ESTOP)){//急停按下
@@ -3653,8 +3656,10 @@ void dcHmiLoop(void){//HMI轮训程序
 				UPDAC16();//打开红光
 			}
 #endif
-			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
-			UPDAC16();//打开红光
+#if defined(LYPE_MCU_1V0_20260106)
+			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;
+			UPDAC17();//打开红光
+#endif
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);

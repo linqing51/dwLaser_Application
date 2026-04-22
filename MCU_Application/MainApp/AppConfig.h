@@ -272,7 +272,7 @@
 #define CONFIG_LASER_B_CRYST1_TEMP_HIGH								0
 #define CONFIG_LASER_B_CRYST1_TEMP_LOW								0
 
-#define CONFIG_HT0_TEMP_HIGH													600//散热器0高温报警
+#define CONFIG_HT0_TEMP_HIGH													750//散热器0高温报警
 #define CONFIG_HT1_TEMP_HIGH													600//散热器1高温报警
 #define CONFIG_HT2_TEMP_HIGH													600//散热器2高温报警
 #define CONFIG_HT3_TEMP_HIGH													600//散热器3高温报警
@@ -302,7 +302,6 @@
 #define CONFIG_MCU_TEMP_LOW														-200//处理器低温标志
 #define CONFIG_MBAT_TEMP_HIGH													550//主电池高温标志
 #define CONFIG_MBAT_TEMP_LOW													-100//主电池低温标志
-
 
 #define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
 #endif
@@ -360,7 +359,6 @@
 #define CONFIG_MCU_TEMP_LOW														50//处理器低温标志
 #define CONFIG_MBAT_TEMP_HIGH													550//主电池高温标志
 #define CONFIG_MBAT_TEMP_LOW													-100//主电池低温标志
-
 
 #define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
 #endif
