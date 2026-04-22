@@ -67,26 +67,26 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
 		
 #if defined(MODLE_M1470_640_10_15_02_D200_22_G5W_PK)//1470 V1
-		deviceConfig.calibrationPwr0[0] = 9;
-		deviceConfig.calibrationPwr0[1] = 15;
-		deviceConfig.calibrationPwr0[2] = 21;
+		deviceConfig.calibrationPwr0[0] = 1;
+		deviceConfig.calibrationPwr0[1] = 8;
+		deviceConfig.calibrationPwr0[2] = 18;
 		deviceConfig.calibrationPwr0[3] = 28;
-		deviceConfig.calibrationPwr0[4] = 38;
-		deviceConfig.calibrationPwr0[5] = 48;
-		deviceConfig.calibrationPwr0[6] = 58;
-		deviceConfig.calibrationPwr0[7] = 68;
-		deviceConfig.calibrationPwr0[8] = 77;
-		deviceConfig.calibrationPwr0[9] = 87;
+		deviceConfig.calibrationPwr0[4] = 37;
+		deviceConfig.calibrationPwr0[5] = 47;
+		deviceConfig.calibrationPwr0[6] = 57;
+		deviceConfig.calibrationPwr0[7] = 67;
+		deviceConfig.calibrationPwr0[8] = 76;
+		deviceConfig.calibrationPwr0[9] = 86;
 		deviceConfig.calibrationPwr0[10] = 96;
 		deviceConfig.calibrationPwr0[11] = 105;
 		deviceConfig.calibrationPwr0[12] = 114;
-		deviceConfig.calibrationPwr0[13] = 120;
-		deviceConfig.calibrationPwr0[14] = 126;
-		deviceConfig.calibrationPwr0[15] = 133;
-		deviceConfig.calibrationPwr0[16] = 138;
-		deviceConfig.calibrationPwr0[17] = 144;
-		deviceConfig.calibrationPwr0[18] = 149;
-		deviceConfig.calibrationPwr0[19] = 153;
+		deviceConfig.calibrationPwr0[13] = 123;
+		deviceConfig.calibrationPwr0[14] = 132;
+		deviceConfig.calibrationPwr0[15] = 141;
+		deviceConfig.calibrationPwr0[16] = 151;
+		deviceConfig.calibrationPwr0[17] = 160;
+		deviceConfig.calibrationPwr0[18] = 167;
+		deviceConfig.calibrationPwr0[19] = 169;
 
 		for(i = 0;i <= 19;i ++){//清空其他波长
 			deviceConfig.calibrationPwr1[i] = i;

@@ -109,9 +109,9 @@ const INFO_MSG_T info_msg = {
 #endif
 
 #if defined(LYPE_MCU_1V0_20260106)
-	.INFO_MSG_TYPE 						 				= "TYPE: PVGLS - DUAL",
-	.INFO_MSG_LASER_POWER 				 		= "LASER_POWER: 200w+50w+5mw",
-	.INFO_MSG_WAVELENGTH 				 			= "WAVE LENGTH: 450nm+980nm+635nm"
+	.TYPE 						 								= "TYPE: PVGLS - DUAL",
+	.LASER_POWER 				 							= "LASER_POWER: 200w+50w+5mw",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 450nm+980nm+635nm"
 #endif
 	
 };
