@@ -1,65 +1,72 @@
 #include "dcHmiLanguage.h"
 /*****************************************************************************/
-const WARN_MSG warn_msg_en = {
-	.NO_ERROR	        								= "",			
-	.INTERLOCK_UNPLUG		 							= "E01:Door interlock disconnected",//安全连锁没插													
-	.FOOTSWITCH_UNPLUG								= "E02:Footswitch not connected",//脚踏没插
-	.ESTOP_PRESS           						= "E03:ESTOP Press",//急停按下
-	.FIBER_UNPLUG											= "E04:No fiber connected",//光纤没插或者RFID不识别													
-	.OUT_ENERGY 				 							= "E05:Energy out of tolerance",//功率偏差超20%，预留功能，可以以后实现
-	.LASER_EMIT 				 							= "E06:Laser is firing",//激光正在发射
-	.WAIT_TRIGGER 				 						= "E07:Wait Laser Trigger",//等待激光触发
-	.FIBER_MISSMATE 			 						= "E08:Fiber not mate",
-	.LASER_DIODE_A_TEMP_HIGH    			= "E10:Laser Diode A high temperature",
-	.LASER_DIODE_B_TEMP_HIGH					= "E11:Laser Diode B high temperature",					
-	.LASER_DIODE_A_TEMP_LOW						= "E12:Laser Diode B low temperature",			
-	.LASER_DIODE_B_TEMP_LOW						= "E13:Laser Diode B low temperature",				
-	.LASER_COUPLER_A_TEMP_HIGH  			= "E14:Laser Couple A high temperature",        
-	.LASER_COUPLER_B_TEMP_HIGH  			= "E15:",       
-	.LASER_CRYST0_A_TEMP_HIGH					= "E16:",				
-	.LASER_CRYST1_A_TEMP_HIGH					= "E17:",		
-	.LASER_CRYST0_B_TEMP_HIGH					= "E18:",			
-	.LASER_CRYST1_B_TEMP_HIGH					= "E19:",			
-	.LASER_CRYST0_A_TEMP_LOW    			= "E20:", 
-	.LASER_CRYST0_B_TEMP_LOW    			= "E21:",  
-	.LASER_CRYST1_A_TEMP_LOW    			= "E22:", 
-	.LASER_CRYST1_B_TEMP_LOW    			= "E23:",
-	.HT0_TEMP_HIGH 										= "E24:Heat sink 0 high temperature",									
-	.HT1_TEMP_HIGH 										= "E25:Heat sink 1 high temperature",									
-	.HT2_TEMP_HIGH 										= "E26:Heat sink 2 high temperature",								
-	.HT3_TEMP_HIGH 										= "E27:Heat sink 3 high temperature",												
-	.HWATER_TEMP_HIGH									= "E28:Hot water high temperature",
-	.HWATER_TEMP_LOW									= "E29:Hot water low temperature",
-	.CWATER_TEMP_HIGH									= "E30:Cool water high temperature",
-	.CWATER_TEMP_LOW									= "E31:Cool water low temperature",
-	.AMBIENT0_TEMP_HIGH								= "E32:",
-	.AMBIENT0_TEMP_LOW								= "E33:",	
-	.AMBIENT1_TEMP_HIGH								= "E34:",
-	.AMBIENT1_TEMP_LOW				        = "E35:",
-	.AMBIENT2_TEMP_HIGH			          = "E36:",
-	.AMBIENT2_TEMP_LOW								= "E37:",
-	.AMBIENT3_TEMP_HIGH			          = "E38:",
-	.AMBIENT3_TEMP_LOW				        = "E39:",
-	.HDC1080_TEMP_HIGH								= "E40:",			
-	.HDC1080_TEMP_LOW									= "E41:",
-	.HDC1080_HUMIDITY_HIGH						= "E42:",	
-	.HDC1080_HUMIDITY_LOW							= "E43:",
-	.DHT11_TEMP_HIGH									= "E44:",
-	.DHT11_TEMP_LOW										= "E45:",	
-	.DHT11_HUMIDITY_HIGH							= "E46:",	
-	.DHT11_HUMIDITY_LOW								= "E47:",	
-	.MCU_TEMP_HIGH										= "E48:",	
-	.MCU_TEMP_LOW											= "E49:",	
-	.MBAT_TEMP_HIGH										= "E50:",	
-	.MBAT_TEMP_LOW										= "E51:",	
-	.DIODE_A_OVERCURRENT							= "E52:Laser current exceeds set value",	
-	.DIODE_B_OVERCURRENT							= "E53:Laser current exceeds set value",
-	.FLOW_ABNORMAL										= "E54:Water Flow Low",									
-	.HUMIDITY_ABNORMAL								= "E55:Humidity abnormal"	
-
+const char *errorCodeToString[ERR_MAX_COUNT] = {
+	[ERR_NO_ERROR]                          = "",
+	[ERR_INTERLOCK_UNPLUG]                  = "E01:Door interlock disconnected",
+	[ERR_FOOTSWITCH_UNPLUG]                 = "E02:Footswitch not connected",
+	[ERR_ESTOP_PRESS]                       = "E03:ESTOP Press",
+	[ERR_FIBER_UNPLUG]                      = "E04:No fiber connected",
+	[ERR_OUT_ENERGY]                        = "E05:Energy out of tolerance",
+	[ERR_LASER_EMIT]                        = "E06:Laser is firing",
+	[ERR_WAIT_TRIGGER]                      = "E07:Wait Laser Trigger",
+	[ERR_FIBER_MISSMATE]                    = "E08:Fiber not mate",
+	[ERR_LASER_A_DIODE_TEMP_HIGH]           = "E10:Laser Diode A high temperature",
+	[ERR_LASER_B_DIODE_TEMP_HIGH]           = "E11:Laser Diode B high temperature",
+	[ERR_LASER_A_DIODE_TEMP_LOW]            = "E12:Laser Diode B low temperature",
+	[ERR_LASER_B_DIODE_TEMP_LOW]            = "E13:Laser Diode B low temperature",
+	[ERR_LASER_A_COUPLER_TEMP_HIGH]         = "E14:Laser Couple A high temperature",
+	[ERR_LASER_B_COUPLER_TEMP_HIGH]         = "E15:",
+	[ERR_LASER_A_COUPLER_TEMP_LOW]					= "E16",             
+	[ERR_LASER_B_COUPLER_TEMP_LOW] 					= "E17",
+	[ERR_LASER_A_CRYST0_TEMP_HIGH]          = "E18:",
+	[ERR_LASER_A_CRYST1_TEMP_HIGH]          = "E17:",
+	[ERR_LASER_B_CRYST0_TEMP_HIGH]          = "E18:",
+	[ERR_LASER_B_CRYST1_TEMP_HIGH]          = "E19:",
+	[ERR_LASER_A_CRYST0_TEMP_LOW]           = "E20:",
+	[ERR_LASER_A_CRYST1_TEMP_LOW]           = "E21:",
+	[ERR_LASER_B_CRYST0_TEMP_LOW]           = "E22:",
+	[ERR_LASER_B_CRYST1_TEMP_LOW]           = "E23:",
+	[ERR_HT0_TEMP_HIGH]                     = "E24:Heat sink 0 high temperature",
+	[ERR_HT1_TEMP_HIGH]                     = "E25:Heat sink 1 high temperature",
+	[ERR_HT2_TEMP_HIGH]                     = "E26:Heat sink 2 high temperature",
+	[ERR_HT3_TEMP_HIGH]                     = "E27:Heat sink 3 high temperature",
+	[ERR_HWATER_TEMP_HIGH]                  = "E28:Hot water high temperature",
+	[ERR_HWATER_TEMP_LOW]                   = "E29:Hot water low temperature",
+	[ERR_CWATER_TEMP_HIGH]                  = "E30:Cool water high temperature",
+	[ERR_CWATER_TEMP_LOW]                   = "E31:Cool water low temperature",
+	[ERR_AMBIENT0_TEMP_HIGH]                = "E32:",
+	[ERR_AMBIENT0_TEMP_LOW]                 = "E33:",
+	[ERR_AMBIENT1_TEMP_HIGH]                = "E34:",
+	[ERR_AMBIENT1_TEMP_LOW]                 = "E35:",
+	[ERR_AMBIENT2_TEMP_HIGH]                = "E36:",
+	[ERR_AMBIENT2_TEMP_LOW]                 = "E37:",
+	[ERR_AMBIENT3_TEMP_HIGH]                = "E38:",
+	[ERR_AMBIENT3_TEMP_LOW]                 = "E39:",
+	[ERR_HDC1080_TEMP_HIGH]                 = "E40:",
+	[ERR_HDC1080_TEMP_LOW]                  = "E41:",
+	[ERR_HDC1080_HUMIDITY_HIGH]             = "E42:",
+	[ERR_HDC1080_HUMIDITY_LOW]              = "E43:",
+	[ERR_DHT11_TEMP_HIGH]                   = "E44:",
+	[ERR_DHT11_TEMP_LOW]                    = "E45:",
+	[ERR_DHT11_HUMIDITY_HIGH]               = "E46:",
+	[ERR_DHT11_HUMIDITY_LOW]                = "E47:",
+	[ERR_MCU_TEMP_HIGH]                     = "E48:",
+	[ERR_MCU_TEMP_LOW]                      = "E49:",
+	[ERR_MBAT_TEMP_HIGH]                    = "E50:",
+	[ERR_MBAT_TEMP_LOW]                     = "E51:",
+	[ERR_DIODE_CH0_OVCP]                    = "E52:Laser current exceeds set value",
+	[ERR_DIODE_CH1_OVCP]                    = "E53:Laser current exceeds set value",
+	[ERR_DIODE_CH2_OVCP]                    = "E54:",
+	[ERR_DIODE_CH3_OVCP]                    = "E55:",
+	[ERR_DIODE_CH4_OVCP]                    = "E56:",
+	[ERR_DIODE_CH5_OVCP]                    = "E57:",
+	[ERR_DIODE_CH6_OVCP]                    = "E58:",
+	[ERR_DIODE_CH7_OVCP]                    = "E59:",
+	[ERR_HWATER_FLOW_LOW]                   = "E60:Water Flow Low",					
+	[ERR_CWATER_FLOW_LOW]										=	"E61:"
 };
 
-const INFO_MSG info_msg = {
+const INFO_MSG_T info_msg = {
 	.SN 						 									= "SN: ",
 	.HW_VER					 									= "HW:"HW_VERSION"",
 	.SW_VER 					 								= "App:"SW_VERSION"",
@@ -109,12 +116,14 @@ const INFO_MSG info_msg = {
 	
 };
 
-
-
-
-
-
-
+/*****************************************************************************/
+const char *getErrorString(MSG_ID_T err_code){//根据错误码获取错误提示字符串
+	// 越界保护
+	if (err_code >= ERR_MAX_COUNT) {
+			return "Unknown error code";
+	}
+	return errorCodeToString[err_code];
+}
 
 
 

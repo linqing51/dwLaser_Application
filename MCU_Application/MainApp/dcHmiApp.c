@@ -3,7 +3,7 @@
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
 uint16_t hmiCmdSize;//已缓冲的指令数
-static uint8_t MsgId = 0xFF;//当前显示的信息ID
+static MSG_ID_T MsgId;//当前显示的信息ID
 uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
 uint32_t newBootloadCrc32;
 // 创建风扇控制器实例
@@ -2028,106 +2028,22 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	sprintf(dispBuf1, "%11.1f J", ((float)temp2 / 10));//00:00
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
 }
-void updateWarnMsgDisplay(uint8_t id){//更新警号显示框
-	switch(NVRAM[DM_LANGUAGE]){
-		case LANGUAGE_CODE_EN:{
-		}
-		case LANGUAGE_CODE_GB:{
-		}
-		default:{
-			break
-		}
-	}
-	const char *pstr;
+void updateWarnMsgDisplay(MSG_ID_T id){//更新警号显示框
+	const char *msg;
+//	switch(NVRAM0[DM_LANGUAGE]){
+//		case LANGUAGE_CODE_EN:{
+//			break;
+//		}
+//		case LANGUAGE_CODE_GB:{
+//			break;
+//		}
+//		default:{
+//			break;
+//		}
+//	}
 	if((MsgId != id) || (NVRAM0[EM_DC_PAGE] != NVRAM1[EM_DC_PAGE])){
-		switch(id){
-			case  MSG_NO_ERROR:{
-				pstr = warn_msg_en.ERROR;
-				break;
-			}
-			case MSG_INTERLOCK_UNPLUG:{
-				pstr = WARN_MSG_INTERLOCK_UNPLUG;
-				break;
-			}
-			case MSG_FOOTSWITCH_UNPLUG:{
-				pstr = WARN_MSG_FOOTSWITCH_UNPLUG;
-				break;
-			}
-			case MSG_ESTOP_PRESS:{
-				pstr = WARN_MSG_ESTOP_PRESS;
-				break;
-			}
-			case MSG_FIBER_UNPLUG:{
-				pstr = WARN_MSG_FIBER_UNPLUG;
-				break;
-			}
-			case MSG_OUT_ENERGY:{
-				pstr = WARN_MSG_OUT_ENERGY;
-				break;
-			}
-			case MSG_DIODE_HTEMP:{
-				pstr = WARN_MSG_DIODE_HTEMP;
-				break;
-			}
-			case MSG_DIODE_LTEMP:{
-				pstr = WARN_MSG_DIODE_LTEMP;
-				break;
-			}
-			case MSG_DIODE0_OVERCURRENT:{
-				pstr = WARN_MSG_DIODE0_OVERCURRENT;
-				break;
-			}
-			case MSG_DIODE1_OVERCURRENT:{
-				pstr = WARN_MSG_DIODE1_OVERCURRENT;
-				break;
-			}
-			case MSG_NTC_ERROR:{
-				pstr = WARN_MSG_NTC_ERROR;
-				break;
-			}
-			case MSG_ENVI_HTEMP:{
-				pstr = WARN_MSG_ENVI_HTEMP;
-				break;
-			}
-			case MSG_ENVI_LTEMP:{
-				pstr = WARN_MSG_ENVI_LTEMP;
-				break;
-			}
-			case MSG_FOOT_DEPRESSED:{
-				pstr = WARN_MSG_FOOT_DEPRESSED;
-				break;
-			}
-			case MSG_LASER_EMIT:{
-				pstr = WARN_MSG_LASER_EMIT;
-				break;
-			}
-			case MSG_WAIT_TRIGGER:{
-				pstr = WARN_MSG_WAIT_TRIGGER;
-				break;
-			}
-			case MSG_FIBER_MISSMATE:{
-				pstr = WARN_MSG_FIBER_MISSMATE;
-				break;
-			}
-			
-			case MSG_HUMIDITY_ABNORMAL:{
-				pstr = WARM_MSG_HUMIDITY_ABNORMAL;
-				break;
-			}	
-			case MSG_HWATER_ABNORMAL:{
-				pstr = WARM_MSG_HWATER_ABNORMAL;
-				break;
-			}
-			case MSG_CWATER_ABNORMAL:{
-				pstr = WARM_MSG_CWATER_ABNORMAL;
-				break;
-			}
-			default:{
-				pstr = WARN_MSG_NO_ERROR;
-				break;
-			}
-		}
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, (uint8_t*)pstr);
+		msg = getErrorString(id);		
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, (uint8_t*)msg);
 		MsgId = id;
 	}
 }
@@ -3214,7 +3130,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			SSET(R_DCHMI_RESTORE_DONE);
 			//设置HMI页面
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_WAIT_ENTER_PASSCODE;
-			MsgId = 0xFF;//当前显示的信息ID
+			MsgId = ERR_NO_ERROR;//当前显示的信息ID
 		
 			SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, false);			
 			SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, true);
@@ -3400,46 +3316,172 @@ void dcHmiLoop(void){//HMI轮训程序
 		
 		if(LDP(SPCOIL_PS200MS)){
 			if(LD(R_FAULT)){
-				if(LD(R_TEMP_FAULT)){
-					if(LD(R_LASER_A_DIODE_TEMP_HIGH) || LD(R_LASER_B_DIODE_TEMP_HIGH)){//激光器高温保护
-						updateWarnMsgDisplay(MSG_DIODE_HTEMP);
+				if(LD(R_TEMP_FAULT)){					
+					if(LD(R_LASER_A_DIODE_TEMP_HIGH)){//激光器高温保护
+						updateWarnMsgDisplay(ERR_LASER_A_DIODE_TEMP_HIGH);
 					}
-					else if(LD(R_LASER_A_DIODE_TEMP_LOW) || LD(R_LASER_B_DIODE_TEMP_LOW)){//激光器低温NTC开路保护
-						updateWarnMsgDisplay(MSG_DIODE_LTEMP);
+					else if(LD(R_LASER_A_DIODE_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_A_DIODE_TEMP_LOW);
 					}
-					else if(LD(R_MCU_TEMP_HIGH)){//环境高温保护
-						updateWarnMsgDisplay(MSG_ENVI_HTEMP);
+					else if(LD(R_LASER_B_DIODE_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_LASER_A_DIODE_TEMP_HIGH);
 					}
-					else if(LD(R_MCU_TEMP_LOW)){//环境低温保护
-						updateWarnMsgDisplay(MSG_ENVI_LTEMP);
+					else if(LD(R_LASER_B_DIODE_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_A_DIODE_TEMP_LOW);
 					}
-					else if(LD(R_HWATER_TEMP_HIGH) || LD(R_HWATER_TEMP_LOW)){//热水温度异常
-						updateWarnMsgDisplay(MSG_HWATER_ABNORMAL);
+								
+					else if(LD(R_LASER_A_COUPLER_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_LASER_A_COUPLER_TEMP_HIGH);
 					}
-					else if(LD(R_CWATER_TEMP_HIGH) || LD(R_CWATER_TEMP_LOW)){//冷水温度异常
-						updateWarnMsgDisplay(MSG_CWATER_ABNORMAL);
+					else if(LD(R_LASER_B_COUPLER_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_LASER_B_COUPLER_TEMP_HIGH);
 					}
+					else if(LD(R_LASER_A_COUPLER_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_B_COUPLER_TEMP_HIGH);
+					}
+					else if(LD(R_LASER_B_COUPLER_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_B_COUPLER_TEMP_HIGH);
+					}
+					else if(LD(R_LASER_A_CRYST0_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_LASER_A_CRYST0_TEMP_HIGH);
+					}						
+					else if(LD(R_LASER_A_CRYST0_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_A_CRYST0_TEMP_LOW);
+					}						
+					else if(LD(R_LASER_A_CRYST1_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_LASER_A_CRYST1_TEMP_HIGH);
+					}						
+					else if(LD(R_LASER_A_CRYST1_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_A_CRYST1_TEMP_LOW);
+					}						
+					else if(LD(R_LASER_B_CRYST0_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_LASER_B_CRYST0_TEMP_HIGH);
+					}						
+					else if(LD(R_LASER_B_CRYST0_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_B_CRYST0_TEMP_LOW);
+					}						
+					else if(LD(R_LASER_B_CRYST1_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_LASER_B_CRYST1_TEMP_HIGH);
+					}						
+					else if(LD(R_LASER_B_CRYST1_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_LASER_B_CRYST1_TEMP_LOW);
+					}						
+					else if(LD(R_HT0_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_HT0_TEMP_HIGH);
+					}						
+					else if(LD(R_HT1_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_HT1_TEMP_HIGH);
+					}						
+					else if(LD(R_HT2_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_HT2_TEMP_HIGH);
+					}						
+					else if(LD(R_HT3_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_HT3_TEMP_HIGH);
+					}
+					else if(LD(R_HWATER_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_HWATER_TEMP_HIGH);
+					}						
+					else if(LD(R_HWATER_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_HWATER_TEMP_LOW);
+					}			
+					else if(LD(R_CWATER_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_CWATER_TEMP_HIGH);
+					}			
+					else if(LD(R_CWATER_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_CWATER_TEMP_LOW);
+					}				
+					else if(LD(R_AMBIENT0_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_AMBIENT0_TEMP_HIGH);
+					}		
+					else if(LD(R_AMBIENT0_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_AMBIENT0_TEMP_LOW);
+					}		
+					else if(LD(R_AMBIENT1_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_AMBIENT1_TEMP_HIGH);
+					}		
+					else if(LD(R_AMBIENT1_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_AMBIENT1_TEMP_LOW);
+					}		
+					else if(LD(R_AMBIENT2_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_AMBIENT2_TEMP_HIGH);
+					}		
+					else if(LD(R_AMBIENT2_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_AMBIENT2_TEMP_LOW);
+					}		
+					else if(LD(R_AMBIENT3_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_AMBIENT3_TEMP_HIGH);
+					}		
+					else if(LD(R_AMBIENT3_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_AMBIENT3_TEMP_LOW);
+					}	
+					else if(LD(R_HDC1080_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_HDC1080_TEMP_HIGH);
+					}		
+					else if(LD(R_HDC1080_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_HDC1080_TEMP_LOW);
+					}	
+					else if(LD(R_DHT11_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_DHT11_TEMP_HIGH);
+					}
+					else if(LD(R_DHT11_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_DHT11_TEMP_HIGH);
+					}
+				
+					else if(LD(R_MCU_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_MCU_TEMP_HIGH);
+					}						
+					else if(LD(R_MCU_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_MCU_TEMP_LOW);
+					}						
+					else if(LD(R_MBAT_TEMP_HIGH)){
+						updateWarnMsgDisplay(ERR_MBAT_TEMP_HIGH);
+					}
+					else if(LD(R_MBAT_TEMP_LOW)){
+						updateWarnMsgDisplay(ERR_MBAT_TEMP_LOW);
+					}
+					else if(LD(R_HWATER_FLOW_LOW)){
+						updateWarnMsgDisplay(ERR_HWATER_FLOW_LOW);
+					}
+					else if(LD(R_CWATER_FLOW_LOW)){
+						updateWarnMsgDisplay(ERR_CWATER_FLOW_LOW);
+					}						
+				}
+				else if(LD(R_FLOW_FAULT)){
+					if(LD(R_HWATER_FLOW_LOW)){
+						updateWarnMsgDisplay(ERR_HWATER_FLOW_LOW);
+					}
+					else if(LD(R_CWATER_FLOW_LOW)){
+						updateWarnMsgDisplay(ERR_CWATER_FLOW_LOW);
+					}
+				}
+				else if(LD(R_HUMIDITY_FALUT)){					
+					if(LD(R_DHT11_HUMIDITY_HIGH)){
+						updateWarnMsgDisplay(ERR_DHT11_TEMP_HIGH);
+					}
+					else if(LD(R_DHT11_HUMIDITY_LOW)){
+						updateWarnMsgDisplay(ERR_DHT11_TEMP_LOW);
+					}
+					else if(LD(R_HDC1080_HUMIDITY_HIGH)){
+						updateWarnMsgDisplay(ERR_HDC1080_HUMIDITY_HIGH);
+					}
+					else if(LD(R_HDC1080_HUMIDITY_LOW)){
+						updateWarnMsgDisplay(ERR_HDC1080_TEMP_LOW);
+					}					
 				}
 				else if(LD(R_ESTOP)){//急停按下
-					updateWarnMsgDisplay(MSG_ESTOP_PRESS);		
+					updateWarnMsgDisplay(ERR_ESTOP_PRESS);		
 				}
 				else if(LD(R_INTERLOCK)){//安全连锁拔出
-					updateWarnMsgDisplay(MSG_INTERLOCK_UNPLUG);
+					updateWarnMsgDisplay(ERR_INTERLOCK_UNPLUG);
 				}
 				else if(LDB(R_FIBER_PROBE)){//光纤拔出
-					updateWarnMsgDisplay(MSG_FIBER_UNPLUG);
+					updateWarnMsgDisplay(ERR_FIBER_UNPLUG);
 				}
 				else if(LDB(R_FOOTSWITCH_PLUG)){//脚踏拔出
-					updateWarnMsgDisplay(MSG_FOOTSWITCH_UNPLUG);
+					updateWarnMsgDisplay(ERR_FOOTSWITCH_UNPLUG);
 				}
 				else if(LDB(R_RFID_PASS)){//光纤ID不匹配
-					updateWarnMsgDisplay(MSG_FIBER_MISSMATE);
-				}
-				else if(LD(R_FLOW_FAULT)){//流量报警
-					updateWarnMsgDisplay(MSG_FLOW_ABNORMAL);
-				}
-				else if(LD(R_HUMIDITY_FALUT)){//湿度报警
-					updateWarnMsgDisplay(MSG_HUMIDITY_ABNORMAL);
+					updateWarnMsgDisplay(ERR_FIBER_MISSMATE);
 				}
 				standbyKeyTouchEnable(false);//禁止Standby触摸
 				NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_3;//设置喇叭声音模式
@@ -3448,13 +3490,13 @@ void dcHmiLoop(void){//HMI轮训程序
 			}
 			else{//无故障显示
 				RRES(SPCOIL_BEEM_ENABLE);
-				updateWarnMsgDisplay(MSG_NO_ERROR);
+				updateWarnMsgDisplay(ERR_NO_ERROR);
 				standbyKeyTouchEnable(true);
 			}
 		}
 		if(LDB(R_FAULT) && LDP(SPCOIL_PS100MS)){//无故障显示
 			RRES(SPCOIL_BEEM_ENABLE);
-			updateWarnMsgDisplay(MSG_NO_ERROR);
+			updateWarnMsgDisplay(ERR_NO_ERROR);
 			standbyKeyTouchEnable(true);
 		}
 		if(LD(R_STANDBY_KEY_ENTER_OPTION_DOWN)){//点击OPTION
@@ -3808,7 +3850,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){
 				RRES(R_STANDBY_KEY_STNADBY_UP);
 			}
-			updateWarnMsgDisplay(MSG_NO_ERROR);//显示警告信息
+			updateWarnMsgDisplay(ERR_NO_ERROR);//显示警告信息
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			return;
 		}
@@ -3865,7 +3907,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){
 				RRES(R_STANDBY_KEY_STNADBY_UP);
 			}
-			updateWarnMsgDisplay(MSG_NO_ERROR);//显示警告信息
+			updateWarnMsgDisplay(ERR_NO_ERROR);//显示警告信息
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			return;
 		}
@@ -3894,7 +3936,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 			standbyKeyValue(false);
 			standbyKeyTouchEnable(true);
-			updateWarnMsgDisplay(MSG_NO_ERROR);
+			updateWarnMsgDisplay(ERR_NO_ERROR);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 		}
 		else{

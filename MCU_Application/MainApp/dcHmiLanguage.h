@@ -3,63 +3,72 @@
 #include "sPlc.h"
 #include "appConfig.h"
 /*****************************************************************************/
-typedef struct{
-	const char *NO_ERROR;			
-	const char *INTERLOCK_UNPLUG;//安全连锁没插													
-	const char *FOOTSWITCH_UNPLUG;//脚踏没插
-	const char *ESTOP_PRESS;//急停按下
-	const char *FIBER_UNPLUG;//光纤没插或者RFID不识别													
-	const char *OUT_ENERGY;//功率偏差超20%，预留功能，可以以后实现
-	const char *LASER_EMIT;//激光正在发射
-	const char *WAIT_TRIGGER;//等待激光触发
-	const char *FIBER_MISSMATE;
-	const char *LASER_DIODE_A_TEMP_HIGH;
-	const char *LASER_DIODE_B_TEMP_HIGH;					
-	const char *LASER_DIODE_A_TEMP_LOW;				
-	const char *LASER_DIODE_B_TEMP_LOW;							
-	const char *LASER_COUPLER_A_TEMP_HIGH;          
-	const char *LASER_COUPLER_B_TEMP_HIGH;         
-	const char *LASER_CRYST0_A_TEMP_HIGH;						
-	const char *LASER_CRYST1_A_TEMP_HIGH;					
-	const char *LASER_CRYST0_B_TEMP_HIGH;					
-	const char *LASER_CRYST1_B_TEMP_HIGH;					
-	const char *LASER_CRYST0_A_TEMP_LOW;     
-	const char *LASER_CRYST0_B_TEMP_LOW;      
-	const char *LASER_CRYST1_A_TEMP_LOW; 
-	const char *LASER_CRYST1_B_TEMP_LOW;  
-	const char *HT0_TEMP_HIGH;				
-	const char *HT1_TEMP_HIGH;				
-	const char *HT2_TEMP_HIGH;				
-	const char *HT3_TEMP_HIGH;			
-	const char *HWATER_TEMP_HIGH;	
-	const char *HWATER_TEMP_LOW;		
-	const char *CWATER_TEMP_HIGH;										
-	const char *CWATER_TEMP_LOW;											
-	const char *AMBIENT0_TEMP_HIGH;									
-	const char *AMBIENT0_TEMP_LOW;											
-	const char *AMBIENT1_TEMP_HIGH;									
-	const char *AMBIENT1_TEMP_LOW;				            
-	const char *AMBIENT2_TEMP_HIGH;			            
-	const char *AMBIENT2_TEMP_LOW;										
-	const char *AMBIENT3_TEMP_HIGH;			            
-	const char *AMBIENT3_TEMP_LOW;				            
-	const char *HDC1080_TEMP_HIGH;													
-	const char *HDC1080_TEMP_LOW;										
-	const char *HDC1080_HUMIDITY_HIGH;									
-	const char *HDC1080_HUMIDITY_LOW;								
-	const char *DHT11_TEMP_HIGH;											
-	const char *DHT11_TEMP_LOW;												
-	const char *DHT11_HUMIDITY_HIGH;										
-	const char *DHT11_HUMIDITY_LOW;											
-	const char *MCU_TEMP_HIGH;													
-	const char *MCU_TEMP_LOW;													
-	const char *MBAT_TEMP_HIGH;												
-	const char *MBAT_TEMP_LOW;													
-	const char *DIODE_A_OVERCURRENT;										
-	const char *DIODE_B_OVERCURRENT;									
-	const char *FLOW_ABNORMAL;																					
-	const char *HUMIDITY_ABNORMAL;	
-}WARN_MSG;
+typedef enum{
+	ERR_NO_ERROR = 0,
+	ERR_INTERLOCK_UNPLUG,											
+	ERR_FOOTSWITCH_UNPLUG,										
+	ERR_ESTOP_PRESS,													
+	ERR_FIBER_UNPLUG,													
+	ERR_OUT_ENERGY,														
+	ERR_LASER_EMIT,														
+	ERR_WAIT_TRIGGER,													
+	ERR_FIBER_MISSMATE,												
+	ERR_LASER_A_DIODE_TEMP_HIGH,									
+	ERR_LASER_B_DIODE_TEMP_HIGH,									
+	ERR_LASER_A_DIODE_TEMP_LOW,									
+	ERR_LASER_B_DIODE_TEMP_LOW,									
+	ERR_LASER_A_COUPLER_TEMP_HIGH,               
+	ERR_LASER_B_COUPLER_TEMP_HIGH,
+	ERR_LASER_A_COUPLER_TEMP_LOW,               
+	ERR_LASER_B_COUPLER_TEMP_LOW,  	
+	ERR_LASER_A_CRYST0_TEMP_HIGH,								
+	ERR_LASER_A_CRYST1_TEMP_HIGH,								
+	ERR_LASER_B_CRYST0_TEMP_HIGH,								
+	ERR_LASER_B_CRYST1_TEMP_HIGH,								
+	ERR_LASER_A_CRYST0_TEMP_LOW,                
+	ERR_LASER_A_CRYST1_TEMP_LOW,                
+	ERR_LASER_B_CRYST0_TEMP_LOW,                
+	ERR_LASER_B_CRYST1_TEMP_LOW,                
+	ERR_HT0_TEMP_HIGH,												
+	ERR_HT1_TEMP_HIGH,												
+	ERR_HT2_TEMP_HIGH,												
+	ERR_HT3_TEMP_HIGH,												
+	ERR_HWATER_TEMP_HIGH,											
+	ERR_HWATER_TEMP_LOW,											
+	ERR_CWATER_TEMP_HIGH,											
+	ERR_CWATER_TEMP_LOW,											
+	ERR_AMBIENT0_TEMP_HIGH,										
+	ERR_AMBIENT0_TEMP_LOW,										
+	ERR_AMBIENT1_TEMP_HIGH,										
+	ERR_AMBIENT1_TEMP_LOW,				            
+	ERR_AMBIENT2_TEMP_HIGH,			              
+	ERR_AMBIENT2_TEMP_LOW,										
+	ERR_AMBIENT3_TEMP_HIGH,
+	ERR_AMBIENT3_TEMP_LOW,
+	ERR_HDC1080_TEMP_HIGH,		
+	ERR_HDC1080_TEMP_LOW,
+	ERR_HDC1080_HUMIDITY_HIGH,	
+	ERR_HDC1080_HUMIDITY_LOW,
+	ERR_DHT11_TEMP_HIGH,	
+	ERR_DHT11_TEMP_LOW,
+	ERR_DHT11_HUMIDITY_HIGH,
+	ERR_DHT11_HUMIDITY_LOW,
+	ERR_MCU_TEMP_HIGH,
+	ERR_MCU_TEMP_LOW,
+	ERR_MBAT_TEMP_HIGH,	
+	ERR_MBAT_TEMP_LOW,	
+	ERR_DIODE_CH0_OVCP,
+	ERR_DIODE_CH1_OVCP,
+	ERR_DIODE_CH2_OVCP,
+	ERR_DIODE_CH3_OVCP,
+	ERR_DIODE_CH4_OVCP,
+	ERR_DIODE_CH5_OVCP,
+	ERR_DIODE_CH6_OVCP,
+	ERR_DIODE_CH7_OVCP,
+	ERR_HWATER_FLOW_LOW,									
+	ERR_CWATER_FLOW_LOW, 
+  ERR_MAX_COUNT// 错误总数
+}MSG_ID_T;
 
 typedef struct{
 	const char *TYPE;
@@ -69,10 +78,10 @@ typedef struct{
 	const char *SW_VER;
 	const char *HW_VER;
 	const char *MANUFACTURE_DATE;
-}INFO_MSG;
+}INFO_MSG_T;
 /*****************************************************************************/
-extern const WARN_MSG warn_msg_en;
-extern const INFO_MSG info_msg;
+extern const INFO_MSG_T info_msg;
+const char *getErrorString(MSG_ID_T err_code);
 #endif
 
 
