@@ -136,6 +136,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH0);
 			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr0;
+			ch = 0;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH1:{
@@ -144,6 +145,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH1);
 			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr1;
+			ch = 1;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH2:{
@@ -152,6 +154,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH2);
 			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr2;
+			ch = 2;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH3:{
@@ -159,8 +162,8 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			pmin = (int16_t)CONFIG_HARDWARE_MIN_LASER_POWER_CH3;
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH3);
 			dacmin = 0;
-			
 			pCal = deviceConfig.calibrationPwr3;
+			ch = 3;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH4:{
@@ -169,6 +172,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH4);
 			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr4;
+			ch = 4;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH5:{
@@ -177,6 +181,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH5);
 			dacmin = 0;	
 			pCal = deviceConfig.calibrationPwr5;
+			ch = 5;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH6:{
@@ -185,6 +190,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH6);
 			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr6;
+			ch = 6;
 			break;
 		}
 		case LASER_DAC_CHANNEL_CH7:{
@@ -193,6 +199,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			dacmax = (float)(CONFIG_DAC_MAXBIT_CH7);
 			dacmin = 0;
 			pCal = deviceConfig.calibrationPwr7;
+			ch = 7;
 			break;
 		}
 		default:{
@@ -295,7 +302,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 		fout = (power - fb) / fk;
 		printf("%s,%d,%s:Enable calibration mode\n", __FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:Calibration fK=%f, fB=%f\n", __FILE__, __LINE__, __func__, fk, fb);
-		printf("%s,%d,%s:Calibration fOut=%f\n", __FILE__, __LINE__, __func__, fout);
+		printf("%s,%d,%s:Calibration ch=%d,fOut=%f\n", __FILE__, __LINE__, __func__, ch, fout);
 	}
 	else{//功率校正模式 ->按等比输出DAC值
 		printf("%s,%d,%s:Disable calibration mode\n", __FILE__, __LINE__, __func__);
@@ -316,7 +323,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 		fout = dacmin;
 	}
 	out = (uint16_t)fout;
-	printf("%s,%d,%s:Calibration fOut=%d\n", __FILE__, __LINE__, __func__, out);
+	printf("%s,%d,%s:Calibration ch=%d,fOut=%d\n", __FILE__, __LINE__, __func__, ch, out);
 	return out;
 }
 

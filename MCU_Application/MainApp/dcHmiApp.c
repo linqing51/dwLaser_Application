@@ -4010,6 +4010,33 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_INFORMATION_KEY_OK_DOWN);	
 		}
+		if(LDP(SPCOIL_PS500MS)){//刷新RTC 显示
+			uint8_t* pyear = (uint8_t*)malloc(sizeof(uint8_t));
+			uint8_t* pmonth = (uint8_t*)malloc(sizeof(uint8_t));
+			uint8_t* pday = (uint8_t*)malloc(sizeof(uint8_t));
+			uint8_t* phour = (uint8_t*)malloc(sizeof(uint8_t));
+			uint8_t* pminute = (uint8_t*)malloc(sizeof(uint8_t));
+			uint8_t* psecond = (uint8_t*)malloc(sizeof(uint8_t));
+			char* pdispBuf = (char*)malloc(64 * sizeof(char)); 
+			
+			if((pyear != NULL) && (pmonth != NULL) && (pday != NULL)){
+				RtcGetNowTime(pyear, pmonth, pday, phour, pminute, psecond);//获取当前时间可循环调用
+			}
+			if(pdispBuf != NULL){
+				memset(pdispBuf, 0x0, 64 * sizeof(char));
+				sprintf(pdispBuf, "Year:%d-Month:%d-Day:%d  Hour:%d-Minute:%d-Second:%d", *pyear, *pmonth, *pday, *phour, *pminute, *psecond);
+				SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)pdispBuf);
+			}
+			free(pyear);
+			free(pmonth);
+			free(pday);
+			free(psecond);
+			free(pdispBuf);
+			pyear = NULL;  // 指针置空，避免野指针
+			pmonth = NULL;
+			pday = NULL;
+			pdispBuf = NULL;
+		}
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME){//方案界面第一页
@@ -4428,7 +4455,9 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7, false);	
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7, false);
+			SET_RAIM_SHDN_OFF;
+			SET_GAIM_SHDN_OFF;			
 		}
 		if(LDP(SPCOIL_PS200MS)){
 			updateDiagnosisCaliInfo();

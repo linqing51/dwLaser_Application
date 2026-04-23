@@ -1829,72 +1829,88 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH0:{
 					if(state){
 						SET_LASER_CH0_ON;
+						printf("SET LASER CH0 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH0_OFF;
+						printf("SET LASER CH0 PWM OFF\n");
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH1:{
 					if(state){
 						SET_LASER_CH1_ON;
+						printf("SET LASER CH1 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH1_OFF;
+						printf("SET LASER CH1 PWM OFF\n");
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH2:{
 					if(state){
 						SET_LASER_CH2_ON;
+						printf("SET LASER CH2 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH2_OFF;
+						printf("SET LASER CH3 PWM OFF\n");
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH3:{
 					if(state){
 						SET_LASER_CH3_ON;
+						printf("SET LASER CH3 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH3_OFF;
+						printf("SET LASER CH3 PWM OFF\n");
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4:{
 					if(state){
 						SET_LASER_CH4_ON;
+						printf("SET LASER CH4 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH4_OFF;
+						printf("SET LASER CH0 PWM OFF\n");
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5:{
 					if(state){
 						SET_LASER_CH5_ON;
+						printf("SET LASER CH5 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH5_OFF;
+						printf("SET LASER CH5 PWM OFF\n");
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6:{
 					if(state){
 						SET_LASER_CH6_ON;
+						printf("SET LASER CH6 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH6_OFF;
+						printf("SET LASER CH6 PWM OFF\n");
 					}
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7:{
 					if(state){
 						SET_LASER_CH7_ON;
+						printf("SET LASER CH7 PWM ON\n");
 					}
 					else{
 						SET_LASER_CH7_OFF;
+						printf("SET LASER CH0 PWM OFF\n");
 					}
 					break;
 				}

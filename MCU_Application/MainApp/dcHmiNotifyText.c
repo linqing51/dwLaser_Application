@@ -134,6 +134,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_B_TEMP:{
+					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 400){
 						sValue = 400;
 					}
@@ -141,6 +142,32 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 						sValue = 150;
 					}
 					deviceConfig.laserDiodeB_Temp = sValue;
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_YEAR:{
+					sscanf((const char*)str, "%d", &sValue);
+					RtcSetYear(sValue);
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MONTH:{
+					sscanf((const char*)str, "%d", &sValue);
+					
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_DAY:{
+					sscanf((const char*)str, "%d", &sValue);
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_HOUR:{
+					sscanf((const char*)str, "%d", &sValue);
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MINUTE:{
+					sscanf((const char*)str, "%d", &sValue);
+					break;
+				}
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_SECOND:{
+					sscanf((const char*)str, "%d", &sValue);
 					break;
 				}
 				default:break;

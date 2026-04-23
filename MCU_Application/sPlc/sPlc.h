@@ -192,6 +192,10 @@ extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
 extern void confirmBootloadUpdate(void);//执行Bootload更新
 extern void exitBootloadUpdate(void);//退出Bootload更新
 /*****************************************************************************/
+extern void RtcInitTimeDefault(void);
+extern void RtcCheckAndInit(void);
+extern void RtcGetNowTime(uint8_t *year,uint8_t *mon,uint8_t *day, uint8_t *hour,uint8_t *min,uint8_t *sec);
+/*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令
 extern void SSET(uint16_t A);//线圈置位
