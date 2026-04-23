@@ -1281,7 +1281,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_DAC_MAXBIT_CH15								0xFFFF//NULL
 
 #define CONFIG_DAC_MAXBIT_CH16								5000
-#define CONFIG_DAC_MAXBIT_CH17								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH17								0x5000//NULL
 #endif	
 
 #if defined(LYPE_MCU_1V0_20260106)

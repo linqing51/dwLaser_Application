@@ -2,6 +2,7 @@
 /*****************************************************************************/
 void statusLoop(void){//温度轮询轮询
 	bool flag;
+	float32_t ftemp;
 #if defined(MODEL_PVGLS_7W_1940_A0) ||\
 		defined(MODEL_PVGLS_10W_1940_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
@@ -9,18 +10,46 @@ void statusLoop(void){//温度轮询轮询
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-	
+	//温度采集
 	TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS, CONFIG_DIODE_NTC_B);
 	TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_DIODE_NTC_RS, CONFIG_HT0_NTC_B);
 	TENV(EM_MCU_TEMP, SPREG_ADC_58);//CODE转换为MCU温度
+	//电流采集 激光通道0
+	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_0]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+	}
+	else{
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_0]) / 4096.0F;//计算电压
+	}
+	ftemp = ftemp * 20.0F / 0.003F;//计算电流
+	NVRAM0[EM_LD_CH0_CURRENT] = (int16_t)(ftemp * 10.0F);
+	//电流采集 激光通道通道1
+	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_1]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+	}
+	else{
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_1]) / 4096.0F;//计算电压
+	}
+	ftemp = ftemp * 20.0F / 0.002F;//计算电流
+	NVRAM0[EM_LD_CH1_CURRENT] = (int16_t)(ftemp * 10.0F);
+	//电流采集 制冷通道0
+	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_16]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+	}
+	else{
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_16]) / 4096.0F;//计算电压
+	}
+	ftemp = ftemp * 20.0F / 0.003F;//计算电流
+	NVRAM0[EM_TEC_CH0_CURRENT] = (int16_t)(ftemp * 10.0F);
 #endif
 #if defined(LYPE_MCU_1V0_20260106)
+	//温度采集
 	TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS , CONFIG_DIODE_NTC_B);//激光器芯片温度
 	TNTUC(EM_HWATER_TEMP, SPREG_ADC_36, CONFIG_WATER_HOT_NTC_RS, CONFIG_WATER_HOT_NTC_B);//水冷热端温度
 	TNTUC(EM_CWATER_TEMP, SPREG_ADC_37, CONFIG_WATER_COOL_NTC_RS, CONFIG_WATER_COOL_NTC_B);//水冷冷端温度
 	TNTLC(EM_AMBIENT0_TEMP, SPREG_ADC_56, CONFIG_AMBIENT_NTC_RS, CONFIG_AMBIENT_NTC_B);//模拟环境温度
 	TENV(EM_MCU_TEMP, SPREG_ADC_58);//CODE转换为MCU温度
-
+	//电流采集
 	if(LDP(SPCOIL_PS1000MS)){//2秒刷新一次板载的环境温度/湿度
 		hdc1080_read(&(NVRAM0[EM_HDC1080_TEMP]), &(NVRAM0[EM_HDC1080_HUMIDITY]));
 #if (CONFIG_DEBUG_IIC_HDC1080 == 1)
