@@ -396,37 +396,37 @@ void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 }
 void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
 	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_1];
 	dac8568_WriteDacRegister(0x01, temp);
 }
 void UPDAC2(void){
 	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_2];
 	dac8568_WriteDacRegister(0x2, temp);
 }
 void UPDAC3(void){
 	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_3];
 	dac8568_WriteDacRegister(0x03, temp);
 }
 void UPDAC4(void){
 	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_4];
 	dac8568_WriteDacRegister(0x04, temp);
 }
 void UPDAC5(void){
 	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_5];
 	dac8568_WriteDacRegister(0x05, temp);
 }
 void UPDAC6(void){
 	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_6];
 	dac8568_WriteDacRegister(0x06, temp);
 }
 void UPDAC7(void){
 	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_7];
 	dac8568_WriteDacRegister(0x07, temp);
 }
 void UPDAC8(void){

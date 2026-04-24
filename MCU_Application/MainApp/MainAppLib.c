@@ -206,11 +206,13 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 			break;
 		}
 	}
-	if(power > pmax){
-		power = pmax;
-	}
-	if(power < pmin){
-		power = pmin;
+	if(caliEna){
+		if(power > pmax){
+			power = pmax;
+		}
+		if(power < pmin){
+			power = pmin;
+		}
 	}
 	fpower = (float)power;
 	printf("%s,%d,%s:Calibration input power = %d\n", __FILE__, __LINE__, __func__, power);
