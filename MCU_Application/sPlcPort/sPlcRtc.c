@@ -1,10 +1,12 @@
 #include "rtc.h"
 #include "stdio.h"
+#include "sPlc.h"
+#include "BoardConfig.h"
 /*****************************************************************************/
 // 自定义魔术标记值
 #define RTC_VALID_FLAG    0x52544346U   // "RTCF"
 // 选用RTC备份寄存器 0
-#define RTC_FLAG_BKP_REG  RTC_BKP_DR0
+#define RTC_FLAG_BKP_REG  RTC_BKP_DR19
 
 RTC_TimeTypeDef sTime;
 RTC_DateTypeDef sDate;
@@ -28,14 +30,21 @@ void RtcCheckAndInit(void){
   // 1. 开启后备域时钟，解除写保护
   __HAL_RCC_PWR_CLK_ENABLE();
   HAL_PWR_EnableBkUpAccess();
-
   // 2. 判断备份寄存器标记
   if(HAL_RTCEx_BKUPRead(&hrtc, RTC_FLAG_BKP_REG) != RTC_VALID_FLAG){
     // 首次上电 / 电池没电丢失备份 → 设置初始时间
-    RtcInitTimeDefault();
+#if (CONFIG_DEBUG_RTC == 1)
+    printf("%s,%d,%s:Check BKSRAM fail,reInit RTC\n", __FILE__, __LINE__, __func__);
+#endif
+		RtcInitTimeDefault();
     // 写入有效标记，下次不再重置
-    HAL_RTCEx_BKUPWrite(&hrtc, RTC_FLAG_BKP_REG, RTC_VALID_FLAG);
+    HAL_RTCEx_BKUPWrite(&hrtc, RTC_FLAG_BKP_REG, RTC_VALID_FLAG);	
   }
+	else{
+#if (CONFIG_DEBUG_RTC == 1)
+	printf("%s,%d,%s:Check BKSRAM pass\n", __FILE__, __LINE__, __func__);
+#endif
+		}
   // 否则：直接沿用RTC现有时间，不操作
 }
 
@@ -63,19 +72,67 @@ void RtcSetTime(uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t 
 	sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
 	sTime.StoreOperation = RTC_STOREOPERATION_RESET;
 	HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-
 	// 2. 设置日期
 	sDate.Year = year;     // 只填后两位，如 25 代表 2025
 	sDate.Month = month;
 	sDate.Date = day;
 	HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+#if (CONFIG_DEBUG_RTC == 1)
+	printf("%s,%d,%s:Get RTC YY-MM-DD:%d-%d-%d,HH-MM-SS:%d-%d-%d\n", __FILE__, __LINE__, __func__, year, month, day, hour, min, sec);
+#endif
 }
 
-void RtcSetYear(uint8_t yy){
-	uint8_t year, mon, day, hour, min, sec;
-	if(yy >= 99){
-		yy = 99;
+void RtcSetYear(uint8_t tmp){
+	uint8_t year, mon, date, hour, min, sec;
+	if(tmp >= 99){
+		tmp = 99;
 	}
-	RtcGetNowTime(&year, &mon, &day, &hour, &min, &sec);//获取当前时间可循环调用
-	RtcSetTime(yy, mon, day, hour, min, sec);
+	RtcGetNowTime(&year, &mon, &date, &hour, &min, &sec);
+	RtcSetTime(tmp, mon, date, hour, min, sec);
 }
+
+void RtcSetMonth(uint8_t tmp){
+	uint8_t year, mon, date, hour, min, sec;
+	if(tmp >= 12){
+		tmp = 12;
+	}
+	RtcGetNowTime(&year, &mon, &date, &hour, &min, &sec);
+	RtcSetTime(year, tmp, date, hour, min, sec);
+}
+
+void RtcSetDate(uint8_t tmp){
+	uint8_t year, mon, date, hour, min, sec;
+	if(tmp >= 31){
+		tmp = 31;
+	}
+	RtcGetNowTime(&year, &mon, &date, &hour, &min, &sec);
+	RtcSetTime(year, mon, tmp, hour, min, sec);
+}
+
+void RtcSetHours(uint8_t tmp){
+	uint8_t year, mon, date, hour, min, sec;
+	if(tmp >= 31){
+		tmp = 31;
+	}
+	RtcGetNowTime(&year, &mon, &date, &hour, &min, &sec);
+	RtcSetTime(year, mon, date, tmp, min, sec);
+}
+
+void RtcSetMinutes(uint8_t tmp){
+	uint8_t year, mon, date, hour, min, sec;
+	if(tmp >= 60){
+		tmp = 60;
+	}
+	RtcGetNowTime(&year, &mon, &date, &hour, &min, &sec);
+	RtcSetTime(year, mon, date, hour, tmp, sec);
+}
+
+void RtcSetSeconds(uint8_t tmp){
+	uint8_t year, mon, date, hour, min, sec;
+	if(tmp >= 60){
+		tmp = 60;
+	}
+	RtcGetNowTime(&year, &mon, &date, &hour, &min, &sec);
+	RtcSetTime(year, mon, date, hour, min, tmp);
+}
+

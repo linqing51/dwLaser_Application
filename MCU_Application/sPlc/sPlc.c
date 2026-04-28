@@ -272,6 +272,16 @@ void sPlcSpwmLoop(void){//SPWM轮询
 	}
 }
 
+void sPlcRtcProcess(void){//RTC轮询
+	uint8_t year, mon, day, hour, min, sec;
+	RtcGetNowTime(&year, &mon, &day, &hour, &min, &sec);
+	NVRAM0[EM_RTC_YEAR] = year;
+	NVRAM0[EM_RTC_MONTH] = mon;
+	NVRAM0[EM_RTC_DAY] = day;
+	NVRAM0[EM_RTC_HOURS] = hour;
+	NVRAM0[EM_RTC_MINUTES] = min;
+	NVRAM0[EM_RTC_SECONDS] = sec;
+}
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
@@ -330,6 +340,9 @@ void sPlcProcessStart(void){//sPLC轮询起始
 		TD_60000MS_SP = 0;
 	}
 	sPlcInputRefresh();//读取X口输入
+	if(LDP(SPCOIL_PS100MS)){
+		sPlcRtcProcess();
+	}
 #if CONFIG_SPLC_USING_SPWM == 1
 	sPlcSpwmLoop();
 #endif

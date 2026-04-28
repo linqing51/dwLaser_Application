@@ -125,7 +125,7 @@ int main(void)
   MX_ADC3_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-
+	RtcCheckAndInit();
   /* USER CODE END 2 */
 
   /* Init scheduler */

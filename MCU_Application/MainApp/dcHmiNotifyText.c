@@ -151,23 +151,27 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 				}
 				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MONTH:{
 					sscanf((const char*)str, "%d", &sValue);
-					
+					RtcSetMonth(sValue);
 					break;
 				}
 				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_DAY:{
 					sscanf((const char*)str, "%d", &sValue);
+					RtcSetDate(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_HOUR:{
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_HOURS:{
 					sscanf((const char*)str, "%d", &sValue);
+					RtcSetHours(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MINUTE:{
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MINUTES:{
 					sscanf((const char*)str, "%d", &sValue);
+					RtcSetMinutes(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_SECOND:{
+				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_SECONDS:{
 					sscanf((const char*)str, "%d", &sValue);
+					RtcSetSeconds(sValue);
 					break;
 				}
 				default:break;

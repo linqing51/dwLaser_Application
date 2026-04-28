@@ -195,6 +195,13 @@ extern void exitBootloadUpdate(void);//退出Bootload更新
 extern void RtcInitTimeDefault(void);
 extern void RtcCheckAndInit(void);
 extern void RtcGetNowTime(uint8_t *year,uint8_t *mon,uint8_t *day, uint8_t *hour,uint8_t *min,uint8_t *sec);
+extern void RtcSetTime(uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec);
+extern void RtcSetYear(uint8_t tmp);
+extern void RtcSetMonth(uint8_t tmp);
+extern void RtcSetDate(uint8_t tmp);
+extern void RtcSetHours(uint8_t tmp);
+extern void RtcSetMinutes(uint8_t tmp);
+extern void RtcSetSeconds(uint8_t tmp);
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
 //位指令

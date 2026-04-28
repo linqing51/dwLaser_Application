@@ -2,7 +2,8 @@
 #define __SPLCCONFIG_H__
 /*****************************************************************************/
 #define CONFIG_DEBUG_DAC															1//调试DAC驱动
-#define CONFIG_DEBUB_ADC															1//调试ADC驱动
+#define CONFIG_DEBUG_ADC															1//调试ADC驱动
+#define CONFIG_DEBUG_RTC															1//调试RTC驱动
 #define CONFIG_DEBUG_EPROM														1//调试EPROM驱动
 #define CONFIG_DEBUG_IO																1//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
@@ -386,6 +387,14 @@
 #define EM_CALI_CUR_SET_CH5														(EM_START + 255)//通道5校准设置电流
 #define EM_CALI_CUR_SET_CH6														(EM_START + 256)//通道6校准设置电流
 #define EM_CALI_CUR_SET_CH7														(EM_START + 257)//通道7校准设置电流
+/*****************************************************************************/
+//RTC 时钟
+#define EM_RTC_YEAR																		(EM_START + 300)//
+#define EM_RTC_MONTH																	(EM_START + 301)//
+#define EM_RTC_DAY																		(EM_START + 302)//
+#define EM_RTC_HOURS																	(EM_START + 303)//
+#define EM_RTC_MINUTES																(EM_START + 304)//
+#define EM_RTC_SECONDS																(EM_START + 305)//
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME													(FD_START +  0)//方案名称
 #define FD_LASER_CHANNEL_SELECT												(FD_START +  51)//激光通道选择
