@@ -285,8 +285,8 @@ void sPlcRtcProcess(void){//RTC轮询
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
-	epromWriteEnable(true);
-	listEpromTable();
+	epromInit();
+  listEpromTable();
 	readStm32UniqueID();
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
 	sPlcEpromTest();

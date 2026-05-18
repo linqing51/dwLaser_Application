@@ -875,6 +875,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom_SPI.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom_I2C.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -5343,7 +5353,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
+            <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>D:\GitHub\dwLaser_Application\MCU_Application\targetBoard_G5_A1\MDK-ARM\convert.bat</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -5396,7 +5406,7 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4101</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
@@ -6084,6 +6094,16 @@
               <FileName>sPlcRtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom_SPI.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom_I2C.c</FilePath>
             </File>
           </Files>
         </Group>

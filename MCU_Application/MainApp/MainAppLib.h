@@ -6,6 +6,10 @@
 #include "stm32f4xx_hal.h"
 #include "arm_math.h"
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 typedef struct{
 	float kp;
 	float ki;
@@ -35,6 +39,9 @@ uint8_t saveSchemeToUdisk(void);//将FDRAM写入USB DISK
 uint8_t loadSchemeFromUdisk(void);//从USB DISK载入FDRAM
 int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb);
 /*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

@@ -1,8 +1,11 @@
 #ifndef __SPLCSMBUS_H__ 
 #define __SPLCSMBUS_H__
-
+/*****************************************************************************/
 #include "stm32f4xx_hal.h"
-
+/*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
 /* ************************ 硬件配置 ************************ */
 // I2C3 句柄（需在主函数或i2c.c中初始化）
 extern I2C_HandleTypeDef hi2c3;
@@ -31,6 +34,17 @@ HAL_StatusTypeDef PCA9546_HardwareReset(void);         // 硬件复位
 HAL_StatusTypeDef PCA9546_SelectChannel(uint8_t channel); // 选择通道
 HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel);  // 读取通道状态
 uint8_t PCA9546_Test(void);
+
+
+
+
+
+#ifdef __cplusplus
+}
+#endif
+
+
+
 #endif /* __PCA9546_H */
 
 

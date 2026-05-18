@@ -18,7 +18,10 @@
 #include "dcHmiRes.h"
 #include "MainAppLib.h"
 //#include "fan_controller.h"
-//#
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*****************************************************************************/
 #define LANGUAGE_CODE_EN														01
 #define LANGUAGE_CODE_GB														02
@@ -94,6 +97,10 @@ void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/
 extern void PmuPowerUp(void);//开机函数
 extern void PmuPowerDown(void);//关机函数
+
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

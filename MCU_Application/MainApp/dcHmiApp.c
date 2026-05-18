@@ -3620,8 +3620,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		defined(MODEL_PVGLS_15W_1470_A0) ||\
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_RASPI_G9_A1_20260322)
+		defined(LDR2P1_G5_A1_20250910_DUAL)
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig, true);
 				UPDAC0();
@@ -3668,6 +3667,16 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;
 			UPDAC17();//打开红光
 #endif
+			printf("%s,%d,%s:SPREG_DAC_0=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_0]);
+			printf("%s,%d,%s:SPREG_DAC_1=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_1]);
+			printf("%s,%d,%s:SPREG_DAC_2=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_2]);
+			printf("%s,%d,%s:SPREG_DAC_3=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_3]);
+			printf("%s,%d,%s:SPREG_DAC_4=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_4]);
+			printf("%s,%d,%s:SPREG_DAC_5=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_5]);
+			printf("%s,%d,%s:SPREG_DAC_6=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_6]);
+			printf("%s,%d,%s:SPREG_DAC_7=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_7]);
+			printf("%s,%d,%s:SPREG_DAC_16=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_16]);
+			printf("%s,%d,%s:SPREG_DAC_17=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_17]);
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);

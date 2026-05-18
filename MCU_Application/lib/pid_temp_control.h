@@ -1,6 +1,10 @@
-#ifndef PID_TEMP_CONTROL_H
-#define PID_TEMP_CONTROL_H
-
+#ifndef __PID_TEMP_CONTROL_H__
+#define __PID_TEMP_CONTROL_H__
+/*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 #include "stm32f4xx_hal.h" // 根据实际使用的STM32系列修改
 // PID控制器结构体
 typedef struct {
@@ -44,6 +48,10 @@ void Thermoelectric_Init(void);
 // 设置半导体制冷片输出
 void Thermoelectric_SetOutput(uint16_t output);
 
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif /* PID_TEMP_CONTROL_H */
 
 

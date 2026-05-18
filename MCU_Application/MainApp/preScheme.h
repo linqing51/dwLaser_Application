@@ -4,6 +4,10 @@
 #include "sPlc.h"
 #include "dcHmiApp.h"
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 typedef struct{
 	char *name;//治疗名字
 	int16_t channel;//激光通道选择
@@ -29,6 +33,10 @@ extern myScheme_t sEndolift[32];//11
 void schemeInit(uint8_t reDef);//治疗方案初始化
 void goNextScheme(void);//切换下一个方案
 void goLastScheme(void);//切换上一个方案
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

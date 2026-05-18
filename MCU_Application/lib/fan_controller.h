@@ -6,11 +6,14 @@
 #include <stdbool.h>
 #include "appConfig.h"
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 typedef struct{//温度-转速曲线点结构体（温度单位: °C，转速单位: 占空比0-100）
 	float temperature;  // 温度值(°C)
 	uint8_t speed;      // 对应转速(0-100%)
 }TempSpeedPoint;
-
 
 typedef struct{//风扇控制器结构体（封装状态、配置和硬件接口）
 	// 配置参数
@@ -75,5 +78,10 @@ void FanController_GetState(FanController* fan,
                            uint8_t* target);
 
 													 
-extern TempSpeedPoint fan_curve[CONFIG_FAN_CURVE_POINTS];													 
+extern TempSpeedPoint fan_curve[CONFIG_FAN_CURVE_POINTS];	
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
+												 
 #endif

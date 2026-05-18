@@ -137,6 +137,22 @@ void sPlcAdcProcessBufferA(void){//循环采集ADC
 		NVRAM0[SPREG_ADC_60] = (uint16_t)((float)sum[12] / (float)CONFIG_ADC_AVERAGE_NUM);//VBAT
 #endif		
 		
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+		NVRAM0[SPREG_ADC_55] = (uint16_t)((float)sum[0] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN0 LAS0_LPD
+		NVRAM0[SPREG_ADC_54] = (uint16_t)((float)sum[1] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN1 LAS0_FPD
+		NVRAM0[SPREG_ADC_32] = (uint16_t)((float)sum[2] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN2 HT0_NTC
+		NVRAM0[SPREG_ADC_33] = (uint16_t)((float)sum[3] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN3 HT1_NTC	
+		NVRAM0[SPREG_ADC_52] = (uint16_t)((float)sum[4] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN7 IVIN_IS
+		NVRAM0[SPREG_ADC_1] = (uint16_t)((float)sum[5] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN10 LAS1_CUR
+		NVRAM0[SPREG_ADC_0] = (uint16_t)((float)sum[6] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN11 LAS0_CUR
+		NVRAM0[SPREG_ADC_16] = (uint16_t)((float)sum[7] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN12 TEC0_CUR	
+		NVRAM0[SPREG_ADC_40] = (uint16_t)((float)sum[8] / (float)CONFIG_ADC_AVERAGE_NUM);	//IN13 LAS0_NTC
+		NVRAM0[SPREG_ADC_58] = (uint16_t)((float)sum[9] / (float)CONFIG_ADC_AVERAGE_NUM);//CHIP TEMP
+		NVRAM0[SPREG_ADC_59] = (uint16_t)((float)sum[10] / (float)CONFIG_ADC_AVERAGE_NUM);//VREFINT
+		NVRAM0[SPREG_ADC_60] = (uint16_t)((float)sum[11] / (float)CONFIG_ADC_AVERAGE_NUM);//VBAT		
+#endif		
+		
+		
 #if defined(MODEL_PVGLS_15W_1470_A0) || defined(MODEL_PVGLS_15W_1470_A1)
 		NVRAM0[SPREG_ADC_12] = (uint16_t)((float)sum[0] / (float)CONFIG_ADC_AVERAGE_NUM);//HNTC
 		NVRAM0[SPREG_ADC_11] = (uint16_t)((float)sum[1] / (float)CONFIG_ADC_AVERAGE_NUM);//LNTC

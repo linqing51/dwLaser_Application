@@ -9,6 +9,10 @@
 #ifndef __HMICMDQUEUE_H__
 #define __HMICMDQUEUE_H__
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 #include "hmiLib.h"
 /*****************************************************************************/
 typedef unsigned char qdata;
@@ -33,6 +37,9 @@ extern void queue_push(qdata _data);
 *  \return  指令长度，0表示队列中无完整指令
 */
 extern qsize queue_find_cmd(qdata *cmd,qsize buf_len);
-
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif
 

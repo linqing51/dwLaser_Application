@@ -7,8 +7,12 @@
 */
 
 
-#ifndef _CMD_PROCESS_H
-#define _CMD_PROCESS_H
+#ifndef __CMD_PROCESS_H__
+#define __CMD_PROCESS_H__
+/*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
 /*****************************************************************************/
 #include "hmiDriver.h"
 /*****************************************************************************/
@@ -184,4 +188,8 @@ void NotifyWriteFlash(uint8_t status);
 */
 void NotifyReadRTC(uint8_t year,uint8_t month,uint8_t week,uint8_t day,uint8_t hour,uint8_t minute,uint8_t second);
 
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif

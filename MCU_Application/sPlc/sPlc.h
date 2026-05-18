@@ -46,6 +46,10 @@
 #include "sPlcTest.h"
 #endif
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 #define BEEM_MODE_0														0x10//连续模式
 #define BEEM_MODE_1														0x11//声光同步
 #define BEEM_MODE_2														0x12//激光发射固定间隔
@@ -175,17 +179,6 @@ extern void morseCodeDiag(uint8_t diag);//诊断码
 extern void saveDeviceConfig(void);//将配置写入EPROM
 extern void loadDeviceConfig(void);//从EPROM载入配置文件
 extern void saveCalibrationTable(uint8_t channel);//储存选定通道的功率校准表
-extern HAL_StatusTypeDef epromWriteEnable(bool en);//ERPOM写保护
-extern HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//指定地址读出一个数据
-extern HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//指定地址开始读出16位数
-extern HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);//指定地址开始读出32位数
-extern HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//在AT24CXX指定地址写入8位数据
-extern HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//在AT24CXX里面的指定地址开始写入16位数
-extern HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//在AT24CXX里面的指定地址开始写入32位数
-extern HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
-extern HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
-extern uint8_t sPlcEpromTest(void);
-
 extern uint32_t getOriginBootloadCrc(void);//计算MCU Bootload CRC32
 extern uint32_t getOriginAppCrc(void);//计算MCU App CRC32
 extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
@@ -284,4 +277,7 @@ extern void LINKM(void);//主机发送
 extern void EDLAR(void);//停止发射脉冲
 extern void STLAR(void);//开始发射脉冲
 /*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif

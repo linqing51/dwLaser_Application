@@ -1,8 +1,10 @@
 #ifndef FUZZY_PID_H
 #define FUZZY_PID_H
-
+/*****************************************************************************/
 #include "stm32f4xx_hal.h"
-
+#ifdef __cplusplus
+}
+#endif
 // 模糊集合定义
 typedef enum {
     NB = 0,  // 负大
@@ -50,15 +52,17 @@ typedef struct {
 } FuzzyPID_HandleTypeDef;
 
 // 函数声明
-void FuzzyPID_Init(FuzzyPID_HandleTypeDef *pid, float Kp, float Ki, float Kd,
-                  uint16_t output_min, uint16_t output_max, float integral_limit,
-                  uint32_t control_period, int16_t error_range, int16_t error_dot_range);
+void FuzzyPID_Init(FuzzyPID_HandleTypeDef *pid, float Kp, float Ki, float Kd, uint16_t output_min, uint16_t output_max, float integral_limit, uint32_t control_period, int16_t error_range, int16_t error_dot_range);
 void FuzzyPID_SetSetpoint(FuzzyPID_HandleTypeDef *pid, int16_t setpoint);
 uint16_t FuzzyPID_Compute(FuzzyPID_HandleTypeDef *pid, int16_t current_temp);
 static void Fuzzy_AdjustParams(FuzzyPID_HandleTypeDef *pid);
 static FuzzySet Fuzzy_GetErrorSet(FuzzyPID_HandleTypeDef *pid);
 static FuzzySet Fuzzy_GetErrorDotSet(FuzzyPID_HandleTypeDef *pid);
 
+									
+#ifdef __cplusplus
+extern "C" {
+#endif
 #endif /* FUZZY_PID_H */
     
 									

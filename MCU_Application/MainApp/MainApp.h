@@ -4,11 +4,18 @@
 #include "sPlc.h"
 #include "dcHmiApp.h"
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 extern uint8_t gddcHmiRxBuf[];
 extern __IO uint8_t adcBufferDone;//ADC 采集完毕
 /*****************************************************************************/
-void mainAppTask(void *argument);
+extern void mainAppTask(void *argument);
 /*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

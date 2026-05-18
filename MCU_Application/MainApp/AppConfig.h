@@ -1,5 +1,8 @@
 #ifndef __APPCONFIG_H__
 #define __APPCONFIG_H__
+#ifdef __cplusplus
+extern "C" {
+#endif
 //通用配置信息
 /*****************************************************************************/
 #define CONFIG_CUSTIOM_SIZE														32//自定义方案数
@@ -78,7 +81,7 @@
 #define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
 /*****************************************************************************/
 //版本配置
-#define SW_VERSION																		"4.0a0b0"
+#define SW_VERSION																		"4.0a1b0"
 
 #if defined(LDR2P1_G5_A1_20250731_DUAL)
 #define HW_VERSION																		"LDR2P1G5A1_20250731_DUAL"
@@ -133,6 +136,7 @@
 #define APP_CONFIG_WAVE_1470_650//APP为双波长 1470+650
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL
 #endif
+
 #if defined(MODEL_PVGLS_TRI_A0) ||\
 		defined(MODEL_PVGLS_TRI_COMBINE_A0) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
@@ -251,7 +255,7 @@
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 						
-#define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
+#define CONFIG_LASER_A_DIODE_SET_TEMP									200//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP									250//激光器温度设定
 
 #define CONFIG_LASER_A_DIODE_TEMP_HIGH								400//激光器高温极限 46.0C
@@ -780,6 +784,11 @@
 #if defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_FAN_MAX_DC															100
 #define CONFIG_FAN_MIN_DC															0
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

@@ -73,11 +73,17 @@ const INFO_MSG_T info_msg = {
 	.MANUFACTURE_DATE 								= "MANUFACTURE DATE: ",
 	
 #if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+	.TYPE 						 								= "TYPE: PVGLS 1470/30",
+	.LASER_POWER 				 							= "LASER_POWER: 30W+0.5W",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+635nm"
+#else
 	.TYPE 						 								= "TYPE: PVGLS 1470/15",
 	.LASER_POWER 				 							= "LASER_POWER: 15W+0.5W",
 	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+635nm"
 #endif
-
+#endif
+	
 #if defined(MODEL_PVGLS_7W_1940_A0)
 	.TYPE 						 								= "TYPE: PVGLS 1940/7",
 	.LASER_POWER 				 							= "LASER_POWER: 7W",

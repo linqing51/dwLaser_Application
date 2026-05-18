@@ -3,6 +3,10 @@
 #include "sPlc.h"
 #include "appConfig.h"
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 typedef enum{
 	ERR_NO_ERROR = 0,
 	ERR_INTERLOCK_UNPLUG,											
@@ -82,6 +86,10 @@ typedef struct{
 /*****************************************************************************/
 extern const INFO_MSG_T info_msg;
 const char *getErrorString(MSG_ID_T err_code);
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

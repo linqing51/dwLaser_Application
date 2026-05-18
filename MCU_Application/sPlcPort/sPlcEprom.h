@@ -6,6 +6,16 @@
 #include "sPlcConfig.h"
 #include "boardConfig.h"
 #include "AppConfig.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*****************************************************************************/
+extern I2C_HandleTypeDef hi2c1;
+extern I2C_HandleTypeDef hi2c2;
+extern CRC_HandleTypeDef hcrc;
+extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 typedef enum {
 	CLEAR_EPROM_ALL 														= 0x01,
@@ -17,19 +27,28 @@ typedef enum {
 	CLEAR_EPROM_LOG_INFO												= 0x07
 }clarmEpromCmd_t;
 /*****************************************************************************/
-HAL_StatusTypeDef epromReadByte(uint16_t ReadAddr, uint8_t *rdat);//在AT24CXX指定地址读出一个数据
-HAL_StatusTypeDef epromReadHword(uint16_t ReadAddr, uint16_t *rdat);//在AT24CXX里面的指定地址开始读出16位数 
-HAL_StatusTypeDef epromReadDword(uint16_t ReadAddr, uint32_t *rdat);////在AT24CXX里面的指定地址开始读出32位数
-HAL_StatusTypeDef epromWriteByte(uint16_t WriteAddr, uint8_t *wdat);//在AT24CXX指定地址写入8位数据
-HAL_StatusTypeDef epromWriteHword(uint16_t WriteAddr, uint16_t *wdat);//在AT24CXX里面的指定地址开始写入16位数
-HAL_StatusTypeDef epromWriteDword(uint16_t WriteAddr, uint32_t *wdat);//在AT24CXX里面的指定地址开始写入32位数
-HAL_StatusTypeDef epromRead(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
-HAL_StatusTypeDef epromWrite(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
+void epromInit(void);
+HAL_StatusTypeDef epromReadStatusReg(uint8_t *status);
+HAL_StatusTypeDef epromReadDeviceId(uint8_t *idBuf);
+HAL_StatusTypeDef epromWriteEnable(bool en);
+HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *dat);
+HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *dat);
+HAL_StatusTypeDef epromReadHword(uint32_t addr, uint16_t *dat);
+HAL_StatusTypeDef epromWriteHword(uint32_t addr, uint16_t *dat);
+HAL_StatusTypeDef epromReadDword(uint32_t addr, uint32_t *dat);
+HAL_StatusTypeDef epromWriteDword(uint32_t addr, uint32_t *dat);
+HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *buf, uint16_t len);
+HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *buf, uint16_t len);
+/*****************************************************************************/
 uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
 void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
 void listEpromTable(void);
-void I2C_ReleaseBus(I2C_TypeDef* I2Cx, GPIO_TypeDef* SDA_GPIO, uint16_t SDA_Pin, GPIO_TypeDef* SCL_GPIO, uint16_t SCL_Pin);
-bool I2C_WaitFlag(I2C_TypeDef* I2Cx, uint32_t flag, uint32_t timeout);
+uint8_t sPlcEpromTest(void);//EPROM 读写自测试
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 

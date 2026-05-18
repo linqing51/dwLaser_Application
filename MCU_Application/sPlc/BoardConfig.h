@@ -94,11 +94,9 @@ extern UART_HandleTypeDef huart4;//GDDC LCD
 extern UART_HandleTypeDef huart6;//DEBUG
 extern SPI_HandleTypeDef hspi3;
 extern I2C_HandleTypeDef hi2c2;//MPU I2C
-
 extern TIM_HandleTypeDef htim2;//SKP TIM
 extern TIM_HandleTypeDef htim3;//FAN TIM
 extern TIM_HandleTypeDef htim4;//RGB LED
-extern TIM_HandleTypeDef htim5;//GAIM TIM
 extern TIM_HandleTypeDef htim7;//LASER TIM
 extern TIM_HandleTypeDef htim9;//RAIM  TIM
 extern TIM_HandleTypeDef htim14;//SPLC  TIM
@@ -1144,6 +1142,7 @@ extern uint16_t audioSineTable[];
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP)
+#define	CONFIG_EPROM_IIC											1
 #define CONFIG_EPROM_SIZE 										CONFIG_AT24C64_SIZE
 #define	CONFIG_AT24C64_SIZE										8192
 #define	CONFIG_AT24C128_SIZE 									16384
@@ -1157,11 +1156,13 @@ extern uint16_t audioSineTable[];
 #endif
 #if defined(LYPE_MCU_1V0_20260106) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-#define CONFIG_EPROM_SIZE 										CONFIG_FM25W256G_SIZE
+#define CONFIG_EPROM_SPI											
+#define CONFIG_EPROM_SIZE 										CONFIG_MB85RS2MAT_SIZE
 #define	CONFIG_AT24C64_SIZE										8192
 #define	CONFIG_AT24C128_SIZE 									16384
 #define	CONFIG_AT24C256_SIZE 									32768//32K*8
 #define CONFIG_FM25W256G_SIZE									32768//32K
+#define CONFIG_MB85RS2MAT_SIZE								262144//256K
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
@@ -1173,8 +1174,7 @@ extern uint16_t audioSineTable[];
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+		defined(LDR2P1_G5_A1_20250910_TRIP)
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 #define CONFIG_ADC1_CHANNEL										13//ADC采集通道
 #define CONFIG_ADC3_CHANNEL										0
@@ -1187,7 +1187,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25												760.0F//0.76V@25D
 
-#define CONFIG_DIODE_NTC_RS										4700L//激光器热敏电阻分压电阻值
+#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻值
 #define CONFIG_HT0_NTC_RS											4700L//散热器0热敏电阻分压电阻值
 #define CONFIG_HT1_NTC_RS											4700L//散热器1热敏电阻分压电阻值
 #define CONFIG_HT2_NTC_RS											1L	
@@ -1214,6 +1214,50 @@ extern uint16_t audioSineTable[];
 
 #define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
 #endif
+
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+#define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
+#define CONFIG_ADC1_CHANNEL										12//ADC采集通道
+#define CONFIG_ADC3_CHANNEL										0
+#define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数		
+#define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_ADC1_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
+#define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
+
+#define CONFIG_VREF_ADC												SPREG_ADC_59
+#define CONFIG_MCU_VREF												3300.0F
+#define CONFIG_ADC_AVG_SLOPE									2.5F
+#define CONFIG_ADC_V25												760.0F//0.76V@25D
+
+#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻值
+#define CONFIG_HT0_NTC_RS											4700L//散热器0热敏电阻分压电阻值
+#define CONFIG_HT1_NTC_RS											4700L//散热器1热敏电阻分压电阻值
+#define CONFIG_HT2_NTC_RS											1L	
+#define CONFIG_HT3_NTC_RS											1L
+#define CONFIG_WATER_HOT_NTC_RS								1L
+#define CONFIG_WATER_COOL_NTC_RS							1L
+#define CONFIG_AMBIENT_NTC_RS									1L
+#define CONFIG_MBAT_NTC_RS										4700L//环境热敏电阻分压电阻值
+
+#define CONFIG_DIODE_NTC_B										3477.0F//激光器热敏电阻B值
+#define CONFIG_HT0_NTC_B											3477.0F//散热器0热敏电阻B值
+#define CONFIG_HT1_NTC_B											3477.0F//散热器1热敏电阻B值
+#define CONFIG_HT2_NTC_B											3477.0F//散热器2热敏电阻B值
+#define CONFIG_HT3_NTC_B											3477.0F//散热器3热敏电阻B值
+#define CONFIG_MBAT_NTC_B											3477.0F//电池热敏电阻B值
+
+#define CONFIG_WATER_HOT_NTC_B							  3477.0F
+#define CONFIG_WATER_COOL_NTC_B								3477.0F
+#define CONFIG_AMBIENT_NTC_B									3477.0F
+
+#define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
+#define CONFIG_NTC_VREF												3300L//
+#define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
+
+#define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
+#endif
+
+
+
 
 #if defined(LYPE_MCU_1V0_20260106)
 #define CONFIG_ADC1_CHANNEL										7//ADC采集通道

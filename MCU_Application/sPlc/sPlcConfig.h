@@ -1,5 +1,10 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*****************************************************************************/
 #define CONFIG_DEBUG_DAC															1//调试DAC驱动
 #define CONFIG_DEBUG_ADC															1//调试ADC驱动
@@ -17,9 +22,10 @@
 #define CONFIG_INPUT_FILTER_TIME											10//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
+#define CONFIG_SPLC_USING_RTC													1//使能RTC模块
 #define CONFIG_SPLC_USING_SPWM												1//使能软件PWM功能
 #define CONFIG_SPLC_USING_FUNTEST											0//功能指令测试
-#define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM 读写测试
+#define CONFIG_SPLC_USING_EPROM_TEST									1//EPROM 读写测试
 #define CONFIG_SPLC_USING_LASER_TEST									0//激光器脉冲模式测试
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT														1//检查地址范围
@@ -770,6 +776,9 @@
 #define T10MS_ACOUSTIC_TIME_ADD_KEYDOWN_DELAY					10
 #define T10MS_ACOUSTIC_TIME_DEC_KEYDOWN_DELAY					11	
 /*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

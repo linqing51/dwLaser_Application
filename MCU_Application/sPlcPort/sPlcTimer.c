@@ -25,7 +25,7 @@ void sPlcTimerDisable(void) {//SPLC关闭计时器
 void sPlcTimerEnable(void) {//SPLC打开计时器
 	HAL_TIM_Base_Start_IT(&CONFIG_SPLC_TIM_HANDLE);
 }
-void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
+__forceinline void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	uint16_t i;
 	for(i = TD_1MS_START;i <= TD_1MS_END;i ++){
 		if(LD(T_1MS_ENA_START * 16 + (i - TD_1MS_START))){
