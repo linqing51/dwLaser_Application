@@ -29,6 +29,7 @@ typedef enum {
 /*****************************************************************************/
 void epromInit(void);
 HAL_StatusTypeDef epromReadStatusReg(uint8_t *status);
+HAL_StatusTypeDef epromWriteStatusReg(uint8_t *status);
 HAL_StatusTypeDef epromReadDeviceId(uint8_t *idBuf);
 HAL_StatusTypeDef epromWriteEnable(bool en);
 HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *dat);

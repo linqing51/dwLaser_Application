@@ -125,8 +125,8 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 	uint32_t bk, remain;//写入地址
 	uint8_t rblock[64], wblock[64];
 	uint32_t tempRead, tempWrite;
-	uint8_t res = 0;
-	//字节顺序写入
+	uint8_t res = 0;  
+	//随机字节顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
 	for(i = 0;i <CONFIG_EPROM_SIZE ;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);	
@@ -144,7 +144,6 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 		epromReadByte((i + 3), ((uint8_t*)&tempRead + 3));
 		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
 	}
-
 	if(crcRead == crcWrite){
 		printf("%s,%d,%s:byte(8bit) sequential write pass!\r\n", __FILE__, __LINE__, __func__);
 	}
@@ -152,7 +151,6 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 		printf("%s,%d,%s:byte(8bit) sequential wirte fail!\r\n", __FILE__, __LINE__, __func__);
 		res = false;
 	}
-  
   //字顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
 	for(i = 0;i <CONFIG_EPROM_SIZE;i += 4){

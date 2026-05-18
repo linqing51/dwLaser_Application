@@ -67,7 +67,10 @@ void MX_GPIO_Init(void)
                           |MCP41010_SCK_Pin|ERR_LED_Pin|TICK_LED_Pin|MCP41010_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, EPROM_NSS_Pin|DAC7311_SDI_Pin|DAC7311_SCK_Pin|DAC7311_CS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, DAC7311_SDI_Pin|DAC7311_SCK_Pin|DAC7311_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : FS_NO_Pin FS_NC_Pin */
   GPIO_InitStruct.Pin = FS_NO_Pin|FS_NC_Pin;

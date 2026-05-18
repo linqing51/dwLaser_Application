@@ -1162,7 +1162,7 @@ extern uint16_t audioSineTable[];
 #define	CONFIG_AT24C128_SIZE 									16384
 #define	CONFIG_AT24C256_SIZE 									32768//32K*8
 #define CONFIG_FM25W256G_SIZE									32768//32K
-#define CONFIG_MB85RS2MAT_SIZE								262144//256K
+#define CONFIG_MB85RS2MAT_SIZE								0x40000//256K
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
