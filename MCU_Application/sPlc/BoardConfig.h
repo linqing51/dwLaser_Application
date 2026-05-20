@@ -1111,7 +1111,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_AIM_PWM_CHANNEL								TIM_CHANNEL_2							
 
 #define CONFIG_SPK_HANDLE											htim2//SPK 计时器定义	
-#define CONFIG_SPK_TIM												TIM9
+#define CONFIG_SPK_TIM												TIM2
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
 
 #define CONFIG_FAN0_TIM_HANDLE								htim3	
@@ -1325,7 +1325,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_DAC_MAXBIT_CH15								0xFFFF//NULL
 
 #define CONFIG_DAC_MAXBIT_CH16								5000
-#define CONFIG_DAC_MAXBIT_CH17								0x5000//NULL
+#define CONFIG_DAC_MAXBIT_CH17								5000//NULL
 #endif	
 
 #if defined(LYPE_MCU_1V0_20260106)

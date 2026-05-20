@@ -3658,10 +3658,10 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 				NVRAM0[SPREG_DAC_2] = 0;UPDAC2();
-				//打开指示激光
-				NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
-				UPDAC16();//打开红光
+
 			}
+			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
+			UPDAC16();//打开红光
 #endif
 #if defined(LYPE_MCU_1V0_20260106)
 			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;

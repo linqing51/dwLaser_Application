@@ -255,7 +255,7 @@ extern "C" {
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 						
-#define CONFIG_LASER_A_DIODE_SET_TEMP									200//激光器温度设定
+#define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP									250//激光器温度设定
 
 #define CONFIG_LASER_A_DIODE_TEMP_HIGH								400//激光器高温极限 46.0C

@@ -21,7 +21,7 @@ void statusLoop(void){//温度轮询轮询
 	else{
 		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_0]) / 4096.0F;//计算电压
 	}
-	ftemp = ftemp * 20.0F / 0.003F;//计算电流
+	ftemp = ftemp / 20.0F / 0.004F / 1000.0F;//计算电流
 	NVRAM0[EM_LD_CH0_CURRENT] = (int16_t)(ftemp * 10.0F);
 	//电流采集 激光通道通道1
 	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
@@ -30,7 +30,7 @@ void statusLoop(void){//温度轮询轮询
 	else{
 		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_1]) / 4096.0F;//计算电压
 	}
-	ftemp = ftemp * 20.0F / 0.002F;//计算电流
+	ftemp = ftemp / 20.0F / 0.004F / 1000.0F;//计算电流
 	NVRAM0[EM_LD_CH1_CURRENT] = (int16_t)(ftemp * 10.0F);
 	//电流采集 制冷通道0
 	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
@@ -39,7 +39,7 @@ void statusLoop(void){//温度轮询轮询
 	else{
 		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_16]) / 4096.0F;//计算电压
 	}
-	ftemp = ftemp * 20.0F / 0.003F;//计算电流
+	ftemp = ftemp * 20.0F / 0.004F / 1000.0F;//计算电流
 	NVRAM0[EM_TEC_CH0_CURRENT] = (int16_t)(ftemp * 10.0F);
 #endif
 #if defined(LYPE_MCU_1V0_20260106)

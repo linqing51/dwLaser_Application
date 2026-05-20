@@ -126,6 +126,34 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 	uint8_t rblock[64], wblock[64];
 	uint32_t tempRead, tempWrite;
 	uint8_t res = 0;  
+  
+  //字节填充写入0x55
+  printf("%s,%d,%s:byte(8bit) start write 0x55\r\n", __FILE__, __LINE__, __func__);
+  for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
+    tempWrite = 0x55;
+    tempRead = 0;
+    epromWriteByte(i, (uint8_t*)&tempWrite);
+  }
+  for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
+    epromReadByte(i, (uint8_t*)&tempRead);
+    if(tempRead != 0x55){
+      printf("%s,%d,%s:byte(8bit) write 0x55 fail at:0x08%X!\r\n", __FILE__, __LINE__, __func__, i);
+      break;
+    }
+  }
+  //字节填充写入0xAA
+  printf("%s,%d,%s:byte(8bit) start write 0xAA\r\n", __FILE__, __LINE__, __func__);
+  for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
+    tempWrite = 0xAA;
+    epromWriteByte(i, (uint8_t*)&tempWrite);
+  }
+  for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
+    epromReadByte(i, (uint8_t*)&tempRead);
+    if(tempRead != 0xAA){
+      printf("%s,%d,%s:byte(8bit) write 0xAA fail at:0x08%X!\r\n", __FILE__, __LINE__, __func__, i);
+      break;
+    }
+  }  
 	//随机字节顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
 	for(i = 0;i <CONFIG_EPROM_SIZE ;i += 4){

@@ -25,7 +25,7 @@ extern "C" {
 #define CONFIG_SPLC_USING_RTC													1//使能RTC模块
 #define CONFIG_SPLC_USING_SPWM												1//使能软件PWM功能
 #define CONFIG_SPLC_USING_FUNTEST											0//功能指令测试
-#define CONFIG_SPLC_USING_EPROM_TEST									1//EPROM 读写测试
+#define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM 读写测试
 #define CONFIG_SPLC_USING_LASER_TEST									0//激光器脉冲模式测试
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT														1//检查地址范围

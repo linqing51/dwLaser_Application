@@ -151,8 +151,6 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 }
 #endif
 
-
-
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
@@ -162,7 +160,16 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 static void setSpeakerFreq(uint16_t frequency){
   // TIM8时钟频率为168MHz (APB2时钟84MHz，定时器时钟=2*APB2时钟)
   //uint32_t timer_clock = 84000000;
-  uint32_t timer_clock = HAL_RCC_GetPCLK2Freq();
+  uint32_t timer_clock;
+#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
+		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
+		defined(LDR2P1_G5_A1_20250910_TRIP)
+    timer_clock = HAL_RCC_GetPCLK2Freq();
+#endif
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+    timer_clock= HAL_RCC_GetPCLK1Freq();
+#endif
   // 计算预分频器和自动重装载值
   // 目标: (PSC + 1) * (ARR + 1) = timer_clock / frequency
   uint32_t prescaler = 0;
@@ -287,7 +294,7 @@ static void setSpeakerFreq(uint16_t frequency){
   uint32_t arr = (SystemCoreClock / (psc + 1)) / frequency - 1;
 
   // TIM2初始化
-  htim2.Instance = TIM2;
+  htim2.Instance = CONFIG_SPK_TIM;
   htim2.Init.Prescaler = psc;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = arr;
@@ -297,12 +304,12 @@ static void setSpeakerFreq(uint16_t frequency){
 		printf("reSet TIM2 base clk fail!!!\n");
     Error_Handler();
   }
-  // 配置PWM模式 (使用CH2)
+  // 配置PWM模式
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = arr / 2; // 50%占空比
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK){
+  if (HAL_TIM_PWM_ConfigChannel(&CONFIG_SPK_TIM, &sConfigOC, CONFIG_SPK_PWM_CHANNEL) != HAL_OK){
 		printf("reSet TIM2 out freq fail!!!\n");
     Error_Handler();
   }

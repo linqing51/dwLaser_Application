@@ -289,7 +289,9 @@ void sPlcInit(void){//软逻辑初始化
   listEpromTable();
 	readStm32UniqueID();
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
-	sPlcEpromTest();
+  while(1){
+    sPlcEpromTest();
+  }
 #endif
 	sPlcNvramLoad();//上电恢复NVRAM
 	sPlcFdramLoad();//上电恢复FDRAM

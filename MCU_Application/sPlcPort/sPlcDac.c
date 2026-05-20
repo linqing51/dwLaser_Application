@@ -70,12 +70,12 @@ void sPlcDacInit(void){//DAC初始化
 void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_0] & 0x0FFF;
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
 }
 void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_1] & 0x0FFF;
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
 }
 void UPDAC2(void){}
 void UPDAC3(void){}
