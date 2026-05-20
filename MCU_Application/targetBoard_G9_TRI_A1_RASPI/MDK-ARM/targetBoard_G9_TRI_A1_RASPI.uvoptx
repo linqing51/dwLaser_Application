@@ -610,7 +610,7 @@
 
   <Group>
     <GroupName>lib</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -853,6 +853,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+<<<<<<< HEAD
       <PathWithFileName>..\..\sPlcPort\sPlc_PCA9546.c</PathWithFileName>
       <FilenameWithoutPath>sPlc_PCA9546.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -865,6 +866,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+=======
+>>>>>>> Release-V4-BugFix
       <PathWithFileName>..\..\sPlcPort\sPlcI2C_HDC1080.c</PathWithFileName>
       <FilenameWithoutPath>sPlcI2C_HDC1080.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -872,7 +875,11 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>40</FileNumber>
+=======
+      <FileNumber>38</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -884,7 +891,11 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>41</FileNumber>
+=======
+      <FileNumber>39</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -940,7 +951,11 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>7</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>45</FileNumber>
+=======
+      <FileNumber>40</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -952,7 +967,11 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>46</FileNumber>
+=======
+      <FileNumber>41</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -964,7 +983,11 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>47</FileNumber>
+=======
+      <FileNumber>42</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -984,9 +1007,13 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>48</FileNumber>
+=======
+      <FileNumber>43</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\MainApp\dcHmiApp.c</PathWithFileName>
@@ -996,7 +1023,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>49</FileNumber>
+=======
+      <FileNumber>44</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1008,7 +1039,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>50</FileNumber>
+=======
+      <FileNumber>45</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1020,7 +1055,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>51</FileNumber>
+=======
+      <FileNumber>46</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1032,7 +1071,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>52</FileNumber>
+=======
+      <FileNumber>47</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1044,7 +1087,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>53</FileNumber>
+=======
+      <FileNumber>48</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1056,7 +1103,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>54</FileNumber>
+=======
+      <FileNumber>49</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1068,7 +1119,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>55</FileNumber>
+=======
+      <FileNumber>50</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1080,7 +1135,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>56</FileNumber>
+=======
+      <FileNumber>51</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1092,7 +1151,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>57</FileNumber>
+=======
+      <FileNumber>52</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1104,7 +1167,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>58</FileNumber>
+=======
+      <FileNumber>53</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1116,7 +1183,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>59</FileNumber>
+=======
+      <FileNumber>54</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1128,7 +1199,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>60</FileNumber>
+=======
+      <FileNumber>55</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1140,7 +1215,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>61</FileNumber>
+=======
+      <FileNumber>56</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1152,7 +1231,11 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>62</FileNumber>
+=======
+      <FileNumber>57</FileNumber>
+>>>>>>> Release-V4-BugFix
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
