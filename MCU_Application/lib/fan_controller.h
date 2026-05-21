@@ -78,7 +78,9 @@ void FanController_GetState(FanController* fan,
                            uint8_t* target);
 
 													 
-extern TempSpeedPoint fan_curve[CONFIG_FAN_CURVE_POINTS];	
+extern TempSpeedPoint fan_curve_0[CONFIG_FAN_CURVE_POINTS];
+extern TempSpeedPoint fan_curve_1[CONFIG_FAN_CURVE_POINTS];	
+extern TempSpeedPoint fan_curve_2[CONFIG_FAN_CURVE_POINTS];														 
 /*****************************************************************************/
 #ifdef __cplusplus
 }

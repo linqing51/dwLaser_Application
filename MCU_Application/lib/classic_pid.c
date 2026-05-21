@@ -1,24 +1,25 @@
-#include "pid_temp_control.h"
-// 初始化PID控制器
-void PID_Init(PID_Controller_t *pid, float kp, float ki, float kd, 
-             int16_t setpoint, int32_t integral_limit) {
-    pid->Kp = kp;
-    pid->Ki = ki;
-    pid->Kd = kd;
-    pid->setpoint = setpoint;
-    pid->last_temp = 0;
-    pid->prev_temp = 0;
-    pid->output = 0;
-    pid->min_output = 0;
-    pid->max_output = 4095;
-    pid->integral_limit = integral_limit;
+#include "classic_pid.h"
+
+#if CONFIG_USING_CLASSIC_PID == 1
+
+void PID_Init(PID_Controller_t *pid, float kp, float ki, float kd, int16_t setpoint, int32_t integral_limit){// 初始化PID控制器
+	pid->Kp = kp;
+	pid->Ki = ki;
+	pid->Kd = kd;
+	pid->setpoint = setpoint;
+	pid->last_temp = 0;
+	pid->prev_temp = 0;
+	pid->output = 0;
+	pid->min_output = 0;
+	pid->max_output = 4095;
+	pid->integral_limit = integral_limit;
 }
 
 // 设置PID参数
 void PID_SetParams(PID_Controller_t *pid, float kp, float ki, float kd) {
-    pid->Kp = kp;
-    pid->Ki = ki;
-    pid->Kd = kd;
+	pid->Kp = kp;
+	pid->Ki = ki;
+	pid->Kd = kd;
 }
 
 // 设置温度目标值
@@ -57,6 +58,8 @@ int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
     return pid->output;
 }
 
+
+#endif
 
 
 

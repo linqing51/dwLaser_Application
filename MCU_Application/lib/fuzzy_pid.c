@@ -1,5 +1,6 @@
 #include "fuzzy_pid.h"
-
+/*****************************************************************************/
+#if (CONFIG_USING_FUZZY_PID == 1)
 // 模糊规则表 - 行:误差 列:误差变化率
 // 表格值为[Kp调整系数, Ki调整系数, Kd调整系数]
 static const float fuzzy_rules[7][7][3] = {
@@ -20,9 +21,7 @@ static const float fuzzy_rules[7][7][3] = {
 };
 
 // 初始化模糊PID控制器
-void FuzzyPID_Init(FuzzyPID_HandleTypeDef *pid, float Kp, float Ki, float Kd,
-                  uint16_t output_min, uint16_t output_max, float integral_limit,
-                  uint32_t control_period, int16_t error_range, int16_t error_dot_range) {
+void FuzzyPID_Init(FuzzyPID_HandleTypeDef *pid, float Kp, float Ki, float Kd, uint16_t output_min, uint16_t output_max, float integral_limit, uint32_t control_period, int16_t error_range, int16_t error_dot_range) {
     pid->Kp_base = Kp;
     pid->Ki_base = Ki;
     pid->Kd_base = Kd;
@@ -141,7 +140,7 @@ static FuzzySet Fuzzy_GetErrorDotSet(FuzzyPID_HandleTypeDef *pid) {
     else return PB;
 }
     
-
+#endif
 
 
 

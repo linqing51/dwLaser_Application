@@ -1,6 +1,32 @@
 #include "fan_controller.h"
 /*****************************************************************************/
-TempSpeedPoint fan_curve[CONFIG_FAN_CURVE_POINTS] = {
+TempSpeedPoint fan_curve_0[CONFIG_FAN_CURVE_POINTS] = {
+  {20.0f, 20}, 
+	{25.0f, 30},
+	{30.0f, 35},
+	{35.0f, 40},
+	{40.0f, 45},
+	{45.0f, 60},
+	{50.0f, 70}, 
+	{55.0f, 75}, 
+	{60.0f, 85}, 
+	{65.0f, 100}
+};
+
+TempSpeedPoint fan_curve_1[CONFIG_FAN_CURVE_POINTS] = {
+  {20.0f, 20}, 
+	{25.0f, 30},
+	{30.0f, 35},
+	{35.0f, 40},
+	{40.0f, 45},
+	{45.0f, 60},
+	{50.0f, 70}, 
+	{55.0f, 75}, 
+	{60.0f, 85}, 
+	{65.0f, 100}
+};
+
+TempSpeedPoint fan_curve_2[CONFIG_FAN_CURVE_POINTS] = {
   {20.0f, 20}, 
 	{25.0f, 30},
 	{30.0f, 35},

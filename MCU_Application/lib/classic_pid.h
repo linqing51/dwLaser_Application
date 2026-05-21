@@ -6,7 +6,10 @@ extern "C" {
 #endif
 /*****************************************************************************/
 #include "stm32f4xx_hal.h" // 根据实际使用的STM32系列修改
+#include "AppConfig.h"
+#include "BoardConfig.h"
 // PID控制器结构体
+#if CONFIG_USING_CLASSIC_PID== 1
 typedef struct {
     // PID参数
     float Kp;           // 比例系数
@@ -48,6 +51,8 @@ void Thermoelectric_Init(void);
 // 设置半导体制冷片输出
 void Thermoelectric_SetOutput(uint16_t output);
 
+
+#endif
 /*****************************************************************************/
 #ifdef __cplusplus
 }

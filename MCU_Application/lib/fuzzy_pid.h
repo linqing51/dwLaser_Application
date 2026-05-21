@@ -1,19 +1,24 @@
-#ifndef FUZZY_PID_H
-#define FUZZY_PID_H
+#ifndef __FUZZY_PID_H__
+#define __FUZZY_PID_H__
+/*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
 /*****************************************************************************/
 #include "stm32f4xx_hal.h"
-#ifdef __cplusplus
-}
-#endif
+#include "AppConfig.h"
+#include "BoardConfig.h"
+/*****************************************************************************/
+#if (CONFIG_USING_FUZZY_PID == 1)
 // 模糊集合定义
 typedef enum {
-    NB = 0,  // 负大
-    NM,      // 负中
-    NS,      // 负小
-    ZO,      // 零
-    PS,      // 正小
-    PM,      // 正中
-    PB       // 正大
+	NB = 0,  // 负大
+	NM,      // 负中
+	NS,      // 负小
+	ZO,      // 零
+	PS,      // 正小
+	PM,      // 正中
+	PB       // 正大
 } FuzzySet;
 
 // 模糊PID控制器结构体
@@ -59,9 +64,9 @@ static void Fuzzy_AdjustParams(FuzzyPID_HandleTypeDef *pid);
 static FuzzySet Fuzzy_GetErrorSet(FuzzyPID_HandleTypeDef *pid);
 static FuzzySet Fuzzy_GetErrorDotSet(FuzzyPID_HandleTypeDef *pid);
 
-									
+#endif
 #ifdef __cplusplus
-extern "C" {
+}
 #endif
 #endif /* FUZZY_PID_H */
     

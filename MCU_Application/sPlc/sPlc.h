@@ -26,8 +26,6 @@
 #include "libdbg.h"
 #include "libcpu.h"
 #include "flash_if.h"
-#include "pid_temp_control.h"
-#include "fuzzy_pid.h"
 #if defined(LYPE_MCU_1V0_20260106)
 #include "sPlcI2C_HDC1080.h"
 #endif
