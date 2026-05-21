@@ -417,8 +417,6 @@ void updateDiagnosisCali(void){//跟新诊断-校准页面静态信息
 	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7, false);
 }
 
-
-
 void updateDiagnosis(void){//更新诊断信信息
 	//uint8_t i;
 	//char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];

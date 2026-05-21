@@ -255,8 +255,8 @@ extern "C" {
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 						
-#define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
-#define CONFIG_LASER_B_DIODE_SET_TEMP									250//激光器温度设定
+#define CONFIG_LASER_A_DIODE_SET_TEMP									280//激光器温度设定
+#define CONFIG_LASER_B_DIODE_SET_TEMP									280//激光器温度设定
 
 #define CONFIG_LASER_A_DIODE_TEMP_HIGH								400//激光器高温极限 46.0C
 #define CONFIG_LASER_A_DIODE_TEMP_LOW									-100//激光器低温极限 -25.0C
@@ -570,8 +570,8 @@ extern "C" {
 #define CONFIG_LOGIC_MIN_LASER_POWER_CH6							0//逻辑通道6最小激光功率
 #define CONFIG_LOGIC_MIN_LASER_POWER_CH7							0//逻辑通道7最小激光功率
 
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH0						300//硬件通道0最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH1						1//硬件通道1最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH0						150//硬件通道0最大激光功率
+#define CONFIG_HARDWARE_MAX_LASER_POWER_CH1						150//硬件通道1最大激光功率
 #define CONFIG_HARDWARE_MAX_LASER_POWER_CH2						1//硬件通道2最大激光功率
 #define CONFIG_HARDWARE_MAX_LASER_POWER_CH3						1//硬件通道3最大激光功率
 #define CONFIG_HARDWARE_MAX_LASER_POWER_CH4						1//硬件通道4最大激光功率

@@ -10,7 +10,7 @@
       <TargetName>targetBoard_M450_RASPI_20260106</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1091,6 +1091,16 @@
               <FileName>sPlcRtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom_SPI.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom_I2C.c</FilePath>
             </File>
           </Files>
         </Group>
