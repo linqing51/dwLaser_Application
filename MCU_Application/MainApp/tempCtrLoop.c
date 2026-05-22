@@ -2,6 +2,7 @@
 #include "tempCtrLoop.h"
 /*****************************************************************************/
 #if (CONFIG_USING_CLASSIC_PID == 1)
+PID_GetTickFunc_t PID_GetTick = HAL_GetTick;
 PID_Controller_t ClassicPid_A,ClassicPid_B;//恒温控制器
 #endif
 
@@ -18,9 +19,9 @@ int16_t LaserTecOutCounter0, LaserTecOut0;
 int16_t LaserTecOutCounter1, LaserTecOut1;
 /*****************************************************************************/
 void tempControlInit(void){
-#if (CONFIG_USING_CLASSIC_PID == 1)
-	PID_Init(&ClassicPid_A, 3.0f, 0.02f, 0.1f, deviceConfig.laserDiodeA_Temp, 500);
-	PID_Init(&ClassicPid_B, 5.0f, 0.4f, 2.0f, deviceConfig.laserDiodeA_Temp, 500);
+#if (CONFIG_USING_CLASSIC_PID == 1)	
+	PID_Init(&ClassicPid_A, 2.0f, 0.1f, 5.0f, deviceConfig.laserDiodeA_Temp, 1000, 250, 0.1f);
+	PID_Init(&ClassicPid_B, 2.0f, 0.1f, 5.0f, deviceConfig.laserDiodeB_Temp, 1000, 250, 0.1f);
 #endif
 
 #if CONFIG_USING_FUZZY_PID == 1
@@ -73,10 +74,14 @@ void tempControlLoop(void){//温度风扇控制循环
 		setFanSpeed(NVRAM0[EM_FAN0_SET_SPEED]);
 		
 #if CONFIG_USING_CLASSIC_PID == 1
-		ClassicPid_A.setpoint = deviceConfig.laserDiodeA_Temp;
-		ClassicPid_B.setpoint = deviceConfig.laserDiodeB_Temp;
-		LaserTecOut0 = PID_Compute(&ClassicPid_A, NVRAM0[EM_LASER_A_DIODE_TEMP]);	
-		LaserTecOut1 = PID_Compute(&ClassicPid_B, NVRAM0[EM_LASER_B_DIODE_TEMP]);	
+	ClassicPid_A.setpoint = deviceConfig.laserDiodeA_Temp;
+	ClassicPid_B.setpoint = deviceConfig.laserDiodeB_Temp;
+	
+	PID_SetFeedforward(&ClassicPid_A, NVRAM0[EM_HT0_TEMP],  0.1f);
+	PID_SetFeedforward(&ClassicPid_B, NVRAM0[EM_HT0_TEMP],  0.1f);
+		
+	LaserTecOut0 = PID_Compute(&ClassicPid_A, NVRAM0[EM_LASER_A_DIODE_TEMP]);	
+	LaserTecOut1 = PID_Compute(&ClassicPid_B, NVRAM0[EM_LASER_B_DIODE_TEMP]);	
 #endif
 
 #if CONFIG_USING_FUZZY_PID == 1
