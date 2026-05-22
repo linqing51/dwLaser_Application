@@ -10,6 +10,15 @@ extern "C" {
 #include "BoardConfig.h"
 // PID控制器结构体
 #if CONFIG_USING_CLASSIC_PID== 1
+typedef enum
+{
+    PID_AUTO_TUNE_IDLE,        // 空闲未整定
+    PID_AUTO_TUNE_START,       // 开始整定
+    PID_AUTO_TUNE_WAIT_OSC,    // 等待振荡
+    PID_AUTO_TUNE_CALC_PARAM   // 计算整定参数
+}PID_TuneState_t;
+
+
 typedef struct {
     // PID参数
     float Kp;           // 比例系数
@@ -30,6 +39,15 @@ typedef struct {
     
     // 积分限幅，防止积分饱和
     int32_t integral_limit;
+  
+    // 自整定私有变量
+    PID_TuneState_t tune_state;
+    float tune_kp_critical;    // 临界比例系数
+    uint32_t tune_period;       // 临界振荡周期
+    int16_t tune_temp_max;
+    int16_t tune_temp_min;
+    uint32_t osc_cnt;
+    uint32_t tick_start;
 }PID_Controller_t;
 
 // 初始化PID控制器
@@ -44,13 +62,7 @@ void PID_SetSetpoint(PID_Controller_t *pid, int16_t setpoint);
 
 // 增量式PID计算
 int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp);
-
-// 半导体制冷片控制初始化
-void Thermoelectric_Init(void);
-
-// 设置半导体制冷片输出
-void Thermoelectric_SetOutput(uint16_t output);
-
+void PID_StartAutoTune(PID_Controller_t *pid);// 手动启动PID参数自整定
 
 #endif
 /*****************************************************************************/

@@ -19,20 +19,20 @@ int16_t LaserTecOutCounter1, LaserTecOut1;
 /*****************************************************************************/
 void tempControlInit(void){
 #if (CONFIG_USING_CLASSIC_PID == 1)
-	PID_Init(&ClassicPid_A, 5.0f, 0.6f, 2.0f, NVRAM0[EM_LASER_A_DIODE_TEMP], 500);
-	PID_Init(&ClassicPid_B, 5.0f, 0.6f, 2.0f, NVRAM0[EM_LASER_B_DIODE_TEMP], 500);
+	PID_Init(&ClassicPid_A, 3.0f, 0.02f, 0.1f, deviceConfig.laserDiodeA_Temp, 500);
+	PID_Init(&ClassicPid_B, 5.0f, 0.4f, 2.0f, deviceConfig.laserDiodeA_Temp, 500);
 #endif
 
 #if CONFIG_USING_FUZZY_PID == 1
 	FuzzyPID_Init(&FuzzyPid_A, 
-									2.0f, 0.5f, 10.0f,  // 基础 Kp, Ki, Kd
+									6.2f, 0.4f, 0.3f,  // 基础 Kp, Ki, Kd
                   0, 4095,            // 输出限幅 0~1000
                   500.0f,             // 积分限幅
                   200,                // 控制周期 200ms
                   1,                 // 误差范围 ±10℃
                   1);                // 误差变化率范围 ±1℃/s
 	FuzzyPID_Init(&FuzzyPid_B, 
-									2.0f, 0.5f, 10.0f,  // 基础 Kp, Ki, Kd
+									2.2f, 0.3f, 0.3f,  // 基础 Kp, Ki, Kd
                   0, 4095,            // 输出限幅 0~1000
                   500.0f,             // 积分限幅
                   200,                // 控制周期 200ms
@@ -41,8 +41,8 @@ void tempControlInit(void){
 #endif
 
 #if CONFIG_USING_SMART_PID == 1
-	 SmartPID_Init(&SmartPid_A, (float_t)NVRAM0[EM_LASER_A_DIODE_TEMP] / 10.0F);
-	 SmartPID_Init(&SmartPid_B, (float_t)NVRAM0[EM_LASER_B_DIODE_TEMP] / 10.0F);
+	 SmartPID_Init(&SmartPid_A, (float_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+	 SmartPID_Init(&SmartPid_B, (float_t)deviceConfig.laserDiodeB_Temp / 10.0F);
 #endif	
 	
 	FanController_Init(&AutoFan0, fan_curve_0, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
@@ -81,7 +81,7 @@ void tempControlLoop(void){//温度风扇控制循环
 
 #if CONFIG_USING_FUZZY_PID == 1
 		  FuzzyPID_SetSetpoint(&FuzzyPid_A, deviceConfig.laserDiodeA_Temp); // 设定目标温度为 25℃
-		  FuzzyPID_SetSetpoint(&FuzzyPid_B, deviceConfig.laserDiodeA_Temp); // 设定目标温度为 25℃
+		  FuzzyPID_SetSetpoint(&FuzzyPid_B, deviceConfig.laserDiodeB_Temp); // 设定目标温度为 25℃
 			LaserTecOut0 = FuzzyPID_Compute(&FuzzyPid_A, NVRAM0[EM_LASER_A_DIODE_TEMP]);
 			LaserTecOut1 = FuzzyPID_Compute(&FuzzyPid_B, NVRAM0[EM_LASER_B_DIODE_TEMP]);
 #endif		
@@ -97,7 +97,7 @@ void tempControlLoop(void){//温度风扇控制循环
 		if(!SmartPID_Identify(&SmartPid_B, (float32_t)NVRAM0[EM_LASER_B_DIODE_TEMP] / 10.0F, &ftmp1)){
 		}
 		else{
-			ftmp1 = SmartPID_Compute(&SmartPid_A, (float32_t)NVRAM0[EM_LASER_B_DIODE_TEMP]);
+			ftmp1 = SmartPID_Compute(&SmartPid_B, (float32_t)NVRAM0[EM_LASER_B_DIODE_TEMP]);
 		}
 		LaserTecOut0 =(int16_t)(ftmp0 * 4095);
 		LaserTecOut1 =(int16_t)(ftmp1 * 4095);

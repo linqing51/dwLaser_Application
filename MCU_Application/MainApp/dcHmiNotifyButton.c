@@ -1,4 +1,6 @@
 #include "dcHmiNotifyButton.h"
+
+extern PID_Controller_t ClassicPid_A,ClassicPid_B;//恒温控制器
 /*****************************************************************************/
 //按钮控件通知当按钮状态改变(或调用GetControlValue)时，执行此函数
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
@@ -1914,6 +1916,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
+        case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_AUTOTUNE:{
+          if(state){
+            PID_StartAutoTune(&ClassicPid_A);
+          }
+          
+        }
 				default:break;
 			}
 			break;

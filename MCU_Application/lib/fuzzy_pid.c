@@ -21,7 +21,7 @@ static const float fuzzy_rules[7][7][3] = {
 };
 
 // 初始化模糊PID控制器
-void FuzzyPID_Init(FuzzyPID_HandleTypeDef *pid, float Kp, float Ki, float Kd, uint16_t output_min, uint16_t output_max, float integral_limit, uint32_t control_period, int16_t error_range, int16_t error_dot_range) {
+void FuzzyPID_Init(FuzzyPID_HandleTypeDef *pid, double Kp, double Ki, double Kd, uint16_t output_min, uint16_t output_max, double integral_limit, uint32_t control_period, int16_t error_range, int16_t error_dot_range) {
     pid->Kp_base = Kp;
     pid->Ki_base = Ki;
     pid->Kd_base = Kd;
@@ -52,6 +52,9 @@ void FuzzyPID_SetSetpoint(FuzzyPID_HandleTypeDef *pid, int16_t setpoint) {
     pid->setpoint = setpoint;
     // 重置积分项，避免目标变化时积分饱和
     pid->integral = 0.0f;
+    pid->last_temp = 0;
+    pid->error = 0;
+    pid->error_dot = 0;
 }
 
 // 计算PID输出
@@ -60,32 +63,34 @@ uint16_t FuzzyPID_Compute(FuzzyPID_HandleTypeDef *pid, int16_t current_temp) {
     // 温度越高，误差越大，输出越大，符合制冷需求
     pid->error = current_temp - pid->setpoint;
     
-    // 计算误差变化率 (当前误差 - 上一次误差) / 控制周期
-    pid->error_dot = (pid->error - (pid->last_temp - pid->setpoint)) * 1000 / pid->control_period;
+    // 计算上一次误差
+    double last_err = pid->last_temp - pid->setpoint;
+    // 修正误差变化率计算
+    pid->error_dot = (pid->error - last_err) / (pid->control_period / 1000.0f);
     
     // 根据模糊规则调整PID参数
     Fuzzy_AdjustParams(pid);
     
     // 计算比例项
-    float proportional = pid->Kp * pid->error;
+    double proportional = pid->Kp * pid->error;
     
     // 计算积分项 (带抗积分饱和)
-    if ((pid->output > pid->output_min && pid->output < pid->output_max) || 
-        (pid->error * pid->integral < 0)) {
-        pid->integral += pid->Ki * pid->error * pid->control_period / 1000.0f;
-        
-        // 积分限幅
-        if (pid->integral > pid->integral_limit)
-            pid->integral = pid->integral_limit;
-        else if (pid->integral < -pid->integral_limit)
-            pid->integral = -pid->integral_limit;
+    if (pid->output > pid->output_min && pid->output < pid->output_max){
+      pid->integral += pid->Ki * pid->error * pid->control_period / 1000.0f;        
+      // 积分限幅
+      if (pid->integral > pid->integral_limit){
+          pid->integral = pid->integral_limit;
+      }
+      else if (pid->integral < -pid->integral_limit){
+          pid->integral = -pid->integral_limit;
+      }
     }
     
     // 计算微分项
-    float derivative = pid->Kd * pid->error_dot;
+    double derivative = pid->Kd * pid->error_dot;
     
     // 计算总输出
-    float total = proportional + pid->integral + derivative;
+    double total = proportional + pid->integral + derivative;
     
     // 输出限幅
     if (total > pid->output_max)
@@ -115,7 +120,13 @@ static void Fuzzy_AdjustParams(FuzzyPID_HandleTypeDef *pid) {
 // 确定误差的模糊集合
 static FuzzySet Fuzzy_GetErrorSet(FuzzyPID_HandleTypeDef *pid) {
     // 归一化误差到[-1, 1]范围
-    double norm_error = (float)pid->error / pid->error_range;
+    double norm_error = pid->error / (double)pid->error_range;
+    if(norm_error > 1.0f){
+      norm_error = 1.0f;
+    }
+    if(norm_error < -1.0f){
+      norm_error = -1.0f;
+    }
     
     if (norm_error <= -0.8) return NB;
     else if (norm_error <= -0.4) return NM;
@@ -129,7 +140,14 @@ static FuzzySet Fuzzy_GetErrorSet(FuzzyPID_HandleTypeDef *pid) {
 // 确定误差变化率的模糊集合
 static FuzzySet Fuzzy_GetErrorDotSet(FuzzyPID_HandleTypeDef *pid) {
     // 归一化误差变化率到[-1, 1]范围
-    double norm_dot = (float)pid->error_dot / pid->error_dot_range;
+    double norm_dot = (double)pid->error_dot / pid->error_dot_range;
+    if(norm_dot > 1.0f){
+      norm_dot = 1.0f;
+    }
+    if(norm_dot < -1.0f){
+      norm_dot = -1.0f;
+    }
+    
     
     if (norm_dot <= -0.8) return NB;
     else if (norm_dot <= -0.4) return NM;

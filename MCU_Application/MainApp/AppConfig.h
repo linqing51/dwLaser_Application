@@ -254,7 +254,11 @@ extern "C" {
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-						
+    
+#define CONFIG_USING_CLASSIC_PID												1
+#define CONFIG_USING_FUZZY_PID													0
+#define CONFIG_USING_SMART_PID													0
+
 #define CONFIG_LASER_A_DIODE_SET_TEMP									280//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP									280//激光器温度设定
 
