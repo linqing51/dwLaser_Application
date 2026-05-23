@@ -23,7 +23,18 @@ void softDelayUs(uint32_t us){
 }
 
 
-
+void tickCheckTask(void){//TICK 检测程序
+  uint32_t tick_begin, tick_end; 
+  tick_begin = HAL_GetTick();
+  FLIP_TICK_LED;
+  HAL_Delay(1000);
+  tick_end = HAL_GetTick();
+  FLIP_TICK_LED;
+  // 计算实际间隔
+  uint32_t real_ms = tick_end - tick_begin;
+  // 串口打印数值
+  printf("HAL TICK:%d ms\r\n", real_ms);
+}
 
 
 uint16_t cpuGetFlashSize(void){//获取处理器程序容量

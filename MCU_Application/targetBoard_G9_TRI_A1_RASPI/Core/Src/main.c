@@ -124,6 +124,7 @@ int main(void)
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 	RtcCheckAndInit();
+  tickCheckTask();
   /* USER CODE END 2 */
 
   /* Init scheduler */

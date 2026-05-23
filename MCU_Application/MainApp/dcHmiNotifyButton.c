@@ -1918,7 +1918,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
         case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_AUTOTUNE:{
           if(state){
-            PID_StartAutoTune(&ClassicPid_A);
+            PID_StartTune(&ClassicPid_A);
           }
           
         }

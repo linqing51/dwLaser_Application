@@ -476,8 +476,12 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	p = &sGynecology[7];
 	p->name = "LVR/SUI Pro @ 4 Passes / 2400J";
 	p->channel = LASER_CHANNEL_CH0;
-	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 150;
+	p->pulse_mode = LASER_MODE_MP;
+#if defined( MODLE_M1470_640_10_30_05_D200_22_G9_PK)
+	p->power_ch0 = 170;
+#else
+  p->power_ch0 = 150;
+#endif
 	p->power_ch1 = 1;
 	p->power_red = 1;
 	p->poswidth = 50;

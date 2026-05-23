@@ -81,7 +81,7 @@ extern "C" {
 #define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
 /*****************************************************************************/
 //版本配置
-#define SW_VERSION																		"4.0a1b0"
+#define SW_VERSION																		"4.0a1b1"
 
 #if defined(LDR2P1_G5_A1_20250731_DUAL)
 #define HW_VERSION																		"LDR2P1G5A1_20250731_DUAL"

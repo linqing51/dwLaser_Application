@@ -17,6 +17,7 @@ extern uint16_t cpuGetFlashSize(void);
 extern void readStm32UniqueID(void);
 extern void softDelayMs(uint32_t ms);//软件延时
 extern void softDelayUs(uint32_t us);//软件延时
+extern void tickCheckTask(void);//TICK 检测程序
 /*****************************************************************************/
 #ifdef __cplusplus
 }

@@ -1219,6 +1219,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 #define CONFIG_ADC1_CHANNEL										12//ADC采集通道
 #define CONFIG_ADC3_CHANNEL										0
+#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱
 #define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数		
 #define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_ADC1_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
@@ -1255,8 +1256,6 @@ extern uint16_t audioSineTable[];
 
 #define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
 #endif
-
-
 
 
 #if defined(LYPE_MCU_1V0_20260106)

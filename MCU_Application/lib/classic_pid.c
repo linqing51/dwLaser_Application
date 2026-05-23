@@ -1,243 +1,184 @@
 #include "classic_pid.h"
+#include <stdio.h>  // 用于终端输出
 
-#if (CONFIG_USING_CLASSIC_PID == 1)
-/* 时间戳函数实例(需根据平台实现，此处为HAL库示例) */
-//PID_GetTickFunc_t PID_GetTick = HAL_GetTick;
+#if CONFIG_USING_CLASSIC_PID == 1
 
-/* 私有函数：输出限幅 */
-static int32_t PID_LimitOutput(int32_t output)
-{
-    if (output > PID_MAX_OUTPUT) {
-        return PID_MAX_OUTPUT;
-    } else if (output < PID_MIN_OUTPUT) {
-        return PID_MIN_OUTPUT;
-    }
-    return output;
-}
+// 系统TICK获取函数（需根据硬件实现，此处为示例）
+#define GET_TICK() HAL_GetTick()  // STM32 HAL库默认毫秒级TICK
 
-/* 私有函数：自整定核心逻辑 */
-static void PID_AutoTuneProcess(PID_Controller_t *pid)
-{
-    if (pid == NULL || PID_GetTick == NULL) {
-        return;
-    }
+// 自整定核心参数（可根据系统调整）
+#define TUNE_TIMEOUT_MS    300000  // 整定超时时间(30秒)
+#define TUNE_OSC_MIN_COUNT 3      // 最小振荡次数
+#define TUNE_PEAK_DELTA    6      // 温度峰值判定阈值(10倍实际温度，如5=0.5℃)
 
-    switch (pid->tune_state) {
-        case PID_TUNE_START:
-            pid->tick_start = PID_GetTick();
-            pid->tune_temp_max = pid->curr_temp;
-            pid->tune_temp_min = pid->curr_temp;
-            pid->osc_cnt = 0;
-            pid->cross_flag = false;
-            pid->tune_state = PID_TUNE_WAIT_OSC;
-            printf("PID Auto Tune Start...\r\n");
-            break;
-
-        case PID_TUNE_WAIT_OSC: {
-            // 更新温度极值
-            pid->tune_temp_max = (pid->curr_temp > pid->tune_temp_max) ? pid->curr_temp : pid->tune_temp_max;
-            pid->tune_temp_min = (pid->curr_temp < pid->tune_temp_min) ? pid->curr_temp : pid->tune_temp_min;
-
-            // 计算温差和时间差
-            int16_t temp_diff = pid->tune_temp_max - pid->tune_temp_min;
-            uint32_t time_diff = PID_GetTick() - pid->tick_start;
-
-            // 检测温度穿越设定值
-            if ((pid->last_osc_temp < pid->setpoint && pid->curr_temp >= pid->setpoint) ||
-                (pid->last_osc_temp > pid->setpoint && pid->curr_temp <= pid->setpoint)) {
-                pid->cross_flag = true;
-            }
-
-            // 振荡判定：温差达标 + 穿越设定值 + 时间稳定
-            if (temp_diff > PID_OSC_TEMP_THRESH && pid->cross_flag && time_diff > PID_OSC_TIME_MIN) {
-                pid->osc_cnt++;
-                pid->cross_flag = false;
-                pid->tune_temp_max = pid->curr_temp;
-                pid->tune_temp_min = pid->curr_temp;
-                printf("Oscillation Count: %d\r\n", pid->osc_cnt);
-
-                // 动态调整临界比例系数(防止振荡过强/过弱)
-                if (pid->osc_cnt == 1 && temp_diff > PID_OSC_TEMP_THRESH * 2) {
-                    pid->tune_kp_critical *= 0.8f; // 振荡过强，降低KP
-                } else if (pid->osc_cnt == 1 && temp_diff < PID_OSC_TEMP_THRESH) {
-                    pid->tune_kp_critical *= 1.2f; // 振荡过弱，提升KP
-                }
-            }
-
-            // 满足整定条件：3次振荡 + 稳定时间
-            if (pid->osc_cnt >= 3 && time_diff > PID_TUNE_STABLE_TIME) {
-                pid->tune_period = time_diff / pid->osc_cnt;
-                pid->tune_state = PID_TUNE_CALC_PARAM;
-            }
-
-            pid->last_osc_temp = pid->curr_temp;
-            break;
-        }
-
-        case PID_TUNE_CALC_PARAM: {
-            // Ziegler-Nichols公式(位置式PID优化版)
-            float tune_period_sec = (float)pid->tune_period / 1000.0f;
-            pid->Kp = 0.6f * pid->tune_kp_critical;
-            pid->Ki = pid->Kp / (1.0f * tune_period_sec);  // 位置式Ki适配
-            pid->Kd = pid->Kp * (0.125f * tune_period_sec);
-
-            // 参数合法性修正
-            pid->Ki = (pid->Ki < 0.001f) ? 0.001f : pid->Ki;
-            pid->Kd = (pid->Kd < 0.0f) ? 0.0f : pid->Kd;
-            pid->Kd = (pid->Kd > 1000.0f) ? 1000.0f : pid->Kd;
-
-            // 输出整定结果
-            printf("=====PID Auto Tune Result==========\r\n");
-            printf("Critical Kp: %.3f\r\n", pid->tune_kp_critical);
-            printf("Critical Period: %d ms\r\n", pid->tune_period);
-            printf("Tuned Kp = %.3f\r\n", pid->Kp);
-            printf("Tuned Ki = %.3f\r\n", pid->Ki);
-            printf("Tuned Kd = %.3f\r\n", pid->Kd);
-            printf("====================================\r\n");
-
-            pid->tune_state = PID_TUNE_IDLE;
-            break;
-        }
-
-        default:
-            break;
-    }
-}
-
-/* 公开函数：初始化PID */
-void PID_Init(PID_Controller_t *pid, float kp, float ki, float kd,
-              int16_t setpoint, int32_t integ_limit, int16_t env_temp, float feed_gain)
-{
-    if (pid == NULL) {
-        return;
-    }
-
-    // 基础参数初始化
-    pid->Kp = (kp >= 0.0f) ? kp : 0.0f;
-    pid->Ki = (ki >= 0.0f) ? ki : 0.0f;
-    pid->Kd = (kd >= 0.0f) ? kd : 0.0f;
-    pid->setpoint = (setpoint >= 0) ? setpoint : 0;
-    pid->integ_limit = (integ_limit > 0) ? integ_limit : 1000;
-
-    // 运行时状态初始化
-    pid->curr_temp = 0;
-    pid->last_temp = 0;
-    pid->diff_filter = 0.0f;
-    pid->integ_sum = 0.0f;
-    pid->output = 0;
-
-    // 自整定参数初始化
-    pid->tune_state = PID_TUNE_IDLE;
-    pid->tune_kp_critical = 2.0f;
-    pid->tune_period = 0;
-    pid->tune_temp_max = 0;
-    pid->tune_temp_min = 0;
-    pid->osc_cnt = 0;
-    pid->tick_start = 0;
-    pid->last_osc_temp = 0;
-    pid->cross_flag = false;
-
-    // 前馈参数初始化
-    pid->env_temp = (env_temp >= 0) ? env_temp : PID_TEMP_SCALE * 25; // 默认25℃
-    pid->feedforward_gain = (feed_gain >= 0.0f) ? feed_gain : 0.1f;
-}
-
-/* 公开函数：设置PID参数 */
-bool PID_SetParams(PID_Controller_t *pid, float kp, float ki, float kd)
-{
-    if (pid == NULL || kp < 0.0f || ki < 0.0f || kd < 0.0f) {
-        return false; // 参数非法
-    }
-
+// 初始化PID控制器
+void PID_Init(PID_Controller_t *pid, float kp, float ki, float kd, int16_t setpoint, int32_t integral_limit){
     pid->Kp = kp;
     pid->Ki = ki;
     pid->Kd = kd;
-    return true;
-}
-
-/* 公开函数：设置目标温度 */
-bool PID_SetSetpoint(PID_Controller_t *pid, int16_t setpoint)
-{
-    if (pid == NULL || setpoint < 0) {
-        return false;
-    }
     pid->setpoint = setpoint;
-    return true;
+    pid->last_temp = 0;
+    pid->prev_temp = 0;
+    pid->output = 0;
+    pid->min_output = 0;
+    pid->max_output = 4095;
+    pid->integral_limit = integral_limit;
+
+    // 初始化自整定变量
+    pid->tune_state = PID_TUNE_IDLE;
+    pid->tune_start_tick = 0;
+    pid->tune_current_tick = 0;
+    pid->tune_period = 0;
+    pid->tune_max_temp = 0;
+    pid->tune_min_temp = 0;
+    pid->tune_error_peak = 0;
+    pid->tune_osc_count = 0;
+    pid->tune_osc_threshold = TUNE_OSC_MIN_COUNT;
+    pid->tune_is_peak = 0;
 }
 
-/* 公开函数：设置前馈参数 */
-bool PID_SetFeedforward(PID_Controller_t *pid, int16_t env_temp, float feed_gain)
-{
-    if (pid == NULL || env_temp < 0 || feed_gain < 0.0f) {
-        return false;
-    }
-    pid->env_temp = env_temp;
-    pid->feedforward_gain = feed_gain;
-    return true;
+// 设置PID参数
+void PID_SetParams(PID_Controller_t *pid, float kp, float ki, float kd) {
+    pid->Kp = kp;
+    pid->Ki = ki;
+    pid->Kd = kd;
 }
 
-/* 公开函数：启动自整定 */
-bool PID_StartAutoTune(PID_Controller_t *pid)
-{
-    if (pid == NULL || pid->tune_state != PID_TUNE_IDLE || PID_GetTick == NULL) {
-        return false;
-    }
-    pid->tune_state = PID_TUNE_START;
-    return true;
+// 设置温度目标值
+void PID_SetSetpoint(PID_Controller_t *pid, int16_t setpoint) {
+    pid->setpoint = setpoint;
 }
 
-/* 公开函数：PID计算核心 */
-int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp)
-{
-    if (pid == NULL || PID_GetTick == NULL) {
-        return 0;
+// 启动PID自整定
+void PID_StartTune(PID_Controller_t *pid) {
+    pid->tune_state = PID_TUNE_RUNNING;
+    pid->tune_start_tick = GET_TICK();
+    pid->tune_max_temp = pid->last_temp;
+    pid->tune_min_temp = pid->last_temp;
+    pid->tune_osc_count = 0;
+    pid->tune_is_peak = 0;
+    pid->tune_error_peak = 0;
+    pid->tune_period = 0;
+
+    // 终端输出整定启动信息
+    printf("PID Auto-tune start. Setpoint: %d, Timeout: %dms\r\n", 
+           pid->setpoint, TUNE_TIMEOUT_MS);
+}
+
+// 峰值检测（内部函数）
+static void PID_Tune_PeakDetect(PID_Controller_t *pid, int16_t current_temp) {
+    //int16_t error = current_temp - pid->setpoint;
+
+    // 检测最大值峰值
+    if (current_temp > pid->tune_max_temp + TUNE_PEAK_DELTA) {
+        pid->tune_max_temp = current_temp;
+        pid->tune_is_peak = 1;
+    }
+    // 检测最小值峰值（振荡谷值）
+    if (current_temp < pid->tune_min_temp - TUNE_PEAK_DELTA) {
+        pid->tune_min_temp = current_temp;
+        pid->tune_is_peak = 2;
     }
 
-    // 更新当前/历史温度
-    pid->last_temp = pid->curr_temp;
-    pid->curr_temp = current_temp;
+    // 峰值确认（温度反向变化）
+    if (pid->tune_is_peak == 1 && current_temp < pid->tune_max_temp - TUNE_PEAK_DELTA) {
+        // 记录误差峰值
+        pid->tune_error_peak = pid->tune_max_temp - pid->setpoint;
+        pid->tune_osc_count++;
+        pid->tune_is_peak = 0;
+        // 输出振荡信息
+        printf("PID Tune: Oscillation %d, Peak temp: %d, Error peak: %d\r\n",
+               pid->tune_osc_count, pid->tune_max_temp, pid->tune_error_peak);
+        // 重置极值用于下次检测
+        pid->tune_min_temp = current_temp;
+    } else if (pid->tune_is_peak == 2 && current_temp > pid->tune_min_temp + TUNE_PEAK_DELTA) {
+        pid->tune_osc_count++;
+        pid->tune_is_peak = 0;
+        // 输出振荡信息
+        printf("PID Tune: Oscillation %d, Valley temp: %d\r\n",
+               pid->tune_osc_count, pid->tune_min_temp);
+        // 重置极值用于下次检测
+        pid->tune_max_temp = current_temp;
+    }
+}
 
-    // 自整定优先执行
-    if (pid->tune_state != PID_TUNE_IDLE) {
-        PID_AutoTuneProcess(pid);
-        // 自整定输出：临界比例系数*误差(限幅)
-        int16_t err = pid->setpoint - current_temp;
-        pid->output = PID_LimitOutput((int32_t)(pid->tune_kp_critical * err));
-        return pid->output;
+// 增量式PID计算（集成自整定）
+int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
+    // 自整定逻辑（优先执行）
+    if (pid->tune_state == PID_TUNE_RUNNING) {
+        pid->tune_current_tick = GET_TICK();
+        
+        // 1. 检测整定超时
+        if (pid->tune_current_tick - pid->tune_start_tick > TUNE_TIMEOUT_MS) {
+            pid->tune_state = PID_TUNE_FAILED;
+            printf("PID Auto-tune failed: Timeout\r\n");
+        }
+
+        // 2. 峰值检测与振荡计数
+        PID_Tune_PeakDetect(pid, current_temp);
+
+        // 3. 满足振荡次数，计算PID参数（Ziegler-Nichols法）
+        if (pid->tune_osc_count >= pid->tune_osc_threshold * 2) { // 2次完整振荡
+            // 计算振荡周期
+            pid->tune_period = (pid->tune_current_tick - pid->tune_start_tick) / pid->tune_osc_count;
+            // Ziegler-Nichols参数计算（适用于增量式PID）
+            float Kp_tune = 0.6 * pid->tune_error_peak / pid->max_output * 100;
+            float Ki_tune = Kp_tune / (pid->tune_period / 1000.0f) * 0.5;
+            float Kd_tune = Kp_tune * (pid->tune_period / 1000.0f) * 0.125;
+
+            // 更新PID参数
+            PID_SetParams(pid, Kp_tune, Ki_tune, Kd_tune);
+            pid->tune_state = PID_TUNE_COMPLETED;
+
+            // 终端输出整定结果
+            printf("PID Auto-tune completed!\r\n");
+            printf("Tune result - Period: %dms, Kp: %.2f, Ki: %.4f, Kd: %.2f\r\n",
+                   pid->tune_period, pid->Kp, pid->Ki, pid->Kd);
+        }
     }
 
-    // 1. 计算偏差
-    int16_t error = pid->setpoint - current_temp;
-
-    // 2. 前馈控制计算
-    int32_t feedforward = (int32_t)((pid->setpoint - pid->env_temp) * pid->feedforward_gain);
-
-    // 3. 位置式PID计算
-    float p_term = pid->Kp * error; // 比例项
-
-    float i_term = 0.0f;
-    // 积分分离：偏差小于阈值时才积分
-    if (abs(error) < PID_INTEG_SEP_THRESH) {
-        i_term = pid->Ki * error;
-        pid->integ_sum += i_term;
-        // 积分限幅
-        pid->integ_sum = (pid->integ_sum > pid->integ_limit) ? pid->integ_limit : pid->integ_sum;
-        pid->integ_sum = (pid->integ_sum < -pid->integ_limit) ? -pid->integ_limit : pid->integ_sum;
+    // 原有PID计算逻辑（无修改）
+    int16_t error = current_temp - pid->setpoint;
+    
+    // 计算增量式PID的三个部分
+    float delta_p = pid->Kp * (error - (current_temp - pid->last_temp));
+    float delta_i = pid->Ki * error;
+    float delta_d = pid->Kd * (error - 2*(current_temp - pid->last_temp) + 
+                              (pid->last_temp - pid->prev_temp));
+    
+    // 计算输出增量
+    float delta_output = delta_p + delta_i + delta_d;
+    
+    // 更新输出值
+    pid->output += delta_output;
+    
+    // 输出限幅
+    if (pid->output > pid->max_output) {
+        pid->output = pid->max_output;
+    } else if (pid->output < pid->min_output) {
+        pid->output = pid->min_output;
     }
-
-    // 微分项：带一阶滤波，降低噪声影响
-    float diff = current_temp - pid->last_temp;
-    pid->diff_filter = PID_DIFF_FILTER_ALPHA * diff + (1 - PID_DIFF_FILTER_ALPHA) * pid->diff_filter;
-    float d_term = -pid->Kd * pid->diff_filter; // 负号：微分负反馈
-
-    // 4. 总输出 = 比例 + 积分 + 微分 + 前馈
-    float total_output = p_term + pid->integ_sum + d_term + feedforward;
-    pid->output = PID_LimitOutput((int32_t)total_output);
+    
+    // 保存温度历史值，用于下次计算
+    pid->prev_temp = pid->last_temp;
+    pid->last_temp = current_temp;
+    
+    // 输出当前PID状态（仅自整定过程中）
+    if (pid->tune_state == PID_TUNE_RUNNING) {
+        printf("PID Tune: Current temp: %d, Error: %d, Output: %d\r\n",
+               current_temp, error, pid->output);
+    }
 
     return pid->output;
 }
 
 #endif
+
+
+
+
+
+
 
 
 

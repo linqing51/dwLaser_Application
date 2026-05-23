@@ -1,5 +1,6 @@
 #include "sPlc.h"
 #include "boardConfig.h"
+#include "AppConfig.h"
 /*****************************************************************************/
 __IO static uint16_t adcDmaBufferA0[CONFIG_ADC1_DMA_BUFFER_SIZE];//ADC DMA采集储存池
 __IO static uint16_t adcDmaBufferA1[CONFIG_ADC1_DMA_BUFFER_SIZE];//ADC DMA采集储存池
