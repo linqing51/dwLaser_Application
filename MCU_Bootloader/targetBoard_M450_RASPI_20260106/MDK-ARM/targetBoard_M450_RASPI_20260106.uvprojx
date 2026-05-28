@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,LYPE_MCU_1V0_20260106</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\..\..\MCU_Application\sPlcPort;..\..\..\MCU_Application\sPlc;..\Drivers\CMSIS\DSP\Include;..\..\..\MCU_Application\lib;..\..\..\MCU_Application\MainApp</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../../../MCU_Application/sPlcPort;../../../MCU_Application/sPlc;../Drivers/CMSIS/DSP/Include;../../../MCU_Application/lib;../../../MCU_Application/MainApp</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -423,11 +423,6 @@
               <FileName>dac.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/dac.c</FilePath>
-            </File>
-            <File>
-              <FileName>dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/dma.c</FilePath>
             </File>
             <File>
               <FileName>i2c.c</FileName>
@@ -773,6 +768,16 @@
               <FileName>libdbg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\MCU_Application\lib\libdbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEprom_I2C.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEprom_SPI.c</FilePath>
             </File>
           </Files>
         </Group>

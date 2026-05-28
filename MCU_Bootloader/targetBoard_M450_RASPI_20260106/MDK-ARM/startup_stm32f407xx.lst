@@ -850,7 +850,7 @@ ARM Macro Assembler    Page 14
 
 
 etboard_m450_raspi_20260106\startup_stm32f407xx.o -I.\RTE\_targetBoard_M450_RAS
-PI_20260106 -IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core
+PI_20260106 -IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core
 \Include --predefine="__UVISION_VERSION SETA 543" --predefine="STM32F407xx SETA
  1" --predefine="_RTE_ SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407
 xx.s

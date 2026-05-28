@@ -122,9 +122,9 @@ int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
             // 计算振荡周期
             pid->tune_period = (pid->tune_current_tick - pid->tune_start_tick) / pid->tune_osc_count;
             // Ziegler-Nichols参数计算（适用于增量式PID）
-            float Kp_tune = 0.6 * pid->tune_error_peak / pid->max_output * 100;
-            float Ki_tune = Kp_tune / (pid->tune_period / 1000.0f) * 0.5;
-            float Kd_tune = Kp_tune * (pid->tune_period / 1000.0f) * 0.125;
+            double Kp_tune = 0.6 * pid->tune_error_peak / pid->max_output * 100;
+            double Ki_tune = Kp_tune / (pid->tune_period / 1000.0f) * 0.5;
+            double Kd_tune = Kp_tune * (pid->tune_period / 1000.0f) * 0.125;
 
             // 更新PID参数
             PID_SetParams(pid, Kp_tune, Ki_tune, Kd_tune);
@@ -141,13 +141,13 @@ int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
     int16_t error = current_temp - pid->setpoint;
     
     // 计算增量式PID的三个部分
-    float delta_p = pid->Kp * (error - (current_temp - pid->last_temp));
-    float delta_i = pid->Ki * error;
-    float delta_d = pid->Kd * (error - 2*(current_temp - pid->last_temp) + 
+    double delta_p = pid->Kp * (error - (current_temp - pid->last_temp));
+    double delta_i = pid->Ki * error;
+    double delta_d = pid->Kd * (error - 2*(current_temp - pid->last_temp) + 
                               (pid->last_temp - pid->prev_temp));
     
     // 计算输出增量
-    float delta_output = delta_p + delta_i + delta_d;
+    double delta_output = delta_p + delta_i + delta_d;
     
     // 更新输出值
     pid->output += delta_output;
