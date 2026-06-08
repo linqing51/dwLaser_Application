@@ -316,8 +316,8 @@ extern "C" {
 
 #if defined(LYPE_MCU_1V0_20260106)
 
-#define CONFIG_USING_CLASSIC_PID												1
-#define CONFIG_USING_FUZZY_PID													0
+#define CONFIG_USING_CLASSIC_PID												0
+#define CONFIG_USING_FUZZY_PID													1
 #define CONFIG_USING_SMART_PID													0
 
 #define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
@@ -346,10 +346,10 @@ extern "C" {
 #define CONFIG_HT2_TEMP_HIGH													600//散热器2高温报警
 #define CONFIG_HT3_TEMP_HIGH													600//散热器3高温报警
 
-#define CONFIG_HWATER_TEMP_HIGH												2000//热水端高温报警温度
-#define CONFIG_HWATER_TEMP_LOW												-2000//热水端低温报警温度
-#define CONFIG_CWATER_TEMP_HIGH												2000//冷水端高温报警温度
-#define CONFIG_CWATER_TEMP_LOW												-2000//冷水管低温报警温度
+#define CONFIG_HWATER_TEMP_HIGH												600//热水端高温报警温度 60度
+#define CONFIG_HWATER_TEMP_LOW												50//热水端低温报警温度 5度
+#define CONFIG_CWATER_TEMP_HIGH												400//冷端高温报警温度 40度
+#define CONFIG_CWATER_TEMP_LOW												50//冷端低温报警温度 5度
 #define CONFIG_AMBIENT0_TEMP_HIGH											2000//环境0高温报警
 #define CONFIG_AMBIENT0_TEMP_LOW											-2000//环境0低温报警
 #define CONFIG_AMBIENT1_TEMP_HIGH											2000//环境1高温报警
@@ -359,8 +359,8 @@ extern "C" {
 #define CONFIG_AMBIENT3_TEMP_HIGH											2000//环境3高温报警
 #define CONFIG_AMBIENT3_TEMP_LOW											-2000//环境3低温报警
 
-#define CONFIG_HDC1080_TEMP_HIGH											650//板载环境高温报警
-#define CONFIG_HDC1080_TEMP_LOW												0//板载环境低温报警
+#define CONFIG_HDC1080_TEMP_HIGH											350//板载环境高温报警 40度
+#define CONFIG_HDC1080_TEMP_LOW												50//板载环境低温报警 5度
 #define CONFIG_HDC1080_HUMIDITY_HIGH									850//板载环境高湿度报警
 #define CONFIG_HDC1080_HUMIDITY_LOW										0//板载环境低温报警
 #define CONFIG_DHT11_TEMP_HIGH												500//远程环境高温报警		

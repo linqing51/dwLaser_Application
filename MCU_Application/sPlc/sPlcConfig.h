@@ -346,10 +346,22 @@ extern "C" {
 #define EM_FAN1_SET_SPEED															(EM_START + 181)//风扇1设定速度 0-100%
 #define EM_FAN2_SET_SPEED															(EM_START + 182)//风扇2设定速度 0-100%
 #define EM_FAN3_SET_SPEED															(EM_START + 183)//风扇3设定速度 0-100%
+#define EM_FAN4_SET_SPEED															(EM_START + 180)//风扇4设定速度 0-100%
+#define EM_FAN5_SET_SPEED															(EM_START + 181)//风扇5设定速度 0-100%
+#define EM_FAN6_SET_SPEED															(EM_START + 182)//风扇6设定速度 0-100%
+#define EM_FAN7_SET_SPEED															(EM_START + 183)//风扇7设定速度 0-100%
+
 #define EM_FAN0_GET_SPEED															(EM_START + 184)//风扇0实际速度 转速
 #define EM_FAN1_GET_SPEED															(EM_START + 185)//风扇1实际速度 转速
 #define EM_FAN2_GET_SPEED															(EM_START + 186)//风扇2实际速度 转速
 #define EM_FAN3_GET_SPEED															(EM_START + 187)//风扇3实际速度 转速
+#define EM_FAN4_GET_SPEED															(EM_START + 184)//风扇4实际速度 转速
+#define EM_FAN5_GET_SPEED															(EM_START + 185)//风扇5实际速度 转速
+#define EM_FAN6_GET_SPEED															(EM_START + 186)//风扇6实际速度 转速
+#define EM_FAN7_GET_SPEED															(EM_START + 187)//风扇7实际速度 转速
+
+
+
 
 #define EM_LASER_FPD																	(EM_START + 190)//光纤探测PD计算值
 #define EM_LASER_LPD																	(EM_START + 191)//激光能量PD计算值

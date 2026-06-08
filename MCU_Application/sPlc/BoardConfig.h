@@ -1154,8 +1154,22 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
 #define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
 #endif
-#if defined(LYPE_MCU_1V0_20260106) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+#if defined(LYPE_MCU_1V0_20260106)
+#define CONFIG_EPROM_SPI											
+#define CONFIG_EPROM_SIZE 										CONFIG_FM25W256G_SIZE
+#define	CONFIG_AT24C64_SIZE										8192
+#define	CONFIG_AT24C128_SIZE 									16384
+#define	CONFIG_AT24C256_SIZE 									32768//32K*8
+#define CONFIG_FM25W256G_SIZE									32768//32K
+#define CONFIG_MB85RS2MAT_SIZE								0x40000//256K
+#define CONFIG_EPROM_WRITE_ADDR								0xA0//
+#define CONFIG_EPROM_READ_ADDR								0xA1//
+#define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
+#define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
+#define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
+#endif
+
+#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 #define CONFIG_EPROM_SPI											
 #define CONFIG_EPROM_SIZE 										CONFIG_MB85RS2MAT_SIZE
 #define	CONFIG_AT24C64_SIZE										8192
@@ -1169,6 +1183,7 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
 #define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
 #endif
+
 
 //配置ADC
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\

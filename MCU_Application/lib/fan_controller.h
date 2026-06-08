@@ -1,4 +1,4 @@
-#ifndef __FAN_CONTROLLER_H__
+ #ifndef __FAN_CONTROLLER_H__
 #define __FAN_CONTROLLER_H__
 /*****************************************************************************/
 #include "stm32f4xx.h"
@@ -80,7 +80,12 @@ void FanController_GetState(FanController* fan,
 													 
 extern TempSpeedPoint fan_curve_0[CONFIG_FAN_CURVE_POINTS];
 extern TempSpeedPoint fan_curve_1[CONFIG_FAN_CURVE_POINTS];	
-extern TempSpeedPoint fan_curve_2[CONFIG_FAN_CURVE_POINTS];														 
+extern TempSpeedPoint fan_curve_2[CONFIG_FAN_CURVE_POINTS];
+extern TempSpeedPoint fan_curve_3[CONFIG_FAN_CURVE_POINTS];
+extern TempSpeedPoint fan_curve_4[CONFIG_FAN_CURVE_POINTS];	
+extern TempSpeedPoint fan_curve_5[CONFIG_FAN_CURVE_POINTS];
+extern TempSpeedPoint fan_curve_6[CONFIG_FAN_CURVE_POINTS];
+extern TempSpeedPoint fan_curve_7[CONFIG_FAN_CURVE_POINTS];																 
 /*****************************************************************************/
 #ifdef __cplusplus
 }

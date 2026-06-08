@@ -39,6 +39,75 @@ TempSpeedPoint fan_curve_2[CONFIG_FAN_CURVE_POINTS] = {
 	{65.0f, 100}
 };
 
+TempSpeedPoint fan_curve_3[CONFIG_FAN_CURVE_POINTS] = {
+  {20.0f, 20}, 
+	{25.0f, 30},
+	{30.0f, 35},
+	{35.0f, 40},
+	{40.0f, 45},
+	{45.0f, 60},
+	{50.0f, 70}, 
+	{55.0f, 75}, 
+	{60.0f, 85}, 
+	{65.0f, 100}
+};
+
+TempSpeedPoint fan_curve_4[CONFIG_FAN_CURVE_POINTS] = {
+  {20.0f, 20}, 
+	{25.0f, 30},
+	{30.0f, 35},
+	{35.0f, 40},
+	{40.0f, 45},
+	{45.0f, 60},
+	{50.0f, 70}, 
+	{55.0f, 75}, 
+	{60.0f, 85}, 
+	{65.0f, 100}
+};
+
+TempSpeedPoint fan_curve_5[CONFIG_FAN_CURVE_POINTS] = {
+  {20.0f, 20}, 
+	{25.0f, 30},
+	{30.0f, 35},
+	{35.0f, 40},
+	{40.0f, 45},
+	{45.0f, 60},
+	{50.0f, 70}, 
+	{55.0f, 75}, 
+	{60.0f, 85}, 
+	{65.0f, 100}
+};
+
+TempSpeedPoint fan_curve_6[CONFIG_FAN_CURVE_POINTS] = {
+  {20.0f, 20}, 
+	{25.0f, 30},
+	{30.0f, 35},
+	{35.0f, 40},
+	{40.0f, 45},
+	{45.0f, 60},
+	{50.0f, 70}, 
+	{55.0f, 75}, 
+	{60.0f, 85}, 
+	{65.0f, 100}
+};
+
+TempSpeedPoint fan_curve_7[CONFIG_FAN_CURVE_POINTS] = {
+  {20.0f, 20}, 
+	{25.0f, 30},
+	{30.0f, 35},
+	{35.0f, 40},
+	{40.0f, 45},
+	{45.0f, 60},
+	{50.0f, 70}, 
+	{55.0f, 75}, 
+	{60.0f, 85}, 
+	{65.0f, 100}
+};
+
+
+
+
+
 static void calculate_target_speed(FanController* fan){//内部函数：计算目标转速（基于曲线插值）
 	if(fan->curve_point_count < 2){
 		fan->target_speed = fan->min_speed;

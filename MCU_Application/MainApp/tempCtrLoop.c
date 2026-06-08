@@ -13,7 +13,7 @@ FuzzyPID_HandleTypeDef FuzzyPid_A;
 SmartPID_Controller SmartPid_A;
 #endif
 
-FanController AutoFan0, AutoFan1, AutoFan2;// 创建风扇控制器实例
+FanController AutoFan0, AutoFan1, AutoFan2, AutoFan3, AutoFan4, AutoFan5, AutoFan6, AutoFan7;// 创建风扇控制器实例
 int16_t LaserTecOutCounter0, LaserTecOut0;
 /*****************************************************************************/
 void tempControlInit(void){
@@ -24,10 +24,10 @@ void tempControlInit(void){
 
 #if CONFIG_USING_FUZZY_PID == 1
 	FuzzyPID_Init(&FuzzyPid_A, 
-									6.2f, 0.4f, 0.3f,  // 基础 Kp, Ki, Kd
+									2.2f, 0.1f, 0.1f,  // 基础 Kp, Ki, Kd
                   0, 4095,            // 输出限幅 0~1000
                   500.0f,             // 积分限幅
-                  200,                // 控制周期 200ms
+                  1000,                // 控制周期 200ms
                   1,                 // 误差范围 ±10℃
                   1);                // 误差变化率范围 ±1℃/s
 #endif
@@ -39,6 +39,12 @@ void tempControlInit(void){
 	FanController_Init(&AutoFan0, fan_curve_0, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	FanController_Init(&AutoFan1, fan_curve_1, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	FanController_Init(&AutoFan2, fan_curve_2, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+	FanController_Init(&AutoFan3, fan_curve_3, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+	FanController_Init(&AutoFan4, fan_curve_4, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+	FanController_Init(&AutoFan5, fan_curve_5, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+	FanController_Init(&AutoFan6, fan_curve_6, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+	FanController_Init(&AutoFan7, fan_curve_7, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
+		
 }
 
 void tempControlLoop(void){//温度风扇控制循环
@@ -46,7 +52,7 @@ void tempControlLoop(void){//温度风扇控制循环
 	ftmp0 = !ftmp0;
 	ftmp1 = !ftmp1;
 	//温控执行 激光等待发射及错误状态启动温控
-	if(LDP(SPCOIL_PS100MS)){//0.2秒间隔
+	if(LDP(SPCOIL_PS500MS)){//1秒间隔
 		if(LD(R_TEMP_FAULT)){//温度异常无条件打开风扇
 			 	NVRAM0[EM_FAN0_SET_SPEED] = 100;
 		}
@@ -54,12 +60,28 @@ void tempControlLoop(void){//温度风扇控制循环
 			AutoFan0.current_temp = ((float32_t)NVRAM0[EM_HT0_TEMP] / 10.0F);//关联温度
 			AutoFan1.current_temp = ((float32_t)NVRAM0[EM_HT1_TEMP] / 10.0F);//关联温度
 			AutoFan2.current_temp = ((float32_t)NVRAM0[EM_HT2_TEMP] / 10.0F);//关联温度
+			AutoFan3.current_temp = ((float32_t)NVRAM0[EM_HT3_TEMP] / 10.0F);//关联温度
+			AutoFan4.current_temp = ((float32_t)NVRAM0[EM_HT1_TEMP] / 10.0F);//关联温度
+			AutoFan5.current_temp = ((float32_t)NVRAM0[EM_AMBIENT0_TEMP] / 10.0F);//关联温度->环境进风温度
+			AutoFan6.current_temp = ((float32_t)NVRAM0[EM_HWATER_TEMP] / 10.0F);//关联温度->热水温度
+			AutoFan7.current_temp = ((float32_t)NVRAM0[EM_HDC1080_TEMP] / 10.0F);//关联温度->板载传感器温度
+				
 			FanController_Run(&AutoFan0);// 更新风扇控制
 			FanController_Run(&AutoFan1);// 更新风扇控制
 			FanController_Run(&AutoFan2);// 更新风扇控制
+			FanController_Run(&AutoFan3);// 更新风扇控制
+			FanController_Run(&AutoFan4);// 更新风扇控制
+			FanController_Run(&AutoFan5);// 更新风扇控制
+			FanController_Run(&AutoFan6);// 更新风扇控制
+			FanController_Run(&AutoFan7);// 更新风扇控制
 			NVRAM0[EM_FAN0_SET_SPEED] = AutoFan0.current_speed;
 			NVRAM0[EM_FAN1_SET_SPEED] = AutoFan1.current_speed;
 			NVRAM0[EM_FAN2_SET_SPEED] = AutoFan2.current_speed;
+			NVRAM0[EM_FAN3_SET_SPEED] = AutoFan3.current_speed;
+			NVRAM0[EM_FAN4_SET_SPEED] = AutoFan4.current_speed;
+			NVRAM0[EM_FAN5_SET_SPEED] = AutoFan5.current_speed;
+			NVRAM0[EM_FAN6_SET_SPEED] = AutoFan6.current_speed;
+			NVRAM0[EM_FAN7_SET_SPEED] = AutoFan7.current_speed;
 		}
 		setFanSpeed(NVRAM0[EM_FAN0_SET_SPEED]);
 		
