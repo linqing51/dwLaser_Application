@@ -5,7 +5,7 @@
 /*****************************************************************************/
 #define OFFSET_OF(type, member)  ((uint32_t)&(((type *)0)->member))
 extern deviceConfig_t deviceConfig;
-static int16_t FanSpeed = -1;
+static int16_t FanSpeed[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 /*****************************************************************************/
 /**
  * @brief 通用结构体成员偏移量计算函数
@@ -25,36 +25,64 @@ void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	vTaskDelay(delayMs);
 }
 
-void setFanSpeed(int16_t speed){//设置风扇转速
-	if(FanSpeed != speed){
-		if(speed > CONFIG_FAN_MAX_DC){
-			speed = CONFIG_FAN_MAX_DC;
+void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//设置风扇转速
+		switch(ch){
+			case FAN_CH0:{
+				if(FanSpeed[0] != speed){
+					if(speed > CONFIG_FAN_MAX_DC){
+						speed = CONFIG_FAN_MAX_DC;
+					}
+					if(speed < CONFIG_FAN_MIN_DC){
+						speed = CONFIG_FAN_MIN_DC;
+					}
+					__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, speed);
+					if(speed != 0){
+						HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//打开TIM
+					}
+					else{
+						HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//关闭TIM
+					}
+					if(speed <= 0){
+						SET_FAN0_OFF;
+					}
+					else if(speed >0 && speed < 100){
+						SET_FAN0_ON;
+						SET_FAN0_TIM_PWM(speed);
+					}
+					else if(speed >= 100){
+						SET_FAN0_ON;
+						SET_FAN0_TIM_PWM(100);
+					}
+					FanSpeed[0] = speed;
+				}
+				break;
+			}
+			case FAN_CH1:{
+				break;
+			}
+			case FAN_CH2:{
+				break;
+			}
+			case FAN_CH3:{
+				break;
+			}
+			case FAN_CH4:{
+				break;
+			}
+			case FAN_CH5:{
+				break;
+			}
+			case FAN_CH6:{
+				break;
+			}
+			case FAN_CH7:{
+				break;
+			}
+			default:{
+				break;
+			}
 		}
-		if(speed < CONFIG_FAN_MIN_DC){
-			speed = CONFIG_FAN_MIN_DC;
-		}
-		__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, speed);
-		if(speed != 0){
-			HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//打开TIM
-		}
-		else{
-			HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//关闭TIM
-		}
-
-		if(speed <= 0){
-			SET_FAN0_OFF;
-		}
-		else if(speed >0 && speed < 100){
-			SET_FAN0_ON;
-			SET_FAN0_TIM_PWM(speed);
-		}
-		else if(speed >= 100){
-			SET_FAN0_ON;
-			SET_FAN0_TIM_PWM(100);
-		}
-		FanSpeed = speed;
-		printf("%s,%d,%s:set fan:%d\n",__FILE__, __LINE__, __func__, speed);	
-	}
+		printf("%s,%d,%s:set ch:%d fan:%d\n",__FILE__, __LINE__, __func__, ch, speed);	
 }
 
 void loadDeviceConfig(void){//从EPROM载入配置文件

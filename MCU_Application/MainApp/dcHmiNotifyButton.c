@@ -1776,6 +1776,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, NVRAM0[EM_CALI_CUR_SET_CH0], &deviceConfig, false);
 						UPDAC0();
+						printf("%s,%d,%s:SPREG_DAC_0=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_0]);
 					}
 					break;
 				}
@@ -1783,6 +1784,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, NVRAM0[EM_CALI_CUR_SET_CH1], &deviceConfig, false);
 						UPDAC1();
+						printf("%s,%d,%s:SPREG_DAC_1=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_1]);
 					}
 					break;
 				}
@@ -1790,6 +1792,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, NVRAM0[EM_CALI_CUR_SET_CH2], &deviceConfig, false);
 						UPDAC2();
+						printf("%s,%d,%s:SPREG_DAC_2=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_2]);
 					}					
 					break;
 				}
@@ -1797,6 +1800,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, NVRAM0[EM_CALI_CUR_SET_CH3], &deviceConfig, false);
 						UPDAC3();
+						printf("%s,%d,%s:SPREG_DAC_3=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_3]);
 					}
 					break;
 				}
@@ -1804,6 +1808,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_CALI_CUR_SET_CH4], &deviceConfig, false);
 						UPDAC4();
+						printf("%s,%d,%s:SPREG_DAC_4=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_4]);
 					}
 					break;
 				}
@@ -1811,6 +1816,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_5] = fitLaserToCode(LASER_DAC_CHANNEL_CH5, NVRAM0[EM_CALI_CUR_SET_CH5], &deviceConfig, false);
 						UPDAC5();
+						printf("%s,%d,%s:SPREG_DAC_5=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_5]);
 					}
 					break;
 				}
@@ -1818,6 +1824,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_6] = fitLaserToCode(LASER_DAC_CHANNEL_CH6, NVRAM0[EM_CALI_CUR_SET_CH6], &deviceConfig, false);
 						UPDAC6();
+						printf("%s,%d,%s:SPREG_DAC_6=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_6]);
 					}
 					break;
 				}
@@ -1825,6 +1832,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						NVRAM0[SPREG_DAC_7] = fitLaserToCode(LASER_DAC_CHANNEL_CH7, NVRAM0[EM_CALI_CUR_SET_CH7], &deviceConfig, false);
 						UPDAC7();
+						printf("%s,%d,%s:SPREG_DAC_7=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_7]);
 					}
 					break;
 				}

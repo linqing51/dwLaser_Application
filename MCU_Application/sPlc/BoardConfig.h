@@ -107,6 +107,18 @@ extern DAC_HandleTypeDef hdac;
 extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #endif
 /*****************************************************************************/
+typedef enum{
+	FAN_CH0 = 0,
+	FAN_CH1 = 1,
+	FAN_CH2 = 2, 
+	FAN_CH3 = 3,
+	FAN_CH4 = 4,
+	FAN_CH5 = 5,
+	FAN_CH6 = 6,
+	FAN_CH7 = 7,
+}FAN_CHANNLE_ENMU;
+
+/*****************************************************************************/
 //引脚功能定义
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
@@ -1097,6 +1109,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_DEBUG_UART											huart5//调试串口
 #define CONFIG_GDDC_UART											huart3//GDDC串口
 #define CONFIG_GDDC_UART_INSTANCE							USART3//GDDC串口中断
+
+#define CONFIG_MBI2C_BUS											hi2c2//主板I2C总线
 #endif
 
 #if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)

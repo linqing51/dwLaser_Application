@@ -1102,6 +1102,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcEprom_I2C.c</FilePath>
             </File>
+            <File>
+              <FileName>sPlc_MBI2C_PCA9546.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlc_MBI2C_PCA9546.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlc_MBI2C_DAC5578.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlc_MBI2C_DAC5578.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlc_MBI2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlc_MBI2C.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

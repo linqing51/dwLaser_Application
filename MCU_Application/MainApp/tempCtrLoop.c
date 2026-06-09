@@ -74,6 +74,7 @@ void tempControlLoop(void){//温度风扇控制循环
 			FanController_Run(&AutoFan5);// 更新风扇控制
 			FanController_Run(&AutoFan6);// 更新风扇控制
 			FanController_Run(&AutoFan7);// 更新风扇控制
+			
 			NVRAM0[EM_FAN0_SET_SPEED] = AutoFan0.current_speed;
 			NVRAM0[EM_FAN1_SET_SPEED] = AutoFan1.current_speed;
 			NVRAM0[EM_FAN2_SET_SPEED] = AutoFan2.current_speed;
@@ -83,8 +84,15 @@ void tempControlLoop(void){//温度风扇控制循环
 			NVRAM0[EM_FAN6_SET_SPEED] = AutoFan6.current_speed;
 			NVRAM0[EM_FAN7_SET_SPEED] = AutoFan7.current_speed;
 		}
-		setFanSpeed(NVRAM0[EM_FAN0_SET_SPEED]);
-		
+		setFanSpeed(FAN_CH0, NVRAM0[EM_FAN0_SET_SPEED]);
+		setFanSpeed(FAN_CH1, NVRAM0[EM_FAN1_SET_SPEED]);
+		setFanSpeed(FAN_CH2, NVRAM0[EM_FAN2_SET_SPEED]);
+		setFanSpeed(FAN_CH3, NVRAM0[EM_FAN3_SET_SPEED]);
+		setFanSpeed(FAN_CH4, NVRAM0[EM_FAN4_SET_SPEED]);
+		setFanSpeed(FAN_CH5, NVRAM0[EM_FAN5_SET_SPEED]);
+		setFanSpeed(FAN_CH6, NVRAM0[EM_FAN6_SET_SPEED]);
+		setFanSpeed(FAN_CH7, NVRAM0[EM_FAN7_SET_SPEED]);
+			
 #if CONFIG_USING_CLASSIC_PID == 1
 		ClassicPid_A.setpoint = deviceConfig.laserDiodeA_Temp;	
 		LaserTecOut0 = PID_Compute(&ClassicPid_A, NVRAM0[EM_LASER_A_DIODE_TEMP]);	

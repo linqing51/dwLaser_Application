@@ -172,7 +172,7 @@ extern void UsbGpioReset(void);
 extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
 extern void setGreenLaserPwm(int16_t pwm);//设置绿激光占空比
 extern void setPower_635(int16_t pwr);//设置红激光功率
-extern void setFanSpeed(int16_t speed);//设置风扇转速
+extern void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed);//设置风扇转速;//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
 extern void saveDeviceConfig(void);//将配置写入EPROM
 extern void loadDeviceConfig(void);//从EPROM载入配置文件
