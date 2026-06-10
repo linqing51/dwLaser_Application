@@ -84,6 +84,16 @@ void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
 	HAL_GPIO_Init(USBA0_PSON_GPIO_Port, &GPIO_InitStruct);
 	SET_USBA0_PSON_OFF;
 #endif
+
+#if defined(LYPE_SURGI_LDR5_20260519)
+	GPIO_InitStruct.Pin = USB_OTG_FS_PSON_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(USB_OTG_FS_PSON_GPIO_Port, &GPIO_InitStruct);
+	SET_USB_OTG_FS_PSON_OFF;
+#endif
+
 	softDelayMs(10);
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
 	HAL_GPIO_DeInit(USB_FS_PSON_LEGACY_GPIO_Port, USB_FS_PSON_LEGACY_Pin);
@@ -91,6 +101,10 @@ void UsbGpioReset(void){//模拟USB拔插动作并关闭VBUS供电
 #if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
 	HAL_GPIO_DeInit(USBA0_PSON_GPIO_Port, USBA0_PSON_Pin);
 #endif
+#if defined(LYPE_SURGI_LDR5_20260519)
+	HAL_GPIO_DeInit(USB_OTG_FS_PSON_GPIO_Port, USB_OTG_FS_PSON_Pin);
+#endif
+
 	__HAL_RCC_GPIOG_CLK_DISABLE();	
 	__HAL_RCC_USB_OTG_FS_CLK_DISABLE();//关闭USB时钟
 	HAL_NVIC_DisableIRQ(OTG_FS_IRQn);//关闭USB 中断

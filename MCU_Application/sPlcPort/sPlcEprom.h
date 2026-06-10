@@ -12,10 +12,10 @@ extern "C" {
 #endif
 
 /*****************************************************************************/
-extern I2C_HandleTypeDef hi2c1;
-extern I2C_HandleTypeDef hi2c2;
-extern CRC_HandleTypeDef hcrc;
-extern RNG_HandleTypeDef hrng;
+//extern I2C_HandleTypeDef hi2c1;
+//extern I2C_HandleTypeDef hi2c2;
+//extern CRC_HandleTypeDef hcrc;
+//extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 typedef enum {
 	CLEAR_EPROM_ALL 														= 0x01,

@@ -1534,8 +1534,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\sPlcPort\sPlc_MBI2C_PCA9546.c</PathWithFileName>
-      <FilenameWithoutPath>sPlc_MBI2C_PCA9546.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\sPlcPort\sPlc_SMBUS.c</PathWithFileName>
+      <FilenameWithoutPath>sPlc_SMBUS.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1546,8 +1546,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\sPlcPort\sPlc_MBI2C_DAC5578.c</PathWithFileName>
-      <FilenameWithoutPath>sPlc_MBI2C_DAC5578.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\sPlcPort\sPlc_SMBUS_DAC5578.c</PathWithFileName>
+      <FilenameWithoutPath>sPlc_SMBUS_DAC5578.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1558,8 +1558,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\sPlcPort\sPlc_MBI2C.c</PathWithFileName>
-      <FilenameWithoutPath>sPlc_MBI2C.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\sPlcPort\sPlc_SMBUS_PCA9546.c</PathWithFileName>
+      <FilenameWithoutPath>sPlc_SMBUS_PCA9546.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

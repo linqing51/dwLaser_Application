@@ -211,7 +211,6 @@ void bootLoadInit(void){//引导程序初始化
 	SET_GREEN_LED_ON;
 	SET_BLUE_LED_OFF;
 #endif
-	overTime = HAL_GetTick() + CONFIG_JUMP_DELAY;
 	releaseTime0 = 0;
 	releaseTime1 = 0;
 	bootLoadState = BT_STATE_IDLE; 
@@ -389,10 +388,12 @@ void bootLoadProcess(void){//bootload 执行程序
 				SET_GREEN_LED_OFF;
 				SET_BLUE_LED_OFF;
 				bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
+#if !defined(LYPE_SURGI_LDR5_20260519)
 			}
 			else{//安全连锁插入
 				bootLoadState = BT_STATE_RUN_APP;//进入运行APP流程
 			}
+#endif
 			break;
 		}
 		case BT_STATE_USBHOST_INIT:{//在USB HOST上挂载FATFS
@@ -404,6 +405,7 @@ void bootLoadProcess(void){//bootload 执行程序
 			else{//挂载U盘成功
 				printf("Bootloader:Mount Fatfs sucess!\n");
 				bootLoadState = BT_STATE_WAIT_UDISK;
+				overTime = HAL_GetTick() + CONFIG_JUMP_DELAY;
 			}
 			break;
 		}
