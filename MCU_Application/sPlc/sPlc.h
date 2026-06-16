@@ -31,6 +31,7 @@
 #endif
 /*****************************************************************************/
 //usb
+#ifndef LYPE_SURGI_LDR5_20260519
 #include "usbh_msc.h"
 #include "usb_host.h"
 #include "usbh_core.h"
@@ -39,6 +40,7 @@
 #include "ff.h"
 #include "ff_gen_drv.h"
 #include "flash_if.h"
+#endif
 /*****************************************************************************/
 #if CONFIG_SPLC_USING_FUNTEST == 1
 #include "sPlcTest.h"
@@ -58,6 +60,17 @@ extern "C" {
 #define LASER_MODE_CW													0x01//连续模式
 #define LASER_MODE_MP													0x02//多脉冲模式
 /*****************************************************************************/
+typedef enum{
+	FAN_CH0 = 0,
+	FAN_CH1 = 1,
+	FAN_CH2 = 2, 
+	FAN_CH3 = 3,
+	FAN_CH4 = 4,
+	FAN_CH5 = 5,
+	FAN_CH6 = 6,
+	FAN_CH7 = 7,
+}FAN_CHANNLE_ENMU;
+
 typedef struct{
 	uint16_t calibrationPwr0[20];//通道0功率校正表
 	uint16_t calibrationPwr1[20];//通道1功率校正表

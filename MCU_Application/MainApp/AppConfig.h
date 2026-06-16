@@ -58,7 +58,7 @@ extern "C" {
 #define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//次版本标识地址
 #define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
 #define DEVID_H																				'1'//设备ID
-#define DEVID_L																				'A'//设备ID
+#define DEVID_L																				'B'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
 #define CONFIG_JUMP_DELAY															7000//检测U盘时间
 #define FATFS_ROOT																		"0:"
@@ -374,6 +374,65 @@ extern "C" {
 
 #define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
 #endif
+
+
+#if defined(LYPE_SURGI_LDR5_20260519)
+
+#define CONFIG_USING_CLASSIC_PID											1
+#define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
+#define CONFIG_LASER_B_DIODE_SET_TEMP									250//激光器温度设定
+
+#define CONFIG_LASER_A_DIODE_TEMP_HIGH								2000//激光器高温极限 46.0C
+#define CONFIG_LASER_A_DIODE_TEMP_LOW									-1000//激光器低温极限 -25.0C
+#define CONFIG_LASER_A_COUPLER_TEMP_HIGH							2000//耦合器高温报警
+#define CONFIG_LASER_A_COUPLER_TEMP_LOW								-1000//耦合器低温报警
+#define CONFIG_LASER_A_CRYST0_TEMP_HIGH								1000
+#define CONFIG_LASER_A_CRYST0_TEMP_LOW								-1000
+#define CONFIG_LASER_A_CRYST1_TEMP_HIGH								1000
+#define CONFIG_LASER_A_CRYST1_TEMP_LOW								-1000
+
+#define CONFIG_LASER_B_DIODE_TEMP_HIGH								1000//
+#define CONFIG_LASER_B_DIODE_TEMP_LOW									-1000//
+#define CONFIG_LASER_B_COUPLER_TEMP_HIGH							1000//
+#define CONFIG_LASER_B_COUPLER_TEMP_LOW								-1000//
+#define CONFIG_LASER_B_CRYST0_TEMP_HIGH								1000
+#define CONFIG_LASER_B_CRYST0_TEMP_LOW								-1000
+#define CONFIG_LASER_B_CRYST1_TEMP_HIGH								1000
+#define CONFIG_LASER_B_CRYST1_TEMP_LOW								-1000
+
+#define CONFIG_HT0_TEMP_HIGH													600//散热器0高温报警
+#define CONFIG_HT1_TEMP_HIGH													600//散热器1高温报警
+#define CONFIG_HT2_TEMP_HIGH													600//散热器2高温报警
+#define CONFIG_HT3_TEMP_HIGH													600//散热器3高温报警
+
+#define CONFIG_HWATER_TEMP_HIGH												600//热水端高温报警温度 60度
+#define CONFIG_HWATER_TEMP_LOW												50//热水端低温报警温度 5度
+#define CONFIG_CWATER_TEMP_HIGH												400//冷端高温报警温度 40度
+#define CONFIG_CWATER_TEMP_LOW												50//冷端低温报警温度 5度
+#define CONFIG_AMBIENT0_TEMP_HIGH											2000//环境0高温报警
+#define CONFIG_AMBIENT0_TEMP_LOW											-2000//环境0低温报警
+#define CONFIG_AMBIENT1_TEMP_HIGH											2000//环境1高温报警
+#define CONFIG_AMBIENT1_TEMP_LOW											-2000//环境1低温报警
+#define CONFIG_AMBIENT2_TEMP_HIGH											2000//环境2高温报警
+#define CONFIG_AMBIENT2_TEMP_LOW											-2000//环境2低温报警
+#define CONFIG_AMBIENT3_TEMP_HIGH											2000//环境3高温报警
+#define CONFIG_AMBIENT3_TEMP_LOW											-2000//环境3低温报警
+
+#define CONFIG_HDC1080_TEMP_HIGH											350//板载环境高温报警 40度
+#define CONFIG_HDC1080_TEMP_LOW												50//板载环境低温报警 5度
+#define CONFIG_HDC1080_HUMIDITY_HIGH									850//板载环境高湿度报警
+#define CONFIG_HDC1080_HUMIDITY_LOW										0//板载环境低温报警
+#define CONFIG_DHT11_TEMP_HIGH												500//远程环境高温报警		
+#define CONFIG_DHT11_TEMP_LOW													0//远程环境低温报警
+#define CONFIG_DHT11_HUMIDITY_HIGH										850//远程高湿度报警标志
+#define CONFIG_DHT11_HUMIDITY_LOW											0//远程低湿度报警标志
+#define CONFIG_MCU_TEMP_HIGH													650//处理器高温标志
+#define CONFIG_MCU_TEMP_LOW														50//处理器低温标志
+#define CONFIG_MBAT_TEMP_HIGH													550//主电池高温标志
+#define CONFIG_MBAT_TEMP_LOW													-100//主电池低温标志
+
+#endif
+
 /*****************************************************************************/
 //配置激光参数
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)

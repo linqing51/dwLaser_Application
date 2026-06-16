@@ -550,6 +550,23 @@ extern "C" {
 #define DM_DC_OLD_PASSCODE2														(DM_START + 8)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3														(DM_START + 9)//屏旧密码2-3
 #define DM_LANGUAGE																		(DM_START + 10)//语言代码
+
+#if defined(LYPE_SURGI_LDR5_20260519)
+#define DM_LASER_POWER_CH0														(DM_START + 11)//LAS0 通道功率储存
+#define DM_LASER_POWER_CH1														(DM_START + 12)//LAS1 通道功率储存
+#define DM_LASER_POWER_CH2														(DM_START + 13)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_0																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_1																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_2																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_3																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_4																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_5																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_6																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_7																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_8																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_9																(DM_START + 14)//LAS2 通道功率存储
+#define DM_ADC_OFFSET_10																(DM_START + 14)//LAS2 通道功率存储
+#endif
 /*****************************************************************************/
 #define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC																(X_START * 16 + 1)//XIN1 安全连锁

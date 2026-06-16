@@ -1,8 +1,14 @@
 #ifndef __BOARDCONFIG_H__
 #define __BOARDCONFIG_H__
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 #include "main.h"
+#ifndef LYPE_SURGI_LDR5_20260519
 #include "usbh_core.h"
+#endif
 /*****************************************************************************/
 //定义外部资源
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP)
@@ -88,6 +94,21 @@ extern DAC_HandleTypeDef hdac;
 extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #endif
 
+#if defined(LYPE_SURGI_LDR5_20260519)
+extern UART_HandleTypeDef huart1;//DEBUG
+extern UART_HandleTypeDef huart2;//HMI
+extern UART_HandleTypeDef huart6;//COMM
+extern SPI_HandleTypeDef hspi2;
+extern TIM_HandleTypeDef htim7;//LASER TIM
+extern TIM_HandleTypeDef htim14;//SPLC  TIM
+extern ADC_HandleTypeDef hadc1;
+extern DMA_HandleTypeDef hdma_adc1;
+extern CRC_HandleTypeDef hcrc;
+extern RNG_HandleTypeDef hrng;
+extern DAC_HandleTypeDef hdac;
+//extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
+#endif
+
 #if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 extern UART_HandleTypeDef huart1;//RASPI
 extern UART_HandleTypeDef huart3;//BT UART
@@ -108,34 +129,6 @@ extern RNG_HandleTypeDef hrng;
 extern DAC_HandleTypeDef hdac;
 extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #endif
-
-#if defined(LYPE_SURGI_LDR5_20260519)
-extern UART_HandleTypeDef huart1;//DEBUG
-extern UART_HandleTypeDef huart2;//HMI
-extern UART_HandleTypeDef huart6;//COMM
-extern SPI_HandleTypeDef hspi2;
-//extern TIM_HandleTypeDef htim7;//LASER TIM
-//extern TIM_HandleTypeDef htim14;//SPLC  TIM
-extern ADC_HandleTypeDef hadc1;
-extern DMA_HandleTypeDef hdma_adc1;
-extern CRC_HandleTypeDef hcrc;
-extern RNG_HandleTypeDef hrng;
-extern DAC_HandleTypeDef hdac;
-extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
-
-#endif
-
-/*****************************************************************************/
-typedef enum{
-	FAN_CH0 = 0,
-	FAN_CH1 = 1,
-	FAN_CH2 = 2, 
-	FAN_CH3 = 3,
-	FAN_CH4 = 4,
-	FAN_CH5 = 5,
-	FAN_CH6 = 6,
-	FAN_CH7 = 7,
-}FAN_CHANNLE_ENMU;
 
 /*****************************************************************************/
 //引脚功能定义
@@ -1068,7 +1061,7 @@ extern uint16_t audioSineTable[];
 
 #define SET_BEEM_LED_ON												__nop()
 #define SET_BEEM_LED_OFF											__nop()
-#define GET_BEEM_LED													__nop()
+#define GET_BEEM_LED													0
 #define FLIP_BEEM_LED													__nop()
 
 #define SET_TICK_LED_ON												HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
@@ -1377,33 +1370,15 @@ extern uint16_t audioSineTable[];
 #define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
 #define CONFIG_SPLC_TIM												TIM14
 
-#define CONFIG_SPK_HANDLE											htim9//SPK 计时器定义	
-#define CONFIG_SPK_TIM												TIM9
-#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_2
-
-#define CONFIG_FAN0_TIM_HANDLE								htim8	
-#define CONFIG_FAN0_TIM												TIM8
-#define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_3
-#define CONFIG_FAN0_FG_CHANNEL								
-
-#define CONFIG_FAN1_TIM_HANDLE								htim8	
-#define CONFIG_FAN1_TIM												TIM8
-#define CONFIG_FAN1_PWM_CHANNEL								TIM_CHANNEL_2
-#define CONFIG_FAN1_FG_CHANNEL								
-
-#define CONFIG_FAN2_TIM_HANDLE								htim8	
-#define CONFIG_FAN2_TIM												TIM8
-#define CONFIG_FAN2_PWM_CHANNEL								TIM_CHANNEL_1
-#define CONFIG_FAN2_FG_CHANNEL								
-
 #define CONFIG_EPROM_BUS_HANDLE								hspi2//SPLC NVRAM接口定义
-#define CONFIG_EPROM_BUS											SPI3									
+#define CONFIG_EPROM_BUS											SPI2									
 
 #define CONFIG_DEBUG_UART											huart1//调试串口
-#define CONFIG_GDDC_UART											huart2//GDDC串口
-#define CONFIG_GDDC_UART_INSTANCE							USART2//GDDC串口中断
+#define CONFIG_HMI_UART												huart2//GDDC串口
+#define CONFIG_HMI_UART_INSTANCE							USART2//GDDC串口中断
+#define CONFIG_COMM_UART											huart6		
+#define CONFIG_COMM_UART_INSTANCE							USART6
 
-#define CONFIG_MBI2C_BUS											hi2c2//主板I2C总线
 #endif
 
 #if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
@@ -1834,8 +1809,10 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_LOGINFO_START						(32512L)//256B 记录信息区 
 #define CONFIG_EPROM_LOGINFO_END							(32767L)
 #endif
-
-	
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 
