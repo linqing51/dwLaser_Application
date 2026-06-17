@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 /*****************************************************************************/
+#include "stdio.h"
 #include "stm32f4xx_hal.h"
 #include "boardConfig.h"
 #include "flash_if.h"
@@ -18,6 +19,7 @@ extern void readStm32UniqueID(void);
 extern void softDelayMs(uint32_t ms);//软件延时
 extern void softDelayUs(uint32_t us);//软件延时
 extern void tickCheckTask(void);//TICK 检测程序
+extern void morseCodeDiag(uint8_t diag);//蜂鸣器诊断声音 摩尔斯电码
 /*****************************************************************************/
 #ifdef __cplusplus
 }

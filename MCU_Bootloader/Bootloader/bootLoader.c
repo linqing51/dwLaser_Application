@@ -44,6 +44,8 @@
 #define BT_DONE_UPDATE_EPROM										'I'//更新EPROM完成
 #define BT_DONE_DUMP_EPROM											'J'//下载EPROM完成
 #define BT_FAIL_LCD_RESPOND_ERROR								'K'//LCD 响应错误
+
+#define BT_DONE_FIRMWARE_UPDATE									'L'//
 /*****************************************************************************/
 #define GDDC_RX_BUF_SIZE												128
 #define GDDC_TX_BUF_SIZE												(2048 + 4)
@@ -310,6 +312,29 @@ void bootLoadProcess(void){//bootload 执行程序
 			SET_RED_LED_OFF;
 			SET_GREEN_LED_OFF;
 			SET_BLUE_LED_OFF;
+      
+#if defined(LYPE_SURGI_LDR5_20260519)
+      SET_SPEAK_ENA(GPIO_PIN_RESET);
+      SET_LASER_PWM(GPIO_PIN_RESET);
+      SET_LASER1_AIM(GPIO_PIN_RESET);
+      SET_LASER2_AIM(GPIO_PIN_RESET);
+
+      SET_LINK_LED(GPIO_PIN_RESET);
+      SET_ALARM_LED(GPIO_PIN_RESET);
+      SET_LASER1_LED(GPIO_PIN_RESET);
+      SET_LASER2_LED(GPIO_PIN_RESET);
+      HAL_Delay(50);
+      SET_ALARM_LED(GPIO_PIN_SET);
+      SET_LINK_LED(GPIO_PIN_SET);
+      SET_LASER1_LED(GPIO_PIN_SET);
+      SET_LASER2_LED(GPIO_PIN_SET);
+      HAL_Delay(500);
+      SET_ALARM_LED(GPIO_PIN_RESET);
+      SET_LINK_LED(GPIO_PIN_RESET);
+      SET_LASER1_LED(GPIO_PIN_RESET);
+      SET_LASER2_LED(GPIO_PIN_RESET);
+#endif      
+      
 			printf("\n\n\n\n");
 			printf("Bootloader:Start...............\n");
 			listEpromTable();
@@ -680,6 +705,11 @@ void bootLoadProcess(void){//bootload 执行程序
 				SET_FAN0_OFF;
 				SET_FAN1_OFF;
 				SET_FAN2_OFF;
+#if defined(LYPE_SURGI_LDR5_20260519)        
+        SET_ALARM_LED(GPIO_PIN_RESET);
+				SET_LASER1_LED(GPIO_PIN_RESET);
+				SET_LASER2_LED(GPIO_PIN_RESET);
+#endif        
 				__disable_irq();
 				SysTick->CTRL = 0;//关键代码
 				//关闭中断                                    				
@@ -701,70 +731,114 @@ static void bootLoadFailHandler(uint8_t ftype){//引导错误程序
 	SET_RED_LED_ON;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
+#if defined(LYPE_SURGI_LDR5_20260519)   
+  SET_ALARM_LED(GPIO_PIN_RESET);
+	SET_LASER1_LED(GPIO_PIN_RESET);
+	SET_LASER2_LED(GPIO_PIN_RESET);
+	SET_LINK_LED(GPIO_PIN_RESET);
+#endif
 	switch(ftype){
 		case BT_FAIL_READ_CFG:{//从U盘读取CFG失败
 			printf("Bootloader:FailHandler,Read config file fail!.\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_READ_CFG);
+			};
 		}
 		case BT_FAIL_READ_LMCU_APP:{//从U盘读取MCU APP失败
 			printf("Bootloader:FailHandler,Read mcu firmware fail!.\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_READ_LMCU_APP);
+			};
 		}
 		case BT_FAIL_READ_LCD_APP:{//从U盘读取LCD APP失败
 			printf("Bootloader:FailHandler,Read lcd firmware fail!.\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_READ_LCD_APP);
+			};
 		}
 		case BT_FAIL_ERASE_MCU_APP:{//擦除MCU APP FLASH区域失败
 			printf("Bootloader:FailHandler,Erase mcu application fail\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_ERASE_MCU_APP);
+			};
 		}
 		case BT_FAIL_READ_EPROM_BIN:{
 			printf("Bootloader:FailHandler,Read eprom file fail!\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_READ_EPROM_BIN);
+			};
 		}
 		case BT_FAIL_WRITE_EPROM_BIN:{
 			printf("Bootloader:FailHandler,Write eprom file fail!\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_WRITE_EPROM_BIN);
+			};
 		}
 		case BT_FAIL_LMCU_APP_CHECK:{//lmcu.bin 检查错误
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LMCU_FIRMWARE_FILENAME);
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_LMCU_APP_CHECK);
+			};
 		}
 		case BT_FAIL_LCD_APP_CHECK:{//llcd.bin 检查错误
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LLCD_FIRMWARE_FILENAME);
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_LCD_APP_CHECK);
+			};
 		}
 		case BT_FAIL_CHECKSUM_MCU_APP_FLASH:{//校验 lmcu.bin 错误
 			printf("Bootloader:FailHandler,Verify %s fail!.\n", LMCU_FIRMWARE_FILENAME);
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_CHECKSUM_MCU_APP_FLASH);
+			};
 		}
 		case BT_FAIL_LCD_NOT_RESPOND:{//LCD 串口无响应或错误
 			printf("Bootloader:FailHandler,LCD is not responsed!.\n");
-			while(1);
+			while(1){
+        morseCodeDiag(BT_FAIL_LCD_NOT_RESPOND);
+      };
 		}
 		case BT_FAIL_LCD_DOWNLOAD:{//LCD 命令无响应
 			printf("Bootloader:FailHandler,LCD download fail!.\n");
-			while(1);
+			while(1){
+        morseCodeDiag(BT_FAIL_LCD_DOWNLOAD);
+      };
 		}
 		case BT_FAIL_VECTOR_TABLE_INVALID:{//APP无效向量表
 			printf("Bootloader:FailHandler,App vector table invalid.\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_VECTOR_TABLE_INVALID);
+			};
 		}
 		case BT_FAIL_CHECK_BLANK:{//FLASH 查空错误
 			printf("Bootloader:FailHandler,Flash is not blank!.\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_FAIL_CHECK_BLANK);
+			};
 		}
 		case BT_DONE_CLEAR_ALL:{
 			printf("Bootloader:DoneHandler,Flash and Eprom easer done!.\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_DONE_CLEAR_ALL);
+			}
 		}
 		case BT_DONE_UPDATE_EPROM:{
 			printf("Bootloader:DoneHandler,Update eprom form udisk done!.\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_DONE_UPDATE_EPROM);
+			}
 		}
 		case BT_DONE_DUMP_EPROM:{
 			printf("Bootloader:DoneHandler,Dump eprom to udisk done!\n");
-			while(1);
+			while(1){
+				morseCodeDiag(BT_DONE_DUMP_EPROM);
+			}
+		}
+    case BT_DONE_FIRMWARE_UPDATE:{
+			printf("Bootloader:DoneHandler, Update Firmware done!\n");
+			while(1){
+				morseCodeDiag(BT_DONE_FIRMWARE_UPDATE);
+			}
 		}
 		default:{
 			printf("Bootloader:DoneHandler,unknown error!\n");
@@ -887,6 +961,9 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		if(TmpReadSize < BUFFER_SIZE){
 			readflag = FALSE;
 		}
+#if defined(LYPE_SURGI_LDR5_20260519)
+    FLIP_ALARM_LED;
+#endif
 		/* Program flash memory */
 		for(programcounter = 0; programcounter < TmpReadSize; programcounter += 4){
 			/* Write word into flash memory */
@@ -896,6 +973,9 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		}
 		/* Update last programmed address value */
 		LastPGAddress += TmpReadSize;
+#if defined(LYPE_SURGI_LDR5_20260519)
+    FLIP_ALARM_LED;
+#endif
 	}
 	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//补完剩余CRC
 		crc32 = crc32CalculateAdd(0xFF);

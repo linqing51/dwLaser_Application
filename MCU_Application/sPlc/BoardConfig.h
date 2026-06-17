@@ -1048,8 +1048,8 @@ extern uint16_t audioSineTable[];
 #define SET_DAC7311_SCK(b)                    __nop()
 #define SET_DAC7311_SDI(b)										__nop()						
 
-#define SET_RED_LED_ON												__nop()
-#define SET_RED_LED_OFF												__nop()
+#define SET_RED_LED_ON												SET_ALARM_LED_ON
+#define SET_RED_LED_OFF												SET_ALARM_LED_OFF
 #define SET_GREEN_LED_ON											__nop()
 #define SET_GREEN_LED_OFF											__nop()
 #define SET_BLUE_LED_ON												__nop()
@@ -1064,6 +1064,11 @@ extern uint16_t audioSineTable[];
 #define GET_BEEM_LED													0
 #define FLIP_BEEM_LED													__nop()
 
+#define SET_SPEAK_ENA(b)                      __nop()
+
+#define SET_LASER1_LED(b)                     HAL_GPIO_WritePin(GPIO_Y0_GPIO_Port, GPIO_Y1_Pin, b)         
+#define SET_LASER2_LED(b)                     HAL_GPIO_WritePin(GPIO_Y0_GPIO_Port, GPIO_Y2_Pin, b)
+
 #define SET_TICK_LED_ON												HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
 #define SET_TICK_LED_OFF											HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_SET)
 #define GET_TICK_LED													!HAL_GPIO_ReadPin(TICK_LED_GPIO_Port, TICK_LED_Pin)
@@ -1074,16 +1079,23 @@ extern uint16_t audioSineTable[];
 #define GET_ERR_LED														!HAL_GPIO_ReadPin(ERR_LED_GPIO_Port, ERR_LED_Pin)
 #define FLIP_ERR_LED													HAL_GPIO_TogglePin(ERR_LED_GPIO_Port, ERR_LED_Pin)
 
+
+
+#define SET_ALARM_LED(b)                      HAL_GPIO_WritePin(GPIO_Y0_GPIO_Port, GPIO_Y0_Pin, b)
 #define SET_ALARM_LED_ON											HAL_GPIO_WritePin(GPIO_Y0_GPIO_Port, GPIO_Y0_Pin, GPIO_PIN_SET)
 #define SET_ALARM_LED_OFF											HAL_GPIO_WritePin(GPIO_Y0_GPIO_Port, GPIO_Y0_Pin, GPIO_PIN_RESET)
 #define GET_ALARM_LED													!HAL_GPIO_ReadPin(GPIO_Y0_GPIO_Port, GPIO_Y0_Pin)
 #define FLIP_ALARM_LED												HAL_GPIO_TogglePin(GPIO_Y0_GPIO_Port, GPIO_Y0_Pin)
 
+#define SET_LINK_LED(b)                        HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, b)
+#define SET_LOCK_LED(b)                       HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, b)
 #define SET_LOCK_LED_ON												HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, GPIO_PIN_SET)
 #define SET_LOCK_LED_OFF											HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, GPIO_PIN_RESET)
 #define GET_LOCK_LED													!HAL_GPIO_ReadPin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin)
 #define FLIP_LOCK_LED													HAL_GPIO_TogglePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin)
 
+
+#define SET_LASER_PWM(b)                      HAL_GPIO_WritePin(LAS0_PWM_GPIO_Port, LAS0_PWM_Pin, b);HAL_GPIO_WritePin(LAS1_PWM_GPIO_Port, LAS1_PWM_Pin, b)
 
 #define SET_LASER_CH0_ON											HAL_GPIO_WritePin(LAS0_PWM_GPIO_Port, LAS0_PWM_Pin, GPIO_PIN_SET)
 #define SET_LASER_CH0_OFF											HAL_GPIO_WritePin(LAS0_PWM_GPIO_Port, LAS0_PWM_Pin, GPIO_PIN_RESET)
@@ -1186,11 +1198,13 @@ extern uint16_t audioSineTable[];
 #define FLIP_GAIM_SHDN                        __nop()
 #define GET_GAIM_SHDN													0
 
+#define SET_LASER1_AIM(b)                     HAL_GPIO_WritePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin, b)
 #define SET_LAS0_AIM_ON												HAL_GPIO_WritePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin, GPIO_PIN_SET)
 #define SET_LAS0_AIM_OFF											HAL_GPIO_WritePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin, GPIO_PIN_RESET)
 #define FLIP_LAS0_AIM													HAL_GPIO_TogglePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin)
 #define GET_LAS0_AIM													HAL_GPIO_ReadPin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin)
 
+#define SET_LASER2_AIM(b)                     HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, b)
 #define SET_LAS1_AIM_ON												HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, GPIO_PIN_SET)
 #define SET_LAS1_AIM_OFF											HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, GPIO_PIN_RESET)
 #define FLIP_LAS1_AIM													HAL_GPIO_TogglePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin)
@@ -1379,6 +1393,8 @@ extern uint16_t audioSineTable[];
 #define CONFIG_COMM_UART											huart6		
 #define CONFIG_COMM_UART_INSTANCE							USART6
 
+#define CONFIG_GDDC_UART											huart1//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
 #endif
 
 #if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
