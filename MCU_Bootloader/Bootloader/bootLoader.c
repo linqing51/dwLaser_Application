@@ -191,7 +191,11 @@ void bootLoadInit(void){//引导程序初始化
 	SET_BLUE_LED_OFF;
 	SET_TICK_LED_OFF;
 	SET_ERR_LED_OFF;
-#if !defined(LDR2P1_G5_A1_20250731_DUAL) && !defined(LDR2P1_G5_A1_20250910_DUAL) && !defined(LDR2P1_G5_A1_20250731_TRIP) && !defined(LDR2P1_G5_A1_20250910_TRIP)
+#if !defined(LDR2P1_G5_A1_20250731_DUAL) && \
+		!defined(LDR2P1_G5_A1_20250910_DUAL) && \
+		!defined(LDR2P1_G5_A1_20250731_TRIP) && \
+		!defined(LDR2P1_G5_A1_20250910_TRIP) && \
+		!defined(LYPE_SURGI_LDR5_20260519)
 	//R-G-Y流水
 	//R
 	SET_RED_LED_ON;
@@ -394,6 +398,7 @@ void bootLoadProcess(void){//bootload 执行程序
 				SET_VN5016_INPUT_ON;//打开24V 供电
 				printf("Bootloader:24V ON\n");
 #endif
+#ifndef LYPE_SURGI_LDR5_20260519
 				SET_FAN0_ON;
 				SET_FAN1_ON;
 				SET_FAN2_ON;
@@ -412,6 +417,7 @@ void bootLoadProcess(void){//bootload 执行程序
 				SET_RED_LED_OFF;
 				SET_GREEN_LED_OFF;
 				SET_BLUE_LED_OFF;
+#endif
 				bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
 #if !defined(LYPE_SURGI_LDR5_20260519)
 			}
@@ -587,6 +593,9 @@ void bootLoadProcess(void){//bootload 执行程序
 				epromWriteDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);
 				printf("Bootloader:Update new crc32 sucess,0x08%XH\n", crcFlash);
 			}
+#if defined(LYPE_SURGI_LDR5_20260519)
+		bootLoadFailHandler(BT_DONE_FIRMWARE_UPDATE);	
+#endif
 			bootLoadState = BT_STATE_RESET;//更新APP
 			break;
 		}
@@ -961,9 +970,6 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		if(TmpReadSize < BUFFER_SIZE){
 			readflag = FALSE;
 		}
-#if defined(LYPE_SURGI_LDR5_20260519)
-    FLIP_ALARM_LED;
-#endif
 		/* Program flash memory */
 		for(programcounter = 0; programcounter < TmpReadSize; programcounter += 4){
 			/* Write word into flash memory */

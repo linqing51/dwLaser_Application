@@ -1,0 +1,5 @@
+--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ../Core/Inc -I ../FATFS/Target -I ../FATFS/App -I ../USB_HOST/App -I ../USB_HOST/Target -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FatFs/src -I ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../../../MCU_Application/sPlcPort -I ../../../MCU_Application/sPlc -I ../Drivers/CMSIS/DSP/Include -I ../../../MCU_Application/lib -I ../../../MCU_Application/MainApp -I ../../Bootloader
+-I.\RTE\_targetBoard_SUGRI_LDR5_20260519
+-IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Include
+-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx -DLYPE_SURGI_LDR5_20260519
+-o .\targetboard_sugri_ldr5_20260519\usart.o --omf_browse .\targetboard_sugri_ldr5_20260519\usart.crf --depend .\targetboard_sugri_ldr5_20260519\usart.d --feedback ".\targetBoard_SUGRI_LDR5_20260519\targetBoard_SUGRI_LDR5_20260519.fed" "../Core/Src/usart.c"

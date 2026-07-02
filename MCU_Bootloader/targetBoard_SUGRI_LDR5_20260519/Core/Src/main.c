@@ -107,7 +107,8 @@ int main(void)
   MX_USB_HOST_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+	bootLoadInit();
+	HAL_FLASH_Unlock();
   /* USER CODE END 2 */
 
   /* Infinite loop */

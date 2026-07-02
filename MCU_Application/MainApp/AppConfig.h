@@ -60,7 +60,7 @@ extern "C" {
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'B'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
-#define CONFIG_JUMP_DELAY															7000//检测U盘时间
+#define CONFIG_JUMP_DELAY															5000//检测U盘时间
 #define FATFS_ROOT																		"0:"
 #define BOOTLOAD_FILENAME															"/bootload.bin"//引导固件
 #define LOG_FIRMWARE_FILENAME													"/log.txt"//操作记录文件

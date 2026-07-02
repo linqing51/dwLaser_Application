@@ -850,10 +850,10 @@ ARM Macro Assembler    Page 14
 
 
 targetboard_sugri_ldr5_20260519\startup_stm32f407xx.o -I.\RTE\_targetBoard_SUGR
-I_LDR5_20260519 -IC:\Users\linqing\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSI
-S\Core\Include --predefine="__UVISION_VERSION SETA 543" --predefine="STM32F407x
-x SETA 1" --predefine="_RTE_ SETA 1" --list=.\targetboard_sugri_ldr5_20260519\s
-tartup_stm32f407xx.lst startup_stm32f407xx.s
+I_LDR5_20260519 -IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\
+Core\Include --predefine="__UVISION_VERSION SETA 543" --predefine="STM32F407xx 
+SETA 1" --predefine="_RTE_ SETA 1" --list=.\targetboard_sugri_ldr5_20260519\sta
+rtup_stm32f407xx.lst startup_stm32f407xx.s
 
 
 

@@ -2,12 +2,12 @@
 /*****************************************************************************/
 uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
-void HAL_Delay(uint32_t ms){// 同样使用易变变量防止外层循环被优化
-	volatile uint32_t ms_count = ms;
-	for(; ms_count > 0; ms_count--){
-		softDelayUs(1000);
-	}
-}
+//void HAL_Delay(uint32_t ms){// 同样使用易变变量防止外层循环被优化
+//	volatile uint32_t ms_count = ms;
+//	for(; ms_count > 0; ms_count--){
+//		softDelayUs(1000);
+//	}
+//}
 
 void softDelayUs(uint32_t us){
 	// 粗略估算：1us 大约需要 hclk_mhz 个周期

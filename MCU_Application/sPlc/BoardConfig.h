@@ -1066,8 +1066,8 @@ extern uint16_t audioSineTable[];
 
 #define SET_SPEAK_ENA(b)                      __nop()
 
-#define SET_LASER1_LED(b)                     HAL_GPIO_WritePin(GPIO_Y0_GPIO_Port, GPIO_Y1_Pin, b)         
-#define SET_LASER2_LED(b)                     HAL_GPIO_WritePin(GPIO_Y0_GPIO_Port, GPIO_Y2_Pin, b)
+#define SET_LASER1_LED(b)                     HAL_GPIO_WritePin(GPIO_Y1_GPIO_Port, GPIO_Y1_Pin, b)         
+#define SET_LASER2_LED(b)                     HAL_GPIO_WritePin(GPIO_Y2_GPIO_Port, GPIO_Y2_Pin, b)
 
 #define SET_TICK_LED_ON												HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_RESET)
 #define SET_TICK_LED_OFF											HAL_GPIO_WritePin(TICK_LED_GPIO_Port, TICK_LED_Pin, GPIO_PIN_SET)
@@ -1205,6 +1205,7 @@ extern uint16_t audioSineTable[];
 #define GET_LAS0_AIM													HAL_GPIO_ReadPin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin)
 
 #define SET_LASER2_AIM(b)                     HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, b)
+
 #define SET_LAS1_AIM_ON												HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, GPIO_PIN_SET)
 #define SET_LAS1_AIM_OFF											HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, GPIO_PIN_RESET)
 #define FLIP_LAS1_AIM													HAL_GPIO_TogglePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin)
