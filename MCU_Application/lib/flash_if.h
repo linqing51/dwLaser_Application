@@ -75,6 +75,11 @@ typedef  void (*pFunction)(void);
 #define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_11 + 131072 - 1)//应用程序结束地址
 #define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//应用程序区容量
 #endif
+#ifdef STM32F429xx
+#define APPLICATION_FLASH_START_ADDRESS       ADDR_FLASH_SECTOR_4//应用程序起始地址
+#define APPLICATION_FLASH_END_ADDRESS  				(ADDR_FLASH_SECTOR_11 + 131072 - 1)//应用程序结束地址
+#define APPLICATION_FLASH_SIZE   							(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1)//应用程序区容量
+#endif
 
 /* Base address of the Flash sectors Bank 1 */
 #ifdef STM32F413xx
@@ -95,7 +100,7 @@ typedef  void (*pFunction)(void);
 #define ADDR_FLASH_SECTOR_14     				((uint32_t)0x08140000) /* Base @ of Sector 14, 128 Kbytes */
 #define ADDR_FLASH_SECTOR_15     				((uint32_t)0x08160000) /* Base @ of Sector 15, 128 Kbytes */
 #endif
-#ifdef STM32F405xx
+#if defined(STM32F405xx) || defined(STM32F407xx)
 #define ADDR_FLASH_SECTOR_0     				((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
 #define ADDR_FLASH_SECTOR_1     				((uint32_t)0x08004000) /* Base @ of Sector 1, 16 Kbytes */
 #define ADDR_FLASH_SECTOR_2     				((uint32_t)0x08008000) /* Base @ of Sector 2, 16 Kbytes */
@@ -110,7 +115,7 @@ typedef  void (*pFunction)(void);
 #define ADDR_FLASH_SECTOR_11    				((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
 #endif
 
-#ifdef STM32F407xx
+#ifdef STM32F429xx
 #define ADDR_FLASH_SECTOR_0     				((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
 #define ADDR_FLASH_SECTOR_1     				((uint32_t)0x08004000) /* Base @ of Sector 1, 16 Kbytes */
 #define ADDR_FLASH_SECTOR_2     				((uint32_t)0x08008000) /* Base @ of Sector 2, 16 Kbytes */
@@ -124,7 +129,6 @@ typedef  void (*pFunction)(void);
 #define ADDR_FLASH_SECTOR_10    				((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
 #define ADDR_FLASH_SECTOR_11    				((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
 #endif
-
 
 /* Exported macros -----------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

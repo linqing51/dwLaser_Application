@@ -161,41 +161,12 @@ void bootLoadInit(void){//引导程序初始化
 	SET_LASER_CH5_OFF;
 	SET_LASER_CH6_OFF;
 	SET_LASER_CH7_OFF;
-	//USB-A切换为MCU
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)	
-	//打开USB FS电源
-	SET_USB_FS_PSON_LEGACY_ON;
-	//USBA切换到MCU
-	SET_USB_FS_SEL_LEGACY_OFF;
-	//关闭USB HS电源
-	SET_USB_HS_PSON_LEGACY_OFF;
-#endif
-
-#if defined (LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250910_TRIP)
-	//MCU FS USB 切换到外部USBA-0
-	SET_USBA0_SEL_OFF;
-	SET_USBA1_SEL_OFF;
-	//USBA-0 打开电源
-	SET_USBA0_PSON_ON;
-	SET_USBA1_PSON_OFF;
-	SET_USBD0_PSON_OFF;
-	//MPU 电源关闭
-	SET_MPU_RESET_OFF;
-	SET_MPU_1V2_EN_OFF;
-	SET_MPU_1V8_EN_OFF;
-	SET_MPU_3V3_EN_OFF;	
-#endif
 	//关闭所有LED
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
 	SET_TICK_LED_OFF;
 	SET_ERR_LED_OFF;
-#if !defined(LDR2P1_G5_A1_20250731_DUAL) && \
-		!defined(LDR2P1_G5_A1_20250910_DUAL) && \
-		!defined(LDR2P1_G5_A1_20250731_TRIP) && \
-		!defined(LDR2P1_G5_A1_20250910_TRIP) && \
-		!defined(LYPE_SURGI_LDR5_20260519)
 	//R-G-Y流水
 	//R
 	SET_RED_LED_ON;
@@ -216,7 +187,6 @@ void bootLoadInit(void){//引导程序初始化
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_ON;
 	SET_BLUE_LED_OFF;
-#endif
 	releaseTime0 = 0;
 	releaseTime1 = 0;
 	bootLoadState = BT_STATE_IDLE; 
@@ -316,29 +286,7 @@ void bootLoadProcess(void){//bootload 执行程序
 			SET_RED_LED_OFF;
 			SET_GREEN_LED_OFF;
 			SET_BLUE_LED_OFF;
-      
-#if defined(LYPE_SURGI_LDR5_20260519)
-      SET_SPEAK_ENA(GPIO_PIN_RESET);
-      SET_LASER_PWM(GPIO_PIN_RESET);
-      SET_LASER1_AIM(GPIO_PIN_RESET);
-      SET_LASER2_AIM(GPIO_PIN_RESET);
-
-      SET_LINK_LED(GPIO_PIN_RESET);
-      SET_ALARM_LED(GPIO_PIN_RESET);
-      SET_LASER1_LED(GPIO_PIN_RESET);
-      SET_LASER2_LED(GPIO_PIN_RESET);
-      HAL_Delay(50);
-      SET_ALARM_LED(GPIO_PIN_SET);
-      SET_LINK_LED(GPIO_PIN_SET);
-      SET_LASER1_LED(GPIO_PIN_SET);
-      SET_LASER2_LED(GPIO_PIN_SET);
-      HAL_Delay(500);
-      SET_ALARM_LED(GPIO_PIN_RESET);
-      SET_LINK_LED(GPIO_PIN_RESET);
-      SET_LASER1_LED(GPIO_PIN_RESET);
-      SET_LASER2_LED(GPIO_PIN_RESET);
-#endif      
-      
+             
 			printf("\n\n\n\n");
 			printf("Bootloader:Start...............\n");
 			listEpromTable();
@@ -365,66 +313,11 @@ void bootLoadProcess(void){//bootload 执行程序
 			printf("Bootloader:Build->%s:%s\n", __DATE__, __TIME__);
 			printf("Bootloader:Bootload Start  :0x%08X,End:0x%08X,Size:0x%08X\n", BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_END_ADDRESS ,BOOTLOADER_FLASH_SIZE);
 			printf("Bootloader:Applicent Start :0x%08X,End:0x%08X,Size:0x%08X\n", APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_END_ADDRESS, APPLICATION_FLASH_SIZE);
-
-#if defined(MODEL_PVGLS_15W_1470_A0)
-			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//安全连锁未插入
-				(GET_FSWITCH_NC == GPIO_PIN_RESET) &&//脚踏插入
-				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下		
-#endif
-					
-#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(LYPE_MCU_1V0_20260106) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+				
 			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//安全连锁未插入
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
-#endif					
-
-#if defined(MODEL_PVGLS_15W_1470_A1)
-			if((GET_INTERLOCK_NC == GPIO_PIN_RESET) &&//安全连锁插入
-				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
-				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下	
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//安全连锁插入
-				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
-				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下	
-#endif
-
-#if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250910_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP) || defined(LDR2P1_G5_A1_20250910_TRIP) 
-				SET_VN5016_INPUT_ON;//打开24V 供电
-				printf("Bootloader:24V ON\n");
-#endif
-#ifndef LYPE_SURGI_LDR5_20260519
-				SET_FAN0_ON;
-				SET_FAN1_ON;
-				SET_FAN2_ON;
-				SET_RED_LED_ON;
-				SET_GREEN_LED_OFF;
-				SET_BLUE_LED_OFF;	
-				HAL_Delay(500);
-				SET_RED_LED_OFF;
-				SET_GREEN_LED_ON;
-				SET_BLUE_LED_OFF;	
-				HAL_Delay(500);
-				SET_RED_LED_OFF;
-				SET_GREEN_LED_OFF;
-				SET_BLUE_LED_ON;	
-				HAL_Delay(500);	
-				SET_RED_LED_OFF;
-				SET_GREEN_LED_OFF;
-				SET_BLUE_LED_OFF;
-#endif
 				bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
-#if !defined(LYPE_SURGI_LDR5_20260519)
-			}
-			else{//安全连锁插入
-				bootLoadState = BT_STATE_RUN_APP;//进入运行APP流程
-			}
-#endif
 			break;
 		}
 		case BT_STATE_USBHOST_INIT:{//在USB HOST上挂载FATFS
@@ -593,9 +486,6 @@ void bootLoadProcess(void){//bootload 执行程序
 				epromWriteDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);
 				printf("Bootloader:Update new crc32 sucess,0x08%XH\n", crcFlash);
 			}
-#if defined(LYPE_SURGI_LDR5_20260519)
-		bootLoadFailHandler(BT_DONE_FIRMWARE_UPDATE);	
-#endif
 			bootLoadState = BT_STATE_RESET;//更新APP
 			break;
 		}
@@ -713,12 +603,7 @@ void bootLoadProcess(void){//bootload 执行程序
 				SET_BLUE_LED_OFF;
 				SET_FAN0_OFF;
 				SET_FAN1_OFF;
-				SET_FAN2_OFF;
-#if defined(LYPE_SURGI_LDR5_20260519)        
-        SET_ALARM_LED(GPIO_PIN_RESET);
-				SET_LASER1_LED(GPIO_PIN_RESET);
-				SET_LASER2_LED(GPIO_PIN_RESET);
-#endif        
+				SET_FAN2_OFF;     
 				__disable_irq();
 				SysTick->CTRL = 0;//关键代码
 				//关闭中断                                    				
@@ -740,12 +625,6 @@ static void bootLoadFailHandler(uint8_t ftype){//引导错误程序
 	SET_RED_LED_ON;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
-#if defined(LYPE_SURGI_LDR5_20260519)   
-  SET_ALARM_LED(GPIO_PIN_RESET);
-	SET_LASER1_LED(GPIO_PIN_RESET);
-	SET_LASER2_LED(GPIO_PIN_RESET);
-	SET_LINK_LED(GPIO_PIN_RESET);
-#endif
 	switch(ftype){
 		case BT_FAIL_READ_CFG:{//从U盘读取CFG失败
 			printf("Bootloader:FailHandler,Read config file fail!.\n");

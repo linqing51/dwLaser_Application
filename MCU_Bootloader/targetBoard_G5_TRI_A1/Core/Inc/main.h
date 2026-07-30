@@ -81,10 +81,10 @@ void Error_Handler(void);
 #define LD0_CUR_GPIO_Port GPIOC
 #define TEC_CUR_Pin GPIO_PIN_3
 #define TEC_CUR_GPIO_Port GPIOC
-#define LD1_SET_Pin GPIO_PIN_4
-#define LD1_SET_GPIO_Port GPIOA
-#define LD0_SET_Pin GPIO_PIN_5
-#define LD0_SET_GPIO_Port GPIOA
+#define MPR1_SET_Pin GPIO_PIN_4
+#define MPR1_SET_GPIO_Port GPIOA
+#define MPR2_SET_Pin GPIO_PIN_5
+#define MPR2_SET_GPIO_Port GPIOA
 #define IVIN_IS_Pin GPIO_PIN_6
 #define IVIN_IS_GPIO_Port GPIOA
 #define LAS_NTC_Pin GPIO_PIN_7
