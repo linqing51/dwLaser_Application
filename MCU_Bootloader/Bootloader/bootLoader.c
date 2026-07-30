@@ -106,8 +106,6 @@ static uint32_t updateLcdApp(char* filePath);//更新LCD APP
 static void DBGU_Printk_num(uint8_t *buffer, uint16_t datanum);
 static void dp_display_text_num(uint8_t *text,uint16_t datanum);	
 static void clearFlash(void);
-static void updateEprom(void);
-static void dumpEprom(void);
 static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len);
 static FRESULT crcLcdFile(char* scanPath);
 static FRESULT updateLcdFile(char* scanPath);
@@ -191,8 +189,6 @@ void bootLoadInit(void){//引导程序初始化
 	releaseTime1 = 0;
 	bootLoadState = BT_STATE_IDLE; 
 	printf("\r\n");
-	printf("\r\n");
-	printf("\r\n");   
 	//显示输入IO状态
 	if(GET_ESTOP_NC == GPIO_PIN_SET){//TTL=H
 		printf("Bootloader:INPUT->ESTOP_NC      = HIGH\n");
@@ -219,35 +215,6 @@ void bootLoadInit(void){//引导程序初始化
 	else{
 		printf("Bootloader:INPUT->INTERLOCK     = LOW\n");
 	}	
-	//显示输出IO状态
-	if(GET_LASER_CH0 == GPIO_PIN_SET){//LPA_PWM0
-		printf("Bootloader:OUTPUT->LAS_PWM0     = HIGH\n");
-	}
-	else{
-		printf("Bootloader:OUTPUT->LAS_PWM0     = LOW\n");
-	}
-	if(GET_LASER_CH1 == GPIO_PIN_SET){//LPA_PWM1
-		printf("Bootloader:OUTPUT->LAS_PWM1     = HIGH\n");
-	}
-	else{
-		printf("Bootloader:OUTPUT->LAS_PWM1     = LOW\n");
-	}
-	if(GET_LASER_CH2 == GPIO_PIN_SET){//LPB_PWM2
-		printf("Bootloader:OUTPUT->LAS_PWM2     = HIGH\n");
-	}
-	else{
-		printf("Bootloader:OUTPUT->LAS_PWM2     = LOW\n");
-	}
-	if(GET_LASER_CH3 == GPIO_PIN_SET){//LPB_PWM3
-		printf("Bootloader:OUTPUT->LAS_PWM3     = HIGH\n");
-	}
-	else{
-		printf("Bootloader:OUTPUT->LAS_PWM3     = LOW\n");
-	}
-	
-	printf("Bootloader:OUTPUT->AIM_PWM      = Low!\n");
-	printf("Bootloader:OUTPUT->LAS_FAN      = Low!\n");
-	printf("Bootloader:OUTPUT->LAS_TEC      = Low!\n");
 	HAL_Delay(10);
 	
 }
@@ -314,12 +281,13 @@ void bootLoadProcess(void){//bootload 执行程序
 			printf("Bootloader:Bootload Start  :0x%08X,End:0x%08X,Size:0x%08X\n", BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_END_ADDRESS ,BOOTLOADER_FLASH_SIZE);
 			printf("Bootloader:Applicent Start :0x%08X,End:0x%08X,Size:0x%08X\n", APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_END_ADDRESS, APPLICATION_FLASH_SIZE);
 				
-			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//安全连锁未插入
+			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//安全连锁未插入
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
-				bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
-			break;
-		}
+          bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
+          break;
+      }
+    }
 		case BT_STATE_USBHOST_INIT:{//在USB HOST上挂载FATFS
 			retUsbH = f_mount(&USBH_fatfs, FATFS_ROOT, 0);
 			if(retUsbH != FR_OK){//挂载U盘失败
@@ -566,11 +534,9 @@ void bootLoadProcess(void){//bootload 执行程序
 			break;
 		}		
 		case BT_STATE_UPDATE_EPROM:{//更新EPROM
-			updateEprom();
 			break;
 		}
 		case BT_STATE_DUMP_EPROM:{
-			dumpEprom();
 			break;
 		}
 		case BT_STATE_CLEAT_ALL:{//清除FLASH和EPROM全部
@@ -858,9 +824,6 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		}
 		/* Update last programmed address value */
 		LastPGAddress += TmpReadSize;
-#if defined(LYPE_SURGI_LDR5_20260519)
-    FLIP_ALARM_LED;
-#endif
 	}
 	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//补完剩余CRC
 		crc32 = crc32CalculateAdd(0xFF);
@@ -1024,44 +987,6 @@ static uint32_t updateLcdApp(char* filePath){//更新LCD APP单个文件
 	return crc32;
 }
 
-static void updateEprom(void){//UDISK->EPROM
-	HAL_StatusTypeDef ret;
-	uint32_t brByte;
-	retUsbH = f_open(&LepromFile, LOAD_EPROM_FILENAME, FA_OPEN_EXISTING | FA_READ);//读取完成信息文件
-	if(retUsbH != FR_OK){//读取失败跳过固件更新直接运行程序
-		printf("BootLoader:Open %s fail,ECODE=0x%02XH\n", LOAD_EPROM_FILENAME, retUsbH);
-				bootLoadFailHandler(BT_FAIL_READ_EPROM_BIN);
-	}
-	else{//读取成功检查文件内容
-		printf("BootLoader:Open %s sucess,ECODE=0x%02XH\n", LOAD_EPROM_FILENAME, retUsbH);
-		f_lseek(&LepromFile, 0);//读取指针移动到开头
-		SET_RED_LED_ON;
-		retUsbH = f_read(&LepromFile, RAM_Buf, CONFIG_EPROM_SIZE, &brByte);
-		SET_RED_LED_OFF;
-		if((retUsbH != FR_OK) || (brByte !=  CONFIG_EPROM_SIZE)){
-			bootLoadFailHandler(BT_FAIL_READ_EPROM_BIN);
-		}
-		f_close(&LepromFile);
-		ret = epromWrite(0, RAM_Buf, CONFIG_EPROM_SIZE);//写入EPROM
-		if(ret != HAL_OK){
-			bootLoadFailHandler(BT_FAIL_WRITE_EPROM);
-		}
-		bootLoadFailHandler(BT_DONE_UPDATE_EPROM);
-	}
-}
-static void dumpEprom(void){//下载EPROM信息到U盘
-	uint32_t wrByte;
-	epromRead(0x0, RAM_Buf, CONFIG_EPROM_SIZE);
-	retUsbH = f_open(&SepromFile, LOAD_EPROM_FILENAME, FA_CREATE_ALWAYS | FA_WRITE);
-	if(retUsbH != FR_OK){//打开失败
-		bootLoadFailHandler(BT_FAIL_WRITE_EPROM_BIN);
-	}
-	retUsbH = f_write(&SepromFile, RAM_Buf, CONFIG_EPROM_SIZE, &wrByte);
-	if(retUsbH != FR_OK){//写入失败
-		bootLoadFailHandler(BT_FAIL_WRITE_EPROM_BIN);
-	}
-	bootLoadFailHandler(BT_DONE_DUMP_EPROM);
-}
 static uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
 	uint8_t val;
 	uint32_t i;

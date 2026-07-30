@@ -39,18 +39,14 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 
 /*****************************************************************************/
 //引脚功能定义
-#define GET_ESTOP_NC													0
-#define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(GPIO_X2_GPIO_Port, GPIO_X2_Pin)
-#define GET_FSWITCH_NO												0
-#define GET_FSWITCH_NC												0
+#define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
+#define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(ILOCK_NC_GPIO_Port, ILOCK_NC_Pin)
+#define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
+#define GET_FSWITCH_NC												HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
 
-#define SET_SPK_AP_ON													__nop()
-#define SET_SPK_AP_OFF												__nop()
-
-#define SET_DAC7311_CS(b)											__nop()								
-#define SET_DAC7311_SCK(b)                    __nop()
-#define SET_DAC7311_SDI(b)										__nop()						
-
+#define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_ENA_GPIO_Port, SPK_ENA_Pin, GPIO_PIN_SET)
+#define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_ENA_GPIO_Port, SPK_ENA_Pin, GPIO_PIN_RESET)
+					
 #define SET_RED_LED_ON												HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1)
 #define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1)
 
@@ -60,9 +56,9 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3)
 #define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_3)
 
-#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, b)
-#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, b)
-#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, b)
+#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, b)
+#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, b)
+#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, b)
 
 #define SET_BEEM_LED_ON												HAL_GPIO_WritePin(BEEM_LED_GPIO_Port, BEEM_LED_Pin, GPIO_PIN_SET)
 #define SET_BEEM_LED_OFF											HAL_GPIO_WritePin(BEEM_LED_GPIO_Port, BEEM_LED_Pin, GPIO_PIN_RESET)
@@ -85,11 +81,11 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define GET_ERR_LED														!HAL_GPIO_ReadPin(ERR_LED_GPIO_Port, ERR_LED_Pin)
 #define FLIP_ERR_LED													HAL_GPIO_TogglePin(ERR_LED_GPIO_Port, ERR_LED_Pin)
 
-#define SET_LINK_LED(b)                        HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, b)
+#define SET_LINK_LED(b)                       HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, b)
 #define SET_LOCK_LED(b)                       HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, b)
 #define SET_LOCK_LED_ON												HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, GPIO_PIN_SET)
 #define SET_LOCK_LED_OFF											HAL_GPIO_WritePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin, GPIO_PIN_RESET)
-#define GET_LOCK_LED													!HAL_GPIO_ReadPin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin)
+#define GET_LOCK_LED													HAL_GPIO_ReadPin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin)
 #define FLIP_LOCK_LED													HAL_GPIO_TogglePin(GPIO_Y3_GPIO_Port, GPIO_Y3_Pin)
 
 
@@ -150,12 +146,12 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define FLIP_LASER_CH6												HAL_GPIO_TogglePin(SLD0_PWM_GPIO_Port, SLD0_PWM_Pin)
 #define FLIP_LASER_CH7												HAL_GPIO_TogglePin(SLD1_PWM_GPIO_Port, SLD1_PWM_Pin)
 
-#define GET_LASER_CH0													HAL_GPIO_ReadPin(MPR0_PWM_GPIO_Port, LAS0_PWM_Pin)
-#define GET_LASER_CH1													HAL_GPIO_ReadPin(MPR0_PWM_GPIO_Port, LAS1_PWM_Pin)
-#define GET_LASER_CH2													HAL_GPIO_ReadPin(MPR0_PWM_GPIO_Port, LAS2_PWM_Pin)
-#define GET_LASER_CH3													HAL_GPIO_ReadPin(MPR0_PWM_GPIO_Port, LAS3_PWM_Pin)
-#define GET_LASER_CH4													HAL_GPIO_ReadPin(MPR0_PWM_GPIO_Port, LAS4_PWM_Pin)
-#define GET_LASER_CH5													HAL_GPIO_ReadPin(MPR0_PWM_GPIO_Port, LAS5_PWM_Pin)
+#define GET_LASER_CH0													HAL_GPIO_ReadPin(MPR0_PWM_GPIO_Port, MPR0_PWM_Pin)
+#define GET_LASER_CH1													HAL_GPIO_ReadPin(MPR1_PWM_GPIO_Port, MPR1_PWM_Pin)
+#define GET_LASER_CH2													HAL_GPIO_ReadPin(MPR2_PWM_GPIO_Port, MPR2_PWM_Pin)
+#define GET_LASER_CH3													HAL_GPIO_ReadPin(MPR3_PWM_GPIO_Port, MPR3_PWM_Pin)
+#define GET_LASER_CH4													HAL_GPIO_ReadPin(MPR4_PWM_GPIO_Port, MPR4_PWM_Pin)
+#define GET_LASER_CH5													HAL_GPIO_ReadPin(MPR5_PWM_GPIO_Port, MPR5_PWM_Pin)
 #define GET_LASER_CH6													HAL_GPIO_ReadPin(SLD0_PWM_GPIO_Port, SLD0_PWM_Pin)
 #define GET_LASER_CH7													HAL_GPIO_ReadPin(SLD1_PWM_GPIO_Port, SLD1_PWM_Pin)
 
@@ -178,45 +174,17 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define SET_RAIM_TIM_ON												HAL_TIM_PWM_Stop(&htim9, TIM_CHANNEL_2)
 #define SET_RAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, b)
 
-#define SET_RAIM_SHDN(b)			                __nop()
-#define SET_RAIM_SHDN_ON                      __nop()
-#define SET_RAIM_SHDN_OFF                     __nop()
-#define FLIP_RAIM_SHDN                        __nop()
-#define GET_RAIM_SHDN													0
-
 #define SET_GAIM_TIM_OFF											__nop()
 #define SET_GAIM_TIM_ON												__nop()
 #define SET_GAIM_TIM_PWM(b)										__nop()
-
-#define SET_GAIM_SHDN(b)			                __nop()
-#define SET_GAIM_SHDN_ON                      __nop()
-#define SET_GAIM_SHDN_OFF                     __nop()
-#define FLIP_GAIM_SHDN                        __nop()
-#define GET_GAIM_SHDN													0
-
-#define SET_LASER1_AIM(b)                     HAL_GPIO_WritePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin, b)
-#define SET_LAS0_AIM_ON												HAL_GPIO_WritePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin, GPIO_PIN_SET)
-#define SET_LAS0_AIM_OFF											HAL_GPIO_WritePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin, GPIO_PIN_RESET)
-#define FLIP_LAS0_AIM													HAL_GPIO_TogglePin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin)
-#define GET_LAS0_AIM													HAL_GPIO_ReadPin(LAS0_AIM_GPIO_Port, LAS0_AIM_Pin)
-
-#define SET_LASER2_AIM(b)                     HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, b)
-
-#define SET_LAS1_AIM_ON												HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, GPIO_PIN_SET)
-#define SET_LAS1_AIM_OFF											HAL_GPIO_WritePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin, GPIO_PIN_RESET)
-#define FLIP_LAS1_AIM													HAL_GPIO_TogglePin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin)
-#define GET_LAS1_AIM													HAL_GPIO_ReadPin(LAS1_AIM_GPIO_Port, LAS1_AIM_Pin)
 
 //MCP41010
 #define SET_MCP41010_CS(b)										HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
 #define SET_MCP41010_SCK(b)										HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
 
-//POWER SWITCH 硬关机信号->MCU最为MPU单元
-#define GET_PWR_KEY														0
-
 //POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
-#define GET_PWR_INT														0
+#define GET_PWR_INT														HAL_GPIO_ReadPin(PWR_INT_GPIO_Port, PWR_INT_Pin)
 //POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
 #define SET_PWR_KILL(b)												__nop()
 #define SET_PWR_KILL_ON												__nop()
@@ -290,20 +258,12 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_FAN1_PWM_CHANNEL								TIM_CHANNEL_2
 #define CONFIG_FAN1_FG_CHANNEL								
 
-#define CONFIG_FAN2_TIM_HANDLE								htim8	
-#define CONFIG_FAN2_TIM												TIM8
-#define CONFIG_FAN2_PWM_CHANNEL								TIM_CHANNEL_1
-#define CONFIG_FAN2_FG_CHANNEL								
+#define CONFIG_EPROM_BUS_HANDLE								hspi5//SPLC NVRAM接口定义
+#define CONFIG_EPROM_BUS											SPI5									
 
-#define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
-#define CONFIG_EPROM_BUS											SPI3									
-
-#define CONFIG_DEBUG_UART											huart5//调试串口
-#define CONFIG_GDDC_UART											huart3//GDDC串口
-#define CONFIG_GDDC_UART_INSTANCE							USART3//GDDC串口中断
-
-#define CONFIG_MBI2C_BUS											hi2c2//主板I2C总线
-
+#define CONFIG_DEBUG_UART											huart3//调试串口
+#define CONFIG_GDDC_UART											huart6//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART6//GDDC串口中断
 /*****************************************************************************/
 //配置EPROM规格
 #define CONFIG_EPROM_SPI											

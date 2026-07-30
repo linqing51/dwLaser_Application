@@ -118,7 +118,7 @@ uint32_t FLASH_If_EraseApplication(void){
 		return (0);
 	}
 }
-uint32_t FLASH_If_EraseBootload(void){//擦除BOOTLOAD
+uint32_t FLASH_If_EraseBootloader(void){//擦除BOOTLOAD
   /* Erase the user Flash area (area defined by APPLICATION_ADDRESS and
    * USER_FLASH_LAST_PAGE_ADDRESS) *** */
 	/* Get the 1st sector to erase */
@@ -133,7 +133,7 @@ uint32_t FLASH_If_EraseBootload(void){//擦除BOOTLOAD
 		return (1);
 	}
 	else{
-		return (0);
+		return (1);
 	}
 }
 /**
@@ -144,7 +144,7 @@ uint32_t FLASH_If_EraseBootload(void){//擦除BOOTLOAD
   * @retval 0: Data successfully written to Flash memory
   *         1: Error occurred while writing data in Flash memory
   */
-uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data)
+uint32_t FLASH_If_Write(uint32_t Address, uint32_t Data)
 {
   /* Program the user Flash area word by word (area defined by
    * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
@@ -162,28 +162,10 @@ uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data)
   return (0);
 }
 
-uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data)
-{
-  /* Program the user Flash area word by word (area defined by
-   * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
-
-  if (Address <= (uint32_t)(BOOTLOADER_FLASH_END_ADDRESS - 4))
-  {
-    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, Data) != HAL_OK)
-      return (1);
-  }
-  else
-  {
-    return (1);
-  }
-
-  return (0);
-}
-
 static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
 {
   uint32_t sector = 0;
-
+  //BANK1
   if (Address < ADDR_FLASH_SECTOR_1 && Address >= ADDR_FLASH_SECTOR_0)
   {
     sector = FLASH_SECTOR_0;
@@ -228,34 +210,10 @@ static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
   {
     sector = FLASH_SECTOR_10;
   }
-#if defined(STM32F405xx) || defined(STM32F407xx)
-	else
+  else if (Address >= ADDR_FLASH_SECTOR_11)
   {
     sector = FLASH_SECTOR_11;
   }
-#endif
-#ifdef STM32F413xx
-  else if (Address < ADDR_FLASH_SECTOR_12 && Address >= ADDR_FLASH_SECTOR_11)
-  {
-    sector = FLASH_SECTOR_11;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_13 && Address >= ADDR_FLASH_SECTOR_12)
-  {
-    sector = FLASH_SECTOR_12;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_14 && Address >= ADDR_FLASH_SECTOR_13)
-  {
-    sector = FLASH_SECTOR_13;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_15 && Address >= ADDR_FLASH_SECTOR_14)
-  {
-    sector = FLASH_SECTOR_14;
-  }
-  else
-  {
-    sector = FLASH_SECTOR_15;
-  }
-#endif
   return sector;
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
