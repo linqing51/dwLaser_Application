@@ -1,7 +1,7 @@
 #include "rtc.h"
 #include "stdio.h"
 #include "sPlc.h"
-#include "BoardConfig.h"
+#include "myConfig.h"
 /*****************************************************************************/
 // 自定义魔术标记值
 #define RTC_VALID_FLAG    0x52544346U   // "RTCF"

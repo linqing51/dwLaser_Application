@@ -1,7 +1,6 @@
 #ifndef __DCHMILANGUAGE_H__
 #define __DCHMILANGUAGE_H__
 #include "sPlc.h"
-#include "appConfig.h"
 /*****************************************************************************/
 #ifdef __cplusplus
 extern "C" {

@@ -1,6 +1,4 @@
 #include "sPlc.h"
-#include "boardConfig.h"
-#include "appConfig.h"
 /*****************************************************************************/
 static int8_t LoudspeakerEnable = -1;//喇叭使能状态
 static int8_t LoudspeakerVolume = -1;//喇叭音量

@@ -2,8 +2,6 @@
 #define __DCHMIAPP_H__
 /*****************************************************************************/
 #include "sPlc.h"
-#include "boardConfig.h"
-#include "appConfig.h"
 /*****************************************************************************/
 #include "dcHmiApp.h"
 #include "preScheme.h"

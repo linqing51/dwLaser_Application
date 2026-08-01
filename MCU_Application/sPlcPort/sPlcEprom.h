@@ -3,19 +3,10 @@
 #include "stm32f4xx_hal.h"
 #include "stdbool.h"
 #include "libcpu.h"
-#include "sPlcConfig.h"
-#include "boardConfig.h"
-#include "AppConfig.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/*****************************************************************************/
-//extern I2C_HandleTypeDef hi2c1;
-//extern I2C_HandleTypeDef hi2c2;
-//extern CRC_HandleTypeDef hcrc;
-//extern RNG_HandleTypeDef hrng;
 /*****************************************************************************/
 typedef enum {
 	CLEAR_EPROM_ALL 														= 0x01,

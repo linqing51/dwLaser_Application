@@ -1,6 +1,5 @@
 #include "smart_pid.h"
 /*****************************************************************************/
-#if (CONFIG_USING_SMART_PID == 1)
 // ³õÊ¼»¯PID¿ØÖÆÆ÷
 void SmartPID_Init(SmartPID_Controller *pid, float target_temp) {
 	pid->target = target_temp;
@@ -106,7 +105,6 @@ float SmartPID_Compute(SmartPID_Controller *pid, float current_temp) {
 	return output;
 }
 
-#endif
 
 
 

@@ -44,8 +44,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __FLASH_IF_H
-#define __FLASH_IF_H
+#ifndef __FLASH_IF_H__
+#define __FLASH_IF_H__
 
 #ifdef __cplusplus
  extern "C" {

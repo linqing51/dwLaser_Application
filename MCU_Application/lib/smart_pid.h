@@ -9,10 +9,7 @@ extern "C" {
 #include <math.h>
 #include "FreeRTOS.h"
 #include "cmsis_os.h"
-#include "AppConfig.h"
-#include "BoardConfig.h"
 /*****************************************************************************/
-#if (CONFIG_USING_SMART_PID == 1)
 // 最大TEC驱动电压，用于输出限幅保护硬件
 #define MAX_TEC_VOLTAGE 5.0f 
 
@@ -70,7 +67,7 @@ uint8_t SmartPID_Identify(SmartPID_Controller *pid, float current_temp, float *t
  */
 float SmartPID_Compute(SmartPID_Controller *pid, float current_temp);
 /*****************************************************************************/
-#endif
+
 
 #ifdef __cplusplus
 }

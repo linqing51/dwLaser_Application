@@ -6,11 +6,8 @@ extern "C" {
 #endif
 /*****************************************************************************/
 #include "stm32f4xx_hal.h" // 根据实际使用的STM32系列修改
-#include "AppConfig.h"
-#include "BoardConfig.h"
-
-// PID控制器结构体
-#if CONFIG_USING_CLASSIC_PID== 1
+#include "myConfig.h"
+/*****************************************************************************/
 // PID自整定状态枚举
 typedef enum {
     PID_TUNE_IDLE = 0,    // 未整定
@@ -74,8 +71,6 @@ void Thermoelectric_Init(void);
 
 // 设置半导体制冷片输出
 void Thermoelectric_SetOutput(uint16_t output);
-
-#endif
 /*****************************************************************************/
 #ifdef __cplusplus
 }

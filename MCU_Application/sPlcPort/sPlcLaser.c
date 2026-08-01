@@ -1,7 +1,5 @@
 //TIM11->计时
 #include "sPlc.h"
-#include "boardConfig.h"
-#include "appConfig.h"
 /*****************************************************************************/
 int8_t LaserOn_635;
 int8_t LaserOn_535;

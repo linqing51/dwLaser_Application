@@ -1,5 +1,4 @@
 #include "sPlc.h"
-#include "boardConfig.h"
 /*****************************************************************************/
 void sPlcOutputInit(void){//IO输出初始化
 	NVRAM0[Y_START] = 0x0;

@@ -103,11 +103,7 @@ TempSpeedPoint fan_curve_7[CONFIG_FAN_CURVE_POINTS] = {
 	{60.0f, 85}, 
 	{65.0f, 100}
 };
-
-
-
-
-
+/*****************************************************************************/
 static void calculate_target_speed(FanController* fan){//内部函数：计算目标转速（基于曲线插值）
 	if(fan->curve_point_count < 2){
 		fan->target_speed = fan->min_speed;

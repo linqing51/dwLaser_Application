@@ -14,18 +14,14 @@
  *----------------------------------------------------------------------------*/
 
 #include "libdbg.h"
-
-
+/*****************************************************************************/
 extern UART_HandleTypeDef CONFIG_DEBUG_UART;
 
 #pragma import(__use_no_semihosting_swi)
 
-
-
 struct __FILE { int handle; /* Add whatever you need here */ };
 FILE __stdout;
 FILE __stdin;
-
 
 int fputc(int ch,FILE *f){
 	uint8_t dat;
@@ -43,11 +39,10 @@ int fgetc(FILE *f) {
 }
 
 
-//int ferror(FILE *f) {
+int ferror(FILE *f) {
 //  /* Your implementation of ferror */
 //  return EOF;
-//}
-
+}
 
 //定义_sys_exit()以避免使用半主机模式
 void _sys_exit(int x){

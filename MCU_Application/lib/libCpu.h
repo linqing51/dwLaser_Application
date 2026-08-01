@@ -7,9 +7,8 @@ extern "C" {
 /*****************************************************************************/
 #include "stdio.h"
 #include "stm32f4xx_hal.h"
-#include "boardConfig.h"
+#include "myConfig.h"
 #include "flash_if.h"
-#include "AppConfig.h"
 #include "libcrc.h"
 /*****************************************************************************/
 extern uint32_t	UniqueId[3];//处理器序列号 

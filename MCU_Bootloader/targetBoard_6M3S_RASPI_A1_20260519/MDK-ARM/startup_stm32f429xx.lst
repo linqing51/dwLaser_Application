@@ -873,10 +873,10 @@ ARM Macro Assembler    Page 14
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=targetboard_6m3s_raspi_a1_20260519\startup_stm32f429xx.d -ot
 argetboard_6m3s_raspi_a1_20260519\startup_stm32f429xx.o -I.\RTE\_targetBoard_6M
-3S_RASPI_A1_20260519 -IC:\Users\linqing\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0
-\CMSIS\Core\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERS
-ION SETA 543" --predefine="STM32F429xx SETA 1" --predefine="_RTE_ SETA 1" --lis
-t=startup_stm32f429xx.lst startup_stm32f429xx.s
+3S_RASPI_A1_20260519 -IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\C
+MSIS\Core\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSIO
+N SETA 543" --predefine="STM32F429xx SETA 1" --predefine="_RTE_ SETA 1" --list=
+startup_stm32f429xx.lst startup_stm32f429xx.s
 
 
 

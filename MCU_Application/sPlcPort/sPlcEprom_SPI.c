@@ -1,7 +1,7 @@
 #include "sPlc.h"
 #include "sPlcEprom.h"
 /*****************************************************************************/
-#if defined(CONFIG_EPROM_SPI)
+#if (CONFIG_EPROM_SPI == 1)
 typedef enum {
 	WREN    = 0x06,   // 写使能
 	WRDI    = 0x04,   // 写禁止

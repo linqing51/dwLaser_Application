@@ -19,19 +19,16 @@
 #include "string.h"
 /*****************************************************************************/
 //lib
-#include "sPlcConfig.h"
+#include "myConfig.h"
 #include "sPlcEprom.h"
 #include "sPlcFun.h"
+#include "sPlcI2C_HDC1080.h"
 #include "libcrc.h"
 #include "libdbg.h"
 #include "libcpu.h"
 #include "flash_if.h"
-#if defined(LYPE_MCU_1V0_20260106)
-#include "sPlcI2C_HDC1080.h"
-#endif
 /*****************************************************************************/
 //usb
-#ifndef LYPE_SURGI_LDR5_20260519
 #include "usbh_msc.h"
 #include "usb_host.h"
 #include "usbh_core.h"
@@ -40,7 +37,6 @@
 #include "ff.h"
 #include "ff_gen_drv.h"
 #include "flash_if.h"
-#endif
 /*****************************************************************************/
 #if CONFIG_SPLC_USING_FUNTEST == 1
 #include "sPlcTest.h"

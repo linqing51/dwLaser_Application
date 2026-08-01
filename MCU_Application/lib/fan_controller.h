@@ -1,10 +1,10 @@
- #ifndef __FAN_CONTROLLER_H__
+#ifndef __FAN_CONTROLLER_H__
 #define __FAN_CONTROLLER_H__
 /*****************************************************************************/
 #include "stm32f4xx.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include "appConfig.h"
+#include "myConfig.h"
 /*****************************************************************************/
 #ifdef __cplusplus
 extern "C" {
