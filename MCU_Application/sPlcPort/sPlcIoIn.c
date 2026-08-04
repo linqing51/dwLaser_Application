@@ -65,30 +65,6 @@ void sPlcInputRefresh(void){//获取输入IO
 	}
 	//X3 脚踏常闭
 	temp = GET_FSWITCH_NC;
-#if defined(MODEL_PVGLS_15W_1470_A0)
-	if(temp == 0){
-		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[3] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 3);
-		}
-	}
-	else{
-		if(inputFilter[3] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[3] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
-		}
-	}
-#endif
-#if defined(MODEL_PVGLS_15W_1470_A1) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 	if(temp == 1){
 		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[3] ++;
@@ -105,43 +81,6 @@ void sPlcInputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
 		}
 	}
-#endif
-#if defined(MODEL_PVGLS_10W_1940_A1)
-	if(temp == 1){
-		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[3] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 3);
-		}
-	}
-	else{
-		if(inputFilter[3] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[3] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
-		}
-	}
-#endif
-#if defined(LYPE_MCU_1V0_20260106)
-	if(temp == 0){
-		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[3] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 3);
-		}
-	}
-	else{
-		if(inputFilter[3] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[3] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
-		}
-	}
-#endif
 	//X4 光纤探测
 	if(NVRAM0[SPREG_ADC_54] <= deviceConfig.fiberDetect){
 		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
@@ -158,28 +97,8 @@ void sPlcInputRefresh(void){//获取输入IO
 		else{
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
 		}
-	}
-	
-	//X5 电源开关
-	temp = GET_PWR_KEY;
-	if(temp == 0){
-		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[5] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 5);
-		}
-	}
-	else{
-		if(inputFilter[5] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[5] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 5);
-		}
-	}
-	
-	//X6 软关机信号
+	}	
+	//X5 软关机信号
 	temp = GET_PWR_INT;
 		if(temp == 0){
 		if(inputFilter[6] < CONFIG_INPUT_FILTER_TIME){

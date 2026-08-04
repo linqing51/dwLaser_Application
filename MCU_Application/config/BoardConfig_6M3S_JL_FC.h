@@ -185,6 +185,10 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
 #define SET_MCP41010_SCK(b)										HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
 
+//DAC8568 	
+#define SET_DAC8568_SYNC(b)										HAL_GPIO_WritePin(DAC8568_SYNC_GPIO_Port, DAC8568_SYNC_Pin, b)
+#define SET_DAC8568_SCK(b)										HAL_GPIO_WritePin(DAC8568_SCK_GPIO_Port, DAC8568_SCK_Pin, b)
+#define SET_DAC8568_DOUT(b)										HAL_GPIO_WritePin(DAC8568_DOUT_GPIO_Port, DAC8568_DOUT_Pin, b)
 //POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
 #define GET_PWR_INT														HAL_GPIO_ReadPin(PWR_INT_GPIO_Port, PWR_INT_Pin)
 //POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
@@ -250,8 +254,8 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_SPK_TIM												TIM9
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_2
 
-#define CONFIG_FAN0_TIM_HANDLE								htim8	
-#define CONFIG_FAN0_TIM												TIM8
+#define CONFIG_FAN0_TIM_HANDLE								htim3	
+#define CONFIG_FAN0_TIM												TIM3
 #define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_3
 #define CONFIG_FAN0_FG_CHANNEL								
 
@@ -284,13 +288,8 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 /*****************************************************************************/
 //配置ADC
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
-#define CONFIG_ADC1_CHANNEL										12//ADC采集通道
-#define CONFIG_ADC3_CHANNEL										0
-#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱
-#define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数		
-#define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_ADC1_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
-#define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
-
+#define CONFIG_ADC_CHANNEL										16//ADC采集通道
+#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱		
 #define CONFIG_VREF_ADC												SPREG_ADC_59
 #define CONFIG_MCU_VREF												3300.0F
 #define CONFIG_ADC_AVG_SLOPE									2.5F

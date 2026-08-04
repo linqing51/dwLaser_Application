@@ -41,7 +41,7 @@ int fgetc(FILE *f) {
 
 int ferror(FILE *f) {
 //  /* Your implementation of ferror */
-//  return EOF;
+	return EOF;
 }
 
 //定义_sys_exit()以避免使用半主机模式

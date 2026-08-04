@@ -687,12 +687,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_POWER_SEL_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//选中1470nm
-							if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_LOGIC_MAX_LASER_POWER_CH0){
+							if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH0){
 								ADDS1(EM_LASER_POWER_CH0);
 							}
 						}
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//选中980nm
-							if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_LOGIC_MAX_LASER_POWER_CH1){
+							if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH1){
 								ADDS1(EM_LASER_POWER_CH1);							
 							}
 						}
@@ -710,13 +710,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//选中1470nm
-							if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_LOGIC_MIN_LASER_POWER_CH0){
+							if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH0){
 								DECS1(EM_LASER_POWER_CH0);
 							}
 						}
 
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//选中980nm
-							if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_LOGIC_MIN_LASER_POWER_CH1){
+							if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH1){
 								DECS1(EM_LASER_POWER_CH1);							
 							}
 						}
@@ -775,7 +775,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_LOGIC_MAX_LASER_POWER_CH0){
+						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH0){
 							ADDS1(EM_LASER_POWER_CH0);
 							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
@@ -785,7 +785,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_INC:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_LOGIC_MIN_LASER_POWER_CH0){
+						if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH0){
 							DECS1(EM_LASER_POWER_CH0);
 							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
@@ -795,7 +795,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_LOGIC_MAX_LASER_POWER_CH1){
+						if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH1){
 							ADDS1(EM_LASER_POWER_CH1);
 							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();
@@ -805,7 +805,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH1_INC:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_LOGIC_MIN_LASER_POWER_CH1){
+						if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH1){
 							DECS1(EM_LASER_POWER_CH1);
 							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
 							updateStandbyDisplay();

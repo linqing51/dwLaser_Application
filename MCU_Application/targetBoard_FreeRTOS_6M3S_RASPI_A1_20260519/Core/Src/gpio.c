@@ -59,8 +59,8 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOF, BEEM_LED_Pin|ERR_LED_Pin|TICK_LED_Pin|EPROM_WP_Pin
-                          |MPR5_PWM_Pin|SLD0_PWM_Pin|EDAC_DIN_Pin|EDAC_SCLK_Pin
-                          |EDAC_SYNC_Pin, GPIO_PIN_RESET);
+                          |MPR5_PWM_Pin|SLD0_PWM_Pin|DAC8568_DOUT_Pin|DAC8568_SCK_Pin
+                          |DAC8568_SYNC_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, MPR3_PWM_Pin|MPR4_PWM_Pin|USB_FS_PSON_Pin, GPIO_PIN_RESET);
@@ -98,8 +98,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EPROM_WP_Pin EDAC_SCLK_Pin */
-  GPIO_InitStruct.Pin = EPROM_WP_Pin|EDAC_SCLK_Pin;
+  /*Configure GPIO pins : EPROM_WP_Pin DAC8568_SCK_Pin */
+  GPIO_InitStruct.Pin = EPROM_WP_Pin|DAC8568_SCK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -112,8 +112,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EDAC_DIN_Pin EDAC_SYNC_Pin */
-  GPIO_InitStruct.Pin = EDAC_DIN_Pin|EDAC_SYNC_Pin;
+  /*Configure GPIO pins : DAC8568_DOUT_Pin DAC8568_SYNC_Pin */
+  GPIO_InitStruct.Pin = DAC8568_DOUT_Pin|DAC8568_SYNC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;

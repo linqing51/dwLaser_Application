@@ -270,16 +270,12 @@ void setRedLaserPwm(int16_t pwm){//设置红激光占空比 0-100
 		pwm = 0;
 	}
 	SET_RAIM_TIM_PWM(pwm);
-	if(pwm != 0){
-		SET_RAIM_SHDN_ON;
-		__nop();__nop();__nop();__nop();__nop();
+	if(pwm != 0){	
 		SET_RAIM_TIM_ON;//打开TIM
 		LaserOn_635 = true;
 	}
 	else{
 		SET_RAIM_TIM_OFF;//关闭TIM
-		__nop();__nop();__nop();__nop();__nop();
-		SET_RAIM_SHDN_OFF;
 		LaserOn_635 = false;
 	}
 #if (CONFIG_DEBUG_AIM == 1)
@@ -293,15 +289,11 @@ void setGreenLaserPwm(int16_t pwm){//设置绿激光占空比
 	}
 	SET_GAIM_TIM_PWM(pwm);
 	if(pwm != 0){
-		SET_GAIM_SHDN_ON;
-		__nop();__nop();__nop();__nop();__nop();
 		SET_GAIM_TIM_ON;//打开TIM
 		LaserOn_535 = true;
 	}
 	else{
 		SET_GAIM_TIM_OFF;//关闭TIM
-		__nop();__nop();__nop();__nop();__nop();
-		SET_GAIM_SHDN_OFF;
 		LaserOn_535 = false;
 	}
 #if (CONFIG_DEBUG_AIM == 1)

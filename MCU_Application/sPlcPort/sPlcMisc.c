@@ -1,7 +1,4 @@
 #include "sPlc.h"
-#include "boardConfig.h"
-#include "appConfig.h"
-#include "usbh_core.h"
 /*****************************************************************************/
 #define OFFSET_OF(type, member)  ((uint32_t)&(((type *)0)->member))
 extern deviceConfig_t deviceConfig;
@@ -17,9 +14,6 @@ size_t get_offset(size_t type_size, void *member_ptr) {
     // 利用 0 地址结构体指针计算偏移
     return (size_t)member_ptr;
 }
-
-
-
 
 void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	vTaskDelay(delayMs);

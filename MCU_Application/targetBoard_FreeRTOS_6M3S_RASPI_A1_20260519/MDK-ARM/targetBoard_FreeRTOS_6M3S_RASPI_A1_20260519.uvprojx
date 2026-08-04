@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx,CORE_6M3S_JL_FC_1470_1940</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Drivers\CMSIS\DSP\Include;..\..\config;..\..\lib;..\..\sPlc;..\..\sPlcPort;..\..\MainApp;..\..\dcHmi</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../../config;../../lib;../../sPlc;../../sPlcPort;../../MainApp;../../dcHmi</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -925,11 +925,6 @@
               <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcPMU_LTC2955.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
-            </File>
-            <File>
               <FileName>sPlcLaser.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcLaser.c</FilePath>
@@ -965,9 +960,29 @@
               <FilePath>..\..\sPlcPort\sPlcAdc.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcEprom_I2C.c</FileName>
+              <FileName>sPlcEprom.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom.h</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEpromSelfTest.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcEprom_I2C.c</FilePath>
+              <FilePath>..\..\sPlcPort\sPlcEpromSelfTest.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcMisc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcMisc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPMU.h</FilePath>
             </File>
           </Files>
         </Group>

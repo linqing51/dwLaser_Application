@@ -72,25 +72,8 @@ void sPlcOutputRefresh(void){//设置输出IO
 	}
 	if(LDN(Y_TEC)){
 		SET_TEC_GATE_CH0_OFF;
-	}
-		
-	//YOUT7 PWR ON
-	if(LDP(Y_VN5016_INPUT)){
-		SET_VN5016_INPUT_ON;
-	}
-	if(LDN(Y_VN5016_INPUT)){
-		SET_VN5016_INPUT_OFF;
-	}	
-	
-	//YOUT8 POWER DIS
-	if(LDP(Y_VN5016_CSDIS)){
-		SET_VN5016_CSDIS_ON;
-	}
-	if(LDN(Y_VN5016_CSDIS)){
-		SET_VN5016_CSDIS_OFF;
-	}	
-	
-	//YOUT9 POWER LED
+	}			
+	//YOUT7 POWER LED
 	if(LDP(Y_PWR_LED)){
 		SET_PWR_LED_ON;
 	}

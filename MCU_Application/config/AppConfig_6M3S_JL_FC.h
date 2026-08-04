@@ -152,6 +152,10 @@ extern "C" {
 #define CONFIG_AMBIENT3_TEMP_HIGH											2000//环境3高温报警
 #define CONFIG_AMBIENT3_TEMP_LOW											-2000//环境3低温报警
 
+#define CONFIG_HDC1080_HUMIDITY_HIGH									9999
+#define CONFIG_HDC1080_HUMIDITY_HIGH									9999	
+#define CONFIG_HDC1080_HUMIDITY_LOW										0
+#define CONFIG_HDC1080_HUMIDITY_LOW										0
 
 #define CONFIG_MCU_TEMP_HIGH													650//处理器高温标志
 #define CONFIG_MCU_TEMP_LOW														-200//处理器低温标志

@@ -22,11 +22,12 @@
 #include "myConfig.h"
 #include "sPlcEprom.h"
 #include "sPlcFun.h"
-#include "sPlcI2C_HDC1080.h"
 #include "libcrc.h"
 #include "libdbg.h"
 #include "libcpu.h"
 #include "flash_if.h"
+/*****************************************************************************/
+#include "classic_pid.h"
 /*****************************************************************************/
 //usb
 #include "usbh_msc.h"
