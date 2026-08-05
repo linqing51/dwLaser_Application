@@ -21,9 +21,6 @@ extern "C" {
 #define CONFIG_DEBUG_IIC_HDC1080											0//调试I2C 板载温湿度传感器
 #define CONFIG_INPUT_FILTER_TIME											10//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
-#define CONFIG_SPLC_USING_ADC													1//使能ADC模块
-#define CONFIG_SPLC_USING_RTC													1//使能RTC模块
-#define CONFIG_SPLC_USING_SPWM												1//使能软件PWM功能
 #define CONFIG_SPLC_USING_FUNTEST											0//功能指令测试
 #define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM 读写测试
 #define CONFIG_SPLC_USING_LASER_TEST									0//激光器脉冲模式测试

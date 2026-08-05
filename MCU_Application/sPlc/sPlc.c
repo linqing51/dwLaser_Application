@@ -347,10 +347,8 @@ void sPlcProcessStart(void){//sPLC轮询起始
 #if CONFIG_SPLC_USING_SPWM == 1
 	sPlcSpwmLoop();
 #endif
-	sPlcAdcProcessBufferA();//ADC 更新NVRAM
-#if defined(LYPE_MCU_1V0_20260106)
-	sPlcAdcProcessBufferB();//ADC 更新NVRAM
-#endif
+	sPlcAdcProcessBuffer();//ADC 更新NVRAM
+
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束

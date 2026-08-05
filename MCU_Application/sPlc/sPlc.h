@@ -156,8 +156,7 @@ extern void sPlcTimerEnable(void);//SPLC打开计时器
 extern void sPlcDacInit(void);//DAC初始化
 extern void sPlcDacRefresh(void);//刷新DAC
 extern void sPlcAdcInit(void);
-extern void sPlcAdcProcessBufferA(void);
-extern void sPlcAdcProcessBufferB(void);
+extern void sPlcAdcProcessBuffer(void);
 extern void sPlcSpeakerFreq(int16_t freq);//设置喇叭频率
 extern void sPlcSpeakerVolume(int16_t volume);//设置喇叭音量
 extern void sPlcSpeakerEnable(void);//打开喇叭数据流

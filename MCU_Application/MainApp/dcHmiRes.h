@@ -28,23 +28,24 @@ extern "C" {
 #define GDDC_PAGE_POWERUP_TRI														2
 #define GDDC_PAGE_POWERUP_1940													3
 #define GDDC_PAGE_POWERUP_450														4
-#define GDDC_PAGE_PASSCODE															5
-#define GDDC_PAGE_NEW_PASSCODE													6
-#define GDDC_PAGE_STANDBY_DUAL													7
-#define GDDC_PAGE_STANDBY_TRI														8
-#define GDDC_PAGE_READY																	9
-#define GDDC_PAGE_OPTION																10//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										11//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									12//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_DETAIL													13//方案分类页 自定义
-#define GDDC_PAGE_INFORMATION														14//信息页面
-#define GDDC_PAGE_DIAGNOSIS															15//诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW													16//诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI												17
-#define GDDC_PAGE_RENAME																18//SCHEME更名
-#define GDDC_PAGE_RESTORE																19//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														20//脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM											21//弹出菜单 确认关机
+#define GDDC_PAGE_POWERUP_1940_1470                     5
+#define GDDC_PAGE_PASSCODE															6
+#define GDDC_PAGE_NEW_PASSCODE													7
+#define GDDC_PAGE_STANDBY_DUAL													8
+#define GDDC_PAGE_STANDBY_TRI														9
+#define GDDC_PAGE_READY																	10
+#define GDDC_PAGE_OPTION																11//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										12//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									13//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_DETAIL													14//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														15//信息页面
+#define GDDC_PAGE_DIAGNOSIS															16//诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW													17//诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI												18
+#define GDDC_PAGE_RENAME																19//SCHEME更名
+#define GDDC_PAGE_RESTORE																20//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														21//脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM											22//弹出菜单 确认关机
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2

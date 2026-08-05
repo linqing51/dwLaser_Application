@@ -23,8 +23,6 @@ static void dac8568SpiWrite(uint32_t dat){//DAC8568 SPI写入
 
 static void dac8568_Init(void){//DAC8568初始化
 	uint32_t tmp;
-	SET_DAC8568_CLR(GPIO_PIN_SET);
-	SET_DAC8568_LDAC(GPIO_PIN_RESET);
 	//setCLR0(true);
 	//setLDAC0(true);
 	tmp = 0x07000000;//Software Reset
@@ -145,7 +143,6 @@ void UPDAC17(void){
 }
 
 void CLDAC(void){//立即清空全部DAC
-	SET_DAC8568_CLR(GPIO_PIN_RESET);
 	dac8568_WriteDacRegister(0x00, 0x0);
 	dac8568_WriteDacRegister(0x01, 0x0);
 	dac8568_WriteDacRegister(0x02, 0x0);
@@ -154,7 +151,6 @@ void CLDAC(void){//立即清空全部DAC
 	dac8568_WriteDacRegister(0x05, 0x0);
 	dac8568_WriteDacRegister(0x06, 0x0);
 	dac8568_WriteDacRegister(0x07, 0x0);
-	SET_DAC8568_CLR(GPIO_PIN_SET);
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // 设置DAC输出值
 }

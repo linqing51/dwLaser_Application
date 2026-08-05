@@ -2670,12 +2670,20 @@ void updateReadyDisplay(void){//更新READY显示
 #if defined(APP_CONFIG_WAVE_450_980)
 			sprintf(dispBuf, "450nm");
 #endif
+      
+#if defined(APP_CONFIG_WAVE_1940_1470_650)
+      sprintf(dispBuf, "1940nm");
+#endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
 		case LASER_CHANNEL_CH1:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH1] / 10.0F;
-			sprintf(dispBuf, "980nm");
+#if defined(APP_CONFIG_WAVE_1940_1470_650)
+      sprintf(dispBuf, "1940nm");
+#else
+			sprintf(dispBuf, "1470nm");
+#endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
@@ -3050,15 +3058,9 @@ static void gddcHmiLoop(void){//大彩触摸屏轮询程序
 				}                                                                             
 	}
 }
+
 static void powerManagementLoop(void){//电源管理轮询程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] != FSMSTEP_HIBERNATE){	
-#if defined(CONFIG_PMU_STM32)
-		if(LDB(X_PWR_KEY)){//STM32软关机按键
-			PmuPowerDown();
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
-		}		
-#endif
-#if defined(CONFIG_PMU_LTC2955)
 		if(LDN(X_PWR_INT)){//PMU单元软关机信号
 			//关闭激光器
 			EDLAR();//停止发射
@@ -3071,7 +3073,6 @@ static void powerManagementLoop(void){//电源管理轮询程序
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWEROFF_CONFIRM;	
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 		}
-#endif
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){
@@ -3185,10 +3186,13 @@ void dcHmiLoop(void){//HMI轮训程序
 #if defined(APP_CONFIG_WAVE_1940_650)
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1940;	
 #endif
-
 #if defined(APP_CONFIG_WAVE_450_980)
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_450;	
 #endif
+#if defined(APP_CONFIG_WAVE_1940_1470_650)
+      NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1940_1470;	
+#endif
+
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
 			//打开蜂鸣器
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
@@ -4293,7 +4297,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcFdramClear();//清空FDRAM
 			sPlcDeviceConfigClear();//清空config
 			resetGddcHmi();
-			softDelayMs(40);//等待4秒
+      softDelayMs(4000);
 			REBOOT();	
 		}
 		else if(LD(R_SAVE_EPROM)){//储存配制到EPROM
@@ -4303,7 +4307,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcFdramSave();//更新FDRAM
 			saveDeviceConfig();//更新配制
 			resetGddcHmi();
-			softDelayMs(4000);//等待4秒
+			softDelayMs(4000);
 			REBOOT();	
 		}
 		else if(LD(R_CLEAR_CRC)){//清除固件CRC
@@ -4402,20 +4406,12 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
 			NVRAM0[SPREG_DAC_4] = 0;NVRAM0[SPREG_DAC_5] = 0;NVRAM0[SPREG_DAC_6] = 0;NVRAM0[SPREG_DAC_7] = 0;
 			UPDAC0();UPDAC1();UPDAC2();UPDAC3();UPDAC4();UPDAC5();UPDAC6();UPDAC7();
-#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-			SET_RAIM_SHDN_ON;
+
+      SET_RAIM_SHDN_ON;
 			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
 			UPDAC16();
-#endif
-#if defined(LYPE_MCU_1V0_20260106)
-			SET_GAIM_SHDN_ON;
-			NVRAM0[SPREG_DAC_17] = CONFIG_DAC_MAXBIT_CH17;
-			UPDAC17();
-#endif
+
+
 			
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			updateDiagnosisCali();

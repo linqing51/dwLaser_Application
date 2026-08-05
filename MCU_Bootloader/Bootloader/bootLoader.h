@@ -1,5 +1,5 @@
-#ifndef __DWLASER_BOOTLOADER_H__
-#define __DWLASER_BOOTLOADER_H__
+#ifndef __BOOTLOADER_H__
+#define __BOOTLOADER_H__
 /*****************************************************************************/
 #include "main.h"
 #include "stdbool.h"
@@ -22,9 +22,7 @@
 #include "..\..\MCU_Application\sPlcPort\sPlcEprom.h"
 #include "..\..\MCU_Application\lib\libcpu.h"
 #include "..\..\MCU_Application\lib\libdbg.h"
-#include "..\..\MCU_Application\sPlc\sPlcConfig.h"
-#include "..\..\MCU_Application\sPlc\BoardConfig.h"
-#include "..\..\MCU_Application\MainApp\AppConfig.h"
+#include "..\..\MCU_Application\config\myConfig.h"
 /*****************************************************************************/
 void resetInit(void);
 void bootLoadInit(void);

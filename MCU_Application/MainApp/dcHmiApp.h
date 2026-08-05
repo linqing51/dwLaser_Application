@@ -15,7 +15,7 @@
 #include "hmiLib.h"
 #include "dcHmiRes.h"
 #include "MainAppLib.h"
-//#include "fan_controller.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

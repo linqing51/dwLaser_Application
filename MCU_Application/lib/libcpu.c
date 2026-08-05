@@ -15,6 +15,13 @@ void softDelayUs(uint32_t us){
 	}
 }
 
+void softDelayMs(uint32_t ms){
+  volatile uint32_t count = ms;
+  while(count--){
+    softDelayUs(1000);
+  }
+}
+
 void tickCheckTask(void){//TICK 检测程序
   uint32_t tick_begin, tick_end; 
   tick_begin = HAL_GetTick();

@@ -85,8 +85,10 @@ typedef  void (*pFunction)(void);
 void FLASH_If_FlashUnlock(void);
 FlagStatus FLASH_If_ReadOutProtectionStatus(void);
 uint32_t FLASH_If_Write(uint32_t Address, uint32_t Data);
-uint32_t FLASH_If_EraseBootloader(void);//擦除BOOTLOADER
+uint32_t FLASH_If_EraseBootload(void);//擦除BOOTLOADER
 uint32_t FLASH_If_EraseApplication(void);//擦除APPLICATION
+uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data);
+uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data);
 #ifdef __cplusplus
 }
 #endif

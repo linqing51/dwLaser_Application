@@ -154,8 +154,17 @@ extern "C" {
 
 #define CONFIG_HDC1080_HUMIDITY_HIGH									9999
 #define CONFIG_HDC1080_HUMIDITY_HIGH									9999	
-#define CONFIG_HDC1080_HUMIDITY_LOW										0
-#define CONFIG_HDC1080_HUMIDITY_LOW										0
+#define CONFIG_HDC1080_HUMIDITY_LOW										-9999
+#define CONFIG_HDC1080_HUMIDITY_LOW										-9999
+
+#define CONFIG_HDC1080_TEMP_HIGH                      9999
+#define CONFIG_HDC1080_TEMP_LOW                       -9999
+
+#define CONFIG_DHT11_HUMIDITY_HIGH                   9999
+#define CONFIG_DHT11_HUMIDITY_LOW                    -9999
+
+#define CONFIG_DHT11_TEMP_HIGH                       9999              
+#define CONFIG_DHT11_TEMP_LOW                        -9999
 
 #define CONFIG_MCU_TEMP_HIGH													650//处理器高温标志
 #define CONFIG_MCU_TEMP_LOW														-200//处理器低温标志

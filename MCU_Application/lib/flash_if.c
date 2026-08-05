@@ -118,7 +118,7 @@ uint32_t FLASH_If_EraseApplication(void){
 		return (0);
 	}
 }
-uint32_t FLASH_If_EraseBootloader(void){//擦除BOOTLOAD
+uint32_t FLASH_If_EraseBootload(void){//擦除BOOTLOAD
   /* Erase the user Flash area (area defined by APPLICATION_ADDRESS and
    * USER_FLASH_LAST_PAGE_ADDRESS) *** */
 	/* Get the 1st sector to erase */
@@ -136,6 +136,33 @@ uint32_t FLASH_If_EraseBootloader(void){//擦除BOOTLOAD
 		return (1);
 	}
 }
+
+/**
+  * @brief  Writes a data buffer in flash (data are 32-bit aligned).
+  * @note   After writing data buffer, the flash content is checked.
+  * @param  Address: Start address for writing data buffer
+  * @param  Data: Pointer on data buffer
+  * @retval 0: Data successfully written to Flash memory
+  *         1: Error occurred while writing data in Flash memory
+  */
+uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data)
+{
+  /* Program the user Flash area word by word (area defined by
+   * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
+
+  if (Address <= (uint32_t)(APPLICATION_FLASH_END_ADDRESS - 4))
+  {
+    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, Data) != HAL_OK)
+      return (1);
+  }
+  else
+  {
+    return (1);
+  }
+
+  return (0);
+}
+
 /**
   * @brief  Writes a data buffer in flash (data are 32-bit aligned).
   * @note   After writing data buffer, the flash content is checked.
@@ -150,6 +177,24 @@ uint32_t FLASH_If_Write(uint32_t Address, uint32_t Data)
    * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
 
   if (Address <= (uint32_t)(APPLICATION_FLASH_END_ADDRESS - 4))
+  {
+    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, Data) != HAL_OK)
+      return (1);
+  }
+  else
+  {
+    return (1);
+  }
+
+  return (0);
+}
+
+uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data)
+{
+  /* Program the user Flash area word by word (area defined by
+   * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
+
+  if (Address <= (uint32_t)(BOOTLOADER_FLASH_END_ADDRESS - 4))
   {
     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, Data) != HAL_OK)
       return (1);

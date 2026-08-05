@@ -180,6 +180,18 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define SET_GAIM_TIM_ON												__nop()
 #define SET_GAIM_TIM_PWM(b)										__nop()
 
+#define SET_RAIM_SHDN(b)			                __nop()
+#define SET_RAIM_SHDN_ON                      __nop()
+#define SET_RAIM_SHDN_OFF                     __nop()
+#define FLIP_RAIM_SHDN                        __nop()
+#define GET_RAIM_SHDN													0
+
+#define SET_GAIM_SHDN(b)			                __nop()
+#define SET_GAIM_SHDN_ON                      __nop()
+#define SET_GAIM_SHDN_OFF                     __nop()
+#define FLIP_GAIM_SHDN                        __nop()
+#define GET_GAIM_SHDN													0
+
 //MCP41010
 #define SET_MCP41010_CS(b)										HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)

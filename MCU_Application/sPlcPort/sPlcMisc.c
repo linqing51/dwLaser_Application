@@ -506,11 +506,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
 		deviceConfig.redAimGain = CONFIG_LASER_RAIM_DEFAULT_GAIN;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
-#if defined(LYPE_MCU_1V0_20260106)
-		deviceConfig.normalOpenInterLock = 0;//默认常开联锁
-#else
 		deviceConfig.normalOpenInterLock = 1;//默认常开联锁 
-#endif
 		deviceConfig.laserDiodeA_Temp = CONFIG_LASER_A_DIODE_SET_TEMP;
 		deviceConfig.laserDiodeB_Temp = CONFIG_LASER_B_DIODE_SET_TEMP;
 		saveDeviceConfig();

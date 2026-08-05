@@ -10,7 +10,7 @@
       <TargetName>targetBoard_FreeRTOS_6M3S_RASPI_A1_20260519</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1045,11 +1045,6 @@
               <FilePath>..\..\MainApp\MainApp.c</FilePath>
             </File>
             <File>
-              <FileName>MainAppDual50SA.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\MainAppDual50SA.c</FilePath>
-            </File>
-            <File>
               <FileName>MainAppLib.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\MainAppLib.c</FilePath>
@@ -1068,6 +1063,11 @@
               <FileName>preSchemeDual_1940.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\preSchemeDual_1940.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeDual_1940_1470.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_1940_1470.c</FilePath>
             </File>
             <File>
               <FileName>preSchemeTrip.c</FileName>
