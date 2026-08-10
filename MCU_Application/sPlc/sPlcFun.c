@@ -459,36 +459,33 @@ void BCPY(uint16_t dist, uint16_t src, uint16_t length) {//块复制
 	}
 }
 void NVFSAVE(void){//NVRAM全部写入EPROM
-	sPlcIsrDisable();
 	sPlcNvramSave();
-	sPlcIsrEnable();
 }
 void NVSAVE(void){//储存NVRAM更新数据到EPROM
-	sPlcIsrDisable();
 	sPlcNvramUpdate();
-	sPlcIsrEnable();
 }
 void NVLOAD(void){
-	sPlcIsrDisable();
 	sPlcNvramLoad();
-	sPlcIsrEnable();	
 }
 
 void FDSAV(void){//FDRAM->EPROM
-	sPlcIsrDisable();
 	sPlcFdramSave();
-	sPlcIsrEnable();
 }
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
-	sPlcIsrDisable();
-	epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM0), 128);
-	printf("%s,%d,%s:save One FD NVRAM done...\n",__FILE__, __LINE__, __func__);
-	sPlcIsrEnable();
+  uint32_t crc32_eprom_fd;
+  HAL_StatusTypeDef ref;
+  crc32_eprom_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
+	ref = epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM0), 128);
+	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写入32位数
+  if(ref != HAL_OK){
+		printf("%s,%d,%s:save FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
+	}
+	else{
+    printf("%s,%d,%s:save one FDRAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
+	}
 }
 void FDLAD(void){//FDRAM<-EPROM
-	sPlcIsrDisable();
 	sPlcFdramLoad();
-	sPlcIsrEnable();
 }
 
 /*****************************************************************************/

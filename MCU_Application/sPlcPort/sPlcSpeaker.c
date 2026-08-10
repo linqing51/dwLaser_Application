@@ -149,6 +149,7 @@ inline void sPlcSpeakerVolume(int16_t volume){//设置喇叭音量
 			ftmp = 0;
 		}
 		writeMcp41010((int16_t)ftmp);
+    LoudspeakerVolume = volume;
 	}
 }
 

@@ -27,8 +27,6 @@ extern "C" {
 #define LASER_CHANNEL_CH5															(1 << 5)
 #define LASER_CHANNEL_CH6															(1 << 6)
 #define LASER_CHANNEL_CH7															(1 << 7)
-#define LASER_CHANNEL_RAIM														(1 << 8)//红激光指示光
-#define LASER_CHANNEL_GAIM														(1 << 9)//绿激光指示光
 /*****************************************************************************/
 //定义物理激光DAC通道编码
 #define LASER_DAC_CHANNEL_CH0													(1 << 0)
@@ -82,10 +80,10 @@ extern "C" {
 /*****************************************************************************/
 //版本配置
 #define SW_VERSION																		"5.0a0b0"
-#define HW_VERSION																		"CORE_6M3S_JL_FC_1940_1470"
+#define HW_VERSION																		"CORE_6M3S_JL_FC_1940_1470_635"
 //配置波长
-#define APP_CONFIG_WAVE_1940_1470_650//APP为三波长 1470+1940+650
-////配置激光器型号
+#define APP_CONFIG_WAVE_1940_1470_635//APP为三波长 1940+1470+635
+//配置激光器型号
 #define MODLE_JL_FC_1470_1940_22W_200_22_1D//1470+1940+650
 /*****************************************************************************/
 //配置无线脚踏USB接口
@@ -94,7 +92,8 @@ extern "C" {
 #define CONFIG_FSWITCH_USB_PID												0x05E2
 /*****************************************************************************/
 //设置页面配置
-#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_TRI
+#define GDDC_PAGE_POWERUP                             GDDC_PAGE_POWERUP_TRI_1940_1470_635
+#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_TRI_1940_1470_635
 /*****************************************************************************/
 //配置蜂鸣器		
 #define CONFIG_MAX_SPK_FREQ														4500L//喇叭最高频率
@@ -160,11 +159,11 @@ extern "C" {
 #define CONFIG_HDC1080_TEMP_HIGH                      9999
 #define CONFIG_HDC1080_TEMP_LOW                       -9999
 
-#define CONFIG_DHT11_HUMIDITY_HIGH                   9999
-#define CONFIG_DHT11_HUMIDITY_LOW                    -9999
+#define CONFIG_DHT11_HUMIDITY_HIGH                    9999
+#define CONFIG_DHT11_HUMIDITY_LOW                     -9999
 
-#define CONFIG_DHT11_TEMP_HIGH                       9999              
-#define CONFIG_DHT11_TEMP_LOW                        -9999
+#define CONFIG_DHT11_TEMP_HIGH                        9999              
+#define CONFIG_DHT11_TEMP_LOW                         -9999
 
 #define CONFIG_MCU_TEMP_HIGH													650//处理器高温标志
 #define CONFIG_MCU_TEMP_LOW														-200//处理器低温标志
@@ -173,49 +172,28 @@ extern "C" {
 
 #define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
 
-//配置虚拟通道激光参数 最多8个虚拟激光通道
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH0						150//逻辑通道1470最大激光功率		
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH1						70//逻辑通道1940最大激光功率		
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH2						0//逻辑通道2最大激光功率
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH3						0//逻辑通道3最大激光功率
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH4						0//逻辑通道4最大激光功率
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH5						0//逻辑通道5最大激光功率
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH6						0//逻辑通道6最大激光功率
-#define CONFIG_VIRTUAL_MAX_LASER_POWER_CH7						0//逻辑通道7最大激光功率	
+//配置激光参数
+#define CONFIG_MAX_LASER_POWER_CH0						        150//通道1470最大激光功率		
+#define CONFIG_MAX_LASER_POWER_CH1						        70//通道1940最大激光功率		
+#define CONFIG_MAX_LASER_POWER_CH2						        5//通道2最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH3						        0//通道3最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH4						        0//通道4最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH5						        0//通道5最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH6						        0//通道6最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH7						        0//通道7最大激光功率	
 
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH0						1//逻辑通道1470最小激光功率		
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH1						1//逻辑通道1940最小激光功率		
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH2						0//逻辑通道2最小激光功率
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH3						0//逻辑通道3最小激光功率
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH4						0//逻辑通道4最小激光功率
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH5						0//逻辑通道5最小激光功率
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH6						0//逻辑通道6最小激光功率
-#define CONFIG_VIRTUAL_MIN_LASER_POWER_CH7						0//逻辑通道7最小激光功率	
-
-//配置硬件通道激光参数
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH0						150//硬件通道0最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH1						70//硬件通道1最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH2						1//硬件通道2最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH3						1//硬件通道3最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH4						1//硬件通道4最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH5						1//硬件通道5最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH6						1//硬件通道6最大激光功率
-#define CONFIG_HARDWARE_MAX_LASER_POWER_CH7						1//硬件通道7最大激光功率
-
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH0						1//硬件通道0最小激光功率
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH1						1//硬件通道1最小激光功率
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH2						1//硬件通道2最小激光功率
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH3						1//硬件通道3最小激光功率
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH4						1//硬件通道4最小激光功率
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH5						1//硬件通道5最小激光功率
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH6						1//硬件通道6最小激光功率
-#define CONFIG_HARDWARE_MIN_LASER_POWER_CH7						1//硬件通道7最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH0						        1//通道1470最小激光功率		
+#define CONFIG_MIN_LASER_POWER_CH1						        1//通道1940最小激光功率		
+#define CONFIG_MIN_LASER_POWER_CH2						        1//通道2最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH3						        1//通道3最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH4						        1//通道4最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH5						        1//通道5最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH6						        1//通道6最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH7						        1//通道7最小激光功率	
 
 #define CONFIG_MAX_LASER_POWER_GAIM										0//绿指示激光最大功率档
-#define CONFIG_MAX_LASER_POWER_RED                    5//红激光最大功率 5档
 #define CONFIG_MAX_LASER_POWER_RAIM                   10//指示激光最大功率 10档
 
-#define CONFIG_MIN_LASER_POWER_RED                    1//红激光最小功率
 #define CONFIG_MIN_LASER_POWER_RAIM                   0//指示激光最小功率
 #define CONFIG_MIN_LASER_POWER_GAIM                   0//指示激光最小功率
 

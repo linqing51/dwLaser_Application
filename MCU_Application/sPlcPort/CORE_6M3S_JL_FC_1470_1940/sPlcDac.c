@@ -65,54 +65,47 @@ void sPlcDacInit(void){//DAC初始化
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_1); // 开启DAC输出
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_2); // 开启DAC输出
-	dac8568_Init();	
+	dac8568_Init();
+#if (CONFIG_DEBUG_DAC == 1)
+  dac8568_WriteDacRegister(0x00, (512 << 4));
+	dac8568_WriteDacRegister(0x01, (1025 << 4));
+	dac8568_WriteDacRegister(0x02, (1536 << 4));
+	dac8568_WriteDacRegister(0x03, (2048 << 4));
+	dac8568_WriteDacRegister(0x04, (2560 << 4));
+	dac8568_WriteDacRegister(0x05, (3072 << 4));
+	dac8568_WriteDacRegister(0x06, (3585 << 4));
+	dac8568_WriteDacRegister(0x07, (4095 << 4));
+  while(1);
+#endif	
 }
-void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
+
+void UPDAC0(void){//立即从SPREG_DAC_0中更新 1940
 	uint16_t temp;
 	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
-	dac8568_WriteDacRegister(0x3, temp);//DAC3
+  if(temp > 0xFFF){
+		temp = 0xFFF;
+	}
+  dac8568_WriteDacRegister(0x3, (temp << 4));//DAC3 MPR0
 }
-void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
-	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_1];
-#if (CONFIG_USING_IDAC == 1)
-  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, temp); // 设置DAC输出值
-#else
-	dac8568_WriteDacRegister(0x05, temp);//DAC5
-#endif
+void UPDAC1(void){//立即从SPREG_DAC_1中更新 1470
+  uint16_t temp;
+	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+  if(temp > 0xFFF){
+		temp = 0xFFF;
+	}
+  dac8568_WriteDacRegister(0x4, (temp << 4));//DAC4 MPR5
 }
 void UPDAC2(void){
-	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_2];
-#if (CONFIG_USING_IDAC == 1)
-#else
-	dac8568_WriteDacRegister(0x02, temp);//DAC2
-#endif
 }
 void UPDAC3(void){
-	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_3];
-	dac8568_WriteDacRegister(0x06, temp);//DAC6
 }
 void UPDAC4(void){
-	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_4];
-	dac8568_WriteDacRegister(0x07, temp);//DAC7
 }
 void UPDAC5(void){
-	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_5];
-	dac8568_WriteDacRegister(0x04, temp);//DAC4
 }
 void UPDAC6(void){
-	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_6];
-	dac8568_WriteDacRegister(0x00, temp);//DAC0
 }
 void UPDAC7(void){
-	uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_7];
-	dac8568_WriteDacRegister(0x01, temp);//DAC1
 }
 void UPDAC8(void){
 	uint16_t temp;
@@ -120,19 +113,9 @@ void UPDAC8(void){
 	if(temp > 0xFFF){
 		temp = 0xFFF;
 	}
-#if (CONFIG_USING_IDAC == 1)
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, temp); // 设置DAC输出值	
-#else
-  dac8568_WriteDacRegister(0x05, temp);//DAC5
-#endif
 }
 void UPDAC9(void){
-	uint16_t temp;
-	temp = NVRAM0[SPREG_DAC_9];
-	if(temp > 0xFFF){
-		temp = 0xFFF;
-	}
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_8B_R, temp); // 设置DAC输出值	
 }
 void UPDAC10(void){
 }

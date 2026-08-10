@@ -46,8 +46,8 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
 #define GET_FSWITCH_NC												HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
 
-#define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_ENA_GPIO_Port, SPK_ENA_Pin, GPIO_PIN_SET)
-#define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_ENA_GPIO_Port, SPK_ENA_Pin, GPIO_PIN_RESET)
+#define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_ENA_GPIO_Port, SPK_ENA_Pin, GPIO_PIN_RESET)
+#define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_ENA_GPIO_Port, SPK_ENA_Pin, GPIO_PIN_SET)
 					
 #define SET_RED_LED_ON												HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1)
 #define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1)
@@ -169,8 +169,8 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define SET_FAN2_OFF													__nop()
 #define SET_FAN2_TIM_PWM(b)										__nop()
 
-#define SET_SPK_TIM_ON												__nop()
-#define SET_SPK_TIM_OFF												__nop()
+#define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim11, TIM_CHANNEL_1)
+#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim11, TIM_CHANNEL_1)
 
 #define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2)
 #define SET_RAIM_TIM_ON												HAL_TIM_PWM_Stop(&htim9, TIM_CHANNEL_2)
@@ -262,9 +262,9 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
 #define CONFIG_SPLC_TIM												TIM14
 
-#define CONFIG_SPK_HANDLE											htim9//SPK 计时器定义	
-#define CONFIG_SPK_TIM												TIM9
-#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_2
+#define CONFIG_SPK_HANDLE											htim11//SPK 计时器定义	
+#define CONFIG_SPK_TIM												TIM11
+#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
 
 #define CONFIG_FAN0_TIM_HANDLE								htim3	
 #define CONFIG_FAN0_TIM												TIM3
@@ -280,8 +280,8 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_EPROM_BUS											SPI5									
 
 #define CONFIG_DEBUG_UART											huart3//调试串口
-#define CONFIG_GDDC_UART											huart6//GDDC串口
-#define CONFIG_GDDC_UART_INSTANCE							USART6//GDDC串口中断
+#define CONFIG_GDDC_UART											huart1//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
 /*****************************************************************************/
 //配置EPROM规格
 #define CONFIG_EPROM_SPI											1	
@@ -307,14 +307,14 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25												760.0F//0.76V@25D
 
-#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻值
+#define CONFIG_DIODE_NTC_RS										4700L//激光器热敏电阻分压电阻值
 #define CONFIG_HT0_NTC_RS											4700L//散热器0热敏电阻分压电阻值
 #define CONFIG_HT1_NTC_RS											4700L//散热器1热敏电阻分压电阻值
-#define CONFIG_HT2_NTC_RS											1L	
-#define CONFIG_HT3_NTC_RS											1L
-#define CONFIG_WATER_HOT_NTC_RS								1L
-#define CONFIG_WATER_COOL_NTC_RS							1L
-#define CONFIG_AMBIENT_NTC_RS									1L
+#define CONFIG_HT2_NTC_RS											4700L	
+#define CONFIG_HT3_NTC_RS											4700L
+#define CONFIG_WATER_HOT_NTC_RS								4700L
+#define CONFIG_WATER_COOL_NTC_RS							4700L
+#define CONFIG_AMBIENT_NTC_RS									4700L
 #define CONFIG_MBAT_NTC_RS										4700L//环境热敏电阻分压电阻值
 
 #define CONFIG_DIODE_NTC_B										3477.0F//激光器热敏电阻B值
@@ -364,12 +364,12 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-#define CONFIG_EPROM_MEDICAL_CRC							(31466L)//4B 治疗历史 CRC32 硬件计算
-#define CONFIG_EPROM_MR_CRC										(31470L)//4B MR NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_DM_CRC										(31474L)//4B DM NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_FD_CRC										(31478L)//4B FD NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_MCU_FW_CRC								(31482L)//4B MCU固件CRC32值 软件计算
-#define CONFIG_EPROM_LCD_FW_CRC								(31486L)//4B LCD固件CRC32值 软件计算
+#define CONFIG_EPROM_MEDICAL_CRC							(31456L)//4B 治疗历史 CRC32 硬件计算
+#define CONFIG_EPROM_MR_CRC										(31460L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC										(31464L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC										(31468L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(31472L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(31476L)//4B LCD固件CRC32值 软件计算
 #define CONFIG_EPROM_CFG_CRC									(31480L)//4B deviceConfig CRC32值 硬件计算
 #define CONFIG_EPROM_LOG_CRC									(31484L)//4B logInfo CRC32值 硬件计算
 

@@ -11,10 +11,15 @@ extern "C" {
 typedef struct{
 	char *name;//治疗名字
 	int16_t channel;//激光通道选择
-	int16_t pulse_mode;//脉冲模式
-	int16_t power_ch0;//功率 1470
-	int16_t power_ch1;//功率 980
-	int16_t power_red;//功率 635
+	int16_t pulse_mode;//模式
+	int16_t power_ch0;
+	int16_t power_ch1;
+	int16_t power_ch2;
+  int16_t power_ch3;
+  int16_t power_ch4;
+  int16_t power_ch5;
+  int16_t power_ch6;
+  int16_t power_ch7;
 	int16_t poswidth;
 	int16_t negwidth;
 }myScheme_t;

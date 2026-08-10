@@ -1,7 +1,7 @@
 //预设方案内容
 #include "preScheme.h"
 /*****************************************************************************/
-#if defined(APP_CONFIG_WAVE_1940_650)
+#if defined(APP_CONFIG_WAVE_1940_635)
 myScheme_t sPhlebology[32];//0
 myScheme_t sProctology[32];//1
 myScheme_t sGynecology[32];//2

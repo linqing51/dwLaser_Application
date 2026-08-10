@@ -120,7 +120,14 @@ const INFO_MSG_T info_msg = {
 	.LASER_POWER 				 							= "LASER_POWER: 200w+50w+5mw",
 	.WAVELENGTH 				 							= "WAVE LENGTH: 450nm+980nm+635nm"
 #endif
-	
+
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+	.TYPE 						 								= "TYPE: PVGLS - TRI",
+	.LASER_POWER 				 							= "LASER_POWER: 15w+7w+0.5w",
+	.WAVELENGTH 				 							= "WAVE LENGTH: 1940nm+1470nm+635nm"
+
+#endif
+
 };
 
 /*****************************************************************************/

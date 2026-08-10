@@ -302,81 +302,19 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					*(int16_t*)(dispBuf + 0) = NVRAM0[EM_DC_NEW_PASSCODE0];
 					*(int16_t*)(dispBuf + 2) = NVRAM0[EM_DC_NEW_PASSCODE1];
 					dispBuf[4] = 0x0;
-#if defined(APP_CONFIG_WAVE_1470_650)
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
 
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);					
-#endif				
-#if defined(APP_CONFIG_WAVE_1470_980_650)
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-					SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
+					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, false);
+          SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, true);
 					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);					
+          SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
 
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, true);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, true);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);					
-#endif
-#if defined(APP_CONFIG_WAVE_1940_650)
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-				
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-#endif		
-#if defined(APP_CONFIG_WAVE_450_980)
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-					SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, true);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
+          SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, false);
+					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, true);
+					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, true);					
 
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, true);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, true);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-					
-					SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
-					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
-					SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);		
-#endif
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
 					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(dispBuf));					
 										
@@ -687,21 +625,21 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_STANDBY_KEY_POWER_SEL_ADD:{
 					if(state){
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//选中1470nm
-							if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH0){
+							if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASER_POWER_CH0){
 								ADDS1(EM_LASER_POWER_CH0);
 							}
 						}
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//选中980nm
-							if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH1){
+							if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_MAX_LASER_POWER_CH1){
 								ADDS1(EM_LASER_POWER_CH1);							
 							}
 						}
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//选中635nm
-							if(NVRAM0[EM_LASER_POWER_635] < CONFIG_MAX_LASER_POWER_RED){
-								ADDS1(EM_LASER_POWER_635);								
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//选中635nm
+							if(NVRAM0[EM_LASER_POWER_CH2] < CONFIG_MAX_LASER_POWER_CH2){
+								ADDS1(EM_LASER_POWER_CH2);								
 							}
 						}
-						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 						updateStandbyDisplay();
 					}					
 					break;
@@ -710,74 +648,52 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//选中1470nm
-							if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH0){
+							if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_MIN_LASER_POWER_CH0){
 								DECS1(EM_LASER_POWER_CH0);
 							}
 						}
 
 						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//选中980nm
-							if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH1){
+							if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_MIN_LASER_POWER_CH1){
 								DECS1(EM_LASER_POWER_CH1);							
 							}
 						}
-						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//选中635nm
-							if(NVRAM0[EM_LASER_POWER_635] > CONFIG_MIN_LASER_POWER_RED){
-								DECS1(EM_LASER_POWER_635);								
+						if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//选中635nm
+							if(NVRAM0[EM_LASER_POWER_CH2] > CONFIG_MIN_LASER_POWER_CH2){
+								DECS1(EM_LASER_POWER_CH2);								
 							}
 						}						
-						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+						NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 						updateStandbyDisplay();
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_SELECT_CH0A:{
+				case GDDC_PAGE_STANDBY_KEY_SELECT_CH0:{
 					if(state){
 						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH0;
 						updateStandbyDisplay();
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_SELECT_CH0B:{
-					if(state){
-						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH0;
-						updateStandbyDisplay();
-					}
-					break;
-				}		
-				case GDDC_PAGE_STANDBY_KEY_SELECT_CH0C:{
-					if(state){
-						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH0;
-						updateStandbyDisplay();
-					}
-					break;		
-				}
-				case GDDC_PAGE_STANDBY_KEY_SELECT_CH1A:{
+				case GDDC_PAGE_STANDBY_KEY_SELECT_CH1:{
 					if(state){
 						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH1;
 						updateStandbyDisplay();
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_SELECT_CH1B:{
+				case GDDC_PAGE_STANDBY_KEY_SELECT_CH2:{
 					if(state){
-						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH1;
-						updateStandbyDisplay();
-					}
-					break;
-				}
-
-				case GDDC_PAGE_STANDBY_KEY_SELECT_RED:{
-					if(state){
-						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_RAIM;
+						NVRAM0[EM_LASER_CHANNEL_SELECT] = LASER_CHANNEL_CH2;
 						updateStandbyDisplay();
 					}
 					break;
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH0){
+						if(NVRAM0[EM_LASER_POWER_CH0] < CONFIG_MAX_LASER_POWER_CH0){
 							ADDS1(EM_LASER_POWER_CH0);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 							updateStandbyDisplay();
 						}
 					}
@@ -785,9 +701,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH0_INC:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH0){
+						if(NVRAM0[EM_LASER_POWER_CH0] > CONFIG_MIN_LASER_POWER_CH0){
 							DECS1(EM_LASER_POWER_CH0);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 							updateStandbyDisplay();
 						}
 					}
@@ -795,9 +711,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_VIRTUAL_MAX_LASER_POWER_CH1){
+						if(NVRAM0[EM_LASER_POWER_CH1] < CONFIG_MAX_LASER_POWER_CH1){
 							ADDS1(EM_LASER_POWER_CH1);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 							updateStandbyDisplay();
 						}
 					}
@@ -805,29 +721,29 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_STANDBY_KEY_POWER_CH1_INC:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_VIRTUAL_MIN_LASER_POWER_CH1){
+						if(NVRAM0[EM_LASER_POWER_CH1] > CONFIG_MIN_LASER_POWER_CH1){
 							DECS1(EM_LASER_POWER_CH1);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 							updateStandbyDisplay();
 						}
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_POWER_RED_ADD:{
+				case GDDC_PAGE_STANDBY_KEY_POWER_CH2_ADD:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_635] < CONFIG_MAX_LASER_POWER_RED){
-							ADDS1(EM_LASER_POWER_635);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+						if(NVRAM0[EM_LASER_POWER_CH2] < CONFIG_MIN_LASER_POWER_CH2){
+							ADDS1(EM_LASER_POWER_CH2);
+							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 							updateStandbyDisplay();
 						}
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_POWER_RED_INC:{
+				case GDDC_PAGE_STANDBY_KEY_POWER_CH2_INC:{
 					if(state){
-						if(NVRAM0[EM_LASER_POWER_635] > CONFIG_MIN_LASER_POWER_RED){
-							DECS1(EM_LASER_POWER_635);
-							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+						if(NVRAM0[EM_LASER_POWER_CH2] > CONFIG_MIN_LASER_POWER_CH2){
+							DECS1(EM_LASER_POWER_CH2);
+							NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 							updateStandbyDisplay();
 						}
 					}
@@ -947,20 +863,14 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SCHEME;
 #if defined(APP_CONFIG_WAVE_1470_650)
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-						
-						//memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));		
-						//NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;
-						//NVRAM0[EM_SCHEME_NUM_TMP] = 0;
-						//NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_DETAIL;	
-						//SetScreen(NVRAM0[EM_DC_PAGE]);				
-						//updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
-						//seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);							
+						SetScreen(NVRAM0[EM_DC_PAGE]);					
 #endif
+            
 #if defined(APP_CONFIG_WAVE_1470_980_650)				
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_TRI;
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
+
 #if defined(APP_CONFIG_WAVE_1940_650)		
 					memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));						
 					NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;											
@@ -979,6 +889,11 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetScreen(NVRAM0[EM_DC_PAGE]);						
 					updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 					seletcSchemeNum(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
+#endif
+
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+          NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
+          SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
 					}
 					break;
@@ -1412,6 +1327,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						updateStandbyDisplay();						
+#endif
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
+						SetScreen(NVRAM0[EM_DC_PAGE]);						
 #endif
 					}
 					break;
@@ -1947,19 +1866,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_POWEROFF_BUTTON_CANCEL:{
 					if(state){
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//进入关机确认状态												
-						#if defined(APP_CONFIG_WAVE_1470_650)
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;												
-						#endif
-						#if defined(APP_CONFIG_WAVE_1470_980_650)
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;								
-						#endif
-						#if defined(APP_CONFIG_WAVE_1940_650)
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_DUAL;	
-						#endif
-						#if defined(APP_CONFIG_WAVE_450_980)
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY_TRI;	
-						#endif
+						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//退出关机确认状态												
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 					}
 					break;

@@ -35,7 +35,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "sPlc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -79,7 +79,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  resetInit();
+  RtcCheckAndInit();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -116,9 +117,9 @@ int main(void)
   MX_CRC_Init();
   MX_RNG_Init();
   MX_FATFS_Init();
-  MX_RTC_Init();
   MX_TIM7_Init();
   MX_TIM14_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -218,7 +219,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+	if(htim->Instance == CONFIG_SPLC_TIM) {
+		sPlcTimerIsr();
+	}
+	if(htim->Instance == CONFIG_LASER_TIM){
+		sPlcLaserTimerIsr();
+	}
   /* USER CODE END Callback 1 */
 }
 

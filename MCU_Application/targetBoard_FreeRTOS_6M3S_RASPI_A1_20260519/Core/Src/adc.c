@@ -241,13 +241,13 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     PB0     ------> ADC1_IN8
     PB1     ------> ADC1_IN9
     */
-    GPIO_InitStruct.Pin = LAS_LPD_Pin|LAS_FPD_Pin|LAS_NTC_Pin|SLD1_CUR_Pin
+    GPIO_InitStruct.Pin = LAS_LPD_Pin|LAS_FPD_Pin|LAS_NTC_Pin|BUS_VIN_Pin
                           |HT2_NTC_Pin|HT1_NTC_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_0|MPR0_CUR_Pin|MPR1_CUR_Pin|MPR2_CUR_Pin
+    GPIO_InitStruct.Pin = SLD1_CUR_Pin|MPR0_CUR_Pin|MPR1_CUR_Pin|MPR2_CUR_Pin
                           |MPR3_CUR_Pin|MPR4_CUR_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -310,10 +310,10 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     PB0     ------> ADC1_IN8
     PB1     ------> ADC1_IN9
     */
-    HAL_GPIO_DeInit(GPIOC, LAS_LPD_Pin|LAS_FPD_Pin|LAS_NTC_Pin|SLD1_CUR_Pin
+    HAL_GPIO_DeInit(GPIOC, LAS_LPD_Pin|LAS_FPD_Pin|LAS_NTC_Pin|BUS_VIN_Pin
                           |HT2_NTC_Pin|HT1_NTC_Pin);
 
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_0|MPR0_CUR_Pin|MPR1_CUR_Pin|MPR2_CUR_Pin
+    HAL_GPIO_DeInit(GPIOA, SLD1_CUR_Pin|MPR0_CUR_Pin|MPR1_CUR_Pin|MPR2_CUR_Pin
                           |MPR3_CUR_Pin|MPR4_CUR_Pin);
 
     HAL_GPIO_DeInit(GPIOB, MPR5_CUR_Pin|SLD0_CUR_Pin);

@@ -24,28 +24,31 @@ extern "C" {
 /*****************************************************************************/
 //HMI页面编号
 #define GDDC_PAGE_START																	0
-#define GDDC_PAGE_POWERUP_1470													1
-#define GDDC_PAGE_POWERUP_TRI														2
-#define GDDC_PAGE_POWERUP_1940													3
-#define GDDC_PAGE_POWERUP_450														4
-#define GDDC_PAGE_POWERUP_1940_1470                     5
+#define GDDC_PAGE_POWERUP_DUAL_1470_635									1
+#define GDDC_PAGE_POWERUP_DUAL_1940_636                 2
+#define GDDC_PAGE_POWERUP_DUAL_450_980                  3
+#define GDDC_PAGE_POWERUP_TRI_1470_980_635							4
+#define GDDC_PAGE_POWERUP_TRI_1940_1470_635             5
 #define GDDC_PAGE_PASSCODE															6
 #define GDDC_PAGE_NEW_PASSCODE													7
-#define GDDC_PAGE_STANDBY_DUAL													8
-#define GDDC_PAGE_STANDBY_TRI														9
-#define GDDC_PAGE_READY																	10
-#define GDDC_PAGE_OPTION																11//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										12//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									13//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_DETAIL													14//方案分类页 自定义
-#define GDDC_PAGE_INFORMATION														15//信息页面
-#define GDDC_PAGE_DIAGNOSIS															16//诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW													17//诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI												18
-#define GDDC_PAGE_RENAME																19//SCHEME更名
-#define GDDC_PAGE_RESTORE																20//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														21//脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM											22//弹出菜单 确认关机
+#define GDDC_PAGE_STANDBY_DUAL_1470_635									8
+#define GDDC_PAGE_STANDBY_DUAL_1940_635									9
+#define GDDC_PAGE_STANDBY_DUAL_450_980                  10
+#define GDDC_PAGE_STANDBY_TRI_1470_980_635							11
+#define GDDC_PAGE_STANDBY_TRI_1940_1470_635             12
+#define GDDC_PAGE_READY																	13
+#define GDDC_PAGE_OPTION																14//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									15//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										16//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_DETAIL													17//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														18//信息页面
+#define GDDC_PAGE_DIAGNOSIS															19//诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW													20//诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI												21
+#define GDDC_PAGE_RENAME																22//SCHEME更名
+#define GDDC_PAGE_RESTORE																23//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														24//脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM											25//弹出菜单 确认关机
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -85,8 +88,8 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_KEY_POWER_CH0_INC							4//功率减小
 #define GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD             5
 #define GDDC_PAGE_STANDBY_KEY_POWER_CH1_INC             6
-#define GDDC_PAGE_STANDBY_KEY_POWER_RED_ADD             7
-#define GDDC_PAGE_STANDBY_KEY_POWER_RED_INC             8
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH2_ADD             7
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH2_INC             8
 #define GDDC_PAGE_STANDBY_KEY_POWER_AIM_ADD							9//指示光亮度加
 #define GDDC_PAGE_STANDBY_KEY_POWER_AIM_INC							10//指示光亮度减
 #define GDDC_PAGE_STANDBY_KEY_STANDBY										11//进入准备
@@ -101,12 +104,9 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_KEY_POSWIDTH_INC							20//
 #define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD							21//
 #define GDDC_PAGE_STANDBY_KEY_NEGWIDTH_INC							22//
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0A								23//1470
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0B								45//1940
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0C								46//450
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH1A								24//980
-#define GDDC_PAGE_STANDBY_KEY_SELECT_CH1B								47//蓝光980			
-#define GDDC_PAGE_STANDBY_KEY_SELECT_RED								25
+#define GDDC_PAGE_STANDBY_KEY_SELECT_CH0								23//1470
+#define GDDC_PAGE_STANDBY_KEY_SELECT_CH1								24//980	
+#define GDDC_PAGE_STANDBY_KEY_SELECT_CH2								25
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME							26//方案名称显示
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL			27//当前设定功率
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0			28//设定功率 1470 / 1940
@@ -123,7 +123,7 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL				39//当前功率设定拖动条
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0			  40//功率设定拖动条 1470 /1940
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1        41//功率设定拖动条 980
-#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED 				42//功率设定拖动条 635(工作激光)
+#define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH2 				42//功率设定拖动条 635(工作激光)
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM				43//功率设定拖动条 650(指示激光)
 #define GDDC_PAGE_STANDBY_ICON_MPKEY										44//脉冲模式背景图
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息

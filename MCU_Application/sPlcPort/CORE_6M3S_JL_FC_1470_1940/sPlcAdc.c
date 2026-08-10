@@ -51,22 +51,23 @@ void sPlcAdcProcessBuffer(void){//循环采集ADC
 			adcFilterBuf[i] = (1.0f - ADC_FILTER_ALPHA) * adcFilterBuf[i] + ADC_FILTER_ALPHA * adcRaw;
 		}
 	}
-	NVRAM0[SPREG_ADC_52] = (uint16_t)adcFilterBuf[0];//IN6 VIN VOLTAGE
-	NVRAM0[SPREG_ADC_40] = (uint16_t)adcFilterBuf[1];//IN7 LASER_NTC
-	NVRAM0[SPREG_ADC_32] = (uint16_t)adcFilterBuf[2];//IN8 HT0_NTC
-	NVRAM0[SPREG_ADC_33] = (uint16_t)adcFilterBuf[3];//IN9 HT1_NTC
-	NVRAM0[SPREG_ADC_51] = (uint16_t)adcFilterBuf[4];//IN10 PWR_CUR		
-	NVRAM0[SPREG_ADC_1] = (uint16_t)adcFilterBuf[5];//IN11 CH1_CUR
-	NVRAM0[SPREG_ADC_0] = (uint16_t)adcFilterBuf[6];//IN12 CH0_CUR		
-	NVRAM0[SPREG_ADC_16] = (uint16_t)adcFilterBuf[7];//IN13 TEC_CUR
-	NVRAM0[SPREG_ADC_55] = (uint16_t)adcFilterBuf[8];//IN14 LPD		
-	NVRAM0[SPREG_ADC_54] = (uint16_t)adcFilterBuf[9];//IN15 FPD	
-	NVRAM0[SPREG_ADC_58] = (uint16_t)adcFilterBuf[10];//CHIP TEMP
-	NVRAM0[SPREG_ADC_59] = (uint16_t)adcFilterBuf[11];//VREFINT
-	NVRAM0[SPREG_ADC_60] = (uint16_t)adcFilterBuf[12];//VBAT
-	NVRAM0[SPREG_ADC_58] = (uint16_t)adcFilterBuf[13];//CHIP TEMP
-	NVRAM0[SPREG_ADC_59] = (uint16_t)adcFilterBuf[14];//VREFINT
-	NVRAM0[SPREG_ADC_60] = (uint16_t)adcFilterBuf[15];//VBAT
+	NVRAM0[SPREG_ADC_7] = (uint16_t)adcFilterBuf[0];//IN0 SLD1_CUR
+  NVRAM0[SPREG_ADC_1] = (uint16_t)adcFilterBuf[1];//IN1 MPR0_CUR ->1940
+  NVRAM0[SPREG_ADC_16] = (uint16_t)adcFilterBuf[2];//IN2 MPR1_CUR->TEC
+  //NVRAM0[SPREG_ADC_2] = (uint16_t)adcFilterBuf[3];//IN3 MPR2_CUR
+  //NVRAM0[SPREG_ADC_51] = (uint16_t)adcFilterBuf[4];//IN6 MPR3_CUR	
+  //NVRAM0[SPREG_ADC_1] = (uint16_t)adcFilterBuf[5];//IN7  MPR4_CUR
+  NVRAM0[SPREG_ADC_0] = (uint16_t)adcFilterBuf[6];//IN8  MPR5_CUR	->1470
+	NVRAM0[SPREG_ADC_6] = (uint16_t)adcFilterBuf[7];//IN9 SLD0_PWM
+  
+	NVRAM0[SPREG_ADC_40] = (uint16_t)adcFilterBuf[8];//IN10 LAS NTC
+	NVRAM0[SPREG_ADC_54] = (uint16_t)adcFilterBuf[9];//IN11 LAS FPD
+	NVRAM0[SPREG_ADC_55] = (uint16_t)adcFilterBuf[10];//IN12 LAS LPD
+	NVRAM0[SPREG_ADC_52] = (uint16_t)adcFilterBuf[11];//IN13 VIN
+	NVRAM0[SPREG_ADC_33] = (uint16_t)adcFilterBuf[12];//IN14 HT1 NTC
+	NVRAM0[SPREG_ADC_32] = (uint16_t)adcFilterBuf[13];//IN15 HT0 NTC
+	NVRAM0[SPREG_ADC_58] = (uint16_t)adcFilterBuf[14];//TMCU
+	NVRAM0[SPREG_ADC_59] = (uint16_t)adcFilterBuf[15];//VREFINT
 }
 
 

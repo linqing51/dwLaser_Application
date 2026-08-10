@@ -58,9 +58,9 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(SLD1_PWM_GPIO_Port, SLD1_PWM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOF, BEEM_LED_Pin|ERR_LED_Pin|TICK_LED_Pin|EPROM_WP_Pin
-                          |MPR5_PWM_Pin|SLD0_PWM_Pin|DAC8568_DOUT_Pin|DAC8568_SCK_Pin
-                          |DAC8568_SYNC_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOF, BEEM_LED_Pin|ERR_LED_Pin|TICK_LED_Pin|EPROM_NSS_Pin
+                          |EPROM_WP_Pin|MPR5_PWM_Pin|SLD0_PWM_Pin|DAC8568_DOUT_Pin
+                          |DAC8568_SCK_Pin|DAC8568_SYNC_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, MPR3_PWM_Pin|MPR4_PWM_Pin|USB_FS_PSON_Pin, GPIO_PIN_RESET);
@@ -91,8 +91,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SLD1_PWM_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : BEEM_LED_Pin ERR_LED_Pin TICK_LED_Pin */
-  GPIO_InitStruct.Pin = BEEM_LED_Pin|ERR_LED_Pin|TICK_LED_Pin;
+  /*Configure GPIO pins : BEEM_LED_Pin ERR_LED_Pin TICK_LED_Pin EPROM_NSS_Pin */
+  GPIO_InitStruct.Pin = BEEM_LED_Pin|ERR_LED_Pin|TICK_LED_Pin|EPROM_NSS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -153,12 +153,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(USB_HS_PSON_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPK_ENA_Pin PWR_LED_Pin */
-  GPIO_InitStruct.Pin = SPK_ENA_Pin|PWR_LED_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  /*Configure GPIO pin : SPK_ENA_Pin */
+  GPIO_InitStruct.Pin = SPK_ENA_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+  HAL_GPIO_Init(SPK_ENA_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : MCP41010_CS_Pin */
   GPIO_InitStruct.Pin = MCP41010_CS_Pin;
@@ -173,6 +173,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PWR_LED_Pin */
+  GPIO_InitStruct.Pin = PWR_LED_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(PWR_LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PWR_INT_Pin */
   GPIO_InitStruct.Pin = PWR_INT_Pin;

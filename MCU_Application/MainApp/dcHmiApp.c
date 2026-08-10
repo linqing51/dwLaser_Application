@@ -292,15 +292,8 @@ void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
 void updateDebugInfo(void){//更新Standby调试信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(MODEL_PVGLS_15W_1470_A0) ||\
-		defined(MODEL_PVGLS_15W_1470_A1) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,FPD:%05d,LPD:%05d,TC:%05d", \
-	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HT0_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_9], NVRAM0[SPREG_ADC_10], NVRAM0[SPREG_DAC_7]);
+	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,FPD:%05d,LPD:%05d,TEC:%05d", \
+	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HT0_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_54], NVRAM0[SPREG_ADC_55], NVRAM0[SPREG_DAC_8]);
 	switch(NVRAM0[EM_DC_PAGE]){
 		case GDDC_PAGE_STANDBY:{
 			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
@@ -312,7 +305,6 @@ void updateDebugInfo(void){//更新Standby调试信息
 		}
 		default:break;	
 	}
-#endif
 #if defined(LYPE_MCU_1V0_20260106)
 	sprintf(dispBuf, "LT:%05d,WHT:%05d,WCT%05d,AT%05d,MT:%05d,FPD:%05d,LPD:%05d,PID:%05d", \
 	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HWATER_TEMP], NVRAM0[EM_CWATER_TEMP], NVRAM0[EM_HDC1080_TEMP], NVRAM0[EM_MCU_TEMP], \
@@ -591,7 +583,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 	//uint8_t index;
 	//index = NVRAM0[EM_SCHEME_NUM_TMP];
 	switch(classify){
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 		case SCHEME_PHLEBOLOGY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Phlebology");
 			if(strlen((char*)sPhlebology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
@@ -1093,7 +1085,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
 #endif
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1582,7 +1574,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
 #endif
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1644,7 +1636,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}	
 		case SCHEME_ENDOLIFT:{
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Endolift");
 			if(strlen((char*)sEndolift[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[0].name));
@@ -1740,17 +1732,14 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 
 		}
-		
-		
 		case SCHEME_CUSTIOM:{
 #if defined(APP_CONFIG_WAVE_1470_980_650)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
 #endif
 			
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "");
 #endif
-			
 			if(index < 16){
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_0], CONFIG_SCHEME_NAME_SIZE);
@@ -2057,13 +2046,13 @@ void updateWarnMsgDisplay(MSG_ID_T id){//更新警号显示框
 void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参数
 	char dispBuf1[CONFIG_DCHMI_DISKBUF_SIZE], dispBuf2[CONFIG_DCHMI_DISKBUF_SIZE];
 	int16_t mode, select;
-	int16_t	power_ch0, power_ch1, power_red, posWidth, negWidth;
+	int16_t	power_ch0, power_ch1, power_ch2, posWidth, negWidth;
 	power_ch0 &= power_ch0;
 	power_ch1 &= power_ch1;
 	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);	
 	memset(dispBuf2, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	switch(classify){
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 		case SCHEME_PHLEBOLOGY:{
 			if(index > (CONFIG_PHLEBOLOGY_SIZE - 1)){
 				index = (CONFIG_PHLEBOLOGY_SIZE - 1);
@@ -2071,7 +2060,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sPhlebology[index].channel;
 			power_ch0 = sPhlebology[index].power_ch0;
 			power_ch1 = sPhlebology[index].power_ch1;
-			power_red = sPhlebology[index].power_red;
+			power_ch2 = sPhlebology[index].power_ch2;
 			posWidth = sPhlebology[index].poswidth;
 			negWidth = sPhlebology[index].negwidth;
 			mode = sPhlebology[index].pulse_mode;				
@@ -2084,7 +2073,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sProctology[index].channel;
 			power_ch0 = sProctology[index].power_ch0;
 			power_ch1 = sProctology[index].power_ch1;
-			power_red = sProctology[index].power_red;
+			power_ch2 = sProctology[index].power_ch2;
 			posWidth = sProctology[index].poswidth;
 			negWidth = sProctology[index].negwidth;
 			mode = sProctology[index].pulse_mode;	
@@ -2097,7 +2086,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sGynecology[index].channel;
 			power_ch0 = sGynecology[index].power_ch0;
 			power_ch1 = sGynecology[index].power_ch1;
-			power_red = sGynecology[index].power_red;
+			power_ch2 = sGynecology[index].power_ch2;
 			posWidth = sGynecology[index].poswidth;
 			negWidth = sGynecology[index].negwidth;
 			mode = sGynecology[index].pulse_mode;		
@@ -2110,7 +2099,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sENT[index].channel;
 			power_ch0 = sENT[index].power_ch0;
 			power_ch1 = sENT[index].power_ch1;
-			power_red = sENT[index].power_red;
+			power_ch2 = sENT[index].power_ch2;
 			posWidth = sENT[index].poswidth;
 			negWidth = sENT[index].negwidth;
 			mode = sENT[index].pulse_mode;	
@@ -2123,7 +2112,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sNeurosurgery[index].channel;
 			power_ch0 = sNeurosurgery[index].power_ch0;
 			power_ch1 = sNeurosurgery[index].power_ch1;
-			power_red = sNeurosurgery[index].power_red;
+			power_ch2 = sNeurosurgery[index].power_ch2;
 			posWidth = sNeurosurgery[index].poswidth;
 			negWidth = sNeurosurgery[index].negwidth;
 			mode = sNeurosurgery[index].pulse_mode;
@@ -2136,7 +2125,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sDermatology[index].channel;
 			power_ch0 = sDermatology[index].power_ch0;
 			power_ch1 = sDermatology[index].power_ch1;
-			power_red = sDermatology[index].power_red;
+			power_ch2 = sDermatology[index].power_ch2;
 			posWidth = sDermatology[index].poswidth;
 			negWidth = sDermatology[index].negwidth;
 			mode = sDermatology[index].pulse_mode;
@@ -2149,7 +2138,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sLiposuction[index].channel;
 			power_ch0 = sLiposuction[index].power_ch0;
 			power_ch1 = sLiposuction[index].power_ch1;
-			power_red = sLiposuction[index].power_red;
+			power_ch2 = sLiposuction[index].power_ch2;
 			posWidth = sLiposuction[index].poswidth;
 			negWidth = sLiposuction[index].negwidth;
 			mode = sLiposuction[index].pulse_mode;
@@ -2162,7 +2151,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sDentistry[index].channel;
 			power_ch0 = sDentistry[index].power_ch0;
 			power_ch1 = sDentistry[index].power_ch1;
-			power_red = sDentistry[index].power_red;
+			power_ch2 = sDentistry[index].power_ch2;
 			posWidth = sDentistry[index].poswidth;
 			negWidth = sDentistry[index].negwidth;
 			mode = sDentistry[index].pulse_mode;
@@ -2175,7 +2164,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sTherapy[index].channel;
 			power_ch0 = sTherapy[index].power_ch0;
 			power_ch1 = sTherapy[index].power_ch1;
-			power_red = sTherapy[index].power_red;
+			power_ch2 = sTherapy[index].power_ch2;
 			posWidth = sTherapy[index].poswidth;
 			negWidth = sTherapy[index].negwidth;
 			mode = sTherapy[index].pulse_mode;
@@ -2188,7 +2177,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = sEndolift[index].channel;
 			power_ch0 = sEndolift[index].power_ch0;
 			power_ch1 = sEndolift[index].power_ch1;
-			power_red = sEndolift[index].power_red;
+			power_ch2 = sEndolift[index].power_ch2;
 			posWidth = sEndolift[index].poswidth;
 			negWidth = sEndolift[index].negwidth;
 			mode = sEndolift[index].pulse_mode;
@@ -2203,7 +2192,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			select = FDRAM1[index * 64 + FD_LASER_CHANNEL_SELECT];	
 			power_ch0 = FDRAM1[index * 64 + FD_LASER_POWER_CH0];
 			power_ch1 = FDRAM1[index * 64 + FD_LASER_POWER_CH1];
-			power_red = FDRAM1[index * 64 + FD_LASER_POWER_RED];
+			power_ch2 = FDRAM1[index * 64 + FD_LASER_POWER_CH2];
 			posWidth = FDRAM1[index * 64 + FD_LASER_POSWIDTH];
 			negWidth = FDRAM1[index * 64 + FD_LASER_NEGWIDTH];
 			mode = FDRAM1[index * 64 + FD_LASER_PULSE_MODE];
@@ -2223,6 +2212,9 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 
 #if defined(APP_CONFIG_WAVE_450_980)
 			sprintf(dispBuf1, "450nm: %3.1fW", ((float)power_ch0 / 10.0F));
+#endif
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+			sprintf(dispBuf1, "1940nm: %3.1fW", ((float)power_ch0 / 10.0F));
 #endif			
 			
 			if(mode == LASER_MODE_CW){
@@ -2234,7 +2226,11 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			break;
 		}
 		case LASER_CHANNEL_CH1:{
-			sprintf(dispBuf1, "980nm: %3.1fW", ((float)power_ch1 / 10.0F));
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+			sprintf(dispBuf1, "1470nm: %3.1fW", ((float)power_ch1 / 10.0F));
+#else
+      sprintf(dispBuf1, "980nm: %3.1fW", ((float)power_ch1 / 10.0F));
+#endif
 			if(mode == LASER_MODE_CW){
 				sprintf(dispBuf2, "Mode: CW");
 			}
@@ -2243,8 +2239,8 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 			}						
 			break;
 		}
-		case    LASER_CHANNEL_RAIM:{
-			sprintf(dispBuf1, "635nm: %3.1fW", ((float)power_red / 10.0F));
+		case    LASER_CHANNEL_CH2:{
+			sprintf(dispBuf1, "635nm: %3.1fW", ((float)power_ch2 / 10.0F));
 			if(mode == LASER_MODE_CW){
 				sprintf(dispBuf2, "Mode: CW");
 			}
@@ -2348,12 +2344,12 @@ void updateExtralDisplay(void){//更新额外显示
 			averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_CH1]) / 10.0F;
 			break;
 		}
-		case LASER_CHANNEL_RAIM:{
-			averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_635]) / 10.0F;
+		case LASER_CHANNEL_CH2:{
+			averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_CH2]) / 10.0F;
 			break;
 		}
 		default:{
-			averagePower = dutyCycle * ((float)(NVRAM0[EM_LASER_POWER_CH0]) + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_635]) / 10.0F;
+			averagePower = dutyCycle * ((float)(NVRAM0[EM_LASER_POWER_CH0]) + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_CH2]) / 10.0F;
 			break;
 		}
 	}
@@ -2400,8 +2396,8 @@ void updateStandbyDisplay(void){//更新方案显示
 			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH1];
 			break;
 		}
-		case LASER_CHANNEL_RAIM:{
-			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_635];
+		case LASER_CHANNEL_CH2:{
+			NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH2];
 			break;
 		}
 		default:break;
@@ -2451,181 +2447,44 @@ void updateStandbyDisplay(void){//更新方案显示
 		updateNegWidthDisplay();
 	}
 
-#if defined(APP_CONFIG_WAVE_1470_980_650)
-		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_VIRTUAL_MAX_LASER_POWER_CH0;
-		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH0, (uint32_t)barValue);
-		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_VIRTUAL_MAX_LASER_POWER_CH1;
-		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH1, (uint32_t)barValue);
-		barValue = NVRAM0[EM_LASER_POWER_635] * 100.0F / CONFIG_MAX_LASER_POWER_RED;
-		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED, (uint32_t)barValue);
-#endif
 	SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM, NVRAM0[DM_RAIM_BRG]);
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//1470
+	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);		
-		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_VIRTUAL_MAX_LASER_POWER_CH0;
+		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_MAX_LASER_POWER_CH0;
 		if(barValue <= 2){
 			barValue = 2;
 		}
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL, (uint32_t)barValue);
-		
-#if defined(APP_CONFIG_WAVE_1470_980_650)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, true);
-		
-				SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, 0);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-		
-#endif
-#if defined(APP_CONFIG_WAVE_1470_650)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
-#endif
-#if defined(APP_CONFIG_WAVE_1940_650)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
-#endif
-
-#if defined(APP_CONFIG_WAVE_450_980)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, true);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, true);
-
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
-#endif
-
+		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, true);	
+		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);	
+		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, false);
 	}
-	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//980
+	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH1]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
-		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_VIRTUAL_MAX_LASER_POWER_CH1;
+		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_MAX_LASER_POWER_CH1;
 		if(barValue <= 2){
 			barValue = 2;
 		}
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL, (uint32_t)barValue);
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, 0);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, 1);
-#endif
-#if defined(APP_CONFIG_WAVE_1940_650)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, 0);
-#endif
-#if defined(APP_CONFIG_WAVE_450_980)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, 0);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, 1);		
-#endif
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, 0);
+    SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, false);
+    SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
+		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, false);
 	}
-	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//635
-		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_635]) / 10));
+	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//635
+		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH2]) / 10));
 		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
-		barValue = NVRAM0[EM_LASER_POWER_635] * 100.0F / CONFIG_MAX_LASER_POWER_RED;
+		barValue = NVRAM0[EM_LASER_POWER_CH2] * 100.0F / CONFIG_MAX_LASER_POWER_CH2;
 		if(barValue <= 2){
 			barValue = 2;
 		}
 		SetProgressValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_SEL, (uint32_t)barValue);
-
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, true);
-		//SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		//SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		//SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);	
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-#endif
-#if defined(APP_CONFIG_WAVE_1940_650)
-		//SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		//SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		//SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0A, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0B, true);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, true);
-#endif 
-		
-#if defined(APP_CONFIG_WAVE_450_980)
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, true);
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0C, true);
-
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1A, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1B, false);
-		
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_RED, false);
-#endif
-	}
-#if defined(APP_CONFIG_WAVE_1470_980_650)
-	//memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	//sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
-	//SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH0, (uint8_t*)dispBuf);
-	//memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	//sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH1]) / 10));
-	//SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_CH1, (uint8_t*)dispBuf);	
-	//memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	//sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_635]) / 10));	
-	//SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_RED, (uint8_t*)dispBuf);		
-#endif
-		
+    SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, false);    
+    SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
+    SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, true);
+	}	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%d%%\n", NVRAM0[DM_RAIM_BRG] * 10);
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM, (uint8_t*)dispBuf);
@@ -2671,24 +2530,24 @@ void updateReadyDisplay(void){//更新READY显示
 			sprintf(dispBuf, "450nm");
 #endif
       
-#if defined(APP_CONFIG_WAVE_1940_1470_650)
-      sprintf(dispBuf, "1940nm");
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+      sprintf(dispBuf, "1470nm");
 #endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
 		case LASER_CHANNEL_CH1:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH1] / 10.0F;
-#if defined(APP_CONFIG_WAVE_1940_1470_650)
-      sprintf(dispBuf, "1940nm");
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+      sprintf(dispBuf, "1470nm");
 #else
-			sprintf(dispBuf, "1470nm");
+			sprintf(dispBuf, "980nm");
 #endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
-		case LASER_CHANNEL_RAIM:{
-			displayPower = (float)NVRAM0[EM_LASER_POWER_635] / 10.0F;
+		case LASER_CHANNEL_CH2:{
+			displayPower = (float)NVRAM0[EM_LASER_POWER_CH2] / 10.0F;
 			sprintf(dispBuf, "635nm");
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
@@ -2696,7 +2555,7 @@ void updateReadyDisplay(void){//更新READY显示
 		default:{
 			sprintf(dispBuf, "1470+980nm");
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
-			displayPower = ((float)NVRAM0[EM_LASER_POWER_CH0] + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_635])/ 10.0F;
+			displayPower = ((float)NVRAM0[EM_LASER_POWER_CH0] + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_CH2])/ 10.0F;
 			break;
 		}
 	}
@@ -2782,8 +2641,8 @@ void dcHmiLoopInit(void){//初始化模块
 	hmiUartInit();
 	schemeInit(0);//不恢复自定义方案
 	loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
-	//NVRAM0[EM_HMI_OPERA_STEP] = 0;
-	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
+	//NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
+  NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;
 	//检查VOLUME储存值是否合规
 	NVRAM0[TMP_REG_0] = 0;
 	NVRAM0[TMP_REG_1] = CONFIG_BEEM_MAX_VOLUME;
@@ -3177,22 +3036,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 			
 			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
-#if defined(APP_CONFIG_WAVE_1470_650)
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1470;												
-#endif
-#if defined(APP_CONFIG_WAVE_1470_980_650)
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_TRI;								
-#endif
-#if defined(APP_CONFIG_WAVE_1940_650)
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1940;	
-#endif
-#if defined(APP_CONFIG_WAVE_450_980)
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_450;	
-#endif
-#if defined(APP_CONFIG_WAVE_1940_1470_650)
-      NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP_1940_1470;	
-#endif
-
+      NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP;	
 			SetScreen(NVRAM0[EM_DC_PAGE]);	
 			//打开蜂鸣器
 			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
@@ -3342,8 +3186,7 @@ void dcHmiLoop(void){//HMI轮训程序
 					}
 					else if(LD(R_LASER_B_DIODE_TEMP_LOW)){
 						updateWarnMsgDisplay(ERR_LASER_B_DIODE_TEMP_LOW);
-					}
-								
+					}					
 					else if(LD(R_LASER_A_COUPLER_TEMP_HIGH)){
 						updateWarnMsgDisplay(ERR_LASER_A_COUPLER_TEMP_HIGH);
 					}
@@ -3599,30 +3442,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			printf("%s,%d,%s:acoustic energy max = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY_MAX]);
 			
 			//校正输出功率
-#if defined(LYPE_MCU_1V0_20260106)
-			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){//->450nm  0-3CH 
-				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, (int16_t)((float)(NVRAM0[EM_LASER_POWER_CH0] / 4.0F)), &deviceConfig, true);
-				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, (int16_t)((float)(NVRAM0[EM_LASER_POWER_CH0] / 4.0F)), &deviceConfig, true);
-				NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, (int16_t)((float)(NVRAM0[EM_LASER_POWER_CH0] / 4.0F)), &deviceConfig, true);
-				NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, (int16_t)((float)(NVRAM0[EM_LASER_POWER_CH0] / 4.0F)), &deviceConfig, true);
-				UPDAC0();UPDAC1();UPDAC2();UPDAC3();
-			}
-			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){//->980nm 4CH
-				NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;NVRAM0[SPREG_DAC_2] = 0;NVRAM0[SPREG_DAC_3] = 0;
-				UPDAC0();UPDAC1();UPDAC2();UPDAC3();
-				NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig, true);
-				UPDAC4();
-			}
-			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;
-			UPDAC17();//打开绿光
-#endif
 			
-#if defined(MODEL_PVGLS_7W_1940_A0) ||\
-		defined(MODEL_PVGLS_10W_1940_A1) ||\
-		defined(MODEL_PVGLS_15W_1470_A0) ||\
-		defined(MODEL_PVGLS_15W_1470_A1) ||\
-		defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL)
+#if defined(APP_CONFIG_WAVE_1470_650)
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig, true);
 				UPDAC0();
@@ -3643,32 +3464,27 @@ void dcHmiLoop(void){//HMI轮训程序
 			UPDAC16();//打开红光
 #endif
 
-#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, (int16_t)((float)NVRAM0[EM_LASER_POWER_CH0] / 2.0F), &deviceConfig, true);
-				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_CHANNEL_CH1, (int16_t)((float)NVRAM0[EM_LASER_POWER_CH0] / 2.0F), &deviceConfig, true);
-				UPDAC0();UPDAC1();
+				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig, true);
+				UPDAC0();
+				NVRAM0[SPREG_DAC_1] = 0;
+				UPDAC1();
 			}
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
-				NVRAM0[SPREG_DAC_0] = 0;NVRAM0[SPREG_DAC_1] = 0;
+				NVRAM0[SPREG_DAC_0] = 0;
 				UPDAC0();
+				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_CHANNEL_CH1, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig, true);
 				UPDAC1();
-				NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_CHANNEL_CH1, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig, true);
-				UPDAC2();
 			}
-			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){
+			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
-				NVRAM0[SPREG_DAC_2] = 0;UPDAC2();
-
-			}
+			}	
 			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
 			UPDAC16();//打开红光
 #endif
-#if defined(LYPE_MCU_1V0_20260106)
-			NVRAM0[SPREG_DAC_17] = (NVRAM0[DM_GAIM_BRG] * deviceConfig.greenAimGain) + CONFIG_LASER_GAIM_OFFSET;
-			UPDAC17();//打开红光
-#endif
+     
 			printf("%s,%d,%s:SPREG_DAC_0=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_0]);
 			printf("%s,%d,%s:SPREG_DAC_1=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_1]);
 			printf("%s,%d,%s:SPREG_DAC_2=0x%04X\n", __FILE__, __LINE__, __func__, NVRAM0[SPREG_DAC_2]);
@@ -4297,7 +4113,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcFdramClear();//清空FDRAM
 			sPlcDeviceConfigClear();//清空config
 			resetGddcHmi();
-      softDelayMs(4000);
+      softDelayMs(1000);
 			REBOOT();	
 		}
 		else if(LD(R_SAVE_EPROM)){//储存配制到EPROM

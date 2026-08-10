@@ -13,27 +13,36 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						value = 1;
 					}
 					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-						fpwr = (float)value / 100 * CONFIG_VIRTUAL_MAX_LASER_POWER_CH0;
-						if(fpwr < CONFIG_VIRTUAL_MIN_LASER_POWER_CH0){
-							fpwr = CONFIG_VIRTUAL_MIN_LASER_POWER_CH0;
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH0;
+						if(fpwr < CONFIG_MIN_LASER_POWER_CH0){
+							fpwr = CONFIG_MIN_LASER_POWER_CH0;
 						}
+            if(fpwr > CONFIG_MAX_LASER_POWER_CH0){
+              fpwr = CONFIG_MAX_LASER_POWER_CH0;
+            }
 						NVRAM0[EM_LASER_POWER_CH0] = (int16_t)fpwr;
 					}
 					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
-						fpwr = (float)value / 100 * CONFIG_VIRTUAL_MAX_LASER_POWER_CH1;
-						if(fpwr < CONFIG_VIRTUAL_MIN_LASER_POWER_CH1){
-							fpwr = CONFIG_VIRTUAL_MIN_LASER_POWER_CH1;
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH1;
+						if(fpwr < CONFIG_MIN_LASER_POWER_CH1){
+							fpwr = CONFIG_MIN_LASER_POWER_CH1;
 						}
+            if(fpwr > CONFIG_MAX_LASER_POWER_CH1){
+              fpwr = CONFIG_MAX_LASER_POWER_CH1;
+            }
 						NVRAM0[EM_LASER_POWER_CH1] = (int16_t)fpwr;
 					}
-					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//635
-						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_RED;
-						if(fpwr < CONFIG_MIN_LASER_POWER_RED){
-							fpwr = CONFIG_MIN_LASER_POWER_RED;
+					if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//635
+						fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH2;
+						if(fpwr < CONFIG_MIN_LASER_POWER_CH2){
+							fpwr = CONFIG_MIN_LASER_POWER_CH2;
 						}
-						NVRAM0[EM_LASER_POWER_635] = (int16_t)fpwr;
+            if(fpwr > CONFIG_MAX_LASER_POWER_CH2){
+              fpwr = CONFIG_MAX_LASER_POWER_CH2;
+            }
+						NVRAM0[EM_LASER_POWER_CH2] = (int16_t)fpwr;
 					}
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 					updateStandbyDisplay();
 					break;
 				}
@@ -44,9 +53,9 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value <= 0){
 						value = 1;
 					}
-					fpwr = (float)value / 100 * CONFIG_VIRTUAL_MAX_LASER_POWER_CH0 * 10.0F;
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH0 * 10.0F;
 					NVRAM0[EM_LASER_AVERAGE_POWER_CH0] = (int16_t)fpwr;
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 					updateStandbyDisplay();					
 					break;
 				}
@@ -57,19 +66,19 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					if(value <= 0){
 						value = 1;
 					}
-					fpwr = (float)value / 100 * CONFIG_VIRTUAL_MAX_LASER_POWER_CH1 * 10.0F;
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH1 * 10.0F;
 					NVRAM0[EM_LASER_AVERAGE_POWER_CH1] = (int16_t)fpwr;
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 					updateStandbyDisplay();
 					break;
 				}
-				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_RED:{
+				case GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH2:{
 					if(value > 100){
 						value = 100;
 					}
-					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_RED * 10.0F;
-					NVRAM0[EM_LASER_AVERAGE_POWER_635] = (int16_t)fpwr;
-					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_635];
+					fpwr = (float)value / 100 * CONFIG_MAX_LASER_POWER_CH2 * 10.0F;
+					NVRAM0[EM_LASER_AVERAGE_POWER_CH2] = (int16_t)fpwr;
+					NVRAM0[EM_LASER_POWER_TOTAL] = NVRAM0[EM_LASER_POWER_CH0] + NVRAM0[EM_LASER_POWER_CH1] + NVRAM0[EM_LASER_POWER_CH2];
 					updateStandbyDisplay();
 					break;
 				}

@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 /*****************************************************************************/
-#if defined(CORE_6M3S_JL_FC_1470_1940)
+#if defined(CORE_6M3S_JL_FC_1940_1470_635)
 #include "AppConfig_6M3S_JL_FC.h"
 #include "BoardConfig_6M3S_JL_FC.h"
 #include "sPlcConfig_6M3S_JL_FC.h"
@@ -17,11 +17,11 @@ extern "C" {
 #define CONFIG_ENT_SIZE																16
 #define CONFIG_ENDOLIFT_SIZE													11
 
-#if defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_980_635)
 #define CONFIG_NEUROSURGERY_SIZE											5
 #endif
 
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 #define CONFIG_NEUROSURGERY_SIZE											3
 #endif
 
@@ -29,16 +29,14 @@ extern "C" {
 #define CONFIG_LIPOSUCTION_SIZE												7
 #define CONFIG_DENTISRTY_SIZE													23
 
-#if defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_980_635)
 #define CONFIG_THERAPY_SIZE														8
 #endif
 
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 #define CONFIG_THERAPY_SIZE														3
 #endif
 /*****************************************************************************/
-
-
 #ifdef __cplusplus
 }
 #endif

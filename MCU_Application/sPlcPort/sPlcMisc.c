@@ -11,8 +11,8 @@ static int16_t FanSpeed[8] = {0, 0, 0, 0, 0, 0, 0, 0};
  * @return 成员相对于结构体起始地址的偏移量
  */
 size_t get_offset(size_t type_size, void *member_ptr) {
-    // 利用 0 地址结构体指针计算偏移
-    return (size_t)member_ptr;
+  // 利用 0 地址结构体指针计算偏移
+  return (size_t)member_ptr;
 }
 
 void delayMs(uint32_t delayMs){//SPLC 阻塞延时
@@ -20,63 +20,63 @@ void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 }
 
 void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//设置风扇转速
-		switch(ch){
-			case FAN_CH0:{
-				if(FanSpeed[0] != speed){
-					if(speed > CONFIG_FAN_MAX_DC){
-						speed = CONFIG_FAN_MAX_DC;
-					}
-					if(speed < CONFIG_FAN_MIN_DC){
-						speed = CONFIG_FAN_MIN_DC;
-					}
-					__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, speed);
-					if(speed != 0){
-						HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//打开TIM
-					}
-					else{
-						HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//关闭TIM
-					}
-					if(speed <= 0){
-						SET_FAN0_OFF;
-					}
-					else if(speed >0 && speed < 100){
-						SET_FAN0_ON;
-						SET_FAN0_TIM_PWM(speed);
-					}
-					else if(speed >= 100){
-						SET_FAN0_ON;
-						SET_FAN0_TIM_PWM(100);
-					}
-					FanSpeed[0] = speed;
-				}
-				break;
-			}
-			case FAN_CH1:{
-				break;
-			}
-			case FAN_CH2:{
-				break;
-			}
-			case FAN_CH3:{
-				break;
-			}
-			case FAN_CH4:{
-				break;
-			}
-			case FAN_CH5:{
-				break;
-			}
-			case FAN_CH6:{
-				break;
-			}
-			case FAN_CH7:{
-				break;
-			}
-			default:{
-				break;
-			}
-		}
-		printf("%s,%d,%s:set ch:%d fan:%d\n",__FILE__, __LINE__, __func__, ch, speed);	
+  switch(ch){
+    case FAN_CH0:{
+      if(FanSpeed[0] != speed){
+        if(speed > CONFIG_FAN_MAX_DC){
+          speed = CONFIG_FAN_MAX_DC;
+        }
+        if(speed < CONFIG_FAN_MIN_DC){
+          speed = CONFIG_FAN_MIN_DC;
+        }
+        __HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, speed);
+        if(speed != 0){
+          HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//打开TIM
+        }
+        else{
+          HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//关闭TIM
+        }
+        if(speed <= 0){
+          SET_FAN0_OFF;
+        }
+        else if(speed >0 && speed < 100){
+          SET_FAN0_ON;
+          SET_FAN0_TIM_PWM(speed);
+        }
+        else if(speed >= 100){
+          SET_FAN0_ON;
+          SET_FAN0_TIM_PWM(100);
+        }
+        FanSpeed[0] = speed;
+        printf("%s,%d,%s:set ch:%d fan:%d\n",__FILE__, __LINE__, __func__, ch, speed);
+      }
+      break;
+    }
+    case FAN_CH1:{
+      break;
+    }
+    case FAN_CH2:{
+      break;
+    }
+    case FAN_CH3:{
+      break;
+    }
+    case FAN_CH4:{
+      break;
+    }
+    case FAN_CH5:{
+      break;
+    }
+    case FAN_CH6:{
+      break;
+    }
+    case FAN_CH7:{
+      break;
+    }
+    default:{
+      break;
+    }
+  }
 }
 
 void loadDeviceConfig(void){//从EPROM载入配置文件
@@ -495,10 +495,65 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		
 #endif
 
+#if defined(MODLE_JL_FC_1470_1940_22W_200_22_1D)
+		//1470
+		deviceConfig.calibrationPwr0[0] = 9;
+		deviceConfig.calibrationPwr0[1] = 15;
+		deviceConfig.calibrationPwr0[2] = 21;
+		deviceConfig.calibrationPwr0[3] = 28;
+		deviceConfig.calibrationPwr0[4] = 38;
+		deviceConfig.calibrationPwr0[5] = 48;
+		deviceConfig.calibrationPwr0[6] = 58;
+		deviceConfig.calibrationPwr0[7] = 68;
+		deviceConfig.calibrationPwr0[8] = 77;
+		deviceConfig.calibrationPwr0[9] = 87;
+		deviceConfig.calibrationPwr0[10] = 96;
+		deviceConfig.calibrationPwr0[11] = 105;
+		deviceConfig.calibrationPwr0[12] = 113;
+		deviceConfig.calibrationPwr0[13] = 120;
+		deviceConfig.calibrationPwr0[14] = 127;
+		deviceConfig.calibrationPwr0[15] = 133;
+		deviceConfig.calibrationPwr0[16] = 139;
+		deviceConfig.calibrationPwr0[17] = 144;
+		deviceConfig.calibrationPwr0[18] = 149;
+		deviceConfig.calibrationPwr0[19] = 153;
+		
+		//980
+		deviceConfig.calibrationPwr1[0] = 9;
+		deviceConfig.calibrationPwr1[1] = 15;
+		deviceConfig.calibrationPwr1[2] = 22;
+		deviceConfig.calibrationPwr1[3] = 28;
+		deviceConfig.calibrationPwr1[4] = 38;
+		deviceConfig.calibrationPwr1[5] = 48;
+		deviceConfig.calibrationPwr1[6] = 58;
+		deviceConfig.calibrationPwr1[7] = 68;
+		deviceConfig.calibrationPwr1[8] = 77;
+		deviceConfig.calibrationPwr1[9] = 87;
+		deviceConfig.calibrationPwr1[10] = 96;
+		deviceConfig.calibrationPwr1[11] = 105;
+		deviceConfig.calibrationPwr1[12] = 113;
+		deviceConfig.calibrationPwr1[13] = 120;
+		deviceConfig.calibrationPwr1[14] = 126;
+		deviceConfig.calibrationPwr1[15] = 133;
+		deviceConfig.calibrationPwr1[16] = 138;
+		deviceConfig.calibrationPwr1[17] = 144;
+		deviceConfig.calibrationPwr1[18] = 149;
+		deviceConfig.calibrationPwr1[19] = 153;
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			//deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
+#endif
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 		deviceConfig.mfg_year = 2026;
-		deviceConfig.mfg_month = 04;
-		deviceConfig.mfg_day = 06;
+		deviceConfig.mfg_month = 8;
+		deviceConfig.mfg_day = 6;
 			
 		sprintf(deviceConfig.serialNumber, "XXXX-XXXX");
 		deviceConfig.greenLedDc = CONFIG_GREEN_LED_DEFAULT_DC;

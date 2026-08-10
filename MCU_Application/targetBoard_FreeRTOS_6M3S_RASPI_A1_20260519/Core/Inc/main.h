@@ -91,8 +91,10 @@ void Error_Handler(void);
 #define LAS_FPD_GPIO_Port GPIOC
 #define LAS_NTC_Pin GPIO_PIN_2
 #define LAS_NTC_GPIO_Port GPIOC
-#define SLD1_CUR_Pin GPIO_PIN_3
-#define SLD1_CUR_GPIO_Port GPIOC
+#define BUS_VIN_Pin GPIO_PIN_3
+#define BUS_VIN_GPIO_Port GPIOC
+#define SLD1_CUR_Pin GPIO_PIN_0
+#define SLD1_CUR_GPIO_Port GPIOA
 #define MPR0_CUR_Pin GPIO_PIN_1
 #define MPR0_CUR_GPIO_Port GPIOA
 #define MPR1_CUR_Pin GPIO_PIN_2

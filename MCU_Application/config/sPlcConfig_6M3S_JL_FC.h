@@ -6,14 +6,14 @@ extern "C" {
 #endif
 
 /*****************************************************************************/
-#define CONFIG_DEBUG_DAC															1//调试DAC驱动
-#define CONFIG_DEBUG_ADC															1//调试ADC驱动
-#define CONFIG_DEBUG_RTC															1//调试RTC驱动
+#define CONFIG_DEBUG_DAC															0//调试DAC驱动
+#define CONFIG_DEBUG_ADC															0//调试ADC驱动
+#define CONFIG_DEBUG_RTC															0//调试RTC驱动
 #define CONFIG_DEBUG_EPROM														1//调试EPROM驱动
-#define CONFIG_DEBUG_IO																1//调试IO
+#define CONFIG_DEBUG_IO																0//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
-#define CONFIG_DEBUG_LED															1//调试指示灯驱动
-#define CONFIG_DEBUG_AIM															1//调试指示光驱动
+#define CONFIG_DEBUG_LED														  0//调试指示灯驱动
+#define CONFIG_DEBUG_AIM															0//调试指示光驱动
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
@@ -198,14 +198,14 @@ extern "C" {
 #define SPREG_ADC_59																	(SPREG_START + 59)//CHIP VREFINT片内基准源
 #define SPREG_ADC_60																	(SPREG_START + 60)//VBAT 掉电存储电池 
 /*****************************************************************************/
-#define SPREG_DAC_0																		(SPREG_START + 70)//DAC设定值 激光通道 CH0 ->1470 1940
-#define SPREG_DAC_1																		(SPREG_START + 71)//DAC设定值 激光通道 CH1 ->980
-#define SPREG_DAC_2																		(SPREG_START + 72)//DAC设定值 激光通道 CH2 
-#define SPREG_DAC_3																		(SPREG_START + 73)//DAC设定值 激光通道 CH3
-#define SPREG_DAC_4																		(SPREG_START + 74)//DAC设定值 激光通道 CH4
-#define SPREG_DAC_5																		(SPREG_START + 75)//DAC设定值 激光通道 CH5
-#define SPREG_DAC_6																		(SPREG_START + 76)//DAC设定值 激光通道 CH6 
-#define SPREG_DAC_7																		(SPREG_START + 77)//DAC设定值 激光通道 CH7
+#define SPREG_DAC_0																		(SPREG_START + 70)//DAC设定值 激光通道 CH0 ->MPR0
+#define SPREG_DAC_1																		(SPREG_START + 71)//DAC设定值 激光通道 CH1 ->MPR1
+#define SPREG_DAC_2																		(SPREG_START + 72)//DAC设定值 激光通道 CH2 ->MPR2
+#define SPREG_DAC_3																		(SPREG_START + 73)//DAC设定值 激光通道 CH3 ->MPR3
+#define SPREG_DAC_4																		(SPREG_START + 74)//DAC设定值 激光通道 CH4 ->MPR4
+#define SPREG_DAC_5																		(SPREG_START + 75)//DAC设定值 激光通道 CH5 ->MPR5
+#define SPREG_DAC_6																		(SPREG_START + 76)//DAC设定值 激光通道 CH6 ->SLD0
+#define SPREG_DAC_7																		(SPREG_START + 77)//DAC设定值 激光通道 CH7 ->SLD0
 /*****************************************************************************/
 #define SPREG_DAC_8																		(SPREG_START + 78)//DAC设定值 激光通道 CH8 ->TEC0
 #define SPREG_DAC_9																		(SPREG_START + 79)//DAC设定值 激光通道 CH9 ->TEC1
@@ -247,17 +247,16 @@ extern "C" {
 /*****************************************************************************/
 //需要存储的方案
 #define EM_LASER_SCHEME_NAME													(EM_START + 0)//方案名称
-#define EM_LASER_CHANNEL_SELECT												(EM_START + 51)//激光通道选择
-#define EM_LASER_PULSE_MODE														(EM_START + 52)//脉冲模式
-#define EM_LASER_POWER_CH0														(EM_START + 53)//通道0->1470/1940功率
-#define EM_LASER_POWER_CH1														(EM_START + 54)//通道1->980功率
-#define EM_LASER_POWER_CH2														(EM_START + 55)//备用通道2
-#define EM_LASER_POWER_CH3														(EM_START + 56)//备用通道3
-#define EM_LASER_POWER_CH4														(EM_START + 57)//备用通道4
-#define EM_LASER_POWER_CH5														(EM_START + 58)//备用通道5
-#define EM_LASER_POWER_CH6														(EM_START + 59)//备用通道6
-#define EM_LASER_POWER_CH7														(EM_START + 60)//备用通道7
-#define EM_LASER_POWER_635														(EM_START + 61)//红激光功率
+#define EM_LASER_CHANNEL_SELECT												(EM_START + 52)//激光通道选择
+#define EM_LASER_PULSE_MODE														(EM_START + 53)//脉冲模式
+#define EM_LASER_POWER_CH0														(EM_START + 54)//通道1940
+#define EM_LASER_POWER_CH1														(EM_START + 55)//通道1470
+#define EM_LASER_POWER_CH2														(EM_START + 56)//通道635
+#define EM_LASER_POWER_CH3														(EM_START + 57)//备用通道3
+#define EM_LASER_POWER_CH4														(EM_START + 58)//备用通道4
+#define EM_LASER_POWER_CH5														(EM_START + 59)//备用通道5
+#define EM_LASER_POWER_CH6														(EM_START + 60)//备用通道6
+#define EM_LASER_POWER_CH7														(EM_START + 61)//备用通道7
 #define EM_LASER_POSWIDTH															(EM_START + 62)//多脉冲正脉宽
 #define EM_LASER_NEGWIDTH															(EM_START + 63)//多脉冲负脉宽
 /*****************************************************************************/
@@ -269,9 +268,8 @@ extern "C" {
 #define EM_LASER_AVERAGE_POWER_CH5										(EM_START + 85)//当前模式平均功率->备用通道5
 #define EM_LASER_AVERAGE_POWER_CH6										(EM_START + 86)//当前模式平均功率->备用通道6
 #define EM_LASER_AVERAGE_POWER_CH7              			(EM_START + 87)//当前模式平均功率->备用通道7
-#define EM_LASER_AVERAGE_POWER_635              			(EM_START + 88)//当前模式平均高功率 635
-#define EM_LASER_FREQUENCY														(EM_START + 89)//当前模式频率
-#define EM_LASER_DUTY_CYCLE														(EM_START + 90)//当前模式占空比 
+#define EM_LASER_FREQUENCY														(EM_START + 88)//当前模式频率
+#define EM_LASER_DUTY_CYCLE														(EM_START + 89)//当前模式占空比 
 /*****************************************************************************/
 #define EM_LASER_A_DIODE_TEMP													(EM_START + 100)//激光二极管模块A管芯温度
 #define EM_LASER_A_COUPLER_TEMP												(EM_START + 101)//激光二极管模块A耦合温度
@@ -409,17 +407,16 @@ extern "C" {
 #define EM_RTC_SECONDS																(EM_START + 305)//
 /*****************************************************************************/
 #define FD_LASER_SCHEME_NAME													(FD_START +  0)//方案名称
-#define FD_LASER_CHANNEL_SELECT												(FD_START +  51)//激光通道选择
-#define FD_LASER_PULSE_MODE														(FD_START +  52)//脉冲模式
-#define FD_LASER_POWER_CH0														(FD_START +  53)//通道1470功率
-#define FD_LASER_POWER_CH1														(FD_START +  54)//通道980功率
-#define FD_LASER_POWER_CH2														(FD_START +  55)//备用通道
-#define FD_LASER_POWER_CH3														(FD_START +  56)//备用通道
-#define FD_LASER_POWER_CH4														(FD_START +  57)//备用通道
-#define FD_LASER_POWER_CH5														(FD_START +  58)//备用通道
-#define FD_LASER_POWER_CH6														(FD_START +  59)//备用通道
-#define FD_LASER_POWER_CH7														(FD_START +  60)//备用通道
-#define FD_LASER_POWER_RED														(FD_START +  61)//红激光功率
+#define FD_LASER_CHANNEL_SELECT												(FD_START +  52)//激光通道选择
+#define FD_LASER_PULSE_MODE														(FD_START +  53)//脉冲模式
+#define FD_LASER_POWER_CH0														(FD_START +  54)//通道1940
+#define FD_LASER_POWER_CH1														(FD_START +  55)//通道1470
+#define FD_LASER_POWER_CH2														(FD_START +  56)//通道635
+#define FD_LASER_POWER_CH3														(FD_START +  57)//备用通道
+#define FD_LASER_POWER_CH4														(FD_START +  58)//备用通道
+#define FD_LASER_POWER_CH5														(FD_START +  59)//备用通道
+#define FD_LASER_POWER_CH6														(FD_START +  60)//备用通道
+#define FD_LASER_POWER_CH7														(FD_START +  61)//备用通道
 #define FD_LASER_POSWIDTH															(FD_START +  62)//多脉冲正脉宽
 #define FD_LASER_NEGWIDTH															(FD_START +  63)//多脉冲负脉宽
 /*****************************************************************************/
