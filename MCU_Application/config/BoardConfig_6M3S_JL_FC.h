@@ -280,8 +280,8 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_EPROM_BUS											SPI5									
 
 #define CONFIG_DEBUG_UART											huart3//调试串口
-#define CONFIG_GDDC_UART											huart1//GDDC串口
-#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
+#define CONFIG_GDDC_UART											huart6//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART6//GDDC串口中断
 /*****************************************************************************/
 //配置EPROM规格
 #define CONFIG_EPROM_SPI											1	

@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F429xx,CORE_6M3S_JL_FC_1470_1940,MCU_BOOTLOADER</Define>
+              <Define>USE_HAL_DRIVER,STM32F429xx,CORE_6M3S_JL_FC_1940_1470_635,MCU_BOOTLOADER</Define>
               <Undefine></Undefine>
-              <IncludePath>../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;..\..\..\MCU_Application\config;../../../MCU_Application/lib;../../../MCU_Application/sPlc;../../../MCU_Application/sPlcPort;../../../MCU_Application/MainApp;../../Bootloader</IncludePath>
+              <IncludePath>../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;..\..\..\MCU_Application\config;../../../MCU_Application/lib;../../../MCU_Application/sPlc;../../../MCU_Application/sPlcPort;../../../MCU_Application/MainApp;../../Bootloader;..\..\..\MCU_Application\sPlcPort\CORE_6M3S_JL_FC_1470_1940</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

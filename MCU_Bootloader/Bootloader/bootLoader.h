@@ -19,10 +19,10 @@
 #include "flash_if.h"
 //#include "usart.h"
 /*****************************************************************************/
-#include "..\..\MCU_Application\sPlcPort\sPlcEprom.h"
-#include "..\..\MCU_Application\lib\libcpu.h"
-#include "..\..\MCU_Application\lib\libdbg.h"
-#include "..\..\MCU_Application\config\myConfig.h"
+#include "sPlcEprom.h"
+#include "libcpu.h"
+#include "libdbg.h"
+#include "myConfig.h"
 /*****************************************************************************/
 void resetInit(void);
 void bootLoadInit(void);
