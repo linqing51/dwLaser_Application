@@ -45,7 +45,7 @@
         <PageWidth>79</PageWidth>
         <PageLength>66</PageLength>
         <TabStop>8</TabStop>
-        <ListingPath></ListingPath>
+        <ListingPath>.\targetBoard_G9_TRI_A1_RASPI\</ListingPath>
       </OPTLEX>
       <ListingPage>
         <CreateCListing>1</CreateCListing>
@@ -1064,6 +1064,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\MCU_Application\lib\libdbg.c</PathWithFileName>
       <FilenameWithoutPath>libdbg.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>11</GroupNumber>
+      <FileNumber>66</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\MCU_Application\sPlcPort\sPlcEprom_SPI.c</PathWithFileName>
+      <FilenameWithoutPath>sPlcEprom_SPI.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

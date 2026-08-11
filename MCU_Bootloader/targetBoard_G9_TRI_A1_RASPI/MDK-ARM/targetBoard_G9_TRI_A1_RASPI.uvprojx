@@ -48,14 +48,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>targetBoard_M450_RASPI_20260106\</OutputDirectory>
-          <OutputName>targetBoard_M450_RASPI_20260106</OutputName>
+          <OutputDirectory>.\targetBoard_G9_TRI_A1_RASPI\</OutputDirectory>
+          <OutputName>dwLaser_Bootloader</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath></ListingPath>
+          <ListingPath>.\targetBoard_G9_TRI_A1_RASPI\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -134,7 +134,7 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4101</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
@@ -911,6 +911,11 @@
               <FileName>libdbg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\MCU_Application\lib\libdbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEprom_SPI.c</FilePath>
             </File>
           </Files>
         </Group>

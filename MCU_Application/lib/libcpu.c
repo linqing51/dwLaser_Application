@@ -2,13 +2,6 @@
 /*****************************************************************************/
 uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
-//void HAL_Delay(uint32_t ms){// 同样使用易变变量防止外层循环被优化
-//	volatile uint32_t ms_count = ms;
-//	for(; ms_count > 0; ms_count--){
-//		softDelayUs(1000);
-//	}
-//}
-
 void softDelayUs(uint32_t us){
 	// 粗略估算：1us 大约需要 hclk_mhz 个周期
 	// 这里的 0.9 是经验修正系数，用于补偿 Flash 预取和流水线带来的加速效应
@@ -20,6 +13,13 @@ void softDelayUs(uint32_t us){
 			__NOP(); // 插入空指令，强制消耗时钟周期
 			__NOP(); // 可以多加几个来增加精度
 	}
+}
+
+void softDelayMs(uint32_t ms){
+  volatile uint32_t count = ms;
+  while(count--){
+    softDelayUs(1000);
+  }
 }
 
 void tickCheckTask(void){//TICK 检测程序
