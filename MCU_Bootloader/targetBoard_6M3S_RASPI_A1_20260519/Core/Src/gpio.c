@@ -58,23 +58,29 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(SLD1_PWM_GPIO_Port, SLD1_PWM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOF, BEEM_LED_Pin|ERR_LED_Pin|TICK_LED_Pin|EPROM_WP_Pin
-                          |MPR5_PWM_Pin|SLD0_PWM_Pin|EDAC_DIN_Pin|EDAC_SCLK_Pin
-                          |EDAC_SYNC_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOF, BEEM_LED_Pin|EPROM_WP_Pin|MPR5_PWM_Pin|SLD0_PWM_Pin
+                          |EDAC_DIN_Pin|EDAC_SCLK_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOF, ERR_LED_Pin|TICK_LED_Pin|EPROM_NSS_Pin|EDAC_SYNC_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, MPR3_PWM_Pin|MPR4_PWM_Pin|USB_FS_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, MPR0_PWM_Pin|MPR1_PWM_Pin|MPR2_PWM_Pin|MPU_STA2_Pin
-                          |MPU_STA1_Pin|MPU_STA0_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, MPR0_PWM_Pin|MPR1_PWM_Pin|MPR2_PWM_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, MPU_STA2_Pin|MPU_STA1_Pin|MPU_STA0_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USB_HS_PSON_GPIO_Port, USB_HS_PSON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, SPK_ENA_Pin|MCP41010_CS_Pin|MCP41010_SCK_Pin|MCP41010_SDI_Pin
-                          |PWR_LED_Pin|PWR_KILL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, SPK_ENA_Pin|MCP41010_SCK_Pin|MCP41010_SDI_Pin|PWR_KILL_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOD, MCP41010_CS_Pin|PWR_LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : BID0_Pin BID1_Pin BID2_Pin BID3_Pin
                            MPU_INT2_Pin MPU_INT1_Pin MPU_INT0_Pin */
@@ -87,7 +93,7 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin : SLD1_PWM_Pin */
   GPIO_InitStruct.Pin = SLD1_PWM_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SLD1_PWM_GPIO_Port, &GPIO_InitStruct);
 
@@ -96,6 +102,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : EPROM_NSS_Pin EDAC_DIN_Pin EDAC_SYNC_Pin */
+  GPIO_InitStruct.Pin = EPROM_NSS_Pin|EDAC_DIN_Pin|EDAC_SYNC_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
   /*Configure GPIO pins : EPROM_WP_Pin EDAC_SCLK_Pin */
@@ -110,13 +123,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : EDAC_DIN_Pin EDAC_SYNC_Pin */
-  GPIO_InitStruct.Pin = EDAC_DIN_Pin|EDAC_SYNC_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
   /*Configure GPIO pins : MPR3_PWM_Pin MPR4_PWM_Pin USB_FS_PSON_Pin */
