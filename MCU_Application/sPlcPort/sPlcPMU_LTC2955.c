@@ -11,7 +11,7 @@ void PmuPowerDown(void){//关机函数
 	
 	
 	NVSAVE();//单片机同步NVRAM
-	SET_PWR_KILL_OFF;//给LTC2955 KILL信号实现软关机
+	SET_PWR_KILL_ON;//给LTC2955 KILL信号实现软关机
 	while(1);
 }
 

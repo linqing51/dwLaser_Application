@@ -300,7 +300,7 @@ void updateDebugInfo(void){//更新Standby调试信息
 		defined(MODEL_PVGLS_15W_1470_A1) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
 	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,FPD:%05d,LPD:%05d,TC:%05d", \
-	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HT0_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_9], NVRAM0[SPREG_ADC_10], NVRAM0[SPREG_DAC_7]);
+	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HT0_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_54], NVRAM0[SPREG_ADC_55], NVRAM0[SPREG_DAC_8]);
 	switch(NVRAM0[EM_DC_PAGE]){
 		case GDDC_PAGE_STANDBY:{
 			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
@@ -4025,33 +4025,33 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_INFORMATION_KEY_OK_DOWN);	
 		}
-		if(LDP(SPCOIL_PS500MS)){//刷新RTC 显示
-			uint8_t* pyear = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* pmonth = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* pday = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* phour = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* pminute = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* psecond = (uint8_t*)malloc(sizeof(uint8_t));
-			char* pdispBuf = (char*)malloc(64 * sizeof(char)); 
-			
-			if((pyear != NULL) && (pmonth != NULL) && (pday != NULL)){
-				RtcGetNowTime(pyear, pmonth, pday, phour, pminute, psecond);//获取当前时间可循环调用
-			}
-			if(pdispBuf != NULL){
-				memset(pdispBuf, 0x0, 64 * sizeof(char));
-				sprintf(pdispBuf, "Year:%d-Month:%d-Day:%d  Hour:%d-Minute:%d-Second:%d", *pyear, *pmonth, *pday, *phour, *pminute, *psecond);
-				SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)pdispBuf);
-			}
-			free(pyear);
-			free(pmonth);
-			free(pday);
-			free(psecond);
-			free(pdispBuf);
-			pyear = NULL;  // 指针置空，避免野指针
-			pmonth = NULL;
-			pday = NULL;
-			pdispBuf = NULL;
-		}
+//		if(LDP(SPCOIL_PS500MS)){//刷新RTC 显示
+//			uint8_t* pyear = (uint8_t*)malloc(sizeof(uint8_t));
+//			uint8_t* pmonth = (uint8_t*)malloc(sizeof(uint8_t));
+//			uint8_t* pday = (uint8_t*)malloc(sizeof(uint8_t));
+//			uint8_t* phour = (uint8_t*)malloc(sizeof(uint8_t));
+//			uint8_t* pminute = (uint8_t*)malloc(sizeof(uint8_t));
+//			uint8_t* psecond = (uint8_t*)malloc(sizeof(uint8_t));
+//			char* pdispBuf = (char*)malloc(64 * sizeof(char)); 
+//			
+//			if((pyear != NULL) && (pmonth != NULL) && (pday != NULL)){
+//				RtcGetNowTime(pyear, pmonth, pday, phour, pminute, psecond);//获取当前时间可循环调用
+//			}
+//			if(pdispBuf != NULL){
+//				memset(pdispBuf, 0x0, 64 * sizeof(char));
+//				sprintf(pdispBuf, "Year:%d-Month:%d-Day:%d  Hour:%d-Minute:%d-Second:%d", *pyear, *pmonth, *pday, *phour, *pminute, *psecond);
+//				SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)pdispBuf);
+//			}
+//			free(pyear);
+//			free(pmonth);
+//			free(pday);
+//			free(psecond);
+//			free(pdispBuf);
+//			pyear = NULL;  // 指针置空，避免野指针
+//			pmonth = NULL;
+//			pday = NULL;
+//			pdispBuf = NULL;
+//		}
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SCHEME){//方案界面第一页

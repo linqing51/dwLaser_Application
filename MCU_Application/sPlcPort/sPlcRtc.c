@@ -1,4 +1,3 @@
-#include "rtc.h"
 #include "stdio.h"
 #include "sPlc.h"
 #include "BoardConfig.h"

@@ -378,7 +378,7 @@ void bootLoadProcess(void){//bootload 执行程序
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LYPE_MCU_1V0_20260106) ||\
 		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-			if((GET_INTERLOCK_NC == GPIO_PIN_SET) &&//安全连锁未插入
+			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//安全连锁未插入
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
 #endif					

@@ -82,7 +82,7 @@ void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//设置风扇转速
 				break;
 			}
 		}
-		printf("%s,%d,%s:set ch:%d fan:%d\n",__FILE__, __LINE__, __func__, ch, speed);	
+		//printf("%s,%d,%s:set ch:%d fan:%d\n",__FILE__, __LINE__, __func__, ch, speed);	
 }
 
 void loadDeviceConfig(void){//从EPROM载入配置文件
