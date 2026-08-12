@@ -278,7 +278,7 @@ void bootLoadProcess(void){//bootload 执行程序
 			printf("Bootloader:Bootload Start  :0x%08X,End:0x%08X,Size:0x%08X\n", BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_END_ADDRESS ,BOOTLOADER_FLASH_SIZE);
 			printf("Bootloader:Applicent Start :0x%08X,End:0x%08X,Size:0x%08X\n", APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_END_ADDRESS, APPLICATION_FLASH_SIZE);
 				
-			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//安全连锁未插入
+			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//急停按下
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
           bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
