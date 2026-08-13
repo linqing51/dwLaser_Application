@@ -24,9 +24,9 @@
         <page name="GDDC_PAGE_POWEROFF" id="21" />
     </pages>
     <images>
-        <image id="0" url="d:\github\dwlaser_application\vtft_hmi\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />
+        <image id="0" url="d:\github\dwlaser_application\vtft_hmi\Images\1.4_GDDC_PAGE_POWERUP_1470_30W.png" effect_width="1024" effect_height="600" />
         <image id="1" url="d:\github\dwlaser_application\vtft_hmi\Images\1.0_GDDC_PAGE_POWERUP_TRI.jpg" effect_width="1024" effect_height="600" />
-        <image id="2" url="d:\github\dwlaser_application\vtft_hmi\Images\1.2_GDDC_PAGE_POWERUP_1940_10W.jpg" effect_width="1024" effect_height="600" />
+        <image id="2" url="d:\github\dwlaser_application\vtft_hmi\Images\1.3_GDDC_PAGE_POWERUP_1940_10W.jpg" effect_width="1024" effect_height="600" />
         <image id="3" url="d:\github\dwlaser_application\vtft_hmi\Images\2_GDDC_PAGE_PASSCODE_0.jpg" effect_width="1024" effect_height="600" />
         <image id="4" url="d:\github\dwlaser_application\vtft_hmi\Images\3_GDDC_PAGE_PASSCODE_1.jpg" effect_width="1024" effect_height="600" />
         <image id="5" url="d:\github\dwlaser_application\vtft_hmi\Images\4_GDDC_PAGE_NEW_PASSCODE_0 .jpg" effect_width="1024" effect_height="600" />
