@@ -75,7 +75,6 @@ void sPlcDacInit(void){//DAC初始化
 	dac8568_WriteDacRegister(0x05, (3072 << 4));
 	dac8568_WriteDacRegister(0x06, (3585 << 4));
 	dac8568_WriteDacRegister(0x07, (4095 << 4));
-  while(1);
 #endif	
 }
 
@@ -85,15 +84,15 @@ void UPDAC0(void){//立即从SPREG_DAC_0中更新 1940
   if(temp > 0xFFF){
 		temp = 0xFFF;
 	}
-  dac8568_WriteDacRegister(0x3, (temp << 4));//DAC3 MPR0
+  dac8568_WriteDacRegister(0x4, (temp << 4));//DAC4 MPR5
 }
 void UPDAC1(void){//立即从SPREG_DAC_1中更新 1470
   uint16_t temp;
-	temp = (uint16_t)NVRAM0[SPREG_DAC_0];
+	temp = (uint16_t)NVRAM0[SPREG_DAC_1];
   if(temp > 0xFFF){
 		temp = 0xFFF;
 	}
-  dac8568_WriteDacRegister(0x4, (temp << 4));//DAC4 MPR5
+  dac8568_WriteDacRegister(0x3, (temp << 4));//DAC3 MPR0
 }
 void UPDAC2(void){
 }

@@ -207,10 +207,10 @@ void Error_Handler(void);
 #define FAN_PWM_GPIO_Port GPIOB
 #define FAN_FG_Pin GPIO_PIN_5
 #define FAN_FG_GPIO_Port GPIOB
-#define RLED_PWM_Pin GPIO_PIN_6
-#define RLED_PWM_GPIO_Port GPIOB
-#define GLED_PWM_Pin GPIO_PIN_7
+#define GLED_PWM_Pin GPIO_PIN_6
 #define GLED_PWM_GPIO_Port GPIOB
+#define RLED_PWM_Pin GPIO_PIN_7
+#define RLED_PWM_GPIO_Port GPIOB
 #define BLED_PWM_Pin GPIO_PIN_8
 #define BLED_PWM_GPIO_Port GPIOB
 #define SPK_PWM_Pin GPIO_PIN_9

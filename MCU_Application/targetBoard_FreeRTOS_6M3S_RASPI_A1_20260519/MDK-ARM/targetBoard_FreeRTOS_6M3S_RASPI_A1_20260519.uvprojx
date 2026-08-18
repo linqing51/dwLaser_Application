@@ -10,7 +10,7 @@
       <TargetName>targetBoard_FreeRTOS_6M3S_RASPI_A1_20260519</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1073,11 +1073,6 @@
               <FilePath>..\..\sPlcPort\sPlcSpeaker.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcRtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
-            </File>
-            <File>
               <FileName>sPlcIoOut.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcIoOut.c</FilePath>
@@ -1126,6 +1121,11 @@
               <FileName>sPlcLaser.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\CORE_6M3S_JL_FC_1470_1940\sPlcLaser.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcRtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -9,7 +9,7 @@ extern "C" {
 #define CONFIG_DEBUG_DAC															0//调试DAC驱动
 #define CONFIG_DEBUG_ADC															0//调试ADC驱动
 #define CONFIG_DEBUG_RTC															0//调试RTC驱动
-#define CONFIG_DEBUG_EPROM														1//调试EPROM驱动
+#define CONFIG_DEBUG_EPROM														0//调试EPROM驱动
 #define CONFIG_DEBUG_IO																0//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
 #define CONFIG_DEBUG_LED														  0//调试指示灯驱动

@@ -107,7 +107,7 @@ int main(void)
   MX_FATFS_Init();
   MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
-
+  bootLoadInit();
   /* USER CODE END 2 */
 
   /* Infinite loop */

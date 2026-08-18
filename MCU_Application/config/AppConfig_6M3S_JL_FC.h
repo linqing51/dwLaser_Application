@@ -173,8 +173,8 @@ extern "C" {
 #define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
 
 //配置激光参数
-#define CONFIG_MAX_LASER_POWER_CH0						        150//通道1470最大激光功率		
-#define CONFIG_MAX_LASER_POWER_CH1						        70//通道1940最大激光功率		
+#define CONFIG_MAX_LASER_POWER_CH0						        70//通道1470最大激光功率		
+#define CONFIG_MAX_LASER_POWER_CH1						        150//通道1940最大激光功率		
 #define CONFIG_MAX_LASER_POWER_CH2						        5//通道2最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH3						        0//通道3最大激光功率
 #define CONFIG_MAX_LASER_POWER_CH4						        0//通道4最大激光功率
@@ -197,10 +197,10 @@ extern "C" {
 #define CONFIG_MIN_LASER_POWER_RAIM                   0//指示激光最小功率
 #define CONFIG_MIN_LASER_POWER_GAIM                   0//指示激光最小功率
 
-#define CONFIG_LASER_RAIM_OFFSET											100
-#define CONFIG_LASER_GAIM_OFFSET											100
-#define CONFIG_LASER_RAIM_DEFAULT_GAIN								60
-#define CONFIG_LASER_GAIM_DEFAULT_GAIN								60
+#define CONFIG_LASER_RAIM_OFFSET											200
+#define CONFIG_LASER_GAIM_OFFSET											200
+#define CONFIG_LASER_RAIM_DEFAULT_GAIN								100
+#define CONFIG_LASER_GAIM_DEFAULT_GAIN								100
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1

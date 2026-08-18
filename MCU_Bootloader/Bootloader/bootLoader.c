@@ -63,7 +63,7 @@ static __IO uint32_t LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//文件读写缓冲
 /*****************************************************************************/
 const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   		= '2';
-const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '2';
+const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '3';
 /*****************************************************************************/
 uint8_t cmdShakeHandOp[] = {0xEE,0x04,0xFF,0xFC,0xFF,0xFF};
 uint8_t cmdShakeHandRespondOp[] = {0xEE,0x55,0xFF,0xFC,0xFF,0xFF};
@@ -247,9 +247,16 @@ void bootLoadProcess(void){//bootload 执行程序
 			
 			SET_GAIM_TIM_OFF;
 			SET_RAIM_TIM_OFF;
-			SET_FAN0_OFF;
-			SET_FAN1_OFF;
-			SET_FAN2_OFF;			
+			
+      SET_FAN0_ON;
+      SET_FAN0_TIM_PWM(30);
+      	
+      SET_FAN1_ON;
+      SET_FAN1_TIM_PWM(30);
+
+      SET_FAN2_ON;
+      SET_FAN2_TIM_PWM(30);
+        
 			SET_RED_LED_OFF;
 			SET_GREEN_LED_OFF;
 			SET_BLUE_LED_OFF;
@@ -282,7 +289,13 @@ void bootLoadProcess(void){//bootload 执行程序
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
           bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
+          printf("Bootloader:GOTO USBHOST INIT\n");	
           break;
+      }
+      else{
+        bootLoadState = BT_STATE_RUN_APP;
+        printf("Bootloader:GOTO RUN APP\n");	
+        break;
       }
     }
 		case BT_STATE_USBHOST_INIT:{//在USB HOST上挂载FATFS
@@ -526,7 +539,7 @@ void bootLoadProcess(void){//bootload 执行程序
 			//等待60秒 LCD FLASH写入完成后重启
 			//重启HMI
 			dp_display_text_num(cmdResetHmiOp, strlen((char*)cmdResetHmiOp));	
-			HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);
+			HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);
 			bootLoadState = BT_STATE_RESET;//更新APP
 			break;
 		}		
@@ -563,10 +576,7 @@ void bootLoadProcess(void){//bootload 执行程序
 				printf("\n\n\n\r\r\r");
 				SET_RED_LED_OFF;
 				SET_GREEN_LED_OFF;
-				SET_BLUE_LED_OFF;
-				SET_FAN0_OFF;
-				SET_FAN1_OFF;
-				SET_FAN2_OFF;     
+				SET_BLUE_LED_OFF;    
 				__disable_irq();
 				SysTick->CTRL = 0;//关键代码
 				//关闭中断                                    				

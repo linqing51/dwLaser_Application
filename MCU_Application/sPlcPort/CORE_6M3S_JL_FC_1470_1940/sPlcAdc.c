@@ -29,7 +29,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){    //ADC转换完成回�
 
 void sPlcAdcProcessBuffer(void){//循环采集ADC
 	uint8_t i;
-	float adcRaw;
+	float adcRaw, ftemp;
 	while(adcBufferDone == 0);
 	adcBufferDone = 0;
 	if(adcBufferSelect == 0){	
@@ -68,7 +68,43 @@ void sPlcAdcProcessBuffer(void){//循环采集ADC
 	NVRAM0[SPREG_ADC_32] = (uint16_t)adcFilterBuf[13];//IN15 HT0 NTC
 	NVRAM0[SPREG_ADC_58] = (uint16_t)adcFilterBuf[14];//TMCU
 	NVRAM0[SPREG_ADC_59] = (uint16_t)adcFilterBuf[15];//VREFINT
+  
+	//温度采集
+	TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS, CONFIG_DIODE_NTC_B);
+  TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_DIODE_NTC_RS, CONFIG_HT0_NTC_B);
+  
+	TENV(EM_MCU_TEMP, SPREG_ADC_58);//CODE转换为MCU温度
+	//电流采集 激光通道0
+	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_0]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+	}
+	else{
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_0]) / 4096.0F;//计算电压
+	}
+	ftemp = ftemp / 20.0F / 0.003F / 1000.0F;//计算电流
+	NVRAM0[EM_LD_CH0_CURRENT] = (int16_t)(ftemp * 10.0F);
+	//电流采集 激光通道通道1
+	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_1]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+	}
+	else{
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_1]) / 4096.0F;//计算电压
+	}
+	ftemp = ftemp / 20.0F / 0.003F / 1000.0F;//计算电流
+	NVRAM0[EM_LD_CH1_CURRENT] = (int16_t)(ftemp * 10.0F);
+	//电流采集 制冷通道0
+	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_16]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);//计算电压
+	}
+	else{
+		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[SPREG_ADC_16]) / 4096.0F;//计算电压
+	}
+	ftemp = ftemp * 20.0F / 0.003F / 1000.0F;//计算电流
+	NVRAM0[EM_TEC_CH0_CURRENT] = (int16_t)(ftemp * 10.0F);  
+  
+  NVRAM0[EM_LASER_FPD] = NVRAM0[SPREG_ADC_54];	
 }
+
 
 
 

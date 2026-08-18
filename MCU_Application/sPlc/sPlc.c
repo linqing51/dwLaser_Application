@@ -338,7 +338,7 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	}
 	sPlcInputRefresh();//读取X口输入
 	if(LDP(SPCOIL_PS100MS)){
-		sPlcRtcProcess();
+		//sPlcRtcProcess();
 	}
 	sPlcSpwmLoop();
 	sPlcAdcProcessBuffer();//ADC 更新NVRAM

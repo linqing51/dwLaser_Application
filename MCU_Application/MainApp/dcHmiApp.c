@@ -2531,7 +2531,7 @@ void updateReadyDisplay(void){//更新READY显示
 #endif
       
 #if defined(APP_CONFIG_WAVE_1940_1470_635)
-      sprintf(dispBuf, "1470nm");
+      sprintf(dispBuf, "1940nm");
 #endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
@@ -2945,7 +2945,7 @@ static void powerManagementLoop(void){//电源管理轮询程序
 void dcHmiLoop(void){//HMI轮训程序
 	uint8_t tmp8;
 	powerManagementLoop();
-	wfswLoop(&APP_CONFIG_WFSW_PORT);
+	//wfswLoop(&APP_CONFIG_WFSW_PORT);
 	speakerLoop();
 	statusLoop();
 	tempControlLoop();
@@ -4123,7 +4123,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcFdramSave();//更新FDRAM
 			saveDeviceConfig();//更新配制
 			resetGddcHmi();
-			softDelayMs(4000);
+			softDelayMs(1000);
 			REBOOT();	
 		}
 		else if(LD(R_CLEAR_CRC)){//清除固件CRC
@@ -4139,7 +4139,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 2), &tmp8);
 			epromWriteByte((CONFIG_EPROM_MCU_FW_CRC + 3), &tmp8);
 			resetGddcHmi();
-			softDelayMs(4000);//等待4秒
+			softDelayMs(1000);//等待4秒
 			REBOOT();	
 		}
 		else if(LD(R_UPDATE_BOOTLOAD_REQ)){//更新Boot load请求
@@ -4226,8 +4226,6 @@ void dcHmiLoop(void){//HMI轮训程序
       SET_RAIM_SHDN_ON;
 			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
 			UPDAC16();
-
-
 			
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			updateDiagnosisCali();

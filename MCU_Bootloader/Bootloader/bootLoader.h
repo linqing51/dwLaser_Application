@@ -24,9 +24,9 @@
 #include "libdbg.h"
 #include "myConfig.h"
 /*****************************************************************************/
-void resetInit(void);
-void bootLoadInit(void);
-void bootLoadProcess(void);
+extern void resetInit(void);
+extern void bootLoadInit(void);
+extern void bootLoadProcess(void);
 #endif
 
 

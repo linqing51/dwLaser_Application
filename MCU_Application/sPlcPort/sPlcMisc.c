@@ -496,29 +496,29 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 #endif
 
 #if defined(MODLE_JL_FC_1470_1940_22W_200_22_1D)
-		//1470
-		deviceConfig.calibrationPwr0[0] = 9;
-		deviceConfig.calibrationPwr0[1] = 15;
-		deviceConfig.calibrationPwr0[2] = 21;
-		deviceConfig.calibrationPwr0[3] = 28;
-		deviceConfig.calibrationPwr0[4] = 38;
-		deviceConfig.calibrationPwr0[5] = 48;
-		deviceConfig.calibrationPwr0[6] = 58;
-		deviceConfig.calibrationPwr0[7] = 68;
-		deviceConfig.calibrationPwr0[8] = 77;
-		deviceConfig.calibrationPwr0[9] = 87;
-		deviceConfig.calibrationPwr0[10] = 96;
-		deviceConfig.calibrationPwr0[11] = 105;
-		deviceConfig.calibrationPwr0[12] = 113;
-		deviceConfig.calibrationPwr0[13] = 120;
-		deviceConfig.calibrationPwr0[14] = 127;
-		deviceConfig.calibrationPwr0[15] = 133;
-		deviceConfig.calibrationPwr0[16] = 139;
-		deviceConfig.calibrationPwr0[17] = 144;
-		deviceConfig.calibrationPwr0[18] = 149;
-		deviceConfig.calibrationPwr0[19] = 153;
+		//1940
+		deviceConfig.calibrationPwr0[0] = 3;
+		deviceConfig.calibrationPwr0[1] = 7;
+		deviceConfig.calibrationPwr0[2] = 10;
+		deviceConfig.calibrationPwr0[3] = 14;
+		deviceConfig.calibrationPwr0[4] = 17;
+		deviceConfig.calibrationPwr0[5] = 21;
+		deviceConfig.calibrationPwr0[6] = 24;
+		deviceConfig.calibrationPwr0[7] = 28;
+		deviceConfig.calibrationPwr0[8] = 31;
+		deviceConfig.calibrationPwr0[9] = 35;
+		deviceConfig.calibrationPwr0[10] = 38;
+		deviceConfig.calibrationPwr0[11] = 42;
+		deviceConfig.calibrationPwr0[12] = 45;
+		deviceConfig.calibrationPwr0[13] = 49;
+		deviceConfig.calibrationPwr0[14] = 53;
+		deviceConfig.calibrationPwr0[15] = 56;
+		deviceConfig.calibrationPwr0[16] = 60;
+		deviceConfig.calibrationPwr0[17] = 63;
+		deviceConfig.calibrationPwr0[18] = 66;
+		deviceConfig.calibrationPwr0[19] = 70;
 		
-		//980
+		//1470
 		deviceConfig.calibrationPwr1[0] = 9;
 		deviceConfig.calibrationPwr1[1] = 15;
 		deviceConfig.calibrationPwr1[2] = 22;
