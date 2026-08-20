@@ -19,6 +19,8 @@
 // Í¨µÀµØÖ·Æ«ÒÆ£¨A~H£©
 #define CH_ADDR_OFFSET(ch)    ((uint8_t)(ch & 0x07U))
 
+
+#define CONFIG_MBI2C_BUS  hi2c2
 /**
  * @brief  
  * @param  pBuf: ·¢ËÍ»º³åÇø
@@ -27,7 +29,7 @@
  */
 static DAC5578_StatusTypeDef DAC5578_I2C_Write(uint8_t *pBuf, uint16_t len){//µ×²ãI2CÐ´Êý¾Ý£¨Ë½ÓÐº¯Êý£©
 	HAL_StatusTypeDef hal_sta;
-	hal_sta = HAL_I2C_Master_Transmit(CONFIG_MBI2C_BUS, DAC5578_WR_ADDR, pBuf, len, DAC5578_I2C_TIMEOUT);
+	hal_sta = HAL_I2C_Master_Transmit(&CONFIG_MBI2C_BUS, DAC5578_WR_ADDR, pBuf, len, DAC5578_I2C_TIMEOUT);
 	if(hal_sta == HAL_OK){
 		return DAC5578_OK;
 	}
@@ -41,7 +43,7 @@ static DAC5578_StatusTypeDef DAC5578_I2C_Write(uint8_t *pBuf, uint16_t len){//µ×
 
 static DAC5578_StatusTypeDef DAC5578_I2C_Read(uint8_t *pBuf, uint16_t len){//µ×²ãI2C¶ÁÊý¾Ý£¨Ë½ÓÐº¯Êý£©
 	HAL_StatusTypeDef hal_sta;
-	hal_sta = HAL_I2C_Master_Receive(CONFIG_MBI2C_BUS, DAC5578_RD_ADDR, pBuf, len, DAC5578_I2C_TIMEOUT);
+	hal_sta = HAL_I2C_Master_Receive(&CONFIG_MBI2C_BUS, DAC5578_RD_ADDR, pBuf, len, DAC5578_I2C_TIMEOUT);
 	if(hal_sta == HAL_OK){
 		return DAC5578_OK;
 	}
@@ -55,7 +57,7 @@ static DAC5578_StatusTypeDef DAC5578_I2C_Read(uint8_t *pBuf, uint16_t len){//µ×²
 
 DAC5578_StatusTypeDef DAC5578_Init(void){//DAC5578 ³õÊ¼»¯
 	// 1. I2CÉè±¸×Ô¼ì
-	if(HAL_I2C_IsDeviceReady(DAC5578_HI2C, DAC5578_WR_ADDR, 2U, DAC5578_I2C_TIMEOUT) != HAL_OK){
+	if(HAL_I2C_IsDeviceReady(&CONFIG_MBI2C_BUS, DAC5578_WR_ADDR, 2U, DAC5578_I2C_TIMEOUT) != HAL_OK){
 		return DAC5578_ERROR;
 	}
 	// 2. Èí¼þ¸´Î»£¬»Ö¸´Ä¬ÈÏ×´Ì¬

@@ -6,6 +6,10 @@ extern "C" {
 #endif
 /*****************************************************************************/
 #include "main.h"
+#ifdef CORE_6M3S_RASPI_L2_A1_20260519
+#include "Config_CORE_6M3S_RASPI_L2_A1_20260519.h"
+#endif
+
 #ifndef LYPE_SURGI_LDR5_20260519
 #include "usbh_core.h"
 #endif
@@ -77,11 +81,13 @@ extern UART_HandleTypeDef huart3;//DC HMI
 extern UART_HandleTypeDef huart5;//DEBUG
 extern SPI_HandleTypeDef hspi3;
 extern I2C_HandleTypeDef hi2c3;//IBUS I2C
+extern I2C_HandleTypeDef hi2c2;//DAC5578 I2C
 
 extern TIM_HandleTypeDef htim5;//GAIM TIM
 extern TIM_HandleTypeDef htim8;//FAN TIM
 extern TIM_HandleTypeDef htim7;//LASER TIM
 extern TIM_HandleTypeDef htim9;//SKP TIM
+extern TIM_HandleTypeDef htim10;//SPI2 TIM
 extern TIM_HandleTypeDef htim12;//RAIM  TIM
 extern TIM_HandleTypeDef htim14;//SPLC  TIM
 extern ADC_HandleTypeDef hadc1;
@@ -129,7 +135,6 @@ extern RNG_HandleTypeDef hrng;
 extern DAC_HandleTypeDef hdac;
 extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #endif
-
 /*****************************************************************************/
 //引脚功能定义
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
@@ -611,6 +616,17 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
 #define SET_MCP41010_SCK(b)										HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
 
+//TPL0501-100DCMR
+#define TPL0501_CS_L()    HAL_GPIO_WritePin(TPL0501_SPI3_NSS_GPIO_Port, TPL0501_SPI3_NSS_Pin, GPIO_PIN_RESET)
+#define TPL0501_CS_H()    HAL_GPIO_WritePin(TPL0501_SPI3_NSS_GPIO_Port, TPL0501_SPI3_NSS_Pin, GPIO_PIN_SET)
+
+#define TPL0501_SCK_L()   HAL_GPIO_WritePin(TPL0501_SPI3_SCK_GPIO_Port, TPL0501_SPI3_SCK_Pin, GPIO_PIN_RESET)
+#define TPL0501_SCK_H()   HAL_GPIO_WritePin(TPL0501_SPI3_SCK_GPIO_Port, TPL0501_SPI3_SCK_Pin, GPIO_PIN_SET)
+
+#define TPL0501_DIN_L()   HAL_GPIO_WritePin(TPL0501_SPI3_MOSI_GPIO_Port, TPL0501_SPI3_MOSI_Pin, GPIO_PIN_RESET)
+#define TPL0501_DIN_H()   HAL_GPIO_WritePin(TPL0501_SPI3_MOSI_GPIO_Port, TPL0501_SPI3_MOSI_Pin, GPIO_PIN_SET)
+
+
 //VN5016
 #define SET_VN5016_INPUT(b)										__nop()
 #define SET_VN5016_INPUT_ON										__nop()
@@ -668,7 +684,7 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_DAC8568_SYNC(b)  									HAL_GPIO_WritePin(DAC8568_NSS_GPIO_Port, DAC8568_NSS_Pin, b)
 #define SET_DAC8568_SCK(b)   									HAL_GPIO_WritePin(DAC8568_SCK_GPIO_Port, DAC8568_SCK_Pin, b)
 #define SET_DAC8568_DOUT(b)   								HAL_GPIO_WritePin(DAC8568_DOUT_GPIO_Port, DAC8568_DOUT_Pin, b)
-#define SET_DAC8568_LDAC(b)  									HAL_GPIO_WritePin(DAC8568_LDAC_GPIO_Port, DAC8568_LDAC_Pin, b)
+#define SET_DAC8568_LDAC(b)  									__nop()
 #define SET_DAC8568_CLR(b)   									HAL_GPIO_WritePin(DAC8568_CLEAR_GPIO_Port, DAC8568_CLEAR_Pin, b)
 
 //SPI EPROM
@@ -684,6 +700,22 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_SAFE_RESET(b)											HAL_GPIO_WritePin(SAFE_RESET_GPIO_Port, SAFE_RESET_Pin, b)
 #define SET_SAFE_RESET_ON                     HAL_GPIO_WritePin(SAFE_RESET_GPIO_Port, SAFE_RESET_Pin, GPIO_PIN_SET)
 #define SET_SAFE_RESET_OFF                    HAL_GPIO_WritePin(SAFE_RESET_GPIO_Port, SAFE_RESET_Pin, GPIO_PIN_RESET)
+
+
+// PCA9546 复位引脚定义（PH13）
+#define PCA9546_RESET_LOW()  									HAL_GPIO_WritePin(PCA9546_RESET_GPIO_Port, PCA9546_RESET_Pin, GPIO_PIN_RESET)
+#define PCA9546_RESET_HIGH() 									HAL_GPIO_WritePin(PCA9546_RESET_GPIO_Port, PCA9546_RESET_Pin, GPIO_PIN_SET)
+
+// PCA9546 通道定义
+#define PCA9546_CHANNEL_0   0x01  // 选择通道0
+#define PCA9546_CHANNEL_1   0x02  // 选择通道1
+#define PCA9546_CHANNEL_2   0x04  // 选择通道2
+#define PCA9546_CHANNEL_3   0x08  // 选择通道3
+#define PCA9546_CHANNEL_ALL 0x0F  // 选择所有通道
+#define PCA9546_CHANNEL_NONE 0x00 // 关闭所有通道
+
+
+
 #endif
 
 #if defined(MODEL_PVGLS_15W_1470_A0) ||\
@@ -1368,6 +1400,10 @@ extern uint16_t audioSineTable[];
 #define CONFIG_FAN2_PWM_CHANNEL								TIM_CHANNEL_1
 #define CONFIG_FAN2_FG_CHANNEL								
 
+#define CONFIG_SPI2_TIM												TIM10
+
+
+
 #define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
 #define CONFIG_EPROM_BUS											SPI3									
 
@@ -1507,7 +1543,6 @@ extern uint16_t audioSineTable[];
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 #define CONFIG_ADC1_CHANNEL										13//ADC采集通道
 #define CONFIG_ADC3_CHANNEL										0
-#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱
 #define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数		
 #define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_ADC1_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
@@ -1549,9 +1584,10 @@ extern uint16_t audioSineTable[];
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 #define CONFIG_ADC1_CHANNEL										12//ADC采集通道
 #define CONFIG_ADC3_CHANNEL										0
-#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱		
-#define CONFIG_ADC1_DMA_BUFFER_SIZE						CONFIG_ADC1_CHANNEL//ADC DMA采集缓冲
-#define CONFIG_ADC3_DMA_BUFFER_SIZE						CONFIG_ADC3_CHANNEL//ADC DMA采集缓冲
+#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱
+#define CONFIG_ADC_AVERAGE_NUM								8//ADC平均值次数		
+#define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_ADC1_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
+#define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 
 #define CONFIG_VREF_ADC												SPREG_ADC_59
 #define CONFIG_MCU_VREF												3300.0F
@@ -1588,10 +1624,10 @@ extern uint16_t audioSineTable[];
 
 
 #if defined(LYPE_MCU_1V0_20260106)
-#define CONFIG_ADC1_CHANNEL										7//ADC采集通道
+#define CONFIG_ADC1_CHANNEL										16//ADC采集通道
 #define CONFIG_ADC3_CHANNEL										3//ADC采集通道
 #define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱
-#define CONFIG_ADC_AVERAGE_NUM								10//ADC平均值次数
+#define CONFIG_ADC_AVERAGE_NUM								16//ADC平均值次数
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
 #define CONFIG_ADC1_DMA_BUFFER_SIZE						(CONFIG_ADC1_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
 #define CONFIG_ADC3_DMA_BUFFER_SIZE						(CONFIG_ADC3_CHANNEL * CONFIG_ADC_AVERAGE_NUM)//ADC DMA采集缓冲
@@ -1787,12 +1823,12 @@ extern uint16_t audioSineTable[];
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-#define CONFIG_EPROM_MEDICAL_CRC							(31456L)//4B 治疗历史 CRC32 硬件计算
-#define CONFIG_EPROM_MR_CRC										(31460L)//4B MR NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_DM_CRC										(31464L)//4B DM NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_FD_CRC										(31468L)//4B FD NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_MCU_FW_CRC								(31472L)//4B MCU固件CRC32值 软件计算
-#define CONFIG_EPROM_LCD_FW_CRC								(31476L)//4B LCD固件CRC32值 软件计算
+#define CONFIG_EPROM_MEDICAL_CRC							(31466L)//4B 治疗历史 CRC32 硬件计算
+#define CONFIG_EPROM_MR_CRC										(31470L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC										(31474L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC										(31478L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(31482L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(31486L)//4B LCD固件CRC32值 软件计算
 #define CONFIG_EPROM_CFG_CRC									(31480L)//4B deviceConfig CRC32值 硬件计算
 #define CONFIG_EPROM_LOG_CRC									(31484L)//4B logInfo CRC32值 硬件计算
 

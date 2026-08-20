@@ -316,8 +316,8 @@ extern "C" {
 
 #if defined(LYPE_MCU_1V0_20260106)
 
-#define CONFIG_USING_CLASSIC_PID												0
-#define CONFIG_USING_FUZZY_PID													1
+#define CONFIG_USING_CLASSIC_PID												1
+#define CONFIG_USING_FUZZY_PID													0
 #define CONFIG_USING_SMART_PID													0
 
 #define CONFIG_LASER_A_DIODE_SET_TEMP									250//激光器温度设定
