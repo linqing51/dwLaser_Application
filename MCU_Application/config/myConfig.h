@@ -5,9 +5,14 @@ extern "C" {
 #endif
 /*****************************************************************************/
 #if defined(CORE_6M3S_JL_FC_1940_1470_635)
-#include "AppConfig_6M3S_JL_FC.h"
-#include "BoardConfig_6M3S_JL_FC.h"
-#include "sPlcConfig_6M3S_JL_FC.h"
+#include ".\6M3S_JL_FC\AppConfig.h"
+#include ".\6M3S_JL_FC\BoardConfig.h"
+#include ".\6M3S_JL_FC\sPlcConfig.h"
+#endif
+#if defined(LYPE_2V0_20260703_M450)
+#include ".\LYPE_2V0_M450\AppConfig.h"
+#include ".\LYPE_2V0_M450\BoardConfig.h"
+#include ".\LYPE_2V0_M450\sPlcConfig.h"
 #endif
 /*****************************************************************************/
 //定义分类方案个数
