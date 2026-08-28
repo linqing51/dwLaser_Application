@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx,USER_VECT_TAB_ADDRESS,CORE_6M3S_JL_FC_1940_1470_635</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../../config;../../lib;../../sPlc;../../sPlcPort;../../MainApp;../../dcHmi</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../../lib;../../sPlc;../../sPlcPort;../../MainApp;../../dcHmi</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1073,21 +1073,6 @@
               <FilePath>..\..\sPlcPort\sPlcSpeaker.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcIoOut.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcIoOut.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcIoIn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcIoIn.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcEprom_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcEprom_SPI.c</FilePath>
-            </File>
-            <File>
               <FileName>sPlcEprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcEprom.c</FilePath>
@@ -1126,6 +1111,21 @@
               <FileName>sPlcRtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcIoIn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\CORE_6M3S_JL_FC_1470_1940\sPlcIoIn.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcIoOut.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\CORE_6M3S_JL_FC_1470_1940\sPlcIoOut.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\CORE_6M3S_JL_FC_1470_1940\sPlcEprom_SPI.c</FilePath>
             </File>
           </Files>
         </Group>

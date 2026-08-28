@@ -4,7 +4,7 @@
 #include "stm32f4xx.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include "myConfig.h"
+#include "..\config\myConfig.h"
 /*****************************************************************************/
 #ifdef __cplusplus
 extern "C" {

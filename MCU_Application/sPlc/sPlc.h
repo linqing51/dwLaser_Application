@@ -19,7 +19,7 @@
 #include "string.h"
 /*****************************************************************************/
 //lib
-#include "myConfig.h"
+#include "..\config\myConfig.h"
 #include "sPlcEprom.h"
 #include "sPlcFun.h"
 #include "libcrc.h"

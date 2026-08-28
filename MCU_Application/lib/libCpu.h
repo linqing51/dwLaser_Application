@@ -7,7 +7,7 @@ extern "C" {
 /*****************************************************************************/
 #include "stdio.h"
 #include "stm32f4xx_hal.h"
-#include "myConfig.h"
+#include "..\config\myConfig.h"
 #include "flash_if.h"
 #include "libcrc.h"
 /*****************************************************************************/

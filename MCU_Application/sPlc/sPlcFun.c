@@ -1,5 +1,5 @@
 #include "sPlcFun.h"
-#include "myConfig.h"
+#include "..\config\myConfig.h"
 /*****************************************************************************/
 void REBOOT(void) {//软件复位	
 	__set_FAULTMASK(1);

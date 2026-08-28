@@ -6,7 +6,7 @@ extern "C" {
 #endif
 /*****************************************************************************/
 #include "stm32f4xx_hal.h"
-#include "myConfig.h"
+#include "..\config\myConfig.h"
 #include "stdio.h"
 /*****************************************************************************/
 #ifdef __cplusplus

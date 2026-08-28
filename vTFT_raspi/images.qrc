@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/mnue.png</file>
+        <file>images/mnue1.png</file>
+        <file>images/numberkeyboard.png</file>
+        <file>images/mnue3.png</file>
+        <file>images/numberkeyboard1.png</file>
+        <file>images/mnue4.png</file>
+        <file>images/mnue5.png</file>
+        <file>images/sprite.png</file>
+    </qresource>
+</RCC>
