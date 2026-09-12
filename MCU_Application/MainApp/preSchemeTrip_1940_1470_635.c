@@ -296,10 +296,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//Phlebology
 	//1940nm, CW 8w 80J/cm
 	p = &sPhlebology[0];
-	p->name = "EVLA Thigh";
+	p->name = "EVLA Thigh CW i";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 70;
+	p->power_ch0 = 40;
 	p->power_ch1 = 1;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
@@ -307,10 +307,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	
 	//1940nm, CW 6w 60J/cm
 	p = &sPhlebology[1];
-	p->name = "EVLA calf";
+	p->name = "EVLA Thigh Pulse i";
 	p->channel = LASER_CHANNEL_CH0;
-	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 60;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 40;
 	p->power_ch1 = 1;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
@@ -318,9 +318,79 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	
 	//1940nm, CW 3w 30J/cm
 	p = &sPhlebology[2];
-	p->name = "EVLA Small Vessel";
+	p->name = "EVLA Thigh CW ii";
 	p->channel = LASER_CHANNEL_CH0;
 	p->pulse_mode = LASER_MODE_CW; 
+	p->power_ch0 = 50;
+	p->power_ch1 = 1;
+	p->power_ch2 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+  
+  p = &sPhlebology[3];
+	p->name = "EVLA Thigh Pulse ii";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 50;
+	p->power_ch1 = 1;
+	p->power_ch2 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+  
+  p = &sPhlebology[4];
+	p->name = "EVLA Thigh CW iii";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_CW; 
+	p->power_ch0 = 60;
+	p->power_ch1 = 1;
+	p->power_ch2 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+  
+  p = &sPhlebology[5];
+	p->name = "EVLA Thigh Pulse iii";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 60;
+	p->power_ch1 = 1;
+	p->power_ch2 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+  
+  p = &sPhlebology[6];
+	p->name = "EVLA calf CW i";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_CW; 
+	p->power_ch0 = 20;
+	p->power_ch1 = 1;
+	p->power_ch2 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+  
+  p = &sPhlebology[7];
+	p->name = "EVLA calf Pulse i";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
+	p->power_ch0 = 20;
+	p->power_ch1 = 1;
+	p->power_ch2 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+  
+  p = &sPhlebology[8];
+	p->name = "EVLA calf CW ii";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_CW; 
+	p->power_ch0 = 30;
+	p->power_ch1 = 1;
+	p->power_ch2 = 1;
+	p->poswidth = 1000;
+	p->negwidth = 1000;
+  
+  p = &sPhlebology[9];
+	p->name = "EVLA calf Pulse ii";
+	p->channel = LASER_CHANNEL_CH0;
+	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
 	p->power_ch2 = 1;
@@ -331,10 +401,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 6w, 250 Joules per hemorrhoid
 	p = &sProctology[0];
 	p->name = "Hemorrhoids Grade 2, 250J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 70;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 70;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -342,10 +412,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 7w, 350 Joules per hemorrhoid
 	p = &sProctology[1];
 	p->name ="Hemorrhoids Grade 3, 350J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
@@ -353,10 +423,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 8w, 350 Joules per hemorrhoid
 	p = &sProctology[2];
 	p->name = "Hemorrhoids Grade 4, 350J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
@@ -364,10 +434,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 10w 100J/cm
 	p = &sProctology[3];
 	p->name = "Fistula";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
@@ -375,10 +445,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 10w 100J/cm
 	p = &sProctology[4];
 	p->name = "Pilonidal Sinus";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
@@ -386,10 +456,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 7w 100J/cm
 	p = &sProctology[5];
 	p->name = "Fissure Ablation";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 70;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 70;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
@@ -397,10 +467,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, Pulse 6w 500ms Ton, 500ms Toff
 	p = &sGynecology[0];
 	p->name = "Laser Vaginal Tightening 1st 600J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 60;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 60;
 	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 	
@@ -408,10 +478,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, Pulse 7w 500ms Ton, 500ms Toff
 	p = &sGynecology[1];
 	p->name = "Laser Vaginal Tightening 2nd 600J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 70;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 70;
 	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 
@@ -419,10 +489,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, Pulse 8w 500ms Ton, 500ms Toff
 	p = &sGynecology[2];
 	p->name = "Laser Vaginal Tightening 3rd 600J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 
@@ -430,10 +500,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, Pulse 8w 500ms Ton, 500ms Toff
 	p = &sGynecology[3];
 	p->name = "Laser Vaginal Tightening 4th 600J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 
@@ -441,10 +511,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 6w 15s Ton
 	p = &sGynecology[4];
 	p->name ="Laser Vaginal Rejuvenation 360J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 60;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 60;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
@@ -452,10 +522,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 10w 15s Ton
 	p = &sGynecology[5];
 	p->name = "Laser Vaginal Rejuvenation+ 600J"; 
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 15000;
 	p->negwidth = 1000; 	
@@ -463,10 +533,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 5w
 	p = &sGynecology[6];
 	p->name = "Stress Urinary Incontinence,75J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 50;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 50;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
@@ -474,14 +544,14 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 		//1470nm 10w CW
 	p = &sGynecology[7];
 	p->name = "LVR/SUI Pro @ 4 Passes / 2400J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP;
 #if defined( MODLE_M1470_640_10_30_05_D200_22_G9_PK)
 	p->power_ch0 = 170;
 #else
-  p->power_ch0 = 150;
+  p->power_ch0 = 1;
 #endif
-	p->power_ch1 = 1;
+	p->power_ch1 = 150;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 150;
@@ -489,10 +559,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 5w
 	p = &sGynecology[8];
 	p->name = "Infection control, 50J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 50;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 50;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
@@ -500,10 +570,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, CW 8w
 	p = &sGynecology[9];
 	p->name = "Treatment after Menopause, 480J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
@@ -511,10 +581,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 12w CW
 	p = &sGynecology[10];
 	p->name = "Hysteroscopy Myomas";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -522,10 +592,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 8w CW
 	p = &sGynecology[11];
 	p->name = "Hysteroscopy Polyps";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
@@ -533,10 +603,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sGynecology[12];
 	p->name = "Hysteroscopy Septum";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
@@ -544,10 +614,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sGynecology[13];
 	p->name = "Hysteroscopy Adhesion";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
@@ -555,10 +625,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 12w CW
 	p = &sGynecology[14];
 	p->name = "Hysteroscopy Dysmorphic Uterus";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
@@ -566,10 +636,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 12w CW
 	p = &sGynecology[15];
 	p->name = "Hysteroscopy Isthmocele";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
@@ -577,10 +647,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 12w CW
 	p = &sGynecology[16];
 	p->name = "Hysteroscopy T-Shape Uterus";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
@@ -588,10 +658,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 12w CW
 	p = &sGynecology[17];
 	p->name = "Laparoscopy Myomas";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -599,10 +669,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sGynecology[18];
 	p->name = "Laparoscopy Ovarian Cysts";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -610,10 +680,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sGynecology[19];
 	p->name = "Laparoscopy Adhesion";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -621,10 +691,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sGynecology[20];
 	p->name = "Laparoscopy Salpingectomy";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -632,10 +702,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sGynecology[21];
 	p->name = "Laparoscopy Cysts";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
@@ -643,10 +713,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sGynecology[22];
 	p->name = "Laparoscopy Endometriosis";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -654,10 +724,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, Pulse 7w 1s Ton, 5s Toff
 	p = &sNeurosurgery[0];
 	p->name = "PLDD L2-L3, L3-L4, L5-S1 800-1500J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 70;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 70;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
@@ -665,10 +735,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, Pulse 7w 1s Ton, 5s Toff
 	p = &sNeurosurgery[1];
 	p->name = "PLDD L4-L5 Total 800-1800J";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 70;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 70;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
@@ -676,10 +746,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, Pulse 7w, 1s Ton, 5s Toff
 	p = &sNeurosurgery[2];
 	p->name = "Tumour 1470nm";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 70;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 70;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;	
@@ -688,110 +758,110 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm Pulse 0.5W, 50ms,50ms
 	p = &sEndolift[0];
 	p->name = "Face Lower eyelids";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 6;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 6;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;	
 	
 	p = &sEndolift[1];
 	p->name = "Face Cheeks";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 15;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 15;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;	
 		
 	p = &sEndolift[2];
 	p->name = "Face Mandib bord";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 13;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 13;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 		
 	p = &sEndolift[3];
 	p->name = "Face Under chin";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP;
-	p->power_ch0 = 15;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 15;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
 	p = &sEndolift[4];
 	p->name = "Face Neck";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 15;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 15;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
 	p = &sEndolift[5];
 	p->name = "Body Arms";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 30;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 30;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
 	p = &sEndolift[6];
 	p->name = "Body Abdomen";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 30;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 30;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 
 	p = &sEndolift[7];
 	p->name = "Body Sides";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 30;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 30;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 		
 	p = &sEndolift[8];
 	p->name = "Body Trochanter";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 30;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 30;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
 	p = &sEndolift[9];
 	p->name = "Body Inside led";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 30;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 30;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
 	p = &sEndolift[10];
 	p->name = "Body Anckle";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_MP; 
-	p->power_ch0 = 30;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 30;
 	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
@@ -800,10 +870,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm, 3w CW
 	p = &sLiposuction[0];
 	p->name =  "Liposuction Under Eye";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 30;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 30;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -811,10 +881,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 6w CW	
 	p = &sLiposuction[1];
 	p->name = "Liposuction Chin";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 60;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 60;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -822,10 +892,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 8w CW
 	p = &sLiposuction[2];
 	p->name = "Liposuction Arm";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -833,10 +903,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 12 CW
 	p = &sLiposuction[3];
 	p->name = "Liposuction Abdomen";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 120;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 120;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -844,10 +914,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 10w CW
 	p = &sLiposuction[4];
 	p->name = "Liposuction Buttock";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 100;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 100;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -855,10 +925,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 8w CW
 	p = &sLiposuction[5];
 	p->name = "Liposuction Thigh";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
@@ -866,10 +936,10 @@ void schemeInit(uint8_t reDef){//治疗方案初始化
 	//1470nm 8w CW	
 	p = &sLiposuction[6];
 	p->name = "Gynecomastia";
-	p->channel = LASER_CHANNEL_CH0;
+	p->channel = LASER_CHANNEL_CH1;
 	p->pulse_mode = LASER_MODE_CW; 
-	p->power_ch0 = 80;
-	p->power_ch1 = 1;
+	p->power_ch0 = 1;
+	p->power_ch1 = 80;
 	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;

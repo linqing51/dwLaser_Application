@@ -1867,7 +1867,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_POWEROFF_BUTTON_CANCEL:{
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//退出关机确认状态												
-						SetScreen(NVRAM0[EM_DC_PAGE]);
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
+            SetScreen(NVRAM0[EM_DC_PAGE]);
 					}
 					break;
 				}

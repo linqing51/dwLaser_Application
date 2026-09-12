@@ -11,7 +11,15 @@ extern "C" {
 #endif
 /*****************************************************************************/
 //定义分类方案个数
+
+#if defined(APP_CONFIG_WAVE_1470_635)
 #define CONFIG_PHLEBOLOGY_SIZE												3
+#endif
+
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+#define CONFIG_PHLEBOLOGY_SIZE												10
+#endif
+
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												23
 #define CONFIG_ENT_SIZE																16

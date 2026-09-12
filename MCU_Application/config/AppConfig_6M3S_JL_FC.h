@@ -79,7 +79,7 @@ extern "C" {
 #define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
 /*****************************************************************************/
 //版本配置
-#define SW_VERSION																		"5.0a0b0"
+#define SW_VERSION																		"5.0a0b1"
 #define HW_VERSION																		"CORE_6M3S_JL_FC_1940_1470_635"
 //配置波长
 #define APP_CONFIG_WAVE_1940_1470_635//APP为三波长 1940+1470+635

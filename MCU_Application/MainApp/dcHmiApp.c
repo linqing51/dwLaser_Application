@@ -598,6 +598,38 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				strcpy(dispBuf, (char*)(sPhlebology[2].name));
 				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
 			}
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+      if(strlen((char*)sPhlebology[3].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[3].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+			}
+      if(strlen((char*)sPhlebology[4].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[4].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+			}
+      if(strlen((char*)sPhlebology[5].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[5].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+			}
+      if(strlen((char*)sPhlebology[6].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[6].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+			}
+      if(strlen((char*)sPhlebology[7].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[7].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+			}
+      if(strlen((char*)sPhlebology[8].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[8].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+			}
+      if(strlen((char*)sPhlebology[9].name) <= CONFIG_SCHEME_NAME_SIZE){
+				strcpy(dispBuf, (char*)(sPhlebology[9].name));
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+			}
+#endif    
+
+#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)      
 			//方案3-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
@@ -617,7 +649,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
 			BatchEnd();
-			
+
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
@@ -636,7 +668,48 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
+#endif
 
+#if defined(APP_CONFIG_WAVE_1940_1470_635)
+			//方案3-15禁止选择
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_1, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_2, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_3, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_4, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_5, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_6, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_7, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_8, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_9, true);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_10, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_11, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_12, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_13, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_14, false);
+			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
+			BatchEnd();
+
+			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchEnd();
+#endif
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
 			SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
 			
