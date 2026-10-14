@@ -10,7 +10,7 @@
       <TargetName>targetBoard_G5_TRI_A1_20260915</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\BIN</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -338,7 +338,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,ARM_MATH_CM4,USER_VECT_TAB_ADDRESS,LDR2P1_G5_A1_20250731_TRIP,MBEDTLS_CONFIG_FILE=&lt;mbedtls_config.h&gt;,STM32F405xx</Define>
+              <Define>USE_HAL_DRIVER,ARM_MATH_CM4,USER_VECT_TAB_ADDRESS,MBEDTLS_CONFIG_FILE=&lt;mbedtls_config.h&gt;,STM32F405xx,G5_TRI_A1_20260915</Define>
               <Undefine></Undefine>
               <IncludePath>../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../../sPlc;../../sPlcPort;../../lib;../../MainApp;../../deviceInfo;../../dcHmi;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../LIBJPEG/App;../LIBJPEG/Target;../MBEDTLS/App;../Middlewares/Third_Party/LibJPEG/include;../Middlewares/Third_Party/mbedTLS/include/mbedtls;../Middlewares/Third_Party/mbedTLS/include</IncludePath>
             </VariousControls>
@@ -2474,11 +2474,6 @@
               <FilePath>..\..\lib\libdbg.c</FilePath>
             </File>
             <File>
-              <FileName>pid_temp_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\pid_temp_control.c</FilePath>
-            </File>
-            <File>
               <FileName>fuzzy_pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\fuzzy_pid.c</FilePath>
@@ -2509,34 +2504,9 @@
           <GroupName>sPlcPort</GroupName>
           <Files>
             <File>
-              <FileName>sPlcAdc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcAdc.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcDac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcDac.c</FilePath>
-            </File>
-            <File>
               <FileName>sPlcEprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcEprom.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcIoIn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcIoIn.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcIoOut.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcIoOut.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcLaser.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcLaser.c</FilePath>
             </File>
             <File>
               <FileName>sPlcMisc.c</FileName>
@@ -2554,34 +2524,44 @@
               <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcPMU_LTC2955.c</FileName>
+              <FileName>sPlcRtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
+              <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcPMU_STM32.c</FileName>
+              <FileName>sPlcAdc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcAdc.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcI2C_HDC1080.c</FileName>
+              <FileName>sPlcDac.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcI2C_HDC1080.c</FilePath>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcDac.c</FilePath>
             </File>
             <File>
               <FileName>sPlcEprom_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcEprom_SPI.c</FilePath>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcEprom_SPI.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcEprom_I2C.c</FileName>
+              <FileName>sPlcIoIn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcEprom_I2C.c</FilePath>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcIoIn.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcRtc.c</FileName>
+              <FileName>sPlcIoOut.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcIoOut.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcLaser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcLaser.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcPmu.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2649,21 +2629,6 @@
               <FilePath>..\..\MainApp\MainAppLib.c</FilePath>
             </File>
             <File>
-              <FileName>preSchemeDual_1470.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preSchemeDual_1470.c</FilePath>
-            </File>
-            <File>
-              <FileName>preSchemeDual_1940.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preSchemeDual_1940.c</FilePath>
-            </File>
-            <File>
-              <FileName>preSchemeTrip.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
-            </File>
-            <File>
               <FileName>statusLoop.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\statusLoop.c</FilePath>
@@ -2677,6 +2642,31 @@
               <FileName>wfswLoop.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\wfswLoop.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeDual_450_980.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_450_980.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeDual_1470_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_1470_635.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeDual_1940_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_1940_635.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeTrip_1470_980_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeTrip_1470_980_635.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeTrip_1940_1470_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeTrip_1940_1470_635.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2751,104 +2741,6 @@
               </Aads>
             </GroupArmAds>
           </GroupOption>
-        </Group>
-        <Group>
-          <GroupName>Middlewares/CMSIS/CMSIS/DSP/Library</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>0</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>4</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <ClangAsOpt>1</ClangAsOpt>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
-          <Files>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Lib/ARM/arm_cortexM4lf_math.lib</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>1</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds/>
-              </FileOption>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>Middlewares/CLI</GroupName>

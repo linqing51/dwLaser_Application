@@ -56,7 +56,7 @@ void MX_GPIO_Init(void)
                           |MCP41010_SCK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, TEC_PWM_Pin|MCP41010_SDI_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, TEC_PWM_Pin|MCP41010_SDI_Pin|EPROM_NSS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, USB_HS_PSON_Pin|USB_FS_PSON_Pin, GPIO_PIN_RESET);
@@ -67,19 +67,19 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD1_PWM_Pin LD0_PWM_Pin SPK_EN_Pin MCP41010_SCK_Pin */
-  GPIO_InitStruct.Pin = LD1_PWM_Pin|LD0_PWM_Pin|SPK_EN_Pin|MCP41010_SCK_Pin;
+  /*Configure GPIO pins : LD1_PWM_Pin LD0_PWM_Pin SPK_EN_Pin */
+  GPIO_InitStruct.Pin = LD1_PWM_Pin|LD0_PWM_Pin|SPK_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TEC_PWM_Pin MCP41010_SDI_Pin */
-  GPIO_InitStruct.Pin = TEC_PWM_Pin|MCP41010_SDI_Pin;
+  /*Configure GPIO pin : TEC_PWM_Pin */
+  GPIO_InitStruct.Pin = TEC_PWM_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(TEC_PWM_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : ESTOP_NC_Pin */
   GPIO_InitStruct.Pin = ESTOP_NC_Pin;
@@ -98,8 +98,29 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = MCP41010_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(MCP41010_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : MCP41010_SCK_Pin */
+  GPIO_InitStruct.Pin = MCP41010_SCK_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(MCP41010_SCK_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : MCP41010_SDI_Pin */
+  GPIO_InitStruct.Pin = MCP41010_SDI_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(MCP41010_SDI_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : EPROM_NSS_Pin */
+  GPIO_InitStruct.Pin = EPROM_NSS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(EPROM_NSS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : INTERLOCK_NC_Pin */
   GPIO_InitStruct.Pin = INTERLOCK_NC_Pin;

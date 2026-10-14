@@ -1,0 +1,13 @@
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_mult_q31.c
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ../Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ../Drivers/CMSIS/DSP/Include/arm_math_types.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ../Drivers/CMSIS/DSP/Include/arm_math_memory.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ../Drivers/CMSIS/DSP/Include/dsp/none.h
+.\targetboard_g5_tri_a1_20260915\arm_mult_q31.o: ../Drivers/CMSIS/DSP/Include/dsp/utils.h

@@ -1,0 +1,15 @@
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../Middlewares/Third_Party/mbedTLS/library/bignum.c
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../MBEDTLS/App/mbedtls_config.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/bignum.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/bn_mul.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_util.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_time.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\targetboard_g5_tri_a1_20260915\bignum.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

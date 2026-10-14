@@ -104,7 +104,6 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sPhlebology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sPhlebology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sPhlebology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sPhlebology[index].power_red;
 			NVRAM0[EM_LASER_POSWIDTH] = sPhlebology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sPhlebology[index].negwidth;
 			break;
@@ -118,7 +117,6 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sProctology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sProctology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sProctology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sProctology[index].power_red;
 			NVRAM0[EM_LASER_POSWIDTH] = sProctology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sProctology[index].negwidth;
 			break;			
@@ -132,7 +130,6 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sGynecology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sGynecology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sGynecology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sGynecology[index].power_red;
 			NVRAM0[EM_LASER_POSWIDTH] = sGynecology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sGynecology[index].negwidth;
 			break;
@@ -146,7 +143,6 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sENT[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sENT[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sENT[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sENT[index].power_red;
 			NVRAM0[EM_LASER_POSWIDTH] = sENT[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sENT[index].negwidth;
 			break;
@@ -160,7 +156,6 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sNeurosurgery[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sNeurosurgery[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sNeurosurgery[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sNeurosurgery[index].power_red;
 			NVRAM0[EM_LASER_POSWIDTH] = sNeurosurgery[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sNeurosurgery[index].negwidth;
 			break;
@@ -174,7 +169,6 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sDermatology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sDermatology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sDermatology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sDermatology[index].power_red;
 			NVRAM0[EM_LASER_POSWIDTH] = sDermatology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sDermatology[index].negwidth;			
 			break;

@@ -15,7 +15,6 @@
 #include "hmiLib.h"
 #include "dcHmiRes.h"
 #include "MainAppLib.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

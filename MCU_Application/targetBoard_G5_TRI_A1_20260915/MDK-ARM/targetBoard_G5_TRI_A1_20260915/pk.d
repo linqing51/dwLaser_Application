@@ -1,0 +1,13 @@
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/library/pk.c
+.\targetboard_g5_tri_a1_20260915\pk.o: ../MBEDTLS/App/mbedtls_config.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+.\targetboard_g5_tri_a1_20260915\pk.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/pk.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/md.h
+.\targetboard_g5_tri_a1_20260915\pk.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/ecp.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/bignum.h
+.\targetboard_g5_tri_a1_20260915\pk.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/ecdsa.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/pk_internal.h
+.\targetboard_g5_tri_a1_20260915\pk.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_util.h
