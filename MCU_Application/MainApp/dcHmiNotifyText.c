@@ -1207,6 +1207,19 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 			}
 			break;
 		}
+		case GDDC_PAGE_TREATMENTLOG:{	
+			switch(control_id){
+				case GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME:{
+					
+					break;
+				}
+				case GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE:{
+					
+					break;
+				}
+				default:break;
+			}
+		}
 		default:break;
 	}
 }   

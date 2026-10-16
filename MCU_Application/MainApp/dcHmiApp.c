@@ -16,6 +16,8 @@ extern ApplicationTypeDef Appli_state;
 static uint16_t legalUsbDev[5] = {0x16C0, 0, 0, 0, 0};
 static uint16_t legalUsbPid[5] = {0x05E2, 0, 0, 0, 0};
 /*****************************************************************************/
+treatmentLog_t treatmentLog;
+/*****************************************************************************/
 void saveConfigToDisk(void){//将配置储存到U盘
 
 }
@@ -1987,7 +1989,9 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	minute = temp0 / 60;
 	seconds = temp0 % 60;
 	sprintf(dispBuf1, "%3d:%02d", minute, seconds);//00:00
+	
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME, (uint8_t*)dispBuf1);		
+	strcpy(treatmentLog.releaseTime, dispBuf1);
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){//连续模式能量计算
 		temp2 = temp0 * NVRAM0[EM_LASER_POWER_TOTAL];//计算发射能量
 	}
@@ -2021,7 +2025,8 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	p = (int32_t*)(&NVRAM0[EM_LASER_RELEASE_ENERGY]);
 	*p = temp2;
 	sprintf(dispBuf1, "%11.1f J", ((float)temp2 / 10));//00:00
-	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1);
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1); 
+	treatmentLog.releaseEnergy = (float)temp2 / 10.0F;
 }
 void updateWarnMsgDisplay(MSG_ID_T id){//更新警号显示框
 	const char *msg;
@@ -2490,6 +2495,14 @@ void updateStandbyDisplay(void){//更新方案显示
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	updateExtralDisplay();
+	if(treatmentLog.vailable == true){//记录有效
+		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT, true);
+		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT,  true);
+	}
+	else{
+		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT, false);
+		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT, false);
+	}
 }
 
 void updateOptionDisplay(void){//更新选项显示	
@@ -2522,17 +2535,16 @@ void updateReadyDisplay(void){//更新READY显示
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH0] / 10.0F;
 #if defined(APP_CONFIG_WAVE_1470_650)	|| defined(APP_CONFIG_WAVE_1470_980_650)
 			sprintf(dispBuf, "1470nm");
+			sprintf(treatment.laserWave, "1470nm");
 #endif
-#if defined(APP_CONFIG_WAVE_1940_650)
+#if defined(APP_CONFIG_WAVE_1940_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			sprintf(dispBuf, "1940nm");
+			sprintf(treatment.laserWave, "1940nm");
 #endif
 #if defined(APP_CONFIG_WAVE_450_980)
 			sprintf(dispBuf, "450nm");
-#endif
-      
-#if defined(APP_CONFIG_WAVE_1940_1470_635)
-      sprintf(dispBuf, "1940nm");
-#endif
+			sprintf(treatment.laserWave, "450nm");
+#endif     
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
@@ -2540,8 +2552,10 @@ void updateReadyDisplay(void){//更新READY显示
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH1] / 10.0F;
 #if defined(APP_CONFIG_WAVE_1940_1470_635)
       sprintf(dispBuf, "1470nm");
+			sprintf(treatment.laserWave, "1470nm");
 #else
 			sprintf(dispBuf, "980nm");
+			sprintf(treatmentLog.laserWave, "980nm");
 #endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
@@ -2549,11 +2563,13 @@ void updateReadyDisplay(void){//更新READY显示
 		case LASER_CHANNEL_CH2:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH2] / 10.0F;
 			sprintf(dispBuf, "635nm");
+			sprintf(treatmentLog.laserWave, "635nm");
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}			
 		default:{
 			sprintf(dispBuf, "1470+980nm");
+			sprintf(treatmentLog.laserWave, "1470+980nm");
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_CH0] + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_CH2])/ 10.0F;
 			break;
@@ -2561,6 +2577,8 @@ void updateReadyDisplay(void){//更新READY显示
 	}
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%3.1f W\n", displayPower);
+	treatmentLog.laserPower = displayPower;//复制实际功率
+	strcpy(treatmentLog.protocol, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);//复制方案名称
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	clearReleaseTimeEnergy();
@@ -2958,7 +2976,8 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	//状态机
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤	
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤
+		treatmentLog.vailable = false;//记录不可用
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 		tempControlInit();
 		sPlcSpeakerEnable();
@@ -3518,6 +3537,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			updateStandbyDisplay();	
 			RRES(R_STANDBY_KEY_SCHEME_LAST_DOWN);
 		}
+		if(LD(R_STANDBY_KEY_SAVE_TREATMENT_DOWN)){
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SAVE_TREATMENT;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_TREATMENTLOG;	
+			SetScreen(NVRAM0[EM_DC_PAGE]);
+		}
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_READY_LOAD_PARA){//等待蜂鸣器
@@ -3702,6 +3726,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
+				treatmentLog.vailable = true;//任意一次激光发射后记录有效
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}
 		}
@@ -3713,6 +3738,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
+				treatmentLog.vailable = true;//任意一次激光发射后记录有效
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}	
 		}
@@ -4309,6 +4335,10 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWEROFF_CONFIRM){//关机确认
+		return;
+	}
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SAVE_TREATMENT){//进入病历储存页面
+		
 		return;
 	}
 	

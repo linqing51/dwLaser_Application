@@ -58,6 +58,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+/* ȫ��FATFS����������main.c�ж��� */
+//SemaphoreHandle_t xFatfsMutex = NULL;
 
 /* USER CODE END PV */
 

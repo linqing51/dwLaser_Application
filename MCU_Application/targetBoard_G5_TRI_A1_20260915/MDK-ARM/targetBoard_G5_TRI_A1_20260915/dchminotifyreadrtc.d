@@ -104,6 +104,7 @@
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../lib/minicsv.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../lib/classic_pid.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h

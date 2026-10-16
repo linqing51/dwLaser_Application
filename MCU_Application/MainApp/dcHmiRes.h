@@ -36,19 +36,21 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_DUAL_450_980                  10
 #define GDDC_PAGE_STANDBY_TRI_1470_980_635							11
 #define GDDC_PAGE_STANDBY_TRI_1940_1470_635             12
-#define GDDC_PAGE_READY																	13
-#define GDDC_PAGE_OPTION																14//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									15//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										16//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_DETAIL													17//方案分类页 自定义
-#define GDDC_PAGE_INFORMATION														18//信息页面
-#define GDDC_PAGE_DIAGNOSIS															19//诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW													20//诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI												21
-#define GDDC_PAGE_RENAME																22//SCHEME更名
-#define GDDC_PAGE_RESTORE																23//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														24//脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM											25//弹出菜单 确认关机
+#define GDDC_PAGE_TREATMENTLOG													13//病例储存页面
+#define GDDC_PAGE_READY																	14
+#define GDDC_PAGE_OPTION																15//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									16//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										17//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_DETAIL													18//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														19//信息页面
+#define GDDC_PAGE_DIAGNOSIS															20//诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW													21//诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI												22
+#define GDDC_PAGE_RENAME																23//SCHEME更名
+#define GDDC_PAGE_RESTORE																24//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														25//脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM											26//弹出菜单 确认关机
+#define GDDC_PAGE_STATUS_USB														27//
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -126,7 +128,21 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH2 				42//功率设定拖动条 635(工作激光)
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM				43//功率设定拖动条 650(指示激光)
 #define GDDC_PAGE_STANDBY_ICON_MPKEY										44//脉冲模式背景图
+#define GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT						45//储存手术记录
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
+/*****************************************************************************/
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID							 1
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME						 2
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_GENDER					 3
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE							 4
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_ENERGY					 5
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_TIME						 6
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_POWER						 7
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_PROTOCOL				 8
+#define GDDC_PAGE_TREATMENT_KEY_MALE										 9
+#define GDDC_PAGE_TREATMENT_KEY_FEMALE									10
+#define GDDC_PAGE_TREATMENT_KEY_CANCEL									11
+#define GDDC_PAGE_TREATMENT_KEY_SAVEUSB									12
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//发射功率显示 1470 /1940

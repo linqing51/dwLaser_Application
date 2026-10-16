@@ -103,6 +103,7 @@
 .\targetboard_g5_tri_a1_20260915\dchmilanguage.o: ../../sPlc/sPlcFun.h
 .\targetboard_g5_tri_a1_20260915\dchmilanguage.o: ../../sPlc/sPlc.h
 .\targetboard_g5_tri_a1_20260915\dchmilanguage.o: ../../lib/libdbg.h
+.\targetboard_g5_tri_a1_20260915\dchmilanguage.o: ../../lib/minicsv.h
 .\targetboard_g5_tri_a1_20260915\dchmilanguage.o: ../../lib/classic_pid.h
 .\targetboard_g5_tri_a1_20260915\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h
 .\targetboard_g5_tri_a1_20260915\dchmilanguage.o: ../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h

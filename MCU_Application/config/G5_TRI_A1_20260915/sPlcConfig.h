@@ -706,6 +706,7 @@ extern "C" {
 #define R_STANDBY_KEY_MODE_SP_DOWN										(R_START * 16 + 121)
 #define R_STANDBY_KEY_MODE_MP_DOWN										(R_START * 16 + 122)
 #define R_STANDBY_KEY_MODE_GP_DOWN										(R_START * 16 + 123)
+#define R_STANDBY_KEY_SAVE_TREATMENT_DOWN							(R_START * 16 + 124)
 /*****************************************************************************/
 #define R_READY_KEY_READY_DOWN												(R_START * 16 + 130)
 #define R_READY_KEY_READY_UP													(R_START * 16 + 131)

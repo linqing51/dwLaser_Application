@@ -16,9 +16,11 @@ extern DAC_HandleTypeDef hdac;//LAS0 LAS1
 extern SPI_HandleTypeDef hspi3;//EPROM SPI3
 extern TIM_HandleTypeDef htim3;//RGB LED TIM
 extern TIM_HandleTypeDef htim4;//FAN TIM
+extern TIM_HandleTypeDef htim5;//AIM TIM	
+	
 extern TIM_HandleTypeDef htim7;//LASER TIM
 extern TIM_HandleTypeDef htim8;//SKP TIM
-extern TIM_HandleTypeDef htim10;//AIM TIM
+
 extern TIM_HandleTypeDef htim14;//SPLC TIM
 extern UART_HandleTypeDef huart1;//DBG UART
 extern UART_HandleTypeDef huart2;//GDDC UART
@@ -165,9 +167,9 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1)
 #define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim8, TIM_CHANNEL_1)
 
-#define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Stop(&htim10, TIM_CHANNEL_1)
-#define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1)
-#define SET_RAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim10, TIM_CHANNEL_1, b)
+#define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Stop(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
+#define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
+#define SET_RAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL, b)
 
 #define SET_RAIM_SHDN(b)			                __nop()
 #define SET_RAIM_SHDN_ON                      __nop()
@@ -227,13 +229,16 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_2
 #define CONFIG_FAN0_FG_CHANNEL								TIM_CHANNEL_1
 
+#define CONFIG_AIM_HANDLE											htim5			
+#define CONFIG_AIM_PWM_CHANNEL								TIM_CHANNEL_1
+
 #define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
 #define CONFIG_EPROM_BUS											SPI3	
 
 #define CONFIG_DEBUG_UART											huart1//调试串口
 
-#define CONFIG_GDDC_UART											huart2//GDDC串口
-#define CONFIG_GDDC_UART_INSTANCE							USART2//GDDC串口中断
+#define CONFIG_GDDC_UART											huart1//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
 /*****************************************************************************/
 //配置EPROM规格
 #define CONFIG_EPROM_SPI											

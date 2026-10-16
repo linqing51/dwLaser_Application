@@ -41,6 +41,10 @@ extern "C" {
 #define FSMSTEP_LASER_WAIT_TRIGGER									403//激光触发
 #define FSMSTEP_LASER_EMITING												404//激光发射中
 #define FSMSTEP_READY_ERROR													405//脚踏踩下错误
+
+//储存病例
+#define FSMSTEP_SAVE_TREATMENT											450//
+
 //选项状态
 #define FSMSTEP_OPTION															500//选项菜单
 #define FSMSTEP_INFORMATION													600
@@ -56,6 +60,20 @@ extern "C" {
 /*****************************************************************************/
 #define FLASH_DATA_VERSION  												0XAABB0000
 #define FLASH_DATA_ADDR     												0X00000000
+/*****************************************************************************/
+typedef struct{//定义患者记录
+	bool vailable;//是否可用
+	uint32_t id;//患者ID
+	uint8_t age;//患者年龄
+	float laserPower;//激光功率	
+	double releaseEnergy; //已发射能量
+	char releaseTime[CONFIG_DCHMI_DISKBUF_SIZE];//发射时间文本
+	char name[CONFIG_DCHMI_DISKBUF_SIZE];//患者名字
+	char gender[CONFIG_DCHMI_DISKBUF_SIZE];//患者性别
+	char laserWave[CONFIG_DCHMI_DISKBUF_SIZE];//选择的波长
+	char protocol[CONFIG_DCHMI_DISKBUF_SIZE];//选择的预设方案
+}treatmentLog_t;
+extern treatmentLog_t treatmentLog;
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);

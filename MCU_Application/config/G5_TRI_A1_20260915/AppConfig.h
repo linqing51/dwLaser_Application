@@ -11,6 +11,7 @@ extern "C" {
 #define CONFIG_DCHMI_DISKBUF_SIZE											256//显示缓冲区大小
 #define CONFIG_USING_DEFAULT_SCHEME										1//是能预设模式
 #define CONFIG_MAX_SCHEME_NAME_SIZE										40//方案名称长度
+#define	CONFIG_FIXSTRING_BUF_SIZE 										64//固定长度字符穿
 /*****************************************************************************/
 #define CONFIG_MORSECODE_SPACE_TIME										3000//莫尔斯电码空时间
 #define CONFIG_MORSECODE_LONG_TIME										900//莫尔斯电码长时间

@@ -898,10 +898,49 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
+				case GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT:{
+					if(state){
+						SSET(R_STANDBY_KEY_SAVE_TREATMENT_DOWN);
+					}
+					break;
+				}
 				default:break;
 			}
 			break;
 		}	
+		case GDDC_PAGE_TREATMENTLOG:{
+			switch(control_id){
+				case GDDC_PAGE_TREATMENT_KEY_MALE:{
+					if(state){
+						sprintf(treatmentLog.gender, "Male");
+					}
+					break;
+				}
+				case GDDC_PAGE_TREATMENT_KEY_FEMALE:{
+					if(state){
+						sprintf(treatmentLog.gender, "Female");
+					}
+					break;
+				}					
+				case GDDC_PAGE_TREATMENT_KEY_CANCEL:{
+					if(state){
+						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
+						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
+						SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
+						updateStandbyDisplay();
+					}
+					break;
+				}				
+				case GDDC_PAGE_TREATMENT_KEY_SAVEUSB:{
+					if(state){
+						
+					}
+					break;
+				}					
+			}
+			break;
+		}
+		
 		
 		case GDDC_PAGE_READY:{
 			switch(control_id){
