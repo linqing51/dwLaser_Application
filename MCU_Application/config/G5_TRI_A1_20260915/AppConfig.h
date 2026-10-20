@@ -70,6 +70,8 @@ extern "C" {
 #define LLCD_FIRMWARE_FILENAME												"/ld_lcd.pkg"//更新LCD固件地址
 #define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK 储存名称
 #define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM 恢复名称
+#define TREATMENTLOG_FILENAME													"/treatment_v1.csv" 
+
 /*****************************************************************************/
 //配置密码
 #define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码

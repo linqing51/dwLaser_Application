@@ -3538,6 +3538,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_STANDBY_KEY_SCHEME_LAST_DOWN);
 		}
 		if(LD(R_STANDBY_KEY_SAVE_TREATMENT_DOWN)){
+			//检查U盘是否插入
+			//检查U盘内是否有CSV病历文件
+			//如果没有->跳到询问是否新建
+			//如果有,打开CSV文件
+			//如果打开失败->调到询问是否新建
+			//如果打开成功,读取所有ID字段
+			//获取全部ID字段的数量如果
+			
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SAVE_TREATMENT;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_TREATMENTLOG;	
 			SetScreen(NVRAM0[EM_DC_PAGE]);

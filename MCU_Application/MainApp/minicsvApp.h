@@ -9,6 +9,7 @@ extern "C" {
 #include "ff.h"
 #include <string.h>
 #include <stdio.h>
+#include "dcHmiApp.h"
 /******************************************************************************/
 #ifdef __cplusplus
 }
