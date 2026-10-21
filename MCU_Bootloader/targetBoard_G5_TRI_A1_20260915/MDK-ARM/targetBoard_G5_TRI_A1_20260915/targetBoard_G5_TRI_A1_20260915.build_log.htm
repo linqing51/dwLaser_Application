@@ -1,0 +1,263 @@
+<html>
+<body>
+<pre>
+<h1>�Vision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ��Vision V5.43.1.0
+Copyright (C) 2025 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 11, 1, LIC=WHYH9-4JM2U-8TH3P-MLCN1-RZ7P9-KLWGS
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.43.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.43.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.3.1.0
+Dialog DLL:      TCM.DLL V1.56.6.0
+ 
+<h2>Project:</h2>
+D:\GitHub\dwLaser_Application\MCU_Bootloader\targetBoard_G5_TRI_A1_20260915\MDK-ARM\targetBoard_G5_TRI_A1_20260915.uvprojx
+Project File Date:  10/20/2026
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'targetBoard_G5_TRI_A1_20260915'
+Note: source file '..\..\Bootloader\bootLoader.c' - object file renamed from 'targetBoard_G5_TRI_A1_20260915\bootLoader.o' to 'targetBoard_G5_TRI_A1_20260915\bootloader_1.o'.
+Note: source file '..\..\..\MCU_Application\sPlcPort\sPlcEprom.c' - object file renamed from 'targetBoard_G5_TRI_A1_20260915\sPlcEprom.o' to 'targetBoard_G5_TRI_A1_20260915\splceprom_1.o'.
+compiling libcpu.c...
+..\..\..\MCU_Application\lib\libcpu.c(28): error:  #20: identifier "FLIP_TICK_LED" is undefined
+    FLIP_TICK_LED;
+..\..\..\MCU_Application\lib\libcpu.c(66): warning:  #223-D: function "Error_Handler" declared implicitly
+  		Error_Handler();
+..\..\..\MCU_Application\lib\libcpu.c(75): warning:  #223-D: function "Error_Handler" declared implicitly
+  		Error_Handler();
+..\..\..\MCU_Application\lib\libcpu.c(114): error:  #20: identifier "SET_RED_LED_ON" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(114): error:  #20: identifier "CONFIG_MORSECODE_SHORT_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(114): error:  #20: identifier "SET_RED_LED_OFF" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(114): error:  #20: identifier "CONFIG_MORSECODE_SPACE_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(116): error:  #20: identifier "CONFIG_MORSECODE_LONG_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(127): error:  #20: identifier "SET_RED_LED_ON" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(127): error:  #20: identifier "CONFIG_MORSECODE_SHORT_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(127): error:  #20: identifier "SET_RED_LED_OFF" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(127): error:  #20: identifier "CONFIG_MORSECODE_SPACE_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(129): error:  #20: identifier "CONFIG_MORSECODE_LONG_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(140): error:  #20: identifier "SET_RED_LED_ON" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(140): error:  #20: identifier "CONFIG_MORSECODE_SHORT_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(140): error:  #20: identifier "SET_RED_LED_OFF" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(140): error:  #20: identifier "CONFIG_MORSECODE_SPACE_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(144): error:  #20: identifier "CONFIG_MORSECODE_LONG_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(153): error:  #20: identifier "SET_RED_LED_ON" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(153): error:  #20: identifier "CONFIG_MORSECODE_SHORT_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(153): error:  #20: identifier "SET_RED_LED_OFF" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(153): error:  #20: identifier "CONFIG_MORSECODE_SPACE_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(157): error:  #20: identifier "CONFIG_MORSECODE_LONG_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(166): error:  #20: identifier "SET_RED_LED_ON" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(166): error:  #20: identifier "CONFIG_MORSECODE_SHORT_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(166): error:  #20: identifier "SET_RED_LED_OFF" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(166): error:  #20: identifier "CONFIG_MORSECODE_SPACE_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(170): error:  #20: identifier "CONFIG_MORSECODE_LONG_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(179): error:  #20: identifier "SET_RED_LED_ON" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(179): error:  #20: identifier "CONFIG_MORSECODE_SHORT_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(179): error:  #20: identifier "SET_RED_LED_OFF" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c(179): error:  #20: identifier "CONFIG_MORSECODE_SPACE_TIME" is undefined
+  			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
+..\..\..\MCU_Application\lib\libcpu.c: 2 warnings, 30 errors
+compiling bootLoader.c...
+..\..\Bootloader\bootLoader.h(25): error:  #5: cannot open source input file "myConfig.h": No such file or directory
+  #include "myConfig.h"
+..\..\Bootloader\bootLoader.c: 0 warnings, 1 error
+compiling bootLoader.c...
+..\..\Bootloader\bootLoader.h(25): error:  #5: cannot open source input file "myConfig.h": No such file or directory
+  #include "myConfig.h"
+..\..\Bootloader\bootLoader.c: 0 warnings, 1 error
+compiling sPlcEprom.c...
+..\..\..\MCU_Application\sPlc\sPlc.h(107): error:  #20: identifier "CONFIG_NVRAM_SIZE" is undefined
+  extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存�? 当前 包含存档寄存�?
+..\..\..\MCU_Application\sPlc\sPlc.h(109): error:  #20: identifier "CONFIG_FDRAM_SIZE" is undefined
+  extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存�?
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(10): error:  #20: identifier "CONFIG_EPROM_MR_START" is undefined
+  	printf("MR EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(10): error:  #20: identifier "CONFIG_EPROM_MR_END" is undefined
+  	printf("MR EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(10): error:  #20: identifier "CONFIG_MRRAM_SIZE" is undefined
+  	printf("MR EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(11): error:  #20: identifier "CONFIG_EPROM_DM_START" is undefined
+  	printf("DM EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(11): error:  #20: identifier "CONFIG_EPROM_DM_END" is undefined
+  	printf("DM EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(11): error:  #20: identifier "CONFIG_DMRAM_SIZE" is undefined
+  	printf("DM EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(12): error:  #20: identifier "CONFIG_EPROM_FD_START" is undefined
+  	printf("FD EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(12): error:  #20: identifier "CONFIG_EPROM_FD_END" is undefined
+  	printf("FD EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(14): error:  #20: identifier "CONFIG_EPROM_MEDICAL_CRC" is undefined
+  	printf("MEDICAL CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MEDICAL_CRC, (uint32_t)(CONFIG_EPROM_MEDICAL_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(15): error:  #20: identifier "CONFIG_EPROM_MR_CRC" is undefined
+  	printf("MR CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_CRC, (uint32_t)(CONFIG_EPROM_MR_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(16): error:  #20: identifier "CONFIG_EPROM_DM_CRC" is undefined
+  	printf("DM CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_CRC, (uint32_t)(CONFIG_EPROM_DM_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(17): error:  #20: identifier "CONFIG_EPROM_FD_CRC" is undefined
+  	printf("FD CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3), 4);	
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(18): error:  #20: identifier "CONFIG_EPROM_MCU_FW_CRC" is undefined
+  	printf("MCU FW CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(19): error:  #20: identifier "CONFIG_EPROM_LCD_FW_CRC" is undefined
+  	printf("LCD FW CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(21): error:  #20: identifier "CONFIG_EPROM_CONFIG_START" is undefined
+  	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(21): error:  #20: identifier "CONFIG_EPROM_CONFIG_END" is undefined
+  	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(22): error:  #20: identifier "CONFIG_EPROM_LOGINFO_START" is undefined
+  	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(22): error:  #20: identifier "CONFIG_EPROM_LOGINFO_END" is undefined
+  	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(42): error:  #20: identifier "CONFIG_EPROM_SIZE" is undefined
+  			for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(48): error:  #20: identifier "CONFIG_EPROM_MR_START" is undefined
+  			for(i = CONFIG_EPROM_MR_START; i <= CONFIG_EPROM_MR_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(48): error:  #20: identifier "CONFIG_EPROM_MR_END" is undefined
+  			for(i = CONFIG_EPROM_MR_START; i <= CONFIG_EPROM_MR_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(51): error:  #20: identifier "CONFIG_EPROM_DM_START" is undefined
+  			for(i = CONFIG_EPROM_DM_START; i <= CONFIG_EPROM_DM_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(51): error:  #20: identifier "CONFIG_EPROM_DM_END" is undefined
+  			for(i = CONFIG_EPROM_DM_START; i <= CONFIG_EPROM_DM_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(55): error:  #20: identifier "CONFIG_EPROM_MR_CRC" is undefined
+  			for(i = CONFIG_EPROM_MR_CRC; i <= (CONFIG_EPROM_MR_CRC + 3);i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(59): error:  #20: identifier "CONFIG_EPROM_DM_CRC" is undefined
+  			for(i = CONFIG_EPROM_DM_CRC; i <= (CONFIG_EPROM_DM_CRC + 3);i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(65): error:  #20: identifier "CONFIG_EPROM_FD_START" is undefined
+  			for(i = CONFIG_EPROM_FD_START; i <= CONFIG_EPROM_FD_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(65): error:  #20: identifier "CONFIG_EPROM_FD_END" is undefined
+  			for(i = CONFIG_EPROM_FD_START; i <= CONFIG_EPROM_FD_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(68): error:  #20: identifier "CONFIG_EPROM_FD_CRC" is undefined
+  			for(i = CONFIG_EPROM_FD_CRC; i <= (CONFIG_EPROM_FD_CRC + 3);i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c: 0 warnings, 30 errors
+compiling sPlcEprom.c...
+..\..\..\MCU_Application\sPlc\sPlc.h(107): error:  #20: identifier "CONFIG_NVRAM_SIZE" is undefined
+  extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存�? 当前 包含存档寄存�?
+..\..\..\MCU_Application\sPlc\sPlc.h(109): error:  #20: identifier "CONFIG_FDRAM_SIZE" is undefined
+  extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存�?
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(10): error:  #20: identifier "CONFIG_EPROM_MR_START" is undefined
+  	printf("MR EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(10): error:  #20: identifier "CONFIG_EPROM_MR_END" is undefined
+  	printf("MR EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(10): error:  #20: identifier "CONFIG_MRRAM_SIZE" is undefined
+  	printf("MR EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)CONFIG_MRRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(11): error:  #20: identifier "CONFIG_EPROM_DM_START" is undefined
+  	printf("DM EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(11): error:  #20: identifier "CONFIG_EPROM_DM_END" is undefined
+  	printf("DM EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(11): error:  #20: identifier "CONFIG_DMRAM_SIZE" is undefined
+  	printf("DM EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)CONFIG_DMRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(12): error:  #20: identifier "CONFIG_EPROM_FD_START" is undefined
+  	printf("FD EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(12): error:  #20: identifier "CONFIG_EPROM_FD_END" is undefined
+  	printf("FD EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, (uint16_t)CONFIG_FDRAM_SIZE);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(14): error:  #20: identifier "CONFIG_EPROM_MEDICAL_CRC" is undefined
+  	printf("MEDICAL CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MEDICAL_CRC, (uint32_t)(CONFIG_EPROM_MEDICAL_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(15): error:  #20: identifier "CONFIG_EPROM_MR_CRC" is undefined
+  	printf("MR CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_CRC, (uint32_t)(CONFIG_EPROM_MR_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(16): error:  #20: identifier "CONFIG_EPROM_DM_CRC" is undefined
+  	printf("DM CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_CRC, (uint32_t)(CONFIG_EPROM_DM_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(17): error:  #20: identifier "CONFIG_EPROM_FD_CRC" is undefined
+  	printf("FD CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_FD_CRC, (uint32_t)(CONFIG_EPROM_FD_CRC + 3), 4);	
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(18): error:  #20: identifier "CONFIG_EPROM_MCU_FW_CRC" is undefined
+  	printf("MCU FW CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MCU_FW_CRC, (uint32_t)(CONFIG_EPROM_MCU_FW_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(19): error:  #20: identifier "CONFIG_EPROM_LCD_FW_CRC" is undefined
+  	printf("LCD FW CRC EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_LCD_FW_CRC, (uint32_t)(CONFIG_EPROM_LCD_FW_CRC + 3), 4);
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(21): error:  #20: identifier "CONFIG_EPROM_CONFIG_START" is undefined
+  	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(21): error:  #20: identifier "CONFIG_EPROM_CONFIG_END" is undefined
+  	printf("CONFIG EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(22): error:  #20: identifier "CONFIG_EPROM_LOGINFO_START" is undefined
+  	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(22): error:  #20: identifier "CONFIG_EPROM_LOGINFO_END" is undefined
+  	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(42): error:  #20: identifier "CONFIG_EPROM_SIZE" is undefined
+  			for(i = 0;i < CONFIG_EPROM_SIZE;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(48): error:  #20: identifier "CONFIG_EPROM_MR_START" is undefined
+  			for(i = CONFIG_EPROM_MR_START; i <= CONFIG_EPROM_MR_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(48): error:  #20: identifier "CONFIG_EPROM_MR_END" is undefined
+  			for(i = CONFIG_EPROM_MR_START; i <= CONFIG_EPROM_MR_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(51): error:  #20: identifier "CONFIG_EPROM_DM_START" is undefined
+  			for(i = CONFIG_EPROM_DM_START; i <= CONFIG_EPROM_DM_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(51): error:  #20: identifier "CONFIG_EPROM_DM_END" is undefined
+  			for(i = CONFIG_EPROM_DM_START; i <= CONFIG_EPROM_DM_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(55): error:  #20: identifier "CONFIG_EPROM_MR_CRC" is undefined
+  			for(i = CONFIG_EPROM_MR_CRC; i <= (CONFIG_EPROM_MR_CRC + 3);i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(59): error:  #20: identifier "CONFIG_EPROM_DM_CRC" is undefined
+  			for(i = CONFIG_EPROM_DM_CRC; i <= (CONFIG_EPROM_DM_CRC + 3);i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(65): error:  #20: identifier "CONFIG_EPROM_FD_START" is undefined
+  			for(i = CONFIG_EPROM_FD_START; i <= CONFIG_EPROM_FD_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(65): error:  #20: identifier "CONFIG_EPROM_FD_END" is undefined
+  			for(i = CONFIG_EPROM_FD_START; i <= CONFIG_EPROM_FD_END;i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c(68): error:  #20: identifier "CONFIG_EPROM_FD_CRC" is undefined
+  			for(i = CONFIG_EPROM_FD_CRC; i <= (CONFIG_EPROM_FD_CRC + 3);i ++){
+..\..\..\MCU_Application\sPlcPort\sPlcEprom.c: 0 warnings, 30 errors
+compiling sPlcEprom_SPI.c...
+..\..\..\MCU_Application\sPlc\sPlc.h(107): error:  #20: identifier "CONFIG_NVRAM_SIZE" is undefined
+  extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存�? 当前 包含存档寄存�?
+..\..\..\MCU_Application\sPlc\sPlc.h(109): error:  #20: identifier "CONFIG_FDRAM_SIZE" is undefined
+  extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存�?
+..\..\..\MCU_Application\sPlcPort\G5_TRI_A1_20260915\sPlcEprom_SPI.c: 0 warnings, 2 errors
+"targetBoard_G5_TRI_A1_20260915\targetBoard_G5_TRI_A1_20260915.axf" - 94 Error(s), 2 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                https://www.keil.com/pack/ARM.CMSIS.6.3.0.pack
+                ARM::CMSIS@6.3.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 6.2.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F4xx_DFP.3.1.1.pack
+                Keil::STM32F4xx_DFP@3.1.1
+                STMicroelectronics STM32F4 Series Device Support
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_targetBoard_G5_TRI_A1_20260915
+  C:/Users/linqing/AppData/Local/Arm/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@6.2.0
+      Include file:  CMSIS/Core/Include/tz_context.h
+Target not created.
+Build Time Elapsed:  00:00:02
+</pre>
+</body>
+</html>
