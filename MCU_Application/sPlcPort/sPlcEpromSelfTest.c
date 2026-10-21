@@ -47,7 +47,7 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
   }  
 	//随机字节顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i <CONFIG_EPROM_SIZE ;i += 4){
+	for(i = 0;i < CONFIG_EPROM_SIZE ;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);	
 		epromWriteByte((i + 0), ((uint8_t*)&tempWrite + 0));
 		epromWriteByte((i + 1), ((uint8_t*)&tempWrite + 1));
@@ -56,7 +56,7 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i <CONFIG_EPROM_SIZE;i += 4){
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadByte((i + 0), ((uint8_t*)&tempRead + 0));
 		epromReadByte((i + 1), ((uint8_t*)&tempRead + 1));
 		epromReadByte((i + 2), ((uint8_t*)&tempRead + 2));
@@ -72,14 +72,14 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试
 	}
   //字顺序写入
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i <CONFIG_EPROM_SIZE;i += 4){
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
 		epromWriteHword((i + 0), ((uint16_t*)&tempWrite + 0));
 		epromWriteHword((i + 2), ((uint16_t*)&tempWrite + 1));
 		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
 	}
 	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
-	for(i = 0;i <CONFIG_EPROM_SIZE;i += 4){
+	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadHword((i + 0), ((uint16_t*)&tempRead + 0));
 		epromReadHword((i + 2), ((uint16_t*)&tempRead + 1));
 		crcRead = HAL_CRC_Accumulate(&hcrc, (uint32_t*)&tempRead, 1);

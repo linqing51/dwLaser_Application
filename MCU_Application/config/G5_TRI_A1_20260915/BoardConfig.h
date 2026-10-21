@@ -88,7 +88,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_TICK_LED_OFF											__nop()
 #define GET_TICK_LED													__nop()
 #define FLIP_TICK_LED													__nop()
-
+//FLIP_TICK_LED
 #define SET_ERR_LED_ON												__nop()
 #define SET_ERR_LED_OFF												__nop()
 #define GET_ERR_LED														__nop()
@@ -247,7 +247,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define	CONFIG_AT24C128_SIZE 									16384
 #define	CONFIG_AT24C256_SIZE 									32768//32K*8
 #define CONFIG_FM25W256G_SIZE									32768//32K
-#define CONFIG_MB85RS2MAT_SIZE								0x40000//256K
+#define CONFIG_MB85RS512TPN										65536//64K
+#define CONFIG_MB85RS2MAT_SIZE								262144//256K
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
@@ -324,19 +325,27 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-#define CONFIG_EPROM_MEDICAL_CRC							(31466L)//4B 治疗历史 CRC32 硬件计算
-#define CONFIG_EPROM_MR_CRC										(31470L)//4B MR NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_DM_CRC										(31474L)//4B DM NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_FD_CRC										(31478L)//4B FD NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_MCU_FW_CRC								(31482L)//4B MCU固件CRC32值 软件计算
-#define CONFIG_EPROM_LCD_FW_CRC								(31486L)//4B LCD固件CRC32值 软件计算
-#define CONFIG_EPROM_CFG_CRC									(31480L)//4B deviceConfig CRC32值 硬件计算
-#define CONFIG_EPROM_LOG_CRC									(31484L)//4B logInfo CRC32值 硬件计算
+#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L + 1L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L + 1L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L + 1L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L + 1L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(CONFIF_EPROM_TREATMENT_CRC - 4L + 1L)//4B LCD固件CRC32值 软件计算
+#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L + 1L)//4B treatment CRC32值 硬件计算
+#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L + 1L)//4B deviceConfig CRC32值 硬件计算
+#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L + 1L)//4B logInfo CRC32值 硬件计算
 
-#define CONFIG_EPROM_CONFIG_START							(31488L)//1024B 配置信息区
-#define CONFIG_EPROM_CONFIG_END								(32511L)
-#define CONFIG_EPROM_LOGINFO_START						(32512L)//256B 记录信息区 
-#define CONFIG_EPROM_LOGINFO_END							(32767L)
+#define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - (32L * 1024L) + 1L)
+#define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
+
+#define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 配置信息区
+#define CONFIG_EPROM_CONFIG_END								(CONFIG_EPROM_LOGINFO_START - 1L)
+#define CONFIG_EPROM_LOGINFO_START						(CONFIG_EPROM_LOGINFO_END - 256L + 1L)//256B 记录信息区 
+#define CONFIG_EPROM_LOGINFO_END							(CONFIG_EPROM_SIZE - 1L)
+
+#if (CONFIG_EPROM_MR_CRC  >= CONFIG_EPROM_FD_END)
+	//#error "Please use Arm Compiler Toolchain V4.0.677 or later!"
+	//#error "EPROM 容量不足：存储区域重叠，请调小分区或更换更大容量芯片"
+#endif
 /*****************************************************************************/
 #ifdef __cplusplus
 }

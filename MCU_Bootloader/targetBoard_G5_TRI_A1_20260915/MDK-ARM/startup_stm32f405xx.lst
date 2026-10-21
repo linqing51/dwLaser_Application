@@ -828,10 +828,10 @@ ARM Macro Assembler    Page 13
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=targetboard_g5_tri_a1_20260915\startup_stm32f405xx.d -otarge
 tboard_g5_tri_a1_20260915\startup_stm32f405xx.o -I.\RTE\_targetBoard_G5_TRI_A1_
-20260915 -IC:\Users\linqing\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\
-Include --predefine="__UVISION_VERSION SETA 543" --predefine="STM32F405xx SETA 
-1" --predefine="_RTE_ SETA 1" --list=startup_stm32f405xx.lst startup_stm32f405x
-x.s
+20260915 -IC:\Users\linqi\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\In
+clude --predefine="__UVISION_VERSION SETA 543" --predefine="STM32F405xx SETA 1"
+ --predefine="_RTE_ SETA 1" --list=startup_stm32f405xx.lst startup_stm32f405xx.
+s
 
 
 
