@@ -10,7 +10,7 @@
       <TargetName>targetBoard_G5_TRI_A1_20260915</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -190,7 +190,7 @@
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F405xx,G5_TRI_A1_20260915</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\..\..\MCU_Application\sPlc;..\..\..\MCU_Application\lib;..\..\..\MCU_Application\MainApp;..\..\..\MCU_Application\sPlcPort;..\..\..\MCU_Application\config;..\..\..\MCU_Application\config\G5_TRI_A1_20260915</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../../../MCU_Application/sPlc;../../../MCU_Application/lib;../../../MCU_Application/MainApp;../../../MCU_Application/sPlcPort;../../../MCU_Application/config;../../../MCU_Application/config/G5_TRI_A1_20260915;../../Bootloader</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -783,11 +783,6 @@
               <FileName>sPlcEprom_SPI.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\MCU_Application\sPlcPort\G5_TRI_A1_20260915\sPlcEprom_SPI.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcEpromSelfTest.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEpromSelfTest.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -38,8 +38,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
 #define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
 
-#define EPROM_SPI_NSS_SEL                     HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_SET)
-#define EPROM_SPI_NSS_DESEL                   HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET)
+#define EPROM_SPI_NSS_SEL                     HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET)
+#define EPROM_SPI_NSS_DESEL                   HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_SET)
 
 #define SET_EDAC0_CS(b)												__nop()		
 #define SET_EDAC1_CS(b)												__nop()
@@ -235,19 +235,19 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
 #define CONFIG_EPROM_BUS											SPI3	
 
-#define CONFIG_DEBUG_UART											huart1//调试串口
+#define CONFIG_DEBUG_UART											huart3//调试串口
 
 #define CONFIG_GDDC_UART											huart1//GDDC串口
 #define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
 /*****************************************************************************/
 //配置EPROM规格
 #define CONFIG_EPROM_SPI											
-#define CONFIG_EPROM_SIZE 										CONFIG_MB85RS2MAT_SIZE
+#define CONFIG_EPROM_SIZE 										CONFIG_MB85RS512TPN_SIZE
 #define	CONFIG_AT24C64_SIZE										8192
 #define	CONFIG_AT24C128_SIZE 									16384
 #define	CONFIG_AT24C256_SIZE 									32768//32K*8
 #define CONFIG_FM25W256G_SIZE									32768//32K
-#define CONFIG_MB85RS512TPN										65536//64K
+#define CONFIG_MB85RS512TPN_SIZE							65536//64K
 #define CONFIG_MB85RS2MAT_SIZE								262144//256K
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
@@ -325,16 +325,16 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L + 1L)//4B MR NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L + 1L)//4B DM NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L + 1L)//4B FD NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L + 1L)//4B MCU固件CRC32值 软件计算
-#define CONFIG_EPROM_LCD_FW_CRC								(CONFIF_EPROM_TREATMENT_CRC - 4L + 1L)//4B LCD固件CRC32值 软件计算
-#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L + 1L)//4B treatment CRC32值 硬件计算
-#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L + 1L)//4B deviceConfig CRC32值 硬件计算
-#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L + 1L)//4B logInfo CRC32值 硬件计算
+#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(CONFIF_EPROM_TREATMENT_CRC - 4L)//4B LCD固件CRC32值 软件计算
+#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L)//4B treatment CRC32值 硬件计算
+#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L)//4B deviceConfig CRC32值 硬件计算
+#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L)//4B logInfo CRC32值 硬件计算
 
-#define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - (32L * 1024L) + 1L)
+#define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - (32L * 1536) + 1L)
 #define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
 
 #define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 配置信息区

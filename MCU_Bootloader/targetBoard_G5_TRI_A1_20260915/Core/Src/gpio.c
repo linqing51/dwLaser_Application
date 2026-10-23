@@ -52,14 +52,19 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, LD1_PWM_Pin|LD0_PWM_Pin|SPK_EN_Pin|MCP41010_CS_Pin
-                          |MCP41010_SCK_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, LD1_PWM_Pin|LD0_PWM_Pin|SPK_EN_Pin|MCP41010_SCK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, TEC_PWM_Pin|MCP41010_SDI_Pin|EPROM_NSS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, TEC_PWM_Pin|MCP41010_SDI_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, USB_HS_PSON_Pin|USB_FS_PSON_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : FS_NC_Pin FS_NO_Pin */
   GPIO_InitStruct.Pin = FS_NC_Pin|FS_NO_Pin;

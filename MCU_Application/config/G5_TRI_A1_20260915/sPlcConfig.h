@@ -32,63 +32,63 @@ extern "C" {
 #define CONFIG_SPLC_CLEAR_CODE												0xA58E
 #define CONFIG_SOFTPLC_TICK														200L//5mS
 /*****************************************************************************/
-//线圈 保持 16 * 32 = 512 
+//线圈 保持 16 * 64 = 512 
 #define MR_START																			0
-#define MR_END   																			31
-//数据寄存器 保持 512
-#define DM_START																			32
-#define DM_END																				543
-//线圈寄存器 非保持 16 * 32 = 512
-#define R_START																				544
-#define R_END																					575						
-//数据寄存器 非保持 512
-#define EM_START																			576
-#define EM_END																				1087
+#define MR_END   																			(MR_START + 64L - 1L)
+//数据寄存器 保持 1024
+#define DM_START																			(MR_END + 1L)
+#define DM_END																				(DM_START + 1024L - 1L)
+//线圈寄存器 非保持 16 * 64 = 512
+#define R_START																				(DM_END + 1L)
+#define R_END																					(R_START + 64L - 1L)				
+//数据寄存器 非保持 1024
+#define EM_START																			(R_END + 1L)
+#define EM_END																				(EM_START + 1024L - 1L)
 //延时线圈
 //1MS  16 * 4 = 64
-#define T_1MS_START																		1088
-#define T_1MS_END																			1091
+#define T_1MS_START																		(EM_END + 1L)
+#define T_1MS_END																			(T_1MS_START + 64L - 1L)
 //10MS 16 * 4 = 64
-#define T_10MS_START																	1092
-#define T_10MS_END																		1095
+#define T_10MS_START																	(T_1MS_END + 1L)
+#define T_10MS_END																		(T_10MS_START + 64L - 1L)
 //100MS 16 * 4 = 64
-#define T_100MS_START																	1096
-#define T_100MS_END																		1099
+#define T_100MS_START																	(T_10MS_END + 1L)
+#define T_100MS_END																		(T_100MS_START + 64L - 1L)
 //延时器使能
 //1MS  16 * 4 = 64
-#define T_1MS_ENA_START																1100
-#define T_1MS_ENA_END																	1103
+#define T_1MS_ENA_START																(T_100MS_END + 1L)
+#define T_1MS_ENA_END																	(T_1MS_ENA_START + 64L -1L)
 //10MS 16 * 4 = 64
-#define T_10MS_ENA_START															1104
-#define T_10MS_ENA_END																1107
+#define T_10MS_ENA_START															(T_1MS_ENA_END + 1L)
+#define T_10MS_ENA_END																(T_10MS_ENA_START + 64L -1L)
 //100MS 16 * 4 = 64
-#define T_100MS_ENA_START															1108
-#define T_100MS_ENA_END																1111
+#define T_100MS_ENA_START															(T_10MS_ENA_END + 1L)
+#define T_100MS_ENA_END																(T_100MS_ENA_START + 64L - 1L)
 //延时计时器
 //1MS   64
-#define TD_1MS_START																	1112
-#define TD_1MS_END																		1175
+#define TD_1MS_START																	(T_100MS_ENA_END + 1L)
+#define TD_1MS_END																		(TD_1MS_START + 64L - 1L)
 //10MS  64
-#define TD_10MS_START																	1176											
-#define TD_10MS_END																		1239
+#define TD_10MS_START																	(TD_1MS_END + 1L)											
+#define TD_10MS_END																		(TD_10MS_START + 64L - 1L)
 //100MS 64
-#define TD_100MS_START																1240
-#define TD_100MS_END																	1303
+#define TD_100MS_START																(TD_10MS_END + 1L)
+#define TD_100MS_END																	(TD_100MS_START + 64L - 1L)
 //输入位寄存器 16 * 8 = 128
-#define X_START																				1304
-#define X_END																					1311
+#define X_START																				(TD_100MS_END + 1L)
+#define X_END																					(X_START + 8L - 1L)
 //输出位寄存器 16 * 8 = 128
-#define Y_START																				1312
-#define Y_END																					1319
+#define Y_START																				(X_END + 1L)
+#define Y_END																					(Y_START + 8L - 1L)
 //特殊寄存器 128
-#define SPREG_START																		1320
-#define SPREG_END																			1447
+#define SPREG_START																		(Y_END + 1L)
+#define SPREG_END																			(SPREG_START + 128L - 1L)
 //特殊线圈 16 * 16 = 256
-#define SPCOIL_START																	1448
-#define SPCOIL_END																		1463
+#define SPCOIL_START																	(SPREG_END + 1L)
+#define SPCOIL_END																		(SPCOIL_START + 16L - 1L)
 //临时寄存器 16
-#define TMP_START																			1464
-#define TMP_END																				1479
+#define TMP_START																			(SPCOIL_END + 1L)
+#define TMP_END																				(TMP_START + 16L - 1L)
 /*****************************************************************************/
 #define CONFIG_NVRAM_SIZE 														(TMP_END + 1)
 /*****************************************************************************/

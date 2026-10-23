@@ -123,6 +123,7 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 void bootLoadInit(void){//引导程序初始化
 	forceUpdateMcu = 0;
 	forceUpdateLcd = 0;
+  epromInit();
 	SET_SPK_AP_OFF;//关闭蜂鸣器
 	printf("Bootloader:OUTPUT->SKP_EN       = LOW\n");
 	//关闭指示激光

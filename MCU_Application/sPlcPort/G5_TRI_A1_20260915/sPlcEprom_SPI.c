@@ -22,9 +22,11 @@ void epromInit(void){
   wtmp |= 1 << 1;
   epromReadStatusReg(&rtmp);
   printf("OLD STATUS REGISTER:%02X\n", rtmp);
+  epromWriteEnable(true);
   epromWriteStatusReg(&wtmp);
   epromReadStatusReg(&rtmp);
   printf("NEW STATUS REGISTER:%02X\n", rtmp);
+  EPROM_SPI_NSS_DESEL;
 }
 
 __forceinline HAL_StatusTypeDef epromReadStatusReg(uint8_t *status){//读状态寄存器
@@ -34,7 +36,8 @@ __forceinline HAL_StatusTypeDef epromReadStatusReg(uint8_t *status){//读状态�
 	__ASM volatile ("NOP");
 	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &cmd, 1, CONFIG_EPROM_TIMEOUT);
 	ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, status, 1, CONFIG_EPROM_TIMEOUT);
-	EPROM_SPI_NSS_DESEL;
+	__ASM volatile ("NOP");
+  EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
 	return ret;
 }
@@ -46,7 +49,8 @@ __forceinline HAL_StatusTypeDef epromWriteStatusReg(uint8_t *status){//写状态
 	__ASM volatile ("NOP");
 	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &cmd, 1, CONFIG_EPROM_TIMEOUT);
 	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, status, 1, CONFIG_EPROM_TIMEOUT);
-	EPROM_SPI_NSS_DESEL;
+	__ASM volatile ("NOP");
+  EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
 	return ret;
 }
@@ -58,7 +62,8 @@ __forceinline HAL_StatusTypeDef epromReadDeviceId(uint8_t *id){//读设备ID（4
 	__ASM volatile ("NOP");
 	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &cmd, 1, CONFIG_EPROM_TIMEOUT);
 	ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, id, 4, CONFIG_EPROM_TIMEOUT);
-	EPROM_SPI_NSS_DESEL;
+	__ASM volatile ("NOP");
+  EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
 	return ret;
 }
@@ -67,7 +72,7 @@ __forceinline HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所有�
 	HAL_StatusTypeDef ret;
   uint8_t cmd;
 	EPROM_SPI_NSS_SEL;
-	__asm volatile ("nop");
+	__ASM volatile ("NOP");
 	if(en){
 		cmd = WREN;
 	}
@@ -75,8 +80,9 @@ __forceinline HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所有�
 		cmd = WRDI;
 	}
 	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, &cmd, 1, CONFIG_EPROM_TIMEOUT); // 发送写使能指令	
-	__asm volatile ("nop");
+	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
+  __ASM volatile ("NOP");
   return ret;
 }
 
@@ -85,7 +91,7 @@ __forceinline HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//�
 	uint8_t tempBuf[4];
 	EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");
-  if(CONFIG_EPROM_SIZE > 0xFFFF){
+  if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = READ;
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
@@ -99,7 +105,8 @@ __forceinline HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//�
     ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
 	}
 	ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, rdat, 1, CONFIG_EPROM_TIMEOUT);
-	EPROM_SPI_NSS_DESEL;
+	__ASM volatile ("NOP");
+  EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
 	return ret;
 }
@@ -110,7 +117,7 @@ __forceinline HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//�
   epromWriteEnable(true); 
 	EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");
-  if(CONFIG_EPROM_SIZE > 0xFFFF){
+  if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = WRITE;
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
@@ -124,7 +131,8 @@ __forceinline HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//�
     ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
 	}
 	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, wdat, 1, CONFIG_EPROM_TIMEOUT);
-	EPROM_SPI_NSS_DESEL;
+	__ASM volatile ("NOP");
+  EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
 	return ret;
 }
@@ -134,7 +142,7 @@ __forceinline HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t
 	uint8_t tempBuf[4];
   EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");
-  if(CONFIG_EPROM_SIZE > 0xFFFF){
+  if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = READ;
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
@@ -148,7 +156,8 @@ __forceinline HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t
     ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
 	}
 	ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, pBuf, len, 100);	
-	EPROM_SPI_NSS_DESEL;
+	__ASM volatile ("NOP");
+  EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
 	return ret;
 }
@@ -159,7 +168,7 @@ __forceinline HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uint16_
   epromWriteEnable(true);
 	EPROM_SPI_NSS_SEL;
   __ASM volatile ("NOP");
-  if(CONFIG_EPROM_SIZE > 0xFFFF){
+  if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = WRITE;
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
@@ -173,7 +182,8 @@ __forceinline HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uint16_
     ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
 	}
 	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)pBuf, len, CONFIG_EPROM_TIMEOUT);
-	EPROM_SPI_NSS_DESEL;
+	__ASM volatile ("NOP");
+  EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
 	return ret;
 }

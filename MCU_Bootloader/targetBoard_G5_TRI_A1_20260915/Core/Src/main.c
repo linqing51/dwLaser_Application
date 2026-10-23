@@ -35,7 +35,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "bootloader.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -122,7 +122,9 @@ int main(void)
   MX_RTC_Init();
   MX_USB_OTG_HS_HCD_Init();
   /* USER CODE BEGIN 2 */
-
+	bootLoadInit();
+	HAL_FLASH_Unlock();
+	//SET_VN5016_INPUT_OFF;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -133,6 +135,7 @@ int main(void)
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
+    bootLoadProcess();
   }
   /* USER CODE END 3 */
 }
