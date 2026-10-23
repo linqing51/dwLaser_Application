@@ -16,7 +16,10 @@ typedef enum {
 
 void epromInit(void){
   uint8_t wtmp, rtmp;
-  EPROM_SPI_NSS_DESEL;
+	uint8_t eprom_id[4];
+  EPROM_SPI_NSS_DESEL;	
+	epromReadDeviceId(eprom_id);
+	printf("EPROM ID:%02X%02X%02X%02X\n", eprom_id[0], eprom_id[1], eprom_id[2], eprom_id[3]);
   wtmp = 0;
   wtmp |= 1 << 7;
   wtmp |= 1 << 1;

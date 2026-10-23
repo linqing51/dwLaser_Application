@@ -65,11 +65,11 @@
 "targetboard_g5_tri_a1_20260915\bootloader.o"
 "targetboard_g5_tri_a1_20260915\flash_if.o"
 "targetboard_g5_tri_a1_20260915\libcpu.o"
-"targetboard_g5_tri_a1_20260915\libcrc.o"
 "targetboard_g5_tri_a1_20260915\libdbg.o"
 "targetboard_g5_tri_a1_20260915\splceprom.o"
 "targetboard_g5_tri_a1_20260915\splceprom_spi.o"
---library_type=microlib --strict --scatter "targetBoard_G5_TRI_A1_20260915\targetBoard_G5_TRI_A1_20260915.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+"targetboard_g5_tri_a1_20260915\libcrc.o"
+--library_type=microlib --strict --scatter "targetBoard_G5_TRI_A1_20260915.sct"
+--remove --diag_suppress 6918 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "targetBoard_G5_TRI_A1_20260915.map" -o targetBoard_G5_TRI_A1_20260915\targetBoard_G5_TRI_A1_20260915.axf

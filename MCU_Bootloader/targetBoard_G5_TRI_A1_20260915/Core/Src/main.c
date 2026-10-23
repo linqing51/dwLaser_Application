@@ -102,9 +102,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_ADC1_Init();
-  MX_CAN2_Init();
-  MX_DAC_Init();
+  /* Bootloader does not use ADC/CAN/DAC/RNG/RTC at runtime;
+   * skip their init to save flash (functions are preserved in source). */
+  /* MX_ADC1_Init(); */
+  /* MX_CAN2_Init(); */
+  /* MX_DAC_Init(); */
   MX_SPI3_Init();
   MX_TIM3_Init();
   MX_TIM5_Init();
@@ -114,7 +116,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM4_Init();
   MX_CRC_Init();
-  MX_RNG_Init();
+  /* MX_RNG_Init(); */
   MX_FATFS_Init();
   MX_USB_HOST_Init();
   MX_TIM7_Init();

@@ -53,13 +53,13 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
 	//从EPROM中恢复MR NVRAM
-	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//从EPROM中恢复MR
+	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//从EPROM中恢复MR
 	epromReadDword(CONFIG_EPROM_MR_CRC, &crc32_eprom_mr);
-	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
+	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
 	//从EPROM中恢复DM NVRAM
-	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//从EPROM中恢复DM
+	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//从EPROM中恢复DM
 	epromReadDword(CONFIG_EPROM_DM_CRC, &crc32_eprom_dm);
-	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
+	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 	
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
 	printf("%s,%d,%s:MR EPROM CRC:0x%08X,MR CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_mr, crc32_mr);
@@ -74,12 +74,12 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	uint32_t crc32_mr, crc32_dm;
 	//MR NVRAM写入EPROM
-	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE * 2));//将NVRAM中MR储存入EPROM																				
-	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
+	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//将NVRAM中MR储存入EPROM																				
+	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写入32位数
 	//DM NVRAM写入EPROM
-	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE * 2));//将NVRAM中DM储存入EPROM
-	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
+	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//将NVRAM中DM储存入EPROM
+	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
@@ -92,7 +92,7 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 	updateFlagMr = 0;
 	sp0 = (uint8_t*)(NVRAM0 + MR_START);
 	sp1 = (uint8_t*)(NVRAM1 + MR_START);
-	for(i = 0;i < (CONFIG_MRRAM_SIZE * 2);i ++){//储存MR
+	for(i = 0;i < (CONFIG_MR_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
 			epromWriteByte((i + CONFIG_EPROM_MR_START), sp0);
 			updateFlagMr |= 0xFF;
@@ -101,14 +101,14 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 		sp1 ++;
 	}
 	if(updateFlagMr){
-		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MRRAM_SIZE / 2));
+		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
 		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写入32位数
 	}
 	//储存DM
 	updateFlagDm = 0;
 	sp0 = (uint8_t*)(NVRAM0 + DM_START);
 	sp1 = (uint8_t*)(NVRAM1 + DM_START);
-	for(i = 0;i < (CONFIG_DMRAM_SIZE * 2);i ++){//储存MR
+	for(i = 0;i < (CONFIG_DM_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
 			epromWriteByte((i + CONFIG_EPROM_DM_START), sp0);
 			updateFlagDm |= 0xFF;
@@ -117,7 +117,7 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 		sp1 ++;
 	}
 	if(updateFlagDm){
-		crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DMRAM_SIZE / 2));
+		crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 		epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
 	}
 	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//更新NVRAM1 非保持寄存器

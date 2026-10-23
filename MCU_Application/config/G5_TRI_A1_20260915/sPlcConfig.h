@@ -1,10 +1,9 @@
 #ifndef __SPLCCONFIG_H__
 #define __SPLCCONFIG_H__
-
+/*****************************************************************************/
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /*****************************************************************************/
 #define CONFIG_DEBUG_DAC															1//调试DAC驱动
 #define CONFIG_DEBUG_ADC															1//调试ADC驱动
@@ -32,73 +31,90 @@ extern "C" {
 #define CONFIG_SPLC_CLEAR_CODE												0xA58E
 #define CONFIG_SOFTPLC_TICK														200L//5mS
 /*****************************************************************************/
-//线圈 保持 16 * 64 = 512 
+//单位byte
+#define CONFIG_MR_SIZE																64L//
+#define CONFIG_DM_SIZE																1024L
+#define CONFIG_R_SIZE																	64L
+#define CONFIG_EM_SIZE																1024L
+#define CONFIG_T_1MS_SIZE															4L
+#define CONFIG_T_10MS_SIZE														4L
+#define CONFIG_T_100MS_SIZE														4L
+#define CONFIG_T_1MS_ENA_SIZE													CONFIG_T_1MS_SIZE
+#define CONFIG_T_10MS_ENA_SIZE												CONFIG_T_10MS_SIZE
+#define CONFIG_T_100MS_ENA_SIZE												CONFIG_T_100MS_SIZE
+#define CONFIG_TD_1MS_SIZE														(CONFIG_T_1MS_SIZE * 16L)
+#define CONFIG_TD_10MS_SIZE														(CONFIG_T_10MS_SIZE * 16L)
+#define CONFIG_TD_100MS_SIZE													(CONFIG_T_100MS_SIZE * 16L)
+#define CONFIG_X_SIZE																	8L
+#define CONFIG_Y_SIZE																	8L
+#define CONFIG_SPREG_SIZE															128L
+#define CONFIG_SPCOIL_SIZE														16L
+#define CONFIG_TMP_SIZE																32L
+#define CONFIG_FDRAM_SIZE															2048L
+/*****************************************************************************/
+//线圈 保持
 #define MR_START																			0
-#define MR_END   																			(MR_START + 64L - 1L)
-//数据寄存器 保持 1024
+#define MR_END   																			(MR_START + CONFIG_MR_SIZE - 1L)
+//数据寄存器 保持
 #define DM_START																			(MR_END + 1L)
-#define DM_END																				(DM_START + 1024L - 1L)
-//线圈寄存器 非保持 16 * 64 = 512
+#define DM_END																				(DM_START + CONFIG_DM_SIZE - 1L)
+//线圈寄存器 非保持
 #define R_START																				(DM_END + 1L)
-#define R_END																					(R_START + 64L - 1L)				
-//数据寄存器 非保持 1024
+#define R_END																					(R_START + CONFIG_R_SIZE - 1L)				
+//数据寄存器 非保持
 #define EM_START																			(R_END + 1L)
-#define EM_END																				(EM_START + 1024L - 1L)
+#define EM_END																				(EM_START + CONFIG_EM_SIZE - 1L)
 //延时线圈
-//1MS  16 * 4 = 64
+//1MS
 #define T_1MS_START																		(EM_END + 1L)
-#define T_1MS_END																			(T_1MS_START + 64L - 1L)
-//10MS 16 * 4 = 64
+#define T_1MS_END																			(T_1MS_START + CONFIG_T_1MS_SIZE - 1L)
+//10MS
 #define T_10MS_START																	(T_1MS_END + 1L)
-#define T_10MS_END																		(T_10MS_START + 64L - 1L)
-//100MS 16 * 4 = 64
+#define T_10MS_END																		(T_10MS_START + CONFIG_T_10MS_SIZE - 1L)
+//100MS
 #define T_100MS_START																	(T_10MS_END + 1L)
-#define T_100MS_END																		(T_100MS_START + 64L - 1L)
+#define T_100MS_END																		(T_100MS_START + CONFIG_T_100MS_SIZE - 1L)
 //延时器使能
-//1MS  16 * 4 = 64
+//1MS
 #define T_1MS_ENA_START																(T_100MS_END + 1L)
-#define T_1MS_ENA_END																	(T_1MS_ENA_START + 64L -1L)
-//10MS 16 * 4 = 64
+#define T_1MS_ENA_END																	(T_1MS_ENA_START + CONFIG_T_1MS_ENA_SIZE -1L)
+//10MS
 #define T_10MS_ENA_START															(T_1MS_ENA_END + 1L)
-#define T_10MS_ENA_END																(T_10MS_ENA_START + 64L -1L)
-//100MS 16 * 4 = 64
+#define T_10MS_ENA_END																(T_10MS_ENA_START + CONFIG_T_10MS_ENA_SIZE -1L)
+//100MS
 #define T_100MS_ENA_START															(T_10MS_ENA_END + 1L)
-#define T_100MS_ENA_END																(T_100MS_ENA_START + 64L - 1L)
+#define T_100MS_ENA_END																(T_100MS_ENA_START + CONFIG_T_100MS_ENA_SIZE - 1L)
 //延时计时器
-//1MS   64
+//1MS
 #define TD_1MS_START																	(T_100MS_ENA_END + 1L)
-#define TD_1MS_END																		(TD_1MS_START + 64L - 1L)
-//10MS  64
+#define TD_1MS_END																		(TD_1MS_START + CONFIG_TD_1MS_SIZE - 1L)
+//10MS
 #define TD_10MS_START																	(TD_1MS_END + 1L)											
-#define TD_10MS_END																		(TD_10MS_START + 64L - 1L)
-//100MS 64
+#define TD_10MS_END																		(TD_10MS_START + CONFIG_TD_10MS_SIZE - 1L)
+//100MS
 #define TD_100MS_START																(TD_10MS_END + 1L)
-#define TD_100MS_END																	(TD_100MS_START + 64L - 1L)
-//输入位寄存器 16 * 8 = 128
+#define TD_100MS_END																	(TD_100MS_START + CONFIG_TD_100MS_SIZE - 1L)
+//输入位寄存器
 #define X_START																				(TD_100MS_END + 1L)
-#define X_END																					(X_START + 8L - 1L)
-//输出位寄存器 16 * 8 = 128
+#define X_END																					(X_START + CONFIG_X_SIZE - 1L)
+//输出位寄存器
 #define Y_START																				(X_END + 1L)
-#define Y_END																					(Y_START + 8L - 1L)
-//特殊寄存器 128
+#define Y_END																					(Y_START + CONFIG_Y_SIZE - 1L)
+//特殊寄存器
 #define SPREG_START																		(Y_END + 1L)
-#define SPREG_END																			(SPREG_START + 128L - 1L)
-//特殊线圈 16 * 16 = 256
+#define SPREG_END																			(SPREG_START + CONFIG_SPREG_SIZE - 1L)
+//特殊线圈
 #define SPCOIL_START																	(SPREG_END + 1L)
-#define SPCOIL_END																		(SPCOIL_START + 16L - 1L)
-//临时寄存器 16
+#define SPCOIL_END																		(SPCOIL_START + CONFIG_SPCOIL_SIZE - 1L)
+//临时寄存器
 #define TMP_START																			(SPCOIL_END + 1L)
-#define TMP_END																				(TMP_START + 16L - 1L)
+#define TMP_END																				(TMP_START + CONFIG_TMP_SIZE - 1L)
 /*****************************************************************************/
 #define CONFIG_NVRAM_SIZE 														(TMP_END + 1)
 /*****************************************************************************/
 //存档寄存器
 #define FD_START																			0
-#define FD_END																				2047
-/*****************************************************************************/
-#define CONFIG_MRRAM_SIZE															(MR_END - MR_START + 1)									
-#define CONFIG_DMRAM_SIZE															(DM_END - DM_START + 1)
-#define CONFIG_FDRAM_SIZE															(FD_END - FD_START + 1)
+#define FD_END																				(CONFIG_FDRAM_SIZE - 1L)
 /*****************************************************************************/
 #define SPCOIL_ON																			(SPCOIL_START * 16 + 0)//长通线圈
 #define SPCOIL_START_UP																(SPCOIL_START * 16 + 1)//初次上电
@@ -212,7 +228,7 @@ extern "C" {
 /*****************************************************************************/
 #define SPREG_DAC_8																		(SPREG_START + 78)//DAC设定值 激光通道 CH8 ->TEC0
 #define SPREG_DAC_9																		(SPREG_START + 79)//DAC设定值 激光通道 CH9 ->TEC1
-#define SPREG_DAC_10																	(SPREG_START + 70)//DAC设定值 激光通道 CH10 ->TEC2
+#define SPREG_DAC_10																	(SPREG_START + 80)//DAC设定值 激光通道 CH10 ->TEC2
 #define SPREG_DAC_11																	(SPREG_START + 81)//DAC设定值 激光通道 CH11 ->TEC3
 #define SPREG_DAC_12																	(SPREG_START + 82)//DAC设定值 激光通道 CH12 ->TEC4
 #define SPREG_DAC_13																	(SPREG_START + 83)//DAC设定值 激光通道 CH13 ->TEC5
@@ -550,23 +566,6 @@ extern "C" {
 #define DM_DC_OLD_PASSCODE2														(DM_START + 8)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3														(DM_START + 9)//屏旧密码2-3
 #define DM_LANGUAGE																		(DM_START + 10)//语言代码
-
-#if defined(LYPE_SURGI_LDR5_20260519)
-#define DM_LASER_POWER_CH0														(DM_START + 11)//LAS0 通道功率储存
-#define DM_LASER_POWER_CH1														(DM_START + 12)//LAS1 通道功率储存
-#define DM_LASER_POWER_CH2														(DM_START + 13)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_0																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_1																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_2																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_3																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_4																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_5																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_6																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_7																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_8																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_9																(DM_START + 14)//LAS2 通道功率存储
-#define DM_ADC_OFFSET_10																(DM_START + 14)//LAS2 通道功率存储
-#endif
 /*****************************************************************************/
 #define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC																(X_START * 16 + 1)//XIN1 安全连锁

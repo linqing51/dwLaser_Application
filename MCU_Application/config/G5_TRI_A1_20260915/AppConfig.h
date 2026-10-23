@@ -55,8 +55,8 @@ extern "C" {
 #define SCHEME_CUSTIOM																0x0000
 /*****************************************************************************/
 //BOOTLOAD配置
-#define BOOTLOAD_MAIN_ADDRESS													0x0800FE00//主版本标识地址															
-#define BOOTLAOD_MINOR_ADDRESS												0x0800FE01//次版本标识地址
+#define BOOTLOAD_MAIN_ADDRESS													0x0800FFFE//主版本标识地址															
+#define BOOTLAOD_MINOR_ADDRESS												0x0800FFFF//次版本标识地址
 #define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'C'//设备ID

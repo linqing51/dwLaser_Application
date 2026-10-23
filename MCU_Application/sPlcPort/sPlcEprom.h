@@ -34,7 +34,6 @@ HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *buf, uint16_t len);
 /*****************************************************************************/
 uint8_t checkBlank(uint32_t adr, uint32_t size);//MCU Flash 查空
 void clearEprom(clarmEpromCmd_t cmd);//清除EPROM内容
-void listEpromTable(void);
 uint8_t sPlcEpromTest(void);//EPROM 读写自测试
 
 #ifdef __cplusplus

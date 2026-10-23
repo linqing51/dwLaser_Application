@@ -9,6 +9,9 @@ extern "C" {
 #include "..\config\myConfig.h"
 #include "stdio.h"
 /*****************************************************************************/
+void listEpromTable(void);//输出EPROM分布表
+void listNvramTable(void);//输出NVRAM分布表
+/*****************************************************************************/
 #ifdef __cplusplus
 }
 #endif

@@ -2,16 +2,63 @@
 /*****************************************************************************/
 uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
+static const char *morseTable[] = {
+  "-----",  // '0'
+  ".----",  // '1'
+  "..---",  // '2'
+  "...--",  // '3'
+  "....-",  // '4'
+  ".....",  // '5'
+  "-....",  // '6'
+  "--...",  // '7'
+  "---..",  // '8'
+  "----.",  // '9'
+  ".-",     // 'A'
+  "-...",   // 'B'
+  "-.-.",   // 'C'
+  "-..",    // 'D'
+  ".",      // 'E'
+  "..-.",   // 'F'
+  "--.",    // 'G'
+  "....",   // 'H'
+  "..",     // 'I'
+  ".---",   // 'J'
+  "-.-",    // 'K'
+  ".-..",   // 'L'
+  "--",     // 'M'
+  "-.",     // 'N'
+  "---",    // 'O'
+  ".--.",   // 'P'
+  "--.-",   // 'Q'
+  ".-.",    // 'R'
+  "...",    // 'S'
+  "-",      // 'T'
+  "..-",    // 'U'
+  "...-",   // 'V'
+  ".--",    // 'W'
+  "-..-",   // 'X'
+  "-.--",   // 'Y'
+  "--.."    // 'Z'
+};
+#ifndef CONFIG_MORSECODE_DOT_MS
+	#define CONFIG_MORSECODE_DOT_MS     					200
+#endif
+#ifndef CONFIG_MORSECODE_DASH_MS
+	#define CONFIG_MORSECODE_DASH_MS   						600
+#endif
+#ifndef CONFIG_MORSECODE_GAP_MS
+	#define CONFIG_MORSECODE_GAP_MS     					200
+#endif
+#ifndef CONFIG_MORSECODE_REPEAT_MS
+	#define CONFIG_MORSECODE_REPEAT_MS  					2000
+#endif
+/*****************************************************************************/
 void softDelayUs(uint32_t us){
-	// 粗略估算：1us 大约需要 hclk_mhz 个周期
-	// 这里的 0.9 是经验修正系数，用于补偿 Flash 预取和流水线带来的加速效应
-	// 具体系数需根据实际示波器测量调整
 	uint32_t loops = us * 168; 
-	// 使用 volatile 防止优化
 	volatile uint32_t count = loops;
 	while(count--){
-			__NOP(); // 插入空指令，强制消耗时钟周期
-			__NOP(); // 可以多加几个来增加精度
+			__NOP();
+			__NOP();
 	}
 }
 
@@ -22,42 +69,37 @@ void softDelayMs(uint32_t ms){
   }
 }
 
-void tickCheckTask(void){//TICK 检测程序
+void tickCheckTask(void){
   uint32_t tick_begin, tick_end; 
   tick_begin = HAL_GetTick();
   FLIP_TICK_LED;
   HAL_Delay(1000);
   tick_end = HAL_GetTick();
   FLIP_TICK_LED;
-  // 计算实际间隔
   uint32_t real_ms = tick_end - tick_begin;
-  // 串口打印数值
   printf("HAL TICK:%d ms\r\n", real_ms);
 }
 
-
-uint16_t cpuGetFlashSize(void){//获取处理器程序容量
+uint16_t cpuGetFlashSize(void){
    return *(volatile uint16_t*)(0x1FFF7A22);
 }
 
-void readStm32UniqueID(void){//获取处理器唯一序列号        
+void readStm32UniqueID(void){        
     UniqueId[0] = *(volatile uint32_t*)(0x1FFF7A10);
     UniqueId[1] = *(volatile uint32_t*)(0x1FFF7A14);
     UniqueId[2] = *(volatile uint32_t*)(0x1FFF7A18);
 }
 
-void SystemClock_Reset(void){//复位系统时钟
+void SystemClock_Reset(void){
 	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 	__HAL_RCC_BACKUPRESET_RELEASE();
 	__HAL_RCC_BACKUPRESET_FORCE();
 	__HAL_RCC_PLL_DISABLE();
 	__HAL_RCC_HSI_DISABLE();
-	/** Configure the main internal regulator output voltage */
 	__HAL_RCC_PWR_CLK_DISABLE();
 	__HAL_RCC_PWR_CLK_ENABLE();
 	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-	/** Initializes the CPU, AHB and APB busses clocks */
 	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
 	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
 	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
@@ -65,7 +107,6 @@ void SystemClock_Reset(void){//复位系统时钟
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK){
 		Error_Handler();
 	}
-	/** Initializes the CPU, AHB and APB busses clocks */
 	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
 	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
 	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
@@ -75,383 +116,62 @@ void SystemClock_Reset(void){//复位系统时钟
 		Error_Handler();
 	}
 }
-void resetInit(void){//复位后初始化
+void resetInit(void){
 	HAL_DeInit();
-	//复位RCC时钟
 	SystemClock_Reset();
-	//NVIC_SystemReset();
 }
 
-
-uint32_t getOriginBootloadCrc(void){//计算MCU Bootload CRC32
+uint32_t getOriginBootloadCrc(void){
 	uint8_t val;
 	uint32_t i;
 	uint32_t crc32;
 	crc32Clear();
 	for(i = BOOTLOADER_FLASH_START_ADDRESS;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){
 		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
+		crc32 = crc32CalculateAdd(val);
 	}
 	return crc32;	
 }
-uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
+
+uint32_t getOriginAppCrc(void){
 	uint8_t val;
 	uint32_t i;
 	uint32_t crc32;
 	crc32Clear();
 	for(i = APPLICATION_FLASH_START_ADDRESS;i < APPLICATION_FLASH_END_ADDRESS;i ++){
 		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
+		crc32 = crc32CalculateAdd(val);
 	}
 	return crc32;	
 }
 
-void morseCodeDiag(uint8_t diag){//蜂鸣器诊断声音 摩尔斯电码
-	//关闭USB VBUS
-	switch(diag){
-		case '0':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case '1':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		};
-		case '2':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		};
-		case '3':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case '4':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case '5':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case '6':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case '7':{	
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case '8':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case '9':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'A':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'B':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;			
-		}
-		case 'C':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'D':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'E':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'F':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'G':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'H':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;			
-		}
-		case 'I':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'J':{
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'K':{
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'L':{//．━ ．．
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//.
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_SHORT_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		//
-		case 'M':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'N':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'O':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'P':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'Q':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'R':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'S':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'T':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'U':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'V':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'W':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'X':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'Y':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		case 'Z':{//━ ━
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;HAL_Delay(CONFIG_MORSECODE_SPACE_TIME);
-			//-
-			SET_RED_LED_ON;HAL_Delay(CONFIG_MORSECODE_LONG_TIME);SET_RED_LED_OFF;
-			break;
-		}
-		default:break;
-	}
-	HAL_Delay(3000);
+void morseCodeDiag(uint8_t diag){//莫尔斯电码诊断闪烁，循环不返回
+  const char *pat;
+  uint8_t i;
+  if(diag >= '0' && diag <= '9'){
+    pat = morseTable[diag - '0'];
+  } else if(diag >= 'A' && diag <= 'Z'){
+    pat = morseTable[10 + (diag - 'A')];
+  } else {
+    pat = morseTable[0];
+  }
+  while(1){
+    for(i = 0; pat[i] != '\0'; i++){
+      if(pat[i] == '.'){
+        SET_RED_LED_ON;
+        HAL_Delay(CONFIG_MORSECODE_DOT_MS);
+      } else {
+        SET_RED_LED_ON;
+        HAL_Delay(CONFIG_MORSECODE_DASH_MS);
+      }
+      SET_RED_LED_OFF;
+      HAL_Delay(CONFIG_MORSECODE_GAP_MS);
+    }
+    HAL_Delay(CONFIG_MORSECODE_REPEAT_MS);
+  }
 }
+
+
+
+
 
