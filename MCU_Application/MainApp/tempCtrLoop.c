@@ -13,6 +13,30 @@ FuzzyPID_HandleTypeDef FuzzyPid_A;
 SmartPID_Controller SmartPid_A;
 #endif
 
+#if (CONFIG_USING_NN_PID == 1)
+NNPid_t NnPid_A;//单神经元自适应PID控制器
+#endif
+
+#if (CONFIG_USING_RLS_PID == 1)
+RLSPid_t RlsPid_A;//RLS递推辨识+极点配置自校正PID控制器
+#endif
+
+#if (CONFIG_USING_ADRC_PID == 1)
+ADRCPid_t AdrcPid_A;//自抗扰(ADRC)控制器
+#endif
+
+#if (CONFIG_USING_MPC_PID == 1)
+MPCPid_t MpcPid_A;//模型预测(RLS+MPC)控制器
+#endif
+
+#if (CONFIG_USING_IMC_PID == 1)
+IMCPid_t ImcPid_A;//内模(IMC)控制器
+#endif
+
+#if (CONFIG_USING_ILC_PID == 1)
+ILCPid_t IlcPid_A;//迭代学习(ILC)控制器
+#endif
+
 FanController AutoFan0, AutoFan1, AutoFan2, AutoFan3, AutoFan4, AutoFan5, AutoFan6, AutoFan7;// 创建风扇控制器实例
 int16_t LaserTecOutCounter0, LaserTecOut0;
 /*****************************************************************************/
@@ -36,6 +60,30 @@ void tempControlInit(void){
  SmartPID_Init(&SmartPid_A, (float_t)deviceConfig.laserDiodeA_Temp / 10.0F);
 
 #endif	
+
+#if CONFIG_USING_NN_PID == 1
+	NNPid_Init(&NnPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+#endif
+
+#if CONFIG_USING_RLS_PID == 1
+	RLSPid_Init(&RlsPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+#endif
+
+#if CONFIG_USING_ADRC_PID == 1
+	ADRCPid_Init(&AdrcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+#endif
+
+#if CONFIG_USING_MPC_PID == 1
+	MPCPid_Init(&MpcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+#endif
+
+#if CONFIG_USING_IMC_PID == 1
+	IMCPid_Init(&ImcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+#endif
+
+#if CONFIG_USING_ILC_PID == 1
+	ILCPid_Init(&IlcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+#endif
 	FanController_Init(&AutoFan0, fan_curve_0, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	FanController_Init(&AutoFan1, fan_curve_1, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	FanController_Init(&AutoFan2, fan_curve_2, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
@@ -157,6 +205,150 @@ void tempControlLoop(void){//温度风扇控制循环
 			ftmp0 = SmartPID_Compute(&SmartPid_A, (float32_t)tecTempFilt / 10.0F);
 		}
 		LaserTecOut0 =(int16_t)(ftmp0 * 4095);
+		//散热器温度前馈: 散热器温度高于设定时叠加制冷输出(单冷TEC, 仅正前馈)
+		{
+			int32_t ff = (int32_t)(((int32_t)NVRAM0[EM_HT0_TEMP] - deviceConfig.laserDiodeA_Temp) * CONFIG_TEC_HT_FF_GAIN);
+			if(ff > 0){
+				LaserTecOut0 += (int16_t)ff;
+			}
+		}
+		if(LaserTecOut0 > 4095){
+			LaserTecOut0 = 4095;
+		}
+#endif
+#if CONFIG_USING_NN_PID == 1		
+		float32_t ftmp1 = 0.0f;
+		//反馈温度一阶低通滤波, 抑制NTC噪声经微分通道放大
+		if(tecTempFiltInit == 0){
+			tecTempFilt = NVRAM0[EM_LASER_A_DIODE_TEMP];
+			tecTempFiltInit = 1;
+		}
+		else{
+			tecTempFilt += (int16_t)(((int32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] - tecTempFilt) * CONFIG_TEC_TEMP_FILTER_ALPHA);
+		}
+		NNPid_SetTarget(&NnPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);//目标温度℃（支持运行中修改）
+		ftmp1 = NNPid_Compute(&NnPid_A, (float32_t)tecTempFilt / 10.0F);//单神经元自适应计算(0~1.0制冷比例)
+		LaserTecOut0 = (int16_t)(ftmp1 * 4095);
+		//散热器温度前馈: 散热器温度高于设定时叠加制冷输出(单冷TEC, 仅正前馈)
+		{
+			int32_t ff = (int32_t)(((int32_t)NVRAM0[EM_HT0_TEMP] - deviceConfig.laserDiodeA_Temp) * CONFIG_TEC_HT_FF_GAIN);
+			if(ff > 0){
+				LaserTecOut0 += (int16_t)ff;
+			}
+		}
+		if(LaserTecOut0 > 4095){
+			LaserTecOut0 = 4095;
+		}
+#endif
+#if CONFIG_USING_RLS_PID == 1		
+		float32_t ftmp2 = 0.0f;
+		//反馈温度一阶低通滤波, 抑制NTC噪声
+		if(tecTempFiltInit == 0){
+			tecTempFilt = NVRAM0[EM_LASER_A_DIODE_TEMP];
+			tecTempFiltInit = 1;
+		}
+		else{
+			tecTempFilt += (int16_t)(((int32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] - tecTempFilt) * CONFIG_TEC_TEMP_FILTER_ALPHA);
+		}
+		RLSPid_SetTarget(&RlsPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);//目标温度℃（支持运行中修改）
+		ftmp2 = RLSPid_Compute(&RlsPid_A, (float32_t)tecTempFilt / 10.0F);//RLS辨识+极点配置自适应计算(0~1.0制冷比例)
+		LaserTecOut0 = (int16_t)(ftmp2 * 4095);
+		//散热器温度前馈: 散热器温度高于设定时叠加制冷输出(单冷TEC, 仅正前馈)
+		{
+			int32_t ff = (int32_t)(((int32_t)NVRAM0[EM_HT0_TEMP] - deviceConfig.laserDiodeA_Temp) * CONFIG_TEC_HT_FF_GAIN);
+			if(ff > 0){
+				LaserTecOut0 += (int16_t)ff;
+			}
+		}
+		if(LaserTecOut0 > 4095){
+			LaserTecOut0 = 4095;
+		}
+#endif
+#if CONFIG_USING_ADRC_PID == 1		
+		float32_t ftmp3 = 0.0f;
+		//反馈温度一阶低通滤波, 抑制NTC噪声
+		if(tecTempFiltInit == 0){
+			tecTempFilt = NVRAM0[EM_LASER_A_DIODE_TEMP];
+			tecTempFiltInit = 1;
+		}
+		else{
+			tecTempFilt += (int16_t)(((int32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] - tecTempFilt) * CONFIG_TEC_TEMP_FILTER_ALPHA);
+		}
+		ADRCPid_SetTarget(&AdrcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);//目标温度℃（支持运行中修改）
+		ftmp3 = ADRCPid_Compute(&AdrcPid_A, (float32_t)tecTempFilt / 10.0F);//ADRC自抗扰计算(0~1.0制冷比例)
+		LaserTecOut0 = (int16_t)(ftmp3 * 4095);
+		//散热器温度前馈: 散热器温度高于设定时叠加制冷输出(单冷TEC, 仅正前馈)
+		{
+			int32_t ff = (int32_t)(((int32_t)NVRAM0[EM_HT0_TEMP] - deviceConfig.laserDiodeA_Temp) * CONFIG_TEC_HT_FF_GAIN);
+			if(ff > 0){
+				LaserTecOut0 += (int16_t)ff;
+			}
+		}
+		if(LaserTecOut0 > 4095){
+			LaserTecOut0 = 4095;
+		}
+#endif
+#if CONFIG_USING_MPC_PID == 1		
+		float32_t ftmp4 = 0.0f;
+		//反馈温度一阶低通滤波, 抑制NTC噪声
+		if(tecTempFiltInit == 0){
+			tecTempFilt = NVRAM0[EM_LASER_A_DIODE_TEMP];
+			tecTempFiltInit = 1;
+		}
+		else{
+			tecTempFilt += (int16_t)(((int32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] - tecTempFilt) * CONFIG_TEC_TEMP_FILTER_ALPHA);
+		}
+		MPCPid_SetTarget(&MpcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);//目标温度℃（支持运行中修改）
+		ftmp4 = MPCPid_Compute(&MpcPid_A, (float32_t)tecTempFilt / 10.0F);//RLS辨识+MPC滚动优化计算(0~1.0制冷比例)
+		LaserTecOut0 = (int16_t)(ftmp4 * 4095);
+		//散热器温度前馈: 散热器温度高于设定时叠加制冷输出(单冷TEC, 仅正前馈)
+		{
+			int32_t ff = (int32_t)(((int32_t)NVRAM0[EM_HT0_TEMP] - deviceConfig.laserDiodeA_Temp) * CONFIG_TEC_HT_FF_GAIN);
+			if(ff > 0){
+				LaserTecOut0 += (int16_t)ff;
+			}
+		}
+		if(LaserTecOut0 > 4095){
+			LaserTecOut0 = 4095;
+		}
+#endif
+#if CONFIG_USING_IMC_PID == 1		
+		float32_t ftmp5 = 0.0f;
+		//反馈温度一阶低通滤波, 抑制NTC噪声
+		if(tecTempFiltInit == 0){
+			tecTempFilt = NVRAM0[EM_LASER_A_DIODE_TEMP];
+			tecTempFiltInit = 1;
+		}
+		else{
+			tecTempFilt += (int16_t)(((int32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] - tecTempFilt) * CONFIG_TEC_TEMP_FILTER_ALPHA);
+		}
+		IMCPid_SetTarget(&ImcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);//目标温度℃（支持运行中修改）
+		ftmp5 = IMCPid_Compute(&ImcPid_A, (float32_t)tecTempFilt / 10.0F);//RLS辨识+IMC内模控制计算(0~1.0制冷比例)
+		LaserTecOut0 = (int16_t)(ftmp5 * 4095);
+		//散热器温度前馈: 散热器温度高于设定时叠加制冷输出(单冷TEC, 仅正前馈)
+		{
+			int32_t ff = (int32_t)(((int32_t)NVRAM0[EM_HT0_TEMP] - deviceConfig.laserDiodeA_Temp) * CONFIG_TEC_HT_FF_GAIN);
+			if(ff > 0){
+				LaserTecOut0 += (int16_t)ff;
+			}
+		}
+		if(LaserTecOut0 > 4095){
+			LaserTecOut0 = 4095;
+		}
+#endif
+#if CONFIG_USING_ILC_PID == 1		
+		float32_t ftmp6 = 0.0f;
+		//反馈温度一阶低通滤波, 抑制NTC噪声
+		if(tecTempFiltInit == 0){
+			tecTempFilt = NVRAM0[EM_LASER_A_DIODE_TEMP];
+			tecTempFiltInit = 1;
+		}
+		else{
+			tecTempFilt += (int16_t)(((int32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] - tecTempFilt) * CONFIG_TEC_TEMP_FILTER_ALPHA);
+		}
+		ILCPid_SetTarget(&IlcPid_A, (float32_t)deviceConfig.laserDiodeA_Temp / 10.0F);//目标温度℃（支持运行中修改）
+		ftmp6 = ILCPid_Compute(&IlcPid_A, (float32_t)tecTempFilt / 10.0F);//迭代学习计算(0~1.0制冷比例)
+		LaserTecOut0 = (int16_t)(ftmp6 * 4095);
 		//散热器温度前馈: 散热器温度高于设定时叠加制冷输出(单冷TEC, 仅正前馈)
 		{
 			int32_t ff = (int32_t)(((int32_t)NVRAM0[EM_HT0_TEMP] - deviceConfig.laserDiodeA_Temp) * CONFIG_TEC_HT_FF_GAIN);

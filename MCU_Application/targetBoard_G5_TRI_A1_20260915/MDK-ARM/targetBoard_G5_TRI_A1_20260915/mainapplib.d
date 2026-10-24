@@ -105,7 +105,7 @@
 .\targetboard_g5_tri_a1_20260915\mainapplib.o: ..\..\MainApp\dcHmiNotifyText.h
 .\targetboard_g5_tri_a1_20260915\mainapplib.o: ..\..\MainApp\tempCtrLoop.h
 .\targetboard_g5_tri_a1_20260915\mainapplib.o: ../../lib/fan_controller.h
-.\targetboard_g5_tri_a1_20260915\mainapplib.o: ../../lib/smart_pid.h
+.\targetboard_g5_tri_a1_20260915\mainapplib.o: ../../lib/ilc_pid.h
 .\targetboard_g5_tri_a1_20260915\mainapplib.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1_20260915\mainapplib.o: ../../dcHmi/hmiCmdQueue.h
 .\targetboard_g5_tri_a1_20260915\mainapplib.o: ../../dcHmi/hmiLib.h

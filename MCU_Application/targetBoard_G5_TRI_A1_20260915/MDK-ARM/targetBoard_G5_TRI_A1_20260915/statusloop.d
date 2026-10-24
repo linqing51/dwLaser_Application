@@ -103,7 +103,7 @@
 .\targetboard_g5_tri_a1_20260915\statusloop.o: ..\..\MainApp\dcHmiNotifyText.h
 .\targetboard_g5_tri_a1_20260915\statusloop.o: ..\..\MainApp\tempCtrLoop.h
 .\targetboard_g5_tri_a1_20260915\statusloop.o: ../../lib/fan_controller.h
-.\targetboard_g5_tri_a1_20260915\statusloop.o: ../../lib/smart_pid.h
+.\targetboard_g5_tri_a1_20260915\statusloop.o: ../../lib/ilc_pid.h
 .\targetboard_g5_tri_a1_20260915\statusloop.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1_20260915\statusloop.o: ../../dcHmi/hmiCmdQueue.h
 .\targetboard_g5_tri_a1_20260915\statusloop.o: ../../dcHmi/hmiLib.h

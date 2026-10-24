@@ -104,7 +104,7 @@
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ..\..\MainApp\dcHmiNotifyText.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ..\..\MainApp\tempCtrLoop.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../lib/fan_controller.h
-.\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../lib/smart_pid.h
+.\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../lib/ilc_pid.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../dcHmi/hmiCmdQueue.h
 .\targetboard_g5_tri_a1_20260915\dchminotifyreadrtc.o: ../../dcHmi/hmiLib.h

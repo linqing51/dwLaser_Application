@@ -104,7 +104,7 @@
 .\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ..\..\MainApp\dcHmiNotifyText.h
 .\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ..\..\MainApp\tempCtrLoop.h
 .\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ../../lib/fan_controller.h
-.\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ../../lib/smart_pid.h
+.\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ../../lib/ilc_pid.h
 .\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ../../dcHmi/hmiCmdQueue.h
 .\targetboard_g5_tri_a1_20260915\preschemedual_450_980.o: ../../dcHmi/hmiLib.h

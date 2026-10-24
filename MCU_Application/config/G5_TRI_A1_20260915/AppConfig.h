@@ -130,7 +130,13 @@ extern "C" {
 //配置环境信息
 #define CONFIG_USING_CLASSIC_PID											0
 #define CONFIG_USING_FUZZY_PID												0
-#define CONFIG_USING_SMART_PID												1
+#define CONFIG_USING_SMART_PID												0
+#define CONFIG_USING_NN_PID													0
+#define CONFIG_USING_RLS_PID													0
+#define CONFIG_USING_ADRC_PID												1
+#define CONFIG_USING_MPC_PID												0
+#define CONFIG_USING_IMC_PID												0
+#define CONFIG_USING_ILC_PID												0
 
 #define CONFIG_LASER_A_DIODE_SET_TEMP										280//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP										280//激光器温度设定

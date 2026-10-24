@@ -2494,6 +2494,36 @@
               <FilePath>..\..\lib\smart_pid.c</FilePath>
             </File>
             <File>
+              <FileName>nn_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\nn_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>rls_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\rls_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>adrc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\adrc_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\mpc_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>imc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\imc_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>ilc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\ilc_pid.c</FilePath>
+            </File>
+            <File>
               <FileName>FreeRTOS_CLI.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
