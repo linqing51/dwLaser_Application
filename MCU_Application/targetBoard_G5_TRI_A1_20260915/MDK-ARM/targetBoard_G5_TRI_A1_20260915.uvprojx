@@ -2494,6 +2494,21 @@
               <FilePath>..\..\lib\smart_pid.c</FilePath>
             </File>
             <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_fun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
+            </File>
+            <File>
+              <FileName>cli_console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cli_console.c</FilePath>
+            </File>
+            <File>
               <FileName>minicsv.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\minicsv.c</FilePath>

@@ -14,3 +14,4 @@
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/stack_macros.h
+.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdio.h

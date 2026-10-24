@@ -116,23 +116,6 @@ static BaseType_t prvParameterEchoCommand( char *pcWriteBuffer, size_t xWriteBuf
     static BaseType_t prvStartStopTraceCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 #endif
 
-//打印参数列表
-static BaseType_t prvPrintEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//设置参数
-static BaseType_t prvSetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//由key值获取值
-static BaseType_t prvGetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//删除key的值
-static BaseType_t prvDelEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//初始化参数区
-static BaseType_t prvResetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-
-
 static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString );
 static BaseType_t prvSystemInfoCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString );
 
