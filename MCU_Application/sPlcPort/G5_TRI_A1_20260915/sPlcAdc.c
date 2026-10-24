@@ -1,7 +1,9 @@
 #include "sPlc.h"
 /*****************************************************************************/
-__IO static uint16_t adcDmaBuffer0[CONFIG_ADC1_CHANNEL];//ADC DMA采集储存池
-__IO static uint16_t adcDmaBuffer1[CONFIG_ADC1_CHANNEL];//ADC DMA采集储存池
+/* adcDmaBuffer0/1 是 ADC1 DMA2_Stream0 的目标缓冲。CCM(0x10000000)不支持DMA，
+   必须通过 dma_ram 段强制留在 SRAM（scatter 文件 RW_IRAM1 显式承接）。 */
+__IO static uint16_t adcDmaBuffer0[CONFIG_ADC1_CHANNEL] __attribute__((section("dma_ram")));//ADC DMA采集储存池
+__IO static uint16_t adcDmaBuffer1[CONFIG_ADC1_CHANNEL] __attribute__((section("dma_ram")));//ADC DMA采集储存池
 __IO static float adcFilterBuf[CONFIG_ADC1_CHANNEL] = {0.0f};  // ADC1浮点滤波缓存
 __IO static uint8_t adcBufferAselect;//ADC BUFFER选择指示
 __IO static uint8_t adcBufferAdone;//ADC 采集完毕

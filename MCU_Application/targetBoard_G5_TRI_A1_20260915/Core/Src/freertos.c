@@ -46,13 +46,7 @@ typedef StaticSemaphore_t osStaticMutexDef_t;
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-/* Definitions for cliTask (FreeRTOS+CLI, 与printf共用调试串口huart3) */
-osThreadId_t cliTaskHandle;
-const osThreadAttr_t cliTask_attributes = {
-  .name = "cliTask",
-  .stack_size = 2048 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
+
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -65,7 +59,7 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t mainAppTaskHandle;
 const osThreadAttr_t mainAppTask_attributes = {
   .name = "mainAppTask",
-  .stack_size = 10240 * 4,
+  .stack_size = 6144 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for xFatfsMutex */
@@ -112,7 +106,7 @@ void MX_FREERTOS_Init(void) {
   myRecursiveMutex01Handle = osMutexNew(&myRecursiveMutex01_attributes);
 
   /* USER CODE BEGIN RTOS_MUTEX */
-	/* ���������� */
+	/* 互斥量初始化 */
     //xFatfsMutex = xSemaphoreCreateMutex();
     /* ... ���������ʼ�� ... */
   /* add mutexes, ... */
@@ -139,9 +133,6 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  /* creation of cliTask (FreeRTOS+CLI console) */
-  extern void StartCliTask(void *argument);
-  cliTaskHandle = osThreadNew(StartCliTask, NULL, &cliTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

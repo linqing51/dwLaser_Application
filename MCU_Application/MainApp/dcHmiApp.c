@@ -4,7 +4,12 @@ uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
 uint16_t hmiCmdSize;//已缓冲的指令数
 static MSG_ID_T MsgId;//当前显示的信息ID
-uint8_t CcmRamBuf[0xFFFF] __attribute__ ((at(CCMDATARAM_BASE)));//文件读写缓冲
+uint8_t CcmRamBuf[BOOTLOAD_BUF_SIZE] __attribute__ ((at(CCMDATARAM_BASE)));//Bootload 升级块缓冲 8KB（CCM 头部）
+/* CCM RAM(0x10000000) 不支持 DMA 访问。当前 FATFS 底层为 USB Host MSC，usbh_conf.c 中
+   dma_enable=DISABLE（CPU 轮询搬运），本缓冲经 f_read 读取安全；若未来启用 USB/SDIO DMA，
+   禁止将本缓冲直接用作 DMA 目标，需先经 SRAM 中转。
+   CCM 剩余空间(0x10002000 起)由 scatter 文件 RW_CCM 区承接普通变量自动分配；
+   ADC DMA 采样缓冲(adcDmaBuffer0/1)已标注 dma_ram 区强制留在 SRAM。 */
 uint32_t newBootloadCrc32;
 // 创建风扇控制器实例
 FanController FanTec;
@@ -75,19 +80,21 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 		return false;
 	}
 	vTaskDelay(800);
-	//计算新固件CRC值
+	//计算新固件CRC值（分块读取+硬件CRC流式累加）
 	newBootloadCrc32 = 0;
 	crc32Clear();
 	LastPGAddress = BOOTLOADER_FLASH_START_ADDRESS;
-	memset(CcmRamBuf, 0xFF, sizeof(CcmRamBuf));
 	while(readflag){
-		/* Read maximum 512 Kbyte from the selected file */
-		f_read(&BootLoadFile, CcmRamBuf, sizeof(CcmRamBuf), (void*)&bytesread);
-		newBootloadCrc32 = crc32Calculate(CcmRamBuf, bytesread);//CRC32 计算数组
+		/* 分块读取固件文件，块大小 BOOTLOAD_BUF_SIZE(8KB)，复用 CCM 缓冲 */
+		f_read(&BootLoadFile, CcmRamBuf, BOOTLOAD_BUF_SIZE, (void*)&bytesread);
+		if(bytesread == 0){//文件已读完
+			break;
+		}
+		newBootloadCrc32 = crc32Calculate(CcmRamBuf, bytesread);//CRC32 累加（硬件CRC不重置）
 		/* Temp variable */
 		TmpReadSize = bytesread;
-		/* The read data < "BUFFER_SIZE" Kbyte */
-		if(TmpReadSize < BUFFER_SIZE){
+		/* The read data < "BOOTLOAD_BUF_SIZE" 字节 */
+		if(TmpReadSize < BOOTLOAD_BUF_SIZE){
 			readflag = FALSE;
 		}
 		LastPGAddress += TmpReadSize;
@@ -118,42 +125,101 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 		return true;
 	}
 }
-void confirmBootloadUpdate(void){//执行Bootload更新
+void confirmBootloadUpdate(void){//执行Bootload更新（分块边读边写：正常上下文读USB块，关中断写Flash块，块缓冲8KB）
 	uint32_t i;
-	vTaskSuspendAll();//禁用任务切换
-	__disable_irq();//关闭中断
-	SysTick->CTRL = 0;//关键代码
-	HAL_FLASH_Unlock();//解锁FLASH锁定
-	softDelayMs(3000);
+	uint32_t tmpWord;
+	uint32_t remain;
+	uint32_t fileOffset = 0;
+	uint32_t bytesread = 0;
+	uint8_t  readflag = 1;
+	uint8_t  firstBlock = 1;
+	FRESULT res;
+
+	/* 重新挂载并打开固件文件（正常上下文，USB 协议栈依赖中断，必须开中断读） */
+	f_mount(&USBH_fatfs, (const TCHAR*)FATFS_ROOT, 1);
+	res = f_open(&BootLoadFile, (const TCHAR*)(BOOTLOAD_FILENAME), FA_OPEN_EXISTING | FA_READ);
+	if(res != FR_OK){//打开失败，保留旧固件
+		printf("BootLoader:Open %s fail,exit update!\n", BOOTLOAD_FILENAME);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Open file fail,Game Over!"));
+		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+		return;
+	}
+	if(f_size(&BootLoadFile) > BOOTLOADER_FLASH_SIZE){//超长防护
+		printf("BootLoader:File is over length, exit update!\n");
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("File is over length,exit update!"));
+		f_close(&BootLoadFile);
+		HAL_FLASH_Lock();//恢复锁定
+		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+		return;
+	}
+	f_lseek(&BootLoadFile, 0);//读取指针移动到开头
+	HAL_FLASH_Unlock();//解锁FLASH锁定（无时序敏感，提前到循环外）
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR);
-	if (FLASH_If_EraseBootload() != 0x00){//擦除BOOTLOAD 失败
-		printf("BootLoader:Erase bootload fail, GameOver!!!!!\n");
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
-		return;
-	}
-	softDelayMs(1000);
-	if(checkBlank(BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_SIZE)){//FLASH 查空
-		printf("Bootloader:Check mcu booload blank sucess.\n");
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload sucessful..."));
-	}
-	else{
-		printf("Bootloader:Check mcu booload blank not empty!\n");
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
-		return;
-	}
-	softDelayMs(2000);
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start update new bootload..."));
-	for(i = 0; i < BOOTLOADER_FLASH_SIZE; i += 4){
-		if(FLASH_lf_WriteBootload((BOOTLOADER_FLASH_START_ADDRESS + i), *(uint32_t *) (CcmRamBuf + i)) != 0x00){
-			softDelayMs(100);
-			printf("BootLoader:Write mcu bootload fail,GameOver!!!!!\n");//写入FLASH错误
+
+	while(readflag){
+		/* 正常上下文读一块（USB MSC 底层轮询需中断驱动，禁止在关中断段读取） */
+		f_read(&BootLoadFile, CcmRamBuf, BOOTLOAD_BUF_SIZE, (void*)&bytesread);
+		if(bytesread == 0){//文件已读完
+			break;
 		}
+		if(bytesread < BOOTLOAD_BUF_SIZE){
+			readflag = 0;
+		}
+		/* 关键写段：关调度+关中断+关SysTick，保证 Flash 编程时序 */
+		vTaskSuspendAll();//禁用任务切换
+		__disable_irq();//关闭中断
+		SysTick->CTRL = 0;//关键代码
+		if(firstBlock){//第一块写入前：整区擦除+查空（与旧版一次性流程等价，仅执行一次）
+			firstBlock = 0;
+			if (FLASH_If_EraseBootload() != 0x00){//擦除BOOTLOAD 失败
+				SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
+				__enable_irq();
+				(void)xTaskResumeAll();
+				HAL_FLASH_Lock();//恢复锁定
+				printf("BootLoader:Erase bootload fail, GameOver!!!!!\n");
+				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
+				f_close(&BootLoadFile);
+				f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+				return;
+			}
+			if(checkBlank(BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_SIZE)){//FLASH 查空
+				printf("Bootloader:Check mcu booload blank sucess.\n");
+				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload sucessful..."));
+			}
+			else{
+				SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
+				__enable_irq();
+				(void)xTaskResumeAll();
+				HAL_FLASH_Lock();//恢复锁定
+				printf("Bootloader:Check mcu booload blank not empty!\n");
+				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
+				f_close(&BootLoadFile);
+				f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
+				return;
+			}
+		}
+		/* 写当前块（块内 4 字节对齐；尾部不足 4 字节补 0xFF，与文件 CRC 补全逻辑一致） */
+		for(i = 0; i < bytesread; i += 4){
+			tmpWord = 0xFFFFFFFFU;
+			remain = bytesread - i;
+			if(remain > 4){ remain = 4; }
+			memcpy(&tmpWord, CcmRamBuf + i, (size_t)remain);//小端：剩余字节填低字节，高位保持0xFF
+			if(FLASH_lf_WriteBootload((BOOTLOADER_FLASH_START_ADDRESS + fileOffset + i), tmpWord) != 0x00){
+				printf("BootLoader:Write mcu bootload fail,GameOver!!!!!\n");//写入FLASH错误
+			}
+		}
+		fileOffset += bytesread;
+		/* 恢复：先恢复SysTick，再开中断，再恢复调度 */
+		SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
+		__enable_irq();
+		(void)xTaskResumeAll();
 	}
 	HAL_FLASH_Lock();
 	printf("BootLoader:Update new bootload done...\n");
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"Update new bootload done...");
 	softDelayMs(1000);
-	//检查已写入的Bootload是否正确
+	//检查已写入的Bootload是否正确（全区读回：未写的0xFF填充区与文件CRC的补全逻辑一致）
 	printf("BootLoader:Start checksum new bootload...\n");
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start checksum new bootload..."));
 	BootloadCrc = getOriginBootloadCrc();
@@ -3943,31 +4009,13 @@ void dcHmiLoop(void){//HMI轮训程序
 			RRES(R_INFORMATION_KEY_OK_DOWN);	
 		}
 		if(LDP(SPCOIL_PS500MS)){//刷新RTC 显示
-			uint8_t* pyear = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* pmonth = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* pday = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* phour = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* pminute = (uint8_t*)malloc(sizeof(uint8_t));
-			uint8_t* psecond = (uint8_t*)malloc(sizeof(uint8_t));
-			char* pdispBuf = (char*)malloc(64 * sizeof(char)); 
-			
-			if((pyear != NULL) && (pmonth != NULL) && (pday != NULL)){
-				RtcGetNowTime(pyear, pmonth, pday, phour, pminute, psecond);//获取当前时间可循环调用
-			}
-			if(pdispBuf != NULL){
-				memset(pdispBuf, 0x0, 64 * sizeof(char));
-				sprintf(pdispBuf, "Year:%d-Month:%d-Day:%d  Hour:%d-Minute:%d-Second:%d", *pyear, *pmonth, *pday, *phour, *pminute, *psecond);
-				SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)pdispBuf);
-			}
-			free(pyear);
-			free(pmonth);
-			free(pday);
-			free(psecond);
-			free(pdispBuf);
-			pyear = NULL;  // 指针置空，避免野指针
-			pmonth = NULL;
-			pday = NULL;
-			pdispBuf = NULL;
+			uint8_t year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
+			char dispBuf[64];
+
+			RtcGetNowTime(&year, &month, &day, &hour, &minute, &second);//获取当前时间可循环调用
+			memset(dispBuf, 0x0, sizeof(dispBuf));
+			sprintf(dispBuf, "Year:%d-Month:%d-Day:%d  Hour:%d-Minute:%d-Second:%d", year, month, day, hour, minute, second);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
 		}
 		return;
 	}
