@@ -1,9 +1,9 @@
 .\targetboard_g5_tri_a1_20260915\poly1305.o: ../Middlewares/Third_Party/mbedTLS/library/poly1305.c
 .\targetboard_g5_tri_a1_20260915\poly1305.o: ../MBEDTLS/App/mbedtls_config.h
 .\targetboard_g5_tri_a1_20260915\poly1305.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
-.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\BIN\Bin\..\include\limits.h
 .\targetboard_g5_tri_a1_20260915\poly1305.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/poly1305.h
-.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
 .\targetboard_g5_tri_a1_20260915\poly1305.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_util.h
-.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\poly1305.o: C:\Keil_v5\ARM\BIN\Bin\..\include\string.h

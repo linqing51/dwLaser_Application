@@ -10,7 +10,7 @@
       <TargetName>targetBoard_G5_TRI_A1_20260915</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\BIN</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -2489,6 +2489,11 @@
               <FilePath>..\..\lib\classic_pid.c</FilePath>
             </File>
             <File>
+              <FileName>smart_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\smart_pid.c</FilePath>
+            </File>
+            <File>
               <FileName>minicsv.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\minicsv.c</FilePath>
@@ -2687,6 +2692,11 @@
               <FileName>minicsvApp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\minicsvApp.c</FilePath>
+            </File>
+            <File>
+              <FileName>treatment.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\treatment.c</FilePath>
             </File>
           </Files>
         </Group>

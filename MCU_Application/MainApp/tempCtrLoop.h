@@ -10,7 +10,7 @@ extern "C" {
 #if CONFIG_USING_CLASSIC_PID == 1
 #include "classic_pid.h"
 
-extern PID_Controller_t TempPid_A,TempPid_B;//ºãÎÂ¿ØÖÆÆ÷
+extern PID_Controller_t TempPid_A,TempPid_B;//æ’æ¸©æ§åˆ¶å™¨
 #endif
 #if CONFIG_USING_FUZZY_PID == 1
 #include "fuzzy_pid.h"

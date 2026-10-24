@@ -127,17 +127,17 @@ static const CLI_Command_Definition_t CLI_Definition_All[] = {
     },        
 
 		{
-				"led_ctrl",                      /* ÃüÁîÃû³Æ */
-				"\r\nled_ctrl <on|off>:\r\n Controls the LED state (on/off)\r\n\r\n", /* °ïÖúĞÅÏ¢ */
-				prvLedCtrlCommand,               /* ÃüÁî´¦Àíº¯Êı */
-				1                                /* ²ÎÊıÊıÁ¿£¨1¸ö²ÎÊı£ºon»òoff£© */
+				"led_ctrl",                      /* å‘½ä»¤åç§° */
+				"\r\nled_ctrl <on|off>:\r\n Controls the LED state (on/off)\r\n\r\n", /* å¸®åŠ©ä¿¡æ¯ */
+				prvLedCtrlCommand,               /* å‘½ä»¤å¤„ç†å‡½æ•° */
+				1                                /* å‚æ•°æ•°é‡ï¼ˆ1ä¸ªå‚æ•°ï¼šonæˆ–offï¼‰ */
 		},
 
 		{
-				"system_info",                   /* ÃüÁîÃû³Æ */
-				"\r\nsystem_info:\r\n Displays system information (version, uptime, etc.)\r\n\r\n", /* °ïÖúĞÅÏ¢ */
-				prvSystemInfoCommand,            /* ÃüÁî´¦Àíº¯Êı */
-				0                                /* ÎŞ²ÎÊı */
+				"system_info",                   /* å‘½ä»¤åç§° */
+				"\r\nsystem_info:\r\n Displays system information (version, uptime, etc.)\r\n\r\n", /* å¸®åŠ©ä¿¡æ¯ */
+				prvSystemInfoCommand,            /* å‘½ä»¤å¤„ç†å‡½æ•° */
+				0                                /* æ— å‚æ•° */
 		},	
 		
 };
@@ -735,20 +735,20 @@ static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLe
     const char * pcParameter;
     BaseType_t lParameterStringLength;
  
-    /* »ñÈ¡²ÎÊı */
+    /* è·å–å‚æ•° */
     pcParameter = FreeRTOS_CLIGetParameter(pcCommandString, 1, &lParameterStringLength);
     configASSERT(pcParameter);
  
-    /* ½âÎö²ÎÊı²¢¿ØÖÆLED */
+    /* è§£æå‚æ•°å¹¶æ§åˆ¶LED */
     if( strncmp(pcParameter, "on", lParameterStringLength) == 0 )
     {
-        /* ´ò¿ªLEDµÄ´úÂë */
+        /* æ‰“å¼€LEDçš„ä»£ç  */
         sprintf(pcWriteBuffer, "LED turned on\r\n");
 				SET_BLUE_LED_ON;
     }
     else if( strncmp(pcParameter, "off", lParameterStringLength) == 0 )
     {
-        /* ¹Ø±ÕLEDµÄ´úÂë */
+        /* å…³é—­LEDçš„ä»£ç  */
         sprintf(pcWriteBuffer, "LED turned off\r\n");
 				SET_BLUE_LED_OFF;
     }
@@ -757,7 +757,7 @@ static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLe
         sprintf(pcWriteBuffer, "Invalid parameter. Usage: led_ctrl <on|off>\r\n");
     }
  
-    return pdFALSE; /* Ã»ÓĞ¸ü¶àÊä³öÊı¾İ */
+    return pdFALSE; /* æ²¡æœ‰æ›´å¤šè¾“å‡ºæ•°æ® */
 }
 
 
@@ -769,7 +769,7 @@ static BaseType_t prvSystemInfoCommand( char * pcWriteBuffer, size_t xWriteBuffe
                                       "CPU Frequency: 100 MHz\r\n";
     uint32_t ulUptimeSeconds = xTaskGetTickCount() / configTICK_RATE_HZ;
  
-    /* Êä³öÏµÍ³ĞÅÏ¢ */
+    /* è¾“å‡ºç³»ç»Ÿä¿¡æ¯ */
     sprintf(pcWriteBuffer, pcSystemInfo, ulUptimeSeconds);
  
     return pdFALSE;

@@ -2,48 +2,48 @@
 
 
 
-//»¼Õß ID µÄ±àÂë¹æÔòÊÇ£º
-//1. AR + Ò»¸ö¿Õ¸ñ + ÖÁÉÙ 4 Î»µÄµİÔöÊı×Ö£¬ÀıÈç£ºAR 0001¡¢AR 0002¡¢AR 0011¡£
-//- ×Ô¶¯Éú³É¡¢²»¿ÉÊÖ¶¯ĞŞ¸Ä£ºÈ¡ÏÖÓĞ»¼Õß ID ÖĞ×î´óµÄÊı×Ö¼Ó 1£¬²»×ã 4 Î»Ê±Ç°Ãæ²¹Áã¡£
-//- ĞÂ»¼Õß·ÖÅäĞÂ ID£ºÄ¿Ç° Demo ÒÑÓĞ±àºÅµ½ AR 0010£¬ËùÒÔÏÂÒ»Î»ÊÇ AR 0011¡£
-//- ÒÑÓĞ»¼Õß¼ÌĞøÊ¹ÓÃÔ­ ID£ºÔÙ´ÎÖÎÁÆÊ±×·¼ÓÖÎÁÆ¼ÇÂ¼£¬²»ÖØĞÂ±àºÅ¡£
-//- Í¬Ãû²»´ú±íÍ¬Ò»»¼Õß£ºÑ¡ÔñÒÑÓĞ»¼Õß¾Í¸´ÓÃÆä ID£»Ñ¡Ôñ¡¸Create New Patient¡¹ÔòÉú³ÉĞÂ ID¡£
+//æ‚£è€… ID çš„ç¼–ç è§„åˆ™æ˜¯ï¼š
+//1. AR + ä¸€ä¸ªç©ºæ ¼ + è‡³å°‘ 4 ä½çš„é€’å¢æ•°å­—ï¼Œä¾‹å¦‚ï¼šAR 0001ã€AR 0002ã€AR 0011ã€‚
+//- è‡ªåŠ¨ç”Ÿæˆã€ä¸å¯æ‰‹åŠ¨ä¿®æ”¹ï¼šå–ç°æœ‰æ‚£è€… ID ä¸­æœ€å¤§çš„æ•°å­—åŠ  1ï¼Œä¸è¶³ 4 ä½æ—¶å‰é¢è¡¥é›¶ã€‚
+//- æ–°æ‚£è€…åˆ†é…æ–° IDï¼šç›®å‰ Demo å·²æœ‰ç¼–å·åˆ° AR 0010ï¼Œæ‰€ä»¥ä¸‹ä¸€ä½æ˜¯ AR 0011ã€‚
+//- å·²æœ‰æ‚£è€…ç»§ç»­ä½¿ç”¨åŸ IDï¼šå†æ¬¡æ²»ç–—æ—¶è¿½åŠ æ²»ç–—è®°å½•ï¼Œä¸é‡æ–°ç¼–å·ã€‚
+//- åŒåä¸ä»£è¡¨åŒä¸€æ‚£è€…ï¼šé€‰æ‹©å·²æœ‰æ‚£è€…å°±å¤ç”¨å…¶ IDï¼›é€‰æ‹©ã€ŒCreate New Patientã€åˆ™ç”Ÿæˆæ–° IDã€‚
 
 
 /*****************************************************************************/
-/* È«¾Ö¾²Ì¬»º³åÇø£¬²»Òª·ÅÔÚÕ»ÉÏ£¡STM32Õ»ºÜĞ¡ */
-static char csv_file_buf[1024];     /* FATFS¶ÁÈ¡ÎÄ¼ş¿é»º³åÇø */
-static char csv_work_buf[512];      /* MiniCSV½âÎö¹¤×÷»º³åÇø */
-static char csv_write_buf[512];     /* CSVĞĞÊä³öĞòÁĞ»¯»º³åÇø */
+/* å…¨å±€é™æ€ç¼“å†²åŒºï¼Œä¸è¦æ”¾åœ¨æ ˆä¸Šï¼STM32æ ˆå¾ˆå° */
+static char csv_file_buf[1024];     /* FATFSè¯»å–æ–‡ä»¶å—ç¼“å†²åŒº */
+static char csv_work_buf[512];      /* MiniCSVè§£æå·¥ä½œç¼“å†²åŒº */
+static char csv_write_buf[512];     /* CSVè¡Œè¾“å‡ºåºåˆ—åŒ–ç¼“å†²åŒº */
 /*****************************************************************************/
 /**
- * @brief Ê¾Àı1£º¶ÁÈ¡SD/UÅÌÉÏcsvÎÄ¼ş£¬ÖğĞĞ½âÎö
+ * @brief ç¤ºä¾‹1ï¼šè¯»å–SD/Uç›˜ä¸Šcsvæ–‡ä»¶ï¼Œé€è¡Œè§£æ
  */
 void MiniCSV_ReadCsvFile(const char* file_path){
 	FIL file;
 	FRESULT fr;
 	MiniCSV_StatusTypeDef csv_ret;
 	MiniCSV_RowTypeDef csv_row;
-	TCHAR *pGet;   // f_gets ·µ»ØÖ¸Õë
+	TCHAR *pGet;   // f_gets è¿”å›æŒ‡é’ˆ
 
 	fr = f_open(&file, file_path, FA_READ);
 	if(fr != FR_OK){
 		return;
 	}
 	while(1){
-		/* FATFS¶ÁÈ¡Ò»ĞĞ£¬¼òµ¥ÊµÏÖ£º¶ÁÈ¡Ò»¿é£¬ÕÒµ½»»ĞĞ£»ÊÊºÏÇ¶ÈëÊ½ */
+		/* FATFSè¯»å–ä¸€è¡Œï¼Œç®€å•å®ç°ï¼šè¯»å–ä¸€å—ï¼Œæ‰¾åˆ°æ¢è¡Œï¼›é€‚åˆåµŒå…¥å¼ */
 		pGet = f_gets(csv_file_buf, sizeof(csv_file_buf), &file);
-		if(pGet == NULL){//ÎÄ¼ş½áÊø»òÕß¶ÁÈ¡³ö´í
+		if(pGet == NULL){//æ–‡ä»¶ç»“æŸæˆ–è€…è¯»å–å‡ºé”™
 			break;
 		}
 		
 		csv_ret = MiniCSV_ParseOneRow(csv_file_buf, csv_work_buf, sizeof(csv_work_buf), &csv_row);
 		if(csv_ret == MINICSV_OK){
-			/* ´òÓ¡½âÎö½á¹û£¬Ê¾Àı£º´®¿ÚÊä³ö */
+			/* æ‰“å°è§£æç»“æœï¼Œç¤ºä¾‹ï¼šä¸²å£è¾“å‡º */
 			for(uint16_t col = 0; col < csv_row.field_count; col++){
-				/* csv_row.fields[col] Ö¸Ïòcsv_work_bufÄÚ²¿£¬csv_row.field_len[col]³¤¶È */
+				/* csv_row.fields[col] æŒ‡å‘csv_work_bufå†…éƒ¨ï¼Œcsv_row.field_len[col]é•¿åº¦ */
 				(void)col;
-				/* Ê¹ÓÃÊ¾Àı£º
+				/* ä½¿ç”¨ç¤ºä¾‹ï¼š
 				printf("col%d:[%.*s]\r\n", col, csv_row.field_len[col], csv_row.fields[col]);
 				*/
 			}
@@ -54,7 +54,7 @@ void MiniCSV_ReadCsvFile(const char* file_path){
 }
 
 /**
- * @brief Ê¾Àı2£º¹¹ÔìÒ»ĞĞCSVÊı¾İ£¬Ğ´ÈëÎÄ¼ş
+ * @brief ç¤ºä¾‹2ï¼šæ„é€ ä¸€è¡ŒCSVæ•°æ®ï¼Œå†™å…¥æ–‡ä»¶
  */
 void MiniCSV_WriteCsvFile(const char* file_path, treatmentLog_t *plog){
 	FIL file;
@@ -64,7 +64,7 @@ void MiniCSV_WriteCsvFile(const char* file_path, treatmentLog_t *plog){
 	UINT write_len;
 	uint16_t out_len;
 
-	/* ÖØÖÃĞĞ½á¹¹ */
+	/* é‡ç½®è¡Œç»“æ„ */
 	memset(&csv_row, 0, sizeof(csv_row));
 
 	printf("Free heap: %d bytes\n", xPortGetFreeHeapSize());
@@ -73,7 +73,7 @@ void MiniCSV_WriteCsvFile(const char* file_path, treatmentLog_t *plog){
 	char *pf0 = (char *)pvPortMalloc(64);
 	configASSERT(pf0 != NULL);
 	memset(pf0, 0, 64);
-	sprintf(pf0, "%s", plog->id);
+	sprintf(pf0, "%u", plog->id);
 	
 	char *pf1 = (char *)pvPortMalloc(64);
 	configASSERT(pf1 != NULL);
@@ -82,49 +82,39 @@ void MiniCSV_WriteCsvFile(const char* file_path, treatmentLog_t *plog){
 	
 	char *pf2 = (char *)pvPortMalloc(64);
 	configASSERT(pf2 != NULL);
-	memset(pf1, 0, 64);
-	sprintf(pf2, "%s", plog->gender);
+	memset(pf2, 0, 64);
+	sprintf(pf2, "%s", (plog->gender == MALE) ? "Male" : "Female");
 	
 	char *pf3 = (char *)pvPortMalloc(64);
 	configASSERT(pf3 != NULL);
-	memset(pf1, 0, 64);
-	sprintf(pf3, "%s", plog->age);
+	memset(pf3, 0, 64);
+	sprintf(pf3, "%u", plog->age);
 	
 	char *pf4 = (char *)pvPortMalloc(64);
 	configASSERT(pf4 != NULL);
-	memset(pf1, 0, 64);
-	sprintf(pf4, "%s", plog->laserPower);
+	memset(pf4, 0, 64);
+	sprintf(pf4, "%d", plog->laserPower);
 	
 	char *pf5 = (char *)pvPortMalloc(64);
 	configASSERT(pf5 != NULL);
 	memset(pf5, 0, 64);
-	sprintf(pf5, "%s", plog->laserWave);
+	sprintf(pf5, "%s", treatmentLaserWaveName(plog->laserWave));
 	
 	char *pf6 = (char *)pvPortMalloc(64);
 	configASSERT(pf6 != NULL);
 	memset(pf6, 0, 64);
-	sprintf(pf6, "%s", plog->protocol);
+	sprintf(pf6, "%s", treatmentProtocolName(plog->protocol));
 		
 	char *pf7 = (char *)pvPortMalloc(64);
 	configASSERT(pf7 != NULL);
 	memset(pf7, 0, 64);
-	sprintf(pf7, "%s", plog->releaseEnergy);
+	sprintf(pf7, "%ld", (long)plog->releaseEnergy);
 	
 	char *pf8 = (char *)pvPortMalloc(64);
 	configASSERT(pf8 != NULL);
 	memset(pf8, 0, 64);
-	sprintf(pf8, "%s", plog->releaseTime);
-	
-	vPortFree(pf0);pf0 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf1);pf1 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf2);pf2 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf3);pf3 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf4);pf4 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf5);pf5 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf6);pf6 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf7);pf7 = NULL;  // ·ÀÒ°Ö¸Õë
-	vPortFree(pf8);pf8 = NULL;  // ·ÀÒ°Ö¸Õë
-	
+	sprintf(pf8, "%ld", (long)plog->releaseTime);
+
 	printf("Free heap: %d bytes\n", xPortGetFreeHeapSize());
   printf("Min ever:  %d bytes\n", xPortGetMinimumEverFreeHeapSize());
 	
@@ -148,10 +138,10 @@ void MiniCSV_WriteCsvFile(const char* file_path, treatmentLog_t *plog){
 
 	csv_row.field_count = 9U;
 
-	/* ĞòÁĞ»¯ÎªCSVĞĞÎÄ±¾ */
+	/* åºåˆ—åŒ–ä¸ºCSVè¡Œæ–‡æœ¬ */
 	csv_ret = MiniCSV_WriteOneRow(&csv_row, csv_write_buf, sizeof(csv_write_buf), &out_len);
 	if(csv_ret != MINICSV_OK){
-		return;
+		goto csv_cleanup;
 	}
 	
 	
@@ -159,16 +149,27 @@ void MiniCSV_WriteCsvFile(const char* file_path, treatmentLog_t *plog){
 	
 	fr = f_open(&file, TREATMENTLOG_FILENAME, FA_OPEN_ALWAYS | FA_WRITE);
 	if(fr != FR_OK){
-		return;
+		goto csv_cleanup;
 	}
-	f_lseek(&file, f_size(&file)); /* ×·¼ÓÄ£Ê½£¬Ìøµ½ÎÄ¼şÄ©Î² */
+	f_lseek(&file, f_size(&file)); /* è¿½åŠ æ¨¡å¼ï¼Œè·³åˆ°æ–‡ä»¶æœ«å°¾ */
 
 	fr = f_write(&file, csv_write_buf, out_len, &write_len);
 	f_close(&file);
+
+	csv_cleanup:
+	vPortFree(pf0);pf0 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf1);pf1 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf2);pf2 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf3);pf3 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf4);pf4 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf5);pf5 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf6);pf6 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf7);pf7 = NULL;  // é˜²é‡æŒ‡é’ˆ
+	vPortFree(pf8);pf8 = NULL;  // é˜²é‡æŒ‡é’ˆ
 }
 
 /**
- * @brief FreeRTOSÈÎÎñÈë¿ÚÊ¾Àı
+ * @brief FreeRTOSä»»åŠ¡å…¥å£ç¤ºä¾‹
  */
 void vMiniCSVTestTask(void *pvParameters){
 	(void) pvParameters;

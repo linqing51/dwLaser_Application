@@ -143,6 +143,10 @@ extern "C" {
 #define GDDC_PAGE_TREATMENT_KEY_FEMALE									10
 #define GDDC_PAGE_TREATMENT_KEY_CANCEL									11
 #define GDDC_PAGE_TREATMENT_KEY_SAVEUSB									12
+#define GDDC_PAGE_TREATMENT_KEY_LAST										13//上一份病历
+#define GDDC_PAGE_TREATMENT_KEY_NEXT										14//下一份病历
+#define GDDC_PAGE_TREATMENT_KEY_DELETE									15//删除当前病历
+#define GDDC_PAGE_TREATMENT_KEY_INSERT									16//插入当前病历到浏览位置
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//发射功率显示 1470 /1940

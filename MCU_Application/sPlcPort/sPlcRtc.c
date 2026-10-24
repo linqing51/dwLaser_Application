@@ -3,9 +3,9 @@
 #include "sPlc.h"
 #include "..\config\myConfig.h"
 /*****************************************************************************/
-// ×Ô¶¨ÒåÄ§Êõ±ê¼ÇÖµ
+// è‡ªå®šä¹‰é­”æœ¯æ ‡è®°å€¼
 #define RTC_VALID_FLAG    0x52544346U   // "RTCF"
-// Ñ¡ÓÃRTC±¸·İ¼Ä´æÆ÷ 0
+// é€‰ç”¨RTCå¤‡ä»½å¯„å­˜å™¨ 0
 #define RTC_FLAG_BKP_REG  RTC_BKP_DR19
 
 RTC_TimeTypeDef sTime;
@@ -28,13 +28,13 @@ void RtcInitTimeDefault(void){
 
 void RtcCheckAndInit(void){
   __HAL_RCC_PWR_CLK_ENABLE();
-  HAL_PWR_EnableBkUpAccess();   // ½â³ı±¸·İÓòĞ´±£»¤
+  HAL_PWR_EnableBkUpAccess();   // è§£é™¤å¤‡ä»½åŸŸå†™ä¿æŠ¤
   __HAL_RCC_BACKUPRESET_FORCE();
   __HAL_RCC_BACKUPRESET_RELEASE();
 }
 
-void RtcGetNowTime(uint8_t *year,uint8_t *mon,uint8_t *day, uint8_t *hour,uint8_t *min,uint8_t *sec){//»ñÈ¡µ±Ç°Ê±¼ä¿ÉÑ­»·µ÷ÓÃ
-  // ¹æ·¶£º±ØĞëÏÈ¶ÁTime£¬ÔÙ¶ÁDate
+void RtcGetNowTime(uint8_t *year,uint8_t *mon,uint8_t *day, uint8_t *hour,uint8_t *min,uint8_t *sec){//è·å–å½“å‰æ—¶é—´å¯å¾ªç¯è°ƒç”¨
+  // è§„èŒƒï¼šå¿…é¡»å…ˆè¯»Timeï¼Œå†è¯»Date
   HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
   HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
   *year = sDate.Year;
@@ -45,13 +45,13 @@ void RtcGetNowTime(uint8_t *year,uint8_t *mon,uint8_t *day, uint8_t *hour,uint8_
   *sec  = sTime.Seconds;
 }
 
-// ¹¦ÄÜ£ºÉèÖÃ RTC ÈÕÆÚºÍÊ±¼ä
-// ÊäÈë£ºÄê(ºóÁ½Î»)¡¢ÔÂ¡¢ÈÕ¡¢Ê±¡¢·Ö¡¢Ãë¡¢ĞÇÆÚ
+// åŠŸèƒ½ï¼šè®¾ç½® RTC æ—¥æœŸå’Œæ—¶é—´
+// è¾“å…¥ï¼šå¹´(åä¸¤ä½)ã€æœˆã€æ—¥ã€æ—¶ã€åˆ†ã€ç§’ã€æ˜ŸæœŸ
 void RtcSetTime(uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec){
 	HAL_PWR_EnableBkUpAccess();	
 	RTC_TimeTypeDef sTime = {0};
 	RTC_DateTypeDef sDate = {0};
-	// 1. ÉèÖÃÊ±¼ä
+	// 1. è®¾ç½®æ—¶é—´
 	sTime.Hours = hour;
 	sTime.Minutes = min;
 	sTime.Seconds = sec;
@@ -59,8 +59,8 @@ void RtcSetTime(uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t 
 	sTime.StoreOperation = RTC_STOREOPERATION_RESET;
 
 	HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-	// 2. ÉèÖÃÈÕÆÚ
-	sDate.Year = year;     // Ö»ÌîºóÁ½Î»£¬Èç 25 ´ú±í 2025
+	// 2. è®¾ç½®æ—¥æœŸ
+	sDate.Year = year;     // åªå¡«åä¸¤ä½ï¼Œå¦‚ 25 ä»£è¡¨ 2025
 	sDate.Month = month;
 	sDate.Date = day;
 	HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);

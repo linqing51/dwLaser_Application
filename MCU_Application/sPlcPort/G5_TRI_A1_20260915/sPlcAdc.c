@@ -53,6 +53,11 @@ void sPlcAdcProcessBuffer(void){//循环采集ADC
 		NVRAM0[SPREG_ADC_58] = adcFilterBuf[10];//CHIP TEMP
 		NVRAM0[SPREG_ADC_59] = adcFilterBuf[11];//VREFINT
 		NVRAM0[SPREG_ADC_60] = adcFilterBuf[12];//VBAT
+		//温度转换(参照 M450/CORE 板): ADC原始值 -> 温度(×10整数)
+		TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS, CONFIG_DIODE_NTC_B);//激光二极管温度
+		TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器0温度
+		TNTLC(EM_HT1_TEMP, SPREG_ADC_33, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器1温度(复用HT0参数)
+		TENV(EM_MCU_TEMP, SPREG_ADC_58);//处理器温度
 	}
 	else{//adcBufferSelect = 1
 		HAL_ADC_Stop_DMA(&hadc1);
@@ -76,6 +81,11 @@ void sPlcAdcProcessBuffer(void){//循环采集ADC
 		NVRAM0[SPREG_ADC_58] = adcFilterBuf[10];//CHIP TEMP
 		NVRAM0[SPREG_ADC_59] = adcFilterBuf[11];//VREFINT
 		NVRAM0[SPREG_ADC_60] = adcFilterBuf[12];//VBAT		
+		//温度转换(参照 M450/CORE 板): ADC原始值 -> 温度(×10整数)
+		TNTLC(EM_LASER_A_DIODE_TEMP, SPREG_ADC_40, CONFIG_DIODE_NTC_RS, CONFIG_DIODE_NTC_B);//激光二极管温度
+		TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器0温度
+		TNTLC(EM_HT1_TEMP, SPREG_ADC_33, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器1温度(复用HT0参数)
+		TENV(EM_MCU_TEMP, SPREG_ADC_58);//处理器温度
 	}
 }
 

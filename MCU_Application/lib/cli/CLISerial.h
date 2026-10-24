@@ -99,7 +99,7 @@ typedef enum
 	ser115200
 } eBaud;
 
-//Òı½Å¶¨Òå
+//å¼•è„šå®šä¹‰
 /*******************************************************/
 #define USART2_CLK                          RCC_APB1Periph_USART2
 #define USART2_GPIO_CLK                     RCC_AHB1Periph_GPIOA
@@ -119,7 +119,7 @@ typedef enum
 
 
 
-#define USART5_RX_BUF_SIZE    128    /* ½ÓÊÕ»º³åÇø´óĞ¡ */
+#define USART5_RX_BUF_SIZE    128    /* æ¥æ”¶ç¼“å†²åŒºå¤§å° */
 
 
 

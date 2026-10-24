@@ -16,8 +16,6 @@ extern ApplicationTypeDef Appli_state;
 static uint16_t legalUsbDev[5] = {0x16C0, 0, 0, 0, 0};
 static uint16_t legalUsbPid[5] = {0x05E2, 0, 0, 0, 0};
 /*****************************************************************************/
-treatmentLog_t treatmentLog;
-/*****************************************************************************/
 void saveConfigToDisk(void){//将配置储存到U盘
 
 }
@@ -1991,7 +1989,7 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	sprintf(dispBuf1, "%3d:%02d", minute, seconds);//00:00
 	
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME, (uint8_t*)dispBuf1);		
-	strcpy(treatmentLog.releaseTime, dispBuf1);
+	treatmentLog.releaseTime = temp0;//发射时间 单位秒
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){//连续模式能量计算
 		temp2 = temp0 * NVRAM0[EM_LASER_POWER_TOTAL];//计算发射能量
 	}
@@ -2495,7 +2493,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	updateExtralDisplay();
-	if(treatmentLog.vailable == true){//记录有效
+	if(treatmentLogValid){//记录有效
 		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT, true);
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT,  true);
 	}
@@ -2535,15 +2533,15 @@ void updateReadyDisplay(void){//更新READY显示
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH0] / 10.0F;
 #if defined(APP_CONFIG_WAVE_1470_650)	|| defined(APP_CONFIG_WAVE_1470_980_650)
 			sprintf(dispBuf, "1470nm");
-			sprintf(treatment.laserWave, "1470nm");
+			treatmentLog.laserWave = WAVE_1470;
 #endif
 #if defined(APP_CONFIG_WAVE_1940_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			sprintf(dispBuf, "1940nm");
-			sprintf(treatment.laserWave, "1940nm");
+			treatmentLog.laserWave = WAVE_1940;
 #endif
 #if defined(APP_CONFIG_WAVE_450_980)
 			sprintf(dispBuf, "450nm");
-			sprintf(treatment.laserWave, "450nm");
+			treatmentLog.laserWave = WAVE_450;
 #endif     
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
@@ -2552,10 +2550,10 @@ void updateReadyDisplay(void){//更新READY显示
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH1] / 10.0F;
 #if defined(APP_CONFIG_WAVE_1940_1470_635)
       sprintf(dispBuf, "1470nm");
-			sprintf(treatment.laserWave, "1470nm");
+			treatmentLog.laserWave = WAVE_1470;
 #else
 			sprintf(dispBuf, "980nm");
-			sprintf(treatmentLog.laserWave, "980nm");
+			treatmentLog.laserWave = WAVE_980;
 #endif
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
@@ -2563,13 +2561,13 @@ void updateReadyDisplay(void){//更新READY显示
 		case LASER_CHANNEL_CH2:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH2] / 10.0F;
 			sprintf(dispBuf, "635nm");
-			sprintf(treatmentLog.laserWave, "635nm");
+			treatmentLog.laserWave = WAVE_635;
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}			
 		default:{
 			sprintf(dispBuf, "1470+980nm");
-			sprintf(treatmentLog.laserWave, "1470+980nm");
+			treatmentLog.laserWave = WAVE_1470_980;
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_CH0] + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_CH2])/ 10.0F;
 			break;
@@ -2578,12 +2576,76 @@ void updateReadyDisplay(void){//更新READY显示
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%3.1f W\n", displayPower);
 	treatmentLog.laserPower = displayPower;//复制实际功率
-	strcpy(treatmentLog.protocol, (char*)&NVRAM0[EM_LASER_SCHEME_NAME]);//复制方案名称
+	treatmentLog.protocol = eCustiom;//复制方案类别(自定义)
+	if((NVRAM0[DM_SCHEME_CLASSIFY] >= SCHEME_PHLEBOLOGY) && (NVRAM0[DM_SCHEME_CLASSIFY] <= SCHMEM_THERAPY)){
+		treatmentLog.protocol = (PROTOCOL_ENUM)(NVRAM0[DM_SCHEME_CLASSIFY] - SCHEME_PHLEBOLOGY);
+	}
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	clearReleaseTimeEnergy();
 	updateReleaseTimeEnergy();
 	updateAcousticDisplay();
+}
+
+/*****************************************************************************/
+//病历储存页面:显示病历信息(idText: ID显示文本; log: 病历数据指针, NULL显示为空)
+static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *log){
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	if(log == NULL){
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_GENDER, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ENERGY, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_TIME, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_POWER, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_PROTOCOL, (uint8_t*)"--");
+		return;
+	}
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID, (uint8_t*)idText);
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "%s", log->name);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)dispBuf);
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "%s", (log->gender == MALE) ? "Male" : "Female");
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_GENDER, (uint8_t*)dispBuf);
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "%d", log->age);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE, (uint8_t*)dispBuf);
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "%d J", log->releaseEnergy);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ENERGY, (uint8_t*)dispBuf);
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	{
+		int32_t totalSec = log->releaseTime;
+		if(totalSec < 0){
+			totalSec = 0;
+		}
+		sprintf(dispBuf, "%ld:%02ld", (long)(totalSec / 60), (long)(totalSec % 60));//MM:SS
+	}
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_TIME, (uint8_t*)dispBuf);
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "%d W", log->laserPower);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_POWER, (uint8_t*)dispBuf);
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "%s", treatmentProtocolName(log->protocol));
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_PROTOCOL, (uint8_t*)dispBuf);
+}
+
+void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	if(log == NULL){
+		dcHmiShowTreatmentCommon("--", NULL);
+		return;
+	}
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "%d", index);//病历序号=索引位置
+	dcHmiShowTreatmentCommon(dispBuf, log);
+}
+
+void updateTreatmentLogDisplay(void){//病历储存页面:显示当前治疗记录(待保存)
+	dcHmiShowTreatmentCommon("NEW", &treatmentLog);
 }
 
 void updateAcousticDisplay(void){//更新提示音设置
@@ -2977,7 +3039,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	//状态机
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤
-		treatmentLog.vailable = false;//记录不可用
+		treatmentLogValid = false;//记录不可用
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 		tempControlInit();
 		sPlcSpeakerEnable();
@@ -3014,7 +3076,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			SSET(R_DCHMI_RESET_DONE);	
 			//HMI从内置FLASH中恢复设置	
 			SSET(R_DCHMI_RESTORE_DOING);
-			FlashRestoreControl(FLASH_DATA_VERSION, FLASH_DATA_ADDR);
+			FlashRestoreControl(HMI_FLASH_DATA_VERSION, HMI_FLASH_DATA_ADDR);
 			RRES(R_DCHMI_RESTORE_DOING);
 			SSET(R_DCHMI_RESTORE_DONE);
 			//设置HMI页面
@@ -3549,6 +3611,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SAVE_TREATMENT;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_TREATMENTLOG;	
 			SetScreen(NVRAM0[EM_DC_PAGE]);
+			updateTreatmentLogDisplay();//刷新病历储存页面显示
 		}
 		return;
 	}
@@ -3734,7 +3797,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				treatmentLog.vailable = true;//任意一次激光发射后记录有效
+				treatmentLogValid = true;//任意一次激光发射后记录有效
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}
 		}
@@ -3746,7 +3809,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				treatmentLog.vailable = true;//任意一次激光发射后记录有效
+				treatmentLogValid = true;//任意一次激光发射后记录有效
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}	
 		}

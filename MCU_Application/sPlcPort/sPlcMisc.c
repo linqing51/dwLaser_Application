@@ -80,7 +80,7 @@ void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//设置风扇转速
 }
 
 void loadDeviceConfig(void){//从EPROM载入配置文件
-	uint32_t crc32_eprom_cfg, crc32_cfg, i;
+	uint32_t crc32_eprom_cfg, crc32_cfg, i, tmp;
 	printf("deviceConfig size:%d byte\n", sizeof(deviceConfig));
 	printf("deviceLogInfo size:%d byte\n", sizeof(deviceLogInfo));
 	

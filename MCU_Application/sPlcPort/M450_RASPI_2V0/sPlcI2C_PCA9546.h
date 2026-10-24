@@ -6,33 +6,33 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* ************************ Ó²¼şÅäÖÃ ************************ */
-// I2C3 ¾ä±ú£¨ĞèÔÚÖ÷º¯Êı»òi2c.cÖĞ³õÊ¼»¯£©
+/* ************************ ç¡¬ä»¶é…ç½® ************************ */
+// I2C3 å¥æŸ„ï¼ˆéœ€åœ¨ä¸»å‡½æ•°æˆ–i2c.cä¸­åˆå§‹åŒ–ï¼‰
 extern I2C_HandleTypeDef hi2c3;
 
-// PCA9546 I2C Éè±¸µØÖ·£¨A0/A1/A2½ÓµØ£¬7Î»µØÖ·0x70£¬HAL¿â×óÒÆ1Î»£©
-#define PCA9546_DEV_ADDR    0x70 << 1  // ×îÖÕÍ¨ĞÅµØÖ·£º0xE0
+// PCA9546 I2C è®¾å¤‡åœ°å€ï¼ˆA0/A1/A2æ¥åœ°ï¼Œ7ä½åœ°å€0x70ï¼ŒHALåº“å·¦ç§»1ä½ï¼‰
+#define PCA9546_DEV_ADDR    0x70 << 1  // æœ€ç»ˆé€šä¿¡åœ°å€ï¼š0xE0
 
-// PCA9546 ¸´Î»Òı½Å¶¨Òå£¨PH13£©
+// PCA9546 å¤ä½å¼•è„šå®šä¹‰ï¼ˆPH13ï¼‰
 #define PCA9546_RESET_PORT  GPIOH
 #define PCA9546_RESET_PIN   GPIO_PIN_13
 #define PCA9546_RESET_LOW()  HAL_GPIO_WritePin(PCA9546_RESET_PORT, PCA9546_RESET_PIN, GPIO_PIN_RESET)
 #define PCA9546_RESET_HIGH() HAL_GPIO_WritePin(PCA9546_RESET_PORT, PCA9546_RESET_PIN, GPIO_PIN_SET)
 
-// PCA9546 Í¨µÀ¶¨Òå
-#define PCA9546_CHANNEL_0   0x01  // Ñ¡ÔñÍ¨µÀ0
-#define PCA9546_CHANNEL_1   0x02  // Ñ¡ÔñÍ¨µÀ1
-#define PCA9546_CHANNEL_2   0x04  // Ñ¡ÔñÍ¨µÀ2
-#define PCA9546_CHANNEL_3   0x08  // Ñ¡ÔñÍ¨µÀ3
-#define PCA9546_CHANNEL_ALL 0x0F  // Ñ¡ÔñËùÓĞÍ¨µÀ
-#define PCA9546_CHANNEL_NONE 0x00 // ¹Ø±ÕËùÓĞÍ¨µÀ
+// PCA9546 é€šé“å®šä¹‰
+#define PCA9546_CHANNEL_0   0x01  // é€‰æ‹©é€šé“0
+#define PCA9546_CHANNEL_1   0x02  // é€‰æ‹©é€šé“1
+#define PCA9546_CHANNEL_2   0x04  // é€‰æ‹©é€šé“2
+#define PCA9546_CHANNEL_3   0x08  // é€‰æ‹©é€šé“3
+#define PCA9546_CHANNEL_ALL 0x0F  // é€‰æ‹©æ‰€æœ‰é€šé“
+#define PCA9546_CHANNEL_NONE 0x00 // å…³é—­æ‰€æœ‰é€šé“
 
-/* ************************ º¯ÊıÉùÃ÷ ************************ */
-HAL_StatusTypeDef PCA9546_Init(void);                  // ÕûÌå³õÊ¼»¯£¨º¬¸´Î»£©
-void PCA9546_Reset_GPIO_Init(void);                    // ¸´Î»Òı½Å³õÊ¼»¯
-HAL_StatusTypeDef PCA9546_HardwareReset(void);         // Ó²¼ş¸´Î»
-HAL_StatusTypeDef PCA9546_SelectChannel(uint8_t channel); // Ñ¡ÔñÍ¨µÀ
-HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel);  // ¶ÁÈ¡Í¨µÀ×´Ì¬
+/* ************************ å‡½æ•°å£°æ˜ ************************ */
+HAL_StatusTypeDef PCA9546_Init(void);                  // æ•´ä½“åˆå§‹åŒ–ï¼ˆå«å¤ä½ï¼‰
+void PCA9546_Reset_GPIO_Init(void);                    // å¤ä½å¼•è„šåˆå§‹åŒ–
+HAL_StatusTypeDef PCA9546_HardwareReset(void);         // ç¡¬ä»¶å¤ä½
+HAL_StatusTypeDef PCA9546_SelectChannel(uint8_t channel); // é€‰æ‹©é€šé“
+HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel);  // è¯»å–é€šé“çŠ¶æ€
 uint8_t PCA9546_Test(void);
 
 

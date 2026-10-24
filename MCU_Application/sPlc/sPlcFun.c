@@ -151,7 +151,7 @@ void MOVD(uint16_t dist, uint16_t src){//32位寄存器传输
 //void ANDD(uint16_t dist){//32位数 按位求与
 //}
 void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换为NTC测量温度温度 电阻上拉
-	float32_t ftemp;
+	float ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	sPlcAssertRegisterAddress(dist);//检查寄存器地址
 	sPlcAssertRegisterAddress(src);//检查寄存器地址
@@ -184,7 +184,7 @@ void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换�
 }
 
 void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换为NTC测量温度温度 电阻下拉
-	float32_t ftemp;
+	float ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	sPlcAssertRegisterAddress(dist);//检查寄存器地址
 	sPlcAssertRegisterAddress(src);//检查寄存器地址
@@ -217,7 +217,7 @@ void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换�
 }
 
 void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
-	float32_t ftemp;
+	float ftemp;
 	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
 		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);
 	}

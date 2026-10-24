@@ -291,6 +291,12 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_NTC_VREF												3300L//
 #define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
 
+/*****************************************************************************/
+//配置TEC温控(TIM9 CH2 PWM -> GP8101C-SH -> 模拟电压, 逻辑DAC8)
+#define CONFIG_TEC_HT_FF_GAIN								20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
+#define CONFIG_TEC_SLEW_STEP								200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
+#define CONFIG_TEC_TEMP_FILTER_ALPHA				0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
+
 #define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
 /*****************************************************************************/
 //配置DAC
@@ -336,6 +342,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 
 #define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - (32L * 1536) + 1L)
 #define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
+#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(32L*1536)
 
 #define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 配置信息区
 #define CONFIG_EPROM_CONFIG_END								(CONFIG_EPROM_LOGINFO_START - 1L)

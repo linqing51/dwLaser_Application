@@ -5,20 +5,20 @@ extern uint32_t SystemCoreClock;
 
 
 
-/************************** DAC8568ָ��� **************************/
-// д�벢����ָ��ͨ��
+/************************** DAC8568指令定义 **************************/
+// 写入并更新指定通道
 #define DAC8568_CMD_WRITE_UPDATE_CH(x)  (0x00 + (x))
-// д��ָ��ͨ���������£�
+// 写入指定通道（不更新）
 #define DAC8568_CMD_WRITE_CH(x)         (0x08 + (x))
-// ����ָ��ͨ��
+// 更新指定通道
 #define DAC8568_CMD_UPDATE_CH(x)        (0x10 + (x))
-// д�벢��������ͨ��
+// 写入并更新所有通道
 #define DAC8568_CMD_WRITE_UPDATE_ALL    0x18
-// ������λ
+// 软件复位
 #define DAC8568_CMD_SOFT_RESET          0x20
-// ��Դ����
+// 电源控制
 #define DAC8568_CMD_POWER_CTRL          0x28
-// �����CLR�����Ź�������
+// 清除（CLR）引脚功能配置
 #define DAC8568_CMD_CLR_CTRL            0x30
 
 
@@ -26,8 +26,8 @@ extern uint32_t SystemCoreClock;
 
 
 /**
- * @brief  ����΢��������ʱ��ָ��ѭ��ģ��ʵ��
- * @param  us: ��Ҫ��ʱ��΢����
+ * @brief  软件微秒阻塞延时，指定循环模板实现
+ * @param  us: 需要延时的微秒数
  */
 //static void Delay_us(uint32_t us)
 void Delay_us(uint32_t us)
@@ -41,15 +41,15 @@ void Delay_us(uint32_t us)
 }
 
 
-/************************** ���к��� **************************/
+/************************** 公有函数 **************************/
 /**
- * @brief ��ʼ�� DAC8568 ���������źͳ�ʼ״̬
- * @param ��
- * @retval ��
+ * @brief 初始化 DAC8568 的所有引脚和初始状态
+ * @param 无
+ * @retval 无
  */
 void DAC8568_Init(void)
 {
-    // �ϵ�Ĭ�ϵ�ƽ
+    // 上电默认电平
     SET_DAC8568_SYNC(GPIO_PIN_SET);
     SET_DAC8568_SCK(GPIO_PIN_SET);
     SET_DAC8568_DOUT(GPIO_PIN_RESET);
@@ -61,20 +61,20 @@ void DAC8568_Init(void)
 }
 
 /**
- * @brief  ģ��SPI����һ���ֽڣ���λ���У�
- * @param  byte: Ҫ���͵��ֽ�
- * @retval ��
+ * @brief  模拟SPI发送一个字节（高位先行）
+ * @param  byte: 要发送的字节
+ * @retval 无
  */
 void DAC8568_SPI_SendByte(uint8_t byte)
 {
     uint8_t i;
-    // ��λ�ȷ���
+    // 高位先发送
     for(i = 0; i < 8; i++)
     {
-        SET_DAC8568_SCK(GPIO_PIN_SET);  // ʱ�����ߣ�׼���������
+        SET_DAC8568_SCK(GPIO_PIN_SET);  // 时钟拉高，准备输出数据
         Delay_us(1);
         
-        // ���͵�ǰλ
+        // 发送当前位
         if(byte & 0x80)
         {
             SET_DAC8568_DOUT(GPIO_PIN_SET);
@@ -84,78 +84,78 @@ void DAC8568_SPI_SendByte(uint8_t byte)
             SET_DAC8568_DOUT(GPIO_PIN_RESET);
         }
         
-        SET_DAC8568_SCK(GPIO_PIN_RESET); // ʱ�����ͣ�DAC��������
+        SET_DAC8568_SCK(GPIO_PIN_RESET); // 时钟拉低，DAC采样数据
         Delay_us(1);
-        byte <<= 1;         // ����һλ��׼����һλ
+        byte <<= 1;         // 左移一位，准备下一位
     }
-    SET_DAC8568_SCK(GPIO_PIN_SET);      // ������ɺ�ʱ������
+    SET_DAC8568_SCK(GPIO_PIN_SET);      // 发送完成后时钟拉高
 }
 
 /**
- * @brief  ��װ32bit���ݲ�ͨ��ģ��SPI����
- *         ���ݸ�ʽ��[4bit 0][4bit cmd][4bit addr][16bit data][4bit 0]
- * @param  cmd: �����֣�4bit��
- * @param  ch: ͨ����ַ��4bit��
- * @param  data: 16bit DAC����
- * @retval ��
+ * @brief  组装32bit数据并通过模拟SPI发送
+ *         数据格式：[4bit 0][4bit cmd][4bit addr][16bit data][4bit 0]
+ * @param  cmd: 命令字（4bit）
+ * @param  ch: 通道地址（4bit）
+ * @param  data: 16bit DAC数据
+ * @retval 无
  */
 void DAC8568_Send32BitData(DAC8568_CmdDef cmd, DAC8568_ChannelDef ch, uint16_t data)
 {
     uint32_t tx_data = 0;
     
-    // ��װ32bit����
-    tx_data |= (0x0UL << 28);          // ǰ4bit��0
-    tx_data |= ((uint32_t)cmd << 24);  // 4bit����
-    tx_data |= ((uint32_t)ch << 20);   // 4bit��ַ
-    tx_data |= ((uint32_t)data << 4);  // 16bit����
-    tx_data |= 0x0UL;                  // ��4bit��0
+    // 组装32bit数据
+    tx_data |= (0x0UL << 28);          // 前4bit：0
+    tx_data |= ((uint32_t)cmd << 24);  // 4bit命令
+    tx_data |= ((uint32_t)ch << 20);   // 4bit地址
+    tx_data |= ((uint32_t)data << 4);  // 16bit数据
+    tx_data |= 0x0UL;                  // 后4bit：0
     
-    // ��ʼ��������
-    SET_DAC8568_SYNC(GPIO_PIN_RESET);  // ����SYNC��ѡͨDAC
+    // 开始发送数据
+    SET_DAC8568_SYNC(GPIO_PIN_RESET);  // 拉低SYNC，选通DAC
     Delay_us(1);
 	
-    // ��4���ֽڷ���32bit���ݣ���λ���У�
-    DAC8568_SPI_SendByte((tx_data >> 24) & 0xFF); // ��1�ֽڣ�0 + cmd
-    DAC8568_SPI_SendByte((tx_data >> 16) & 0xFF); // ��2�ֽڣ�addr + data��8λ
-    DAC8568_SPI_SendByte((tx_data >> 8) & 0xFF);  // ��3�ֽڣ�data��8λ
-    DAC8568_SPI_SendByte(tx_data & 0xFF);         // ��4�ֽڣ�0
+    // 分4个字节发送32bit数据（高位先行）
+    DAC8568_SPI_SendByte((tx_data >> 24) & 0xFF); // 第1字节：0 + cmd
+    DAC8568_SPI_SendByte((tx_data >> 16) & 0xFF); // 第2字节：addr + data高8位
+    DAC8568_SPI_SendByte((tx_data >> 8) & 0xFF);  // 第3字节：data低8位
+    DAC8568_SPI_SendByte(tx_data & 0xFF);         // 第4字节：0
     
-    SET_DAC8568_SYNC(GPIO_PIN_SET); // ����SYNC����������
+    SET_DAC8568_SYNC(GPIO_PIN_SET); // 拉高SYNC，结束发送
     Delay_us(1);
 }
 
 /**
- * @brief  ����ָ��ͨ����DAC���ֵ��д�벢�������£�
- * @param  ch: Ŀ��ͨ��
- * @param  data: 16bit DAC���ݣ�0~65535��Ӧ0~Vref��
- * @retval ��
+ * @brief  设置指定通道的DAC输出值（写入并立即更新）
+ * @param  ch: 目标通道
+ * @param  data: 16bit DAC数据（0~65535对应0~Vref）
+ * @retval 无
  */
 void DAC8568_SetChannelVoltage(DAC8568_ChannelDef ch, uint16_t data)
 {
-    // ���д������Ĵ���������ָ��ͨ��
+    // 命令：写入输入寄存器并更新指定通道
     DAC8568_Send32BitData(DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH, ch, data);
 }
 
 /**
- * @brief  �������DACͨ���������0��
- * @param  ��
- * @retval ��
+ * @brief  清除所有DAC通道输出（置0）
+ * @param  无
+ * @retval 无
  */
 void DAC8568_ClearAllChannels(void)
 {
-    SET_DAC8568_CLR(GPIO_PIN_RESET);   // ����CLR����
-    HAL_Delay(1);                     // ���ֵ͵�ƽ����100ns����ʱ1msȷ���ȶ���
-    SET_DAC8568_CLR(GPIO_PIN_SET);     // ����CLR����
+    SET_DAC8568_CLR(GPIO_PIN_RESET);   // 拉低CLR引脚
+    HAL_Delay(1);                     // 保持低电平至少100ns（延时1ms确保稳定）
+    SET_DAC8568_CLR(GPIO_PIN_SET);     // 拉高CLR引脚
 }
 
 /**
- * @brief  ������λDAC8568
- * @param  ��
- * @retval ��
+ * @brief  软件复位DAC8568
+ * @param  无
+ * @retval 无
  */
 void DAC8568_SoftReset(void)
 {
-    // ����������λ�����ַλ�����壬����λ��0
+    // 发送软件复位命令，地址位无意义，数据位填0
     DAC8568_Send32BitData(DAC8568_CMD_SW_RESET, DAC8568_CH_ALL, 0x0000);
     HAL_Delay(1);
 }

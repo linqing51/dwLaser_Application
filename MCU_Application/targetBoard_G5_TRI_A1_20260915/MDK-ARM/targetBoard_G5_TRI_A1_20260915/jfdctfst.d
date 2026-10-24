@@ -13,7 +13,7 @@
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/CMSIS/Include/cmsis_version.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -21,7 +21,7 @@
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -52,9 +52,9 @@
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../USB_HOST/Target/usbh_conf.h
-.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdio.h
+.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdlib.h
+.\targetboard_g5_tri_a1_20260915\jfdctfst.o: C:\Keil_v5\ARM\BIN\Bin\..\include\string.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 .\targetboard_g5_tri_a1_20260915\jfdctfst.o: ../Core/Inc/FreeRTOSConfig.h

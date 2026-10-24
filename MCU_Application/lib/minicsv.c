@@ -106,7 +106,7 @@ minicsv_trim_cols(char ** const cols, const size_t cols_count)
 }
 
 /*****************************************************************************/
-//minicsv À©Õ¹
+//minicsv æ‰©å±•
 static bool MiniCSV_IsDelimiter(char ch){
     return ((ch == ',') || (ch == '\r') || (ch == '\n'));
 }
@@ -119,14 +119,13 @@ MiniCSV_StatusTypeDef MiniCSV_ParseOneRow(const char* in_buf, char* work_buf, ui
 		return MINICSV_ERR_BUF_TOO_SMALL;
 	}
 
-	/* ³õÊ¼»¯Êä³ö½á¹¹Ìå */
+	/* åˆå§‹åŒ–è¾“å‡ºç»“æ„ä½“ */
 	for(uint16_t i = 0U; i < MINICSV_MAX_COLUMNS; i++){
 		out_row->fields[i] = NULL;
 		out_row->field_len[i] = 0U;
 	}
 	out_row->field_count = 0U;
 
-	uint16_t in_idx = 0U;
 	uint16_t wk_idx = 0U;
 	bool inside_quote = false;
 	bool field_start = true;
@@ -138,9 +137,9 @@ MiniCSV_StatusTypeDef MiniCSV_ParseOneRow(const char* in_buf, char* work_buf, ui
 
 		if(inside_quote){
 			if(ch == '\"'){
-				/* Ë«ÒıºÅ£ºÅĞ¶ÏÊÇ·ñÊÇ×ªÒå "" */
+				/* åŒå¼•å·ï¼šåˆ¤æ–­æ˜¯å¦æ˜¯è½¬ä¹‰ "" */
 				if(*(p_in + 1U) == '\"'){
-					/* "" ×ªÒåÎªÒ»¸ö " */
+					/* "" è½¬ä¹‰ä¸ºä¸€ä¸ª " */
 					p_in++;
 					if(wk_idx >= work_buf_size)
 					{
@@ -149,12 +148,12 @@ MiniCSV_StatusTypeDef MiniCSV_ParseOneRow(const char* in_buf, char* work_buf, ui
 					work_buf[wk_idx++] = '\"';
 				}
 				else{
-					/* ½áÊøÒıºÅ */
+					/* ç»“æŸå¼•å· */
 					inside_quote = false;
 				}
 			}
 			else{
-				/* ÒıºÅÄÚ²¿Ô­Ñù¿½±´£¬°üº¬¶ººÅ¡¢»»ĞĞ */
+				/* å¼•å·å†…éƒ¨åŸæ ·æ‹·è´ï¼ŒåŒ…å«é€—å·ã€æ¢è¡Œ */
 				if(wk_idx >= work_buf_size){
 					return MINICSV_ERR_BUF_TOO_SMALL;
 				}
@@ -165,7 +164,7 @@ MiniCSV_StatusTypeDef MiniCSV_ParseOneRow(const char* in_buf, char* work_buf, ui
 		else{
 			if(field_start){
 				field_start = false;
-				/* ¿ªÆôĞÂ×Ö¶Î */
+				/* å¼€å¯æ–°å­—æ®µ */
 				if(out_row->field_count >= MINICSV_MAX_COLUMNS)
 				{
 						return MINICSV_ERR_COLUMN_OVERFLOW;
@@ -179,24 +178,24 @@ MiniCSV_StatusTypeDef MiniCSV_ParseOneRow(const char* in_buf, char* work_buf, ui
 				p_in++;
 			}
 			else if(MiniCSV_IsDelimiter(ch)){
-				/* ×Ö¶Î½áÊø */
+				/* å­—æ®µç»“æŸ */
 				out_row->field_len[out_row->field_count] = wk_idx - (uint16_t)(out_row->fields[out_row->field_count] - work_buf);
 				out_row->field_count++;
 
-				/* Èç¹ûÊÇ»»ĞĞ£¬±¾ĞĞ½âÎöÍê³É */
+				/* å¦‚æœæ˜¯æ¢è¡Œï¼Œæœ¬è¡Œè§£æå®Œæˆ */
 				if((ch == '\r') || (ch == '\n')){
-					/* Ìø¹ıLF/CR×éºÏ */
+					/* è·³è¿‡LF/CRç»„åˆ */
 					if((ch == '\r') && (*(p_in+1U) == '\n')){
 							p_in++;
 					}
 					break;
 				}
-				/* ¶ººÅ£¬¿ªÆôÏÂÒ»¸ö×Ö¶Î */
+				/* é€—å·ï¼Œå¼€å¯ä¸‹ä¸€ä¸ªå­—æ®µ */
 				field_start = true;
 				p_in++;
 			}
 			else{
-				/* ÆÕÍ¨×Ö·û */
+				/* æ™®é€šå­—ç¬¦ */
 				if(wk_idx >= work_buf_size){
 					return MINICSV_ERR_BUF_TOO_SMALL;
 				}
@@ -206,12 +205,12 @@ MiniCSV_StatusTypeDef MiniCSV_ParseOneRow(const char* in_buf, char* work_buf, ui
 		}
 	}
 
-	/* Ñ­»·½áÊøºó£¬Èç¹ûÒıºÅÎ´¹Ø±Õ£¬±¨´í */
+	/* å¾ªç¯ç»“æŸåï¼Œå¦‚æœå¼•å·æœªå…³é—­ï¼ŒæŠ¥é”™ */
 	if(inside_quote){
 		return MINICSV_ERR_QUOTE_UNCLOSED;
 	}
 
-	/* Èç¹û»º³åÇø½áÊø£¬µ«»¹Ã»ÓĞ±ÕºÏ×îºóÒ»¸ö×Ö¶Î */
+	/* å¦‚æœç¼“å†²åŒºç»“æŸï¼Œä½†è¿˜æ²¡æœ‰é—­åˆæœ€åä¸€ä¸ªå­—æ®µ */
 	if(!field_start && (out_row->field_count < MINICSV_MAX_COLUMNS)){
 		out_row->field_len[out_row->field_count] = wk_idx - (uint16_t)(out_row->fields[out_row->field_count] - work_buf);
 		out_row->field_count++;
@@ -229,7 +228,7 @@ MiniCSV_StatusTypeDef MiniCSV_WriteOneRow(const MiniCSV_RowTypeDef* row, char* o
 
 	for(uint16_t col = 0U; col < row->field_count; col++){
 		if(col > 0U){
-			/* Êä³ö¶ººÅ·Ö¸ô·û */
+			/* è¾“å‡ºé€—å·åˆ†éš”ç¬¦ */
 			if(idx >= out_buf_size - 1U){
 					return MINICSV_ERR_BUF_TOO_SMALL;
 			}
@@ -240,7 +239,7 @@ MiniCSV_StatusTypeDef MiniCSV_WriteOneRow(const MiniCSV_RowTypeDef* row, char* o
 		uint16_t field_sz = row->field_len[col];
 
 		bool need_quote = false;
-		/* ÅĞ¶Ï×Ö¶ÎÊÇ·ñĞèÒªË«ÒıºÅ°ü¹ü£º°üº¬¶ººÅ¡¢»»ĞĞ¡¢Ë«ÒıºÅ */
+		/* åˆ¤æ–­å­—æ®µæ˜¯å¦éœ€è¦åŒå¼•å·åŒ…è£¹ï¼šåŒ…å«é€—å·ã€æ¢è¡Œã€åŒå¼•å· */
 		for(uint16_t i = 0U; i < field_sz; i++){
 			char c = field_ptr[i];
 			if((c == ',') || (c == '\n') || (c == '\r') || (c == '\"')){
@@ -287,7 +286,7 @@ MiniCSV_StatusTypeDef MiniCSV_WriteOneRow(const MiniCSV_RowTypeDef* row, char* o
 		}
 	}
 
-	/* Ìí¼Ó»»ĞĞ CRLF windows csv¸ñÊ½ */
+	/* æ·»åŠ æ¢è¡Œ CRLF windows csvæ ¼å¼ */
 	if(idx + 2U < out_buf_size){
 		out_buf[idx++] = '\r';
 		out_buf[idx++] = '\n';

@@ -8,8 +8,8 @@
 extern "C" {
 #endif
 
-uint8_t hdc1080_init(void);//³õÊ¼»¯HDC1080
-void hdc1080_read(int16_t *temp, int16_t *humi);//¶ÁÈ¡ÎÂÊª¶ÈÊı¾İ
+uint8_t hdc1080_init(void);//åˆå§‹åŒ–HDC1080
+void hdc1080_read(int16_t *temp, int16_t *humi);//è¯»å–æ¸©æ¹¿åº¦æ•°æ®
 
 #ifdef __cplusplus
 }

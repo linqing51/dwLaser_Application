@@ -58,48 +58,8 @@ extern "C" {
 //功率校准状态
 #define FSMSTEP_CORRECTION													1100//功率校正
 /*****************************************************************************/
-#define FLASH_DATA_VERSION  												0XAABB0000
-#define FLASH_DATA_ADDR     												0X00000000
-/*****************************************************************************/
-typedef enum{
-	MELE = 1,
-	FEMEL = 2
-	
-}GENDER_ENUM;
-typedef enum{
-	WAVE_450 = 1,
-	WAVE_915,
-	WAVE_980,
-	WAVE_1064,
-	WAVE_1470,
-	WAVE_1920
-}LASER_WAVE_ENUM;
-typedef enum{
-	Phlebology = 0
-	Proctology[32];//1
-	Gynecology[32];//2
-	ENT[32];//3
-	Neurosurgery[32];//4
-	Dermatology[32];//5
-	Liposuction[32];//6
-	Dentistry = 1;//7
-	Therapy = 1;//8
-}PROTOCOL_ENUM;
-
-
-typedef struct{//定义患者记录
-	bool vailable;//是否可用
-	uint16_t id;//患者ID
-	uint8_t age;//患者年龄
-	int16_t laserPower;//激光功率	
-	int32_t releaseEnergy; //已发射能量 单位焦耳
-	int32_t releaseTime;//发射时间文本 单位秒
-	char name[16];//患者名字
-	GENDER_ENUM gender;//患者性别
-	LASER_WAVE_ENUM laserWave;//选择的波长
-	char protocol[64];//选择的预设方案
-}treatmentLog_t;
-extern treatmentLog_t treatmentLog;
+#define HMI_FLASH_DATA_VERSION  										0XAABB0000
+#define HMI_FLASH_DATA_ADDR     										0X00000000
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);
@@ -126,6 +86,8 @@ void unselectSchemeNum(int16_t index);
 /*****************************************************************************/
 void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
+void updateTreatmentLogDisplay(void);//病历储存页面:显示当前治疗记录(待保存)
+void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log);//病历储存页面:显示EPROM历史病历
 void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);

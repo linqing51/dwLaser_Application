@@ -1,9 +1,9 @@
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
-.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdlib.h
+.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\BIN\Bin\..\include\string.h
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\tasks.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Core/Inc/FreeRTOSConfig.h
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 .\targetboard_g5_tri_a1_20260915\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

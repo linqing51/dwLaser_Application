@@ -1,19 +1,19 @@
 #include "sPlcI2C_hdc1080.h"
 /*****************************************************************************/
-#define HDC1080_ADDR                0x40 << 1  // I2CµØÖ·×óÒÆÒ»Î»£¨HAL¿â¸ñÊ½£©
-#define HDC1080_TEMP_REG            0x00        // ÎÂ¶È¼Ä´æÆ÷
-#define HDC1080_HUMI_REG            0x01        // Êª¶È¼Ä´æÆ÷
-#define HDC1080_CONFIG_REG          0x02        // ÅäÖÃ¼Ä´æÆ÷
+#define HDC1080_ADDR                0x40 << 1  // I2Cåœ°å€å·¦ç§»ä¸€ä½ï¼ˆHALåº“æ ¼å¼ï¼‰
+#define HDC1080_TEMP_REG            0x00        // æ¸©åº¦å¯„å­˜å™¨
+#define HDC1080_HUMI_REG            0x01        // æ¹¿åº¦å¯„å­˜å™¨
+#define HDC1080_CONFIG_REG          0x02        // é…ç½®å¯„å­˜å™¨
 /*****************************************************************************/
-inline static void hdc1080_siic_start(void);// I2CÆðÊ¼ÐÅºÅ
-inline static void hdc1080_siic_stop(void);// I2CÍ£Ö¹ÐÅºÅ
-inline static void hdc1080_siic_ack(void);// ·¢ËÍÓ¦´ðÐÅºÅ
-inline static uint8_t hdc1080_siic_wait_ack(void);// µÈ´ýÓ¦´ðÐÅºÅ
-inline static void hdc1080_siic_nack(void);//I2C ²»ÏìÓ¦
-inline static void hdc1080_siic_send_byte(uint8_t data);// ·¢ËÍÒ»¸ö×Ö½Ú
-inline static uint8_t hdc1080_siic_read_byte(uint8_t ack);// ¶ÁÈ¡Ò»¸ö×Ö½Ú
+inline static void hdc1080_siic_start(void);// I2Cèµ·å§‹ä¿¡å·
+inline static void hdc1080_siic_stop(void);// I2Cåœæ­¢ä¿¡å·
+inline static void hdc1080_siic_ack(void);// å‘é€åº”ç­”ä¿¡å·
+inline static uint8_t hdc1080_siic_wait_ack(void);// ç­‰å¾…åº”ç­”ä¿¡å·
+inline static void hdc1080_siic_nack(void);//I2C ä¸å“åº”
+inline static void hdc1080_siic_send_byte(uint8_t data);// å‘é€ä¸€ä¸ªå­—èŠ‚
+inline static uint8_t hdc1080_siic_read_byte(uint8_t ack);// è¯»å–ä¸€ä¸ªå­—èŠ‚
 /*****************************************************************************/
-inline static void hdc1080_siic_start(void){//·¢ËÍI2CÆðÊ¼ÐÅºÅ
+inline static void hdc1080_siic_start(void){//å‘é€I2Cèµ·å§‹ä¿¡å·
 	/*    _____
 	 *SDA      \_____________
 	 *    __________
@@ -32,7 +32,7 @@ inline static void hdc1080_siic_start(void){//·¢ËÍI2CÆðÊ¼ÐÅºÅ
 	softDelayUs(HDC1080_SOFTI2C_DELAY);
 }
 
-inline static void hdc1080_siic_stop(void){//·¢ËÍI2CÍ£Ö¹ÐÅºÅ
+inline static void hdc1080_siic_stop(void){//å‘é€I2Cåœæ­¢ä¿¡å·
 	/*               _______
 	 *SDA __________/
 	 *          ____________
@@ -48,7 +48,7 @@ inline static void hdc1080_siic_stop(void){//·¢ËÍI2CÍ£Ö¹ÐÅºÅ
 	softDelayUs(HDC1080_SOFTI2C_DELAY);
 }
 
-inline static uint8_t hdc1080_siic_wait_ack(void){//µÈ´ý´Ó»úÓ¦´ð
+inline static uint8_t hdc1080_siic_wait_ack(void){//ç­‰å¾…ä»Žæœºåº”ç­”
 	uint32_t timeout = 0;
 	SET_HDC1080_SDA(GPIO_PIN_SET);//SDA = 1	
 	softDelayUs(HDC1080_SOFTI2C_DELAY);
@@ -66,7 +66,7 @@ inline static uint8_t hdc1080_siic_wait_ack(void){//µÈ´ý´Ó»úÓ¦´ð
 	return 1;
 }
 
-inline static void hdc1080_siic_ack(void){//·¢ËÍÓ¦´ðÐÅºÅ
+inline static void hdc1080_siic_ack(void){//å‘é€åº”ç­”ä¿¡å·
    /*           ____
      *SCL ______/    \______
      *    ____         _____
@@ -85,7 +85,7 @@ inline static void hdc1080_siic_ack(void){//·¢ËÍÓ¦´ðÐÅºÅ
 	SET_HDC1080_SDA(GPIO_PIN_SET);
 }
 
-inline void hdc1080_siic_nack(void){//I2C ²»ÏìÓ¦
+inline void hdc1080_siic_nack(void){//I2C ä¸å“åº”
     /*           ____
      *SCL ______/    \______
      *    __________________
@@ -102,7 +102,7 @@ inline void hdc1080_siic_nack(void){//I2C ²»ÏìÓ¦
 	softDelayUs(HDC1080_SOFTI2C_DELAY);
 }
 
-void hdc1080_siic_send_byte(uint8_t data){//·¢ËÍÒ»¸ö×Ö½Ú
+void hdc1080_siic_send_byte(uint8_t data){//å‘é€ä¸€ä¸ªå­—èŠ‚
 	uint8_t i;
 	for(i = 0; i < 8; i++){
 		if(data & 0x80){
@@ -128,7 +128,7 @@ void hdc1080_siic_send_byte(uint8_t data){//·¢ËÍÒ»¸ö×Ö½Ú
 	}
 }
 
-uint8_t hdc1080_siic_read_byte(uint8_t ack){//¶ÁÈ¡Ò»¸ö×Ö½Ú
+uint8_t hdc1080_siic_read_byte(uint8_t ack){//è¯»å–ä¸€ä¸ªå­—èŠ‚
 	uint8_t i, data = 0;
 	for(i = 0; i < 8; i++ ){
 		data <<= 1;
@@ -145,74 +145,74 @@ uint8_t hdc1080_siic_read_byte(uint8_t ack){//¶ÁÈ¡Ò»¸ö×Ö½Ú
 	return data;
 }
 
-uint8_t hdc1080_init(void){//³õÊ¼»¯HDC1080
+uint8_t hdc1080_init(void){//åˆå§‹åŒ–HDC1080
 	uint8_t config = 0x00;
-	// ·¢ËÍÆðÊ¼ÐÅºÅ
+	// å‘é€èµ·å§‹ä¿¡å·
 	hdc1080_siic_start();
-	// ·¢ËÍÉè±¸µØÖ·+Ð´ÃüÁî
+	// å‘é€è®¾å¤‡åœ°å€+å†™å‘½ä»¤
 	hdc1080_siic_send_byte(HDC1080_ADDR);
 	if(hdc1080_siic_wait_ack()){ 
 		return true;
 	}
-	// ·¢ËÍÅäÖÃ¼Ä´æÆ÷µØÖ·
+	// å‘é€é…ç½®å¯„å­˜å™¨åœ°å€
 	hdc1080_siic_send_byte(HDC1080_CONFIG_REG);
 	hdc1080_siic_wait_ack();
 
-	// ÅäÖÃ¼Ä´æÆ÷¸ß×Ö½Ú£¨14Î»·Ö±æÂÊ£¬Í¬Ê±²âÁ¿ÎÂÊª¶È£©
-	config = 0x10;  // BIT4=1£ºÍ¬Ê±²âÁ¿ÎÂ¶ÈºÍÊª¶È
+	// é…ç½®å¯„å­˜å™¨é«˜å­—èŠ‚ï¼ˆ14ä½åˆ†è¾¨çŽ‡ï¼ŒåŒæ—¶æµ‹é‡æ¸©æ¹¿åº¦ï¼‰
+	config = 0x10;  // BIT4=1ï¼šåŒæ—¶æµ‹é‡æ¸©åº¦å’Œæ¹¿åº¦
 	hdc1080_siic_send_byte(config);
 	hdc1080_siic_wait_ack();
 
-	// ÅäÖÃ¼Ä´æÆ÷µÍ×Ö½Ú
+	// é…ç½®å¯„å­˜å™¨ä½Žå­—èŠ‚
 	hdc1080_siic_send_byte(0x00);
 	hdc1080_siic_wait_ack();
 
-	// ·¢ËÍÍ£Ö¹ÐÅºÅ
+	// å‘é€åœæ­¢ä¿¡å·
 	hdc1080_siic_stop();
-	softDelayUs(20);// µÈ´ýÅäÖÃÉúÐ§
+	softDelayUs(20);// ç­‰å¾…é…ç½®ç”Ÿæ•ˆ
 	return 0;
 }
 
-void hdc1080_read(int16_t *temp, int16_t *humi){//¶ÁÈ¡ÎÂÊª¶ÈÊý¾Ý
+void hdc1080_read(int16_t *temp, int16_t *humi){//è¯»å–æ¸©æ¹¿åº¦æ•°æ®
 	uint8_t buf[4];
 	uint16_t temp_raw, humi_raw;
 
-	// ·¢ËÍÆðÊ¼ÐÅºÅ
+	// å‘é€èµ·å§‹ä¿¡å·
 	hdc1080_siic_start();
-	// ·¢ËÍÉè±¸µØÖ·+Ð´ÃüÁî
+	// å‘é€è®¾å¤‡åœ°å€+å†™å‘½ä»¤
 	hdc1080_siic_send_byte(HDC1080_ADDR);
 	hdc1080_siic_wait_ack();
-	// ·¢ËÍÎÂ¶È¼Ä´æÆ÷µØÖ·£¨´¥·¢²âÁ¿£©
+	// å‘é€æ¸©åº¦å¯„å­˜å™¨åœ°å€ï¼ˆè§¦å‘æµ‹é‡ï¼‰
 	hdc1080_siic_send_byte(HDC1080_TEMP_REG);
 	hdc1080_siic_wait_ack();
-	// ·¢ËÍÍ£Ö¹ÐÅºÅ
+	// å‘é€åœæ­¢ä¿¡å·
 	hdc1080_siic_stop();
-	HAL_Delay(20);  // µÈ´ý²âÁ¿Íê³É£¨HDC1080×ª»»Ê±¼ä×î´ó14ms£©
-	// ·¢ËÍÆðÊ¼ÐÅºÅ
+	HAL_Delay(20);  // ç­‰å¾…æµ‹é‡å®Œæˆï¼ˆHDC1080è½¬æ¢æ—¶é—´æœ€å¤§14msï¼‰
+	// å‘é€èµ·å§‹ä¿¡å·
 	hdc1080_siic_start();
-	// ·¢ËÍÉè±¸µØÖ·+¶ÁÃüÁî
+	// å‘é€è®¾å¤‡åœ°å€+è¯»å‘½ä»¤
 	hdc1080_siic_send_byte(HDC1080_ADDR | 0x01);
 	hdc1080_siic_wait_ack();
 
-	// ¶ÁÈ¡ÎÂ¶È¸ß×Ö½Ú
+	// è¯»å–æ¸©åº¦é«˜å­—èŠ‚
 	buf[0] = hdc1080_siic_read_byte(0);
 	hdc1080_siic_ack();
-	// ¶ÁÈ¡ÎÂ¶ÈµÍ×Ö½Ú
+	// è¯»å–æ¸©åº¦ä½Žå­—èŠ‚
 	buf[1] = hdc1080_siic_read_byte(0);
 	hdc1080_siic_ack();
-	// ¶ÁÈ¡Êª¶È¸ß×Ö½Ú
+	// è¯»å–æ¹¿åº¦é«˜å­—èŠ‚
 	buf[2] = hdc1080_siic_read_byte(0);
 	hdc1080_siic_ack();
-	// ¶ÁÈ¡Êª¶ÈµÍ×Ö½Ú
+	// è¯»å–æ¹¿åº¦ä½Žå­—èŠ‚
 	buf[3] = hdc1080_siic_read_byte(1);
 	hdc1080_siic_nack();
-	// ·¢ËÍÍ£Ö¹ÐÅºÅ
+	// å‘é€åœæ­¢ä¿¡å·
 	hdc1080_siic_stop();
 
-	// ×ª»»ÎªÊµ¼ÊÎÂ¶ÈºÍÊª¶È
+	// è½¬æ¢ä¸ºå®žé™…æ¸©åº¦å’Œæ¹¿åº¦
 	temp_raw = ((uint16_t)buf[0] << 8) | buf[1];
 	humi_raw = ((uint16_t)buf[2] << 8) | buf[3];
 
-	*temp = (int16_t)(((temp_raw / 65536.0) * 165.0 - 40.0) * 10);  // ÎÂ¶È¼ÆËã¹«Ê½
-	*humi = (int16_t)((humi_raw / 65536.0) * 1000.0);         // Êª¶È¼ÆËã¹«Ê½
+	*temp = (int16_t)(((temp_raw / 65536.0) * 165.0 - 40.0) * 10);  // æ¸©åº¦è®¡ç®—å…¬å¼
+	*humi = (int16_t)((humi_raw / 65536.0) * 1000.0);         // æ¹¿åº¦è®¡ç®—å…¬å¼
 }

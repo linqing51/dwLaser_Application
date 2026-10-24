@@ -20,6 +20,9 @@ void PID_Init(PID_Controller_t *pid, float kp, float ki, float kd, int16_t setpo
     pid->last_temp = 0;
     pid->prev_temp = 0;
     pid->output = 0;
+    pid->last_error_c = 0;
+    pid->prev_error_c = 0;
+    pid->first_run = 1;
     pid->min_output = 0;
     pid->max_output = 4095;
     pid->integral_limit = integral_limit;
@@ -102,8 +105,11 @@ static void PID_Tune_PeakDetect(PID_Controller_t *pid, int16_t current_temp) {
     }
 }
 
-// 增量式PID计算（集成自整定）
-int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
+    // 标准增量式PID计算(集成自整定)
+    // 误差统一换算为摄氏度(输入×10单位), 参数语义: Kp/Ki/Kd 为 %/℃, 输出=百分比×4095/100
+    // Δu = Kp*(e(k)-e(k-1)) + Ki*e(k) + Kd*(e(k)-2e(k-1)+e(k-2))
+    // (原实现微分项系数错乱(-1,+3,-1)、比例项滞后一拍、误差符号反向, 导致噪声放大与输出极限环振荡, 已修正)
+    int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
     // 自整定逻辑（优先执行）
     if (pid->tune_state == PID_TUNE_RUNNING) {
         pid->tune_current_tick = GET_TICK();
@@ -137,36 +143,47 @@ int32_t PID_Compute(PID_Controller_t *pid, int16_t current_temp) {
         }
     }
 
-    // 原有PID计算逻辑（无修改）
-    int16_t error = current_temp - pid->setpoint;
-    
-    // 计算增量式PID的三个部分
-    double delta_p = pid->Kp * (error - (current_temp - pid->last_temp));
-    double delta_i = pid->Ki * error;
-    double delta_d = pid->Kd * (error - 2*(current_temp - pid->last_temp) + 
-                              (pid->last_temp - pid->prev_temp));
-    
-    // 计算输出增量
-    double delta_output = delta_p + delta_i + delta_d;
-    
-    // 更新输出值
-    pid->output += delta_output;
-    
-    // 输出限幅
+    // 误差换算为摄氏度(输入为×10单位, 如280=28.0℃), 符号: 正误差=需要制冷
+    float e_c = ((float)pid->setpoint - (float)current_temp) / 10.0f;
+
+    // 首运行初始化误差历史, 消除第一个控制周期的启动冲击
+    if (pid->first_run) {
+        pid->last_error_c = e_c;
+        pid->prev_error_c = e_c;
+        pid->first_run = 0;
+    }
+
+    // 误差死区 ±0.1℃: 稳态小幅噪声不再驱动输出, 防极限环微振
+    if (e_c < 0.1f && e_c > -0.1f) {
+        e_c = 0.0f;
+    }
+
+    // 标准增量式PID三项
+    float delta_p = pid->Kp * (e_c - pid->last_error_c);
+    float delta_i = pid->Ki * e_c;
+    float delta_d = pid->Kd * (e_c - 2.0f * pid->last_error_c + pid->prev_error_c);
+
+    // 输出增量: 百分比(%/周期) 映射为 0~4095 计数
+    float delta_output = (delta_p + delta_i + delta_d) * (4095.0f / 100.0f);
+
+    // 累加输出并限幅(增量式结构输出钳位即抗积分饱和)
+    pid->output += (int32_t)delta_output;
     if (pid->output > pid->max_output) {
         pid->output = pid->max_output;
     } else if (pid->output < pid->min_output) {
         pid->output = pid->min_output;
     }
-    
-    // 保存温度历史值，用于下次计算
+
+    // 保存误差历史与温度历史(温度历史兼容自整定)
+    pid->prev_error_c = pid->last_error_c;
+    pid->last_error_c = e_c;
     pid->prev_temp = pid->last_temp;
     pid->last_temp = current_temp;
     
     // 输出当前PID状态（仅自整定过程中）
     if (pid->tune_state == PID_TUNE_RUNNING) {
         printf("PID Tune: Current temp: %d, Error: %d, Output: %d\r\n",
-               current_temp, error, pid->output);
+               current_temp, (int32_t)(e_c * 10.0f), pid->output);
     }
 
     return pid->output;

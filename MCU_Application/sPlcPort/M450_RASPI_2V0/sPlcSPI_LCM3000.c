@@ -5,7 +5,7 @@
 
 
 /**
- * @brief Èí¼þSPI·¢ËÍ8bit  Mode0 MSB First
+ * @brief è½¯ä»¶SPIå‘é€8bit  Mode0 MSB First
  */
 static void TPL_SPI_Write8(uint8_t dat)
 {
@@ -22,7 +22,7 @@ static void TPL_SPI_Write8(uint8_t dat)
         j = j >> 1;
         Delay_us(1);
         TPL0501_SCK_H();
-        // Í¨ÐÅ²»ÎÈ¶¨´ò¿ªÑÓÊ±£ºHAL_Delay_us(1);
+        // é€šä¿¡ä¸ç¨³å®šæ‰“å¼€å»¶æ—¶ï¼šHAL_Delay_us(1);
         Delay_us(1);
         TPL0501_SCK_L();
     }

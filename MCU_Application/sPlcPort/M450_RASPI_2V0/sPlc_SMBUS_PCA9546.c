@@ -1,18 +1,18 @@
 #include "sPlc_SMBUS.h"
 /*****************************************************************************/
-// PCA9546 I2C …Ë±∏µÿ÷∑£®A0/A1/A2Ω”µÿ£¨7Œªµÿ÷∑0x70£¨HALø‚◊Û“∆1Œª£©
-#define PCA9546_DEV_ADDR    0x70 << 1  // ◊Ó÷’Õ®–≈µÿ÷∑£∫0xE0
+// PCA9546 I2C ËÆæÂ§áÂú∞ÂùÄÔºàA0/A1/A2Êé•Âú∞Ôºå7‰ΩçÂú∞ÂùÄ0x70ÔºåHALÂ∫ìÂ∑¶Áßª1‰ΩçÔºâ
+#define PCA9546_DEV_ADDR    0x70 << 1  // ÊúÄÁªàÈÄö‰ø°Âú∞ÂùÄÔºö0xE0
 
 
 
 
-HAL_StatusTypeDef PCA9546_HardwareReset(void){//PCA9546”≤º˛∏¥Œª£®µÕµÁ∆Ω∏¥Œª£¨—” ±∫Û Õ∑≈£©
-	// ¿≠µÕ∏¥Œª“˝Ω≈£®¥•∑¢∏¥Œª£©
+HAL_StatusTypeDef PCA9546_HardwareReset(void){//PCA9546Á°¨‰ª∂Â§ç‰ΩçÔºà‰ΩéÁîµÂπ≥Â§ç‰ΩçÔºåÂª∂Êó∂ÂêéÈáäÊîæÔºâ
+	// Êãâ‰ΩéÂ§ç‰ΩçÂºïËÑöÔºàËß¶ÂèëÂ§ç‰ΩçÔºâ
 	PCA9546_RESET_LOW();
-	HAL_Delay(10); // —” ±10ms£¨»∑±£–æ∆¨ÕÍ≥…∏¥Œª£®∏˘æ› ÷≤·“™«Û£©	
-	//  Õ∑≈∏¥Œª“˝Ω≈
+	HAL_Delay(10); // Âª∂Êó∂10msÔºåÁ°Æ‰øùËäØÁâáÂÆåÊàêÂ§ç‰ΩçÔºàÊ†πÊçÆÊâãÂÜåË¶ÅÊ±ÇÔºâ	
+	// ÈáäÊîæÂ§ç‰ΩçÂºïËÑö
 	PCA9546_RESET_HIGH();
-	HAL_Delay(5);  // —” ±5ms£¨µ»¥˝–æ∆¨Œ»∂®
+	HAL_Delay(5);  // Âª∂Êó∂5msÔºåÁ≠âÂæÖËäØÁâáÁ®≥ÂÆö
 	return HAL_OK;
 }
 
@@ -21,7 +21,7 @@ void PCA9546_Reset_GPIO_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-    //  πƒ‹GPIOH ±÷”
+    // ‰ΩøËÉΩGPIOHÊó∂Èíü
     __HAL_RCC_GPIOD_CLK_ENABLE();
 
 		GPIO_InitStruct.Pin = PCA9546_RESET_Pin;
@@ -30,37 +30,37 @@ void PCA9546_Reset_GPIO_Init(void)
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 		HAL_GPIO_Init(PCA9546_RESET_GPIO_Port, &GPIO_InitStruct);
 
-    // ≥ı º◊¥Ã¨£∫∏¥Œª“˝Ω≈÷√∏ﬂ£®–æ∆¨’˝≥£π§◊˜£©
+    // ÂàùÂßãÁä∂ÊÄÅÔºöÂ§ç‰ΩçÂºïËÑöÁΩÆÈ´òÔºàËäØÁâáÊ≠£Â∏∏Â∑•‰ΩúÔºâ
     PCA9546_RESET_HIGH();
 }
 
 
 
-HAL_StatusTypeDef PCA9546_Init(void){//PCA9546’˚ÃÂ≥ı ºªØ£®œ»∏¥Œª“˝Ω≈≥ı ºªØ°˙”≤º˛∏¥Œª°˙Õ®µ¿∏¥Œª£©
-	// 1. ≥ı ºªØ∏¥Œª“˝Ω≈
+HAL_StatusTypeDef PCA9546_Init(void){//PCA9546Êï¥‰ΩìÂàùÂßãÂåñÔºàÂÖàÂ§ç‰ΩçÂºïËÑöÂàùÂßãÂåñ‚ÜíÁ°¨‰ª∂Â§ç‰Ωç‚ÜíÈÄöÈÅìÂ§ç‰ΩçÔºâ
+	// 1. ÂàùÂßãÂåñÂ§ç‰ΩçÂºïËÑö
 	PCA9546_Reset_GPIO_Init();
 	
-	// 2. ”≤º˛∏¥Œª–æ∆¨
+	// 2. Á°¨‰ª∂Â§ç‰ΩçËäØÁâá
 	PCA9546_HardwareReset();
 	
-	// 3. ∏¥ŒªÕ®µ¿£®πÿ±’À˘”–Õ®µ¿£©
+	// 3. Â§ç‰ΩçÈÄöÈÅìÔºàÂÖ≥Èó≠ÊâÄÊúâÈÄöÈÅìÔºâ
 	return PCA9546_SelectChannel(PCA9546_CHANNEL_NONE);
 }
 
-HAL_StatusTypeDef PCA9546_SelectChannel(uint8_t channel){//—°‘ÒPCA9546µƒ÷∏∂®Õ®µ¿
-	// ºÏ≤ÈÕ®µ¿≤Œ ˝∫œ∑®–‘£®ΩˆµÕ4Œª”––ß£©
+HAL_StatusTypeDef PCA9546_SelectChannel(uint8_t channel){//ÈÄâÊã©PCA9546ÁöÑÊåáÂÆöÈÄöÈÅì
+	// Ê£ÄÊü•ÈÄöÈÅìÂèÇÊï∞ÂêàÊ≥ïÊÄßÔºà‰ªÖ‰Ωé4‰ΩçÊúâÊïàÔºâ
 	if((channel & 0xF0) != 0){
 		return HAL_ERROR;
 	}
-	// I2C–¥»Î1◊÷Ω⁄øÿ÷∆¬Î£®A0/A1/A2Ω”µÿ£¨µÿ÷∑0xE0£©
+	// I2CÂÜôÂÖ•1Â≠óËäÇÊéßÂà∂Á†ÅÔºàA0/A1/A2Êé•Âú∞ÔºåÂú∞ÂùÄ0xE0Ôºâ
 	return HAL_I2C_Master_Transmit(&hi2c2, PCA9546_DEV_ADDR, &channel, 1, 100);
 }
 
-HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel){//∂¡»°PCA9546µ±«∞—°÷–µƒÕ®µ¿
+HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel){//ËØªÂèñPCA9546ÂΩìÂâçÈÄâ‰∏≠ÁöÑÈÄöÈÅì
 	if(pChannel == NULL){
 		return HAL_ERROR;
 	}
-	// I2C∂¡»°1◊÷Ω⁄Õ®µ¿◊¥Ã¨
+	// I2CËØªÂèñ1Â≠óËäÇÈÄöÈÅìÁä∂ÊÄÅ
 	return HAL_I2C_Master_Receive(&hi2c2, PCA9546_DEV_ADDR, pChannel, 1, 100);
 }
 

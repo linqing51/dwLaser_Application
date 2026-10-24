@@ -56,9 +56,9 @@ extern UART_HandleTypeDef huart5;
 DMA_HandleTypeDef hdma_uart5_rx;
 
 
-#define CONFIG_DEBUG_UART											huart1//µ÷ÊÔ´®¿Ú
-#define CONFIG_GDDC_UART											huart2//GDDC´®¿Ú
-#define CONFIG_GDDC_UART_INSTANCE							USART2//GDDC´®¿ÚÖÐ¶Ï
+#define CONFIG_DEBUG_UART											huart1//è°ƒè¯•ä¸²å£
+#define CONFIG_GDDC_UART											huart2//GDDCä¸²å£
+#define CONFIG_GDDC_UART_INSTANCE							USART2//GDDCä¸²å£ä¸­æ–­
 
 
 
@@ -69,7 +69,7 @@ uint16_t UART5_Rx_Len = 0;
 
 #if 1
 #pragma import(__use_no_semihosting)             
-//±ê×¼¿âÐèÒªµÄÖ§³Öº¯Êý                 
+//æ ‡å‡†åº“éœ€è¦çš„æ”¯æŒå‡½æ•°                 
 struct __FILE 
 { 
 	int handle; 
@@ -83,13 +83,13 @@ struct __FILE
 
 void xUsart5Init(uint32_t BaudRate)
 {
-    /* 1. ¿ªÆôÊ±ÖÓ */
+    /* 1. å¼€å¯æ—¶é’Ÿ */
     __HAL_RCC_UART5_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOD_CLK_ENABLE();
-    __HAL_RCC_DMA1_CLK_ENABLE();  // UART5 RX DMA ÊôÓÚ DMA1 Á÷5 Í¨µÀ4
+    __HAL_RCC_DMA1_CLK_ENABLE();  // UART5 RX DMA å±žäºŽ DMA1 æµ5 é€šé“4
 
-    /* 2. GPIO ³õÊ¼»¯£ºTX=PC12, RX=PD2 */
+    /* 2. GPIO åˆå§‹åŒ–ï¼šTX=PC12, RX=PD2 */
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     GPIO_InitStruct.Pin = GPIO_PIN_12;
@@ -101,11 +101,11 @@ void xUsart5Init(uint32_t BaudRate)
 
     GPIO_InitStruct.Pin = GPIO_PIN_2;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;  // RX ÉÏÀ­
+    GPIO_InitStruct.Pull = GPIO_PULLUP;  // RX ä¸Šæ‹‰
     GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-    /* 3. DMA ½ÓÊÕÅäÖÃ */
+    /* 3. DMA æŽ¥æ”¶é…ç½® */
     hdma_uart5_rx.Instance = DMA1_Stream5;
     hdma_uart5_rx.Init.Channel = DMA_CHANNEL_4;
     hdma_uart5_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
@@ -122,7 +122,7 @@ void xUsart5Init(uint32_t BaudRate)
     }
     __HAL_LINKDMA(&huart5, hdmarx, hdma_uart5_rx);
 
-    /* 4. UART5 ³õÊ¼»¯ */
+    /* 4. UART5 åˆå§‹åŒ– */
     huart5.Instance = UART5;
     huart5.Init.BaudRate = BaudRate;
     huart5.Init.WordLength = UART_WORDLENGTH_8B;
@@ -136,13 +136,13 @@ void xUsart5Init(uint32_t BaudRate)
 //        Error_Handler();
     }
 
-    /* 5. NVIC ÖÐ¶ÏÅäÖÃ */
-    HAL_NVIC_SetPriority(UART5_IRQn, 5, 0);  // ÊÊÅäFreeRTOSÓÅÏÈ¼¶
+    /* 5. NVIC ä¸­æ–­é…ç½® */
+    HAL_NVIC_SetPriority(UART5_IRQn, 5, 0);  // é€‚é…FreeRTOSä¼˜å…ˆçº§
     HAL_NVIC_EnableIRQ(UART5_IRQn);
     HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
-    /* 6. Æô¶¯ DMA ½ÓÊÕ + ¿ªÆô IDLE ÖÐ¶Ï */
+    /* 6. å¯åŠ¨ DMA æŽ¥æ”¶ + å¼€å¯ IDLE ä¸­æ–­ */
     HAL_UART_Receive_DMA(&huart5, UART5_Rx_Buf, USART5_RX_BUF_SIZE);
     __HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
 
@@ -167,13 +167,13 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 	hardware. */
 	if( ( xRxedChars != serINVALID_QUEUE ) && ( xCharsForTx != serINVALID_QUEUE ) )
 	{
-    /* 1. ¿ªÆôÊ±ÖÓ */
+    /* 1. å¼€å¯æ—¶é’Ÿ */
     __HAL_RCC_UART5_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOD_CLK_ENABLE();
-    __HAL_RCC_DMA1_CLK_ENABLE();  // UART5 RX DMA ÊôÓÚ DMA1 Á÷5 Í¨µÀ4
+    __HAL_RCC_DMA1_CLK_ENABLE();  // UART5 RX DMA å±žäºŽ DMA1 æµ5 é€šé“4
 
-    /* 2. GPIO ³õÊ¼»¯£ºTX=PC12, RX=PD2 */
+    /* 2. GPIO åˆå§‹åŒ–ï¼šTX=PC12, RX=PD2 */
 //    GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     GPIO_InitStruct.Pin = GPIO_PIN_12;
@@ -185,11 +185,11 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     GPIO_InitStruct.Pin = GPIO_PIN_2;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;  // RX ÉÏÀ­
+    GPIO_InitStruct.Pull = GPIO_PULLUP;  // RX ä¸Šæ‹‰
     GPIO_InitStruct.Alternate = GPIO_AF8_UART5;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-    /* 3. DMA ½ÓÊÕÅäÖÃ */
+    /* 3. DMA æŽ¥æ”¶é…ç½® */
     hdma_uart5_rx.Instance = DMA1_Stream0;
     hdma_uart5_rx.Init.Channel = DMA_CHANNEL_4;
     hdma_uart5_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
@@ -206,7 +206,7 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
     }
     __HAL_LINKDMA(&huart5, hdmarx, hdma_uart5_rx);
 
-    /* 4. UART5 ³õÊ¼»¯ */
+    /* 4. UART5 åˆå§‹åŒ– */
     huart5.Instance = UART5;
     huart5.Init.BaudRate = ulWantedBaud;
     huart5.Init.WordLength = UART_WORDLENGTH_8B;
@@ -220,13 +220,13 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 //        Error_Handler();
     }
 
-    /* 5. NVIC ÖÐ¶ÏÅäÖÃ */
-    HAL_NVIC_SetPriority(UART5_IRQn, 6, 0);  // ÊÊÅäFreeRTOSÓÅÏÈ¼¶
+    /* 5. NVIC ä¸­æ–­é…ç½® */
+    HAL_NVIC_SetPriority(UART5_IRQn, 6, 0);  // é€‚é…FreeRTOSä¼˜å…ˆçº§
     HAL_NVIC_EnableIRQ(UART5_IRQn);
     HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 6, 0);
     HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
-    /* 6. Æô¶¯ DMA ½ÓÊÕ + ¿ªÆô IDLE ÖÐ¶Ï */
+    /* 6. å¯åŠ¨ DMA æŽ¥æ”¶ + å¼€å¯ IDLE ä¸­æ–­ */
     HAL_UART_Receive_DMA(&huart5, UART5_Rx_Buf, USART5_RX_BUF_SIZE);
     __HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
 			
@@ -323,15 +323,15 @@ void UART5_IDLE_Callback(UART_HandleTypeDef *huart)
     uint32_t temp;
     if(huart->Instance == UART5)
     {
-        /* ¹Ø±ÕDMA + Çå³ýÖÐ¶Ï±êÖ¾ */
+        /* å…³é—­DMA + æ¸…é™¤ä¸­æ–­æ ‡å¿— */
         __HAL_UART_DISABLE_IT(huart, UART_IT_IDLE);
         HAL_UART_DMAStop(huart);
 
-        /* ¼ÆËã½ÓÊÕµ½µÄÊý¾Ý³¤¶È */
+        /* è®¡ç®—æŽ¥æ”¶åˆ°çš„æ•°æ®é•¿åº¦ */
         temp  =  __HAL_DMA_GET_COUNTER(&hdma_uart5_rx);
 				UART5_Rx_Len = USART5_RX_BUF_SIZE - temp;
         /* ============================================== */
-        /* ¹Ø¼ü£º½«½ÓÊÕµ½µÄÊý¾ÝËÍÈë FreeRTOS+CLI ´¦Àí¶ÓÁÐ */
+        /* å…³é”®ï¼šå°†æŽ¥æ”¶åˆ°çš„æ•°æ®é€å…¥ FreeRTOS+CLI å¤„ç†é˜Ÿåˆ— */
         /* ============================================== */
         for(uint16_t i=0; i<UART5_Rx_Len; i++)
         {
@@ -341,11 +341,11 @@ void UART5_IDLE_Callback(UART_HandleTypeDef *huart)
 						portEND_SWITCHING_ISR( xHigherPriorityTaskWoken );					
         }
 
-        /* ÖØÐÂÆô¶¯DMA½ÓÊÕ£¬µÈ´ýÏÂÒ»°üÊý¾Ý */
+        /* é‡æ–°å¯åŠ¨DMAæŽ¥æ”¶ï¼Œç­‰å¾…ä¸‹ä¸€åŒ…æ•°æ® */
         HAL_UART_Receive_DMA(&huart5, UART5_Rx_Buf, USART5_RX_BUF_SIZE);
         __HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
 
-        /* Çå¿Õ½ÓÊÕ»º³åÇø */
+        /* æ¸…ç©ºæŽ¥æ”¶ç¼“å†²åŒº */
         UART5_Rx_Len = 0;
         memset(UART5_Rx_Buf, 0, USART5_RX_BUF_SIZE);
     }
@@ -361,7 +361,7 @@ void vUARTInterruptHandler( void )
 portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 char cChar;
 
-	/* IDLE ¿ÕÏÐÖÐ¶Ï´¦Àí */
+	/* IDLE ç©ºé—²ä¸­æ–­å¤„ç† */
 	if(__HAL_UART_GET_FLAG(&huart5, UART_FLAG_IDLE) != RESET)
 	{
 			UART5_IDLE_Callback(&huart5);

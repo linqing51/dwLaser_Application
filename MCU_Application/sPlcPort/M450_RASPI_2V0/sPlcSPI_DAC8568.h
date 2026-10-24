@@ -1,34 +1,34 @@
 #ifndef __DAC8568_H
 #define __DAC8568_H
 
-#include "stm32f4xx_hal.h"  // ¸ù¾ÝÄãµÄSTM32ÐÍºÅÐÞ¸Ä£¬Èçf1xx/f7xxµÈ
-/************************** Í¨µÀ¶¨Òå **************************/
+#include "stm32f4xx_hal.h"  // æ ¹æ®ä½ çš„STM32åž‹å·ä¿®æ”¹ï¼Œå¦‚f1xx/f7xxç­‰
+/************************** é€šé“å®šä¹‰ **************************/
 typedef enum {
-    DAC8568_CH_A = 0x0,  // Í¨µÀA
-    DAC8568_CH_B = 0x1,  // Í¨µÀB
-    DAC8568_CH_C = 0x2,  // Í¨µÀC
-    DAC8568_CH_D = 0x3,  // Í¨µÀD
-    DAC8568_CH_E = 0x4,  // Í¨µÀE
-    DAC8568_CH_F = 0x5,  // Í¨µÀF
-    DAC8568_CH_G = 0x6,  // Í¨µÀG
-    DAC8568_CH_H = 0x7,  // Í¨µÀH
-    DAC8568_CH_ALL = 0xF // ËùÓÐÍ¨µÀ
+    DAC8568_CH_A = 0x0,  // é€šé“A
+    DAC8568_CH_B = 0x1,  // é€šé“B
+    DAC8568_CH_C = 0x2,  // é€šé“C
+    DAC8568_CH_D = 0x3,  // é€šé“D
+    DAC8568_CH_E = 0x4,  // é€šé“E
+    DAC8568_CH_F = 0x5,  // é€šé“F
+    DAC8568_CH_G = 0x6,  // é€šé“G
+    DAC8568_CH_H = 0x7,  // é€šé“H
+    DAC8568_CH_ALL = 0xF // æ‰€æœ‰é€šé“
 } DAC8568_ChannelDef;
 
-/************************** ÃüÁî¶¨Òå **************************/
+/************************** å‘½ä»¤å®šä¹‰ **************************/
 typedef enum {
-    DAC8568_CMD_WRITE_INPUT_REG      = 0x0,  // Ð´ÈëÊäÈë¼Ä´æÆ÷£¨ÎÞ¸üÐÂ£©
-    DAC8568_CMD_UPDATE_DAC_REG       = 0x1,  // ¸üÐÂDAC¼Ä´æÆ÷£¨´ÓÊäÈë¼Ä´æÆ÷£©
-    DAC8568_CMD_WRITE_INPUT_REG_UPDATE_ALL = 0x2,  // Ð´ÈëÊäÈë¼Ä´æÆ÷²¢¸üÐÂËùÓÐDAC
-    DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH  = 0x3,  // Ð´ÈëÊäÈë¼Ä´æÆ÷²¢¸üÐÂÖ¸¶¨DAC
-    DAC8568_CMD_POWER_DOWN_UP        = 0x4,  // µôµç/ÉÏµç¿ØÖÆ
-    DAC8568_CMD_HW_LDAC_MASK         = 0x5,  // Ó²¼þLDACÆÁ±Î¿ØÖÆ
-    DAC8568_CMD_SW_RESET             = 0x6,  // Èí¼þ¸´Î»
-    DAC8568_CMD_SW_LDAC              = 0x7,  // Èí¼þLDAC
-    DAC8568_CMD_READ_BACK            = 0x8   // ¶Á»Ø¼Ä´æÆ÷£¨½öÊäÈë¼Ä´æÆ÷£©
+    DAC8568_CMD_WRITE_INPUT_REG      = 0x0,  // å†™å…¥è¾“å…¥å¯„å­˜å™¨ï¼ˆæ— æ›´æ–°ï¼‰
+    DAC8568_CMD_UPDATE_DAC_REG       = 0x1,  // æ›´æ–°DACå¯„å­˜å™¨ï¼ˆä»Žè¾“å…¥å¯„å­˜å™¨ï¼‰
+    DAC8568_CMD_WRITE_INPUT_REG_UPDATE_ALL = 0x2,  // å†™å…¥è¾“å…¥å¯„å­˜å™¨å¹¶æ›´æ–°æ‰€æœ‰DAC
+    DAC8568_CMD_WRITE_INPUT_REG_UPDATE_CH  = 0x3,  // å†™å…¥è¾“å…¥å¯„å­˜å™¨å¹¶æ›´æ–°æŒ‡å®šDAC
+    DAC8568_CMD_POWER_DOWN_UP        = 0x4,  // æŽ‰ç”µ/ä¸Šç”µæŽ§åˆ¶
+    DAC8568_CMD_HW_LDAC_MASK         = 0x5,  // ç¡¬ä»¶LDACå±è”½æŽ§åˆ¶
+    DAC8568_CMD_SW_RESET             = 0x6,  // è½¯ä»¶å¤ä½
+    DAC8568_CMD_SW_LDAC              = 0x7,  // è½¯ä»¶LDAC
+    DAC8568_CMD_READ_BACK            = 0x8   // è¯»å›žå¯„å­˜å™¨ï¼ˆä»…è¾“å…¥å¯„å­˜å™¨ï¼‰
 } DAC8568_CmdDef;
 
-/****************************DAC8568ÃüÁî************************/
+/****************************DAC8568å‘½ä»¤************************/
 
 #define POWER_DOWN_INTERNAL_REFERENCE 0
 
@@ -37,7 +37,7 @@ typedef enum {
 #define DAC8568_RESET 2
 
 
-/************************** º¯ÊýÉùÃ÷ **************************/
+/************************** å‡½æ•°å£°æ˜Ž **************************/
 void Delay_us(uint32_t us);
 void DAC8568_Init(void);
 void DAC8568_SPI_SendByte(uint8_t byte);

@@ -9,8 +9,8 @@ extern "C" {
 #include "..\config\myConfig.h"
 #include "stdio.h"
 /*****************************************************************************/
-void listEpromTable(void);//Êä³öEPROM·Ö²¼±í
-void listNvramTable(void);//Êä³öNVRAM·Ö²¼±í
+void listEpromTable(void);//è¾“å‡ºEPROMåˆ†å¸ƒè¡¨
+void listNvramTable(void);//è¾“å‡ºNVRAMåˆ†å¸ƒè¡¨
 /*****************************************************************************/
 #ifdef __cplusplus
 }

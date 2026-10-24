@@ -5,16 +5,16 @@
 #include <string.h>
 #include <stdint.h>
 
-/* ========== ÊÕ·¢×´Ì¬ ========== */
+/* ========== æ”¶å‘çŠ¶æ€ ========== */
 typedef enum {
-    SPI2_STATE_IDLE = 0,      /* ¿ÕÏÐ£¬¿ÉÆô¶¯ÐÂÒ»´ÎÊÕ·¢ */
-    SPI2_STATE_BUSY,           /* DMA ´«Êä½øÐÐÖÐ */
-    SPI2_STATE_CPLT,           /* ±¾´Î´«ÊäÍê³É£¨´ýÓ¦ÓÃ¶ÁÈ¡£© */
-    SPI2_STATE_ERROR           /* ´«Êä´íÎó */
+    SPI2_STATE_IDLE = 0,      /* ç©ºé—²ï¼Œå¯å¯åŠ¨æ–°ä¸€æ¬¡æ”¶å‘ */
+    SPI2_STATE_BUSY,           /* DMA ä¼ è¾“è¿›è¡Œä¸­ */
+    SPI2_STATE_CPLT,           /* æœ¬æ¬¡ä¼ è¾“å®Œæˆï¼ˆå¾…åº”ç”¨è¯»å–ï¼‰ */
+    SPI2_STATE_ERROR           /* ä¼ è¾“é”™è¯¯ */
 } SPI2_SlaveState_t;
 
-/* ========== º¯ÊýÉùÃ÷ ========== */
-void SPI2_Slave_DMA_Init(void);                         /* ³õÊ¼»¯ SPI2+DMA+GPIO+NVIC */
+/* ========== å‡½æ•°å£°æ˜Ž ========== */
+void SPI2_Slave_DMA_Init(void);                         /* åˆå§‹åŒ– SPI2+DMA+GPIO+NVIC */
 
 
 
@@ -29,15 +29,15 @@ extern uint8_t    *g_tx_buf_ptr;
 
 
 
-// DMA·¢ËÍ»º³åÇø
+// DMAå‘é€ç¼“å†²åŒº
 #define SPI_TX_BUF_LEN 16U
 extern uint8_t spi_tx_buffer[SPI_TX_BUF_LEN];
 
-// ·¢ËÍ×´Ì¬±ê¼Ç
+// å‘é€çŠ¶æ€æ ‡è®°
 typedef enum
 {
-  SPI_SLAVE_TX_IDLE    = 0,  // ¿ÕÏÐ£¬¿ÉÒÔÆô¶¯ÏÂÒ»´ÎDMA·¢ËÍ
-  SPI_SLAVE_TX_BUSY    = 1,  // DMA·¢ËÍ½øÐÐÖÐ
+  SPI_SLAVE_TX_IDLE    = 0,  // ç©ºé—²ï¼Œå¯ä»¥å¯åŠ¨ä¸‹ä¸€æ¬¡DMAå‘é€
+  SPI_SLAVE_TX_BUSY    = 1,  // DMAå‘é€è¿›è¡Œä¸­
 }SPI_Slave_TxStateTypeDef;
 
 extern SPI_Slave_TxStateTypeDef spi_slave_tx_state;
@@ -46,22 +46,22 @@ extern SPI_Slave_TxStateTypeDef spi_slave_tx_state;
 
 
 
-//----------ÅäÖÃ²ÎÊý----------
-#define SPI_RX_CMD_LEN     10U      // Ö÷Õ¾ÏÂ·¢ÃüÁî³¤¶È£º4×Ö½ÚÃüÁîÖ¡
-#define SPI_TX_RESP_LEN    10U      // ´ÓÕ¾Ó¦´ð·µ»ØÊý¾Ý³¤¶È£º8×Ö½Ú
+//----------é…ç½®å‚æ•°----------
+#define SPI_RX_CMD_LEN     10U      // ä¸»ç«™ä¸‹å‘å‘½ä»¤é•¿åº¦ï¼š4å­—èŠ‚å‘½ä»¤å¸§
+#define SPI_TX_RESP_LEN    10U      // ä»Žç«™åº”ç­”è¿”å›žæ•°æ®é•¿åº¦ï¼š8å­—èŠ‚
 
-// DMA½ÓÊÕ»º³åÇø£º´æÖ÷»úÏÂ·¢ÃüÁî
+// DMAæŽ¥æ”¶ç¼“å†²åŒºï¼šå­˜ä¸»æœºä¸‹å‘å‘½ä»¤
 extern uint8_t spi_rx_cmd_buf[SPI_RX_CMD_LEN];
-// DMA·¢ËÍÓ¦´ð»º³åÇø£º½âÎöÃüÁîºóÌî³äÓ¦´ðÊý¾Ý
+// DMAå‘é€åº”ç­”ç¼“å†²åŒºï¼šè§£æžå‘½ä»¤åŽå¡«å……åº”ç­”æ•°æ®
 extern uint8_t spi_tx_resp_buf[SPI_TX_RESP_LEN];
 
-// ×´Ì¬»ú
+// çŠ¶æ€æœº
 typedef enum
 {
-    SPI_SLAVE_STATE_IDLE,        // ¿ÕÏÐ£¬µÈ´ýÖ÷Õ¾ÏÂ·¢ÃüÁî
-    SPI_SLAVE_STATE_RX_CMD,      // DMA½ÓÊÕÖ÷Õ¾ÃüÁîÖÐ
-    SPI_SLAVE_STATE_PARSE_CMD,   // ÃüÁî½ÓÊÕÍê³É£¬½âÎöÃüÁî
-    SPI_SLAVE_STATE_TX_RESP,     // DMA·¢ËÍÓ¦´ð¸øÖ÷Õ¾
+    SPI_SLAVE_STATE_IDLE,        // ç©ºé—²ï¼Œç­‰å¾…ä¸»ç«™ä¸‹å‘å‘½ä»¤
+    SPI_SLAVE_STATE_RX_CMD,      // DMAæŽ¥æ”¶ä¸»ç«™å‘½ä»¤ä¸­
+    SPI_SLAVE_STATE_PARSE_CMD,   // å‘½ä»¤æŽ¥æ”¶å®Œæˆï¼Œè§£æžå‘½ä»¤
+    SPI_SLAVE_STATE_TX_RESP,     // DMAå‘é€åº”ç­”ç»™ä¸»ç«™
 }SPI_SLAVE_STATE_t;
 
 extern SPI_SLAVE_STATE_t spi_slave_state;
@@ -79,23 +79,23 @@ extern SPI_SLAVE_STATE_t spi_slave_state;
 
 
 
-// ===================== ÅäÖÃ =====================
-#define MODBUS_SLAVE_ADDR        0x01    // ´ÓÕ¾µØÖ·£¨±ØÐëºÍÊ÷Ý®ÅÉÒ»ÖÂ£©
-#define HOLDING_REG_NUM          50      // ±£³Ö¼Ä´æÆ÷ÊýÁ¿
-#define SPI_BUFFER_SIZE          512     // SPI»º³åÇø´óÐ¡
+// ===================== é…ç½® =====================
+#define MODBUS_SLAVE_ADDR        0x01    // ä»Žç«™åœ°å€ï¼ˆå¿…é¡»å’Œæ ‘èŽ“æ´¾ä¸€è‡´ï¼‰
+#define HOLDING_REG_NUM          50      // ä¿æŒå¯„å­˜å™¨æ•°é‡
+#define SPI_BUFFER_SIZE          512     // SPIç¼“å†²åŒºå¤§å°
 
 #define SPI2_FRAME_MAX_LEN   512
 
 
 
-//// Í¨ÐÅ²ÎÊýÍ³Ò»ÅäÖÃ
-//#define SPI_MAX_PACKET_LEN      1024U       // ×î´óµ¥°ü³¤¶È
-//#define SPI_FRAME_HEAD          0xAAU       // Ö¡Í·
-//#define SPI_FRAME_TAIL          0x55U       // Ö¡Î²
-//#define SPI_TIMEOUT_US          50U         // ´«Êä³¬Ê±Ê±¼ä
-//#define SPI_CRC_ENABLE          1U          // ¿ªÆôCRCÐ£Ñé
+//// é€šä¿¡å‚æ•°ç»Ÿä¸€é…ç½®
+//#define SPI_MAX_PACKET_LEN      1024U       // æœ€å¤§å•åŒ…é•¿åº¦
+//#define SPI_FRAME_HEAD          0xAAU       // å¸§å¤´
+//#define SPI_FRAME_TAIL          0x55U       // å¸§å°¾
+//#define SPI_TIMEOUT_US          50U         // ä¼ è¾“è¶…æ—¶æ—¶é—´
+//#define SPI_CRC_ENABLE          1U          // å¼€å¯CRCæ ¡éªŒ
 
-//// Æ¹ÅÒ»º´æ½á¹¹Ìå
+//// ä¹’ä¹“ç¼“å­˜ç»“æž„ä½“
 //typedef struct
 //{
 //    uint8_t bufA[SPI_MAX_PACKET_LEN];
@@ -103,20 +103,20 @@ extern SPI_SLAVE_STATE_t spi_slave_state;
 //    uint8_t *txBuf;
 //    uint8_t *rxBuf;
 //    uint16_t dataLen;
-//    uint8_t bufSwitchFlag;   // 0:A»º´æ,1:B»º´æ
+//    uint8_t bufSwitchFlag;   // 0:Aç¼“å­˜,1:Bç¼“å­˜
 //}SPI_PINGPONG_Typedef;
 
 
 
-// ===================== Íâ²¿º¯Êý =====================
+// ===================== å¤–éƒ¨å‡½æ•° =====================
 
 uint16_t Modbus_CRC16(uint8_t *buf, uint16_t len);
 
 
 //void Modbus_Process_Frame(void);
-void Modbus_SPI_RxCplt_Callback(void);  // SPI½ÓÊÕÍê³É»Øµ÷
+void Modbus_SPI_RxCplt_Callback(void);  // SPIæŽ¥æ”¶å®Œæˆå›žè°ƒ
 
-//// Íâ²¿±äÁ¿£º±£³Ö¼Ä´æÆ÷
+//// å¤–éƒ¨å˜é‡ï¼šä¿æŒå¯„å­˜å™¨
 //extern uint16_t Holding_Regs[HOLDING_REG_NUM];
 
 

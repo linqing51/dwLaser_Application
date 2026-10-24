@@ -2,16 +2,16 @@
 /*****************************************************************************/
 #if defined(CONFIG_PMU_LTC2955)
 
-void PmuPowerUp(void){//¿ª»úº¯Êý
-//¿ÕÓ²¼þ¿ª»úÓëÈí¼þÎÞ¹Ø
+void PmuPowerUp(void){//å¼€æœºå‡½æ•°
+//ç©ºç¡¬ä»¶å¼€æœºä¸Žè½¯ä»¶æ— å…³
 
 }
 
-void PmuPowerDown(void){//¹Ø»úº¯Êý
+void PmuPowerDown(void){//å…³æœºå‡½æ•°
 	
 	
-	NVSAVE();//µ¥Æ¬»úÍ¬²½NVRAM
-	SET_PWR_KILL_ON;//¸øLTC2955 KILLÐÅºÅÊµÏÖÈí¹Ø»ú
+	NVSAVE();//å•ç‰‡æœºåŒæ­¥NVRAM
+	SET_PWR_KILL_ON;//ç»™LTC2955 KILLä¿¡å·å®žçŽ°è½¯å…³æœº
 	while(1);
 }
 

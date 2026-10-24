@@ -1,8 +1,8 @@
 .\targetboard_g5_tri_a1_20260915\cmsis_os2.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c
-.\targetboard_g5_tri_a1_20260915\cmsis_os2.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\cmsis_os2.o: C:\Keil_v5\ARM\BIN\Bin\..\include\string.h
 .\targetboard_g5_tri_a1_20260915\cmsis_os2.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
-.\targetboard_g5_tri_a1_20260915\cmsis_os2.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\targetboard_g5_tri_a1_20260915\cmsis_os2.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\cmsis_os2.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\cmsis_os2.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
 .\targetboard_g5_tri_a1_20260915\cmsis_os2.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 .\targetboard_g5_tri_a1_20260915\cmsis_os2.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 .\targetboard_g5_tri_a1_20260915\cmsis_os2.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
