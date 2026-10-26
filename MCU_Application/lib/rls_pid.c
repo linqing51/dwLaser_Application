@@ -57,7 +57,9 @@ static uint8_t rlsPolePlace(RLSPid_t *pid){
 	float p1, ac1, ac2, s0, s1, ac3, t0, b0b1;
 	float po_abs;
 	/* 由开环极点半径收缩得目标主导极点（保证闭环略快于开环） */
-	po_abs = sqrtf(fabsf(pid->a2));
+	po_abs = 0.0f;
+	/* ARM DSP 快速开方（内联 __sqrtf → VSQRT 硬件指令），入参经 fabsf 保证非负 */
+	(void)arm_sqrt_f32(fabsf(pid->a2), &po_abs);
 	p1 = po_abs * 0.8f;
 	p1 = rlsClampf(p1, RLS_P_TARGET_MIN, RLS_P_TARGET_MAX);
 	pid->p_target = p1;

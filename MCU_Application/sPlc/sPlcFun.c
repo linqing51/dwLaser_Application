@@ -177,7 +177,7 @@ void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换�
 	else{
 		ftemp = 0.1F;
 	}
-	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * log(ftemp / CONFIG_NTC_R25)) - 273.15;
+	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * logf(ftemp / CONFIG_NTC_R25)) - 273.15F;//log(双精度软浮点)→logf(单精度硬件FPU)
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
@@ -210,7 +210,7 @@ void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换�
 	else{
 		ftemp = 0.1F;
 	}
-	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * log(ftemp / CONFIG_NTC_R25)) - 273.15;
+	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * logf(ftemp / CONFIG_NTC_R25)) - 273.15F;//log(双精度软浮点)→logf(单精度硬件FPU)
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);

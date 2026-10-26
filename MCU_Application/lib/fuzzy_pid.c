@@ -47,7 +47,8 @@ void fuzzy_params_init(struct fuzzy *fuzzy_struct, unsigned int mf_type, unsigne
 
 // Gaussian membership function
 float gaussmf(float x, float sigma, float c) {
-	return expf(-powf(((x - c) / sigma), 2.0f));
+	float t = (x - c) / sigma;
+	return expf(-(t * t));//powf(x,2)→x*x，避免 libm pow 函数调用
 }
 
 // Generalized bell-shaped membership function
@@ -80,10 +81,14 @@ float trimf(float x, float a, float b, float c) {
 float zmf(float x, float a, float b) {
 	if (x <= a)
 		return 1.0f;
-	else if (x >= a && x <= (a + b) / 2.0f)
-		return 1.0f - 2.0f * powf((x - a) / (b - a), 2.0f);
-	else if (x >= (a + b) / 2.0f && x < b)
-		return 2.0f * powf((x - b) / (b - a), 2.0f);
+	else if (x >= a && x <= (a + b) / 2.0f) {
+		float t = (x - a) / (b - a);
+		return 1.0f - 2.0f * (t * t);
+	}
+	else if (x >= (a + b) / 2.0f && x < b) {
+		float t = (x - b) / (b - a);
+		return 2.0f * (t * t);
+	}
 	else return 0;
 }
 
@@ -129,7 +134,13 @@ float and(float a, float b, unsigned int type) {
 
 // Equilibrium operator
 float equilibrium(float a, float b, float params) {
-	return powf(a * b, 1 - params) * powf(1 - (1 - a) * (1 - b), params);
+	float r1, r2;
+	if (params == 0.5f) {// fo() 仅以 params=0.5 调用: powf(x,0.5)≡sqrt(x)
+		arm_sqrt_f32(a * b, &r1);// ARM DSP 快速开方（VSQRT 硬件指令）
+		arm_sqrt_f32(1.0f - (1.0f - a) * (1.0f - b), &r2);
+		return r1 * r2;
+	}
+	return powf(a * b, 1.0f - params) * powf(1.0f - (1.0f - a) * (1.0f - b), params);
 }
 
 // Fuzzy operator

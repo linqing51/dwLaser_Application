@@ -10,7 +10,7 @@
       <TargetName>targetBoard_G5_TRI_A1_20260915</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\BIN</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>D:\GitHub\dwLaser_Application\MCU_Application\targetBoard_G5_TRI_A1\MDK-ARM\convert.bat</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,USER_VECT_TAB_ADDRESS,MBEDTLS_CONFIG_FILE=&lt;mbedtls_config.h&gt;,STM32F405xx,G5_TRI_A1_20260915</Define>
               <Undefine></Undefine>
-              <IncludePath>../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../../sPlc;../../sPlcPort;../../lib;../../MainApp;../../deviceInfo;../../dcHmi;../../minicsv-master;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../LIBJPEG/App;../LIBJPEG/Target;../MBEDTLS/App;../Middlewares/Third_Party/LibJPEG/include;../Middlewares/Third_Party/mbedTLS/include/mbedtls;../Middlewares/Third_Party/mbedTLS/include</IncludePath>
+              <IncludePath>../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../Drivers/CMSIS/DSP/PrivateInclude;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../../sPlc;../../sPlcPort;../../lib;../../MainApp;../../deviceInfo;../../dcHmi;../../minicsv-master;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../LIBJPEG/App;../LIBJPEG/Target;../MBEDTLS/App;../Middlewares/Third_Party/LibJPEG/include;../Middlewares/Third_Party/mbedTLS/include/mbedtls;../Middlewares/Third_Party/mbedTLS/include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1503,6 +1503,271 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Drivers/CMSIS/DSP_Lib</GroupName>
+          <Files>
+            <File>
+              <FileName>arm_common_tables.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\CommonTables\arm_common_tables.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_const_structs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\CommonTables\arm_const_structs.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_sin_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FastMathFunctions\arm_sin_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cos_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FastMathFunctions\arm_cos_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_atan2_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FastMathFunctions\arm_atan2_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_vexp_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FastMathFunctions\arm_vexp_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_vlog_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FastMathFunctions\arm_vlog_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_abs_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_abs_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_add_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_add_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_sub_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_sub_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_mult_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_negate_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_negate_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_scale_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_scale_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_offset_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_offset_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_dot_prod_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_dot_prod_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_clip_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\arm_clip_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mean_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\StatisticsFunctions\arm_mean_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_power_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\StatisticsFunctions\arm_power_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_rms_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\StatisticsFunctions\arm_rms_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_std_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\StatisticsFunctions\arm_std_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_var_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\StatisticsFunctions\arm_var_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_min_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\StatisticsFunctions\arm_min_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_max_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\StatisticsFunctions\arm_max_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_fill_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\SupportFunctions\arm_fill_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_copy_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\SupportFunctions\arm_copy_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_pid_init_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\ControllerFunctions\arm_pid_init_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_pid_reset_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\ControllerFunctions\arm_pid_reset_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_init_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_init_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_add_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_add_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_sub_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_sub_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_mult_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_inverse_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_inverse_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_trans_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_trans_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_cholesky_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_cholesky_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_ldlt_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_ldlt_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_solve_lower_triangular_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_solve_lower_triangular_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_solve_upper_triangular_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\MatrixFunctions\arm_mat_solve_upper_triangular_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_biquad_cascade_df1_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FilteringFunctions\arm_biquad_cascade_df1_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_biquad_cascade_df1_init_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FilteringFunctions\arm_biquad_cascade_df1_init_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_fir_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FilteringFunctions\arm_fir_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_fir_init_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\FilteringFunctions\arm_fir_init_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cmplx_mag_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\ComplexMathFunctions\arm_cmplx_mag_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cmplx_dot_prod_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\ComplexMathFunctions\arm_cmplx_dot_prod_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cmplx_mult_cmplx_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\ComplexMathFunctions\arm_cmplx_mult_cmplx_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cfft_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_cfft_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cfft_init_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_cfft_init_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cfft_radix4_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_cfft_radix4_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cfft_radix8_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_cfft_radix8_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_rfft_fast_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_rfft_fast_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_rfft_fast_init_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_rfft_fast_init_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_bitreversal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_bitreversal.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_bitreversal2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\TransformFunctions\arm_bitreversal2.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Middlewares/FatFs</GroupName>
           <Files>
             <File>
@@ -2543,11 +2808,6 @@
               <FileType>1</FileType>
               <FilePath>..\..\lib\minicsv.c</FilePath>
             </File>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\lib\arm_cortexM4lf_math.lib</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -2816,9 +3076,6 @@
               </Aads>
             </GroupArmAds>
           </GroupOption>
-        </Group>
-        <Group>
-          <GroupName>Middlewares/CLI</GroupName>
         </Group>
         <Group>
           <GroupName>Application/User/LIBJPEG/App</GroupName>

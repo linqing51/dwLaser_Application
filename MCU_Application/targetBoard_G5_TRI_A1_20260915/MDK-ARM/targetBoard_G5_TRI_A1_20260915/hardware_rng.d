@@ -1,7 +1,7 @@
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../MBEDTLS/Target/hardware_rng.c
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../MBEDTLS/App/mbedtls_config.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
-.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\BIN\Bin\..\include\limits.h
+.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Core/Inc/main.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -10,7 +10,7 @@
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/CMSIS/Include/cmsis_version.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -18,7 +18,7 @@
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -47,5 +47,5 @@
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
-.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\BIN\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\hardware_rng.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\targetboard_g5_tri_a1_20260915\hardware_rng.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/entropy_poll.h

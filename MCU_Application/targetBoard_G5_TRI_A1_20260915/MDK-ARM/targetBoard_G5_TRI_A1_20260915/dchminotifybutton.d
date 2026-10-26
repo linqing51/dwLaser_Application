@@ -9,7 +9,7 @@
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/Include/cmsis_version.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -17,7 +17,7 @@
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -46,13 +46,13 @@
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\math.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdio.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdlib.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\string.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\ctype.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\LIMITS.H
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdbool.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\LIMITS.H
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../sPlc/..\config\myConfig.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../sPlc/..\config\.\G5_TRI_A1_20260915\AppConfig.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../sPlc/..\config\.\G5_TRI_A1_20260915\BoardConfig.h
@@ -104,7 +104,7 @@
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ..\..\MainApp\dcHmiNotifyText.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ..\..\MainApp\tempCtrLoop.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../lib/fan_controller.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../lib/ilc_pid.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../lib/nn_pid.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../dcHmi/hmiLib.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../dcHmi/hmiCmdQueue.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../../dcHmi/hmiLib.h
@@ -114,7 +114,7 @@
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ..\..\MainApp\MainAppLib.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/DSP/Include/arm_math_types.h
-.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\BIN\Bin\..\include\float.h
+.\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/DSP/Include/arm_math_memory.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/DSP/Include/dsp/none.h
 .\targetboard_g5_tri_a1_20260915\dchminotifybutton.o: ../Drivers/CMSIS/DSP/Include/dsp/utils.h

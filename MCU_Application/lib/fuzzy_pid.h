@@ -9,6 +9,7 @@ extern "C" {
 #include "stdlib.h"
 #include "stdio.h"
 #include "stdint.h"
+#include "arm_math.h"
 
 #ifndef bool
 #define bool char

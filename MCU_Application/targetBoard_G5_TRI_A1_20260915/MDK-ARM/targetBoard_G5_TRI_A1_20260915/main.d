@@ -7,7 +7,7 @@
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/CMSIS/Include/cmsis_version.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -15,7 +15,7 @@
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -66,9 +66,9 @@
 .\targetboard_g5_tri_a1_20260915\main.o: ../FATFS/Target/ffconf.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../USB_HOST/Target/usbh_conf.h
-.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdio.h
-.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdlib.h
-.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\BIN\Bin\..\include\string.h
+.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ioreq.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
@@ -88,7 +88,7 @@
 .\targetboard_g5_tri_a1_20260915\main.o: ../MBEDTLS/App/mbedtls.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../MBEDTLS/App/mbedtls_config.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
-.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\BIN\Bin\..\include\limits.h
+.\targetboard_g5_tri_a1_20260915\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Core/Inc/rng.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Core/Inc/rtc.h
 .\targetboard_g5_tri_a1_20260915\main.o: ../Core/Inc/spi.h

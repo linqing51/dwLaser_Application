@@ -62,6 +62,13 @@ const osThreadAttr_t mainAppTask_attributes = {
   .stack_size = 6144 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for cliTask */
+osThreadId_t cliTaskHandle;
+const osThreadAttr_t cliTask_attributes = {
+  .name = "cliTask",
+  .stack_size = 2048 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* Definitions for xFatfsMutex */
 osMutexId_t xFatfsMutexHandle;
 osStaticMutexDef_t myMutex02ControlBlock;
@@ -84,6 +91,7 @@ const osMutexAttr_t myRecursiveMutex01_attributes = {
 
 void StartDefaultTask(void *argument);
 extern void StartMainAppTask(void *argument);
+extern void StartCliTask(void *argument);
 
 extern void MX_USB_HOST_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -130,6 +138,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of mainAppTask */
   mainAppTaskHandle = osThreadNew(StartMainAppTask, NULL, &mainAppTask_attributes);
+
+  /* creation of cliTask */
+  cliTaskHandle = osThreadNew(StartCliTask, NULL, &cliTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

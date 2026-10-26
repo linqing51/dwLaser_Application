@@ -1,7 +1,7 @@
 .\targetboard_g5_tri_a1_20260915\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
 .\targetboard_g5_tri_a1_20260915\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-.\targetboard_g5_tri_a1_20260915\croutine.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stddef.h
-.\targetboard_g5_tri_a1_20260915\croutine.o: C:\Keil_v5\ARM\BIN\Bin\..\include\stdint.h
+.\targetboard_g5_tri_a1_20260915\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\targetboard_g5_tri_a1_20260915\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\targetboard_g5_tri_a1_20260915\croutine.o: ../Core/Inc/FreeRTOSConfig.h
 .\targetboard_g5_tri_a1_20260915\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 .\targetboard_g5_tri_a1_20260915\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
