@@ -1907,7 +1907,7 @@
       <GroupNumber>13</GroupNumber>
       <FileNumber>136</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\lib\flash_if.c</PathWithFileName>
@@ -2371,7 +2371,7 @@
       <GroupNumber>17</GroupNumber>
       <FileNumber>172</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\MainApp\dcHmiApp.c</PathWithFileName>
@@ -2395,7 +2395,7 @@
       <GroupNumber>17</GroupNumber>
       <FileNumber>174</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\MainApp\dcHmiNotifyButton.c</PathWithFileName>

@@ -131,22 +131,21 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT						45//储存手术记录
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID							 1
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME						 2
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_GENDER					 3
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE							 4
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_ENERGY					 5
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_TIME						 6
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_POWER						 7
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_PROTOCOL				 8
-#define GDDC_PAGE_TREATMENT_KEY_MALE										 9
-#define GDDC_PAGE_TREATMENT_KEY_FEMALE									10
-#define GDDC_PAGE_TREATMENT_KEY_CANCEL									11
-#define GDDC_PAGE_TREATMENT_KEY_SAVEUSB									12
-#define GDDC_PAGE_TREATMENT_KEY_LAST										13//上一份病历
-#define GDDC_PAGE_TREATMENT_KEY_NEXT										14//下一份病历
-#define GDDC_PAGE_TREATMENT_KEY_DELETE									15//删除当前病历
-#define GDDC_PAGE_TREATMENT_KEY_INSERT									16//插入当前病历到浏览位置
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID							 1//患者ID
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME						 2//患者姓名
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE							 3//患者年龄
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_0			 4//方案预览信息0
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_1			 5//方案预览信息1
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_2			 6//方案预览信息2
+#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_4			 7//方案预览信息3
+#define GDDC_PAGE_TREATMENT_KEY_MALE										 8//性别-男
+#define GDDC_PAGE_TREATMENT_KEY_FAMALE									 9//性别-女
+#define GDDC_PAGE_TREATMENT_KEY_CANCEL									10
+#define GDDC_PAGE_TREATMENT_KEY_SAVETOUSB								11
+#define GDDC_PAGE_TREATMENT_KEY_LAST										12//上一份病历
+#define GDDC_PAGE_TREATMENT_KEY_NEXT										13//下一份病历
+#define GDDC_PAGE_TREATMENT_KEY_DELETE									14//删除当前病历
+#define GDDC_PAGE_TREATMENT_KEY_INSERT									15//插入当前病历到浏览位置
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//发射功率显示 1470 /1940
