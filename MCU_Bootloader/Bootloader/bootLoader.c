@@ -545,10 +545,60 @@ void bootLoadProcess(void){//bootload 执行程序
 			bootLoadState = BT_STATE_RESET;//更新APP
 			break;
 		}		
-		case BT_STATE_UPDATE_EPROM:{//更新EPROM
+		case BT_STATE_UPDATE_EPROM:{//U04 更新EPROM: UDISK(/leprom.bin)->EPROM
+			uint32_t epromAddr = 0;
+			uint16_t bytesread;//实际读取字节数
+			retUsbH = f_open(&LepromFile, LOAD_EPROM_FILENAME, FA_OPEN_EXISTING | FA_READ);
+			if(retUsbH != FR_OK){//打开恢复文件失败
+				bootLoadFailHandler(BT_FAIL_READ_EPROM_BIN);
+			}
+			printf("Bootloader:Restore eprom from %s.\n", LOAD_EPROM_FILENAME);
+			while(1){
+				retUsbH = f_read(&LepromFile, RAM_Buf, BUFFER_SIZE, (void*)&bytesread);
+				if(retUsbH != FR_OK){//读取失败
+					bootLoadFailHandler(BT_FAIL_READ_EPROM_BIN);
+				}
+				if(bytesread == 0){//文件读完成
+					break;
+				}
+				if((epromAddr + bytesread) > CONFIG_EPROM_SIZE){//文件超过EPROM容量
+					bootLoadFailHandler(BT_FAIL_WRITE_EPROM);
+				}
+				if(epromWrite(epromAddr, RAM_Buf, bytesread) != HAL_OK){//写入EPROM失败
+					bootLoadFailHandler(BT_FAIL_WRITE_EPROM);
+				}
+				epromAddr += bytesread;
+				if(bytesread < BUFFER_SIZE){//最后一块
+					break;
+				}
+			}
+			f_close(&LepromFile);
+			printf("Bootloader:Restore eprom sucess,size=%lu.\n", (unsigned long)epromAddr);
+			bootLoadFailHandler(BT_DONE_UPDATE_EPROM);
 			break;
 		}
-		case BT_STATE_DUMP_EPROM:{
+		case BT_STATE_DUMP_EPROM:{//D01 导出EPROM: EPROM->UDISK(/seprom.bin)
+			uint32_t epromAddr = 0;
+			uint16_t dumpLen;
+			retUsbH = f_open(&SepromFile, SAVE_EPROM_FILENAME, FA_CREATE_ALWAYS | FA_WRITE);
+			if(retUsbH != FR_OK){//创建导出文件失败
+				bootLoadFailHandler(BT_FAIL_WRITE_EPROM_BIN);
+			}
+			printf("Bootloader:Dump eprom to %s.\n", SAVE_EPROM_FILENAME);
+			while(epromAddr < CONFIG_EPROM_SIZE){
+				dumpLen = (uint16_t)((CONFIG_EPROM_SIZE - epromAddr) > BUFFER_SIZE ? BUFFER_SIZE : (CONFIG_EPROM_SIZE - epromAddr));
+				if(epromRead(epromAddr, RAM_Buf, dumpLen) != HAL_OK){//读取EPROM失败
+					bootLoadFailHandler(BT_FAIL_READ_EPROM);
+				}
+				retUsbH = f_write(&SepromFile, RAM_Buf, dumpLen, (void*)&brByte);
+				if(retUsbH != FR_OK){//写入U盘失败
+					bootLoadFailHandler(BT_FAIL_WRITE_EPROM_BIN);
+				}
+				epromAddr += dumpLen;
+			}
+			f_close(&SepromFile);
+			printf("Bootloader:Dump eprom sucess,size=%lu.\n", (unsigned long)epromAddr);
+			bootLoadFailHandler(BT_DONE_DUMP_EPROM);
 			break;
 		}
 		case BT_STATE_CLEAT_ALL:{//清除FLASH和EPROM全部
@@ -604,70 +654,112 @@ static void bootLoadFailHandler(uint8_t ftype){//引导错误程序
 		case BT_FAIL_READ_CFG:{//从U盘读取CFG失败
 			printf("Bootloader:FailHandler,Read config file fail!.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_READ_LMCU_APP:{//从U盘读取MCU APP失败
 			printf("Bootloader:FailHandler,Read mcu firmware fail!.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_READ_LCD_APP:{//从U盘读取LCD APP失败
 			printf("Bootloader:FailHandler,Read lcd firmware fail!.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_ERASE_MCU_APP:{//擦除MCU APP FLASH区域失败
 			printf("Bootloader:FailHandler,Erase mcu application fail\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_READ_EPROM_BIN:{
 			printf("Bootloader:FailHandler,Read eprom file fail!\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_WRITE_EPROM_BIN:{
 			printf("Bootloader:FailHandler,Write eprom file fail!\n");
 			morseCodeDiag(ftype);
+			break;
+		}
+		case BT_FAIL_READ_EPROM:{//读取EPROM失败
+			printf("Bootloader:FailHandler,Read eprom fail!\n");
+			morseCodeDiag(ftype);
+			break;
+		}
+		case BT_FAIL_WRITE_EPROM:{//写入EPROM失败
+			printf("Bootloader:FailHandler,Write eprom fail!\n");
+			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_LMCU_APP_CHECK:{//lmcu.bin 检查错误
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LMCU_FIRMWARE_FILENAME);
 			morseCodeDiag(ftype);
+			break;
+		}
+		case BT_FAIL_LMCU_BOT_CHECK:{//ld_bot.bin 检查错误
+			printf("Bootloader:FailHandler,%s size is invalid!\n", BOOTLOAD_FILENAME);
+			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_LCD_APP_CHECK:{//llcd.bin 检查错误
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LLCD_FIRMWARE_FILENAME);
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_CHECKSUM_MCU_APP_FLASH:{//校验 lmcu.bin 错误
 			printf("Bootloader:FailHandler,Verify %s fail!.\n", LMCU_FIRMWARE_FILENAME);
 			morseCodeDiag(ftype);
+			break;
+		}
+		case BT_FAIL_WRITE_MCU_APP_FLASH:{//写mcu app flash错误
+			printf("Bootloader:FailHandler,Write %s to flash fail!.\n", LMCU_FIRMWARE_FILENAME);
+			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_LCD_NOT_RESPOND:{//LCD 串口无响应或错误
 			printf("Bootloader:FailHandler,LCD is not responsed!.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_LCD_DOWNLOAD:{//LCD 命令无响应
 			printf("Bootloader:FailHandler,LCD download fail!.\n");
 			morseCodeDiag(ftype);
+			break;
+		}
+		case BT_FAIL_LCD_RESPOND_ERROR:{//LCD 响应错误
+			printf("Bootloader:FailHandler,LCD respond error!.\n");
+			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_VECTOR_TABLE_INVALID:{//APP无效向量表
 			printf("Bootloader:FailHandler,App vector table invalid.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_FAIL_CHECK_BLANK:{//FLASH 查空错误
 			printf("Bootloader:FailHandler,Flash is not blank!.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_DONE_CLEAR_ALL:{
 			printf("Bootloader:DoneHandler,Flash and Eprom easer done!.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_DONE_UPDATE_EPROM:{
 			printf("Bootloader:DoneHandler,Update eprom form udisk done!.\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		case BT_DONE_DUMP_EPROM:{
 			printf("Bootloader:DoneHandler,Dump eprom to udisk done!\n");
 			morseCodeDiag(ftype);
+			break;
 		}
-    case BT_DONE_FIRMWARE_UPDATE:{
+		case BT_DONE_FIRMWARE_UPDATE:{
 			printf("Bootloader:DoneHandler, Update Firmware done!\n");
 			morseCodeDiag(ftype);
+			break;
 		}
 		default:{
 			printf("Bootloader:DoneHandler,unknown error!\n");
@@ -695,6 +787,7 @@ static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 	if(f_size(&McuFile) > APPLICATION_FLASH_SIZE){//MCU固件大于FLSAH容量
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
+	LastPGAddress = APPLICATION_FLASH_START_ADDRESS;//重置写入地址起点，避免上次残留导致补FF起点错误
 	crc32 = 0;
 	crc32Clear();
 	while(readflag){
@@ -729,6 +822,7 @@ static uint32_t getNewLcdAppCrc(char* filePath){//获取待更新LCD APP CRC16
 		bootLoadFailHandler(BT_FAIL_READ_LCD_APP);			
 	}
 	f_lseek(&LcdFile, 0);//读取指针移动到开头
+	LastPGAddress = APPLICATION_FLASH_START_ADDRESS;//重置写入地址起点，避免残留值污染后续MCU CRC计算
 	crc32 = 0;
 	crc32Clear();
 	while(readflag){
