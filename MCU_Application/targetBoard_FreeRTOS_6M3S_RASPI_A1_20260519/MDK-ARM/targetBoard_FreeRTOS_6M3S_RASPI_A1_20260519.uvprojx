@@ -1163,6 +1163,11 @@
               <FilePath>..\..\MainApp\dcHmiNotifyButton.c</FilePath>
             </File>
             <File>
+              <FileName>treatment.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\treatment.c</FilePath>
+            </File>
+            <File>
               <FileName>dcHmiNotifyProgress.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\dcHmiNotifyProgress.c</FilePath>

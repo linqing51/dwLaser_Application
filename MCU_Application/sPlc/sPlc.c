@@ -172,6 +172,50 @@ void sPlcFdramClear(void){//清除FDRAM数据
 	memset(FDRAM1, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
   printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 }
+#ifdef CONFIG_BKRAM_SIZE
+void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
+	uint32_t crc32_bk;
+	uint32_t crc32_eprom_bk;
+	__HAL_RCC_PWR_CLK_ENABLE();
+	HAL_PWR_EnableBkUpAccess();//解除备份域写保护
+	__HAL_RCC_BKPSRAM_CLK_ENABLE();//使能BKPSRAM接口时钟
+	memset((uint8_t*)BKRAM, 0x0, (CONFIG_BKRAM_SIZE * 2));//清空BKSRAM
+	epromRead(CONFIG_EPROM_BK_START, (uint8_t*)BKRAM, (CONFIG_BKRAM_SIZE * 2));//从EPROM中恢复BK
+	epromReadDword(CONFIG_EPROM_BK_CRC, &crc32_eprom_bk);
+	crc32_bk = HAL_CRC_Calculate(&hcrc, (uint32_t *)BKRAM, (CONFIG_BKRAM_SIZE / 2));
+	printf("%s,%d,%s:BK EPROM CRC:0x%08X,BK CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_bk, crc32_bk);
+	if(crc32_eprom_bk != crc32_bk){
+		printf("%s,%d,%s:load BK crc fail...\n",__FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:load BK done...\n",__FILE__, __LINE__, __func__);
+	}
+}
+void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
+	uint32_t crc32_bk;
+	HAL_StatusTypeDef ref1, ref2;
+	__HAL_RCC_PWR_CLK_ENABLE();
+	HAL_PWR_EnableBkUpAccess();
+	__HAL_RCC_BKPSRAM_CLK_ENABLE();
+	crc32_bk = HAL_CRC_Calculate(&hcrc, (uint32_t *)BKRAM, (CONFIG_BKRAM_SIZE / 2));
+	ref1 = epromWrite(CONFIG_EPROM_BK_START, (uint8_t*)BKRAM, (CONFIG_BKRAM_SIZE * 2));
+	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写入32位数
+	if((ref1 != HAL_OK) || (ref2 != HAL_OK)){
+		printf("%s,%d,%s:save BK NVRAM fail...\n",__FILE__, __LINE__, __func__);
+	}
+	else{
+		printf("%s,%d,%s:save BK done...(BK CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_bk);
+	}
+}
+void sPlcBkramClear(void){//清除BK数据(含EPROM BK区)
+	__HAL_RCC_PWR_CLK_ENABLE();
+	HAL_PWR_EnableBkUpAccess();
+	__HAL_RCC_BKPSRAM_CLK_ENABLE();
+	clearEprom(CLEAR_EPROM_BKRAM);//清除EPROM BK数据区与CRC
+	memset(BKRAM, 0x0, (CONFIG_BKRAM_SIZE * 2));//清空BKSRAM
+	printf("%s,%d,%s:clear BK done...\n",__FILE__, __LINE__, __func__);
+}
+#endif
 void sPlcDeviceConfigClear(void){//清除设备配置参数
 	clearEprom(CLEAR_EPROM_DEVICE_CONFIG);
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
@@ -267,10 +311,11 @@ void sPlcSpwmLoop(void){//SPWM轮询
 	}
 }
 
-void sPlcRtcProcess(void){//RTC轮询
-	uint8_t year, mon, day, hour, min, sec;
-	RtcGetNowTime(&year, &mon, &day, &hour, &min, &sec);
-	NVRAM0[EM_RTC_YEAR] = year;
+void sPlcRtcProcess(void){//RTC轮询(万年历同步到NVRAM EM_RTC_*,NVRAM中year沿用后两位约定,HMI显示时+2000)
+	uint16_t year;
+	uint8_t mon, day, hour, min, sec;
+	RtcGetDateTime(&year, &mon, &day, &hour, &min, &sec);
+	NVRAM0[EM_RTC_YEAR] = (int16_t)(year - 2000);
 	NVRAM0[EM_RTC_MONTH] = mon;
 	NVRAM0[EM_RTC_DAY] = day;
 	NVRAM0[EM_RTC_HOURS] = hour;
@@ -290,6 +335,10 @@ void sPlcInit(void){//软逻辑初始化
 #endif
 	sPlcNvramLoad();//上电恢复NVRAM
 	sPlcFdramLoad();//上电恢复FDRAM
+#ifdef CONFIG_BKRAM_SIZE
+	sPlcBkramLoad();//上电恢复BK(映射BKSRAM)
+#endif
+	RtcCheckAndInit();//RTC掉电检测与防锁死初始化(含BKSRAM使能)
 	BootloadCrc = getOriginBootloadCrc();
 	ApplicationCrc = getOriginAppCrc();
 	printf("%s,%d,%s:bootload crc:0x%08X\n",__FILE__, __LINE__, __func__, BootloadCrc);
@@ -338,7 +387,9 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	}
 	sPlcInputRefresh();//读取X口输入
 	if(LDP(SPCOIL_PS100MS)){
-		//sPlcRtcProcess();
+#if (CONFIG_SPLC_USING_RTC == 1)
+		sPlcRtcProcess();//RTC万年历同步到NVRAM
+#endif
 	}
 	sPlcSpwmLoop();
 	sPlcAdcProcessBuffer();//ADC 更新NVRAM

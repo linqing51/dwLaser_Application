@@ -334,6 +334,11 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_NTC_VREF												3300L//
 #define CONFIG_FIBER_PD_THRESHOLD							50//光纤插入时ADC阈值
 /*****************************************************************************/
+//配置TEC温控(共享tempCtrLoop参数)
+#define CONFIG_TEC_HT_FF_GAIN								20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
+#define CONFIG_TEC_SLEW_STEP								200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
+#define CONFIG_TEC_TEMP_FILTER_ALPHA				0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
+/*****************************************************************************/
 //配置DAC
 #define CONFIG_DAC_MAXBIT_CH0									0xFFF//12BIT STM32
 #define CONFIG_DAC_MAXBIT_CH1									0xFFF//12BIT STM32
@@ -367,6 +372,7 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
 #define CONFIG_EPROM_MEDICAL_CRC							(31456L)//4B 治疗历史 CRC32 硬件计算
+#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_MEDICAL_CRC)//4B treatment CRC32值 硬件计算(沿用原治疗历史CRC地址)
 #define CONFIG_EPROM_MR_CRC										(31460L)//4B MR NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_DM_CRC										(31464L)//4B DM NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_FD_CRC										(31468L)//4B FD NVRAM CRC32 硬件计算
@@ -374,6 +380,11 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_EPROM_LCD_FW_CRC								(31476L)//4B LCD固件CRC32值 软件计算
 #define CONFIG_EPROM_CFG_CRC									(31480L)//4B deviceConfig CRC32值 硬件计算
 #define CONFIG_EPROM_LOG_CRC									(31484L)//4B logInfo CRC32值 硬件计算
+
+//治疗记录历史病历区块: 位于FD数据区实际末址(4639)之后、治疗CRC(31456)之前,不改动任何既有地址
+#define CONFIG_EPROM_TREATMENT_END						(31455L)
+#define CONFIG_EPROM_TREATMENT_SIZE						(26816L)//治疗记录区块字节数(START=4640,约26KB)
+#define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_SIZE + 1L)
 
 #define CONFIG_EPROM_CONFIG_START							(31488L)//1024B 配置信息区
 #define CONFIG_EPROM_CONFIG_END								(32511L)

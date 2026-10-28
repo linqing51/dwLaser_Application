@@ -51,6 +51,7 @@ extern "C" {
 #define CONFIG_SPCOIL_SIZE														16L
 #define CONFIG_TMP_SIZE																32L
 #define CONFIG_FDRAM_SIZE															2048L
+#define CONFIG_BKRAM_SIZE															2048L//BK 2K区块(2048*16bit),映射硬件BKSRAM 4K掉电保持区
 /*****************************************************************************/
 //线圈 保持
 #define MR_START																			0
@@ -115,6 +116,9 @@ extern "C" {
 //存档寄存器
 #define FD_START																			0
 #define FD_END																				(CONFIG_FDRAM_SIZE - 1L)
+//备份掉电保持寄存器 BK 2K 映射硬件BKSRAM 4K
+#define BK_START																			0
+#define BK_END																				(CONFIG_BKRAM_SIZE - 1L)
 /*****************************************************************************/
 #define SPCOIL_ON																			(SPCOIL_START * 16 + 0)//长通线圈
 #define SPCOIL_START_UP																(SPCOIL_START * 16 + 1)//初次上电

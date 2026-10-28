@@ -37,6 +37,17 @@ void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
 			}
 			break;
 		}
+#ifdef CONFIG_EPROM_BK_START
+		case CLEAR_EPROM_BKRAM:{
+			for(i = CONFIG_EPROM_BK_START; i <= CONFIG_EPROM_BK_END;i ++){
+				epromWriteByte(i, &var);
+			}			
+			for(i = CONFIG_EPROM_BK_CRC; i <= (CONFIG_EPROM_BK_CRC + 3);i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+#endif
 		case CLEAR_EPROM_MCU_FIRMWARE_CRC:{
 			for(i = CONFIG_EPROM_MCU_FW_CRC;i <= (CONFIG_EPROM_MCU_FW_CRC + 3);i ++){
 				epromWriteByte(i, &var);

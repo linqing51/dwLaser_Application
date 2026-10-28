@@ -15,7 +15,8 @@ typedef enum {
 	CLEAR_EPROM_MCU_FIRMWARE_CRC								= 0x04,
 	CLEAR_EPROM_LCD_FIRMWARE_CRC								= 0x05,
 	CLEAR_EPROM_DEVICE_CONFIG										= 0x06,
-	CLEAR_EPROM_LOG_INFO												= 0x07
+	CLEAR_EPROM_LOG_INFO												= 0x07,
+	CLEAR_EPROM_BKRAM														= 0x08
 }clarmEpromCmd_t;
 /*****************************************************************************/
 void epromInit(void);

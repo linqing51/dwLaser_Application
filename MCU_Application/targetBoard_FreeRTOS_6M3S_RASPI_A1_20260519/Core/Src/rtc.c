@@ -31,6 +31,15 @@ void MX_RTC_Init(void)
 {
 
   /* USER CODE BEGIN RTC_Init 0 */
+  //RTC/BKSRAM备份域有效标志(与sPlcRtc.c一致)
+  #define RTC_VALID_FLAG_    0x52544346U
+  #define RTC_FLAG_BKP_REG_  RTC_BKP_DR19
+  //STM32F4备份寄存器为BKP0R~BKP19R独立成员(无BKPxR数组),按BKP0R基址+4*索引访问
+  #define RTC_BKP_REG_(idx)  (*(__IO uint32_t *)((uint32_t)&(RTC->BKP0R) + (((uint32_t)(idx)) << 2)))
+  //先解除备份域写保护并使能BKPSRAM接口时钟(BK 2K区块映射硬件BKSRAM 4K)
+  __HAL_RCC_PWR_CLK_ENABLE();
+  HAL_PWR_EnableBkUpAccess();
+  __HAL_RCC_BKPSRAM_CLK_ENABLE();
 
   /* USER CODE END RTC_Init 0 */
 
@@ -56,6 +65,11 @@ void MX_RTC_Init(void)
   }
 
   /* USER CODE BEGIN Check_RTC_BKUP */
+  //掉电检测:备份寄存器魔法字有效说明RTC已在走时,跳过时间写入
+  //(解决RTC/BKSRAM电池掉电后再次启动初始化RTC模块锁死,并保留已有时间)
+  if(READ_REG(RTC_BKP_REG_(RTC_FLAG_BKP_REG_)) == RTC_VALID_FLAG_){
+    return;
+  }
 
   /* USER CODE END Check_RTC_BKUP */
 
@@ -80,6 +94,8 @@ void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
+  //首次初始化完成,写入RTC有效标志(备份域掉电后该标志被清空,下次上电重新初始化)
+  WRITE_REG(RTC_BKP_REG_(RTC_FLAG_BKP_REG_), RTC_VALID_FLAG_);
 
   /* USER CODE END RTC_Init 2 */
 
