@@ -68,3 +68,42 @@ targetBoard_G5_A0
 /MCU_Bootloader/targetBoard_6M3S_RASPI_A1_20260519/MDK-ARM/targetBoard_6M3S_RASPI_A1_20260519
 /MCU_Bootloader/targetBoard_G5_TRI_A1_20260915/MDK-ARM/targetBoard_G5_TRI_A1_20260915
 /MCU_Application/targetBoard_G5_TRI_A1_20260915/MDK-ARM/targetBoard_G5_TRI_A1_20260915
+
+# ===== Keil MDK intermediate / build artifacts =====
+*.crf
+*.lst
+*.dep
+*.lnp
+*.iex
+*.axf
+*.htm
+*.bak
+*.log
+
+# ===== IAR intermediate / build artifacts =====
+*.fed
+*._2i
+
+# ===== Keil user-specific window layout =====
+*.uvguix.*
+
+# ===== macOS & Qt Creator user-specific junk =====
+.DS_Store
+*.pro.user
+*.pro.user.*
+
+# ===== vTFT generated build output =====
+*.idx
+*.crc
+*.fidx
+*.graidx
+*.gwb
+*.pwi
+*.sbin
+*.si
+
+# ===== firmware binaries (generated) =====
+ld_mcu.bin
+bootload.bin
+**/dciot_build/private/bin/*.bin
+**/MDK-ARM/targetBoard_*/*.sct
