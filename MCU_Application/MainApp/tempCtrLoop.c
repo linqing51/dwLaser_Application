@@ -52,7 +52,7 @@ void tempControlLoop(void){//温度风扇控制循环
 	ftmp0 = !ftmp0;
 	ftmp1 = !ftmp1;
 	//温控执行 激光等待发射及错误状态启动温控
-	if(LDP(SPCOIL_PS500MS)){//1秒间隔
+	if(LDP(SPCOIL_PS1000MS)){//1秒间隔
 		if(LD(R_TEMP_FAULT)){//温度异常无条件打开风扇
 			 	NVRAM0[EM_FAN0_SET_SPEED] = 100;
 		}

@@ -106,10 +106,10 @@ static void setSpeakerFreq(uint16_t frequency){
   }
   
   // 配置定时器参数
-  CONFIG_SPK_HANDLE.Init.Prescaler = prescaler;
-  CONFIG_SPK_HANDLE.Init.Period = arr_value;
+  CONFIG_SPK_TIM_HANDLE.Init.Prescaler = prescaler;
+  CONFIG_SPK_TIM_HANDLE.Init.Period = arr_value;
   // 重新初始化定时器
-  if (HAL_TIM_Base_Init(&CONFIG_SPK_HANDLE) != HAL_OK){
+  if (HAL_TIM_Base_Init(&CONFIG_SPK_TIM_HANDLE) != HAL_OK){
 		printf("reSet spk tim base clk fail!!!\n");
     Error_Handler();
   }
@@ -122,7 +122,7 @@ static void setSpeakerFreq(uint16_t frequency){
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;	
   sConfigOC.Pulse = arr_value / 2;  // 50%占空比
-  if (HAL_TIM_PWM_ConfigChannel(&CONFIG_SPK_HANDLE, &sConfigOC, CONFIG_SPK_PWM_CHANNEL) != HAL_OK){
+  if (HAL_TIM_PWM_ConfigChannel(&CONFIG_SPK_TIM_HANDLE, &sConfigOC, CONFIG_SPK_TIM_PWM_CHANNEL) != HAL_OK){
 		printf("reSet spk time out freq fail!!!\n");
     Error_Handler();
   }

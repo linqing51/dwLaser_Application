@@ -296,13 +296,14 @@ void sPlcInit(void){//软逻辑初始化
 	printf("%s,%d,%s:app crc:0x%08X\n",__FILE__, __LINE__, __func__, ApplicationCrc);
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
-	sPlcInputInit();
-	sPlcOutputInit();	
-	sPlcDacInit();//初始化DAC模块
-	sPlcAdcInit();//初始化ADC模块
-	sPlcLaserInit();
-	sPlcTimerInit();//初始化硬件计时器模块 启动计时器
+	
+	
+	chipTimerInit();//初始化硬件计时器模块 启动计时器
 	sPlcSpeakerInit();
+	
+	sPlcPortInit();
+	
+	
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;	
 	SET_BLUE_LED_OFF;
@@ -336,22 +337,24 @@ void sPlcProcessStart(void){//sPLC轮询起始
 		FLIP(SPCOIL_PS1MINS);
 		TD_60000MS_SP = 0;
 	}
-	sPlcInputRefresh();//读取X口输入
+	chipInputRefresh();//读取X口输入
 	if(LDP(SPCOIL_PS100MS)){
 		//sPlcRtcProcess();
 	}
 	sPlcSpwmLoop();
-	sPlcAdcProcessBuffer();//ADC 更新NVRAM
+	chipAdcProcessBuffer();//ADC 更新NVRAM
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
 	if(LDP(SPCOIL_PS500MS)){
 		FLIP(Y_TICK_LED);
 	}
-	sPlcOutputRefresh();//更新Y口输出
+	chipOutputRefresh();//更新Y口输出
 	sPlcNvramUpdate();//更新NVRAM
 	RRES(SPCOIL_START_UP);
 }
+
+
 
 
 

@@ -37,13 +37,13 @@ void tickCheckTask(void){//TICK 检测程序
 
 
 uint16_t cpuGetFlashSize(void){//获取处理器程序容量
-   return *(volatile uint16_t*)(0x1FFF7A22);
+ return *(volatile uint16_t*)(0x1FFF7A22);
 }
 
 void readStm32UniqueID(void){//获取处理器唯一序列号        
-    UniqueId[0] = *(volatile uint32_t*)(0x1FFF7A10);
-    UniqueId[1] = *(volatile uint32_t*)(0x1FFF7A14);
-    UniqueId[2] = *(volatile uint32_t*)(0x1FFF7A18);
+	UniqueId[0] = *(volatile uint32_t*)(0x1FFF7A10);
+	UniqueId[1] = *(volatile uint32_t*)(0x1FFF7A14);
+	UniqueId[2] = *(volatile uint32_t*)(0x1FFF7A18);
 }
 
 void SystemClock_Reset(void){//复位系统时钟

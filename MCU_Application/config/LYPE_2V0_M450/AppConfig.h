@@ -112,8 +112,8 @@ extern "C" {
 #define CONFIG_USING_FUZZY_PID												0
 #define CONFIG_USING_SMART_PID												0
 
-#define CONFIG_LASER_A_DIODE_SET_TEMP									280//激光器温度设定
-#define CONFIG_LASER_B_DIODE_SET_TEMP									280//激光器温度设定
+#define CONFIG_LASER_A_DIODE_SET_TEMP									120//激光器温度设定
+#define CONFIG_LASER_B_DIODE_SET_TEMP									230//激光器温度设定
 
 #define CONFIG_LASER_A_DIODE_TEMP_HIGH								400//激光器高温极限 46.0C
 #define CONFIG_LASER_A_DIODE_TEMP_LOW									-100//激光器低温极限 -25.0C

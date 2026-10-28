@@ -47,21 +47,21 @@ HAL_StatusTypeDef PCA9546_Init(void){//PCA9546整体初始化（先复位引脚初始化→硬件
 	return PCA9546_SelectChannel(PCA9546_CHANNEL_NONE);
 }
 
-HAL_StatusTypeDef PCA9546_SelectChannel(uint8_t channel){//选择PCA9546的指定通道
+HAL_StatusTypeDef PCA9546_SelectChannel(PCA9546_ChannelTypeDef channel){//选择PCA9546的指定通道
 	// 检查通道参数合法性（仅低4位有效）
 	if((channel & 0xF0) != 0){
 		return HAL_ERROR;
 	}
 	// I2C写入1字节控制码（A0/A1/A2接地，地址0xE0）
-	return HAL_I2C_Master_Transmit(&hi2c2, PCA9546_DEV_ADDR, &channel, 1, 100);
+	return HAL_I2C_Master_Transmit(&hi2c2, PCA9546_DEV_ADDR, (uint8_t *)&channel, 1, 100);
 }
 
-HAL_StatusTypeDef PCA9546_ReadChannel(uint8_t *pChannel){//读取PCA9546当前选中的通道
+HAL_StatusTypeDef PCA9546_ReadChannel(PCA9546_ChannelTypeDef *pChannel){//读取PCA9546当前选中的通道
 	if(pChannel == NULL){
 		return HAL_ERROR;
 	}
 	// I2C读取1字节通道状态
-	return HAL_I2C_Master_Receive(&hi2c2, PCA9546_DEV_ADDR, pChannel, 1, 100);
+	return HAL_I2C_Master_Receive(&hi2c2, PCA9546_DEV_ADDR, (uint8_t *)pChannel, 1, 100);
 }
 
 

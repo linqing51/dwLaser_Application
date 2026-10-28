@@ -581,6 +581,7 @@ extern "C" {
 #define Y_VN5016_CSDIS																(Y_START * 16 + 8)//YOUT8 电源电流采集	
 #define Y_PWR_LED																			(Y_START * 16 + 9)//YOUT9 电源指示灯
 #define Y_PWR_SOFTKILL																(Y_START * 16 + 10)//YOUT10 电源管理软关机信号	
+#define Y_ESTOP_RESET																	(Y_START * 16 + 11)//YOUT11 复试急停状态
 /*****************************************************************************/
 #define R_ESTOP																				(R_START * 16 + 0)//急停标志
 #define R_INTERLOCK																		(R_START * 16 + 1)//连锁标志

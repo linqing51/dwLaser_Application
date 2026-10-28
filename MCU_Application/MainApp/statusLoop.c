@@ -2,6 +2,12 @@
 /*****************************************************************************/
 void statusLoop(void){//温度轮询轮询
 	bool flag;
+	int16_t temp, humi;
+	if(LDP(SPCOIL_PS1000MS)){//1秒间隔
+		hdc1080_read(&temp, &humi);
+		NVRAM0[EM_HDC1080_TEMP] = temp;
+		NVRAM0[EM_HDC1080_HUMIDITY] = humi;
+	}
 	//核心温度检测
 	if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_HIGH){//激光器过热
 		SSET(R_LASER_A_DIODE_TEMP_HIGH);
@@ -609,7 +615,7 @@ void statusLoop(void){//温度轮询轮询
 	else{
 		RRES(R_FAULT);
 	}
-
+#ifndef LYPE_2V0_20260703_M450
 	if(LD(R_FAULT)){
 		RRES(Y_GREEN_LED);//关闭绿灯
 		RRES(Y_YELLOW_LED);//关闭黄灯
@@ -625,6 +631,20 @@ void statusLoop(void){//温度轮询轮询
 		RRES(Y_YELLOW_LED);//关闭黄灯
 		RRES(Y_RED_LED);//关闭红灯
 	}	
+#else
+	if(LD(R_FAULT)){
+		SSET(Y_RED_LED);//打开红灯
+	}
+	else{
+		RRES(Y_RED_LED);
+	}
+	if(LaserFlag_Emiting){
+		SSET(Y_YELLOW_LED);
+	}
+	else{
+		RRES(Y_YELLOW_LED);
+	}
+#endif
 }
 
 

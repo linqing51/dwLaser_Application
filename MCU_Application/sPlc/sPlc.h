@@ -20,8 +20,8 @@
 /*****************************************************************************/
 //lib
 #include "..\config\myConfig.h"
+#include "sPlcPort.h"
 #include "sPlcEprom.h"
-#include "sPlcFun.h"
 #include "libcrc.h"
 #include "libdbg.h"
 #include "libcpu.h"
@@ -57,16 +57,7 @@ extern "C" {
 #define LASER_MODE_CW													0x01//连续模式
 #define LASER_MODE_MP													0x02//多脉冲模式
 /*****************************************************************************/
-typedef enum{
-	FAN_CH0 = 0,
-	FAN_CH1 = 1,
-	FAN_CH2 = 2, 
-	FAN_CH3 = 3,
-	FAN_CH4 = 4,
-	FAN_CH5 = 5,
-	FAN_CH6 = 6,
-	FAN_CH7 = 7,
-}FAN_CHANNLE_ENMU;
+
 
 typedef struct{
 	uint16_t calibrationPwr0[20];//通道0功率校正表
@@ -143,28 +134,13 @@ extern void sPlcPortProcess(void);//sPLC平台程序
 extern void sPlcAssertCoilAddress(uint16_t adr);
 extern void sPlcAssertRegisterAddress(uint16_t adr);
 /*****************************************************************************/
-extern void sPlcInputInit(void);
-extern void sPlcInputRefresh(void);
-extern void sPlcOutputInit(void);
-extern void sPlcOutputRefresh(void);
 extern void sPlcIsrDisable(void);
 extern void sPlcIsrEnable(void);
-extern void sPlcTimerInit(void);//硬件sTimer计时器初始化
-extern void sPlcTimerIsr(void);//硬件sTimer计时器中断 1mS
-extern void sPlcTimerDisalbe(void);//SPLC关闭计时器
-extern void sPlcTimerEnable(void);//SPLC打开计时器
-extern void sPlcDacInit(void);//DAC初始化
-extern void sPlcDacRefresh(void);//刷新DAC
-extern void sPlcAdcInit(void);
-extern void sPlcAdcProcessBuffer(void);
 extern void sPlcSpeakerFreq(int16_t freq);//设置喇叭频率
 extern void sPlcSpeakerVolume(int16_t volume);//设置喇叭音量
 extern void sPlcSpeakerEnable(void);//打开喇叭数据流
 extern void sPlcSpeakerDisable(void);//关闭喇叭数据流
 extern void sPlcSpeakerInit(void);//喇叭初始化
-extern void sPlcLaserInit(void);
-extern void sPlcLaserTimerIsr(void);//中断 激光发射
-extern void sPlcLaserTimerTestBench(uint8_t st);//LASER激光发射测试
 extern void sPlcNvramUpdate(void);//更新NVRAM->EPROM	
 extern void sPlcNvramLoad(void);
 extern void sPlcNvramSave(void);
@@ -177,11 +153,9 @@ extern void sPlcDeviceLogClear(void);
 extern void mucReboot(void);//软件复位
 extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
-extern void UsbGpioReset(void);
 extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
 extern void setGreenLaserPwm(int16_t pwm);//设置绿激光占空比
 extern void setPower_635(int16_t pwr);//设置红激光功率
-extern void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed);//设置风扇转速;//设置风扇转速
 extern void morseCodeDiag(uint8_t diag);//诊断码
 extern void saveDeviceConfig(void);//将配置写入EPROM
 extern void loadDeviceConfig(void);//从EPROM载入配置文件
