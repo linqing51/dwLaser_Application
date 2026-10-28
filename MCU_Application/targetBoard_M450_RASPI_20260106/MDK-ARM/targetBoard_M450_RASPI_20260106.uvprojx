@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,ARM_MATH_CM4,LYPE_MCU_1V0_20260106,STM32F407xx,USER_VECT_TAB_ADDRESS</Define>
+              <Define>USE_HAL_DRIVER,ARM_MATH_CM4,LYPE_MCU_1V0_20260106,LYPE_2V0_20260703_M450,STM32F407xx,USER_VECT_TAB_ADDRESS</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../../sPlc;../../sPlcPort;../../MainApp;../../lib;../../dcHmi</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../../sPlc;../../sPlcPort;../../MainApp;../../lib;../../dcHmi;../../sPlcPort/M450_RASPI_2V0;../../config/LYPE_2V0_M450</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1028,34 +1028,9 @@
           <GroupName>sPlcPort</GroupName>
           <Files>
             <File>
-              <FileName>sPlcTimer.c</FileName>
+              <FileName>sPlcEprom.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcAdc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcAdc.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcDac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcDac.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcIoIn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcIoIn.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcIoOut.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcIoOut.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcLaser.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcLaser.c</FilePath>
+              <FilePath>..\..\sPlcPort\sPlcEprom.c</FilePath>
             </File>
             <File>
               <FileName>sPlcMisc.c</FileName>
@@ -1068,24 +1043,9 @@
               <FilePath>..\..\sPlcPort\sPlcSpeaker.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcEprom.c</FileName>
+              <FileName>sPlcTimer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcEprom.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcPMU_LTC2955.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcPMU_LTC2955.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcPMU_STM32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcPMU_STM32.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcI2C_HDC1080.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcI2C_HDC1080.c</FilePath>
+              <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
             </File>
             <File>
               <FileName>sPlcRtc.c</FileName>
@@ -1093,35 +1053,55 @@
               <FilePath>..\..\sPlcPort\sPlcRtc.c</FilePath>
             </File>
             <File>
+              <FileName>sPlcAdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcAdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcDac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcDac.c</FilePath>
+            </File>
+            <File>
               <FileName>sPlcEprom_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcEprom_SPI.c</FilePath>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcEprom_SPI.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcEprom_I2C.c</FileName>
+              <FileName>sPlcIoIn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcEprom_I2C.c</FilePath>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcIoIn.c</FilePath>
             </File>
             <File>
-              <FileName>sPlc_SMBUS.c</FileName>
+              <FileName>sPlcIoOut.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlc_SMBUS.c</FilePath>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcIoOut.c</FilePath>
             </File>
             <File>
-              <FileName>sPlc_SMBUS_DAC5578.c</FileName>
+              <FileName>sPlcLaser.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlc_SMBUS_DAC5578.c</FilePath>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcLaser.c</FilePath>
             </File>
             <File>
-              <FileName>sPlc_SMBUS_PCA9546.c</FileName>
+              <FileName>sPlcI2C_HDC1080.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlc_SMBUS_PCA9546.c</FilePath>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcI2C_HDC1080.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcPMU_LTC2955.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\M450_RASPI_2V0\sPlcPMU_LTC2955.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>MainApp</GroupName>
           <Files>
+            <File>
+              <FileName>MainApp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\MainApp.c</FilePath>
+            </File>
             <File>
               <FileName>dcHmiApp.c</FileName>
               <FileType>1</FileType>
@@ -1153,34 +1133,9 @@
               <FilePath>..\..\MainApp\dcHmiNotifyText.c</FilePath>
             </File>
             <File>
-              <FileName>MainApp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\MainApp.c</FilePath>
-            </File>
-            <File>
               <FileName>MainAppLib.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\MainAppLib.c</FilePath>
-            </File>
-            <File>
-              <FileName>preSchemeDual_1470.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preSchemeDual_1470.c</FilePath>
-            </File>
-            <File>
-              <FileName>preSchemeDual_1940.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preSchemeDual_1940.c</FilePath>
-            </File>
-            <File>
-              <FileName>preSchemeTrip.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preSchemeTrip.c</FilePath>
-            </File>
-            <File>
-              <FileName>preSchemeDual_450.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\MainApp\preSchemeDual_450.c</FilePath>
             </File>
             <File>
               <FileName>statusLoop.c</FileName>
@@ -1197,25 +1152,50 @@
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\wfswLoop.c</FilePath>
             </File>
+            <File>
+              <FileName>preSchemeDual_450_980.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_450_980.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeDual_1470_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_1470_635.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeDual_1940_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeDual_1940_635.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeTrip_1470_980_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeTrip_1470_980_635.c</FilePath>
+            </File>
+            <File>
+              <FileName>preSchemeTrip_1940_1470_635.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\preSchemeTrip_1940_1470_635.c</FilePath>
+            </File>
+            <File>
+              <FileName>minicsvApp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\minicsvApp.c</FilePath>
+            </File>
+            <File>
+              <FileName>treatment.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\treatment.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>lib</GroupName>
           <Files>
             <File>
-              <FileName>fan_controller.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\fan_controller.c</FilePath>
-            </File>
-            <File>
               <FileName>flash_if.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\flash_if.c</FilePath>
-            </File>
-            <File>
-              <FileName>fuzzy_pid.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\lib\fuzzy_pid.c</FilePath>
             </File>
             <File>
               <FileName>libcpu.c</FileName>
@@ -1233,6 +1213,16 @@
               <FilePath>..\..\lib\libdbg.c</FilePath>
             </File>
             <File>
+              <FileName>fuzzy_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\fuzzy_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>fan_controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\fan_controller.c</FilePath>
+            </File>
+            <File>
               <FileName>classic_pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\classic_pid.c</FilePath>
@@ -1241,6 +1231,56 @@
               <FileName>smart_pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\smart_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>nn_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\nn_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>rls_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\rls_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>adrc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\adrc_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\mpc_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>imc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\imc_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>ilc_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\ilc_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>FreeRTOS_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\FreeRTOS_CLI.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_fun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cmd_fun.c</FilePath>
+            </File>
+            <File>
+              <FileName>cli_console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\cli\cli_console.c</FilePath>
+            </File>
+            <File>
+              <FileName>minicsv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\lib\minicsv.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -29,6 +29,8 @@ extern "C" {
 #define CONFIG_SPLC_CLEAR_CODE												0xA58E
 #define CONFIG_SOFTPLC_TICK														200L//5mS
 /*****************************************************************************/
+#define CONFIG_SPLC_USING_RTC													1//使能RTC模块(万年历周期同步到NVRAM EM_RTC_*)
+/*****************************************************************************/
 //线圈 保持 16 * 32 = 512 
 #define MR_START																			0
 #define MR_END   																			31
@@ -96,6 +98,26 @@ extern "C" {
 #define CONFIG_MRRAM_SIZE															(MR_END - MR_START + 1)									
 #define CONFIG_DMRAM_SIZE															(DM_END - DM_START + 1)
 #define CONFIG_FDRAM_SIZE															(FD_END - FD_START + 1)
+/*****************************************************************************/
+//共享代码容量宏(数值由上方现有地址布局推导,仅别名,不改变任何既有地址)
+#define CONFIG_MR_SIZE																(MR_END - MR_START + 1L)
+#define CONFIG_DM_SIZE																(DM_END - DM_START + 1L)
+#define CONFIG_R_SIZE																	(R_END - R_START + 1L)
+#define CONFIG_EM_SIZE																(EM_END - EM_START + 1L)
+#define CONFIG_T_1MS_SIZE															(T_1MS_END - T_1MS_START + 1L)
+#define CONFIG_T_10MS_SIZE															(T_10MS_END - T_10MS_START + 1L)
+#define CONFIG_T_100MS_SIZE														(T_100MS_END - T_100MS_START + 1L)
+#define CONFIG_T_1MS_ENA_SIZE													(T_1MS_ENA_END - T_1MS_ENA_START + 1L)
+#define CONFIG_T_10MS_ENA_SIZE													(T_10MS_ENA_END - T_10MS_ENA_START + 1L)
+#define CONFIG_T_100MS_ENA_SIZE												(T_100MS_ENA_END - T_100MS_ENA_START + 1L)
+#define CONFIG_TD_1MS_SIZE														(TD_1MS_END - TD_1MS_START + 1L)
+#define CONFIG_TD_10MS_SIZE														(TD_10MS_END - TD_10MS_START + 1L)
+#define CONFIG_TD_100MS_SIZE														(TD_100MS_END - TD_100MS_START + 1L)
+#define CONFIG_X_SIZE																	(X_END - X_START + 1L)
+#define CONFIG_Y_SIZE																	(Y_END - Y_START + 1L)
+#define CONFIG_SPREG_SIZE															(SPREG_END - SPREG_START + 1L)
+#define CONFIG_SPCOIL_SIZE														(SPCOIL_END - SPCOIL_START + 1L)
+#define CONFIG_TMP_SIZE																(TMP_END - TMP_START + 1L)
 /*****************************************************************************/
 #define SPCOIL_ON																			(SPCOIL_START * 16 + 0)//长通线圈
 #define SPCOIL_START_UP																(SPCOIL_START * 16 + 1)//初次上电
@@ -257,6 +279,7 @@ extern "C" {
 #define EM_LASER_POWER_CH5														(EM_START + 59)//备用通道5
 #define EM_LASER_POWER_CH6														(EM_START + 60)//备用通道6
 #define EM_LASER_POWER_CH7														(EM_START + 61)//备用通道7
+#define EM_LASER_POWER_635														(EM_START + 61)//红激光635功率(与CH7槽位复用,红激光经DAC16输出)
 #define EM_LASER_POSWIDTH															(EM_START + 62)//多脉冲正脉宽
 #define EM_LASER_NEGWIDTH															(EM_START + 63)//多脉冲负脉宽
 /*****************************************************************************/
@@ -417,6 +440,7 @@ extern "C" {
 #define FD_LASER_POWER_CH5														(FD_START +  59)//备用通道
 #define FD_LASER_POWER_CH6														(FD_START +  60)//备用通道
 #define FD_LASER_POWER_CH7														(FD_START +  61)//备用通道
+#define FD_LASER_POWER_RED														(FD_START +  61)//红激光功率(与CH7槽位复用)
 #define FD_LASER_POSWIDTH															(FD_START +  62)//多脉冲正脉宽
 #define FD_LASER_NEGWIDTH															(FD_START +  63)//多脉冲负脉宽
 /*****************************************************************************/
@@ -700,6 +724,7 @@ extern "C" {
 #define R_STANDBY_KEY_MODE_SP_DOWN										(R_START * 16 + 121)
 #define R_STANDBY_KEY_MODE_MP_DOWN										(R_START * 16 + 122)
 #define R_STANDBY_KEY_MODE_GP_DOWN										(R_START * 16 + 123)
+#define R_STANDBY_KEY_SAVE_TREATMENT_DOWN							(R_START * 16 + 124)//待机界面保存病历
 /*****************************************************************************/
 #define R_READY_KEY_READY_DOWN												(R_START * 16 + 130)
 #define R_READY_KEY_READY_UP													(R_START * 16 + 131)

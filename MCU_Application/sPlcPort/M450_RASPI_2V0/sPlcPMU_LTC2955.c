@@ -1,4 +1,4 @@
-#include "sPlcPMU.h"
+#include "sPlc.h"
 /*****************************************************************************/
 #if defined(CONFIG_PMU_LTC2955)
 

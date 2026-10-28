@@ -37,6 +37,7 @@ extern "C" {
 #define LASER_DAC_CHANNEL_CH5													(1 << 5)
 #define LASER_DAC_CHANNEL_CH6													(1 << 6)
 #define LASER_DAC_CHANNEL_CH7													(1 << 7)
+#define LASER_CHANNEL_RAIM														(1 << 8)//红激光指示光635
 /*****************************************************************************/
 //预设方案编码
 #define SCHEME_PHLEBOLOGY															0x0001
@@ -58,6 +59,7 @@ extern "C" {
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'C'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
+#define BOOTLOAD_BUF_SIZE  														((uint16_t)512*16)//Bootload 块缓冲 8KB（512的整数倍，FATFS扇区对齐）
 #define CONFIG_JUMP_DELAY															5000//检测U盘时间
 #define FATFS_ROOT																		"0:"
 #define BOOTLOAD_FILENAME															"/bootload.bin"//引导固件
@@ -67,6 +69,7 @@ extern "C" {
 #define LLCD_FIRMWARE_FILENAME												"/ld_lcd.pkg"//更新LCD固件地址
 #define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK 储存名称
 #define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM 恢复名称
+#define TREATMENTLOG_FILENAME													"/treatment_v1.csv"//治疗记录导出文件名
 /*****************************************************************************/
 //配置密码
 #define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码
@@ -80,20 +83,20 @@ extern "C" {
 /*****************************************************************************/
 //版本配置
 #define SW_VERSION																		"5.0a0b0"
-#define HW_VERSION																		"CORE_6M3S_JL_FC_1940_1470_635"
+#define HW_VERSION																		"CORE_M450_RASPI_2V0_450_980"
 //配置波长
-#define APP_CONFIG_WAVE_1940_1470_635//APP为三波长 1940+1470+635
+#define APP_CONFIG_WAVE_450_980//APP为双波长 450+980
 //配置激光器型号
-#define MODLE_JL_FC_1470_1940_22W_200_22_1D//1470+1940+650
+#define MODLE_M450_980_200_60_D275_22_VI1_GP//450nm+980nm+635nm
 /*****************************************************************************/
 //配置无线脚踏USB接口
-#define APP_CONFIG_WFSW_PORT													hUsbHostHS
+#define APP_CONFIG_WFSW_PORT													hUsbHostFS
 #define CONFIG_FSWITCH_USB_VID												0x16C0
 #define CONFIG_FSWITCH_USB_PID												0x05E2
 /*****************************************************************************/
 //设置页面配置
-#define GDDC_PAGE_POWERUP                             GDDC_PAGE_POWERUP_TRI_1940_1470_635
-#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_TRI_1940_1470_635
+#define GDDC_PAGE_POWERUP                             GDDC_PAGE_POWERUP_DUAL_450_980
+#define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL_450_980
 /*****************************************************************************/
 //配置蜂鸣器		
 #define CONFIG_MAX_SPK_FREQ														4500L//喇叭最高频率
