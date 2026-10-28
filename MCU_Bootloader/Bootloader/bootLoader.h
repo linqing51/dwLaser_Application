@@ -1,6 +1,10 @@
 #ifndef __BOOTLOADER_H__
 #define __BOOTLOADER_H__
 /*****************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+/*****************************************************************************/
 #include "main.h"
 #include "stdbool.h"
 #include "stm32f4xx_hal.h"
@@ -27,6 +31,11 @@
 extern void resetInit(void);
 extern void bootLoadInit(void);
 extern void bootLoadProcess(void);
+/*****************************************************************************/
+#ifdef __cplusplus
+}
+#endif
+/****************************************************************************/
 #endif
 
 

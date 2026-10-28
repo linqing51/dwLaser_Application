@@ -4,7 +4,6 @@
 //stm32
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_tim.h" 
-#include "arm_math.h"
 /*****************************************************************************/
 //cdev
 #include "math.h"
@@ -26,6 +25,8 @@
 #include "libdbg.h"
 #include "libcpu.h"
 #include "flash_if.h"
+#include "minicsv.h"
+#include "treatment.h"
 /*****************************************************************************/
 #include "classic_pid.h"
 /*****************************************************************************/
@@ -82,15 +83,13 @@ typedef struct{
 	int16_t laserDiodeB_Temp;//激光器B设置温度
 	char normalOpenInterLock;
 }deviceConfig_t;
+
 typedef struct{
 	uint32_t powerUpCycle;//开机次数
 	uint32_t runTime;//运行累计时间 单位分钟
 	int16_t laserMaxPhotoDiode;//激光器最大功率
 	int16_t mucMaxTemper;//处理器最高温度
 }deviceLogInfo_t;
-/*****************************************************************************/
-// 封装一个简化调用的宏
-#define OFFSET(type, member)  ((uint32_t)&(((type *)0)->member))
 
 /*****************************************************************************/
 extern deviceConfig_t deviceConfig;
@@ -100,6 +99,10 @@ extern uint32_t	UniqueId[3];//处理器序列号
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+#ifdef CONFIG_BKRAM_SIZE
+#define CONFIG_BKSRAM_BASE_ADDR								(0x40024000UL)//STM32F405 BKPSRAM 4K 掉电保持区起始地址
+#define BKRAM																	((int16_t *)CONFIG_BKSRAM_BASE_ADDR)//BK 2K区块 直接映射硬件BKSRAM
+#endif
 extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒
@@ -148,6 +151,11 @@ extern void sPlcNvramClear(void);//清除NVRAM数据
 extern void sPlcFdramLoad(void);
 extern void sPlcFdramSave(void);
 extern void sPlcFdramClear(void);
+#ifdef CONFIG_BKRAM_SIZE
+extern void sPlcBkramLoad(void);//从EPROM中载入BK(映射BKSRAM)
+extern void sPlcBkramSave(void);//BKSRAM->EPROM 强制保存
+extern void sPlcBkramClear(void);//清除BK数据(含EPROM BK区)
+#endif
 extern void sPlcDeviceConfigClear(void);
 extern void sPlcDeviceLogClear(void);
 extern void mucReboot(void);//软件复位
@@ -167,9 +175,11 @@ extern void confirmBootloadUpdate(void);//执行Bootload更新
 extern void exitBootloadUpdate(void);//退出Bootload更新
 /*****************************************************************************/
 extern void RtcInitTimeDefault(void);
-extern void RtcCheckAndInit(void);
+extern void RtcCheckAndInit(void);//RTC掉电检测与防锁死初始化(含BKSRAM使能)
 extern void RtcGetNowTime(uint8_t *year,uint8_t *mon,uint8_t *day, uint8_t *hour,uint8_t *min,uint8_t *sec);
 extern void RtcSetTime(uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec);
+extern void RtcGetDateTime(uint16_t *year, uint8_t *mon, uint8_t *day, uint8_t *hour, uint8_t *min, uint8_t *sec);//获取当前时间 常规自然输入(year完整4位数)
+extern uint8_t RtcSetDateTime(uint16_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec);//设置当前时间 常规自然输入,成功返回1
 extern void RtcSetYear(uint8_t tmp);
 extern void RtcSetMonth(uint8_t tmp);
 extern void RtcSetDate(uint8_t tmp);

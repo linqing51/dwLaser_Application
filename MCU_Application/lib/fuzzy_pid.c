@@ -47,7 +47,8 @@ void fuzzy_params_init(struct fuzzy *fuzzy_struct, unsigned int mf_type, unsigne
 
 // Gaussian membership function
 float gaussmf(float x, float sigma, float c) {
-	return expf(-powf(((x - c) / sigma), 2.0f));
+	float t = (x - c) / sigma;
+	return expf(-(t * t));//powf(x,2)→x*x，避免 libm pow 函数调用
 }
 
 // Generalized bell-shaped membership function
@@ -80,10 +81,14 @@ float trimf(float x, float a, float b, float c) {
 float zmf(float x, float a, float b) {
 	if (x <= a)
 		return 1.0f;
-	else if (x >= a && x <= (a + b) / 2.0f)
-		return 1.0f - 2.0f * powf((x - a) / (b - a), 2.0f);
-	else if (x >= (a + b) / 2.0f && x < b)
-		return 2.0f * powf((x - b) / (b - a), 2.0f);
+	else if (x >= a && x <= (a + b) / 2.0f) {
+		float t = (x - a) / (b - a);
+		return 1.0f - 2.0f * (t * t);
+	}
+	else if (x >= (a + b) / 2.0f && x < b) {
+		float t = (x - b) / (b - a);
+		return 2.0f * (t * t);
+	}
 	else return 0;
 }
 
@@ -129,7 +134,13 @@ float and(float a, float b, unsigned int type) {
 
 // Equilibrium operator
 float equilibrium(float a, float b, float params) {
-	return powf(a * b, 1 - params) * powf(1 - (1 - a) * (1 - b), params);
+	float r1, r2;
+	if (params == 0.5f) {// fo() 仅以 params=0.5 调用: powf(x,0.5)≡sqrt(x)
+		arm_sqrt_f32(a * b, &r1);// ARM DSP 快速开方（VSQRT 硬件指令）
+		arm_sqrt_f32(1.0f - (1.0f - a) * (1.0f - b), &r2);
+		return r1 * r2;
+	}
+	return powf(a * b, 1.0f - params) * powf(1.0f - (1.0f - a) * (1.0f - b), params);
 }
 
 // Fuzzy operator
@@ -156,6 +167,12 @@ void moc(const float *joint_membership, const unsigned int *index, const unsigne
 		for (int j = 0; j < count[1]; ++j) {
 			denominator_count += joint_membership[i * count[1] + j];
 		}
+	}
+	if (denominator_count < 1e-9F) {//去模糊分母为0保护, 避免除零产生NaN
+		for (unsigned int l = 0; l < fuzzy_struct->output_num; ++l) {
+			fuzzy_struct->output[l] = 0;
+		}
+		return;
 	}
 	for(unsigned int k = 0; k < fuzzy_struct->output_num; ++k) {
 		for(unsigned int i = 0; i < count[0]; ++i) {
@@ -196,7 +213,7 @@ void fuzzy_control(float e, float de, struct fuzzy *fuzzy_struct) {
         int j = 0;
         for (int i = 0; i < qf_default; ++i) {
             float temp = mf(e, fuzzy_struct->mf_type[0], fuzzy_struct->mf_params + 4 * i);
-            if (temp > 1e-4) {
+            if (temp > 1e-4F) {
                 membership[j] = temp;
                 index[j++] = i;
             }
@@ -206,7 +223,7 @@ void fuzzy_control(float e, float de, struct fuzzy *fuzzy_struct) {
 
         for (int i = 0; i < qf_default; ++i) {
             float temp = mf(de, fuzzy_struct->mf_type[1], fuzzy_struct->mf_params + 4 * i);
-            if (temp > 1e-4) {
+            if (temp > 1e-4F) {
                 membership[j] = temp;
                 index[j++] = i;
             }
@@ -273,9 +290,9 @@ struct PID *raw_fuzzy_pid_init(float kp, float ki, float kd, float integral_limi
     pid->delta_error_max = delta_error_max;
 
     int output_count = 1;
-    if (ki > 1e-4) {
+    if (ki > 1e-4F) {
         output_count += 1;
-        if (kd > 1e-4)
+        if (kd > 1e-4F)
             output_count += 1;
     }
 
@@ -350,7 +367,7 @@ struct PID *pid_init(float *params) {
 }
 
 int round_user(float parameter) {
-    if ((int) (parameter * 10.0) % 10 >= 5)
+    if ((int) (parameter * 10.0F) % 10 >= 5)
         return parameter + 1;
     else
         return parameter;
@@ -380,8 +397,15 @@ float fuzzy_pid_control(float real, float idea, struct PID *pid) {
         }
     }
 #endif
-    fuzzy_control(pid->current_error / pid->error_max * 3.0f, delta_error / pid->delta_error_max * 3.0f,
-                  pid->fuzzy_struct);
+    // 输入论域限幅: 误差/变化率超出 ±error_max 时钳位到边界,
+    // 避免隶属度全零导致 count=0 而输出突变(原实现直接清零)
+    float e_norm = pid->current_error / pid->error_max * 3.0f;
+    if (e_norm > 3.0f) e_norm = 3.0f;
+    else if (e_norm < -3.0f) e_norm = -3.0f;
+    float de_norm = delta_error / pid->delta_error_max * 3.0f;
+    if (de_norm > 3.0f) de_norm = 3.0f;
+    else if (de_norm < -3.0f) de_norm = -3.0f;
+    fuzzy_control(e_norm, de_norm, pid->fuzzy_struct);
 
     pid->delta_kp = pid->fuzzy_struct->output[0] / 3.0f * pid->delta_kp_max + pid->kp;
 
@@ -391,21 +415,20 @@ float fuzzy_pid_control(float real, float idea, struct PID *pid) {
 
     if (pid->fuzzy_struct->output_num >= 3)
         pid->delta_kd = pid->fuzzy_struct->output[2] / 3.0f * pid->delta_kd_max;
-    else pid->delta_ki = 0;
+    else pid->delta_kd = 0;
 
 #ifdef fuzzy_pid_debug_print
     printf("kp : %f, ki : %f, kd : %f\n", kp, ki, kd);
 #endif
 
     pid->intergral += (pid->ki + pid->delta_ki) * pid->current_error;
-#ifdef fuzzy_pid_integral_limit
+    // 积分限幅(抗积分饱和): 运行时始终钳位, 防止积分 windup 引起输出极限环振荡
     if (pid->intergral > pid->intergral_limit)
         pid->intergral = pid->intergral_limit;
     else {
         if (pid->intergral < -pid->intergral_limit)
             pid->intergral = -pid->intergral_limit;
     }
-#endif
     pid->output = (pid->kp + pid->delta_kp) * pid->current_error + pid->intergral +
                   (pid->kd + pid->delta_kd) * (pid->current_error - pid->last_error);
     pid->output += pid->feed_forward * (float) idea;
@@ -445,7 +468,7 @@ float pid_control(float real, float idea, struct PID *pid) {
 #endif
 
     float linear_adaptive_kp = 1;
-    if (pid->linear_adaptive_kp > 1e-4)
+    if (pid->linear_adaptive_kp > 1e-4F)
         linear_adaptive_kp =
                 (1 - pid->linear_adaptive_kp) * pid->current_error / pid->error_max + pid->linear_adaptive_kp;
 
@@ -505,5 +528,85 @@ int fuzzy_pid_motor_pwd_output(float real, float idea, bool direct, struct PID *
 int pid_motor_pwd_output(float real, float idea, bool direct, struct PID *pid) {
     return limit(direct_control(pid->output_middle_value, pid_control(real, idea, pid), direct), pid->output_max_value,
                  pid->output_min_value);
+}
+
+/*============================================================================*/
+/* 模糊PID应用层封装实现 (FuzzyPID_HandleTypeDef)                              */
+/* 默认隶属函数: 7 个三角隶属函数, 论域 ±3, 中心 -3..3 等距                    */
+/* 默认规则表: 标准对称模糊PID规则表(ΔKp/ΔKi/ΔKd, 每表 7×7)                    */
+/*============================================================================*/
+static int fuzzy_default_mf_params[7 * 4] = {
+    -4, -3, -2, 0,   // NB
+    -3, -2, -1, 0,   // NM
+    -2, -1,  0, 0,   // NS
+    -1,  0,  1, 0,   // ZO
+     0,  1,  2, 0,   // PS
+     1,  2,  3, 0,   // PM
+     2,  3,  4, 0    // PB
+};
+
+static int fuzzy_default_rule_base[3][7][7] = {
+    { // ΔKp: 误差大时加大比例, 误差小且变化率大时减小比例
+        { 3, 3, 2, 2, 1, 0, 0},
+        { 3, 3, 2, 1, 1, 0,-1},
+        { 2, 2, 2, 1, 0,-1,-1},
+        { 2, 2, 1, 0,-1,-2,-2},
+        { 1, 1, 0,-1,-1,-2,-2},
+        { 1, 0,-1,-2,-2,-2,-3},
+        { 0, 0,-2,-2,-2,-3,-3}
+    },
+    { // ΔKi: 误差小且同向时加强积分消除静差, 误差大时减弱防超调
+        {-3,-3,-2,-2,-1, 0, 0},
+        {-3,-3,-2,-1,-1, 0, 0},
+        {-3,-2,-1,-1, 0, 1, 1},
+        {-2,-2,-1, 0, 1, 2, 2},
+        {-2,-1, 0, 1, 1, 2, 3},
+        { 0, 0, 1, 1, 2, 3, 3},
+        { 0, 0, 1, 2, 2, 3, 3}
+    },
+    { // ΔKd: 误差变化剧烈时加大微分阻尼, 误差大时适度减小防滞后
+        { 1,-1,-3,-3,-3,-2, 1},
+        { 1,-1,-3,-2,-2,-1, 0},
+        { 0,-1,-2,-2,-1,-1, 0},
+        { 0,-1,-1,-1,-1,-1, 0},
+        { 0, 0, 0, 0, 0, 0, 0},
+        { 3,-1, 1, 1, 1, 1, 3},
+        { 3, 2, 2, 2, 1, 1, 3}
+    }
+};
+
+void FuzzyPID_Init(FuzzyPID_HandleTypeDef *handle, float kp, float ki, float kd,
+                   int output_min, int output_max, float integral_limit,
+                   uint32_t control_period, float error_max_c, float delta_error_max_c) {
+    if (handle == NULL) return;
+    handle->setpoint_x10 = 0.0f;
+    handle->error_max_c = error_max_c;
+    handle->delta_error_max_c = delta_error_max_c;
+    handle->output_min = output_min;
+    handle->output_max = output_max;
+    handle->integral_limit = integral_limit;
+    // 底层量纲统一为 ×10: 误差论域/变化率论域 ×10 与反馈一致;
+    // 模糊增益调节幅度取基础增益的 50%; 死区 1(×10)=0.1℃ 防温控抖振
+    handle->pid = raw_fuzzy_pid_init(kp, ki, kd, integral_limit, 1.0f, 0.0f,
+                                     error_max_c * 10.0f, delta_error_max_c * 10.0f,
+                                     kp * 0.5f, ki * 0.5f, kd * 0.5f,
+                                     4, 0, 0,
+                                     fuzzy_default_mf_params,
+                                     (int (*)[qf_default])fuzzy_default_rule_base,//3张7×7表连续内存, 按线性布局访问
+                                     output_min, 0, output_max);
+    (void)control_period; // 控制周期由外部调用周期决定, 此处仅接口占位
+}
+
+void FuzzyPID_SetSetpoint(FuzzyPID_HandleTypeDef *handle, int16_t setpoint_x10) {
+    if (handle == NULL) return;
+    handle->setpoint_x10 = (float)setpoint_x10;
+}
+
+int16_t FuzzyPID_Compute(FuzzyPID_HandleTypeDef *handle, int16_t real_x10) {
+    if (handle == NULL || handle->pid == NULL) return 0;
+    float out = fuzzy_pid_control((float)real_x10, handle->setpoint_x10, handle->pid);
+    if (out > (float)handle->output_max) out = (float)handle->output_max;
+    else if (out < (float)handle->output_min) out = (float)handle->output_min;
+    return (int16_t)out;
 }
 

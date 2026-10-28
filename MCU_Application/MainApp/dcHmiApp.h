@@ -15,7 +15,6 @@
 #include "hmiLib.h"
 #include "dcHmiRes.h"
 #include "MainAppLib.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,6 +41,10 @@ extern "C" {
 #define FSMSTEP_LASER_WAIT_TRIGGER									403//激光触发
 #define FSMSTEP_LASER_EMITING												404//激光发射中
 #define FSMSTEP_READY_ERROR													405//脚踏踩下错误
+
+//储存病例
+#define FSMSTEP_SAVE_TREATMENT											450//
+
 //选项状态
 #define FSMSTEP_OPTION															500//选项菜单
 #define FSMSTEP_INFORMATION													600
@@ -55,8 +58,8 @@ extern "C" {
 //功率校准状态
 #define FSMSTEP_CORRECTION													1100//功率校正
 /*****************************************************************************/
-#define FLASH_DATA_VERSION  												0XAABB0000
-#define FLASH_DATA_ADDR     												0X00000000
+#define HMI_FLASH_DATA_VERSION  										0XAABB0000
+#define HMI_FLASH_DATA_ADDR     										0X00000000
 /*****************************************************************************/
 void dcHmiLoop(void);//HMI轮训程序
 void dcHmiLoopInit(void);
@@ -83,6 +86,8 @@ void unselectSchemeNum(int16_t index);
 /*****************************************************************************/
 void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
+void updateTreatmentLogDisplay(void);//病历储存页面:显示当前治疗记录(待保存)
+void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log);//病历储存页面:显示EPROM历史病历
 void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);

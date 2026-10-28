@@ -1037,11 +1037,6 @@
               <FileType>1</FileType>
               <FilePath>..\..\lib\smart_pid.c</FilePath>
             </File>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\lib\arm_cortexM4lf_math.lib</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1166,6 +1161,11 @@
               <FileName>dcHmiNotifyButton.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\MainApp\dcHmiNotifyButton.c</FilePath>
+            </File>
+            <File>
+              <FileName>treatment.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\treatment.c</FilePath>
             </File>
             <File>
               <FileName>dcHmiNotifyProgress.c</FileName>

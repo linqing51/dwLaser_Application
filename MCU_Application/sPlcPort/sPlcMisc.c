@@ -12,7 +12,18 @@ void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 }
 
 void loadDeviceConfig(void){//从EPROM载入配置文件
-	uint32_t crc32_eprom_cfg, crc32_cfg, i;
+	uint32_t crc32_eprom_cfg, crc32_cfg, i, tmp;
+	printf("deviceConfig size:%d byte\n", sizeof(deviceConfig));
+	printf("deviceLogInfo size:%d byte\n", sizeof(deviceLogInfo));
+	
+	tmp = CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1;
+	if(sizeof(deviceConfig) > tmp){
+		printf("WARNING:struce deviceConfig size overflow!!!\n");
+	}
+	tmp = CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1;
+	if(sizeof(deviceLogInfo) > tmp){
+		printf("WARNING:struce devideInfo size overflow!!!\n");
+	}
 	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//从EPROM载入设备配置
 	epromReadDword(CONFIG_EPROM_CFG_CRC, &crc32_eprom_cfg);
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));

@@ -123,6 +123,8 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 void bootLoadInit(void){//引导程序初始化
 	forceUpdateMcu = 0;
 	forceUpdateLcd = 0;
+  epromInit();
+	listNvramTable();
 	SET_SPK_AP_OFF;//关闭蜂鸣器
 	printf("Bootloader:OUTPUT->SKP_EN       = LOW\n");
 	//关闭指示激光
@@ -601,71 +603,71 @@ static void bootLoadFailHandler(uint8_t ftype){//引导错误程序
 	switch(ftype){
 		case BT_FAIL_READ_CFG:{//从U盘读取CFG失败
 			printf("Bootloader:FailHandler,Read config file fail!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_READ_LMCU_APP:{//从U盘读取MCU APP失败
 			printf("Bootloader:FailHandler,Read mcu firmware fail!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_READ_LCD_APP:{//从U盘读取LCD APP失败
 			printf("Bootloader:FailHandler,Read lcd firmware fail!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_ERASE_MCU_APP:{//擦除MCU APP FLASH区域失败
 			printf("Bootloader:FailHandler,Erase mcu application fail\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_READ_EPROM_BIN:{
 			printf("Bootloader:FailHandler,Read eprom file fail!\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_WRITE_EPROM_BIN:{
 			printf("Bootloader:FailHandler,Write eprom file fail!\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_LMCU_APP_CHECK:{//lmcu.bin 检查错误
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LMCU_FIRMWARE_FILENAME);
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_LCD_APP_CHECK:{//llcd.bin 检查错误
 			printf("Bootloader:FailHandler,%s size is invalid!\n", LLCD_FIRMWARE_FILENAME);
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_CHECKSUM_MCU_APP_FLASH:{//校验 lmcu.bin 错误
 			printf("Bootloader:FailHandler,Verify %s fail!.\n", LMCU_FIRMWARE_FILENAME);
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_LCD_NOT_RESPOND:{//LCD 串口无响应或错误
 			printf("Bootloader:FailHandler,LCD is not responsed!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_LCD_DOWNLOAD:{//LCD 命令无响应
 			printf("Bootloader:FailHandler,LCD download fail!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_VECTOR_TABLE_INVALID:{//APP无效向量表
 			printf("Bootloader:FailHandler,App vector table invalid.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_FAIL_CHECK_BLANK:{//FLASH 查空错误
 			printf("Bootloader:FailHandler,Flash is not blank!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_DONE_CLEAR_ALL:{
 			printf("Bootloader:DoneHandler,Flash and Eprom easer done!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_DONE_UPDATE_EPROM:{
 			printf("Bootloader:DoneHandler,Update eprom form udisk done!.\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		case BT_DONE_DUMP_EPROM:{
 			printf("Bootloader:DoneHandler,Dump eprom to udisk done!\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
     case BT_DONE_FIRMWARE_UPDATE:{
 			printf("Bootloader:DoneHandler, Update Firmware done!\n");
-			while(1);
+			morseCodeDiag(ftype);
 		}
 		default:{
 			printf("Bootloader:DoneHandler,unknown error!\n");

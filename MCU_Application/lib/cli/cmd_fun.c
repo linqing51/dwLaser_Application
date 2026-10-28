@@ -32,7 +32,7 @@
  *
  ******************************************************************************/
 #include "cmd_fun.h"
-#include "boardConfig.h"
+#include "..\config\myConfig.h"
 
 
 
@@ -92,54 +92,19 @@ static const CLI_Command_Definition_t CLI_Definition_All[] = {
 #endif /* configINCLUDE_TRACE_RELATED_CLI_COMMANDS */
 
     {
-        "printenv",
-        "\r\nprintenv:\r\n Display all parameters\r\n\r\n",
-        prvPrintEnv,
-        0
+        "led_ctrl",                      /* ÂëΩ‰ª§ÂêçÁß∞ */
+        "\r\nled_ctrl <on|off>:\r\n Controls the LED state (on/off)\r\n\r\n", /* Â∏ÆÂä©‰ø°ÊÅØ */
+        prvLedCtrlCommand,               /* ÂëΩ‰ª§Â§ÑÁêÜÂáΩÊï∞ */
+        1                                /* ÂèÇÊï∞Êï∞ÈáèÔºà1‰∏™ÂèÇÊï∞ÔºöonÊàñoffÔºâ */
     },
+
+    {
+        "system_info",                   /* ÂëΩ‰ª§ÂêçÁß∞ */
+        "\r\nsystem_info:\r\n Displays system information (version, uptime, etc.)\r\n\r\n", /* Â∏ÆÂä©‰ø°ÊÅØ */
+        prvSystemInfoCommand,            /* ÂëΩ‰ª§Â§ÑÁêÜÂáΩÊï∞ */
+        0                                /* Êó†ÂèÇÊï∞ */
+    },	
     
-    {
-        "setenv",
-        "\r\nsetenv:\r\n set the value of key \r\n\r\n",
-        prvSetEnv,
-        2
-    },
-
-    {
-        "getenv",
-        "\r\ngetenv:\r\n set the value of key \r\n\r\n",
-        prvGetEnv,
-        1
-    },
-
-    {
-        "delenv",
-        "\r\ndelenv:\r\n del the key value \r\n\r\n",
-        prvDelEnv,
-        1
-    },      
-        
-    {
-        "resetenv",
-        "\r\nresetenv:\r\n Restore default Settings \r\n\r\n",
-        prvResetEnv,
-        0
-    },        
-
-		{
-				"led_ctrl",                      /* √¸¡Ó√˚≥∆ */
-				"\r\nled_ctrl <on|off>:\r\n Controls the LED state (on/off)\r\n\r\n", /* ∞Ô÷˙–≈œ¢ */
-				prvLedCtrlCommand,               /* √¸¡Ó¥¶¿Ì∫Ø ˝ */
-				1                                /* ≤Œ ˝ ˝¡ø£®1∏ˆ≤Œ ˝£∫onªÚoff£© */
-		},
-
-		{
-				"system_info",                   /* √¸¡Ó√˚≥∆ */
-				"\r\nsystem_info:\r\n Displays system information (version, uptime, etc.)\r\n\r\n", /* ∞Ô÷˙–≈œ¢ */
-				prvSystemInfoCommand,            /* √¸¡Ó¥¶¿Ì∫Ø ˝ */
-				0                                /* Œﬁ≤Œ ˝ */
-		},	
-		
 };
 
 
@@ -540,215 +505,25 @@ static UBaseType_t uxParameterNumber = 0;
 #endif /* configINCLUDE_TRACE_RELATED_CLI_COMMANDS */
 
 
-static BaseType_t prvPrintEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString) 
-{
-	/* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
-	( void ) pcCommandString;
-	( void ) xWriteBufferLen;
-	configASSERT( pcWriteBuffer );     
-    
-//    ef_print_env();
-
-    
-    sprintf( pcWriteBuffer, "Display parameters list\r\n");
-    
-	/* There is no more data to return after this single string, so return pdFALSE. */	
-    return pdFALSE;
-
-}
-
-
-static BaseType_t prvGetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString)
-{
-    char *pcParameter;
-    BaseType_t xParameterStringLength;
-    char * xReturn;
-
-	/* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
-	( void ) pcCommandString;
-	( void ) xWriteBufferLen;
-	configASSERT( pcWriteBuffer );    
-
-    
-    pcParameter = (char *)FreeRTOS_CLIGetParameter(pcCommandString, 1, &xParameterStringLength);    
-
-	/* Sanity check something was returned. */
-	configASSERT( pcParameter );
-
-	/* Return the parameter string. */
-	memset( pcWriteBuffer, 0x00, xWriteBufferLen );
-	sprintf( pcWriteBuffer, "the key is :");
-	strncat( pcWriteBuffer, pcParameter, ( size_t ) xParameterStringLength );
-	strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );
-
-//    xReturn = ef_get_env(pcParameter);  
-
-	
-	if(xReturn == NULL)
-	{
-        strcat( pcWriteBuffer, "getenv error \r\n" );
-    }
-    else
-    {
-        strcat( pcWriteBuffer, "the value is :");
-        strncat( pcWriteBuffer, xReturn, strlen( xReturn) );
-        strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );        
-    }
-    
-	/* There is no more data to return after this single string, so return pdFALSE. */	
-    return pdFALSE;
-}
-static BaseType_t prvSetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString)
-{
-    char *pcParameter1;
-    char *pcParameter2;
-    BaseType_t xParameter1StringLength;
-    BaseType_t xParameter2StringLength;
-    EfErrCode xReturn;
-
-	/* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
-	( void ) pcCommandString;
-	( void ) xWriteBufferLen;
-	configASSERT( pcWriteBuffer );    
-
-    
-    pcParameter1 = (char *)FreeRTOS_CLIGetParameter(pcCommandString, 1, &xParameter1StringLength);
-    pcParameter2 = (char *)FreeRTOS_CLIGetParameter(pcCommandString, 2, &xParameter2StringLength);
-
-    /* Sanity check something was returned. */
-	configASSERT( pcParameter1 );
-    configASSERT( pcParameter2 );
-
-    
-    pcParameter1[xParameter1StringLength] = 0x00;
-    pcParameter2[xParameter2StringLength] = 0x00;
-
-
-	/* Return the parameter string. */
-	memset( pcWriteBuffer, 0x00, xWriteBufferLen );
-    sprintf( pcWriteBuffer, "The key is :");
-    strncat( pcWriteBuffer, pcParameter1, ( size_t ) xParameter1StringLength );
-    strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );   
-    strcat( pcWriteBuffer, "The value is :" );
-    strncat( pcWriteBuffer, pcParameter2, ( size_t ) xParameter2StringLength );
-    strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );    
-
-
-//    xReturn = ef_set_env(pcParameter1, pcParameter2);  
-	
-	if(xReturn != EF_NO_ERR)
-	{
-        strcat( pcWriteBuffer, "setenv error \r\n" );
-    }
-    else
-    {
-        strcat( pcWriteBuffer, "setenv success \r\n" );
-    }
-
-
-	/* There is no more data to return after this single string, so return pdFALSE. */	    
-    return pdFALSE;    
-}
-
-static BaseType_t prvDelEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString)
-{
-    char *pcParameter;
-    BaseType_t xParameterStringLength;
-    EfErrCode xReturn;
-
-	/* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
-	( void ) pcCommandString;
-	( void ) xWriteBufferLen;
-	configASSERT( pcWriteBuffer );    
-
-    
-    pcParameter = (char *)FreeRTOS_CLIGetParameter(pcCommandString, 1, &xParameterStringLength);    
-
-	/* Sanity check something was returned. */
-	configASSERT( pcParameter );
-
-	/* Return the parameter string. */
-	memset( pcWriteBuffer, 0x00, xWriteBufferLen );
-    sprintf( pcWriteBuffer, "The key value to be deleted is:");
-    strncat( pcWriteBuffer, pcParameter, ( size_t ) xParameterStringLength );
-    strncat( pcWriteBuffer, "\r\n", strlen( "\r\n" ) );
-    
-
-//    xReturn = ef_del_env(pcParameter);  
-
-	
-	if(xReturn != EF_NO_ERR)
-	{
-        strcat( pcWriteBuffer, "delenv error \r\n" );
-    }
-    else
-    {
-        strcat( pcWriteBuffer, "The key has been deleted\r\n");  
-    }
-    
-	/* There is no more data to return after this single string, so return pdFALSE. */	
-    return pdFALSE;    
-}
-
-static BaseType_t prvResetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString)
-{
-     EfErrCode xReturn;
-    /* Remove compile time warnings about unused parameters, and check the
-    write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-    write buffer length is adequate, so does not check for buffer overflows. */
-    ( void ) pcCommandString;
-    ( void ) xWriteBufferLen;
-    configASSERT( pcWriteBuffer );
-    
-//    xReturn = ef_env_set_default();
-
-    if(xReturn != EF_NO_ERR)
-	{
-        strcat( pcWriteBuffer, "ef_env_set_default error \r\n" );
-    }
-    else
-    {
-        strcat( pcWriteBuffer, "Restore default Settings Success\r\n");  
-    }
-    
-	/* There is no more data to return after this single string, so return pdFALSE. */	
-
-    return pdFALSE;
-    
-}
-
-
-
-
-
-
 static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString )
 {
     const char * pcParameter;
     BaseType_t lParameterStringLength;
  
-    /* ªÒ»°≤Œ ˝ */
+    /* Ëé∑ÂèñÂèÇÊï∞ */
     pcParameter = FreeRTOS_CLIGetParameter(pcCommandString, 1, &lParameterStringLength);
     configASSERT(pcParameter);
  
-    /* Ω‚Œˆ≤Œ ˝≤¢øÿ÷∆LED */
+    /* Ëß£ÊûêÂèÇÊï∞Âπ∂ÊéßÂà∂LED */
     if( strncmp(pcParameter, "on", lParameterStringLength) == 0 )
     {
-        /* ¥Úø™LEDµƒ¥˙¬Î */
+        /* ÊâìÂºÄLEDÁöÑ‰ª£Á†Å */
         sprintf(pcWriteBuffer, "LED turned on\r\n");
 				SET_BLUE_LED_ON;
     }
     else if( strncmp(pcParameter, "off", lParameterStringLength) == 0 )
     {
-        /* πÿ±’LEDµƒ¥˙¬Î */
+        /* ÂÖ≥Èó≠LEDÁöÑ‰ª£Á†Å */
         sprintf(pcWriteBuffer, "LED turned off\r\n");
 				SET_BLUE_LED_OFF;
     }
@@ -757,7 +532,7 @@ static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLe
         sprintf(pcWriteBuffer, "Invalid parameter. Usage: led_ctrl <on|off>\r\n");
     }
  
-    return pdFALSE; /* √ª”–∏¸∂‡ ‰≥ˆ ˝æ› */
+    return pdFALSE; /* Ê≤°ÊúâÊõ¥Â§öËæìÂá∫Êï∞ÊçÆ */
 }
 
 
@@ -769,7 +544,7 @@ static BaseType_t prvSystemInfoCommand( char * pcWriteBuffer, size_t xWriteBuffe
                                       "CPU Frequency: 100 MHz\r\n";
     uint32_t ulUptimeSeconds = xTaskGetTickCount() / configTICK_RATE_HZ;
  
-    /*  ‰≥ˆœµÕ≥–≈œ¢ */
+    /* ËæìÂá∫Á≥ªÁªü‰ø°ÊÅØ */
     sprintf(pcWriteBuffer, pcSystemInfo, ulUptimeSeconds);
  
     return pdFALSE;

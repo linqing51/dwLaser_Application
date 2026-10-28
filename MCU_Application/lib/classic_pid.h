@@ -30,6 +30,12 @@ typedef struct {
     int16_t prev_temp;  // 上上次温度
     int32_t output;     // 当前输出值
     
+    // 增量式PID误差历史(摄氏度单位), 用于标准增量式计算:
+    // Δu = Kp*(e(k)-e(k-1)) + Ki*e(k) + Kd*(e(k)-2e(k-1)+e(k-2))
+    float last_error_c;   // 上一次误差(℃)
+    float prev_error_c;   // 上上次误差(℃)
+    uint8_t first_run;    // 首次计算标志(初始化误差历史, 消除启动冲击)
+    
     // 输出限制
     int16_t min_output;  // 最小输出(0)
     int16_t max_output;  // 最大输出(1023)

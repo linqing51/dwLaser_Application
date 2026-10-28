@@ -587,11 +587,6 @@
               <FilePath>..\..\lib\libcrc.c</FilePath>
             </File>
             <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\lib\arm_cortexM4lf_math.lib</FilePath>
-            </File>
-            <File>
               <FileName>fan_controller.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\lib\fan_controller.c</FilePath>

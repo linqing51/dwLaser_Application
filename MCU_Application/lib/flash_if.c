@@ -1,53 +1,34 @@
 /**
   ******************************************************************************
-  * @file    USB_Host/FWupgrade_Standalone/Src/flash_if.c
-  * @author  MCD Application Team
-  * @brief   This file provides all the flash layer functions.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright ?2017 STMicroelectronics International N.V.
-  * All rights reserved.</center></h2>
-  *
-  * Redistribution and use in source and binary forms, with or without
-  * modification, are permitted, provided that the following conditions are met:
-  *
-  * 1. Redistribution of source code must retain the above copyright notice,
-  *    this list of conditions and the following disclaimer.
-  * 2. Redistributions in binary form must reproduce the above copyright notice,
-  *    this list of conditions and the following disclaimer in the documentation
-  *    and/or other materials provided with the distribution.
-  * 3. Neither the name of STMicroelectronics nor the names of other
-  *    contributors to this software may be used to endorse or promote products
-  *    derived from this software without specific written permission.
-  * 4. This software, including modifications and/or derivative works of this
-  *    software, must execute solely and exclusively on microcontroller or
-  *    microprocessor devices manufactured by or for STMicroelectronics.
-  * 5. Redistribution and use of this software other than as permitted under
-  *    this license is void and will automatically terminate your rights under
-  *    this license.
-  *
-  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-  * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
-  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT
-  * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
+  * @file    flash_if.c
+  * @brief   Flash layer functions - generic for all STM32F4 series
+  *          Supports: 256KB(F401), 512KB(F411), 1MB(F405/407), 2MB dual-bank(F429/469)
+  * @note    Robust against debug-mode stale flags: clears ALL error flags and
+  *          waits for BSY before every erase/program, fixing the issue where
+  *          ST-Link leaves stale OPERR/PGAERR/PGPERR flags that cause
+  *          HAL_FLASHEx_Erase() to fail immediately when debugging.
   ******************************************************************************
   */
-/* Includes ------------------------------------------------------------------ */
 #include "flash_if.h"
+#include "libcpu.h" /* for cpuGetFlashSize() */
 
 /* Private typedef ----------------------------------------------------------- */
 /* Private define ------------------------------------------------------------ */
-/* Private macros ------------------------------------------------------------ */
+#define FLASH_BASE_ADDR       0x08000000U
+#define FLASH_BANK2_OFFSET    0x00100000U  /* 2MB devices: bank2 starts at 0x08100000 */
+#define SECTOR_16KB           0x4000U
+#define SECTOR_64KB           0x10000U
+#define SECTOR_128KB          0x20000U
+
+/* All flash error/status flags that can be left stale by a debug session:
+ * EOP, OPERR, WRPERR, PGAERR, PGPERR, PGSERR.
+ * Note: BSY is read-only and cannot be cleared by writing to SR. */
+#define FLASH_ALL_CLEAR_FLAGS  (FLASH_FLAG_EOP   | FLASH_FLAG_OPERR | \
+                                FLASH_FLAG_WRPERR| FLASH_FLAG_PGAERR| \
+                                FLASH_FLAG_PGPERR| FLASH_FLAG_PGSERR)
+
+#define FLASH_TIMEOUT_MS       5000U
+
 /* Private variables --------------------------------------------------------- */
 static uint32_t FirstSector = 0;
 static uint32_t NbOfSectors = 0;
@@ -56,57 +37,82 @@ static uint32_t OB_RDP_LEVEL;
 
 /* Private function prototypes ----------------------------------------------- */
 static uint32_t FLASH_If_GetSectorNumber(uint32_t Address);
+static uint32_t FLASH_If_GetFlashEndAddr(void);
+static void FLASH_If_Prepare(void);
 static FLASH_OBProgramInitTypeDef FLASH_OBProgramInitStruct;
 static FLASH_EraseInitTypeDef FLASH_EraseInitStruct;
 
 /* Private functions --------------------------------------------------------- */
 
-/**
-  * @brief  Unlocks the Flash to enable the flash control register access.
-  * @param  None
-  * @retval None
-  */
 void FLASH_If_FlashUnlock(void)
 {
   HAL_FLASH_Unlock();
 }
 
-/**
-  * @brief  Gets Flash readout protection status.
-  * @param  None
-  * @retval ReadOut protection status
-  */
 FlagStatus FLASH_If_ReadOutProtectionStatus(void)
 {
   FlagStatus readoutstatus = RESET;
-
   FLASH_OBProgramInitStruct.RDPLevel = OB_RDP_LEVEL;
-
   HAL_FLASHEx_OBGetConfig(&FLASH_OBProgramInitStruct);
-
   if (OB_RDP_LEVEL == SET)
-  {
     readoutstatus = SET;
-  }
   else
-  {
     readoutstatus = RESET;
-  }
-
   return readoutstatus;
 }
 
-/**
-  * @brief  Erases the required FLASH Sectors.
-  * @param  Address: Start address for erasing data
-  * @retval 0: Erase sectors done with success
-  *         1: Erase error
-  */
-uint32_t FLASH_If_EraseApplication(void){	
-	/* Get the 1st sector to erase */
+/* Returns the last valid flash address for the current MCU, based on cpuGetFlashSize() */
+static uint32_t FLASH_If_GetFlashEndAddr(void)
+{
+  uint16_t flashKb = cpuGetFlashSize();
+  return FLASH_BASE_ADDR + ((uint32_t)flashKb << 10) - 1;
+}
+
+/*
+ * Prepare flash for erase/program:
+ * 1. Ensure FPEC is unlocked (tolerates already-unlocked state from debugger)
+ * 2. Wait for BSY to clear with timeout
+ * 3. Clear ALL stale error flags (OPERR/PGAERR/PGPERR/WRPERR/PGSERR/EOP)
+ *
+ * This fixes the classic "can't erase when debugging" issue:
+ * when ST-Link aborts a flash operation mid-way, it leaves stale error flags
+ * in FLASH_SR. HAL_FLASHEx_Erase() internally checks these flags and
+ * immediately returns error without even starting the erase.
+ * Standalone (power-on reset) clears all flags by hardware, so it works.
+ */
+static void FLASH_If_Prepare(void)
+{
+  uint32_t tickstart;
+
+  /* 1. Ensure unlocked. If debugger already left it unlocked, ignore the error. */
+  if ((FLASH->CR & FLASH_CR_LOCK) != 0U)
+  {
+    HAL_FLASH_Unlock();
+  }
+
+  /* 2. Wait for BSY to clear (with timeout). BSY is set by hardware during
+   *    any flash operation. If a debug session halted the CPU mid-operation,
+   *    BSY might still be set when we resume. */
+  tickstart = HAL_GetTick();
+  while ((FLASH->SR & FLASH_SR_BSY) != 0U)
+  {
+    if ((HAL_GetTick() - tickstart) > FLASH_TIMEOUT_MS)
+    {
+      break; /* timeout: proceed anyway, the HAL will report the error */
+    }
+  }
+
+  /* 3. Clear ALL error flags. Writing 1 to active bits clears them.
+   *    This is the critical fix: without clearing OPERR/PGAERR/PGPERR,
+   *    HAL_FLASHEx_Erase()'s internal WaitForLastOperation() sees stale
+   *    flags and returns HAL_ERROR immediately. */
+  __HAL_FLASH_CLEAR_FLAG(FLASH_ALL_CLEAR_FLAGS);
+}
+
+uint32_t FLASH_If_EraseApplication(void){
+	FLASH_If_Prepare();
 	FirstSector = FLASH_If_GetSectorNumber(APPLICATION_FLASH_START_ADDRESS);
-	/* Get the number of sector to erase from 1st sector */
-	NbOfSectors = FLASH_If_GetSectorNumber((APPLICATION_FLASH_END_ADDRESS - 4)) - FirstSector + 1;
+	NbOfSectors = FLASH_If_GetSectorNumber((FLASH_If_GetFlashEndAddr() - 4)) - FirstSector + 1;
 	FLASH_EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
 	FLASH_EraseInitStruct.Sector = FirstSector;
 	FLASH_EraseInitStruct.NbSectors = NbOfSectors;
@@ -114,16 +120,12 @@ uint32_t FLASH_If_EraseApplication(void){
 	if(HAL_FLASHEx_Erase(&FLASH_EraseInitStruct, &SectorError) != HAL_OK){
 		return (1);
 	}
-	else{
-		return (0);
-	}
+	return (0);
 }
-uint32_t FLASH_If_EraseBootload(void){//擦除BOOTLOAD
-  /* Erase the user Flash area (area defined by APPLICATION_ADDRESS and
-   * USER_FLASH_LAST_PAGE_ADDRESS) *** */
-	/* Get the 1st sector to erase */
+
+uint32_t FLASH_If_EraseBootload(void){
+	FLASH_If_Prepare();
 	FirstSector = FLASH_If_GetSectorNumber(BOOTLOADER_FLASH_START_ADDRESS);
-	/* Get the number of sector to erase from 1st sector */
 	NbOfSectors = FLASH_If_GetSectorNumber((BOOTLOADER_FLASH_END_ADDRESS - 4)) - FirstSector + 1;
 	FLASH_EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
 	FLASH_EraseInitStruct.Sector = FirstSector;
@@ -132,26 +134,14 @@ uint32_t FLASH_If_EraseBootload(void){//擦除BOOTLOAD
 	if(HAL_FLASHEx_Erase(&FLASH_EraseInitStruct, &SectorError) != HAL_OK){
 		return (1);
 	}
-	else{
-		return (1);
-	}
+	return (0);
 }
 
-/**
-  * @brief  Writes a data buffer in flash (data are 32-bit aligned).
-  * @note   After writing data buffer, the flash content is checked.
-  * @param  Address: Start address for writing data buffer
-  * @param  Data: Pointer on data buffer
-  * @retval 0: Data successfully written to Flash memory
-  *         1: Error occurred while writing data in Flash memory
-  */
 uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data)
 {
-  /* Program the user Flash area word by word (area defined by
-   * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
-
-  if (Address <= (uint32_t)(APPLICATION_FLASH_END_ADDRESS - 4))
+  if (Address <= (FLASH_If_GetFlashEndAddr() - 4))
   {
+    FLASH_If_Prepare();
     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, Data) != HAL_OK)
       return (1);
   }
@@ -159,25 +149,14 @@ uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data)
   {
     return (1);
   }
-
   return (0);
 }
 
-/**
-  * @brief  Writes a data buffer in flash (data are 32-bit aligned).
-  * @note   After writing data buffer, the flash content is checked.
-  * @param  Address: Start address for writing data buffer
-  * @param  Data: Pointer on data buffer
-  * @retval 0: Data successfully written to Flash memory
-  *         1: Error occurred while writing data in Flash memory
-  */
 uint32_t FLASH_If_Write(uint32_t Address, uint32_t Data)
 {
-  /* Program the user Flash area word by word (area defined by
-   * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
-
-  if (Address <= (uint32_t)(APPLICATION_FLASH_END_ADDRESS - 4))
+  if (Address <= (FLASH_If_GetFlashEndAddr() - 4))
   {
+    FLASH_If_Prepare();
     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, Data) != HAL_OK)
       return (1);
   }
@@ -185,17 +164,14 @@ uint32_t FLASH_If_Write(uint32_t Address, uint32_t Data)
   {
     return (1);
   }
-
   return (0);
 }
 
 uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data)
 {
-  /* Program the user Flash area word by word (area defined by
-   * FLASH_USER_START_ADDR and APPLICATION_ADDRESS) ********** */
-
-  if (Address <= (uint32_t)(BOOTLOADER_FLASH_END_ADDRESS - 4))
+  if (Address <= (BOOTLOADER_FLASH_END_ADDRESS - 4))
   {
+    FLASH_If_Prepare();
     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, Data) != HAL_OK)
       return (1);
   }
@@ -203,61 +179,45 @@ uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data)
   {
     return (1);
   }
-
   return (0);
 }
 
+/*
+ * Generic sector number computation for all STM32F4 devices:
+ * Layout (per bank):
+ *   offset 0x00000-0x0FFFF : sectors 0-3, 16KB each
+ *   offset 0x10000-0x1FFFF : sector 4, 64KB
+ *   offset 0x20000+        : sectors 5+, 128KB each
+ * For 2MB dual-bank devices, addresses >= 0x08100000 map to bank 2 (sectors 12-23).
+ */
 static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
 {
-  uint32_t sector = 0;
-  //BANK1
-  if (Address < ADDR_FLASH_SECTOR_1 && Address >= ADDR_FLASH_SECTOR_0)
+  uint32_t offset;
+  uint32_t sector;
+  uint16_t flashKb = cpuGetFlashSize();
+
+  /* 2MB dual-bank: handle bank 2 */
+  if (flashKb > 1024U && Address >= (FLASH_BASE_ADDR + FLASH_BANK2_OFFSET))
   {
-    sector = FLASH_SECTOR_0;
+    offset = Address - (FLASH_BASE_ADDR + FLASH_BANK2_OFFSET);
+    if (offset < SECTOR_64KB) {
+      sector = 12U + (offset / SECTOR_16KB);       /* sectors 12-15: 16KB each */
+    } else if (offset < (SECTOR_64KB + SECTOR_64KB)) {
+      sector = 16U;                                  /* sector 16: 64KB */
+    } else {
+      sector = 17U + ((offset - (SECTOR_64KB + SECTOR_64KB)) / SECTOR_128KB);
+    }
+    return sector;
   }
-  else if (Address < ADDR_FLASH_SECTOR_2 && Address >= ADDR_FLASH_SECTOR_1)
-  {
-    sector = FLASH_SECTOR_1;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_3 && Address >= ADDR_FLASH_SECTOR_2)
-  {
-    sector = FLASH_SECTOR_2;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_4 && Address >= ADDR_FLASH_SECTOR_3)
-  {
-    sector = FLASH_SECTOR_3;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_5 && Address >= ADDR_FLASH_SECTOR_4)
-  {
-    sector = FLASH_SECTOR_4;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_6 && Address >= ADDR_FLASH_SECTOR_5)
-  {
-    sector = FLASH_SECTOR_5;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_7 && Address >= ADDR_FLASH_SECTOR_6)
-  {
-    sector = FLASH_SECTOR_6;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_8 && Address >= ADDR_FLASH_SECTOR_7)
-  {
-    sector = FLASH_SECTOR_7;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_9 && Address >= ADDR_FLASH_SECTOR_8)
-  {
-    sector = FLASH_SECTOR_8;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_10 && Address >= ADDR_FLASH_SECTOR_9)
-  {
-    sector = FLASH_SECTOR_9;
-  }
-  else if (Address < ADDR_FLASH_SECTOR_11 && Address >= ADDR_FLASH_SECTOR_10)
-  {
-    sector = FLASH_SECTOR_10;
-  }
-  else if (Address >= ADDR_FLASH_SECTOR_11)
-  {
-    sector = FLASH_SECTOR_11;
+
+  /* Bank 1 (all devices) */
+  offset = Address - FLASH_BASE_ADDR;
+  if (offset < SECTOR_64KB) {
+    sector = offset / SECTOR_16KB;          /* sectors 0-3: 16KB each */
+  } else if (offset < (SECTOR_64KB + SECTOR_64KB)) {
+    sector = 4U;                             /* sector 4: 64KB */
+  } else {
+    sector = 5U + ((offset - (SECTOR_64KB + SECTOR_64KB)) / SECTOR_128KB);
   }
   return sector;
 }

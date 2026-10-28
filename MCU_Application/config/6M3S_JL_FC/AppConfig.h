@@ -58,6 +58,7 @@ extern "C" {
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'C'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
+#define BOOTLOAD_BUF_SIZE  														((uint16_t)512*16)//Bootload 块缓冲 8KB（CCM，512的整数倍，FATFS扇区对齐）
 #define CONFIG_JUMP_DELAY															5000//检测U盘时间
 #define FATFS_ROOT																		"0:"
 #define BOOTLOAD_FILENAME															"/bootload.bin"//引导固件
@@ -67,6 +68,7 @@ extern "C" {
 #define LLCD_FIRMWARE_FILENAME												"/ld_lcd.pkg"//更新LCD固件地址
 #define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK 储存名称
 #define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM 恢复名称
+#define TREATMENTLOG_FILENAME													"/treatment_v1.csv"//治疗记录导出文件名
 /*****************************************************************************/
 //配置密码
 #define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码

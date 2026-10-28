@@ -8,6 +8,8 @@ extern "C" {
 #include "math.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "stdint.h"
+#include "arm_math.h"
 
 #ifndef bool
 #define bool char
@@ -78,6 +80,27 @@ struct PID {
     struct fuzzy *fuzzy_struct;
 };
 
+/*============================================================================*/
+/* 模糊PID应用层封装: 供温度控制等场景直接使用的句柄/接口                       */
+/* 量纲约定: 温度反馈与设定值均为 ×10 整数(如 280=28.0℃);                     */
+/* error_max_c / delta_error_max_c 参数以 ℃ 语义传入, 内部自动换算 ×10         */
+/*============================================================================*/
+typedef struct {
+    struct PID *pid;            // 底层模糊PID实例
+    float setpoint_x10;         // 设定温度 ×10
+    float error_max_c;          // 误差论域(℃)
+    float delta_error_max_c;    // 误差变化率论域(℃/s)
+    int output_min;             // 输出下限(0)
+    int output_max;             // 输出上限(4095)
+    float integral_limit;       // 积分限幅
+} FuzzyPID_HandleTypeDef;
+
+void FuzzyPID_Init(FuzzyPID_HandleTypeDef *handle, float kp, float ki, float kd,
+                   int output_min, int output_max, float integral_limit,
+                   uint32_t control_period, float error_max_c, float delta_error_max_c);
+void FuzzyPID_SetSetpoint(FuzzyPID_HandleTypeDef *handle, int16_t setpoint_x10);
+int16_t FuzzyPID_Compute(FuzzyPID_HandleTypeDef *handle, int16_t real_x10);
+
 #define NB -3
 #define NM -2
 #define NS -1
@@ -90,8 +113,8 @@ struct PID {
 //#define pid_dead_zone
 //#define pid_integral_limit
 
+#define fuzzy_pid_dead_zone
 //#define fuzzy_pid_debug_print
-//#define fuzzy_pid_dead_zone
 //#define fuzzy_pid_integral_limit
 //#define fuzzy_pid_rule_base_deep_copy
 

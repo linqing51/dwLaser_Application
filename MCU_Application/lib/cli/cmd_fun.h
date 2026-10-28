@@ -1,26 +1,26 @@
 /******************************************************************************
 
-                  °æÈ¨ËùÓĞ (C), 2013-2023, ÉîÛÚ²©Ë¼¸ß¿Æ¼¼ÓĞÏŞ¹«Ë¾
+                  ç‰ˆæƒæ‰€æœ‰ (C), 2013-2023, æ·±åœ³åšæ€é«˜ç§‘æŠ€æœ‰é™å…¬å¸
 
  ******************************************************************************
-  ÎÄ ¼ş Ãû   : cmd_fun.h
-  °æ ±¾ ºÅ   : ³õ¸å
-  ×÷    Õß   : ÕÅ¶æ
-  Éú³ÉÈÕÆÚ   : 2019Äê5ÔÂ31ÈÕ
-  ×î½üĞŞ¸Ä   :
-  ¹¦ÄÜÃèÊö   : CLI Ö¸ÁîµÄ³õÊ¼»¯¼°ÊµÏÖ
-  º¯ÊıÁĞ±í   :
-  ĞŞ¸ÄÀúÊ·   :
-  1.ÈÕ    ÆÚ   : 2019Äê5ÔÂ31ÈÕ
-    ×÷    Õß   : ÕÅ¶æ
-    ĞŞ¸ÄÄÚÈİ   : ´´½¨ÎÄ¼ş
+  æ–‡ ä»¶ å   : cmd_fun.h
+  ç‰ˆ æœ¬ å·   : åˆç¨¿
+  ä½œ    è€…   : å¼ èˆµ
+  ç”Ÿæˆæ—¥æœŸ   : 2019å¹´5æœˆ31æ—¥
+  æœ€è¿‘ä¿®æ”¹   :
+  åŠŸèƒ½æè¿°   : CLI æŒ‡ä»¤çš„åˆå§‹åŒ–åŠå®ç°
+  å‡½æ•°åˆ—è¡¨   :
+  ä¿®æ”¹å†å²   :
+  1.æ—¥    æœŸ   : 2019å¹´5æœˆ31æ—¥
+    ä½œ    è€…   : å¼ èˆµ
+    ä¿®æ”¹å†…å®¹   : åˆ›å»ºæ–‡ä»¶
 
 ******************************************************************************/
 #ifndef __CMD_FUN_H
 #define __CMD_FUN_H
 
 /*----------------------------------------------*
- * °üº¬Í·ÎÄ¼ş                                   *
+ * åŒ…å«å¤´æ–‡ä»¶                                   *
  *----------------------------------------------*/
 /* Standard includes. */
 #include <stdint.h>
@@ -47,7 +47,7 @@ typedef enum {
 
 
 /*----------------------------------------------*
- * ºê¶¨Òå                                       *
+ * å®å®šä¹‰                                       *
  *----------------------------------------------*/
 #ifndef  configINCLUDE_TRACE_RELATED_CLI_COMMANDS
 	#define configINCLUDE_TRACE_RELATED_CLI_COMMANDS 0
@@ -59,18 +59,18 @@ typedef enum {
 
 
 /*----------------------------------------------*
- * ³£Á¿¶¨Òå                                     *
+ * å¸¸é‡å®šä¹‰                                     *
  *----------------------------------------------*/
 
 
 /*----------------------------------------------*
- * Ä£¿é¼¶±äÁ¿                                   *
+ * æ¨¡å—çº§å˜é‡                                   *
  *----------------------------------------------*/
 
 
 
 /*----------------------------------------------*
- * ÄÚ²¿º¯ÊıÔ­ĞÍËµÃ÷                             *
+ * å†…éƒ¨å‡½æ•°åŸå‹è¯´æ˜                             *
  *----------------------------------------------*/
 
 extern void CMD_Init(void);
@@ -115,23 +115,6 @@ static BaseType_t prvParameterEchoCommand( char *pcWriteBuffer, size_t xWriteBuf
 #if( configINCLUDE_TRACE_RELATED_CLI_COMMANDS == 1 )
     static BaseType_t prvStartStopTraceCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 #endif
-
-//´òÓ¡²ÎÊıÁĞ±í
-static BaseType_t prvPrintEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//ÉèÖÃ²ÎÊı
-static BaseType_t prvSetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//ÓÉkeyÖµ»ñÈ¡Öµ
-static BaseType_t prvGetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//É¾³ıkeyµÄÖµ
-static BaseType_t prvDelEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-//³õÊ¼»¯²ÎÊıÇø
-static BaseType_t prvResetEnv(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString);
-
-
 
 static BaseType_t prvLedCtrlCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString );
 static BaseType_t prvSystemInfoCommand( char * pcWriteBuffer, size_t xWriteBufferLen, const char * pcCommandString );

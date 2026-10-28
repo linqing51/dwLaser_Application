@@ -3,12 +3,12 @@
 #include "main.h"
 
 
-// Íâ²¿¾ä±ú£¨CubeMXÉú³É£©
+// å¤–éƒ¨å¥æŸ„ï¼ˆCubeMXç”Ÿæˆï¼‰
 extern SPI_HandleTypeDef hspi2;
 extern DMA_HandleTypeDef hdma_spi2_rx;
 extern DMA_HandleTypeDef hdma_spi2_tx;
 
-// È«¾Ö±äÁ¿
+// å…¨å±€å˜é‡
 //SPI_PINGPONG_Typedef spi_slave_buf;
 //uint8_t spi_bus_busy = 0;
 //uint32_t spi_tick_timeout = 0;
@@ -21,7 +21,7 @@ extern DMA_HandleTypeDef hdma_spi2_tx;
 //uint16_t spi2_tx_len = 0;
 //uint16_t Holding_Regs[HOLDING_REG_NUM];
 
-// Modbus ¹¦ÄÜÂë
+// Modbus åŠŸèƒ½ç 
 #define READ_HOLDING_REG         0x03
 #define WRITE_SINGLE_REG         0x06
 #define WRITE_MULTI_REG          0x10
@@ -32,9 +32,9 @@ uint8_t spi_tx_buffer[SPI_TX_BUF_LEN] = {0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08
                                           0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,0x10};
 SPI_Slave_TxStateTypeDef spi_slave_tx_state = SPI_SLAVE_TX_IDLE;
 
-// DMA½ÓÊÕ»º³åÇø£º´æÖ÷»úÏÂ·¢ÃüÁî
+// DMAæ¥æ”¶ç¼“å†²åŒºï¼šå­˜ä¸»æœºä¸‹å‘å‘½ä»¤
 uint8_t spi_rx_cmd_buf[SPI_RX_CMD_LEN] = {0};
-// DMA·¢ËÍÓ¦´ğ»º³åÇø£º½âÎöÃüÁîºóÌî³äÓ¦´ğÊı¾İ
+// DMAå‘é€åº”ç­”ç¼“å†²åŒºï¼šè§£æå‘½ä»¤åå¡«å……åº”ç­”æ•°æ®
 uint8_t spi_tx_resp_buf[SPI_TX_RESP_LEN] = {0};
 
 
@@ -63,7 +63,7 @@ SPI_SLAVE_STATE_t spi_slave_state = SPI_SLAVE_STATE_IDLE;
 
 
 
-// ===================== CRC16 Ğ£Ñé =====================
+// ===================== CRC16 æ ¡éªŒ =====================
 uint16_t Modbus_CRC16(uint8_t *buf, uint16_t len)
 {
     uint16_t crc = 0xFFFF;
@@ -77,27 +77,27 @@ uint16_t Modbus_CRC16(uint8_t *buf, uint16_t len)
     return crc;
 }
 
-// ===================== SPI ½ÓÊÕÍê³É»Øµ÷ =====================
+// ===================== SPI æ¥æ”¶å®Œæˆå›è°ƒ =====================
 //void Modbus_SPI_RxCplt_Callback(void)
 //{
-//    // ¼ÌĞø½ÓÊÕÏÂÒ»¸ö×Ö½Ú
+//    // ç»§ç»­æ¥æ”¶ä¸‹ä¸€ä¸ªå­—èŠ‚
 //    HAL_SPI_Receive_IT(hspi_modbus, spi_rx_buf, 1);
 
-//    // Ö¡½áÊøÅĞ¶Ï£¨SPI¿ÕÏĞ>2.5T¼´ModbusÖ¡¼ä¸ô£©
-//    // ÕâÀï¼ò»¯£ºÊÕµ½ÍêÕûÖ¡ºóÖ±½Ó´¦Àí
+//    // å¸§ç»“æŸåˆ¤æ–­ï¼ˆSPIç©ºé—²>2.5Tå³Modbuså¸§é—´éš”ï¼‰
+//    // è¿™é‡Œç®€åŒ–ï¼šæ”¶åˆ°å®Œæ•´å¸§åç›´æ¥å¤„ç†
 ////    Modbus_Process_Frame();
 //}
 
-// ===================== ´¦ÀíModbusÖ¡ =====================
+// ===================== å¤„ç†Modbuså¸§ =====================
 //void Modbus_Process_Frame(void)
 //{
 //    uint8_t slave_addr = spi_rx_buf[0];
 //    uint8_t func_code  = spi_rx_buf[1];
 
-//    // 1. Ğ£Ñé´ÓÕ¾µØÖ·
+//    // 1. æ ¡éªŒä»ç«™åœ°å€
 //    if(slave_addr != MODBUS_SLAVE_ADDR) return;
 
-//    // 2. Ğ£ÑéCRC
+//    // 2. æ ¡éªŒCRC
 //    recv_crc = (spi_rx_buf[spi2_rx_len-1] << 8) | spi_rx_buf[spi2_rx_len-2];
 //    calc_crc = Modbus_CRC16(spi_rx_buf, spi2_rx_len-2);
 //    if(recv_crc != calc_crc) return;
@@ -105,7 +105,7 @@ uint16_t Modbus_CRC16(uint8_t *buf, uint16_t len)
 //    uint16_t resp_len = 0;
 //    memset(spi_tx_buf, 0, spi2_rx_len);
 
-//    // ===================== ¶Á±£³Ö¼Ä´æÆ÷ =====================
+//    // ===================== è¯»ä¿æŒå¯„å­˜å™¨ =====================
 //    if(func_code == READ_HOLDING_REG)
 //    {
 //        uint16_t reg_addr = (spi_rx_buf[2]<<8) | spi_rx_buf[3];
@@ -130,7 +130,7 @@ uint16_t Modbus_CRC16(uint8_t *buf, uint16_t len)
 
 //    }
 
-//    // ===================== Ğ´µ¥¸ö¼Ä´æÆ÷ =====================
+//    // ===================== å†™å•ä¸ªå¯„å­˜å™¨ =====================
 //    else if(func_code == WRITE_SINGLE_REG)
 //    {
 //        uint16_t reg_addr = (spi_rx_buf[2]<<8) | spi_rx_buf[3];
@@ -141,7 +141,7 @@ uint16_t Modbus_CRC16(uint8_t *buf, uint16_t len)
 //        resp_len = 6;
 //    }
 
-//    // ===================== Ğ´¶à¸ö¼Ä´æÆ÷ =====================
+//    // ===================== å†™å¤šä¸ªå¯„å­˜å™¨ =====================
 //    else if(func_code == WRITE_MULTI_REG)
 //    {
 //        uint16_t reg_addr = (spi_rx_buf[2]<<8) | spi_rx_buf[3];
@@ -154,7 +154,7 @@ uint16_t Modbus_CRC16(uint8_t *buf, uint16_t len)
 //        resp_len = 6;
 //    }
 
-//    // ¼ÓÈëCRC
+//    // åŠ å…¥CRC
 //    uint16_t resp_crc = Modbus_CRC16(spi_tx_buf, resp_len);
 //    spi_tx_buf[resp_len++] = resp_crc & 0xFF;
 //    spi_tx_buf[resp_len++] = (resp_crc >> 8) & 0xFF;

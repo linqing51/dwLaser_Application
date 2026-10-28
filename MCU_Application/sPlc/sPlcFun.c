@@ -151,7 +151,7 @@ void MOVD(uint16_t dist, uint16_t src){//32位寄存器传输
 //void ANDD(uint16_t dist){//32位数 按位求与
 //}
 void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换为NTC测量温度温度 电阻上拉
-	float32_t ftemp;
+	float ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	sPlcAssertRegisterAddress(dist);//检查寄存器地址
 	sPlcAssertRegisterAddress(src);//检查寄存器地址
@@ -177,14 +177,14 @@ void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换�
 	else{
 		ftemp = 0.1F;
 	}
-	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * log(ftemp / CONFIG_NTC_R25)) - 273.15;
+	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * logf(ftemp / CONFIG_NTC_R25)) - 273.15F;//log(双精度软浮点)→logf(单精度硬件FPU)
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 
 void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换为NTC测量温度温度 电阻下拉
-	float32_t ftemp;
+	float ftemp;
 #if CONFIG_SPLC_ASSERT == 1
 	sPlcAssertRegisterAddress(dist);//检查寄存器地址
 	sPlcAssertRegisterAddress(src);//检查寄存器地址
@@ -210,14 +210,14 @@ void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b){//CODE转换�
 	else{
 		ftemp = 0.1F;
 	}
-	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * log(ftemp / CONFIG_NTC_R25)) - 273.15;
+	ftemp = 1 / (1 / (273.15F + 25.0F) + 1 / ntc_b * logf(ftemp / CONFIG_NTC_R25)) - 273.15F;//log(双精度软浮点)→logf(单精度硬件FPU)
 	if(ftemp >= 100) ftemp = 100;
 	if(ftemp <= -100) ftemp = -100;
 	NVRAM0[dist] = (int16_t)(ftemp * 10);
 }
 
 void TENV(uint16_t dist, uint16_t src){//CODE转换为MCU温度
-	float32_t ftemp;
+	float ftemp;
 	if(NVRAM0[CONFIG_VREF_ADC]  > 0){
 		ftemp = (CONFIG_MCU_VREF * CONFIG_VREF_CAL * NVRAM0[src]) / (NVRAM0[CONFIG_VREF_ADC] * 4096.0F);
 	}

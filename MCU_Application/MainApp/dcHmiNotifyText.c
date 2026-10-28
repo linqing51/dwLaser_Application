@@ -1207,6 +1207,34 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 			}
 			break;
 		}
+		case GDDC_PAGE_TREATMENTLOG:{	//病历储存页面
+			switch(control_id){
+				case GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME:{//患者姓名录入
+					if(str != NULL){
+						strncpy(treatmentLog.name, (const char*)str, sizeof(treatmentLog.name) - 1);
+						treatmentLog.name[sizeof(treatmentLog.name) - 1] = '\0';//截断保护
+					}
+					break;
+				}
+				case GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE:{//患者年龄录入
+					if(str != NULL){
+						int value = 0;
+						if(sscanf((const char*)str, "%d", &value) == 1){
+							if(value < 0){
+								value = 0;
+							}
+							if(value > 255){
+								value = 255;
+							}
+							treatmentLog.age = (uint8_t)value;
+						}
+					}
+					break;
+				}
+				default:break;
+			}
+			break;
+		}
 		default:break;
 	}
 }   
