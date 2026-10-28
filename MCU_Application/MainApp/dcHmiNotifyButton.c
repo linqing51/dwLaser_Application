@@ -912,17 +912,21 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}	
 		case GDDC_PAGE_TREATMENTLOG:{//病历储存页面
 			switch(control_id){
-				case GDDC_PAGE_TREATMENT_KEY_MALE:{
+				case GDDC_PAGE_TREATMENT_KEY_MALE:{//性别-男 选择按钮
 					if(state){
 						treatmentLog.gender = MALE;
-						updateTreatmentLogDisplay();//刷新性别显示
+						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, true);//选中男
+						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, false);//取消女
+						updateTreatmentLogDisplay();//刷新显示
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_FEMALE:{
+				case GDDC_PAGE_TREATMENT_KEY_FAMALE:{//性别-女 选择按钮
 					if(state){
 						treatmentLog.gender = FEMALE;
-						updateTreatmentLogDisplay();//刷新性别显示
+						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, false);//取消男
+						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, true);//选中女
+						updateTreatmentLogDisplay();//刷新显示
 					}
 					break;
 				}					
@@ -935,7 +939,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}				
-				case GDDC_PAGE_TREATMENT_KEY_SAVEUSB:{//储存当前病历到EPROM
+				case GDDC_PAGE_TREATMENT_KEY_SAVETOUSB:{//储存当前病历到EPROM
 					if(state){
 						treatmentEpromErr_t ret = treatmentEpromSaveCurrent();
 						if(ret == TREATMENT_EPROM_OK){

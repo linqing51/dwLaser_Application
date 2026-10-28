@@ -2090,7 +2090,7 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	*p = temp2;
 	sprintf(dispBuf1, "%11.1f J", ((float)temp2 / 10));//00:00
 	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1); 
-	treatmentLog.releaseEnergy = (float)temp2 / 10.0F;
+	treatmentLog.releaseEnergy = (temp2 + 5) / 10;//已发射能量 单位焦耳(temp2为0.1J计数,四舍五入取整)
 }
 void updateWarnMsgDisplay(MSG_ID_T id){//更新警号显示框
 	const char *msg;
@@ -2641,7 +2641,7 @@ void updateReadyDisplay(void){//更新READY显示
 	}
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%3.1f W\n", displayPower);
-	treatmentLog.laserPower = displayPower;//复制实际功率
+	treatmentLog.laserPower = (int16_t)(displayPower + 0.5F);//复制实际功率(四舍五入为整数W)
 	treatmentLog.protocol = eCustiom;//复制方案类别(自定义)
 	if((NVRAM0[DM_SCHEME_CLASSIFY] >= SCHEME_PHLEBOLOGY) && (NVRAM0[DM_SCHEME_CLASSIFY] <= SCHMEM_THERAPY)){
 		treatmentLog.protocol = (PROTOCOL_ENUM)(NVRAM0[DM_SCHEME_CLASSIFY] - SCHEME_PHLEBOLOGY);
@@ -2660,12 +2660,13 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 	if(log == NULL){
 		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID, (uint8_t*)"--");
 		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_GENDER, (uint8_t*)"--");
+		SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, false);//性别按钮取消选中
+		SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, false);
 		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ENERGY, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_TIME, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_POWER, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_PROTOCOL, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_0, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_1, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_2, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_4, (uint8_t*)"--");
 		return;
 	}
 	memset(dispBuf, 0x0, sizeof(dispBuf));
@@ -2673,15 +2674,14 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%s", log->name);
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)dispBuf);
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%s", (log->gender == MALE) ? "Male" : "Female");
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_GENDER, (uint8_t*)dispBuf);
+	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, (log->gender == MALE));//性别用按钮选中状态显示
+	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, (log->gender == FEMALE));
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d", log->age);
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d J", log->releaseEnergy);
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ENERGY, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_0, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	{
 		int32_t totalSec = log->releaseTime;
@@ -2690,13 +2690,13 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 		}
 		sprintf(dispBuf, "%ld:%02ld", (long)(totalSec / 60), (long)(totalSec % 60));//MM:SS
 	}
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_TIME, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_1, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d W", log->laserPower);
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_POWER, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_2, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%s", treatmentProtocolName(log->protocol));
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_PROTOCOL, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_4, (uint8_t*)dispBuf);
 }
 
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
