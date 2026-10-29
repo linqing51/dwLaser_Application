@@ -42,6 +42,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "sPlc.h"
+extern void sPlcTimerIsr(void);
+extern void sPlcLaserTimerIsr(void);
 
 /* USER CODE END Includes */
 
@@ -222,6 +225,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
+	if(htim->Instance == CONFIG_SPLC_TIM) {
+		sPlcTimerIsr();
+	}
+	if(htim->Instance == CONFIG_LASER_TIM){
+		sPlcLaserTimerIsr();
+	}
 
   /* USER CODE END Callback 1 */
 }
