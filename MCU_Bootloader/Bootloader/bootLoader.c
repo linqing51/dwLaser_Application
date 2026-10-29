@@ -1,4 +1,8 @@
 #include "bootLoader.h"
+#include "usb_host.h"
+/*****************************************************************************/
+extern USBH_HandleTypeDef hUsbHostFS;//USB主机句柄(定义于usb_host.c)
+extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 /*****************************************************************************/
 //SECTOR0->16K:BOOTLOADER
 //SECTOR1->16K:BOOTLOADER
@@ -47,6 +51,9 @@
 
 #define BT_DONE_FIRMWARE_UPDATE									'L'//
 /*****************************************************************************/
+#define CONFIG_USB_ENUM_TIMEOUT									10000//等待USB设备枚举完成超时(ms)
+#define CONFIG_USB_MOUNT_RETRY									3//USB枚举/挂载失败断电重启重试次数
+/*****************************************************************************/
 #define GDDC_RX_BUF_SIZE												128
 #define GDDC_TX_BUF_SIZE												(2048 + 4)
 #define GDDC_HEX 																0
@@ -91,6 +98,8 @@ FILINFO FileInfo;//FATFS 文件信息
 static uint8_t bootLoadState;
 static uint8_t forceUpdateMcu, forceUpdateLcd;
 static uint32_t crcFlash, crcUdisk;
+static uint8_t usbMountRetry = 0;//USB枚举/挂载失败断电重启重试计数
+static uint32_t usbEnumTimeout = 0;//USB枚举等待截止时间(ms)
 int32_t releaseTime0, releaseTime1, overTime, releaseCounter;
 uint32_t JumpAddress;
 pFunction Jump_To_Application;
@@ -118,6 +127,26 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 		}
 	}
 	return true;
+}
+
+static void usbPowerCycle(void){//USB VBUS断电重启,复位U盘主控
+	USBH_Stop(&hUsbHostFS);//关闭VBUS并停止USB主机
+	HAL_Delay(1000);//掉电1秒,让U盘主控彻底复位
+	/*重置USBH状态机(与DeInitStateMachine关键字段一致) */
+	hUsbHostFS.gState = HOST_IDLE;
+	hUsbHostFS.EnumState = ENUM_IDLE;
+	hUsbHostFS.device.is_connected = 0U;
+	hUsbHostFS.device.PortEnabled = 0U;
+	hUsbHostFS.device.is_disconnected = 0U;
+	hUsbHostFS.device.address = USBH_DEVICE_ADDRESS_DEFAULT;
+	hUsbHostFS.device.RstCnt = 0U;
+	hUsbHostFS.device.EnumCnt = 0U;
+	if(hUsbHostFS.pActiveClass != NULL){//释放残留的MSC类实例
+		hUsbHostFS.pActiveClass->DeInit(&hUsbHostFS);
+		hUsbHostFS.pActiveClass = NULL;
+	}
+	Appli_state = APPLICATION_IDLE;//应用状态复位
+	USBH_Start(&hUsbHostFS);//重新上电并启动USB主机
 }
 
 void bootLoadInit(void){//引导程序初始化
@@ -301,12 +330,40 @@ void bootLoadProcess(void){//bootload 执行程序
       }
     }
 		case BT_STATE_USBHOST_INIT:{//在USB HOST上挂载FATFS
+			if(Appli_state != APPLICATION_READY){//USB设备尚未枚举完成
+				if(usbEnumTimeout == 0){//首次进入记录等待截止时间
+					usbEnumTimeout = HAL_GetTick() + CONFIG_USB_ENUM_TIMEOUT;
+				}
+				if((int32_t)(HAL_GetTick() - usbEnumTimeout) >= 0){//枚举超时
+					if(usbMountRetry >= CONFIG_USB_MOUNT_RETRY){//重试次数用尽
+						printf("Bootloader:USB enumerate timeout,run app!\n");
+						bootLoadState = BT_STATE_RUN_APP;//跳转到APP
+					}
+					else{//VBUS断电重启,复位U盘后重新枚举
+						usbMountRetry++;
+						printf("Bootloader:USB enumerate timeout,power cycle %d/%d!\n", usbMountRetry, CONFIG_USB_MOUNT_RETRY);
+						usbPowerCycle();
+						usbEnumTimeout = HAL_GetTick() + CONFIG_USB_ENUM_TIMEOUT;
+					}
+				}
+				break;//继续等待枚举完成
+			}
+			usbEnumTimeout = 0;//枚举完成,清除等待标记
 			retUsbH = f_mount(&USBH_fatfs, FATFS_ROOT, 0);
 			if(retUsbH != FR_OK){//挂载U盘失败
-				printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
-				bootLoadState = BT_STATE_RUN_APP;//跳转到APP
+				if(usbMountRetry >= CONFIG_USB_MOUNT_RETRY){//重试次数用尽
+					printf("Bootloader:Mount Fatfs errror:%d,run app!\n", retUsbH);
+					bootLoadState = BT_STATE_RUN_APP;//跳转到APP
+				}
+				else{//VBUS断电重启后重试挂载
+					usbMountRetry++;
+					printf("Bootloader:Mount Fatfs errror:%d,power cycle %d/%d!\n", retUsbH, usbMountRetry, CONFIG_USB_MOUNT_RETRY);
+					usbPowerCycle();
+					usbEnumTimeout = 0;//重新进入枚举等待
+				}
 			}
 			else{//挂载U盘成功
+				usbMountRetry = 0;//成功,清零重试计数
 				printf("Bootloader:Mount Fatfs sucess!\n");
 				bootLoadState = BT_STATE_WAIT_UDISK;
 				overTime = HAL_GetTick() + CONFIG_JUMP_DELAY;
