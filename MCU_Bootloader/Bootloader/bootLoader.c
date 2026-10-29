@@ -24,6 +24,7 @@ extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 #define BT_STATE_UPDATE_FORCE_BOTH_APP					10//强制更新
 #define BT_STATE_DUMP_EPROM											11//储存全部EPROM到UDISK
 #define BT_STATE_CLEAT_ALL											12//清除FLASH和EPROM全部
+#define BT_STATE_WAIT_FOOT											13//等待脚踏踩下(3秒窗口)
 #define BT_STATE_RESET													90//重启
 #define BT_STATE_RUN_APP												99//跳转到APP应用程序
 
@@ -54,6 +55,7 @@ extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 /*****************************************************************************/
 #define CONFIG_USB_ENUM_TIMEOUT									10000//等待USB设备枚举完成超时(ms)
 #define CONFIG_USB_MOUNT_RETRY									3//USB枚举/挂载失败断电重启重试次数
+#define CONFIG_FOOT_SWITCH_WINDOW								3000//启动后等待脚踏踩下的时间窗口(ms)
 /*****************************************************************************/
 #define GDDC_RX_BUF_SIZE												128
 #define GDDC_TX_BUF_SIZE												(2048 + 4)
@@ -320,19 +322,33 @@ void bootLoadProcess(void){//bootload 执行程序
 			printf("Bootloader:Bootload Start  :0x%08X,End:0x%08X,Size:0x%08X\n", BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_END_ADDRESS ,BOOTLOADER_FLASH_SIZE);
 			printf("Bootloader:Applicent Start :0x%08X,End:0x%08X,Size:0x%08X\n", APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_END_ADDRESS, APPLICATION_FLASH_SIZE);
 				
-			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//急停按下
+			//启动后进入3秒脚踏窗口: 窗口内踩下脚踏进入USB更新, 超时未踩跳APP
+			bootLoadState = BT_STATE_WAIT_FOOT;
+			overTime = HAL_GetTick() + CONFIG_FOOT_SWITCH_WINDOW;
+			printf("Bootloader:GOTO WAIT FOOT SWITCH(%d ms)\n", CONFIG_FOOT_SWITCH_WINDOW);
+			break;
+		}
+		case BT_STATE_WAIT_FOOT:{//等待脚踏踩下(3秒窗口)
+			//每秒打印剩余时间
+			releaseTime0 = (overTime - (int32_t)HAL_GetTick()) / 1000;
+			if(releaseTime0 != releaseTime1){
+				printf("Bootloader:Wait foot switch:%d Second!\n", releaseTime0);
+				releaseTime1 = releaseTime0;
+			}
+			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//急停未触发
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
-          bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
-          printf("Bootloader:GOTO USBHOST INIT\n");	
-          break;
-      }
-      else{
-        bootLoadState = BT_STATE_RUN_APP;
-        printf("Bootloader:GOTO RUN APP\n");	
-        break;
-      }
-    }
+				bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程
+				printf("Bootloader:Foot switch pressed,GOTO USBHOST INIT\n");
+				break;
+			}
+			if((int32_t)(HAL_GetTick() - overTime) >= 0){//窗口超时未踩
+				bootLoadState = BT_STATE_RUN_APP;
+				printf("Bootloader:Foot window timeout,GOTO RUN APP\n");
+				break;
+			}
+			break;//继续等待
+		}
 		case BT_STATE_USBHOST_INIT:{//在USB HOST上挂载FATFS
 			if(Appli_state != APPLICATION_READY){//USB设备尚未枚举完成
 				if(usbEnumTimeout == 0){//首次进入记录等待截止时间
