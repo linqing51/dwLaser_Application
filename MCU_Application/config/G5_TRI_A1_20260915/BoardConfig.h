@@ -3,6 +3,7 @@
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
  *----------------------------------------------------------------------------*/
+
 #ifndef __BOARDCONFIG_H__
 #define __BOARDCONFIG_H__
 /*****************************************************************************/
@@ -13,7 +14,7 @@ extern "C" {
 #include "main.h"
 #include "usbh_core.h"
 /*****************************************************************************/
-//瀹氫箟澶栭儴璧勬簮
+//定义外部资源
 extern ADC_HandleTypeDef hadc1;
 extern CRC_HandleTypeDef hcrc;
 extern RNG_HandleTypeDef hrng;
@@ -34,14 +35,14 @@ extern UART_HandleTypeDef huart6;//NFS UART
 extern USBH_HandleTypeDef hUsbHostHS;
 extern USBH_HandleTypeDef hUsbHostFS;
 /*****************************************************************************/
-//瀹氫箟澶栬鎬荤嚎
+//定义外设总线
 #define CONFIG_LASER_TIM_HANDLE								htim7
 #define CONFIG_LASER_TIM											TIM7
 
-#define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 璁℃椂鍣ㄥ畾涔?
+#define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
 #define CONFIG_SPLC_TIM												TIM14
 
-#define CONFIG_SPK_HANDLE											htim8//SPK 璁℃椂鍣ㄥ畾涔?
+#define CONFIG_SPK_HANDLE											htim8//SPK 计时器定义	
 #define CONFIG_SPK_TIM												TIM8
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
 
@@ -59,15 +60,15 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_AIM_HANDLE											htim5			
 #define CONFIG_AIM_PWM_CHANNEL								TIM_CHANNEL_1
 
-#define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM鎺ュ彛瀹氫箟
+#define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
 #define CONFIG_EPROM_BUS											SPI3	
 
-#define CONFIG_DEBUG_UART											huart3//璋冭瘯涓插彛
+#define CONFIG_DEBUG_UART											huart3//调试串口
 
-#define CONFIG_GDDC_UART											huart1//GDDC涓插彛
-#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC涓插彛涓柇
+#define CONFIG_GDDC_UART											huart1//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
 /*****************************************************************************/
-//寮曡剼鍔熻兘瀹氫箟
+//引脚功能定义
 #define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
 #define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
@@ -230,9 +231,9 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
 #define SET_MCP41010_SCK(b)										HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
 
-//POWER INT MPU杞叧鏈轰腑鏂俊鍙?->LTC2955浣滀负MPU鍗曞厓
+//POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
 #define GET_PWR_INT														0
-//POWER KILL MPU杞欢鍏虫満淇″彿-->LTC2955浣滀负MPU鍗曞厓
+//POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
 #define SET_PWR_KILL_POWER(b)									__nop()
 #define SET_PWR_KILL_POWER_ON									__nop()
 #define SET_PWR_KILL_POWER_OFF								__nop()
@@ -246,12 +247,12 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define GET_PWR_LED														__nop()
 #define FLIP_PWR_LED													__nop()
 
-//瀹夊叏閿佹帴瑙?
+//安全锁接触
 #define SET_SAFE_RESET(b)											__nop()
 #define SET_SAFE_RESET_ON                    	__nop()
 #define SET_SAFE_RESET_OFF                   	__nop()
 /*****************************************************************************/
-//閰嶇疆EPROM瑙勬牸
+//配置EPROM规格
 #define CONFIG_EPROM_SPI											
 #define CONFIG_EPROM_SIZE 										CONFIG_MB85RS512TPN_SIZE
 #define	CONFIG_AT24C64_SIZE										8192
@@ -262,59 +263,59 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_MB85RS2MAT_SIZE								262144//256K
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
-#define CONFIG_EPROM_TIMEOUT									1000//EPROM璇诲啓瓒呮椂
-#define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 椤靛ぇ灏?
-#define CONFIG_EPROM_WRITE_DELAY							0//鍐欏叆绛夊緟鏃堕棿mS
+#define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
+#define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
+#define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
 /******************************************************************************/
-//閰嶇疆ADC
-#define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//鏍℃鐢靛帇婧?
-#define CONFIG_ADC1_CHANNEL										13//ADC閲囬泦閫氶亾
-#define ADC_FILTER_ALPHA    									0.25f//0.1f锛氭护娉㈡瀬寮猴紝瓒呭钩婊?0.25f锛氬钩琛″搷搴斾笌婊ゆ尝锛堟帹鑽愶級 0.5f锛氬搷搴斿揩锛屾护娉㈠急	
-#define CONFIG_ADC1_DMA_BUFFER_SIZE						CONFIG_ADC1_CHANNEL//ADC DMA閲囬泦缂撳啿
+//配置ADC
+#define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
+#define CONFIG_ADC1_CHANNEL										13//ADC采集通道
+#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱	
+#define CONFIG_ADC1_DMA_BUFFER_SIZE						CONFIG_ADC1_CHANNEL//ADC DMA采集缓冲
 
 #define CONFIG_VREF_ADC												SPREG_ADC_59
 #define CONFIG_MCU_VREF												3300.0F
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25												760.0F//0.76V@25D
 
-#define CONFIG_DIODE_NTC_RS										3300L//婵€鍏夊櫒鐑晱鐢甸樆鍒嗗帇鐢甸樆鍊?
-#define CONFIG_HT0_NTC_RS											4700L//鏁ｇ儹鍣?鐑晱鐢甸樆鍒嗗帇鐢甸樆鍊?
-#define CONFIG_HT1_NTC_RS											4700L//鏁ｇ儹鍣?鐑晱鐢甸樆鍒嗗帇鐢甸樆鍊?
+#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻值
+#define CONFIG_HT0_NTC_RS											4700L//散热器0热敏电阻分压电阻值
+#define CONFIG_HT1_NTC_RS											4700L//散热器1热敏电阻分压电阻值
 #define CONFIG_HT2_NTC_RS											1L	
 #define CONFIG_HT3_NTC_RS											1L
 #define CONFIG_WATER_HOT_NTC_RS								1L
 #define CONFIG_WATER_COOL_NTC_RS							1L
 #define CONFIG_AMBIENT_NTC_RS									1L
-#define CONFIG_MBAT_NTC_RS										4700L//鐜鐑晱鐢甸樆鍒嗗帇鐢甸樆鍊?
+#define CONFIG_MBAT_NTC_RS										4700L//环境热敏电阻分压电阻值
 
-#define CONFIG_DIODE_NTC_B										3477.0F//婵€鍏夊櫒鐑晱鐢甸樆B鍊?
-#define CONFIG_HT0_NTC_B											3477.0F//鏁ｇ儹鍣?鐑晱鐢甸樆B鍊?
-#define CONFIG_HT1_NTC_B											3477.0F//鏁ｇ儹鍣?鐑晱鐢甸樆B鍊?
-#define CONFIG_HT2_NTC_B											3477.0F//鏁ｇ儹鍣?鐑晱鐢甸樆B鍊?
-#define CONFIG_HT3_NTC_B											3477.0F//鏁ｇ儹鍣?鐑晱鐢甸樆B鍊?
-#define CONFIG_MBAT_NTC_B											3477.0F//鐢垫睜鐑晱鐢甸樆B鍊?
+#define CONFIG_DIODE_NTC_B										3477.0F//激光器热敏电阻B值
+#define CONFIG_HT0_NTC_B											3477.0F//散热器0热敏电阻B值
+#define CONFIG_HT1_NTC_B											3477.0F//散热器1热敏电阻B值
+#define CONFIG_HT2_NTC_B											3477.0F//散热器2热敏电阻B值
+#define CONFIG_HT3_NTC_B											3477.0F//散热器3热敏电阻B值
+#define CONFIG_MBAT_NTC_B											3477.0F//电池热敏电阻B值
 
 #define CONFIG_WATER_HOT_NTC_B							  3477.0F
 #define CONFIG_WATER_COOL_NTC_B								3477.0F
 #define CONFIG_AMBIENT_NTC_B									3477.0F
 
-#define CONFIG_NTC_R25												10000.0F//25鎽勬皬搴︽椂鐢甸樆
+#define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF												3300L//
-#define CONFIG_FIBER_PD_THRESHOLD							350//鍏夌氦鎻掑叆鏃禔DC闃堝€?
+#define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
 
 /*****************************************************************************/
-//閰嶇疆TEC娓╂帶(TIM9 CH2 PWM -> GP8101C-SH -> 妯℃嫙鐢靛帇, 閫昏緫DAC8)
-#define CONFIG_TEC_HT_FF_GAIN								  20.0f//鏁ｇ儹鍣ㄦ俯搴﹀墠棣堝鐩? 娓╁樊(脳10鍗曚綅)脳澧炵泭=鍙犲姞璁℃暟, 鏁ｇ儹鍣ㄩ珮璁惧畾10鈩冩椂绾﹀彔鍔?9%婊″箙杈撳嚭
-#define CONFIG_TEC_SLEW_STEP								  200//杈撳嚭鍙樺寲鐜囬檺骞? 姣?00ms鎺у埗鍛ㄦ湡鏈€澶氬彉鍖栬鏁?0~4095), 0鈫掓弧骞呯害闇€10s
-#define CONFIG_TEC_TEMP_FILTER_ALPHA			  	0.5f//鍙嶉娓╁害涓€闃舵护娉㈢郴鏁?0~1), 鎶戝埗NTC鍣０鏀惧ぇ
+//配置TEC温控(TIM9 CH2 PWM -> GP8101C-SH -> 模拟电压, 逻辑DAC8)
+#define CONFIG_TEC_HT_FF_GAIN								  20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
+#define CONFIG_TEC_SLEW_STEP								  200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
+#define CONFIG_TEC_TEMP_FILTER_ALPHA			  	0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
 
-#define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C璇诲啓棰戠巼
+#define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
 //G5板未装配HDC1080温湿度传感器(6M3S同款空实现), 后续接硬件时改为真实引脚
-#define SET_HDC1080_SCL(b)										__nop()
-#define SET_HDC1080_SDA(b)										__nop()
-#define GET_HDC1080_SDA												0
+#define SET_HDC1080_SCL(b)																__nop()
+#define SET_HDC1080_SDA(b)																__nop()
+#define GET_HDC1080_SDA																		0
 /*****************************************************************************/
-//閰嶇疆DAC
+//配置DAC
 #define CONFIG_DAC_MAXBIT_CH0									0xFFF//12BIT STM32
 #define CONFIG_DAC_MAXBIT_CH1									0xFFF//12BIT STM32
 #define CONFIG_DAC_MAXBIT_CH2									0xFFFF//NULL
@@ -336,41 +337,41 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_DAC_MAXBIT_CH16								5000
 #define CONFIG_DAC_MAXBIT_CH17								5000//NULL
 /*****************************************************************************/
-//閰嶇疆EPROM鏁版嵁鍦板潃
+//配置EPROM数据地址
 #define CONFIG_EPROM_MR_START									(0x0L)//
 #define CONFIG_EPROM_MR_END										(CONFIG_EPROM_MR_START + MR_END - MR_START)
-#define CONFIG_EPROM_DM_START									(CONFIG_EPROM_MR_END + 1)//NVRAM涓璂M鍦‥PROM鍌ㄥ瓨鍦板潃
+#define CONFIG_EPROM_DM_START									(CONFIG_EPROM_MR_END + 1)//NVRAM中DM在EPROM储存地址
 #define CONFIG_EPROM_DM_END										(CONFIG_EPROM_DM_START + DM_END - DM_START)
 
-#define CONFIG_EPROM_FD_SCHEME_SIZE						((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//鍗曚釜鏂规鍗犵敤鐨凟PROM绌洪棿
+#define CONFIG_EPROM_FD_SCHEME_SIZE						((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//单个方案占用的EPROM空间
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-//BK 2K鍖哄潡(鏄犲皠纭欢BKSRAM 4K鎺夌數淇濇寔鍖?鍦‥PROM鍌ㄥ瓨鍦板潃
+//BK 2K区块(映射硬件BKSRAM 4K掉电保持区)在EPROM储存地址
 #define CONFIG_EPROM_BK_START									(CONFIG_EPROM_FD_END + 1)
 #define CONFIG_EPROM_BK_END										(CONFIG_EPROM_BK_START + BK_END - BK_START)
 
-#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L)//4B MR NVRAM CRC32 纭欢璁＄畻
-#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L)//4B DM NVRAM CRC32 纭欢璁＄畻
-#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_BK_CRC - 4L)//4B FD NVRAM CRC32 纭欢璁＄畻
-#define CONFIG_EPROM_BK_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L)//4B BK NVRAM CRC32 纭欢璁＄畻
-#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L)//4B MCU鍥轰欢CRC32鍊?杞欢璁＄畻
-#define CONFIG_EPROM_LCD_FW_CRC								(CONFIF_EPROM_TREATMENT_CRC - 4L)//4B LCD鍥轰欢CRC32鍊?杞欢璁＄畻
-#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L)//4B treatment CRC32鍊?纭欢璁＄畻
-#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L)//4B deviceConfig CRC32鍊?纭欢璁＄畻
-#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L)//4B logInfo CRC32鍊?纭欢璁＄畻
+#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_BK_CRC - 4L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_BK_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L)//4B BK NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(CONFIF_EPROM_TREATMENT_CRC - 4L)//4B LCD固件CRC32值 软件计算
+#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L)//4B treatment CRC32值 硬件计算
+#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L)//4B deviceConfig CRC32值 硬件计算
+#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L)//4B logInfo CRC32值 硬件计算
 
 #define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - (32L * 1536) + 1L)
 #define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
-#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//娌荤枟璁板綍鍖哄潡瀛楄妭鏁?32L*1536)
+#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(32L*1536)
 
-#define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 閰嶇疆淇℃伅鍖?
+#define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 配置信息区
 #define CONFIG_EPROM_CONFIG_END								(CONFIG_EPROM_LOGINFO_START - 1L)
-#define CONFIG_EPROM_LOGINFO_START						(CONFIG_EPROM_LOGINFO_END - 256L + 1L)//256B 璁板綍淇℃伅鍖?
+#define CONFIG_EPROM_LOGINFO_START						(CONFIG_EPROM_LOGINFO_END - 256L + 1L)//256B 记录信息区 
 #define CONFIG_EPROM_LOGINFO_END							(CONFIG_EPROM_SIZE - 1L)
 
 #if (CONFIG_EPROM_BK_END >= CONFIG_EPROM_MR_CRC)
-	#error "EPROM 瀹归噺涓嶈冻锛氬瓨鍌ㄥ尯鍩熼噸鍙狅紝璇疯皟灏忓垎鍖烘垨鏇存崲鏇村ぇ瀹归噺鑺墖"
+	#error "EPROM 容量不足：存储区域重叠，请调小分区或更换更大容量芯片"
 #endif
 /*****************************************************************************/
 #ifdef __cplusplus

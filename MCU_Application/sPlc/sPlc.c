@@ -3,22 +3,23 @@
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
  *----------------------------------------------------------------------------*/
+
 #include "sPlc.h"
-//閬垮厤鎸囬拡鍜屽姩鎬丷AM鍒嗛厤 绉绘澶ч儴鍒?BIT鍜?6BIT鍗曠墖鏈烘晥鐜囦綆瀛樺湪闂
+//避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
 /*****************************************************************************/
 #pragma pack(push, 4)
-int16_t NVRAM0[CONFIG_NVRAM_SIZE];//鎺夌數淇濇寔瀵勫瓨鍣?褰撳墠 鍖呭惈瀛樻。瀵勫瓨鍣?
-int16_t NVRAM1[CONFIG_NVRAM_SIZE];//鎺夌數淇濇寔瀵勫瓨鍣?涓婁竴娆?
-int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//瀛樻。瀵勫瓨鍣?
-uint32_t BootloadCrc, ApplicationCrc;//褰撳墠鍥轰欢鏍￠獙鐮?
+int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
+int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
+int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
 #pragma pack(pop)
 /*****************************************************************************/
-uint16_t TimerCounter_10mS = 0;//10姣
-uint16_t TimerCounter_100mS = 0;//100姣
-uint16_t TimerCounter_200mS = 0;//200姣
-uint16_t TimerCounter_500mS = 0;//500姣
-uint16_t TimerCounter_1000mS = 0;//1绉?
-uint16_t TimerCounter_60000mS = 0;//1鍒嗛挓
+uint16_t TimerCounter_10mS = 0;//10毫秒
+uint16_t TimerCounter_100mS = 0;//100毫秒
+uint16_t TimerCounter_200mS = 0;//200毫秒
+uint16_t TimerCounter_500mS = 0;//500毫秒
+uint16_t TimerCounter_1000mS = 0;//1秒
+uint16_t TimerCounter_60000mS = 0;//1分钟
 /*****************************************************************************/
 uint8_t TD_10MS_SP = 0;
 uint8_t TD_100MS_SP = 0;
@@ -34,7 +35,7 @@ void sPlcErrorHandler(uint16_t errCode){
 	while(1);
 }
 
-void sPlcAssertCoilAddress(uint16_t adr){//妫€鏌ョ嚎鍦堝湴鍧€
+void sPlcAssertCoilAddress(uint16_t adr){//检查线圈地址
 #if CONFIG_SPLC_ASSERT == 1
 	uint32_t maxCoilAdr = CONFIG_NVRAM_SIZE * 16 - 1;
 	if(adr > (maxCoilAdr)){
@@ -44,7 +45,7 @@ void sPlcAssertCoilAddress(uint16_t adr){//妫€鏌ョ嚎鍦堝湴鍧€
 	adr = ~adr;
 #endif
 }
-void sPlcAssertRegisterAddress(uint16_t adr){//妫€鏌ュ瘎瀛樺櫒鍦板潃
+void sPlcAssertRegisterAddress(uint16_t adr){//检查寄存器地址
 #if CONFIG_SPLC_ASSERT == 1
 	if(adr > (CONFIG_NVRAM_SIZE - 1)){
 		while(1);
@@ -53,16 +54,16 @@ void sPlcAssertRegisterAddress(uint16_t adr){//妫€鏌ュ瘎瀛樺櫒鍦板潃
 	adr = ~adr;
 #endif
 }
-void sPlcNvramLoad(void){//浠嶦PROM涓浇鍏VRAM MR鍜孌M
+void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	uint32_t crc32_mr, crc32_dm;
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
-	//浠嶦PROM涓仮澶峂R NVRAM
-	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//浠嶦PROM涓仮澶峂R
+	//从EPROM中恢复MR NVRAM
+	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//从EPROM中恢复MR
 	epromReadDword(CONFIG_EPROM_MR_CRC, &crc32_eprom_mr);
 	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
-	//浠嶦PROM涓仮澶岲M NVRAM
-	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//浠嶦PROM涓仮澶岲M
+	//从EPROM中恢复DM NVRAM
+	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//从EPROM中恢复DM
 	epromReadDword(CONFIG_EPROM_DM_CRC, &crc32_eprom_dm);
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 	
@@ -76,28 +77,28 @@ void sPlcNvramLoad(void){//浠嶦PROM涓浇鍏VRAM MR鍜孌M
 		printf("%s,%d,%s:load NVRAM done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void sPlcNvramSave(void){//寮哄埗灏哊VRAM瀛樺叆EPROM
+void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	uint32_t crc32_mr, crc32_dm;
-	//MR NVRAM鍐欏叆EPROM
-	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//灏哊VRAM涓璏R鍌ㄥ瓨鍏PROM																				
+	//MR NVRAM写入EPROM
+	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//将NVRAM中MR储存入EPROM																				
 	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
-	epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//鍦ㄧ殑鎸囧畾鍦板潃寮€濮嬪啓鍏?2浣嶆暟
-	//DM NVRAM鍐欏叆EPROM
-	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//灏哊VRAM涓璂M鍌ㄥ瓨鍏PROM
+	epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写入32位数
+	//DM NVRAM写入EPROM
+	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//将NVRAM中DM储存入EPROM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
-	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//鍦ㄧ殑鎸囧畾鍦板潃寮€濮嬪啓鍏?2浣嶆暟
+	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
-void sPlcNvramUpdate(void){//鏇存柊NVRAM->EPROM
+void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 	uint8_t *sp0, *sp1;
 	uint8_t updateFlagMr, updateFlagDm;
 	uint16_t i;
 	uint32_t crc32_mr, crc32_dm;
-	//鍌ㄥ瓨MR
+	//储存MR
 	updateFlagMr = 0;
 	sp0 = (uint8_t*)(NVRAM0 + MR_START);
 	sp1 = (uint8_t*)(NVRAM1 + MR_START);
-	for(i = 0;i < (CONFIG_MR_SIZE * 2);i ++){//鍌ㄥ瓨MR
+	for(i = 0;i < (CONFIG_MR_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
 			epromWriteByte((i + CONFIG_EPROM_MR_START), sp0);
 			updateFlagMr |= 0xFF;
@@ -107,13 +108,13 @@ void sPlcNvramUpdate(void){//鏇存柊NVRAM->EPROM
 	}
 	if(updateFlagMr){
 		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
-		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//鍦ㄧ殑鎸囧畾鍦板潃寮€濮嬪啓鍏?2浣嶆暟
+		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写入32位数
 	}
-	//鍌ㄥ瓨DM
+	//储存DM
 	updateFlagDm = 0;
 	sp0 = (uint8_t*)(NVRAM0 + DM_START);
 	sp1 = (uint8_t*)(NVRAM1 + DM_START);
-	for(i = 0;i < (CONFIG_DM_SIZE * 2);i ++){//鍌ㄥ瓨MR
+	for(i = 0;i < (CONFIG_DM_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
 			epromWriteByte((i + CONFIG_EPROM_DM_START), sp0);
 			updateFlagDm |= 0xFF;
@@ -123,9 +124,9 @@ void sPlcNvramUpdate(void){//鏇存柊NVRAM->EPROM
 	}
 	if(updateFlagDm){
 		crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
-		epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//鍦ㄧ殑鎸囧畾鍦板潃寮€濮嬪啓鍏?2浣嶆暟
+		epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
 	}
-	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//鏇存柊NVRAM1 闈炰繚鎸佸瘎瀛樺櫒
+	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//更新NVRAM1 非保持寄存器
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(updateFlagMr){    
 		printf("%s,%d,%s:update MR NVRAM done...(MR CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr);
@@ -135,18 +136,18 @@ void sPlcNvramUpdate(void){//鏇存柊NVRAM->EPROM
 	}
 #endif
 }
-void sPlcNvramClear(void){//娓呴櫎NVRAM鏁版嵁	
+void sPlcNvramClear(void){//清除NVRAM数据	
 	clearEprom(CLEAR_EPROM_NVRAM);//clear mr dm
-	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//鍒濆鍖朜VRAM0
-	memset((uint8_t*)NVRAM1, 0x0, (CONFIG_NVRAM_SIZE * 2));//鍒濆鍖朜VRAM1
+	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM0
+	memset((uint8_t*)NVRAM1, 0x0, (CONFIG_NVRAM_SIZE * 2));//初始化NVRAM1
 	printf("%s,%d,%s:clear NVRAM done...\n",__FILE__, __LINE__, __func__);
 }
-void sPlcFdramLoad(void){//浠嶦PROM涓浇鍏DRAM
+void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 	uint32_t crc32_fd;
 	uint32_t crc32_eprom_fd;
 	memset((uint8_t*)FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));
   memset((uint8_t*)FDRAM0, 0x1, (CONFIG_FDRAM_SIZE * 2));
-  epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));//浠嶦PROM涓仮澶峂R
+  epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
 	epromReadDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);
   crc32_fd = HAL_CRC_Calculate(&hcrc, (uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
   memcpy((uint8_t*)FDRAM1, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
@@ -158,12 +159,12 @@ void sPlcFdramLoad(void){//浠嶦PROM涓浇鍏DRAM
 		printf("%s,%d,%s:load FDRAM done...\n",__FILE__, __LINE__, __func__);
 	}  
 }
-void sPlcFdramSave(void){//寮哄埗灏咶DRAM瀛樺叆EPROM
+void sPlcFdramSave(void){//强制将FDRAM存入EPROM
 	uint32_t crc32_eprom_fd;
   HAL_StatusTypeDef ref;
   crc32_eprom_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
 	ref = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
-	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//鍦ㄧ殑鎸囧畾鍦板潃寮€濮嬪啓鍏?2浣嶆暟
+	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写入32位数
   if(ref != HAL_OK){
 		printf("%s,%d,%s:save FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
 	}
@@ -171,21 +172,21 @@ void sPlcFdramSave(void){//寮哄埗灏咶DRAM瀛樺叆EPROM
     printf("%s,%d,%s:save FDRAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
 	}
 }
-void sPlcFdramClear(void){//娓呴櫎FDRAM鏁版嵁
+void sPlcFdramClear(void){//清除FDRAM数据
 	clearEprom(CLEAR_EPROM_FDRAM);//clear mr dm
-	memset(FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//鍒濆鍖朏DRAM
-	memset(FDRAM1, 0x0, (CONFIG_FDRAM_SIZE * 2));//鍒濆鍖朏DRAM
+	memset(FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
+	memset(FDRAM1, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
   printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 }
 #ifdef CONFIG_BKRAM_SIZE
-void sPlcBkramLoad(void){//浠嶦PROM涓浇鍏K(鏄犲皠BKSRAM)
+void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
 	uint32_t crc32_bk;
 	uint32_t crc32_eprom_bk;
 	__HAL_RCC_PWR_CLK_ENABLE();
-	HAL_PWR_EnableBkUpAccess();//瑙ｉ櫎澶囦唤鍩熷啓淇濇姢
-	__HAL_RCC_BKPSRAM_CLK_ENABLE();//浣胯兘BKPSRAM鎺ュ彛鏃堕挓
-	memset((uint8_t*)BKRAM, 0x0, (CONFIG_BKRAM_SIZE * 2));//娓呯┖BKSRAM
-	epromRead(CONFIG_EPROM_BK_START, (uint8_t*)BKRAM, (CONFIG_BKRAM_SIZE * 2));//浠嶦PROM涓仮澶岯K
+	HAL_PWR_EnableBkUpAccess();//解除备份域写保护
+	__HAL_RCC_BKPSRAM_CLK_ENABLE();//使能BKPSRAM接口时钟
+	memset((uint8_t*)BKRAM, 0x0, (CONFIG_BKRAM_SIZE * 2));//清空BKSRAM
+	epromRead(CONFIG_EPROM_BK_START, (uint8_t*)BKRAM, (CONFIG_BKRAM_SIZE * 2));//从EPROM中恢复BK
 	epromReadDword(CONFIG_EPROM_BK_CRC, &crc32_eprom_bk);
 	crc32_bk = HAL_CRC_Calculate(&hcrc, (uint32_t *)BKRAM, (CONFIG_BKRAM_SIZE / 2));
 	printf("%s,%d,%s:BK EPROM CRC:0x%08X,BK CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_bk, crc32_bk);
@@ -196,7 +197,7 @@ void sPlcBkramLoad(void){//浠嶦PROM涓浇鍏K(鏄犲皠BKSRAM)
 		printf("%s,%d,%s:load BK done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void sPlcBkramSave(void){//BKSRAM->EPROM 寮哄埗淇濆瓨
+void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
 	uint32_t crc32_bk;
 	HAL_StatusTypeDef ref1, ref2;
 	__HAL_RCC_PWR_CLK_ENABLE();
@@ -204,7 +205,7 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 寮哄埗淇濆瓨
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
 	crc32_bk = HAL_CRC_Calculate(&hcrc, (uint32_t *)BKRAM, (CONFIG_BKRAM_SIZE / 2));
 	ref1 = epromWrite(CONFIG_EPROM_BK_START, (uint8_t*)BKRAM, (CONFIG_BKRAM_SIZE * 2));
-	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//鍦ㄧ殑鎸囧畾鍦板潃寮€濮嬪啓鍏?2浣嶆暟
+	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写入32位数
 	if((ref1 != HAL_OK) || (ref2 != HAL_OK)){
 		printf("%s,%d,%s:save BK NVRAM fail...\n",__FILE__, __LINE__, __func__);
 	}
@@ -212,40 +213,40 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 寮哄埗淇濆瓨
 		printf("%s,%d,%s:save BK done...(BK CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_bk);
 	}
 }
-void sPlcBkramClear(void){//娓呴櫎BK鏁版嵁(鍚獷PROM BK鍖?
+void sPlcBkramClear(void){//清除BK数据(含EPROM BK区)
 	__HAL_RCC_PWR_CLK_ENABLE();
 	HAL_PWR_EnableBkUpAccess();
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
-	clearEprom(CLEAR_EPROM_BKRAM);//娓呴櫎EPROM BK鏁版嵁鍖轰笌CRC
-	memset(BKRAM, 0x0, (CONFIG_BKRAM_SIZE * 2));//娓呯┖BKSRAM
+	clearEprom(CLEAR_EPROM_BKRAM);//清除EPROM BK数据区与CRC
+	memset(BKRAM, 0x0, (CONFIG_BKRAM_SIZE * 2));//清空BKSRAM
 	printf("%s,%d,%s:clear BK done...\n",__FILE__, __LINE__, __func__);
 }
 #endif
-void sPlcDeviceConfigClear(void){//娓呴櫎璁惧閰嶇疆鍙傛暟
+void sPlcDeviceConfigClear(void){//清除设备配置参数
 	clearEprom(CLEAR_EPROM_DEVICE_CONFIG);
 	printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
 }
-void sPlcDeviceLogClear(void){//娓呴櫎璁惧璁板綍
+void sPlcDeviceLogClear(void){//清除设备记录
 	clearEprom(CLEAR_EPROM_LOG_INFO);
 	printf("%s,%d,%s:clear device log done...\n",__FILE__, __LINE__, __func__);
 }
 
-void sPlcSpwmLoop(void){//SPWM杞	
-	if(LDP(SPCOIL_PS10MS)){//姣?0mS鎵ц涓€娆?
+void sPlcSpwmLoop(void){//SPWM轮询	
+	if(LDP(SPCOIL_PS10MS)){//每10mS执行一次
 		//SPWM0
-		if(LD(SPCOIL_SPWM_RESET_0)){//澶嶄綅
+		if(LD(SPCOIL_SPWM_RESET_0)){//复位
 			NVRAM0[SPREG_SPWM_COUNTER_0] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0] = 0;
 			RRES(SPCOIL_SPWM_RESET_0);
 			RRES(SPCOIL_SPWM_OUT_0);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_0] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0]){//鍙戠敓婧㈠嚭
+		if(NVRAM0[SPREG_SPWM_COUNTER_0] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0]){//发生溢出
 			NVRAM0[SPREG_SPWM_COUNTER_0] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_0] = NVRAM0[SPREG_SPWM_POS_0];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_0] = NVRAM0[SPREG_SPWM_CYCLE_0];
 			SSET(SPCOIL_SPWM_OUT_0);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_0] == NVRAM0[SPREG_SPWM_POS_SHADOW_0]){//鍙戠敓鍖归厤缈昏浆杈撳嚭
+		else if(NVRAM0[SPREG_SPWM_COUNTER_0] == NVRAM0[SPREG_SPWM_POS_SHADOW_0]){//发生匹配翻转输出
 			NVRAM0[SPREG_SPWM_COUNTER_0] = NVRAM0[SPREG_SPWM_COUNTER_0] + 1;
 			RRES(SPCOIL_SPWM_OUT_0);
 		}
@@ -253,19 +254,19 @@ void sPlcSpwmLoop(void){//SPWM杞
 			NVRAM0[SPREG_SPWM_COUNTER_0] = NVRAM0[SPREG_SPWM_COUNTER_0] + 1;
 		}
 		//SPWM1
-		if(LD(SPCOIL_SPWM_RESET_1)){//澶嶄綅
+		if(LD(SPCOIL_SPWM_RESET_1)){//复位
 			NVRAM0[SPREG_SPWM_COUNTER_1] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1] = 0; 
 			RRES(SPCOIL_SPWM_RESET_1);
 			RRES(SPCOIL_SPWM_OUT_1);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_1] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1]){//鍙戠敓婧㈠嚭
+		if(NVRAM0[SPREG_SPWM_COUNTER_1] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1]){//发生溢出
 			NVRAM0[SPREG_SPWM_COUNTER_1] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_1] = NVRAM0[SPREG_SPWM_POS_1];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1] = NVRAM0[SPREG_SPWM_CYCLE_1];
 			SSET(SPCOIL_SPWM_OUT_1);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_1] == NVRAM0[SPREG_SPWM_POS_SHADOW_1]){//鍙戠敓鍖归厤缈昏浆杈撳嚭
+		else if(NVRAM0[SPREG_SPWM_COUNTER_1] == NVRAM0[SPREG_SPWM_POS_SHADOW_1]){//发生匹配翻转输出
 			NVRAM0[SPREG_SPWM_COUNTER_1] = NVRAM0[SPREG_SPWM_COUNTER_1] + 1;
 			RRES(SPCOIL_SPWM_OUT_1);
 		}
@@ -274,19 +275,19 @@ void sPlcSpwmLoop(void){//SPWM杞
 			NVRAM0[SPREG_SPWM_COUNTER_1] = NVRAM0[SPREG_SPWM_COUNTER_1] + 1;
 		}
 		//SPWM2
-		if(LD(SPCOIL_SPWM_RESET_2)){//澶嶄綅
+		if(LD(SPCOIL_SPWM_RESET_2)){//复位
 			NVRAM0[SPREG_SPWM_COUNTER_2] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_1] = 0;
 			RRES(SPCOIL_SPWM_RESET_2);
 			RRES(SPCOIL_SPWM_OUT_2);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_2] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_2]){//鍙戠敓婧㈠嚭
+		if(NVRAM0[SPREG_SPWM_COUNTER_2] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_2]){//发生溢出
 			NVRAM0[SPREG_SPWM_COUNTER_2] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_2] = NVRAM0[SPREG_SPWM_POS_2];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_2] = NVRAM0[SPREG_SPWM_CYCLE_2];
 			SSET(SPCOIL_SPWM_OUT_2);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_2] == NVRAM0[SPREG_SPWM_POS_SHADOW_2]){//鍙戠敓鍖归厤缈昏浆杈撳嚭
+		else if(NVRAM0[SPREG_SPWM_COUNTER_2] == NVRAM0[SPREG_SPWM_POS_SHADOW_2]){//发生匹配翻转输出
 			NVRAM0[SPREG_SPWM_COUNTER_2] = NVRAM0[SPREG_SPWM_COUNTER_2] + 1;
 			RRES(SPCOIL_SPWM_OUT_2);
 		}
@@ -294,19 +295,19 @@ void sPlcSpwmLoop(void){//SPWM杞
 			NVRAM0[SPREG_SPWM_COUNTER_2] = NVRAM0[SPREG_SPWM_COUNTER_2] + 1;
 		}
 		//SPWM3
-		if(LD(SPCOIL_SPWM_RESET_3)){//澶嶄綅
+		if(LD(SPCOIL_SPWM_RESET_3)){//复位
 			NVRAM0[SPREG_SPWM_COUNTER_3] = SHRT_MAX;
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3] = 0;
 			RRES(SPCOIL_SPWM_RESET_3);
 			RRES(SPCOIL_SPWM_OUT_3);
 		}
-		if(NVRAM0[SPREG_SPWM_COUNTER_3] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3]){//鍙戠敓婧㈠嚭
+		if(NVRAM0[SPREG_SPWM_COUNTER_3] >= NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3]){//发生溢出
 			NVRAM0[SPREG_SPWM_COUNTER_3] = 0;
 			NVRAM0[SPREG_SPWM_POS_SHADOW_3] = NVRAM0[SPREG_SPWM_POS_3];
 			NVRAM0[SPREG_SPWM_CYCLE_SHADOW_3] = NVRAM0[SPREG_SPWM_CYCLE_3];
 			SSET(SPCOIL_SPWM_OUT_3);
 		}
-		else if(NVRAM0[SPREG_SPWM_COUNTER_3] == NVRAM0[SPREG_SPWM_POS_SHADOW_3]){//鍙戠敓鍖归厤缈昏浆杈撳嚭
+		else if(NVRAM0[SPREG_SPWM_COUNTER_3] == NVRAM0[SPREG_SPWM_POS_SHADOW_3]){//发生匹配翻转输出
 			NVRAM0[SPREG_SPWM_COUNTER_3] = NVRAM0[SPREG_SPWM_COUNTER_3] + 1;
 			RRES(SPCOIL_SPWM_OUT_3);
 		}
@@ -316,7 +317,7 @@ void sPlcSpwmLoop(void){//SPWM杞
 	}
 }
 
-void sPlcRtcProcess(void){//RTC杞(涓囧勾鍘嗗悓姝ュ埌NVRAM EM_RTC_*,NVRAM涓瓂ear娌跨敤鍚庝袱浣嶇害瀹?HMI鏄剧ず鏃?2000)
+void sPlcRtcProcess(void){//RTC轮询(万年历同步到NVRAM EM_RTC_*,NVRAM中year沿用后两位约定,HMI显示时+2000)
 	uint16_t year;
 	uint8_t mon, day, hour, min, sec;
 	RtcGetDateTime(&year, &mon, &day, &hour, &min, &sec);
@@ -328,7 +329,7 @@ void sPlcRtcProcess(void){//RTC杞(涓囧勾鍘嗗悓姝ュ埌NVRAM EM_RTC
 	NVRAM0[EM_RTC_SECONDS] = sec;
 }
 /*****************************************************************************/
-void sPlcInit(void){//杞€昏緫鍒濆鍖?
+void sPlcInit(void){//软逻辑初始化	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	epromInit();
   listEpromTable();
@@ -338,12 +339,12 @@ void sPlcInit(void){//杞€昏緫鍒濆鍖?
     sPlcEpromTest();
   }
 #endif
-	sPlcNvramLoad();//涓婄數鎭㈠NVRAM
-	sPlcFdramLoad();//涓婄數鎭㈠FDRAM
+	sPlcNvramLoad();//上电恢复NVRAM
+	sPlcFdramLoad();//上电恢复FDRAM
 #ifdef CONFIG_BKRAM_SIZE
-	sPlcBkramLoad();//涓婄數鎭㈠BK(鏄犲皠BKSRAM)
+	sPlcBkramLoad();//上电恢复BK(映射BKSRAM)
 #endif
-	RtcCheckAndInit();//RTC鎺夌數妫€娴嬩笌闃查攣姝诲垵濮嬪寲(鍚獴KSRAM浣胯兘)
+	RtcCheckAndInit();//RTC掉电检测与防锁死初始化(含BKSRAM使能)
 	BootloadCrc = getOriginBootloadCrc();
 	ApplicationCrc = getOriginAppCrc();
 	printf("%s,%d,%s:bootload crc:0x%08X\n",__FILE__, __LINE__, __func__, BootloadCrc);
@@ -352,7 +353,7 @@ void sPlcInit(void){//杞€昏緫鍒濆鍖?
 	SSET(SPCOIL_START_UP);
 	
 	
-	sPlcTimerInit();//鍒濆鍖栫‖浠惰鏃跺櫒妯″潡 鍚姩璁℃椂鍣?
+	sPlcTimerInit();//初始化硬件计时器模块 启动计时器
 	sPlcSpeakerInit();
 	
 	sPlcPortInit();
@@ -363,7 +364,7 @@ void sPlcInit(void){//杞€昏緫鍒濆鍖?
 	SET_BLUE_LED_OFF;
 	RRES(Y_TICK_LED);
 }
-void sPlcProcessStart(void){//sPLC杞璧峰
+void sPlcProcessStart(void){//sPLC轮询起始
 	if(TD_10MS_SP >= 1){
 		FLIP(SPCOIL_PS10MS);
 		TD_10MS_SP = 0;
@@ -391,22 +392,22 @@ void sPlcProcessStart(void){//sPLC杞璧峰
 		FLIP(SPCOIL_PS1MINS);
 		TD_60000MS_SP = 0;
 	}
-	sPlcInputRefresh();//璇诲彇X鍙ｈ緭鍏?
+	sPlcInputRefresh();//读取X口输入
 	if(LDP(SPCOIL_PS100MS)){
 #if (CONFIG_SPLC_USING_RTC == 1)
-		sPlcRtcProcess();//RTC涓囧勾鍘嗗悓姝ュ埌NVRAM
+		sPlcRtcProcess();//RTC万年历同步到NVRAM
 #endif
 	}
 	sPlcSpwmLoop();
-	sPlcAdcProcessBuffer();//ADC 鏇存柊NVRAM
+	sPlcAdcProcessBuffer();//ADC 更新NVRAM
 }
 
-void sPlcProcessEnd(void){//sPLC杞缁撴潫
+void sPlcProcessEnd(void){//sPLC轮询结束
 	if(LDP(SPCOIL_PS500MS)){
 		FLIP(Y_TICK_LED);
 	}
-	sPlcOutputRefresh();//鏇存柊Y鍙ｈ緭鍑?
-	sPlcNvramUpdate();//鏇存柊NVRAM
+	sPlcOutputRefresh();//更新Y口输出
+	sPlcNvramUpdate();//更新NVRAM
 	RRES(SPCOIL_START_UP);
 }
 

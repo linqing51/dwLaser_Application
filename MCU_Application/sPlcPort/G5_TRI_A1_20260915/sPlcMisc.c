@@ -3,6 +3,7 @@
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
  *----------------------------------------------------------------------------*/
+
 #include "sPlc.h"
 #include "usbh_core.h"
 /*****************************************************************************/
@@ -11,24 +12,24 @@ extern deviceConfig_t deviceConfig;
 static int16_t FanSpeed[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 /*****************************************************************************/
 /**
- * @brief 閫氱敤缁撴瀯浣撴垚鍛樺亸绉婚噺璁＄畻鍑芥暟
- * @param type_size  缁撴瀯浣撴€诲ぇ灏忥紙鐢?sizeof(缁撴瀯浣? 浼犲叆锛?
- * @param member_ptr 缁撴瀯浣撴垚鍛樼殑鍦板潃
- * @return 鎴愬憳鐩稿浜庣粨鏋勪綋璧峰鍦板潃鐨勫亸绉婚噺
+ * @brief 通用结构体成员偏移量计算函数
+ * @param type_size  结构体总大小（用 sizeof(结构体) 传入）
+ * @param member_ptr 结构体成员的地址
+ * @return 成员相对于结构体起始地址的偏移量
  */
 size_t get_offset(size_t type_size, void *member_ptr) {
-    // 鍒╃敤 0 鍦板潃缁撴瀯浣撴寚閽堣绠楀亸绉?
+    // 利用 0 地址结构体指针计算偏移
     return (size_t)member_ptr;
 }
 
 
 
 
-void delayMs(uint32_t delayMs){//SPLC 闃诲寤舵椂
+void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	vTaskDelay(delayMs);
 }
 
-void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//璁剧疆椋庢墖杞€?
+void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//设置风扇转速
 		switch(ch){
 			case FAN_CH0:{
 				if(FanSpeed[0] != speed){
@@ -40,10 +41,10 @@ void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//璁剧疆椋庢墖杞�
 					}
 					__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, speed);
 					if(speed != 0){
-						HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//鎵撳紑TIM
+						HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//打开TIM
 					}
 					else{
-						HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//鍏抽棴TIM
+						HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL);//关闭TIM
 					}
 					if(speed <= 0){
 						SET_FAN0_OFF;
@@ -88,12 +89,12 @@ void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//璁剧疆椋庢墖杞�
 		//printf("%s,%d,%s:set ch:%d fan:%d\n",__FILE__, __LINE__, __func__, ch, speed);	
 }
 
-void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
+void loadDeviceConfig(void){//从EPROM载入配置文件
 	uint32_t crc32_eprom_cfg, crc32_cfg, i;
-	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//浠嶦PROM杞藉叆璁惧閰嶇疆
+	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//从EPROM载入设备配置
 	epromReadDword(CONFIG_EPROM_CFG_CRC, &crc32_eprom_cfg);
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	if(crc32_eprom_cfg != crc32_cfg){//鏍￠獙鐮侀敊璇娇鐢ㄩ粯璁ら厤缃?
+	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配置
 		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
 		
@@ -119,7 +120,7 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.calibrationPwr0[18] = 167;
 		deviceConfig.calibrationPwr0[19] = 169;
 
-		for(i = 0;i <= 19;i ++){//娓呯┖鍏朵粬娉㈤暱
+		for(i = 0;i <= 19;i ++){//清空其他波长
 			deviceConfig.calibrationPwr1[i] = i;
 			deviceConfig.calibrationPwr2[i] = i;
 			deviceConfig.calibrationPwr3[i] = i;
@@ -175,7 +176,7 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.calibrationPwr1[0] = 145;
 		deviceConfig.calibrationPwr1[19] = 150;
 
-		for(i = 0;i <= 19;i ++){//娓呯┖鍏朵粬娉㈤暱
+		for(i = 0;i <= 19;i ++){//清空其他波长
 			//deviceConfig.calibrationPwr1[i] = i;
 			deviceConfig.calibrationPwr2[i] = i;
 			deviceConfig.calibrationPwr3[i] = i;
@@ -230,7 +231,7 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.calibrationPwr1[18] = 149;
 		deviceConfig.calibrationPwr1[19] = 153;
 		
-		for(i = 0;i <= 19;i ++){//娓呯┖鍏朵粬娉㈤暱
+		for(i = 0;i <= 19;i ++){//清空其他波长
 			//deviceConfig.calibrationPwr1[i] = i;
 			deviceConfig.calibrationPwr2[i] = i;
 			deviceConfig.calibrationPwr3[i] = i;
@@ -286,7 +287,7 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.calibrationPwr1[18] = 149;
 		deviceConfig.calibrationPwr1[19] = 153;
 
-		for(i = 0;i <= 19;i ++){//娓呯┖鍏朵粬娉㈤暱
+		for(i = 0;i <= 19;i ++){//清空其他波长
 			//deviceConfig.calibrationPwr1[i] = i;
 			deviceConfig.calibrationPwr2[i] = i;
 			deviceConfig.calibrationPwr3[i] = i;
@@ -319,7 +320,7 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.calibrationPwr0[18] = 94;
 		deviceConfig.calibrationPwr0[19] = 100;
 
-		for(i = 0;i <= 19;i ++){//娓呯┖鍏朵粬娉㈤暱
+		for(i = 0;i <= 19;i ++){//清空其他波长
 			deviceConfig.calibrationPwr1[i] = i;
 			deviceConfig.calibrationPwr2[i] = i;
 			deviceConfig.calibrationPwr3[i] = i;
@@ -375,7 +376,7 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.calibrationPwr1[18] = 147;
 		deviceConfig.calibrationPwr1[19] = 150;
 
-		for(i = 0;i <= 19;i ++){//娓呯┖鍏朵粬娉㈤暱
+		for(i = 0;i <= 19;i ++){//清空其他波长
 			deviceConfig.calibrationPwr2[i] = i;
 			deviceConfig.calibrationPwr3[i] = i;
 			deviceConfig.calibrationPwr4[i] = i;
@@ -492,7 +493,7 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.calibrationPwr4[18] = 470;
 		deviceConfig.calibrationPwr4[19] = 500;
 
-		for(i = 0;i <= 19;i ++){//娓呯┖鍏朵粬娉㈤暱
+		for(i = 0;i <= 19;i ++){//清空其他波长
 			//deviceConfig.calibrationPwr1[i] = i;
 			//deviceConfig.calibrationPwr2[i] = i;
 			//deviceConfig.calibrationPwr3[i] = i;
@@ -516,9 +517,9 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		deviceConfig.redAimGain = CONFIG_LASER_RAIM_DEFAULT_GAIN;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 #if defined(LYPE_MCU_1V0_20260106)
-		deviceConfig.normalOpenInterLock = 0;//榛樿甯稿紑鑱旈攣
+		deviceConfig.normalOpenInterLock = 0;//默认常开联锁
 #else
-		deviceConfig.normalOpenInterLock = 1;//榛樿甯稿紑鑱旈攣 
+		deviceConfig.normalOpenInterLock = 1;//默认常开联锁 
 #endif
 		deviceConfig.laserDiodeA_Temp = CONFIG_LASER_A_DIODE_SET_TEMP;
 		deviceConfig.laserDiodeB_Temp = CONFIG_LASER_B_DIODE_SET_TEMP;
@@ -528,17 +529,17 @@ void loadDeviceConfig(void){//浠嶦PROM杞藉叆閰嶇疆鏂囦欢
 		printf("%s,%d,%s:load device config done...\n",__FILE__, __LINE__, __func__);
 	}
 }
-void saveDeviceConfig(void){//灏嗛厤缃啓鍏PROM
+void saveDeviceConfig(void){//将配置写入EPROM
 	uint32_t crc32_cfg;
-	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//鍐欏叆EPROM	
+	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM	
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//鍐欏叆鏍￠獙鍊?
+	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
 	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
 }
-void saveCalibrationTable(uint8_t channel){//鍌ㄥ瓨閫夊畾閫氶亾鐨勫姛鐜囨牎鍑嗚〃
+void saveCalibrationTable(uint8_t channel){//储存选定通道的功率校准表
 	uint32_t crc32_cfg;
-	uint8_t *memberAddr;//鎴愬憳鍦板潃
-	uint8_t *structAddr;//缁撴瀯浣撳湴鍧€
+	uint8_t *memberAddr;//成员地址
+	uint8_t *structAddr;//结构体地址
 	uint32_t writeSize, epromWriteAddr;
 	structAddr = (uint8_t*)&deviceConfig;
 	switch(channel){
@@ -584,13 +585,12 @@ void saveCalibrationTable(uint8_t channel){//鍌ㄥ瓨閫夊畾閫氶亾鐨勫�
 		}
 		default:break;
 	}
-	epromWriteAddr = CONFIG_EPROM_CONFIG_START + structAddr - memberAddr;//璁＄畻EPROM
-	epromWrite(epromWriteAddr, memberAddr, writeSize);//鍐欏叆EPROM	
+	epromWriteAddr = CONFIG_EPROM_CONFIG_START + structAddr - memberAddr;//计算EPROM
+	epromWrite(epromWriteAddr, memberAddr, writeSize);//写入EPROM	
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//鍐欏叆鏍￠獙鍊?
+	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
 	printf("%s,%d,%s:save laser channle:%d calibration table to eprom done...(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, channel,crc32_cfg);
 }
-
 
 
 void sPlcPortInit(void){//sPlcPort端口驱动初始化(ADC/IO/DAC)
