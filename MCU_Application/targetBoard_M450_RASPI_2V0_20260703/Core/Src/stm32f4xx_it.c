@@ -238,9 +238,9 @@ void SPI2_IRQHandler(void)
 //  uint8_t rx_data = 0;
 ////  HAL_SPI_IRQHandler(&hspi2);
 //	
-//  // ���շǿ��ж�
+///  // 接收非空中断
 //  if (__HAL_SPI_GET_FLAG(&hspi2, SPI_FLAG_RXNE) != RESET) {
-//    rx_data = (uint8_t)&hspi2.Instance->DR; // ��ȡ��������
+///    rx_data = (uint8_t)&hspi2.Instance->DR; // 获取接收数据
 
 //      if(spi2_rx_len < SPI2_FRAME_MAX_LEN)
 //      {
@@ -248,10 +248,10 @@ void SPI2_IRQHandler(void)
 //      }
 //			else
 //				spi2_rx_len = 0;
-////    // �洢��������
+/////    // 存储接收数据
 ////    spi_rx_buf[spi2_rx_len++] = rx_data;
 ////    if (spi2_rx_len >= 2048) {
-////      spi2_rx_len = 0; // ��������
+/////      spi2_rx_len = 0; // 清空接收计数
 ////    }
 
 ////		if ((spi2_rx_len == 1)&& (spi_rx_buf[0] == MODBUS_SLAVE_ADDR))
@@ -273,7 +273,7 @@ void SPI2_IRQHandler(void)
 //			else
 //			{
 //         hspi2.Instance->DR = 0x00U;
-////					// ������ϣ����̹ر�SPI�����жϣ�������TXEһֱ��λ�����޽��ж�����
+/////					// 希望这里关闭SPI发送中断，避免TXE一直置位导致无限中断
 ////					__HAL_SPI_DISABLE_IT(&hspi2, SPI_IT_TXE);
 //			}			
 //	}	

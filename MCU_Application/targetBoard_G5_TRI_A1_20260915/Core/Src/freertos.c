@@ -121,7 +121,6 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_MUTEX */
 	/* 互斥量初始化 */
     //xFatfsMutex = xSemaphoreCreateMutex();
-    /* ... ���������ʼ�� ... */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 

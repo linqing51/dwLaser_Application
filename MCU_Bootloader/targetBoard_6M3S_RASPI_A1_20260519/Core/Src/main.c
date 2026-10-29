@@ -118,7 +118,7 @@ int main(void)
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
-    bootLoadProcess();//bootload ִ�г���
+    bbootLoadProcess();//bootload 执行程序
   }
   /* USER CODE END 3 */
 }

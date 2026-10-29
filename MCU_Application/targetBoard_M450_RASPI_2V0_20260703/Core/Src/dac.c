@@ -122,54 +122,54 @@ void HAL_DAC_MspDeInit(DAC_HandleTypeDef* dacHandle)
 
 /* USER CODE BEGIN 1 */
 /**
- * @brief  ????DAC???1??????
- * @param  voltage: ????????????(0 ~ 3.3V)
- * @retval HAL????
+ ** @brief  输出DAC通道1电压
+ ** @param  voltage: 要输出的电压值(0 ~ 3.3V)
+ ** @retval HAL状态码
  */
 HAL_StatusTypeDef DAC_TEC_SetChannel1Voltage(float voltage)
 {
-  // ??????����?��???????0~3.3V??
+  /// 输入电压限幅到0~3.3V范围
   if(voltage < 0.0f) voltage = 0.0f;
   if(voltage > DAC_REF_VOLTAGE) voltage = DAC_REF_VOLTAGE;
 
-  // ???????DAC???????12��?????
+  /// 电压转换为12位DAC数值
   uint32_t dac_value = (uint32_t)(voltage * DAC_MAX_VALUE / DAC_REF_VOLTAGE);
 
-  // ????DAC???1????
+  /// 写入DAC通道1输出
   return HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, dac_value);
 }
 
 /**
- * @brief  ????DAC???2??????
- * @param  voltage: ????????????(0 ~ 3.3V)
- * @retval HAL????
+ ** @brief  输出DAC通道2电压
+ ** @param  voltage: 要输出的电压值(0 ~ 3.3V)
+ ** @retval HAL状态码
  */
 HAL_StatusTypeDef DAC_TEC_SetChannel2Voltage(float voltage)
 {
-  // ??????����??
+  /// 输入电压限幅
   if(voltage < 0.0f) voltage = 0.0f;
   if(voltage > DAC_REF_VOLTAGE) voltage = DAC_REF_VOLTAGE;
-  // ???????DAC?????
+  /// 电压转换为DAC数值
   uint32_t dac_value = (uint32_t)(voltage * DAC_MAX_VALUE / DAC_REF_VOLTAGE);
-  // ????DAC???2????
+  /// 写入DAC通道2输出
   return HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, dac_value);
 }
 
 /**
- * @brief  ??????DAC???1?????2??????
- * @param  ch1_voltage: ???1????
- * @param  ch2_voltage: ???2????
- * @retval HAL????
+ ** @brief  同时输出DAC通道1和通道2电压
+ ** @param  ch1_voltage: 通道1电压
+ ** @param  ch2_voltage: 通道2电压
+ ** @retval HAL状态码
  */
 HAL_StatusTypeDef DAC_TEC_SetDualChannelVoltage(float ch1_voltage, float ch2_voltage)
 {
   HAL_StatusTypeDef ret = HAL_OK;
 
-  // ???????1
+  /// 设置通道1电压
   ret = DAC_TEC_SetChannel1Voltage(ch1_voltage);
   if(ret != HAL_OK) return ret;
 
-  // ???????2
+  /// 设置通道2电压
   ret = DAC_TEC_SetChannel2Voltage(ch2_voltage);
   return ret;
 }

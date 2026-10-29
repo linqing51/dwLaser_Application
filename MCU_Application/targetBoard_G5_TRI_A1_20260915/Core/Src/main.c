@@ -63,7 +63,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-/* ȫ��FATFS����������main.c�ж��� */
+//* 全局FATFS变量在main.c中定义 */
 //SemaphoreHandle_t xFatfsMutex = NULL;
 
 /* USER CODE END PV */

@@ -235,13 +235,13 @@ void CAN_Filter_Config(void)
     Error_Handler();
   }
 
-  //����FIFO0�����ж�
+  ///使能FIFO0接收中断
   if(HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING)!=HAL_OK)
   {
     Error_Handler();
   }
 
-  //����CAN����
+  ///启动CAN
   if(HAL_CAN_Start(&hcan1) != HAL_OK)
   {
     Error_Handler();
@@ -265,13 +265,13 @@ void CAN_Filter_Config(void)
     Error_Handler();
   }
 
-  //����FIFO0�����ж�
+  ///使能FIFO0接收中断
   if(HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING)!=HAL_OK)
   {
     Error_Handler();
   }
 
-  //����CAN����
+  ///启动CAN
   if(HAL_CAN_Start(&hcan2) != HAL_OK)
   {
     Error_Handler();
