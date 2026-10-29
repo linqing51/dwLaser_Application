@@ -76,7 +76,7 @@ FILE __stdin;
 /*****************************************************************************/
 
 void listNvramTable(void){//输出NVRAM分布表
-	printf("************************NVRAM MAP****************************\n\n");
+	printf("************************NVRAM MAP****************************\n");
 	printf("MR:%d---%d(size:%d byte)\n", MR_START, MR_END, CONFIG_MR_SIZE);
 	printf("DM:%d---%d(size:%d byte)\n", DM_START, DM_END, CONFIG_DM_SIZE);
 	printf("R:%d---%d(size:%d byte)\n", R_START, R_END, CONFIG_R_SIZE);
@@ -97,11 +97,10 @@ void listNvramTable(void){//输出NVRAM分布表
 	printf("TMP:%d---%d(size:%d byte)\n",TMP_START, TMP_END, CONFIG_TMP_SIZE);
 	printf("NVRAM size:%d byte\n", CONFIG_NVRAM_SIZE);
 	printf("FDRAM size:%d byte\n", CONFIG_FDRAM_SIZE);
-	printf("*************************************************************\n\n");
 }
 
 void listEpromTable(void){//输出EPROM分布表
-	printf("************************EPROM MAP****************************\n\n");
+	printf("************************EPROM MAP****************************\n");
 	printf("MR EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_MR_START, (uint32_t)CONFIG_EPROM_MR_END, (uint16_t)(CONFIG_EPROM_MR_END - CONFIG_EPROM_MR_START + 1L));
 	printf("DM EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_DM_START, (uint32_t)CONFIG_EPROM_DM_END, (uint16_t)(CONFIG_EPROM_DM_END - CONFIG_EPROM_DM_START + 1L));
 	printf("FD EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_FD_START, (uint32_t)CONFIG_EPROM_FD_END, ((uint16_t)CONFIG_EPROM_FD_END - CONFIG_EPROM_FD_START + 1L));
@@ -122,7 +121,6 @@ void listEpromTable(void){//输出EPROM分布表
   printf("TREAMENT EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_TREATMENT_START, (uint32_t)CONFIG_EPROM_TREATMENT_END, (uint16_t)(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1));
   printf("CONFIG EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_CONFIG_START, (uint32_t)CONFIG_EPROM_CONFIG_END, (uint16_t)(CONFIG_EPROM_CONFIG_END - CONFIG_EPROM_CONFIG_START + 1));
 	printf("LOGINFO EPROM:0x%04X---0x%04X(size:%d byte)\n", (uint32_t)CONFIG_EPROM_LOGINFO_START,(uint32_t)CONFIG_EPROM_LOGINFO_END, (uint16_t)(CONFIG_EPROM_LOGINFO_END - CONFIG_EPROM_LOGINFO_START + 1));
-	printf("**************************************************************\n\n");
 }
 
 int fputc(int ch,FILE *f){

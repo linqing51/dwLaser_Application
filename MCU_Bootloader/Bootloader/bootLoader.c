@@ -152,7 +152,9 @@ static void usbPowerCycle(void){//USB VBUS断电重启,复位U盘主控
 void bootLoadInit(void){//引导程序初始化
 	forceUpdateMcu = 0;
 	forceUpdateLcd = 0;
+  printf("Bootloader:Eprom Init\n");
   epromInit();
+  listEpromTable();
 	listNvramTable();
 	SET_SPK_AP_OFF;//关闭蜂鸣器
 	printf("Bootloader:OUTPUT->SKP_EN       = LOW\n");
@@ -176,6 +178,10 @@ void bootLoadInit(void){//引导程序初始化
 	SET_TEC_CH7_OFF;//关闭制冷
 	SET_TEC_GATE_CH0_OFF;
 	SET_TEC_GATE_CH1_OFF;
+  SET_FAN0_OFF;
+  SET_FAN1_OFF;
+  SET_FAN2_OFF;
+  //关闭冷却风扇
 	printf("Bootloader:OUTPUT->LAS_TEC      = LOW\n");
 	//关闭所有激光
 	SET_RED_LED_DC(50);										
@@ -219,7 +225,6 @@ void bootLoadInit(void){//引导程序初始化
 	releaseTime0 = 0;
 	releaseTime1 = 0;
 	bootLoadState = BT_STATE_IDLE; 
-	printf("\r\n");
 	//显示输入IO状态
 	if(GET_ESTOP_NC == GPIO_PIN_SET){//TTL=H
 		printf("Bootloader:INPUT->ESTOP_NC      = HIGH\n");
@@ -291,10 +296,8 @@ void bootLoadProcess(void){//bootload 执行程序
 			SET_RED_LED_OFF;
 			SET_GREEN_LED_OFF;
 			SET_BLUE_LED_OFF;
-             
-			printf("\n\n\n\n");
+
 			printf("Bootloader:Start...............\n");
-			listEpromTable();
 			crcEpromMcu = 0xFFFFFFFF;
 			ret = epromReadDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);//从EPROM载入设备配置
 			if(ret == HAL_OK){
