@@ -1,8 +1,13 @@
+ï»¿/*----------------------------------------------------------------------------
+ * æ–‡ä»¶ç¼–ç çº¦å®š: æœ¬æ–‡ä»¶ä¸º UTF-8 ç¼–ç (å¸¦BOM)ã€‚
+ * æœ¬å·¥ç¨‹æºç ç»Ÿä¸€ä½¿ç”¨ UTF-8(å¸¦BOM) ä¿å­˜: æ–°å»ºæˆ–ä¿®æ”¹ä»»ä½•æºæ–‡ä»¶æ—¶,
+ * è¯·ä»¥ UTF-8 ç¼–ç ä¿å­˜, å¹¶åœ¨æ–‡ä»¶å¤´ä¿ç•™æœ¬æ³¨é‡Šã€‚
+ *----------------------------------------------------------------------------*/
 #include "dcHmiApp.h"
 #include "tempCtrLoop.h"
 /*****************************************************************************/
 #if (CONFIG_USING_CLASSIC_PID == 1)
-PID_Controller_t ClassicPid_A;//ºãÎÂ¿ØÖÆÆ÷
+PID_Controller_t ClassicPid_A;//æ’æ¸©æ§åˆ¶å™¨
 #endif
 
 #if (CONFIG_USING_FUZZY_PID == 1)
@@ -13,7 +18,7 @@ FuzzyPID_HandleTypeDef FuzzyPid_A;
 SmartPID_Controller SmartPid_A;
 #endif
 
-FanController AutoFan0, AutoFan1, AutoFan2, AutoFan3, AutoFan4, AutoFan5, AutoFan6, AutoFan7;// ´´½¨·çÉÈ¿ØÖÆÆ÷ÊµÀı
+FanController AutoFan0, AutoFan1, AutoFan2, AutoFan3, AutoFan4, AutoFan5, AutoFan6, AutoFan7;// åˆ›å»ºé£æ‰‡æ§åˆ¶å™¨å®ä¾‹
 int16_t LaserTecOutCounter0, LaserTecOut0;
 /*****************************************************************************/
 void tempControlInit(void){
@@ -24,56 +29,56 @@ void tempControlInit(void){
 
 #if CONFIG_USING_FUZZY_PID == 1
 	FuzzyPID_Init(&FuzzyPid_A, 
-									2.2f, 0.1f, 0.1f,  // »ù´¡ Kp, Ki, Kd
-                  0, 4095,            // Êä³öÏŞ·ù 0~1000
-                  500.0f,             // »ı·ÖÏŞ·ù
-                  1000,                // ¿ØÖÆÖÜÆÚ 200ms
-                  1,                 // Îó²î·¶Î§ ¡À10¡æ
-                  1);                // Îó²î±ä»¯ÂÊ·¶Î§ ¡À1¡æ/s
+									2.2f, 0.1f, 0.1f,  // åŸºç¡€ Kp, Ki, Kd
+                  0, 4095,            // è¾“å‡ºé™å¹… 0~1000
+                  500.0f,             // ç§¯åˆ†é™å¹…
+                  1000,                // æ§åˆ¶å‘¨æœŸ 200ms
+                  1,                 // è¯¯å·®èŒƒå›´ Â±10â„ƒ
+                  1);                // è¯¯å·®å˜åŒ–ç‡èŒƒå›´ Â±1â„ƒ/s
 #endif
 
 #if CONFIG_USING_SMART_PID == 1
  SmartPID_Init(&SmartPid_A, (float_t)deviceConfig.laserDiodeA_Temp / 10.0F);
 
 #endif	
-	FanController_Init(&AutoFan0, fan_curve_0, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
-	FanController_Init(&AutoFan1, fan_curve_1, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
-	FanController_Init(&AutoFan2, fan_curve_2, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
-	FanController_Init(&AutoFan3, fan_curve_3, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
-	FanController_Init(&AutoFan4, fan_curve_4, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
-	FanController_Init(&AutoFan5, fan_curve_5, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
-	FanController_Init(&AutoFan6, fan_curve_6, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
-	FanController_Init(&AutoFan7, fan_curve_7, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//³õÊ¼»¯·çÉÈ¿ØÖÆÆ÷£¨ºËĞÄËã·¨ÓëÓ²¼ş½Ó¿Ú°ó¶¨£©
+	FanController_Init(&AutoFan0, fan_curve_0, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
+	FanController_Init(&AutoFan1, fan_curve_1, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
+	FanController_Init(&AutoFan2, fan_curve_2, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
+	FanController_Init(&AutoFan3, fan_curve_3, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
+	FanController_Init(&AutoFan4, fan_curve_4, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
+	FanController_Init(&AutoFan5, fan_curve_5, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
+	FanController_Init(&AutoFan6, fan_curve_6, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
+	FanController_Init(&AutoFan7, fan_curve_7, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//åˆå§‹åŒ–é£æ‰‡æ§åˆ¶å™¨ï¼ˆæ ¸å¿ƒç®—æ³•ä¸ç¡¬ä»¶æ¥å£ç»‘å®šï¼‰
 		
 }
 
-void tempControlLoop(void){//ÎÂ¶È·çÉÈ¿ØÖÆÑ­»·
+void tempControlLoop(void){//æ¸©åº¦é£æ‰‡æ§åˆ¶å¾ªç¯
 	float32_t ftmp0, ftmp1;
 	ftmp0 = !ftmp0;
 	ftmp1 = !ftmp1;
-	//ÎÂ¿ØÖ´ĞĞ ¼¤¹âµÈ´ı·¢Éä¼°´íÎó×´Ì¬Æô¶¯ÎÂ¿Ø
-	if(LDP(SPCOIL_PS1000MS)){//1Ãë¼ä¸ô
-		if(LD(R_TEMP_FAULT)){//ÎÂ¶ÈÒì³£ÎŞÌõ¼ş´ò¿ª·çÉÈ
+	//æ¸©æ§æ‰§è¡Œ æ¿€å…‰ç­‰å¾…å‘å°„åŠé”™è¯¯çŠ¶æ€å¯åŠ¨æ¸©æ§
+	if(LDP(SPCOIL_PS1000MS)){//1ç§’é—´éš”
+		if(LD(R_TEMP_FAULT)){//æ¸©åº¦å¼‚å¸¸æ— æ¡ä»¶æ‰“å¼€é£æ‰‡
 			 	NVRAM0[EM_FAN0_SET_SPEED] = 100;
 		}
 		else{
-			AutoFan0.current_temp = ((float32_t)NVRAM0[EM_HT0_TEMP] / 10.0F);//¹ØÁªÎÂ¶È
-			AutoFan1.current_temp = ((float32_t)NVRAM0[EM_HT1_TEMP] / 10.0F);//¹ØÁªÎÂ¶È
-			AutoFan2.current_temp = ((float32_t)NVRAM0[EM_HT2_TEMP] / 10.0F);//¹ØÁªÎÂ¶È
-			AutoFan3.current_temp = ((float32_t)NVRAM0[EM_HT3_TEMP] / 10.0F);//¹ØÁªÎÂ¶È
-			AutoFan4.current_temp = ((float32_t)NVRAM0[EM_HT1_TEMP] / 10.0F);//¹ØÁªÎÂ¶È
-			AutoFan5.current_temp = ((float32_t)NVRAM0[EM_AMBIENT0_TEMP] / 10.0F);//¹ØÁªÎÂ¶È->»·¾³½ø·çÎÂ¶È
-			AutoFan6.current_temp = ((float32_t)NVRAM0[EM_HWATER_TEMP] / 10.0F);//¹ØÁªÎÂ¶È->ÈÈË®ÎÂ¶È
-			AutoFan7.current_temp = ((float32_t)NVRAM0[EM_HDC1080_TEMP] / 10.0F);//¹ØÁªÎÂ¶È->°åÔØ´«¸ĞÆ÷ÎÂ¶È
+			AutoFan0.current_temp = ((float32_t)NVRAM0[EM_HT0_TEMP] / 10.0F);//å…³è”æ¸©åº¦
+			AutoFan1.current_temp = ((float32_t)NVRAM0[EM_HT1_TEMP] / 10.0F);//å…³è”æ¸©åº¦
+			AutoFan2.current_temp = ((float32_t)NVRAM0[EM_HT2_TEMP] / 10.0F);//å…³è”æ¸©åº¦
+			AutoFan3.current_temp = ((float32_t)NVRAM0[EM_HT3_TEMP] / 10.0F);//å…³è”æ¸©åº¦
+			AutoFan4.current_temp = ((float32_t)NVRAM0[EM_HT1_TEMP] / 10.0F);//å…³è”æ¸©åº¦
+			AutoFan5.current_temp = ((float32_t)NVRAM0[EM_AMBIENT0_TEMP] / 10.0F);//å…³è”æ¸©åº¦->ç¯å¢ƒè¿›é£æ¸©åº¦
+			AutoFan6.current_temp = ((float32_t)NVRAM0[EM_HWATER_TEMP] / 10.0F);//å…³è”æ¸©åº¦->çƒ­æ°´æ¸©åº¦
+			AutoFan7.current_temp = ((float32_t)NVRAM0[EM_HDC1080_TEMP] / 10.0F);//å…³è”æ¸©åº¦->æ¿è½½ä¼ æ„Ÿå™¨æ¸©åº¦
 				
-			FanController_Run(&AutoFan0);// ¸üĞÂ·çÉÈ¿ØÖÆ
-			FanController_Run(&AutoFan1);// ¸üĞÂ·çÉÈ¿ØÖÆ
-			FanController_Run(&AutoFan2);// ¸üĞÂ·çÉÈ¿ØÖÆ
-			FanController_Run(&AutoFan3);// ¸üĞÂ·çÉÈ¿ØÖÆ
-			FanController_Run(&AutoFan4);// ¸üĞÂ·çÉÈ¿ØÖÆ
-			FanController_Run(&AutoFan5);// ¸üĞÂ·çÉÈ¿ØÖÆ
-			FanController_Run(&AutoFan6);// ¸üĞÂ·çÉÈ¿ØÖÆ
-			FanController_Run(&AutoFan7);// ¸üĞÂ·çÉÈ¿ØÖÆ
+			FanController_Run(&AutoFan0);// æ›´æ–°é£æ‰‡æ§åˆ¶
+			FanController_Run(&AutoFan1);// æ›´æ–°é£æ‰‡æ§åˆ¶
+			FanController_Run(&AutoFan2);// æ›´æ–°é£æ‰‡æ§åˆ¶
+			FanController_Run(&AutoFan3);// æ›´æ–°é£æ‰‡æ§åˆ¶
+			FanController_Run(&AutoFan4);// æ›´æ–°é£æ‰‡æ§åˆ¶
+			FanController_Run(&AutoFan5);// æ›´æ–°é£æ‰‡æ§åˆ¶
+			FanController_Run(&AutoFan6);// æ›´æ–°é£æ‰‡æ§åˆ¶
+			FanController_Run(&AutoFan7);// æ›´æ–°é£æ‰‡æ§åˆ¶
 			
 			NVRAM0[EM_FAN0_SET_SPEED] = AutoFan0.current_speed;
 			NVRAM0[EM_FAN1_SET_SPEED] = AutoFan1.current_speed;
@@ -99,15 +104,15 @@ void tempControlLoop(void){//ÎÂ¶È·çÉÈ¿ØÖÆÑ­»·
 #endif
 
 #if CONFIG_USING_FUZZY_PID == 1
-		FuzzyPID_SetSetpoint(&FuzzyPid_A, deviceConfig.laserDiodeA_Temp); // Éè¶¨Ä¿±êÎÂ¶ÈÎª 25¡æ
+		FuzzyPID_SetSetpoint(&FuzzyPid_A, deviceConfig.laserDiodeA_Temp); // è®¾å®šç›®æ ‡æ¸©åº¦ä¸º 25â„ƒ
 		LaserTecOut0 = FuzzyPID_Compute(&FuzzyPid_A, NVRAM0[EM_LASER_A_DIODE_TEMP]);
 #endif		
 		
 #if CONFIG_USING_SMART_PID == 1		
-		//±æÊ¶Î´Íê³ÉÆÚ¼ä£¬±£³ÖĞ¡¹¦ÂÊÊä³ö»òÁãÊä³ö£¬µÈ´ı±æÊ¶½áÊø
+		//è¾¨è¯†æœªå®ŒæˆæœŸé—´ï¼Œä¿æŒå°åŠŸç‡è¾“å‡ºæˆ–é›¶è¾“å‡ºï¼Œç­‰å¾…è¾¨è¯†ç»“æŸ
 		if(!SmartPID_Identify(&SmartPid_A, (float32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] / 10.0F, &ftmp0)){
 		}
-		else{//±æÊ¶Íê³É»òÌø¹ı±æÊ¶ºó£¬Ö´ĞĞ³£¹æPID±Õ»·¿ØÖÆ
+		else{//è¾¨è¯†å®Œæˆæˆ–è·³è¿‡è¾¨è¯†åï¼Œæ‰§è¡Œå¸¸è§„PIDé—­ç¯æ§åˆ¶
 			ftmp0 = SmartPID_Compute(&SmartPid_A, (float32_t)NVRAM0[EM_LASER_A_DIODE_TEMP]);
 		}
 		LaserTecOut0 =(int16_t)(ftmp0 * 4095);
