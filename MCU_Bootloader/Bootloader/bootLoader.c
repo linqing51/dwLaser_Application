@@ -675,6 +675,7 @@ void bootLoadProcess(void){//bootload 执行程序
 			break;
 		}
 		case BT_STATE_RUN_APP:{//运行应用程序
+			uint32_t i;
 			HAL_FLASH_Lock();//锁定FLASH
 			/* Check Vector Table: Test if user code is programmed starting from* address "APPLICATION_ADDRESS" */
 			if((((*(__IO uint32_t *) APPLICATION_FLASH_START_ADDRESS) & 0xFF000000) == 0x20000000) || (((*(__IO uint32_t *) APPLICATION_FLASH_START_ADDRESS) & 0xFF000000) == 0x10000000)){
@@ -690,13 +691,20 @@ void bootLoadProcess(void){//bootload 执行程序
 				SET_RED_LED_OFF;
 				SET_GREEN_LED_OFF;
 				SET_BLUE_LED_OFF;    
-				__disable_irq();
-				SysTick->CTRL = 0;//关键代码
-				//关闭中断                                    				
-				HAL_NVIC_DisableIRQ(SysTick_IRQn); 
-				HAL_NVIC_DisableIRQ(OTG_FS_IRQn);
-				HAL_NVIC_ClearPendingIRQ(SysTick_IRQn);
-				HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);
+				/* 跳转前彻底复位系统状态, 避免bootloader残留影响APP重新配置外设:
+				 * 症状: APP再配置TIM/中断/USB等外设偶发失败.
+				 * 根因: bootloader开过的外设时钟/计数/中断使能/pending/OTG host模式残留. */
+				__disable_irq();//复位过程不允许中断
+				HAL_RCC_DeInit();//复位时钟树到复位默认(HSI), 并关闭所有外设时钟
+				HAL_DeInit();//强制复位全部外设(清TIM/SPI/USART/ADC/USB OTG等残留状态)
+				SysTick->CTRL = 0;//停SysTick(老HAL的HAL_DeInit不处理)
+				SysTick->LOAD = 0;
+				SysTick->VAL = 0;
+				for(i = 0;i < 8;i ++){//全量清空NVIC: 禁用所有IRQ+清所有pending
+					NVIC->ICER[i] = 0xFFFFFFFFUL;
+					NVIC->ICPR[i] = 0xFFFFFFFFUL;
+				}
+				__enable_irq();//恢复PRIMASK=0, 让APP从开中断状态启动自行管理
 				Jump_To_Application();
 			}
 			bootLoadFailHandler(BT_FAIL_VECTOR_TABLE_INVALID);
