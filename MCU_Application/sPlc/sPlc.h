@@ -19,7 +19,6 @@
 /*****************************************************************************/
 //lib
 #include "..\config\myConfig.h"
-#include "sPlcPort.h"
 #include "sPlcEprom.h"
 #include "libcrc.h"
 #include "libdbg.h"

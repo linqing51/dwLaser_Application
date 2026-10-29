@@ -48,7 +48,7 @@
 /   2: f_opendir(), f_readdir() and f_closedir() are removed in addition to 1.
 /   3: f_lseek() function is removed in addition to 2. */
 
-#define _USE_STRFUNC         0      /* 0:Disable or 1-2:Enable */
+#define _USE_STRFUNC         2      /* 0:Disable or 1-2:Enable */
 /* This option switches string functions, f_gets(), f_putc(), f_puts() and
 /  f_printf().
 /
@@ -56,28 +56,28 @@
 /  1: Enable without LF-CRLF conversion.
 /  2: Enable with LF-CRLF conversion. */
 
-#define _USE_FIND            0
+#define _USE_FIND            1
 /* This option switches filtered directory read functions, f_findfirst() and
 /  f_findnext(). (0:Disable, 1:Enable 2:Enable with matching altname[] too) */
 
-#define _USE_MKFS            0
+#define _USE_MKFS            1
 /* This option switches f_mkfs() function. (0:Disable or 1:Enable) */
 
-#define _USE_FASTSEEK        0
+#define _USE_FASTSEEK        1
 /* This option switches fast seek feature. (0:Disable or 1:Enable) */
 
-#define	_USE_EXPAND		0
+#define	_USE_EXPAND		1
 /* This option switches f_expand function. (0:Disable or 1:Enable) */
 
-#define _USE_CHMOD		0
+#define _USE_CHMOD		1
 /* This option switches attribute manipulation functions, f_chmod() and f_utime().
 /  (0:Disable or 1:Enable) Also _FS_READONLY needs to be 0 to enable this option. */
 
-#define _USE_LABEL           0
+#define _USE_LABEL           1
 /* This option switches volume label functions, f_getlabel() and f_setlabel().
 /  (0:Disable or 1:Enable) */
 
-#define _USE_FORWARD         0
+#define _USE_FORWARD         1
 /* This option switches f_forward() function. (0:Disable or 1:Enable) */
 
 /*-----------------------------------------------------------------------------/
@@ -178,7 +178,7 @@
 /  arbitrary physical drive and partition listed in the VolToPart[]. Also f_fdisk()
 /  function will be available. */
 #define _MIN_SS    512  /* 512, 1024, 2048 or 4096 */
-#define _MAX_SS    4096  /* 512, 1024, 2048 or 4096 */
+#define _MAX_SS    512  /* 512, 1024, 2048 or 4096 */
 /* These options configure the range of sector size to be supported. (512, 1024,
 /  2048 or 4096) Always set both 512 for most systems, all type of memory cards and
 /  harddisk. But a larger value may be required for on-board flash memory and some
@@ -186,7 +186,7 @@
 /  to variable sector size and GET_SECTOR_SIZE command must be implemented to the
 /  disk_ioctl() function. */
 
-#define	_USE_TRIM      0
+#define	_USE_TRIM      1
 /* This option switches support of ATA-TRIM. (0:Disable or 1:Enable)
 /  To enable Trim function, also CTRL_TRIM command should be implemented to the
 /  disk_ioctl() function. */
@@ -230,7 +230,7 @@
 /  _NORTC_MDAY and _NORTC_YEAR have no effect.
 /  These options have no effect at read-only configuration (_FS_READONLY = 1). */
 
-#define _FS_LOCK    2     /* 0:Disable or >=1:Enable */
+#define _FS_LOCK    255     /* 0:Disable or >=1:Enable */
 /* The option _FS_LOCK switches file lock function to control duplicated file open
 /  and illegal operation to open objects. This option must be 0 when _FS_READONLY
 /  is 1.

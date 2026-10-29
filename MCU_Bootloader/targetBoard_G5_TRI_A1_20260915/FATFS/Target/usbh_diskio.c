@@ -218,8 +218,7 @@ DRESULT USBH_ioctl(BYTE lun, BYTE cmd, void *buff)
   case GET_SECTOR_COUNT :
     if(USBH_MSC_GetLUNInfo(&hUSB_Host, lun, &info) == USBH_OK)
     {
-      /* READ CAPACITY(10) returns last LBA (0-based), total = last LBA + 1 */
-      *(DWORD*)buff = info.capacity.block_nbr + 1U;
+      *(DWORD*)buff = info.capacity.block_nbr;
       res = RES_OK;
     }
     else

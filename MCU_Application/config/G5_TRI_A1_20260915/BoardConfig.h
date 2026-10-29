@@ -14,8 +14,8 @@ extern CRC_HandleTypeDef hcrc;
 extern RNG_HandleTypeDef hrng;
 extern DAC_HandleTypeDef hdac;//LAS0 LAS1
 extern SPI_HandleTypeDef hspi3;//EPROM SPI3
-extern TIM_HandleTypeDef htim3;//RGB LED TIM
-extern TIM_HandleTypeDef htim4;//FAN TIM
+extern TIM_HandleTypeDef htim3;//FAN TIM
+extern TIM_HandleTypeDef htim4;//RGB LED TIM
 extern TIM_HandleTypeDef htim5;//AIM TIM	
 	
 extern TIM_HandleTypeDef htim7;//LASER TIM
@@ -28,6 +28,36 @@ extern UART_HandleTypeDef huart3;//BT/DEV UART
 extern UART_HandleTypeDef huart6;//NFS UART
 extern USBH_HandleTypeDef hUsbHostHS;
 extern USBH_HandleTypeDef hUsbHostFS;
+/*****************************************************************************/
+//定义外设总线
+#define CONFIG_LASER_TIM_HANDLE								htim7
+#define CONFIG_LASER_TIM											TIM7
+
+#define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
+#define CONFIG_SPLC_TIM												TIM14
+
+#define CONFIG_SPK_HANDLE											htim8//SPK 计时器定义	
+#define CONFIG_SPK_TIM												TIM8
+#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
+
+#define CONFIG_FAN0_TIM_HANDLE								htim3	
+#define CONFIG_FAN0_TIM												TIM3
+#define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_2
+#define CONFIG_FAN0_FG_CHANNEL								TIM_CHANNEL_1
+
+#define CONFIG_RGB_LED_TIM_HANDLE             htim4
+#define CONFIG_RGB_LED_TIM                    TIM4
+
+#define CONFIG_AIM_HANDLE											htim5			
+#define CONFIG_AIM_PWM_CHANNEL								TIM_CHANNEL_1
+
+#define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
+#define CONFIG_EPROM_BUS											SPI3	
+
+#define CONFIG_DEBUG_UART											huart3//调试串口
+
+#define CONFIG_GDDC_UART											huart1//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
 /*****************************************************************************/
 //引脚功能定义
 #define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
@@ -68,16 +98,16 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_EDAC6_SDI(b)											__nop()
 #define SET_EDAC7_SDI(b)											__nop()
 
-#define SET_RED_LED_ON												HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3)
-#define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_3)
-#define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4)
-#define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_4)
-#define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2)
-#define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2)
+#define SET_RED_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_2)
+#define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_2)
+#define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_3)
+#define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_3)
+#define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_1)
+#define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_1)
 
-#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, b)
-#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, b)
-#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, b)
+#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_3, b)
+#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_4, b)
+#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_2, b)
 
 #define SET_BEEM_LED_ON												__nop()
 #define SET_BEEM_LED_OFF											__nop()
@@ -212,33 +242,6 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_SAFE_RESET(b)											__nop()
 #define SET_SAFE_RESET_ON                    	__nop()
 #define SET_SAFE_RESET_OFF                   	__nop()
-/*****************************************************************************/
-//定义外设总线
-#define CONFIG_LASER_TIM_HANDLE								htim7
-#define CONFIG_LASER_TIM											TIM7
-
-#define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
-#define CONFIG_SPLC_TIM												TIM14
-
-#define CONFIG_SPK_HANDLE											htim8//SPK 计时器定义	
-#define CONFIG_SPK_TIM												TIM8
-#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
-
-#define CONFIG_FAN0_TIM_HANDLE								htim4	
-#define CONFIG_FAN0_TIM												TIM4
-#define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_2
-#define CONFIG_FAN0_FG_CHANNEL								TIM_CHANNEL_1
-
-#define CONFIG_AIM_HANDLE											htim5			
-#define CONFIG_AIM_PWM_CHANNEL								TIM_CHANNEL_1
-
-#define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
-#define CONFIG_EPROM_BUS											SPI3	
-
-#define CONFIG_DEBUG_UART											huart3//调试串口
-
-#define CONFIG_GDDC_UART											huart1//GDDC串口
-#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
 /*****************************************************************************/
 //配置EPROM规格
 #define CONFIG_EPROM_SPI											
