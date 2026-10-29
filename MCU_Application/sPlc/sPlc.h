@@ -49,45 +49,45 @@ extern "C" {
 /*****************************************************************************/
 #define BEEM_MODE_0														0x10//连续模式
 #define BEEM_MODE_1														0x11//声光同步
-#define BEEM_MODE_2														0x12//激光发射固定间隔
+#define BEEM_MODE_2														0x12//激光发射固定间�?
 #define BEEM_MODE_3														0x13//异常报警
-#define BEEM_MODE_4														0x14//激光发射固定间隔+提示音
+#define BEEM_MODE_4														0x14//激光发射固定间�?提示�?
 #define BEEM_MODE_5														0x15
 /*****************************************************************************/
 #define LASER_MODE_CW													0x01//连续模式
-#define LASER_MODE_MP													0x02//多脉冲模式
+#define LASER_MODE_MP													0x02//多脉冲模�?
 /*****************************************************************************/
 
 
 typedef struct{
-	uint16_t calibrationPwr0[20];//通道0功率校正表
-	uint16_t calibrationPwr1[20];//通道1功率校正表
-	uint16_t calibrationPwr2[20];//通道2功率校正表
-	uint16_t calibrationPwr3[20];//通道3功率校正表
-	uint16_t calibrationPwr4[20];//通道4功率校正表
-	uint16_t calibrationPwr5[20];//通道5功率校正表
-	uint16_t calibrationPwr6[20];//通道6功率校正表
-	uint16_t calibrationPwr7[20];//通道7功率校正表
-	char serialNumber[16];//序列号
-	int16_t mfg_year;//生产年
-	int16_t mfg_month;//生产月
-	int16_t mfg_day;//生产日
+	uint16_t calibrationPwr0[20];//通道0功率校正�?
+	uint16_t calibrationPwr1[20];//通道1功率校正�?
+	uint16_t calibrationPwr2[20];//通道2功率校正�?
+	uint16_t calibrationPwr3[20];//通道3功率校正�?
+	uint16_t calibrationPwr4[20];//通道4功率校正�?
+	uint16_t calibrationPwr5[20];//通道5功率校正�?
+	uint16_t calibrationPwr6[20];//通道6功率校正�?
+	uint16_t calibrationPwr7[20];//通道7功率校正�?
+	char serialNumber[16];//序列�?
+	int16_t mfg_year;//生产�?
+	int16_t mfg_month;//生产�?
+	int16_t mfg_day;//生产�?
 	int8_t redLedDc;//红灯亮度
 	int8_t greenLedDc;//绿灯亮度
 	int8_t blueLedDc;//蓝灯亮度
 	int8_t redAimGain;//红指示光增益
 	int8_t greenAimGain;//绿指示光增益
-	int16_t fiberDetect;//光纤探测阈值
+	int16_t fiberDetect;//光纤探测阈�?
 	int16_t laserDiodeA_Temp;//激光器A设置温度
 	int16_t laserDiodeB_Temp;//激光器B设置温度
 	char normalOpenInterLock;
 }deviceConfig_t;
 
 typedef struct{
-	uint32_t powerUpCycle;//开机次数
+	uint32_t powerUpCycle;//开机次�?
 	uint32_t runTime;//运行累计时间 单位分钟
-	int16_t laserMaxPhotoDiode;//激光器最大功率
-	int16_t mucMaxTemper;//处理器最高温度
+	int16_t laserMaxPhotoDiode;//激光器最大功�?
+	int16_t mucMaxTemper;//处理器最高温�?
 }deviceLogInfo_t;
 
 /*****************************************************************************/
@@ -95,9 +95,9 @@ extern deviceConfig_t deviceConfig;
 extern deviceLogInfo_t deviceLogInfo;
 extern uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
-extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
-extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存�?当前 包含存档寄存�?
+extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存�?上一�?
+extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存�?
 #ifdef CONFIG_BKRAM_SIZE
 #define CONFIG_BKSRAM_BASE_ADDR								(0x40024000UL)//STM32F405 BKPSRAM 4K 掉电保持区起始地址
 #define BKRAM																	((int16_t *)CONFIG_BKSRAM_BASE_ADDR)//BK 2K区块 直接映射硬件BKSRAM
@@ -106,7 +106,7 @@ extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒
 extern uint16_t TimerCounter_500mS;//500毫秒
-extern uint16_t TimerCounter_1000mS;//1秒
+extern uint16_t TimerCounter_1000mS;//1�?
 extern uint16_t TimerCounter_60000mS;//1分钟
 extern uint8_t TD_10MS_SP;
 extern uint8_t TD_100MS_SP;
@@ -127,9 +127,9 @@ extern int16_t LaserTimer_POvertime;
 extern int16_t LaserTimer_ReleaseTime;
 extern int16_t LaserTimer_ReleaseCounter;
 extern int8_t  LaserFlag_Emiting;//激光发射中标志
-extern int8_t LaserFlag_Emitover;//激光发射完毕标志
+extern int8_t LaserFlag_Emitover;//激光发射完毕标�?
 /*****************************************************************************/
-extern void sPlcInit(void);//软逻辑初始化
+extern void sPlcInit(void);//软逻辑初始�?
 extern void sPlcProcessStart(void);//sPLC轮询起始
 extern void sPlcProcessEnd(void);//sPLC轮询结束
 extern void sPlcPortProcess(void);//sPLC平台程序
@@ -140,9 +140,9 @@ extern void sPlcIsrDisable(void);
 extern void sPlcIsrEnable(void);
 extern void sPlcSpeakerFreq(int16_t freq);//设置喇叭频率
 extern void sPlcSpeakerVolume(int16_t volume);//设置喇叭音量
-extern void sPlcSpeakerEnable(void);//打开喇叭数据流
-extern void sPlcSpeakerDisable(void);//关闭喇叭数据流
-extern void sPlcSpeakerInit(void);//喇叭初始化
+extern void sPlcSpeakerEnable(void);//打开喇叭数据�?
+extern void sPlcSpeakerDisable(void);//关闭喇叭数据�?
+extern void sPlcSpeakerInit(void);//喇叭初始�?
 extern void sPlcNvramUpdate(void);//更新NVRAM->EPROM	
 extern void sPlcNvramLoad(void);
 extern void sPlcNvramSave(void);
@@ -153,7 +153,7 @@ extern void sPlcFdramClear(void);
 #ifdef CONFIG_BKRAM_SIZE
 extern void sPlcBkramLoad(void);//从EPROM中载入BK(映射BKSRAM)
 extern void sPlcBkramSave(void);//BKSRAM->EPROM 强制保存
-extern void sPlcBkramClear(void);//清除BK数据(含EPROM BK区)
+extern void sPlcBkramClear(void);//清除BK数据(含EPROM BK�?
 #endif
 extern void sPlcDeviceConfigClear(void);
 extern void sPlcDeviceLogClear(void);
@@ -162,8 +162,8 @@ extern void resetInit(void);
 extern void SystemClock_Reset(void);//复位系统时钟
 extern void setRedLaserPwm(int16_t pwm);//设置红激光占空比
 extern void setGreenLaserPwm(int16_t pwm);//设置绿激光占空比
-extern void setPower_635(int16_t pwr);//设置红激光功率
-extern void morseCodeDiag(uint8_t diag);//诊断码
+extern void setPower_635(int16_t pwr);//设置红激光功�?
+extern void morseCodeDiag(uint8_t diag);//诊断�?
 extern void saveDeviceConfig(void);//将配置写入EPROM
 extern void loadDeviceConfig(void);//从EPROM载入配置文件
 extern void saveCalibrationTable(uint8_t channel);//储存选定通道的功率校准表
@@ -187,53 +187,53 @@ extern void RtcSetMinutes(uint8_t tmp);
 extern void RtcSetSeconds(uint8_t tmp);
 /*****************************************************************************/
 extern void REBOOT(void) ;//复位
-//位指令
+//位指�?
 extern void SSET(uint16_t A);//线圈置位
 extern void RRES(uint16_t A);//线圈复位
 extern void FLIP(uint16_t A) ;//翻转
 extern uint8_t LD(uint16_t A) ;//载入
 extern uint8_t LDB(uint16_t A) ;//方向载入
-extern uint8_t LDP(uint16_t A) ;//脉冲上升沿
-extern uint8_t LDN(uint16_t A) ;//脉冲下降沿
-//计时器指令
-extern void T10MS(uint8_t A, uint8_t start, uint16_t value) ;//10mS计时器启动
-extern void T100MS(uint8_t A, uint8_t start, uint16_t value) ;//100mS计时器启动
+extern uint8_t LDP(uint16_t A) ;//脉冲上升�?
+extern uint8_t LDN(uint16_t A) ;//脉冲下降�?
+//计时器指�?
+extern void T10MS(uint8_t A, uint8_t start, uint16_t value) ;//10mS计时器启�?
+extern void T100MS(uint8_t A, uint8_t start, uint16_t value) ;//100mS计时器启�?
 //运算指令
-extern void CLR(uint16_t A) ;//寄存器清零
+extern void CLR(uint16_t A) ;//寄存器清�?
 extern void CLRD(uint16_t A) ;//32位寄存器清零
 extern void MOV(uint16_t dist, uint16_t src) ;//16位寄存器传输
 extern void MOVD(uint16_t dist, uint16_t src) ;//32位寄存器传输
-extern void SWAP(uint16_t dist, uint16_t src) ;//交换A的高低字节
-extern void ABS16(uint16_t dist, uint16_t src) ;//16位数球绝对值
-extern void ABS32(uint16_t dist, uint16_t src) ;//32位数求绝对值
-extern void SMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16位有符号数组找最小值
-extern void SMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16位有符号数组找最大值
-extern void UMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16位无符号数组找最小值
-extern void UMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16位无符号数组找最大值
-extern void SUM16(uint16_t index, uint16_t length, uint16_t sum) ;//16BIT数求和->32BIT
-extern void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->32非饱和乘法 D = Sa * Sb
+extern void SWAP(uint16_t dist, uint16_t src) ;//交换A的高低字�?
+extern void ABS16(uint16_t dist, uint16_t src) ;//16位数球绝对�?
+extern void ABS32(uint16_t dist, uint16_t src) ;//32位数求绝对�?
+extern void SMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16位有符号数组找最小�?
+extern void SMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16位有符号数组找最大�?
+extern void UMIN16(uint16_t index, uint16_t length, uint16_t min) ;//16位无符号数组找最小�?
+extern void UMAX16(uint16_t index, uint16_t length, uint16_t max) ;//16位无符号数组找最大�?
+extern void SUM16(uint16_t index, uint16_t length, uint16_t sum) ;//16BIT数求�?>32BIT
+extern void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->32非饱和乘�?D = Sa * Sb
 extern void MULTS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->16饱和乘法 D = Sa * Sb
-extern void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->16非饱和乘法 D = Sa * Sb
+extern void MULT16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16*16->16非饱和乘�?D = Sa * Sb
 extern void SUB32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32位非饱和减法 D = Sa - Sb
-extern void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16位饱和减法 D = Sa - Sb
+extern void SUBS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16位饱和减�?D = Sa - Sb
 extern void SUB16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16位非饱和减法 D = Sa - Sb
-extern void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32位非饱加法 D = Sa + Sb
-extern void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32位饱和加法 D = Sa + Sb
-extern void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16位饱和加法 D = Sa + Sb
+extern void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32位非饱加�?D = Sa + Sb
+extern void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D) ;//32位饱和加�?D = Sa + Sb
+extern void ADDS16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16位饱和加�?D = Sa + Sb
 extern void ADD16(uint16_t Sa, uint16_t Sb, uint16_t D) ;//16位非饱和加法 D = Sa + Sb
 extern void ADD1(uint16_t Sa) ;//16位非饱和自加
-extern void ADDS1(uint16_t Sa) ;//16位饱和自加
+extern void ADDS1(uint16_t Sa) ;//16位饱和自�?
 extern void DEC1(uint16_t Sa) ;//16位非饱和自减
-extern void DECS1(uint16_t Sa) ;//16位饱和自减
+extern void DECS1(uint16_t Sa) ;//16位饱和自�?
 extern void ADL1(uint16_t Sa) ;//32位非饱和自加
-extern void ADLS1(uint16_t Sa) ;//32位饱和自加
+extern void ADLS1(uint16_t Sa) ;//32位饱和自�?
 extern void DEL1(uint16_t Sa) ;//32位非饱和自减
-extern void DELS1(uint16_t Sa) ;//32位饱和自减
-extern void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b);//CODE转换为环境温度 下电阻
-extern void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b);//CODE转换为环境温度 上电阻
+extern void DELS1(uint16_t Sa) ;//32位饱和自�?
+extern void TNTLC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b);//CODE转换为环境温�?下电�?
+extern void TNTUC(uint16_t dist, uint16_t src, float ntc_rs, float ntc_b);//CODE转换为环境温�?上电�?
 extern void TENV(uint16_t dist, uint16_t src);//CODE转换为NTC测量温度温度
-extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);//块复制
-extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);//有符号16位数限制幅度指令
+extern void BCPY(uint16_t dist, uint16_t src, uint16_t length);//块复�?
+extern void LIMS16(uint16_t src, uint16_t min, uint16_t max);//有符�?6位数限制幅度指令
 extern void UPDAC0(void);//立即更新LASER DAC0
 extern void UPDAC1(void);//立即更新LASER DAC1
 extern void UPDAC2(void);//立即更新LASER DAC2
@@ -263,9 +263,21 @@ extern void FDSAV_ONE(int16_t cn);
 extern void FDLAD_ONE(int16_t cn);
 extern void PRTM(uint16_t adr, uint8_t len);
 extern void LINKS(void);//从机接收
-extern void LINKM(void);//主机发送
+extern void LINKM(void);//主机发�?
 extern void EDLAR(void);//停止发射脉冲
-extern void STLAR(void);//开始发射脉冲
+extern void STLAR(void);//开始发射脉�?
+extern void sPlcTimerInit(void);//Ӳ��sTimer��ʱ����ʼ��
+extern void sPlcPortInit(void);//sPlcPort�˿�������ʼ��(ADC/IO/DAC)
+extern void sPlcInputRefresh(void);//��ȡX������
+extern void sPlcAdcProcessBuffer(void);//ADC ����NVRAM
+extern void sPlcInputInit(void);//IO�����˲�����ʼ��
+extern void sPlcOutputInit(void);//IO�����ʼ��
+extern void sPlcAdcInit(void);//ADCģ���ʼ��
+extern void sPlcDacInit(void);//DAC��ʼ��
+extern void sPlcOutputRefresh(void);//����Y�����
+extern void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed);//���÷���ת��
+extern uint8_t hdc1080_init(void);//��ʼ��HDC1080
+extern void hdc1080_read(int16_t *temp, int16_t *humi);//��ȡ��ʪ������
 /*****************************************************************************/
 #ifdef __cplusplus
 }

@@ -1,11 +1,9 @@
 #include "sPlc.h"
-#include "boardConfig.h"
-#include "appConfig.h"
 /*****************************************************************************/
-static int8_t LoudspeakerEnable = -1;//喇叭使能状态
+static int8_t LoudspeakerEnable = -1;//喇叭使能状�?
 static int8_t LoudspeakerVolume = -1;//喇叭音量
 /*****************************************************************************/
-void sPlcSpeakerInit(void){//喇叭初始化
+void sPlcSpeakerInit(void){//喇叭初始�?
 	RRES(SPCOIL_BEEM_ENABLE);
 	sPlcSpeakerVolume(NVRAM0[DM_BEEM_VOLUME]);
 	sPlcSpeakerDisable();
@@ -16,7 +14,7 @@ void sPlcSpeakerInit(void){//喇叭初始化
 #endif
 }
 
-void sPlcSpeakerDisable(void){//关闭喇叭数据流
+void sPlcSpeakerDisable(void){//关闭喇叭数据�?
 	if(LoudspeakerEnable != false){
 		SET_SPK_AP_OFF;
 		SET_SPK_TIM_OFF;
@@ -27,7 +25,7 @@ void sPlcSpeakerDisable(void){//关闭喇叭数据流
 	}
 }
 
-void sPlcSpeakerEnable(void){//打开喇叭数据流
+void sPlcSpeakerEnable(void){//打开喇叭数据�?
 	if(LoudspeakerEnable != true){
 		SET_SPK_AP_ON;
 		SET_SPK_TIM_ON;
@@ -42,7 +40,7 @@ void sPlcSpeakerEnable(void){//打开喇叭数据流
 uint16_t audioSineTable[256] = {0};
 static float32_t linearToLog(int16_t volume);
 
-void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
+void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频�?
 	float32_t f1;
 	SET_SPK_TIM_OFF;
 	if(freq > CONFIG_MAX_SPK_FREQ){
@@ -113,7 +111,8 @@ static float32_t linearToLog(int16_t volume){//线性音量转化为对数音量
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LYPE_MCU_1V0_20260106) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL) ||\
+		defined(G5_TRI_A1_20260915)
 static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 	uint16_t tmp, i, wdat;
 	SET_MCP41010_CS(GPIO_PIN_SET);//CS = 1
@@ -156,21 +155,23 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
 		defined(LYPE_MCU_1V0_20260106) ||\
-		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
+		defined(LDR2P1_RASPI_G9_A1_20250322_DUAL) ||\
+		defined(G5_TRI_A1_20260915)
 static void setSpeakerFreq(uint16_t frequency){
-  // TIM8时钟频率为168MHz (APB2时钟84MHz，定时器时钟=2*APB2时钟)
+  // TIM8时钟频率�?68MHz (APB2时钟84MHz，定时器时钟=2*APB2时钟)
   //uint32_t timer_clock = 84000000;
   uint32_t timer_clock;
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
 		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
 		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP)
+		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
+		defined(G5_TRI_A1_20260915)
     timer_clock = HAL_RCC_GetPCLK2Freq();
 #endif
 #if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
     timer_clock= HAL_RCC_GetPCLK1Freq();
 #endif
-  // 计算预分频器和自动重装载值
+  // 计算预分频器和自动重装载�?
   // 目标: (PSC + 1) * (ARR + 1) = timer_clock / frequency
   uint32_t prescaler = 0;
   uint32_t arr_value;
@@ -183,7 +184,7 @@ static void setSpeakerFreq(uint16_t frequency){
   // 先尝试不分频(PSC=0)
   arr_value = (timer_clock / frequency) - 1;
   
-  // 如果ARR超过最大值(65535)，增加预分频
+  // 如果ARR超过最大�?65535)，增加预分频
   if (arr_value > 65535)
   {
     prescaler = 167;  // 168分频
@@ -197,7 +198,7 @@ static void setSpeakerFreq(uint16_t frequency){
     }
   }
   
-  // 配置定时器参数
+  // 配置定时器参�?
   CONFIG_SPK_HANDLE.Init.Prescaler = prescaler;
   CONFIG_SPK_HANDLE.Init.Period = arr_value;
   // 重新初始化定时器
@@ -205,7 +206,7 @@ static void setSpeakerFreq(uint16_t frequency){
 		printf("reSet spk tim base clk fail!!!\n");
     Error_Handler();
   }
-  // 配置50%占空比
+  // 配置50%占空�?
   TIM_OC_InitTypeDef sConfigOC = {0};
 	sConfigOC.OCMode = TIM_OCMODE_TOGGLE;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
@@ -213,7 +214,7 @@ static void setSpeakerFreq(uint16_t frequency){
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;	
-  sConfigOC.Pulse = arr_value / 2;  // 50%占空比
+  sConfigOC.Pulse = arr_value / 2;  // 50%占空�?
   if (HAL_TIM_PWM_ConfigChannel(&CONFIG_SPK_HANDLE, &sConfigOC, CONFIG_SPK_PWM_CHANNEL) != HAL_OK){
 		printf("reSet spk time out freq fail!!!\n");
     Error_Handler();
@@ -221,7 +222,7 @@ static void setSpeakerFreq(uint16_t frequency){
 }
 #endif
 
-inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
+inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频�?
 	if(freq > CONFIG_BEEM_MAX_FREQ){
 		freq = CONFIG_BEEM_MAX_FREQ;
 	}
@@ -288,12 +289,12 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
 
 static void setSpeakerFreq(uint16_t frequency){
 	TIM_OC_InitTypeDef sConfigOC = {0};
-  // 计算自动重载值(ARR)和预分频器值(PSC)
+  // 计算自动重载�?ARR)和预分频器�?PSC)
   uint32_t SystemCoreClock = HAL_RCC_GetPCLK1Freq();
-  uint32_t psc = 84 - 1; // 预分频器值，将42MHz时钟分频为1MHz
+  uint32_t psc = 84 - 1; // 预分频器值，�?2MHz时钟分频�?MHz
   uint32_t arr = (SystemCoreClock / (psc + 1)) / frequency - 1;
 
-  // TIM2初始化
+  // TIM2初始�?
   htim2.Instance = CONFIG_SPK_TIM;
   htim2.Init.Prescaler = psc;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -306,7 +307,7 @@ static void setSpeakerFreq(uint16_t frequency){
   }
   // 配置PWM模式
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = arr / 2; // 50%占空比
+  sConfigOC.Pulse = arr / 2; // 50%占空�?
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&CONFIG_SPK_TIM, &sConfigOC, CONFIG_SPK_PWM_CHANNEL) != HAL_OK){
@@ -315,7 +316,7 @@ static void setSpeakerFreq(uint16_t frequency){
   }
 }
 
-inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频率
+inline void sPlcSpeakerFreq(int16_t freq){//设置蜂鸣器频�?
 	if(freq > CONFIG_BEEM_MAX_FREQ){
 		freq = CONFIG_BEEM_MAX_FREQ;
 	}

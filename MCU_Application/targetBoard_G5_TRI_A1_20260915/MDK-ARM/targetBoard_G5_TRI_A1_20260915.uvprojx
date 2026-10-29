@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,USER_VECT_TAB_ADDRESS,MBEDTLS_CONFIG_FILE=&lt;mbedtls_config.h&gt;,STM32F405xx,G5_TRI_A1_20260915</Define>
               <Undefine></Undefine>
-              <IncludePath>../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../Drivers/CMSIS/DSP/PrivateInclude;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../../sPlc;../../sPlcPort;../../lib;../../MainApp;../../deviceInfo;../../dcHmi;../../minicsv-master;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../LIBJPEG/App;../LIBJPEG/Target;../MBEDTLS/App;../Middlewares/Third_Party/LibJPEG/include;../Middlewares/Third_Party/mbedTLS/include/mbedtls;../Middlewares/Third_Party/mbedTLS/include</IncludePath>
+              <IncludePath>../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/HID/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../Drivers/CMSIS/DSP/PrivateInclude;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../../sPlc;../../sPlcPort;../../lib;../../MainApp;../../deviceInfo;../../dcHmi;../../minicsv-master;../../config;../../config/G5_TRI_A1_20260915;../../sPlcPort/G5_TRI_A1_20260915;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/;../Middlewares/Third_Party/ARM_CMSIS/CMSIS/DSP/Include;../Middlewares/ST/STM32_USB_Host_Library/Class/AUDIO/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MTP/Inc;../LIBJPEG/App;../LIBJPEG/Target;../MBEDTLS/App;../Middlewares/Third_Party/LibJPEG/include;../Middlewares/Third_Party/mbedTLS/include/mbedtls;../Middlewares/Third_Party/mbedTLS/include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2836,17 +2836,12 @@
             <File>
               <FileName>sPlcMisc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcMisc.c</FilePath>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcMisc.c</FilePath>
             </File>
             <File>
               <FileName>sPlcSpeaker.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcSpeaker.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcTimer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\sPlcTimer.c</FilePath>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcSpeaker.c</FilePath>
             </File>
             <File>
               <FileName>sPlcRtc.c</FileName>
@@ -2887,6 +2882,16 @@
               <FileName>sPlcPmu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcPmu.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcTimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcI2C_HDC1080.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcI2C_HDC1080.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,5 +1,4 @@
 #include "sPlc.h"
-#include "boardConfig.h"
 /*****************************************************************************/
 uint32_t sPlcTick;
 /*****************************************************************************/
@@ -14,18 +13,18 @@ void sPlcTimerInit(void){//硬件sTimer计时器初始化
 	TimerCounter_100mS = 0;//100毫秒
 	TimerCounter_200mS = 0;//200毫秒
 	TimerCounter_500mS = 0;//500毫秒
-	TimerCounter_1000mS = 0;//1秒
+	TimerCounter_1000mS = 0;//1�?
 	TimerCounter_60000mS = 0;//1分钟
 	sPlcTick = 0;
 	printf("%s,%d,%s:splc timer init......\n",__FILE__, __LINE__, __func__);
 }
-void sPlcTimerDisable(void) {//SPLC关闭计时器
+void sPlcTimerDisable(void) {//SPLC关闭计时�?
 	HAL_TIM_Base_Stop_IT(&CONFIG_SPLC_TIM_HANDLE);
 }
-void sPlcTimerEnable(void) {//SPLC打开计时器
+void sPlcTimerEnable(void) {//SPLC打开计时�?
 	HAL_TIM_Base_Start_IT(&CONFIG_SPLC_TIM_HANDLE);
 }
-__forceinline void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
+__forceinline void sPlcTimerIsr(void){//硬件sTimer计时器中�?1mS
 	uint16_t i;
 	for(i = TD_1MS_START;i <= TD_1MS_END;i ++){
 		if(LD(T_1MS_ENA_START * 16 + (i - TD_1MS_START))){
@@ -86,7 +85,7 @@ __forceinline void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	TimerCounter_100mS ++;//100毫秒
 	TimerCounter_200mS ++;//200毫秒
 	TimerCounter_500mS ++;//500毫秒
-	TimerCounter_1000mS ++;//1秒
+	TimerCounter_1000mS ++;//1�?
 	TimerCounter_60000mS ++;//1分钟
 	
 	sPlcTick ++;

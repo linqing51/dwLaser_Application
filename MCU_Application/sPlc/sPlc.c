@@ -1,18 +1,18 @@
 #include "sPlc.h"
-//避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
+//避免指针和动态RAM分配 移植大部�?BIT�?6BIT单片机效率低存在问题
 /*****************************************************************************/
 #pragma pack(push, 4)
-int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
-int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
-uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
+int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存�?当前 包含存档寄存�?
+int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存�?上一�?
+int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存�?
+uint32_t BootloadCrc, ApplicationCrc;//当前固件校验�?
 #pragma pack(pop)
 /*****************************************************************************/
 uint16_t TimerCounter_10mS = 0;//10毫秒
 uint16_t TimerCounter_100mS = 0;//100毫秒
 uint16_t TimerCounter_200mS = 0;//200毫秒
 uint16_t TimerCounter_500mS = 0;//500毫秒
-uint16_t TimerCounter_1000mS = 0;//1秒
+uint16_t TimerCounter_1000mS = 0;//1�?
 uint16_t TimerCounter_60000mS = 0;//1分钟
 /*****************************************************************************/
 uint8_t TD_10MS_SP = 0;
@@ -76,11 +76,11 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	//MR NVRAM写入EPROM
 	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//将NVRAM中MR储存入EPROM																				
 	crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
-	epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写入32位数
+	epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写�?2位数
 	//DM NVRAM写入EPROM
 	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//将NVRAM中DM储存入EPROM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
-	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
+	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写�?2位数
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
 void sPlcNvramUpdate(void){//更新NVRAM->EPROM
@@ -102,7 +102,7 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 	}
 	if(updateFlagMr){
 		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
-		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写入32位数
+		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写�?2位数
 	}
 	//储存DM
 	updateFlagDm = 0;
@@ -118,7 +118,7 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM
 	}
 	if(updateFlagDm){
 		crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
-		epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
+		epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写�?2位数
 	}
 	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//更新NVRAM1 非保持寄存器
 #if (CONFIG_DEBUG_EPROM == 1)
@@ -158,7 +158,7 @@ void sPlcFdramSave(void){//强制将FDRAM存入EPROM
   HAL_StatusTypeDef ref;
   crc32_eprom_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
 	ref = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
-	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写入32位数
+	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写�?2位数
   if(ref != HAL_OK){
 		printf("%s,%d,%s:save FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
 	}
@@ -199,7 +199,7 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
 	crc32_bk = HAL_CRC_Calculate(&hcrc, (uint32_t *)BKRAM, (CONFIG_BKRAM_SIZE / 2));
 	ref1 = epromWrite(CONFIG_EPROM_BK_START, (uint8_t*)BKRAM, (CONFIG_BKRAM_SIZE * 2));
-	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写入32位数
+	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写�?2位数
 	if((ref1 != HAL_OK) || (ref2 != HAL_OK)){
 		printf("%s,%d,%s:save BK NVRAM fail...\n",__FILE__, __LINE__, __func__);
 	}
@@ -207,7 +207,7 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
 		printf("%s,%d,%s:save BK done...(BK CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_bk);
 	}
 }
-void sPlcBkramClear(void){//清除BK数据(含EPROM BK区)
+void sPlcBkramClear(void){//清除BK数据(含EPROM BK�?
 	__HAL_RCC_PWR_CLK_ENABLE();
 	HAL_PWR_EnableBkUpAccess();
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
@@ -226,7 +226,7 @@ void sPlcDeviceLogClear(void){//清除设备记录
 }
 
 void sPlcSpwmLoop(void){//SPWM轮询	
-	if(LDP(SPCOIL_PS10MS)){//每10mS执行一次
+	if(LDP(SPCOIL_PS10MS)){//�?0mS执行一�?
 		//SPWM0
 		if(LD(SPCOIL_SPWM_RESET_0)){//复位
 			NVRAM0[SPREG_SPWM_COUNTER_0] = SHRT_MAX;
@@ -311,7 +311,7 @@ void sPlcSpwmLoop(void){//SPWM轮询
 	}
 }
 
-void sPlcRtcProcess(void){//RTC轮询(万年历同步到NVRAM EM_RTC_*,NVRAM中year沿用后两位约定,HMI显示时+2000)
+void sPlcRtcProcess(void){//RTC轮询(万年历同步到NVRAM EM_RTC_*,NVRAM中year沿用后两位约�?HMI显示�?2000)
 	uint16_t year;
 	uint8_t mon, day, hour, min, sec;
 	RtcGetDateTime(&year, &mon, &day, &hour, &min, &sec);
@@ -323,7 +323,7 @@ void sPlcRtcProcess(void){//RTC轮询(万年历同步到NVRAM EM_RTC_*,NVRAM中y
 	NVRAM0[EM_RTC_SECONDS] = sec;
 }
 /*****************************************************************************/
-void sPlcInit(void){//软逻辑初始化	
+void sPlcInit(void){//软逻辑初始�?
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	epromInit();
   listEpromTable();
@@ -347,7 +347,7 @@ void sPlcInit(void){//软逻辑初始化
 	SSET(SPCOIL_START_UP);
 	
 	
-	chipTimerInit();//初始化硬件计时器模块 启动计时器
+	sPlcTimerInit();//初始化硬件计时器模块 启动计时�?
 	sPlcSpeakerInit();
 	
 	sPlcPortInit();
@@ -386,21 +386,21 @@ void sPlcProcessStart(void){//sPLC轮询起始
 		FLIP(SPCOIL_PS1MINS);
 		TD_60000MS_SP = 0;
 	}
-	chipInputRefresh();//读取X口输入
+	sPlcInputRefresh();//读取X口输�?
 	if(LDP(SPCOIL_PS100MS)){
 #if (CONFIG_SPLC_USING_RTC == 1)
 		sPlcRtcProcess();//RTC万年历同步到NVRAM
 #endif
 	}
 	sPlcSpwmLoop();
-	chipAdcProcessBuffer();//ADC 更新NVRAM
+	sPlcAdcProcessBuffer();//ADC 更新NVRAM
 }
 
 void sPlcProcessEnd(void){//sPLC轮询结束
 	if(LDP(SPCOIL_PS500MS)){
 		FLIP(Y_TICK_LED);
 	}
-	chipOutputRefresh();//更新Y口输出
+	sPlcOutputRefresh();//更新Y口输�?
 	sPlcNvramUpdate();//更新NVRAM
 	RRES(SPCOIL_START_UP);
 }

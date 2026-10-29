@@ -1,6 +1,4 @@
 #include "sPlc.h"
-#include "boardConfig.h"
-#include "appConfig.h"
 #include "usbh_core.h"
 /*****************************************************************************/
 #define OFFSET_OF(type, member)  ((uint32_t)&(((type *)0)->member))
@@ -9,12 +7,12 @@ static int16_t FanSpeed[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 /*****************************************************************************/
 /**
  * @brief 通用结构体成员偏移量计算函数
- * @param type_size  结构体总大小（用 sizeof(结构体) 传入）
+ * @param type_size  结构体总大小（�?sizeof(结构�? 传入�?
  * @param member_ptr 结构体成员的地址
  * @return 成员相对于结构体起始地址的偏移量
  */
 size_t get_offset(size_t type_size, void *member_ptr) {
-    // 利用 0 地址结构体指针计算偏移
+    // 利用 0 地址结构体指针计算偏�?
     return (size_t)member_ptr;
 }
 
@@ -25,7 +23,7 @@ void delayMs(uint32_t delayMs){//SPLC 阻塞延时
 	vTaskDelay(delayMs);
 }
 
-void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//设置风扇转速
+void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed){//设置风扇转�?
 		switch(ch){
 			case FAN_CH0:{
 				if(FanSpeed[0] != speed){
@@ -90,7 +88,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//从EPROM载入设备配置
 	epromReadDword(CONFIG_EPROM_CFG_CRC, &crc32_eprom_cfg);
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配置
+	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配�?
 		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
 		
@@ -529,7 +527,7 @@ void saveDeviceConfig(void){//将配置写入EPROM
 	uint32_t crc32_cfg;
 	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM	
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
+	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验�?
 	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
 }
 void saveCalibrationTable(uint8_t channel){//储存选定通道的功率校准表
@@ -584,8 +582,15 @@ void saveCalibrationTable(uint8_t channel){//储存选定通道的功率校准�
 	epromWriteAddr = CONFIG_EPROM_CONFIG_START + structAddr - memberAddr;//计算EPROM
 	epromWrite(epromWriteAddr, memberAddr, writeSize);//写入EPROM	
 	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
-	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
+	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验�?
 	printf("%s,%d,%s:save laser channle:%d calibration table to eprom done...(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, channel,crc32_cfg);
 }
 
 
+
+void sPlcPortInit(void){//sPlcPort�˿�������ʼ��(ADC/IO/DAC)
+	sPlcInputInit();
+	sPlcOutputInit();
+	sPlcAdcInit();
+	sPlcDacInit();
+}

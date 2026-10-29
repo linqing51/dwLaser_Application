@@ -33,10 +33,10 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_LASER_TIM_HANDLE								htim7
 #define CONFIG_LASER_TIM											TIM7
 
-#define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
+#define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定�?
 #define CONFIG_SPLC_TIM												TIM14
 
-#define CONFIG_SPK_HANDLE											htim8//SPK 计时器定义	
+#define CONFIG_SPK_HANDLE											htim8//SPK 计时器定�?
 #define CONFIG_SPK_TIM												TIM8
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
 
@@ -225,7 +225,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
 #define SET_MCP41010_SCK(b)										HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
 
-//POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
+//POWER INT MPU软关机中断信�?->LTC2955作为MPU单元
 #define GET_PWR_INT														0
 //POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
 #define SET_PWR_KILL_POWER(b)									__nop()
@@ -241,7 +241,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define GET_PWR_LED														__nop()
 #define FLIP_PWR_LED													__nop()
 
-//安全锁接触
+//安全锁接�?
 #define SET_SAFE_RESET(b)											__nop()
 #define SET_SAFE_RESET_ON                    	__nop()
 #define SET_SAFE_RESET_OFF                   	__nop()
@@ -258,13 +258,13 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
-#define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
+#define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大�?
 #define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
 /******************************************************************************/
 //配置ADC
-#define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
+#define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压�?
 #define CONFIG_ADC1_CHANNEL										13//ADC采集通道
-#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱	
+#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平�?0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱	
 #define CONFIG_ADC1_DMA_BUFFER_SIZE						CONFIG_ADC1_CHANNEL//ADC DMA采集缓冲
 
 #define CONFIG_VREF_ADC												SPREG_ADC_59
@@ -272,22 +272,22 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_ADC_AVG_SLOPE									2.5F
 #define CONFIG_ADC_V25												760.0F//0.76V@25D
 
-#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻值
-#define CONFIG_HT0_NTC_RS											4700L//散热器0热敏电阻分压电阻值
-#define CONFIG_HT1_NTC_RS											4700L//散热器1热敏电阻分压电阻值
+#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻�?
+#define CONFIG_HT0_NTC_RS											4700L//散热�?热敏电阻分压电阻�?
+#define CONFIG_HT1_NTC_RS											4700L//散热�?热敏电阻分压电阻�?
 #define CONFIG_HT2_NTC_RS											1L	
 #define CONFIG_HT3_NTC_RS											1L
 #define CONFIG_WATER_HOT_NTC_RS								1L
 #define CONFIG_WATER_COOL_NTC_RS							1L
 #define CONFIG_AMBIENT_NTC_RS									1L
-#define CONFIG_MBAT_NTC_RS										4700L//环境热敏电阻分压电阻值
+#define CONFIG_MBAT_NTC_RS										4700L//环境热敏电阻分压电阻�?
 
-#define CONFIG_DIODE_NTC_B										3477.0F//激光器热敏电阻B值
-#define CONFIG_HT0_NTC_B											3477.0F//散热器0热敏电阻B值
-#define CONFIG_HT1_NTC_B											3477.0F//散热器1热敏电阻B值
-#define CONFIG_HT2_NTC_B											3477.0F//散热器2热敏电阻B值
-#define CONFIG_HT3_NTC_B											3477.0F//散热器3热敏电阻B值
-#define CONFIG_MBAT_NTC_B											3477.0F//电池热敏电阻B值
+#define CONFIG_DIODE_NTC_B										3477.0F//激光器热敏电阻B�?
+#define CONFIG_HT0_NTC_B											3477.0F//散热�?热敏电阻B�?
+#define CONFIG_HT1_NTC_B											3477.0F//散热�?热敏电阻B�?
+#define CONFIG_HT2_NTC_B											3477.0F//散热�?热敏电阻B�?
+#define CONFIG_HT3_NTC_B											3477.0F//散热�?热敏电阻B�?
+#define CONFIG_MBAT_NTC_B											3477.0F//电池热敏电阻B�?
 
 #define CONFIG_WATER_HOT_NTC_B							  3477.0F
 #define CONFIG_WATER_COOL_NTC_B								3477.0F
@@ -295,15 +295,19 @@ extern USBH_HandleTypeDef hUsbHostFS;
 
 #define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF												3300L//
-#define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
+#define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈�?
 
 /*****************************************************************************/
 //配置TEC温控(TIM9 CH2 PWM -> GP8101C-SH -> 模拟电压, 逻辑DAC8)
-#define CONFIG_TEC_HT_FF_GAIN								  20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
-#define CONFIG_TEC_SLEW_STEP								  200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
-#define CONFIG_TEC_TEMP_FILTER_ALPHA			  	0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
+#define CONFIG_TEC_HT_FF_GAIN								  20.0f//散热器温度前馈增�? 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠�?9%满幅输出
+#define CONFIG_TEC_SLEW_STEP								  200//输出变化率限�? �?00ms控制周期最多变化计�?0~4095), 0→满幅约需10s
+#define CONFIG_TEC_TEMP_FILTER_ALPHA			  	0.5f//反馈温度一阶滤波系�?0~1), 抑制NTC噪声放大
 
 #define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
+//G5��δװ��HDC1080��ʪ�ȴ�����(6M3Sͬ���ʵ��), ������Ӳ��ʱ��Ϊ��ʵ����
+#define SET_HDC1080_SCL(b)										__nop()
+#define SET_HDC1080_SDA(b)										__nop()
+#define GET_HDC1080_SDA												0
 /*****************************************************************************/
 //配置DAC
 #define CONFIG_DAC_MAXBIT_CH0									0xFFF//12BIT STM32
@@ -337,7 +341,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + FD_END - FD_START)
 
-//BK 2K区块(映射硬件BKSRAM 4K掉电保持区)在EPROM储存地址
+//BK 2K区块(映射硬件BKSRAM 4K掉电保持�?在EPROM储存地址
 #define CONFIG_EPROM_BK_START									(CONFIG_EPROM_FD_END + 1)
 #define CONFIG_EPROM_BK_END										(CONFIG_EPROM_BK_START + BK_END - BK_START)
 
@@ -345,19 +349,19 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L)//4B DM NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_BK_CRC - 4L)//4B FD NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_BK_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L)//4B BK NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L)//4B MCU固件CRC32值 软件计算
-#define CONFIG_EPROM_LCD_FW_CRC								(CONFIF_EPROM_TREATMENT_CRC - 4L)//4B LCD固件CRC32值 软件计算
-#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L)//4B treatment CRC32值 硬件计算
-#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L)//4B deviceConfig CRC32值 硬件计算
-#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L)//4B logInfo CRC32值 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L)//4B MCU固件CRC32�?软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(CONFIF_EPROM_TREATMENT_CRC - 4L)//4B LCD固件CRC32�?软件计算
+#define CONFIF_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L)//4B treatment CRC32�?硬件计算
+#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L)//4B deviceConfig CRC32�?硬件计算
+#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L)//4B logInfo CRC32�?硬件计算
 
 #define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - (32L * 1536) + 1L)
 #define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
-#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(32L*1536)
+#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节�?32L*1536)
 
-#define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 配置信息区
+#define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 配置信息�?
 #define CONFIG_EPROM_CONFIG_END								(CONFIG_EPROM_LOGINFO_START - 1L)
-#define CONFIG_EPROM_LOGINFO_START						(CONFIG_EPROM_LOGINFO_END - 256L + 1L)//256B 记录信息区 
+#define CONFIG_EPROM_LOGINFO_START						(CONFIG_EPROM_LOGINFO_END - 256L + 1L)//256B 记录信息�?
 #define CONFIG_EPROM_LOGINFO_END							(CONFIG_EPROM_SIZE - 1L)
 
 #if (CONFIG_EPROM_BK_END >= CONFIG_EPROM_MR_CRC)

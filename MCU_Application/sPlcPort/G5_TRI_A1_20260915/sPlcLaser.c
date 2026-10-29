@@ -13,14 +13,14 @@ int16_t LaserTimer_POvertime;
 int16_t LaserTimer_ReleaseTime;
 int16_t LaserTimer_ReleaseCounter;
 int8_t LaserFlag_Emiting;//激光发射中标志
-int8_t LaserFlag_Request;//激光发射脚踏请求
-int8_t LaserFlag_Emitover;//激光发射完毕标志
+int8_t LaserFlag_Request;//激光发射脚踏请�?
+int8_t LaserFlag_Emitover;//激光发射完毕标�?
 /*****************************************************************************/
-static void laserStop(void);
-static void laserStart(void);
+void laserStop(void);
+void laserStart(void);
 /*****************************************************************************/
 #if CONFIG_SPLC_USING_LASER_TEST == 1
-void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
+void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测�?
 	EDLAR();
 	if(st == 0){//CH0 CW模式测试
 		STLAR();
@@ -50,67 +50,67 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 	if(st == 6){//CH0 MP模式测试
 		LaserTimer_Mode = LASER_MODE_MP;
 		LaserTimer_TMate = 30;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 90;//激光脉冲周期 25mS
+		LaserTimer_TOvertime = 90;//激光脉冲周�?25mS
 		STLAR();
 	}
 	if(st == 7){//CH1 MP模式测试
 		LaserTimer_Mode = LASER_MODE_MP;
 		LaserTimer_TMate = 74;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 96;//激光脉冲周期 25mS
+		LaserTimer_TOvertime = 96;//激光脉冲周�?25mS
 		STLAR();
 	}
 	if(st == 8){//CH0+CH1 MP模式测试
 		LaserTimer_Mode = LASER_MODE_MP;
 		LaserTimer_TMate = 53;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 130;//激光脉冲周期 25mS
+		LaserTimer_TOvertime = 130;//激光脉冲周�?25mS
 		STLAR();
 	}
 	if(st == 9){//CH0 GP模式测试
 		LaserTimer_Mode = LASER_MODE_GP;
 		LaserTimer_TMate = 10;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 15;//激光脉冲周期 25mS
-		LaserTimer_PMate = 10;//10个脉冲
+		LaserTimer_TOvertime = 15;//激光脉冲周�?25mS
+		LaserTimer_PMate = 10;//10个脉�?
 		LaserTimer_POvertime = 33;//间隔33mS
 		STLAR();
 	}
 	if(st == 10){//CH1 GP模式测试
 		LaserTimer_Mode = LASER_MODE_GP;
 		LaserTimer_TMate = 19;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 86;//激光脉冲周期 25mS
-		LaserTimer_PMate = 12;//10个脉冲
+		LaserTimer_TOvertime = 86;//激光脉冲周�?25mS
+		LaserTimer_PMate = 12;//10个脉�?
 		LaserTimer_POvertime = 43;//间隔33mS
 		STLAR();
 	}
 	if(st == 11){//CH0+CH1 GP模式测试
 		LaserTimer_Mode = LASER_MODE_GP;
 		LaserTimer_TMate = 5;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 24;//激光脉冲周期 25mS
-		LaserTimer_PMate = 6;//10个脉冲
+		LaserTimer_TOvertime = 24;//激光脉冲周�?25mS
+		LaserTimer_PMate = 6;//10个脉�?
 		LaserTimer_POvertime = 60;//间隔33mS
 		STLAR();
 	}	
 	if(st == 12){//CH0 DERMA模式测试
 		LaserTimer_Mode = LASER_MODE_DERMA;
 		LaserTimer_TMate = 10;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 15;//激光脉冲周期 25mS
+		LaserTimer_TOvertime = 15;//激光脉冲周�?25mS
 		STLAR();
 	}
 	if(st == 13){//CH1 DERMA模式测试
 		LaserTimer_Mode = LASER_MODE_DERMA;
 		LaserTimer_TMate = 19;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 86;//激光脉冲周期 25mS
+		LaserTimer_TOvertime = 86;//激光脉冲周�?25mS
 		STLAR();
 	}
 	if(st == 14){//CH0+CH1 DERMA模式测试
 		LaserTimer_Mode = LASER_MODE_DERMA;
 		LaserTimer_TMate = 5;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 24;//激光脉冲周期 25mS
+		LaserTimer_TOvertime = 24;//激光脉冲周�?25mS
 		STLAR();
 	}	
 	if(st == 15){//CH0 SIGNAL模式测试
 		LaserTimer_Mode = LASER_MODE_SIGNAL;
 		LaserTimer_TMate = 10;//激光脉冲正脉宽 10mS
-		LaserTimer_TOvertime = 15;//激光脉冲周期 25mS
+		LaserTimer_TOvertime = 15;//激光脉冲周�?25mS
 		STLAR();
 	}
 	if(st == 16){//CH1 SIGNAL模式测试
@@ -124,17 +124,17 @@ void sPlcLaserTimerTestBench(uint8_t st){//LASER激光发射测试
 }
 
 #endif
-void STLAR(void){//开始发射脉冲
+void STLAR(void){//开始发射脉�?
 	printf("%s,%d,%s:laser start!\n",__FILE__, __LINE__, __func__);
 	if((NVRAM0[DM_SCHEME_CLASSIFY] == SCHEME_PROCTOLOGY) && (NVRAM0[DM_SCHEME_INDEX] <= 2)){
 		NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_5;//PROCTOLOGY专用
 	}
 	else{
 		if(LD(R_ACOUSTIC_ENABLE)){
-			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示音 CW模式
+			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_4;//BEEP + 提示�?CW模式
 		}
 		else{
-			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//激光发射固定间隔
+			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_2;//激光发射固定间�?
 		}
 	}
 	NVRAM0[SPREG_BEEM_FREQ] = CONFIG_DEFAULT_SPK_FREQ;
@@ -145,13 +145,13 @@ void STLAR(void){//开始发射脉冲
 	LaserTimer_ReleaseCounter = 0x0;
 	LaserFlag_Emiting = false;
 	LaserFlag_Emitover = false;
-	__HAL_TIM_SET_COUNTER(&CONFIG_LASER_TIM_HANDLE, 0x0);//清零计数值
-	HAL_TIM_Base_Start_IT(&CONFIG_LASER_TIM_HANDLE);//打开计时器
+	__HAL_TIM_SET_COUNTER(&CONFIG_LASER_TIM_HANDLE, 0x0);//清零计数�?
+	HAL_TIM_Base_Start_IT(&CONFIG_LASER_TIM_HANDLE);//打开计时�?
 }
 void EDLAR(void){//停止发射脉冲
 	printf("%s,%d,%s:laser stop!\n",__FILE__, __LINE__, __func__);
-	__HAL_TIM_SET_COUNTER(&CONFIG_LASER_TIM_HANDLE, 0x0);//清零计数值
-	HAL_TIM_Base_Stop_IT(&CONFIG_LASER_TIM_HANDLE);//停止计时器
+	__HAL_TIM_SET_COUNTER(&CONFIG_LASER_TIM_HANDLE, 0x0);//清零计数�?
+	HAL_TIM_Base_Stop_IT(&CONFIG_LASER_TIM_HANDLE);//停止计时�?
 	laserStop();//关闭DAC输出
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
@@ -162,7 +162,7 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	SET_LASER_CH0_OFF;
 	SET_LASER_CH1_OFF;
 	setRedLaserPwm(0);
-	//设定计时器
+	//设定计时�?
 	LaserTimer_Mode = 0;
 	LaserTimer_TCounter = 0;
 	LaserTimer_TMate = 0;
@@ -176,7 +176,7 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserFlag_Emitover = false;
 	printf("%s,%d,%s:laser timer init......\n",__FILE__, __LINE__, __func__);
 }
-static void laserStart(void){//按通道选择打开激光
+void laserStart(void){//按通道选择打开激�?
 	if(LaserFlag_Emiting == false){
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 #if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
@@ -216,14 +216,14 @@ static void laserStart(void){//按通道选择打开激光
 			SET_LASER_CH4_ON;
 #endif
 		}
-		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//打开红激光
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//打开红激�?
 			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
 		}
 		LaserFlag_Emiting = true;
 		SET_BEEM_LED_ON;
 	}
 }
-static void laserStop(void){//按通道选择关闭激光
+void laserStop(void){//按通道选择关闭激�?
 	if(LaserFlag_Emiting == true){
 		SET_LASER_CH0_OFF;		
 		SET_LASER_CH1_OFF;
@@ -239,7 +239,7 @@ static void laserStop(void){//按通道选择关闭激光
 		SET_BEEM_LED_OFF;
 	}
 }
-__forceinline void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射	
+__forceinline void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发�?
 	switch(LaserTimer_Mode){
 		case LASER_MODE_CW:{//CW连续模式
 			if(LaserTimer_TCounter == 0){
@@ -248,14 +248,14 @@ __forceinline void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
 			}
 			break;
 		}
-		case LASER_MODE_MP:{//MP多脉冲模式	
-			if((LaserTimer_TCounter >= 0) && (LaserTimer_TCounter < LaserTimer_TMate)){//激光发射
+		case LASER_MODE_MP:{//MP多脉冲模�?
+			if((LaserTimer_TCounter >= 0) && (LaserTimer_TCounter < LaserTimer_TMate)){//激光发�?
 				laserStart();
 			}
-			if((LaserTimer_TCounter >= LaserTimer_TMate) && (LaserTimer_TCounter < LaserTimer_TOvertime)){//计时器匹配
+			if((LaserTimer_TCounter >= LaserTimer_TMate) && (LaserTimer_TCounter < LaserTimer_TOvertime)){//计时器匹�?
 				laserStop();
 			}
-			if(LaserTimer_TCounter >= LaserTimer_TOvertime){//计时器溢出
+			if(LaserTimer_TCounter >= LaserTimer_TOvertime){//计时器溢�?
 				LaserTimer_TCounter = -1;//清零
 			}	
 			LaserTimer_TCounter ++;
