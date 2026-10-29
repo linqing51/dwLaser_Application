@@ -87,6 +87,7 @@ extern "C" {
 #define CONFIG_HMI_DEFAULT_PASSWORD3									0x3030//默认密码
 /*****************************************************************************/
 //版本配置
+#undef SW_VERSION
 #define SW_VERSION																		"5.0a0b0"
 #define HW_VERSION																		"CORE_M450_RASPI_2V0_450_980"
 //配置波长

@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F407xx,LYPE_MCU_1V0_20260106</Define>
+              <Define>USE_HAL_DRIVER,STM32F407xx,LYPE_MCU_1V0_20260106,LYPE_2V0_20260703_M450</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../../../MCU_Application/sPlcPort;../../../MCU_Application/sPlc;../Drivers/CMSIS/DSP/Include;../../../MCU_Application/lib;../../../MCU_Application/MainApp</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../../../MCU_Application/sPlcPort;../../../MCU_Application/sPlc;../Drivers/CMSIS/DSP/Include;../../../MCU_Application/lib;../../../MCU_Application/MainApp;../../../MCU_Application/config;../../../MCU_Application/config/LYPE_2V0_M450;../../Bootloader</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -747,12 +747,12 @@
             <File>
               <FileName>flash_if.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Bootloader\flash_if.c</FilePath>
+              <FilePath>..\..\..\MCU_Application\lib\flash_if.c</FilePath>
             </File>
             <File>
               <FileName>libcrc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Bootloader\libcrc.c</FilePath>
+              <FilePath>..\..\..\MCU_Application\lib\libcrc.c</FilePath>
             </File>
             <File>
               <FileName>sPlcEprom.c</FileName>
@@ -770,14 +770,9 @@
               <FilePath>..\..\..\MCU_Application\lib\libdbg.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcEprom_I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEprom_I2C.c</FilePath>
-            </File>
-            <File>
               <FileName>sPlcEprom_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEprom_SPI.c</FilePath>
+              <FilePath>..\..\..\MCU_Application\sPlcPort\G5_TRI_A1_20260915\sPlcEprom_SPI.c</FilePath>
             </File>
           </Files>
         </Group>

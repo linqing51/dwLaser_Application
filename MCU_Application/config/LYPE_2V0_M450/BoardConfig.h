@@ -130,6 +130,12 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define SET_FAN0_ON													HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
 #define SET_FAN0_OFF												HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
 #define SET_FAN0_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, b)
+#define SET_FAN1_ON												__nop()
+#define SET_FAN1_OFF												__nop()
+#define SET_FAN1_TIM_PWM(b)									__nop()
+#define SET_FAN2_ON												__nop()
+#define SET_FAN2_OFF												__nop()
+#define SET_FAN2_TIM_PWM(b)									__nop()
 /*****************************************************************************/
 //红色指示光635: 本机无独立PWM调光引脚(亮度经DAC16),定时器占位
 #define SET_RAIM_TIM_ON												__nop()

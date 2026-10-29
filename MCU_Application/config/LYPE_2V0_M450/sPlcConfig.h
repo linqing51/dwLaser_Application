@@ -612,6 +612,9 @@ extern "C" {
 #define Y_PWR_SOFTKILL																(Y_START * 16 + 10)//YOUT10 电源管理软关机信号	
 #define Y_ESTOP_RESET																	(Y_START * 16 + 11)//YOUT11 复试急停状态
 /*****************************************************************************/
+typedef enum{//风扇通道
+	FAN_CH0 = 0, FAN_CH1, FAN_CH2, FAN_CH3, FAN_CH4, FAN_CH5, FAN_CH6, FAN_CH7
+}FAN_CHANNLE_ENMU;
 #define R_ESTOP																				(R_START * 16 + 0)//急停标志
 #define R_INTERLOCK																		(R_START * 16 + 1)//连锁标志
 #define R_FIBER_PROBE																	(R_START * 16 + 2)//光纤插入标志
