@@ -2,7 +2,8 @@
   ******************************************************************************
   * @file    flash_if.c
   * @brief   Flash layer functions - generic for STM32F1 and STM32F4 series
-  *          F4: 256KB(F401), 512KB(F411), 1MB(F405/407), 2MB dual-bank(F429/469)
+  *          F4: 256KB(F401), 512KB(F411/446), 1MB(F405/407/412/413/423),
+  *              2MB dual-bank(F439/469/479)
   *          F1: 64KB~1MB (F101/F102/F103/F105/F107, 1KB/2KB page erase)
   * @note    Robust against debug-mode stale flags: clears ALL error flags and
   *          waits for BSY before every erase/program, fixing the issue where
@@ -16,7 +17,8 @@
 /* Private typedef ----------------------------------------------------------- */
 /* Private define ------------------------------------------------------------ */
 #define FLASH_BASE_ADDR       0x08000000U
-#define FLASH_BANK2_OFFSET    0x00100000U  /* 2MB devices: bank2 starts at 0x08100000 */
+#define FLASH_BANK2_OFFSET    0x00100000U  /* 2MB devices (F439/469/479): bank2 starts at 0x08100000 */
+#define FLASH_BANK2_OFFSET_1MB 0x00080000U /* 1MB dual-bank (F413/F423): bank2 starts at 0x08080000 */
 #define SECTOR_16KB           0x4000U
 #define SECTOR_64KB           0x10000U
 #define SECTOR_128KB          0x20000U
@@ -206,18 +208,45 @@ uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data)
 /*
  * Returns the erase-unit index of an address:
  *   F1: page number  (page size = FLASH_PAGE_SIZE, 1KB or 2KB per chip density)
- *   F4: sector number (16KB*4 + 64KB + 128KB*N per bank; 2MB dual-bank mapped)
- * Layout (per bank, F4):
- *   offset 0x00000-0x0FFFF : sectors 0-3, 16KB each
- *   offset 0x10000-0x1FFFF : sector 4, 64KB
- *   offset 0x20000+        : sectors 5+, 128KB each
- * For 2MB dual-bank devices, addresses >= 0x08100000 map to bank 2 (sectors 12-23).
+ *   F4: sector number, per-device layout:
+ *     单bank(0-11): F405/407/415/417/412 (16KB*4 + 64KB + 128KB*7)
+ *     1MB双bank(0-15): F413/F423 - bank1 0x08000000-0x0807FFFF (0-7),
+ *                        bank2 0x08080000-0x080FFFFF (8-15); 每bank 16KB*4+64KB+128KB*3
+ *     2MB双bank(0-23): F439/469/479 - bank1 0x08000000-0x080FFFFF (0-11),
+ *                        bank2 0x08100000-0x081FFFFF (12-23)
  */
 static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
 {
 #if defined(STM32F1xx)
   /* F1: 页号 = 偏移 / 页大小(1KB小容量/2KB大容量, 由HAL按器件定义) */
   return (Address - FLASH_BASE_ADDR) / FLASH_PAGE_SIZE;
+#elif defined(STM32F413xx) || defined(STM32F423xx)
+  /* 1MB双bank(F413/F423): bank2起始0x08080000, 每bank 8扇区(扇区号连续0-15) */
+  uint32_t offset;
+  uint32_t sector;
+
+  if (Address >= (FLASH_BASE_ADDR + FLASH_BANK2_OFFSET_1MB))
+  {
+    offset = Address - (FLASH_BASE_ADDR + FLASH_BANK2_OFFSET_1MB);
+    if (offset < SECTOR_64KB) {
+      sector = 8U + (offset / SECTOR_16KB);        /* sectors 8-11: 16KB each */
+    } else if (offset < (SECTOR_64KB + SECTOR_64KB)) {
+      sector = 12U;                                 /* sector 12: 64KB */
+    } else {
+      sector = 13U + ((offset - (SECTOR_64KB + SECTOR_64KB)) / SECTOR_128KB);
+    }
+    return sector;
+  }
+  /* F413/F423 bank1: sectors 0-7 */
+  offset = Address - FLASH_BASE_ADDR;
+  if (offset < SECTOR_64KB) {
+    sector = offset / SECTOR_16KB;                  /* sectors 0-3: 16KB each */
+  } else if (offset < (SECTOR_64KB + SECTOR_64KB)) {
+    sector = 4U;                                     /* sector 4: 64KB */
+  } else {
+    sector = 5U + ((offset - (SECTOR_64KB + SECTOR_64KB)) / SECTOR_128KB);
+  }
+  return sector;
 #else
   uint32_t offset;
   uint32_t sector;
