@@ -52,11 +52,47 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
+/* 按具体型号宏探测系列(工程编译选项定义, 如STM32F405xx/STM32F103xB等);
+ * 若HAL版本未定义系列宏(老版本CubeF1/F4), 在此补齐供库内条件编译使用 */
+#if defined(STM32F100xB)  || defined(STM32F100xE)  || defined(STM32F101x6) || \
+    defined(STM32F101xB)  || defined(STM32F101xE)  || defined(STM32F101xG) || \
+    defined(STM32F102x6)  || defined(STM32F102xB)  || defined(STM32F103x6) || \
+    defined(STM32F103xB)  || defined(STM32F103xE)  || defined(STM32F103xG) || \
+    defined(STM32F105xC)  || defined(STM32F107xC)
+  #include "stm32f1xx_hal.h"
+  #ifndef STM32F1xx
+    #define STM32F1xx
+  #endif
+#elif defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || \
+      defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || \
+      defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F410Tx) || defined(STM32F410Cx) || \
+      defined(STM32F410Rx) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F469xx) || \
+      defined(STM32F479xx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F412Rx) || \
+      defined(STM32F412Vx) || defined(STM32F413xx) || defined(STM32F423xx)
+  #include "stm32f4xx_hal.h"
+  #ifndef STM32F4xx
+    #define STM32F4xx
+  #endif
+#else
+  #error "flash_if.h: only supports STM32F1xx / STM32F4xx!"
+#endif
 
 /* Exported types ------------------------------------------------------------*/
 typedef  void (*pFunction)(void);
 
+#if defined(STM32F1xx)
+/* F1默认与F4相同布局: 64KB Bootloader(0x08000000~0x0800FFFF) + Application从0x08010000起
+ * 小容量F1(64K/128K等)请按实际芯片调整两个END地址; 运行时擦除/写入上限由
+ * FLASH_If_GetFlashEndAddr()(基于cpuGetFlashSize())动态截断, 不会越界 */
+#define BOOTLOADER_FLASH_START_ADDRESS    0x08000000U//引导程序起始地址
+#define BOOTLOADER_FLASH_END_ADDRESS      0x0800FFFFU//引导程序结束地址
+#define BOOTLOADER_FLASH_SIZE             (BOOTLOADER_FLASH_END_ADDRESS - BOOTLOADER_FLASH_START_ADDRESS + 1U)//引导程序区容量
+
+#define APPLICATION_FLASH_START_ADDRESS   0x08010000U//应用程序起始地址
+#define APPLICATION_FLASH_END_ADDRESS     0x080FFFFFU//应用程序结束地址(默认按1MB芯片; 按实际调整)
+#define APPLICATION_FLASH_SIZE            (APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS + 1U)//应用程序区容量
+
+#else/* STM32F4xx */
 #define BOOTLOADER_FLASH_START_ADDRESS    		ADDR_FLASH_SECTOR_0//引导程序起始地址
 #define BOOTLOADER_FLASH_END_ADDRESS					(ADDR_FLASH_SECTOR_4 - 1)//引导程序起始地址
 #define BOOTLOADER_FLASH_SIZE									(BOOTLOADER_FLASH_END_ADDRESS - BOOTLOADER_FLASH_START_ADDRESS + 1)//引导程序区容量
@@ -79,6 +115,7 @@ typedef  void (*pFunction)(void);
 #define ADDR_FLASH_SECTOR_9     				((uint32_t)0x080A0000) /* Base @ of Sector 9, 128 Kbytes */
 #define ADDR_FLASH_SECTOR_10    				((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
 #define ADDR_FLASH_SECTOR_11    				((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
+#endif/* STM32F1xx / STM32F4xx */
 
 /* Exported macros -----------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

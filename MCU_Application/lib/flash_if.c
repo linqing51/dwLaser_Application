@@ -1,8 +1,9 @@
 /**
   ******************************************************************************
   * @file    flash_if.c
-  * @brief   Flash layer functions - generic for all STM32F4 series
-  *          Supports: 256KB(F401), 512KB(F411), 1MB(F405/407), 2MB dual-bank(F429/469)
+  * @brief   Flash layer functions - generic for STM32F1 and STM32F4 series
+  *          F4: 256KB(F401), 512KB(F411), 1MB(F405/407), 2MB dual-bank(F429/469)
+  *          F1: 64KB~1MB (F101/F102/F103/F105/F107, 1KB/2KB page erase)
   * @note    Robust against debug-mode stale flags: clears ALL error flags and
   *          waits for BSY before every erase/program, fixing the issue where
   *          ST-Link leaves stale OPERR/PGAERR/PGPERR flags that cause
@@ -20,12 +21,18 @@
 #define SECTOR_64KB           0x10000U
 #define SECTOR_128KB          0x20000U
 
-/* All flash error/status flags that can be left stale by a debug session:
- * EOP, OPERR, WRPERR, PGAERR, PGPERR, PGSERR.
+/* All flash error/status flags that can be left stale by a debug session.
+ * F4: EOP, OPERR, WRPERR, PGAERR, PGPERR, PGSERR (stm32f4xx_hal_flash.h)
+ * F1: EOP, WRPERR, PGERR, OPTVERR  - no OPERR flag (stm32f1xx_hal_flash_ex.h)
  * Note: BSY is read-only and cannot be cleared by writing to SR. */
+#if defined(STM32F1xx)
+#define FLASH_ALL_CLEAR_FLAGS  (FLASH_FLAG_EOP    | FLASH_FLAG_WRPERR | \
+                                FLASH_FLAG_PGERR  | FLASH_FLAG_OPTVERR)
+#else
 #define FLASH_ALL_CLEAR_FLAGS  (FLASH_FLAG_EOP   | FLASH_FLAG_OPERR | \
                                 FLASH_FLAG_WRPERR| FLASH_FLAG_PGAERR| \
                                 FLASH_FLAG_PGPERR| FLASH_FLAG_PGSERR)
+#endif
 
 #define FLASH_TIMEOUT_MS       5000U
 
@@ -113,10 +120,17 @@ uint32_t FLASH_If_EraseApplication(void){
 	FLASH_If_Prepare();
 	FirstSector = FLASH_If_GetSectorNumber(APPLICATION_FLASH_START_ADDRESS);
 	NbOfSectors = FLASH_If_GetSectorNumber((FLASH_If_GetFlashEndAddr() - 4)) - FirstSector + 1;
+#if defined(STM32F1xx)
+	/* F1: 按页擦除, PageAddress为起始地址(页对齐), NbPages为页数 */
+	FLASH_EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+	FLASH_EraseInitStruct.PageAddress = APPLICATION_FLASH_START_ADDRESS;
+	FLASH_EraseInitStruct.NbPages = NbOfSectors;
+#else
 	FLASH_EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
 	FLASH_EraseInitStruct.Sector = FirstSector;
 	FLASH_EraseInitStruct.NbSectors = NbOfSectors;
 	FLASH_EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+#endif
 	if(HAL_FLASHEx_Erase(&FLASH_EraseInitStruct, &SectorError) != HAL_OK){
 		return (1);
 	}
@@ -127,10 +141,17 @@ uint32_t FLASH_If_EraseBootload(void){
 	FLASH_If_Prepare();
 	FirstSector = FLASH_If_GetSectorNumber(BOOTLOADER_FLASH_START_ADDRESS);
 	NbOfSectors = FLASH_If_GetSectorNumber((BOOTLOADER_FLASH_END_ADDRESS - 4)) - FirstSector + 1;
+#if defined(STM32F1xx)
+	/* F1: 按页擦除, PageAddress为起始地址(页对齐), NbPages为页数 */
+	FLASH_EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+	FLASH_EraseInitStruct.PageAddress = BOOTLOADER_FLASH_START_ADDRESS;
+	FLASH_EraseInitStruct.NbPages = NbOfSectors;
+#else
 	FLASH_EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
 	FLASH_EraseInitStruct.Sector = FirstSector;
 	FLASH_EraseInitStruct.NbSectors = NbOfSectors;
 	FLASH_EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+#endif
 	if(HAL_FLASHEx_Erase(&FLASH_EraseInitStruct, &SectorError) != HAL_OK){
 		return (1);
 	}
@@ -183,8 +204,10 @@ uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data)
 }
 
 /*
- * Generic sector number computation for all STM32F4 devices:
- * Layout (per bank):
+ * Returns the erase-unit index of an address:
+ *   F1: page number  (page size = FLASH_PAGE_SIZE, 1KB or 2KB per chip density)
+ *   F4: sector number (16KB*4 + 64KB + 128KB*N per bank; 2MB dual-bank mapped)
+ * Layout (per bank, F4):
  *   offset 0x00000-0x0FFFF : sectors 0-3, 16KB each
  *   offset 0x10000-0x1FFFF : sector 4, 64KB
  *   offset 0x20000+        : sectors 5+, 128KB each
@@ -192,6 +215,10 @@ uint32_t FLASH_lf_WriteBootload(uint32_t Address, uint32_t Data)
  */
 static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
 {
+#if defined(STM32F1xx)
+  /* F1: 页号 = 偏移 / 页大小(1KB小容量/2KB大容量, 由HAL按器件定义) */
+  return (Address - FLASH_BASE_ADDR) / FLASH_PAGE_SIZE;
+#else
   uint32_t offset;
   uint32_t sector;
   uint16_t flashKb = cpuGetFlashSize();
@@ -220,5 +247,6 @@ static uint32_t FLASH_If_GetSectorNumber(uint32_t Address)
     sector = 5U + ((offset - (SECTOR_64KB + SECTOR_64KB)) / SECTOR_128KB);
   }
   return sector;
+#endif
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

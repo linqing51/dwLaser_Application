@@ -36,7 +36,15 @@ void tickCheckTask(void){//TICK 检测程序
 }
 
 uint16_t cpuGetFlashSize(void){//获取处理器程序容量
- return *(volatile uint16_t*)(0x1FFF7A22);
+#if defined(STM32F1xx)
+	/* F1容量寄存器: 互联型F105/F107(DEV_ID=0x411)在0x1FFFF7CC, 其余F1在0x1FFFF7E0 */
+	if((DBGMCU->IDCODE & 0xFFFU) == 0x411U){
+		return *(volatile uint16_t*)(0x1FFFF7CC);
+	}
+	return *(volatile uint16_t*)(0x1FFFF7E0);
+#else
+	return *(volatile uint16_t*)(0x1FFF7A22);
+#endif
 }
 
 void readStm32UniqueID(void){//获取处理器唯一序列号        

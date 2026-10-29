@@ -47,6 +47,9 @@ extern USBH_HandleTypeDef hUsbHostFS;
 
 #define CONFIG_RGB_LED_TIM_HANDLE             htim4
 #define CONFIG_RGB_LED_TIM                    TIM4
+#define CONFIG_RLED_PWM_CHANNEL               TIM_CHANNEL_2
+#define CONFIG_GLED_PWM_CHANNEL               TIM_CHANNEL_3
+#define CONFIG_BLED_PWM_CHANNEL               TIM_CHANNEL_1
 
 #define CONFIG_AIM_HANDLE											htim5			
 #define CONFIG_AIM_PWM_CHANNEL								TIM_CHANNEL_1
@@ -98,16 +101,16 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_EDAC6_SDI(b)											__nop()
 #define SET_EDAC7_SDI(b)											__nop()
 
-#define SET_RED_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_2)
-#define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_2)
-#define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_3)
-#define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_3)
-#define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_1)
-#define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_1)
+#define SET_RED_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
+#define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
+#define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
+#define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
+#define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
+#define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
 
-#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_3, b)
-#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_4, b)
-#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, TIM_CHANNEL_2, b)
+#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL, b)
+#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL, b)
+#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL, b)
 
 #define SET_BEEM_LED_ON												__nop()
 #define SET_BEEM_LED_OFF											__nop()
@@ -142,7 +145,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_LASER_CH7_OFF											__nop()
 
 #define SET_TEC_CH0_ON												__nop()
-#define SET_TEC_CH0_OFF											__nop()
+#define SET_TEC_CH0_OFF											  __nop()
 #define SET_TEC_CH1_ON												__nop()
 #define SET_TEC_CH1_OFF												__nop()
 #define SET_TEC_CH2_ON												__nop()
@@ -182,9 +185,9 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define GET_LASER_CH6													0
 #define GET_LASER_CH7													0
 
-#define SET_FAN0_ON														HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2)
-#define SET_FAN0_OFF													HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2)
-#define SET_FAN0_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, b)
+#define SET_FAN0_ON														HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
+#define SET_FAN0_OFF													HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
+#define SET_FAN0_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, b)
 
 #define SET_FAN1_ON														__nop()
 #define SET_FAN1_OFF													__nop()
@@ -194,8 +197,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_FAN2_OFF													__nop()
 #define SET_FAN2_TIM_PWM(b)										__nop()
 
-#define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1)
-#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim8, TIM_CHANNEL_1)
+#define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
 
 #define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Stop(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
 #define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
@@ -296,9 +299,9 @@ extern USBH_HandleTypeDef hUsbHostFS;
 
 /*****************************************************************************/
 //配置TEC温控(TIM9 CH2 PWM -> GP8101C-SH -> 模拟电压, 逻辑DAC8)
-#define CONFIG_TEC_HT_FF_GAIN								20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
-#define CONFIG_TEC_SLEW_STEP								200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
-#define CONFIG_TEC_TEMP_FILTER_ALPHA				0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
+#define CONFIG_TEC_HT_FF_GAIN								  20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
+#define CONFIG_TEC_SLEW_STEP								  200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
+#define CONFIG_TEC_TEMP_FILTER_ALPHA			  	0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
 
 #define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
 /*****************************************************************************/
@@ -357,9 +360,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_LOGINFO_START						(CONFIG_EPROM_LOGINFO_END - 256L + 1L)//256B 记录信息区 
 #define CONFIG_EPROM_LOGINFO_END							(CONFIG_EPROM_SIZE - 1L)
 
-#if (CONFIG_EPROM_MR_CRC  >= CONFIG_EPROM_FD_END)
-	//#error "Please use Arm Compiler Toolchain V4.0.677 or later!"
-	//#error "EPROM 容量不足：存储区域重叠，请调小分区或更换更大容量芯片"
+#if (CONFIG_EPROM_BK_END >= CONFIG_EPROM_MR_CRC)
+	#error "EPROM 容量不足：存储区域重叠，请调小分区或更换更大容量芯片"
 #endif
 /*****************************************************************************/
 #ifdef __cplusplus
