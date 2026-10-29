@@ -160,6 +160,12 @@ uint32_t FLASH_If_EraseBootload(void){
 	return (0);
 }
 
+uint32_t FLASH_If_Read(uint32_t Address)
+{
+  /* Flash可像内存一样直接读取(F1/F4全系列); 调用方需保证地址在有效Flash范围内 */
+  return (*(__IO uint32_t *)Address);
+}
+
 uint32_t FLASH_If_WriteApplication(uint32_t Address, uint32_t Data)
 {
   if (Address <= (FLASH_If_GetFlashEndAddr() - 4))

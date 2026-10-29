@@ -121,6 +121,7 @@ typedef  void (*pFunction)(void);
 /* Exported functions ------------------------------------------------------- */
 void FLASH_If_FlashUnlock(void);
 FlagStatus FLASH_If_ReadOutProtectionStatus(void);
+uint32_t FLASH_If_Read(uint32_t Address);//读Flash(32位, F1/F4全系列)
 uint32_t FLASH_If_Write(uint32_t Address, uint32_t Data);
 uint32_t FLASH_If_EraseBootload(void);//擦除BOOTLOADER
 uint32_t FLASH_If_EraseApplication(void);//擦除APPLICATION
