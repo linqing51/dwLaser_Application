@@ -56,6 +56,7 @@ extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 #define CONFIG_USB_ENUM_TIMEOUT									10000//等待USB设备枚举完成超时(ms)
 #define CONFIG_USB_MOUNT_RETRY									3//USB枚举/挂载失败断电重启重试次数
 #define CONFIG_FOOT_SWITCH_WINDOW								3000//启动后等待脚踏踩下的时间窗口(ms)
+#define CONFIG_USB_FIRST_MOUNT_DELAY							3000//VBUS上电到首次f_mount的最短延时(ms), 保证U盘内部控制器自检完成
 /*****************************************************************************/
 #define GDDC_RX_BUF_SIZE												128
 #define GDDC_TX_BUF_SIZE												(2048 + 4)
@@ -103,6 +104,7 @@ static uint8_t forceUpdateMcu, forceUpdateLcd;
 static uint32_t crcFlash, crcUdisk;
 static uint8_t usbMountRetry = 0;//USB枚举/挂载失败断电重启重试计数
 static uint32_t usbEnumTimeout = 0;//USB枚举等待截止时间(ms)
+static uint32_t usbVbusTick = 0;//USB VBUS上电时刻(ms), 用于保证首次f_mount前U盘介质就绪
 int32_t releaseTime0, releaseTime1, overTime, releaseCounter;
 uint32_t JumpAddress;
 pFunction Jump_To_Application;
@@ -350,6 +352,9 @@ void bootLoadProcess(void){//bootload 执行程序
 			break;//继续等待
 		}
 		case BT_STATE_USBHOST_INIT:{//在USB HOST上挂载FATFS
+			if(usbVbusTick == 0){//记录本次VBUS上电时刻(首次进入或断电重启后)
+				usbVbusTick = HAL_GetTick();
+			}
 			if(Appli_state != APPLICATION_READY){//USB设备尚未枚举完成
 				if(usbEnumTimeout == 0){//首次进入记录等待截止时间
 					usbEnumTimeout = HAL_GetTick() + CONFIG_USB_ENUM_TIMEOUT;
@@ -363,12 +368,16 @@ void bootLoadProcess(void){//bootload 执行程序
 						usbMountRetry++;
 						printf("Bootloader:USB enumerate timeout,power cycle %d/%d!\n", usbMountRetry, CONFIG_USB_MOUNT_RETRY);
 						usbPowerCycle();
+						usbVbusTick = HAL_GetTick();//U盘重新上电,重新计时
 						usbEnumTimeout = HAL_GetTick() + CONFIG_USB_ENUM_TIMEOUT;
 					}
 				}
 				break;//继续等待枚举完成
 			}
 			usbEnumTimeout = 0;//枚举完成,清除等待标记
+			if((int32_t)(HAL_GetTick() - usbVbusTick) < CONFIG_USB_FIRST_MOUNT_DELAY){//U盘介质自检延时
+				break;//VBUS上电未满3秒, 等U盘内部闪存控制器自检完成后再首次挂载
+			}
 			retUsbH = f_mount(&USBH_fatfs, FATFS_ROOT, 0);
 			if(retUsbH != FR_OK){//挂载U盘失败
 				if(usbMountRetry >= CONFIG_USB_MOUNT_RETRY){//重试次数用尽
@@ -379,6 +388,7 @@ void bootLoadProcess(void){//bootload 执行程序
 					usbMountRetry++;
 					printf("Bootloader:Mount Fatfs errror:%d,power cycle %d/%d!\n", retUsbH, usbMountRetry, CONFIG_USB_MOUNT_RETRY);
 					usbPowerCycle();
+					usbVbusTick = HAL_GetTick();//U盘重新上电,重新计时
 					usbEnumTimeout = 0;//重新进入枚举等待
 				}
 			}
