@@ -697,6 +697,28 @@ void bootLoadProcess(void){//bootload 执行程序
 				__disable_irq();//复位过程不允许中断
 				HAL_RCC_DeInit();//复位时钟树到复位默认(HSI), 并关闭所有外设时钟
 				HAL_DeInit();//强制复位全部外设(清TIM/SPI/USART/ADC/USB OTG等残留状态)
+#if defined(STM32F1xx)
+				/* F1差异: HAL_DeInit仅复位APB1/APB2外设, 常规F1(F103等)无AHB总线
+				 * 复位位(DMA挂在AHB, 不在复位范围) -> 软件复位清除残留:
+				 * 清全部中断标志(IFCR写1清0) + 关全部通道(CCR清EN与配置),
+				 * 避免APP重新配置DMA时受bootloader残留DMA状态影响 */
+				DMA1->IFCR = 0xFFFFFFFFUL;
+				DMA1_Channel1->CCR = 0;
+				DMA1_Channel2->CCR = 0;
+				DMA1_Channel3->CCR = 0;
+				DMA1_Channel4->CCR = 0;
+				DMA1_Channel5->CCR = 0;
+				DMA1_Channel6->CCR = 0;
+				DMA1_Channel7->CCR = 0;
+	#if defined(DMA2)
+				DMA2->IFCR = 0xFFFFFFFFUL;
+				DMA2_Channel1->CCR = 0;
+				DMA2_Channel2->CCR = 0;
+				DMA2_Channel3->CCR = 0;
+				DMA2_Channel4->CCR = 0;
+				DMA2_Channel5->CCR = 0;
+	#endif
+#endif
 				SysTick->CTRL = 0;//停SysTick(老HAL的HAL_DeInit不处理)
 				SysTick->LOAD = 0;
 				SysTick->VAL = 0;
