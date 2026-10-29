@@ -118,6 +118,19 @@ typedef  void (*pFunction)(void);
 #endif/* STM32F1xx / STM32F4xx */
 
 /* Exported macros -----------------------------------------------------------*/
+/* 全部可清除的FLASH错误/状态标志(供擦写前清陈旧标志, 调试中断后必用):
+ * F1: EOP/WRPERR/PGERR/OPTVERR (无OPERR/PGSERR)
+ * F4: EOP/OPERR/WRPERR/PGAERR/PGPERR/PGSERR
+ * BSY只读, 不可写清除 */
+#if defined(STM32F1xx)
+#define FLASH_IF_ALL_CLEAR_FLAGS  (FLASH_FLAG_EOP    | FLASH_FLAG_WRPERR | \
+                                   FLASH_FLAG_PGERR  | FLASH_FLAG_OPTVERR)
+#else
+#define FLASH_IF_ALL_CLEAR_FLAGS  (FLASH_FLAG_EOP   | FLASH_FLAG_OPERR | \
+                                   FLASH_FLAG_WRPERR| FLASH_FLAG_PGAERR| \
+                                   FLASH_FLAG_PGPERR| FLASH_FLAG_PGSERR)
+#endif
+
 /* Exported functions ------------------------------------------------------- */
 void FLASH_If_FlashUnlock(void);
 FlagStatus FLASH_If_ReadOutProtectionStatus(void);

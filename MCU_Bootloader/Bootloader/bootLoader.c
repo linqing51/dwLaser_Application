@@ -44,6 +44,7 @@ extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 #define BT_FAIL_LCD_DOWNLOAD										'E'//LCD下载失败
 #define BT_FAIL_VECTOR_TABLE_INVALID						'F'//APP 向量表错误
 #define BT_FAIL_CHECK_BLANK											'G'//FLASH查空错误
+#define BT_FAIL_CLEAR_TREATMENT									'M'//清除病历/治疗记录区失败
 #define BT_DONE_CLEAR_ALL												'H'//FLASH和EPROM清除完成
 #define BT_DONE_UPDATE_EPROM										'I'//更新EPROM完成
 #define BT_DONE_DUMP_EPROM											'J'//下载EPROM完成
@@ -801,6 +802,11 @@ static void bootLoadFailHandler(uint8_t ftype){//引导错误程序
 			morseCodeDiag(ftype);
 			break;
 		}
+		case BT_FAIL_CLEAR_TREATMENT:{//清除病历/治疗记录区失败
+			printf("Bootloader:FailHandler,Clear treatment records fail!.\n");
+			morseCodeDiag(ftype);
+			break;
+		}
 		case BT_DONE_CLEAR_ALL:{
 			printf("Bootloader:DoneHandler,Flash and Eprom easer done!.\n");
 			morseCodeDiag(ftype);
@@ -827,13 +833,18 @@ static void bootLoadFailHandler(uint8_t ftype){//引导错误程序
 		}
 	}
 }
+static uint32_t getAppFlashSize(void){//应用区实际可用容量(按芯片实际Flash容量动态计算)
+	/* = 芯片Flash末尾 - 应用区起点 + 1; 兼容F1小容量(32K/64K等)与F4全系列,
+	 * 避免按编译期1MB分区宏APPLICATION_FLASH_SIZE在小容量芯片上超界读/写 */
+	return ((uint32_t)cpuGetFlashSize() * 1024UL) - (APPLICATION_FLASH_START_ADDRESS - 0x08000000UL);
+}
 static void clearFlash(void){//清除MCU FLASH
 	HAL_FLASH_Unlock();
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY|FLASH_FLAG_EOP|FLASH_FLAG_PGSERR|FLASH_FLAG_WRPERR);
+	__HAL_FLASH_CLEAR_FLAG(FLASH_IF_ALL_CLEAR_FLAGS);
 	if (FLASH_If_EraseApplication() != 0x00){//擦除APP FLASH区域失败
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
-	checkBlank(APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_SIZE);//FLASH 查空
+	checkBlank(APPLICATION_FLASH_START_ADDRESS, getAppFlashSize());//FLASH 查空(按实际容量, 防超界)
 }
 static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 	uint32_t crc32;
@@ -844,7 +855,7 @@ static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 	if(retUsbH != FR_OK){//读取失败
 		bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);			
 	}
-	if(f_size(&McuFile) > APPLICATION_FLASH_SIZE){//MCU固件大于FLSAH容量
+	if(f_size(&McuFile) > getAppFlashSize()){//MCU固件大于FLASH容量(按芯片实际容量)
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
 	LastPGAddress = APPLICATION_FLASH_START_ADDRESS;//重置写入地址起点，避免上次残留导致补FF起点错误
@@ -913,17 +924,17 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);			
 	}
 	printf("Bootloader:Open %s sucess,ECODE=0x%02XH.\n", LMCU_FIRMWARE_FILENAME, retUsbH);
-	if(f_size(&McuFile) > APPLICATION_FLASH_SIZE){//MCU固件大于FLSAH容量
+	if(f_size(&McuFile) > getAppFlashSize()){//MCU固件大于FLASH容量(按芯片实际容量)
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
 	HAL_FLASH_Unlock();
 	HAL_Delay(1000);
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY|FLASH_FLAG_EOP|FLASH_FLAG_PGSERR|FLASH_FLAG_WRPERR);
+	__HAL_FLASH_CLEAR_FLAG(FLASH_IF_ALL_CLEAR_FLAGS);
 	if (FLASH_If_EraseApplication() != 0x00){//擦除APP FLASH区域失败
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
 	HAL_Delay(1000);
-	checkBlank(APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_SIZE);//FLASH 查空
+	checkBlank(APPLICATION_FLASH_START_ADDRESS, getAppFlashSize());//FLASH 查空(按实际容量, 防超界)
 	HAL_Delay(1000);
 	printf("Bootloader:Erase mcu application sucess.\n");
 	RamAddress = (uint32_t)&RAM_Buf;//获取RAM缓存区地址

@@ -23,19 +23,6 @@
 #define SECTOR_64KB           0x10000U
 #define SECTOR_128KB          0x20000U
 
-/* All flash error/status flags that can be left stale by a debug session.
- * F4: EOP, OPERR, WRPERR, PGAERR, PGPERR, PGSERR (stm32f4xx_hal_flash.h)
- * F1: EOP, WRPERR, PGERR, OPTVERR  - no OPERR flag (stm32f1xx_hal_flash_ex.h)
- * Note: BSY is read-only and cannot be cleared by writing to SR. */
-#if defined(STM32F1xx)
-#define FLASH_ALL_CLEAR_FLAGS  (FLASH_FLAG_EOP    | FLASH_FLAG_WRPERR | \
-                                FLASH_FLAG_PGERR  | FLASH_FLAG_OPTVERR)
-#else
-#define FLASH_ALL_CLEAR_FLAGS  (FLASH_FLAG_EOP   | FLASH_FLAG_OPERR | \
-                                FLASH_FLAG_WRPERR| FLASH_FLAG_PGAERR| \
-                                FLASH_FLAG_PGPERR| FLASH_FLAG_PGSERR)
-#endif
-
 #define FLASH_TIMEOUT_MS       5000U
 
 /* Private variables --------------------------------------------------------- */
@@ -115,7 +102,7 @@ static void FLASH_If_Prepare(void)
    *    This is the critical fix: without clearing OPERR/PGAERR/PGPERR,
    *    HAL_FLASHEx_Erase()'s internal WaitForLastOperation() sees stale
    *    flags and returns HAL_ERROR immediately. */
-  __HAL_FLASH_CLEAR_FLAG(FLASH_ALL_CLEAR_FLAGS);
+  __HAL_FLASH_CLEAR_FLAG(FLASH_IF_ALL_CLEAR_FLAGS);
 }
 
 uint32_t FLASH_If_EraseApplication(void){

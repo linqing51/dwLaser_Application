@@ -72,6 +72,17 @@ void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
 			}
 			break;
 		}
+#ifdef CONFIG_EPROM_TREATMENT_START
+		case CLEAR_EPROM_TREATMENT:{//清除病历/治疗记录数据区与CRC
+			for(i = CONFIG_EPROM_TREATMENT_START; i <= CONFIG_EPROM_TREATMENT_END;i ++){
+				epromWriteByte(i, &var);
+			}
+			for(i = CONFIF_EPROM_TREATMENT_CRC; i <= (CONFIF_EPROM_TREATMENT_CRC + 3);i ++){
+				epromWriteByte(i, &var);
+			}
+			break;
+		}
+#endif
 		default:break;
 	}
 }
