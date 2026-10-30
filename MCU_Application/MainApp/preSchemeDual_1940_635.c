@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -157,6 +157,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	FDRAM0[FD_LASER_POWER_RED + (i * 64)] = 1;
 	FDRAM0[FD_LASER_POSWIDTH + (i * 64)] = 1000;
 	FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;
+	FDSAV();//FDRAM恢复后强制写回EPROM
 }
 
 void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM		

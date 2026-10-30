@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -109,9 +109,9 @@ void restoreDefault(void){//恢复默认值
   NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_PHLEBOLOGY;
 	NVRAM0[DM_SCHEME_INDEX] = 0;
 #endif
-	FDSAV();
-  NVSAVE();
-	//NVFSAVE();
+	FDSAV();//FDRAM全量写回EPROM
+  NVFSAVE();//强制NVRAM全量重写EPROM(覆盖损坏字节, 保证下次上电CRC通过)
+
 }
 
 uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比

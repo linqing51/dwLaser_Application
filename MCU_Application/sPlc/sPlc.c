@@ -84,17 +84,6 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
     SSET(SPCOIL_DM_CRC_FAIL);
 	}
   //之后在业务流程恢复当前只做标记
-//	if(crcFailMr){//MR区域CRC校验失败: 重新初始化MR(清空并写回EPROM+CRC)
-//		printf("%s,%d,%s:load MR crc fail, re-init MR...\n",__FILE__, __LINE__, __func__);
-//		memset((uint8_t*)(NVRAM0 + MR_START), 0x0, (CONFIG_MR_SIZE * 2));//重新初始化MR
-//		epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));
-//		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
-//		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//更新MR CRC
-//	}
-//	if(crcFailDm){//DM区域CRC校验失败: 使用预设方案恢复设置(恢复默认DM设置与默认方案, 内部已保存)
-//		printf("%s,%d,%s:load DM crc fail, restore default scheme...\n",__FILE__, __LINE__, __func__);
-//		restoreDefault();//使用预设方案恢复设置
-//	}
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));//恢复后同步NVRAM镜像
 	if(crcFailMr || crcFailDm){
 #if (CONFIG_DEBUG_EPROM == 1)
@@ -117,6 +106,32 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//将NVRAM中DM储存入EPROM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
+	//写后回读验证: 读回EPROM计算CRC, 与内存CRC对比(排查NVFSAVE全量保存后校验失败)
+	{
+		uint32_t crcBackMr, crcBackDm, rdCrcMr, rdCrcDm;
+		uint8_t rdBuf[256];
+		uint16_t rdIdx;
+		crcBackMr = crcBackDm = 0;
+		epromReadDword(CONFIG_EPROM_MR_CRC, &rdCrcMr);
+		epromReadDword(CONFIG_EPROM_DM_CRC, &rdCrcDm);
+		for(rdIdx = 0;rdIdx < (CONFIG_MR_SIZE * 2);rdIdx += 64){//MR区逐段读回累计CRC(128B=2段)
+			memset(rdBuf, 0, sizeof(rdBuf));
+			epromRead((CONFIG_EPROM_MR_START + rdIdx), rdBuf, 64);
+			crcBackMr = HAL_CRC_Accumulate(&hcrc, (uint32_t*)rdBuf, (64 / 4));
+		}
+		__HAL_CRC_DR_RESET(&hcrc);
+		for(rdIdx = 0;rdIdx < (CONFIG_DM_SIZE * 2);rdIdx += 256){//DM区逐段读回累计CRC(2048B=8段)
+			memset(rdBuf, 0, sizeof(rdBuf));
+			epromRead((CONFIG_EPROM_DM_START + rdIdx), rdBuf, 256);
+			crcBackDm = HAL_CRC_Accumulate(&hcrc, (uint32_t*)rdBuf, (256 / 4));
+		}
+		if((crcBackMr != crc32_mr) || (crcBackDm != crc32_dm)){
+			printf("%s,%d,%s:save NVRAM verify FAIL!(MR back:0x%08X exp:0x%08X, DM back:0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackMr, crc32_mr, crcBackDm, crc32_dm);
+		}
+		else{
+			printf("%s,%d,%s:save NVRAM verify pass!(MR:0x%08X,DM:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackMr, crcBackDm);
+		}
+	}
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
 void sPlcNvramUpdate(void){//更新NVRAM->EPROM
@@ -186,7 +201,7 @@ void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 #if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load FDRAM crc fail...\n",__FILE__, __LINE__, __func__);
 #endif
-    SSET(SPCOIL_BK_CRC_FAIL); //之后在业务流程恢复当前只做标记
+    SSET(SPCOIL_FD_CRC_FAIL); //之后在业务流程恢复当前只做标记(FD区失败)
 	}
 	else{
 #if (CONFIG_DEBUG_EPROM == 1)
@@ -209,6 +224,25 @@ void sPlcFdramSave(void){//强制将FDRAM存入EPROM
 #if (CONFIG_DEBUG_EPROM == 1)
     printf("%s,%d,%s:save FD RAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
 #endif
+	}
+	//写后回读验证: 读回EPROM计算CRC与内存CRC对比
+	{
+		uint32_t crcBackFd, rdCrcFd;
+		uint8_t rdBuf[256];
+		uint16_t rdIdx;
+		crcBackFd = 0;
+		epromReadDword(CONFIG_EPROM_FD_CRC, &rdCrcFd);
+		for(rdIdx = 0;rdIdx < (CONFIG_FDRAM_SIZE * 2);rdIdx += 256){//FDRAM区逐段读回累计CRC(4096B=16段)
+			memset(rdBuf, 0, sizeof(rdBuf));
+			epromRead((CONFIG_EPROM_FD_START + rdIdx), rdBuf, 256);
+			crcBackFd = HAL_CRC_Accumulate(&hcrc, (uint32_t*)rdBuf, (256 / 4));
+		}
+		if(crcBackFd != crc32_eprom_fd){
+			printf("%s,%d,%s:save FD RAM verify FAIL!(back:0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackFd, crc32_eprom_fd);
+		}
+		else{
+			printf("%s,%d,%s:save FD RAM verify pass!(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackFd);
+		}
 	}
 }
 void sPlcFdramClear(void){//清除FDRAM数据
@@ -237,7 +271,7 @@ void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
 #if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load BK crc fail...\n",__FILE__, __LINE__, __func__);
 #endif
-    SSET(SPCOIL_FD_CRC_FAIL); //之后在业务流程恢复当前只做标记
+    SSET(SPCOIL_BK_CRC_FAIL); //之后在业务流程恢复当前只做标记(BK区失败)
 	}
 	else{
 #if (CONFIG_DEBUG_EPROM == 1)
