@@ -100,7 +100,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sPhlebology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sPhlebology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sPhlebology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sPhlebology[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sPhlebology[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sPhlebology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sPhlebology[index].negwidth;
 			break;
@@ -114,7 +114,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sProctology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sProctology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sProctology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sProctology[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sProctology[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sProctology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sProctology[index].negwidth;
 			break;			
@@ -128,7 +128,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sGynecology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sGynecology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sGynecology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sGynecology[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sGynecology[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sGynecology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sGynecology[index].negwidth;
 			break;
@@ -142,7 +142,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sENT[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sENT[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sENT[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sENT[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sENT[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sENT[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sENT[index].negwidth;
 			break;
@@ -156,7 +156,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sNeurosurgery[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sNeurosurgery[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sNeurosurgery[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sNeurosurgery[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sNeurosurgery[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sNeurosurgery[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sNeurosurgery[index].negwidth;
 			break;
@@ -170,7 +170,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sDermatology[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sDermatology[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sDermatology[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sDermatology[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sDermatology[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sDermatology[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sDermatology[index].negwidth;			
 			break;
@@ -184,7 +184,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sLiposuction[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sLiposuction[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sLiposuction[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sLiposuction[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sLiposuction[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sLiposuction[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sLiposuction[index].negwidth;
 			break;
@@ -198,7 +198,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sDentistry[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sDentistry[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sDentistry[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sDentistry[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sDentistry[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sDentistry[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sDentistry[index].negwidth;
 			break;
@@ -212,7 +212,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 			NVRAM0[EM_LASER_PULSE_MODE] = sTherapy[index].pulse_mode;
 			NVRAM0[EM_LASER_POWER_CH0] = sTherapy[index].power_ch0;
 			NVRAM0[EM_LASER_POWER_CH1] = sTherapy[index].power_ch1;
-			NVRAM0[EM_LASER_POWER_635] = sTherapy[index].power_red;
+			NVRAM0[EM_LASER_POWER_635] = sTherapy[index].power_ch2;
 			NVRAM0[EM_LASER_POSWIDTH] = sTherapy[index].poswidth;
 			NVRAM0[EM_LASER_NEGWIDTH] = sTherapy[index].negwidth;			
 			break;
@@ -251,7 +251,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	for (i = 0;i < 32; i ++){
 		if(reDef == 1){//自定义方案恢复默认值
 			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
-			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
+			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0 | LASER_CHANNEL_CH1 | LASER_CHANNEL_CH2;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 			FDRAM0[FD_LASER_POWER_CH0 + (i * 64)] = 10;
 			FDRAM0[FD_LASER_POWER_CH1 + (i * 64)] = 1;
@@ -260,11 +260,13 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 			FDRAM0[FD_LASER_NEGWIDTH + (i * 64)] = 1000;	
 		}
 		else{
-			if(	(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH0) 			&&
-					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1)  			&&
-					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_RED)){//自定义方案不正确恢复默认值
+			if(	(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH0) &&\
+					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1) &&\
+					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH2) &&\
+					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != (LASER_CHANNEL_CH0 | LASER_CHANNEL_CH1)) &&\
+					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != (LASER_CHANNEL_CH0 | LASER_CHANNEL_CH1 | LASER_CHANNEL_CH2))){//自定义方案不正确恢复默认值
 				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
-				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
+				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0 | LASER_CHANNEL_CH1 | LASER_CHANNEL_CH2;
 				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 				FDRAM0[FD_LASER_POWER_CH0 + (i * 64)] = 10;
 				FDRAM0[FD_LASER_POWER_CH1 + (i * 64)] = 1;
@@ -283,7 +285,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -294,7 +296,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 60;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -305,7 +307,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -317,7 +319,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 70;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -328,7 +330,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
 	
@@ -339,7 +341,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
 	
@@ -350,7 +352,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
 
@@ -361,7 +363,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
 	
@@ -372,7 +374,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 70;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
 	
@@ -384,7 +386,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 60;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 	
 	
@@ -395,7 +397,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 70;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 
 	
@@ -406,7 +408,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 
 	
@@ -417,7 +419,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 500;
 	p->negwidth = 500; 
 	
@@ -428,7 +430,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 60;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
 	
@@ -439,7 +441,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 15000;
 	p->negwidth = 1000; 	
 	
@@ -450,7 +452,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 50;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
 	
@@ -461,7 +463,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 50;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 
 	
@@ -472,7 +474,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 50;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
 	
@@ -483,7 +485,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000; 	
 
@@ -494,7 +496,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -505,7 +507,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -516,7 +518,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
 	
@@ -527,7 +529,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
 	
@@ -538,7 +540,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
 	
@@ -549,7 +551,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
 	
@@ -560,7 +562,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;		
 	
@@ -571,7 +573,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -582,7 +584,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -593,7 +595,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -604,7 +606,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -615,7 +617,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -626,7 +628,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -638,7 +640,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 70;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
 
@@ -649,7 +651,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 70;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
 	
@@ -660,7 +662,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 75;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 700;
 	p->negwidth = 700;		
 	
@@ -671,7 +673,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 70;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;	
 	
@@ -682,7 +684,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 80;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
 	
@@ -694,7 +696,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 130;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -705,7 +707,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 120;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -716,7 +718,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 140;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -727,7 +729,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 140;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -738,7 +740,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 140;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -749,7 +751,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 140;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -760,7 +762,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 130;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -771,7 +773,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 130;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -782,7 +784,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 100;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -793,7 +795,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 130;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -804,7 +806,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 130;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -815,7 +817,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 100;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -826,7 +828,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 130;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -837,7 +839,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 100;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 90;
 	
@@ -848,7 +850,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 100;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -859,7 +861,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 120;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -872,7 +874,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 100;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -883,7 +885,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 30;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -894,7 +896,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 80;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -905,7 +907,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 100;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -916,7 +918,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 60;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -927,7 +929,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 150;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 70;
 	p->negwidth = 120;
 
@@ -938,7 +940,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 80;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
 	
@@ -949,7 +951,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 80;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
 
@@ -960,7 +962,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 80;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 5000;
 	
@@ -973,7 +975,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 30;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -984,7 +986,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 60;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -995,7 +997,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1006,7 +1008,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 120;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1017,7 +1019,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 100;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1028,7 +1030,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 		
@@ -1039,7 +1041,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 80;
 	p->power_ch1 = 1;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 /*****************************************************************************/
@@ -1051,7 +1053,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 12;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1062,7 +1064,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1073,7 +1075,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 20;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;	
 	
@@ -1084,7 +1086,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 15;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;	
 	
@@ -1095,7 +1097,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1106,7 +1108,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1117,7 +1119,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1128,7 +1130,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1139,7 +1141,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1150,7 +1152,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1161,7 +1163,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 18;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;	
 	
@@ -1172,7 +1174,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 15;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1183,7 +1185,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;	
 	
@@ -1194,7 +1196,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 12;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1205,7 +1207,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 18;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1216,7 +1218,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 15;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1227,7 +1229,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 18;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1238,7 +1240,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 8;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -1249,7 +1251,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 8;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1260,7 +1262,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -1271,7 +1273,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 10;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 	
@@ -1282,7 +1284,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 9;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
@@ -1293,7 +1295,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 50;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
@@ -1305,7 +1307,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 80;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
@@ -1316,7 +1318,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 80;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 
@@ -1327,7 +1329,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 100;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 
@@ -1338,7 +1340,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 60;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 	
@@ -1349,40 +1351,40 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化
 	p->pulse_mode = LASER_MODE_MP; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 60;
-	p->power_red = 1;
+	p->power_ch2 = 1;
 	p->poswidth = 50;
 	p->negwidth = 50;
 
 	//635nm CW
 	p = &sTherapy[5];
 	p->name = "Wound Healing";
-	p->channel = LASER_CHANNEL_RED;
+	p->channel = LASER_CHANNEL_CH2;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 1;
-	p->power_red = 5;
+	p->power_ch2 = 5;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
 	//635nm CW
 	p = &sTherapy[6];
 	p->name = "Low Laser Therapy";
-	p->channel = LASER_CHANNEL_RED;
+	p->channel = LASER_CHANNEL_CH2;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 1;
-	p->power_red = 5;
+	p->power_ch2 = 5;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
 	//635nm CW
 	p = &sTherapy[7];
 	p->name = "Biostimulation";
-	p->channel = LASER_CHANNEL_RED;
+	p->channel = LASER_CHANNEL_CH2;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch1 = 1;
-	p->power_red = 5;
+	p->power_ch2 = 5;
 	p->poswidth = 1000;
 	p->negwidth = 1000;
 
