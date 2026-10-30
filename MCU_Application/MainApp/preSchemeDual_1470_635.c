@@ -337,7 +337,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化FDRAM
 	for (i = 0;i < 32; i ++){
 		if(reDef == 1){//自定义方案恢复默认值
 			sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
-			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0 | LASER_CHANNEL_CH1;
+			FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
 			FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 			FDRAM0[FD_LASER_POWER_CH0 + (i * 64)] = 1;
 			FDRAM0[FD_LASER_POWER_CH1 + (i * 64)] = 1;
@@ -353,10 +353,9 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化FDRAM
 		}
 		else{
 			if(	(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH0) &&\
-					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1) &&\
-					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != (LASER_CHANNEL_CH0 | LASER_CHANNEL_CH1))){//自定义方案不正确恢复默认值
+					(FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] != LASER_CHANNEL_CH1)){//自定义方案不正确恢复默认值
 				sprintf(((char*)&FDRAM0[FD_LASER_SCHEME_NAME + (i * 64)]), "Custom %d", (i+1)); 
-				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0 | LASER_CHANNEL_CH1;
+				FDRAM0[FD_LASER_CHANNEL_SELECT + (i * 64)] = LASER_CHANNEL_CH0;
 				FDRAM0[FD_LASER_PULSE_MODE + (i * 64)] = LASER_MODE_CW;
 				FDRAM0[FD_LASER_POWER_CH0 + (i * 64)] = 1;
 				FDRAM0[FD_LASER_POWER_CH1 + (i * 64)] = 1;
@@ -905,7 +904,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化FDRAM
 	//635nm CW
 	p = &sTherapy[0];
 	p->name = "Wound Healing";
-	p->channel = LASER_CHANNEL_RAIM;
+	p->channel = LASER_CHANNEL_CH2;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch2 = 5;
@@ -915,7 +914,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化FDRAM
 	//635nm CW
 	p = &sTherapy[1];
 	p->name = "Low Laser Therapy";
-	p->channel = LASER_CHANNEL_RAIM;
+	p->channel = LASER_CHANNEL_CH2;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch2 = 5;
@@ -925,7 +924,7 @@ void restoreScheme(uint8_t reDef){//治疗方案初始化FDRAM
 	//635nm CW
 	p = &sTherapy[2];
 	p->name = "Biostimulation";
-	p->channel = LASER_CHANNEL_RAIM;
+	p->channel = LASER_CHANNEL_CH2;
 	p->pulse_mode = LASER_MODE_CW; 
 	p->power_ch0 = 1;
 	p->power_ch2 = 5;

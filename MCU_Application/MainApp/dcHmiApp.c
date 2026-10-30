@@ -1049,7 +1049,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[14].name) <= CONFIG_SCHEME_NAME_SIZE){
-					strcpy(dispBuf, (char*)(sENT[15].name));
+					strcpy(dispBuf, (char*)(sENT[14].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[15].name) <= CONFIG_SCHEME_NAME_SIZE){
@@ -1819,7 +1819,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 #endif
 			
 #if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
 #endif
 			if(index < 16){
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
