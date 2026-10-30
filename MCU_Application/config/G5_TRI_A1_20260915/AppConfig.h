@@ -108,43 +108,43 @@ extern "C" {
 #define CONFIG_PHLEBOLOGY_SIZE												3
 #define CONFIG_PROCTOLOGY_SIZE												6
 #define CONFIG_GYNECOLOGY_SIZE												23
-#define CONFIG_ENT_SIZE														16
-#define CONFIG_ENDOLIFT_SIZE												11
+#define CONFIG_ENT_SIZE														    16
+#define CONFIG_ENDOLIFT_SIZE												  11
 #define CONFIG_NEUROSURGERY_SIZE											3
 #define CONFIG_DERMATOLOGY_SIZE												9
 #define CONFIG_LIPOSUCTION_SIZE												7
-#define CONFIG_DENTISRTY_SIZE												23
-#define CONFIG_THERAPY_SIZE													3
+#define CONFIG_DENTISRTY_SIZE												  23
+#define CONFIG_THERAPY_SIZE													  3
 /******************************************************************************/
 //配置蜂鸣器		
-#define CONFIG_MAX_SPK_FREQ													4500L//喇叭最高频率
-#define CONFIG_MIN_SPL_FREQ													500//喇叭最低频率
+#define CONFIG_MAX_SPK_FREQ													  4500L//喇叭最高频率
+#define CONFIG_MIN_SPL_FREQ													  500//喇叭最低频率
 #define CONFIG_DEFAULT_SPK_FREQ												1100//蜂鸣器默认频率
 #define CONFIG_ACOUSITC_SPK_FREQ											1400//蜂鸣器变声频率
 /*****************************************************************************/
-#define CONFIG_WAIT_HMI_DELAY_TIME											20
-#define CONFIG_WAIT_PASSWORD_DELAY_TIME										90
-#define CONFIG_KEY_REPEAT_DELAY_TIME										80
-#define CONFIG_STANDBY_BEEM_DELAY_TIME										20
-#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME								10//无线脚踏掉线超时 10mS * 100
+#define CONFIG_WAIT_HMI_DELAY_TIME										20
+#define CONFIG_WAIT_PASSWORD_DELAY_TIME								90
+#define CONFIG_KEY_REPEAT_DELAY_TIME									80
+#define CONFIG_STANDBY_BEEM_DELAY_TIME								20
+#define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
 /*****************************************************************************/
 //配置环境信息
 #define CONFIG_USING_CLASSIC_PID											0
 #define CONFIG_USING_FUZZY_PID												0
 #define CONFIG_USING_SMART_PID												0
-#define CONFIG_USING_NN_PID													1
+#define CONFIG_USING_NN_PID													  1
 #define CONFIG_USING_RLS_PID													0
-#define CONFIG_USING_ADRC_PID												0
-#define CONFIG_USING_MPC_PID												0
-#define CONFIG_USING_IMC_PID												0
-#define CONFIG_USING_ILC_PID												0
+#define CONFIG_USING_ADRC_PID												  0
+#define CONFIG_USING_MPC_PID												  0
+#define CONFIG_USING_IMC_PID												  0
+#define CONFIG_USING_ILC_PID												  0
 
-#define CONFIG_LASER_A_DIODE_SET_TEMP										280//激光器温度设定
-#define CONFIG_LASER_B_DIODE_SET_TEMP										280//激光器温度设定
+#define CONFIG_LASER_A_DIODE_SET_TEMP									280//激光器温度设定
+#define CONFIG_LASER_B_DIODE_SET_TEMP									280//激光器温度设定
 
-#define CONFIG_LASER_A_DIODE_TEMP_HIGH										400//激光器高温极限 46.0C
-#define CONFIG_LASER_A_DIODE_TEMP_LOW										-100//激光器低温极限 -25.0C
-#define CONFIG_LASER_A_COUPLER_TEMP_HIGH									600//耦合器高温报警
+#define CONFIG_LASER_A_DIODE_TEMP_HIGH								400//激光器高温极限 46.0C
+#define CONFIG_LASER_A_DIODE_TEMP_LOW									-100//激光器低温极限 -25.0C
+#define CONFIG_LASER_A_COUPLER_TEMP_HIGH							600//耦合器高温报警
 #define CONFIG_LASER_A_COUPLER_TEMP_LOW								0//耦合器低温报警
 #define CONFIG_LASER_A_CRYST0_TEMP_HIGH								0
 #define CONFIG_LASER_A_CRYST0_TEMP_LOW								0
@@ -194,18 +194,18 @@ extern "C" {
 #define CONFIG_FAN_CURVE_POINTS 											10//定义温度-转速曲线
 /*****************************************************************************/
 //配置激光参数
-#define CONFIG_MAX_LASER_POWER_CH0						        70//通道1470最大激光功率		
-#define CONFIG_MAX_LASER_POWER_CH1						        150//通道1940最大激光功率		
-#define CONFIG_MAX_LASER_POWER_CH2						        5//通道2最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH3						        0//通道3最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH4						        0//通道4最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH5						        0//通道5最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH6						        0//通道6最大激光功率
-#define CONFIG_MAX_LASER_POWER_CH7						        0//通道7最大激光功率	
+#define CONFIG_MAX_LASER_POWER_CH0						        150//通道1470最大激光功率		
+#define CONFIG_MAX_LASER_POWER_CH1						        1//通道980最大激光功率		
+#define CONFIG_MAX_LASER_POWER_CH2						        5//通道635最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH3						        1//通道3最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH4						        1//通道4最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH5						        1//通道5最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH6						        1//通道6最大激光功率
+#define CONFIG_MAX_LASER_POWER_CH7						        1//通道7最大激光功率	
 
 #define CONFIG_MIN_LASER_POWER_CH0						        1//通道1470最小激光功率		
-#define CONFIG_MIN_LASER_POWER_CH1						        1//通道1940最小激光功率		
-#define CONFIG_MIN_LASER_POWER_CH2						        1//通道2最小激光功率
+#define CONFIG_MIN_LASER_POWER_CH1						        1//通道980最小激光功率		
+#define CONFIG_MIN_LASER_POWER_CH2						        1//通道635最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH3						        1//通道3最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH4						        1//通道4最小激光功率
 #define CONFIG_MIN_LASER_POWER_CH5						        1//通道5最小激光功率

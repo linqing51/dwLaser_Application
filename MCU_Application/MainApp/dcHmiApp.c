@@ -664,7 +664,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 	//uint8_t index;
 	//index = NVRAM0[EM_SCHEME_NUM_TMP];
 	switch(classify){
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1470_980_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 		case SCHEME_PHLEBOLOGY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Phlebology");
 			if(strlen((char*)sPhlebology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
@@ -1106,7 +1106,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 #endif
 		case SCHEME_NEUROSURGERY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Neurosurgery");
-#if defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_980_635)
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1166,7 +1166,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
 #endif
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1583,7 +1583,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 		}
 		case SCHMEM_THERAPY:{
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Therapy");
-#if defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_980_635)
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1655,7 +1655,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
 			BatchEnd();
 #endif
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
 					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
@@ -1717,7 +1717,7 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}	
 		case SCHEME_ENDOLIFT:{
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Endolift");
 			if(strlen((char*)sEndolift[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[0].name));
@@ -1814,11 +1814,11 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 
 		}
 		case SCHEME_CUSTIOM:{
-#if defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_980_635)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
 #endif
 			
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "");
 #endif
 			if(index < 16){
@@ -2136,7 +2136,7 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 	memset(dispBuf1, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);	
 	memset(dispBuf2, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	switch(classify){
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1470_980_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 		case SCHEME_PHLEBOLOGY:{
 			if(index > (CONFIG_PHLEBOLOGY_SIZE - 1)){
 				index = (CONFIG_PHLEBOLOGY_SIZE - 1);
@@ -2286,11 +2286,11 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 	}
 	switch(select){
 		case LASER_CHANNEL_CH0:{
-#if defined(APP_CONFIG_WAVE_1470_650) || defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1470_980_635)
 			sprintf(dispBuf1, "1470nm: %3.1fW", ((float)power_ch0 / 10.0F));
 #endif
 
-#if defined(APP_CONFIG_WAVE_1940_650)
+#if defined(APP_CONFIG_WAVE_1940_635)
 			sprintf(dispBuf1, "1940nm: %3.1fW", ((float)power_ch0 / 10.0F));
 #endif	
 
@@ -2612,11 +2612,11 @@ void updateReadyDisplay(void){//更新READY显示
 	switch(NVRAM0[EM_LASER_CHANNEL_SELECT]){
 		case LASER_CHANNEL_CH0:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH0] / 10.0F;
-#if defined(APP_CONFIG_WAVE_1470_650)	|| defined(APP_CONFIG_WAVE_1470_980_650)
+#if defined(APP_CONFIG_WAVE_1470_635)	|| defined(APP_CONFIG_WAVE_1470_980_635)
 			sprintf(dispBuf, "1470nm");
 			treatmentLog.laserWave = WAVE_1470;
 #endif
-#if defined(APP_CONFIG_WAVE_1940_650) || defined(APP_CONFIG_WAVE_1940_1470_635)
+#if defined(APP_CONFIG_WAVE_1940_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			sprintf(dispBuf, "1940nm");
 			treatmentLog.laserWave = WAVE_1940;
 #endif
@@ -3621,7 +3621,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			
 			//校正输出功率
 			
-#if defined(APP_CONFIG_WAVE_1470_650)
+#if defined(APP_CONFIG_WAVE_1470_635)
 			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 				NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_CHANNEL_CH0, NVRAM0[EM_LASER_POWER_CH0], &deviceConfig, true);
 				UPDAC0();
