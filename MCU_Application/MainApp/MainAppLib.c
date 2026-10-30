@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -91,7 +91,6 @@ void restoreDefault(void){//恢复默认值
 	NVRAM0[DM_RAIM_BRG] = CONFIG_MAX_LASER_POWER_RAIM;
 	NVRAM0[DM_GAIM_BRG] = CONFIG_MAX_LASER_POWER_GAIM;
 	NVRAM0[DM_LCD_BRG] = CONFIG_LCD_MAX_DC;
-	schemeInit(1);//初始化自定义方案
 #if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1470_980_635) 
 	NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_PHLEBOLOGY;
 	NVRAM0[DM_SCHEME_INDEX] = 0;

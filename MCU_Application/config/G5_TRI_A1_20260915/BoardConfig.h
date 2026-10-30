@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -266,6 +266,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
 #define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
 #define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
+#define CONFIG_BKSRAM_BASE_ADDR								(0x40024000UL)//STM32F405 BKPSRAM 4K 掉电保持区起始地址
 /******************************************************************************/
 //配置ADC
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源

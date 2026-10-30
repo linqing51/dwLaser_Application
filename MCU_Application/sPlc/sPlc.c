@@ -71,31 +71,40 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
+#if (CONFIG_DEBUG_EPROM == 1)
 	printf("%s,%d,%s:MR EPROM CRC:0x%08X,MR CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_mr, crc32_mr);
 	printf("%s,%d,%s:DM EPROM CRC:0x%08X,DM CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_dm, crc32_dm);
+#endif
 	if(crc32_eprom_mr != crc32_mr){
-		crcFailMr = 1;
+		crcFailMr = 1; //之后在业务流程恢复当前只做标记
+    SSET(SPCOIL_MR_CRC_FAIL);
 	}
 	if(crc32_eprom_dm != crc32_dm){
-		crcFailDm = 1;
+		crcFailDm = 1; //之后在业务流程恢复当前只做标记
+    SSET(SPCOIL_DM_CRC_FAIL);
 	}
-	if(crcFailMr){//MR区域CRC校验失败: 重新初始化MR(清空并写回EPROM+CRC)
-		printf("%s,%d,%s:load MR crc fail, re-init MR...\n",__FILE__, __LINE__, __func__);
-		memset((uint8_t*)(NVRAM0 + MR_START), 0x0, (CONFIG_MR_SIZE * 2));//重新初始化MR
-		epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));
-		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
-		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//更新MR CRC
-	}
-	if(crcFailDm){//DM区域CRC校验失败: 使用预设方案恢复设置(恢复默认DM设置与默认方案, 内部已保存)
-		printf("%s,%d,%s:load DM crc fail, restore default scheme...\n",__FILE__, __LINE__, __func__);
-		restoreDefault();//使用预设方案恢复设置
-	}
+  //之后在业务流程恢复当前只做标记
+//	if(crcFailMr){//MR区域CRC校验失败: 重新初始化MR(清空并写回EPROM+CRC)
+//		printf("%s,%d,%s:load MR crc fail, re-init MR...\n",__FILE__, __LINE__, __func__);
+//		memset((uint8_t*)(NVRAM0 + MR_START), 0x0, (CONFIG_MR_SIZE * 2));//重新初始化MR
+//		epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));
+//		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
+//		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//更新MR CRC
+//	}
+//	if(crcFailDm){//DM区域CRC校验失败: 使用预设方案恢复设置(恢复默认DM设置与默认方案, 内部已保存)
+//		printf("%s,%d,%s:load DM crc fail, restore default scheme...\n",__FILE__, __LINE__, __func__);
+//		restoreDefault();//使用预设方案恢复设置
+//	}
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));//恢复后同步NVRAM镜像
 	if(crcFailMr || crcFailDm){
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load NVRAM crc fail, re-init done...\n",__FILE__, __LINE__, __func__);
+#endif
 	}
 	else{
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load NVRAM done...\n",__FILE__, __LINE__, __func__);
+#endif
 	}
 }
 void sPlcNvramSave(void){//强制将NVRAM存入EPROM
@@ -174,10 +183,15 @@ void sPlcFdramLoad(void){//从EPROM中载入FDRAM
   memcpy((uint8_t*)FDRAM1, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
   printf("%s,%d,%s:FDRAM EPROM CRC:0x%08X,FDRAM CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_fd, crc32_fd);
   if(crc32_eprom_fd != crc32_fd){
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load FDRAM crc fail...\n",__FILE__, __LINE__, __func__);
+#endif
+    SSET(SPCOIL_BK_CRC_FAIL); //之后在业务流程恢复当前只做标记
 	}
 	else{
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load FDRAM done...\n",__FILE__, __LINE__, __func__);
+#endif
 	}  
 }
 void sPlcFdramSave(void){//强制将FDRAM存入EPROM
@@ -187,17 +201,23 @@ void sPlcFdramSave(void){//强制将FDRAM存入EPROM
 	ref = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
 	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写入32位数
   if(ref != HAL_OK){
-		printf("%s,%d,%s:save FD NVRAM fail...\n",__FILE__, __LINE__, __func__);
+#if (CONFIG_DEBUG_EPROM == 1)
+		printf("%s,%d,%s:save FD RAM fail...\n",__FILE__, __LINE__, __func__);
+#endif
 	}
 	else{
-    printf("%s,%d,%s:save FDRAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
+#if (CONFIG_DEBUG_EPROM == 1)
+    printf("%s,%d,%s:save FD RAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
+#endif
 	}
 }
 void sPlcFdramClear(void){//清除FDRAM数据
 	clearEprom(CLEAR_EPROM_FDRAM);//clear mr dm
 	memset(FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
 	memset(FDRAM1, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM
+#if (CONFIG_DEBUG_EPROM == 1)  
   printf("%s,%d,%s:clear FD NVRAM done...\n",__FILE__, __LINE__, __func__);
+#endif
 }
 
 void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
@@ -210,12 +230,19 @@ void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
 	epromRead(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 2));//从EPROM中恢复BK
 	epromReadDword(CONFIG_EPROM_BK_CRC, &crc32_eprom_bk);
 	crc32_bk = HAL_CRC_Calculate(&hcrc, (uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE / 2));
+#if (CONFIG_DEBUG_EPROM == 1)
 	printf("%s,%d,%s:BK EPROM CRC:0x%08X,BK CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_bk, crc32_bk);
+#endif
 	if(crc32_eprom_bk != crc32_bk){
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load BK crc fail...\n",__FILE__, __LINE__, __func__);
+#endif
+    SSET(SPCOIL_FD_CRC_FAIL); //之后在业务流程恢复当前只做标记
 	}
 	else{
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load BK done...\n",__FILE__, __LINE__, __func__);
+#endif
 	}
 }
 
@@ -229,11 +256,15 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
 	ref1 = epromWrite(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 2));
 	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写入32位数
 	if((ref1 != HAL_OK) || (ref2 != HAL_OK)){
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:save BK NVRAM fail...\n",__FILE__, __LINE__, __func__);
+#endif
 	}
 	else{
+#if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:save BK done...(BK CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_bk);
-	}
+#endif
+  }
 }
 
 void sPlcBkramClear(void){//清除BK数据(含EPROM BK区)
@@ -242,7 +273,9 @@ void sPlcBkramClear(void){//清除BK数据(含EPROM BK区)
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
 	clearEprom(CLEAR_EPROM_BKRAM);//清除EPROM BK数据区与CRC
 	memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 2));//清空BKSRAM
+#if (CONFIG_DEBUG_EPROM == 1)
 	printf("%s,%d,%s:clear BK done...\n",__FILE__, __LINE__, __func__);
+#endif
 }
 
 void sPlcDeviceConfigClear(void){//清除设备配置参数
@@ -355,7 +388,6 @@ void sPlcRtcProcess(void){//RTC轮询(万年历同步到NVRAM EM_RTC_*,NVRAM中y
 void sPlcInit(void){//软逻辑初始化	
 	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	epromInit();
-  listEpromTable();
 	readStm32UniqueID();
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
   while(1){

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -42,7 +42,6 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
 uint16_t fitLaserToCodeLine(uint8_t ch, int16_t power);
 uint8_t saveSchemeToUdisk(void);//将FDRAM写入USB DISK
 uint8_t loadSchemeFromUdisk(void);//从USB DISK载入FDRAM
-int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb);
 /*****************************************************************************/
 #ifdef __cplusplus
 }

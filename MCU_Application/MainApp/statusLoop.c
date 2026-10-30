@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -326,10 +326,10 @@ void statusLoop(void){//温度轮询轮询
 		RRES(R_HDC1080_HUMIDITY_LOW);
 	}
 	if(LDP(R_HDC1080_HUMIDITY_HIGH)){
-		printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
 	}
 	if(LDP(R_HDC1080_HUMIDITY_LOW)){
-		printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
 	}
 	//HDC1080 温度检测
 	if(NVRAM0[EM_HDC1080_TEMP] > CONFIG_HDC1080_TEMP_HIGH){
@@ -364,10 +364,10 @@ void statusLoop(void){//温度轮询轮询
 		RRES(R_DHT11_HUMIDITY_LOW);
 	}
 	if(LDP(R_DHT11_HUMIDITY_HIGH)){
-		printf("%s,%d,%s:STATUS:DHT11 HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:STATUS:DHT11 HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
 	}
 	if(LDP(R_DHT11_HUMIDITY_LOW)){
-		printf("%s,%d,%s:STATUS:DHT11 HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:STATUS:DHT11 HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
 	}
 	//DHT11 温度检测
 	if(NVRAM0[EM_DHT11_TEMP] > CONFIG_DHT11_TEMP_HIGH){
@@ -402,10 +402,10 @@ void statusLoop(void){//温度轮询轮询
 		RRES(R_MCU_TEMP_LOW);
 	}
 	if(LDP(R_MCU_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:MCU TEMP HIGH\n", __FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:STATUS:MCU TEMP HIGH\n", __FILE__, __LINE__, __func__);
 	}
 	if(LDP(R_MCU_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:MCU TEMP LOW\n", __FILE__, __LINE__, __func__);
+		//printf("%s,%d,%s:STATUS:MCU TEMP LOW\n", __FILE__, __LINE__, __func__);
 	}
 	//主电池温度
 	if(NVRAM0[EM_MBAT_TEMP] > CONFIG_MBAT_TEMP_HIGH){

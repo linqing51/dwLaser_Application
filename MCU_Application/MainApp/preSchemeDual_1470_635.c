@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -259,7 +259,7 @@ void loadSelectScheme(int16_t classify, int16_t index){//将方案写入EM
 	printf("%s,%d,%s:scheme negwidth:%d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_LASER_NEGWIDTH]);
 }
 
-void schemeInit(uint8_t reDef){//治疗方案初始化
+void restoreScheme(uint8_t reDef){//治疗方案初始化FDRAM
 	myScheme_t *p;
 	int16_t i;
 	for (i = 0;i < 32; i ++){

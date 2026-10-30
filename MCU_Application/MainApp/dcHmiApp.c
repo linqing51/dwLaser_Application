@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -2778,6 +2778,18 @@ void updateAcousticDisplay(void){//更新提示音设置
 void dcHmiLoopInit(void){//初始化模块
 	//PID参数初始化
 	loadDeviceConfig();//载入硬件配置
+  if(LD(SPCOIL_DM_CRC_FAIL) || (LD(SPCOIL_MR_CRC_FAIL))){//DM或MR校验失败恢复默认设置
+    restoreDefault();//需要添加内容
+    RRES(SPCOIL_DM_CRC_FAIL);
+    RRES(SPCOIL_MR_CRC_FAIL);
+  }
+  if(LD(SPCOIL_FD_CRC_FAIL)){//FD校验失败恢复默认方案
+    restoreScheme(1);//恢复默认方案
+    RRES(SPCOIL_FD_CRC_FAIL);
+  }
+  if(LD(SPCOIL_BK_CRC_FAIL)){//BK校验失败暂时无内容
+    
+  }
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);
 	}
@@ -2799,7 +2811,7 @@ void dcHmiLoopInit(void){//初始化模块
 	standbyKeyTouchEnableStatus = -1;
 	setRedLaserPwm(0);
 	hmiUartInit();
-	schemeInit(0);//不恢复自定义方案
+	restoreScheme(0);//不恢复自定义方案
 	loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
 	//NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_IDLE;

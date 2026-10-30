@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -17,10 +17,6 @@ extern "C" {
 #define CONFIG_USING_DEFAULT_SCHEME										1//是能预设模式
 #define CONFIG_MAX_SCHEME_NAME_SIZE										40//方案名称长度
 #define	CONFIG_FIXSTRING_BUF_SIZE 										64//固定长度字符穿
-/*****************************************************************************/
-#define CONFIG_MORSECODE_SPACE_TIME										3000//莫尔斯电码空时间
-#define CONFIG_MORSECODE_LONG_TIME										900//莫尔斯电码长时间
-#define CONFIG_MORSECODE_SHORT_TIME										300//莫尔斯电码短时间
 /*****************************************************************************/
 #define CONFIG_GDDC_UART_BAUDRATE											115200//LCD通信波特率
 /*****************************************************************************/
@@ -101,10 +97,10 @@ extern "C" {
 #define GDDC_PAGE_STANDBY 														GDDC_PAGE_STANDBY_DUAL_1470_635
 /*****************************************************************************/
 //配置激光器型号
-#define MODLE_M1470_640_10_15_02_D200_22_G5W_PK//1470+650 V1
+#define MODLE_JL_FC_1470_15W_200_22_1S
 /*****************************************************************************/
 //配置无线脚踏USB接口
-#define APP_CONFIG_WFSW_PORT												hUsbHostHS
+#define APP_CONFIG_WFSW_PORT												  hUsbHostHS
 #define CONFIG_FSWITCH_USB_VID												0x16C0
 #define CONFIG_FSWITCH_USB_PID												0x05E2
 /*****************************************************************************/

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -97,7 +97,40 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配置
 		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
-		
+	
+#if defined(MODLE_JL_FC_1470_15W_200_22_1S)
+		deviceConfig.calibrationPwr0[0] = 1;
+		deviceConfig.calibrationPwr0[1] = 8;
+		deviceConfig.calibrationPwr0[2] = 18;
+		deviceConfig.calibrationPwr0[3] = 28;
+		deviceConfig.calibrationPwr0[4] = 37;
+		deviceConfig.calibrationPwr0[5] = 47;
+		deviceConfig.calibrationPwr0[6] = 57;
+		deviceConfig.calibrationPwr0[7] = 67;
+		deviceConfig.calibrationPwr0[8] = 76;
+		deviceConfig.calibrationPwr0[9] = 86;
+		deviceConfig.calibrationPwr0[10] = 96;
+		deviceConfig.calibrationPwr0[11] = 105;
+		deviceConfig.calibrationPwr0[12] = 114;
+		deviceConfig.calibrationPwr0[13] = 123;
+		deviceConfig.calibrationPwr0[14] = 132;
+		deviceConfig.calibrationPwr0[15] = 141;
+		deviceConfig.calibrationPwr0[16] = 151;
+		deviceConfig.calibrationPwr0[17] = 160;
+		deviceConfig.calibrationPwr0[18] = 167;
+		deviceConfig.calibrationPwr0[19] = 169;
+
+		for(i = 0;i <= 19;i ++){//清空其他波长
+			deviceConfig.calibrationPwr1[i] = i;
+			deviceConfig.calibrationPwr2[i] = i;
+			deviceConfig.calibrationPwr3[i] = i;
+			deviceConfig.calibrationPwr4[i] = i;
+			deviceConfig.calibrationPwr5[i] = i;
+			deviceConfig.calibrationPwr6[i] = i;
+			deviceConfig.calibrationPwr7[i] = i;
+		}
+#endif
+    
 #if defined(MODLE_M1470_640_10_15_02_D200_22_G5W_PK)//1470 V1
 		deviceConfig.calibrationPwr0[0] = 1;
 		deviceConfig.calibrationPwr0[1] = 8;

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -71,6 +71,9 @@ extern "C" {
 //数据寄存器 非保持
 #define EM_START																			(R_END + 1L)
 #define EM_END																				(EM_START + CONFIG_EM_SIZE - 1L)
+//真掉电存储寄存器
+#define BK_START                                       0L
+#define BK_END                                        (CONFIG_BKRAM_SIZE - 1L)
 //延时线圈
 //1MS
 #define T_1MS_START																		(EM_END + 1L)
@@ -122,9 +125,6 @@ extern "C" {
 //存档寄存器
 #define FD_START																			0
 #define FD_END																				(CONFIG_FDRAM_SIZE - 1L)
-//备份掉电保持寄存器 BK 2K 映射硬件BKSRAM 4K
-#define BK_START																			0
-#define BK_END																				(CONFIG_BKRAM_SIZE - 1L)
 /*****************************************************************************/
 #define SPCOIL_ON																			(SPCOIL_START * 16 + 0)//长通线圈
 #define SPCOIL_START_UP																(SPCOIL_START * 16 + 1)//初次上电
@@ -158,6 +158,11 @@ extern "C" {
 #define SPCOIL_SPWM_OUT_3															(SPCOIL_START * 16 + 54)//SPWM3输出状态
 #define SPCOIL_SPWM_RESET_3														(SPCOIL_START * 16 + 55)//SPWM3复位
 /*****************************************************************************/
+#define SPCOIL_DM_CRC_FAIL                            (SPCOIL_START * 16 + 60)//DM区域校验失败
+#define SPCOIL_MR_CRC_FAIL                            (SPCOIL_START * 16 + 61)//MR区域校验失败
+#define SPCOIL_FD_CRC_FAIL                            (SPCOIL_START * 16 + 62)//FD区域校验失败
+#define SPCOIL_BK_CRC_FAIL                            (SPCOIL_START * 16 + 63)//BK区域校验失败
+/****************************************************************************/
 #define SPREG_ADC_0																		(SPREG_START + 0)//采集值 CH0 CURRENT
 #define SPREG_ADC_1																		(SPREG_START + 1)//采集值 CH1 CURRENT
 #define SPREG_ADC_2																		(SPREG_START + 2)//采集值 CH2 CURRENT
