@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -2787,8 +2787,8 @@ void dcHmiLoopInit(void){//初始化模块
     restoreScheme(1);//恢复默认方案
     RRES(SPCOIL_FD_CRC_FAIL);
   }
-  if(LD(SPCOIL_BK_CRC_FAIL)){//BK校验失败暂时无内容
-    
+  if(LD(SPCOIL_BK_CRC_FAIL)){//BK校验失败: 用EPROM还原BKSRAM并重新校验
+    sPlcBkramLoad();//还原+重校验(成功自动清除BK失败标记)
   }
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);

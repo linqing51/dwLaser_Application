@@ -106,30 +106,38 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//将NVRAM中DM储存入EPROM
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 	epromWriteDword(CONFIG_EPROM_DM_CRC, &crc32_dm);//在的指定地址开始写入32位数
-	//写后回读验证: 读回EPROM计算CRC, 与内存CRC对比(排查NVFSAVE全量保存后校验失败)
+	//写后回读校验: 逐段读回与内存逐字节比对 + CRC值回读比对(确认写入正确)
 	{
-		uint32_t crcBackMr, crcBackDm, rdCrcMr, rdCrcDm;
+		uint32_t rdCrcMr, rdCrcDm;
 		uint8_t rdBuf[256];
 		uint16_t rdIdx;
-		crcBackMr = crcBackDm = 0;
+		uint8_t bkFail = 0;
 		epromReadDword(CONFIG_EPROM_MR_CRC, &rdCrcMr);
 		epromReadDword(CONFIG_EPROM_DM_CRC, &rdCrcDm);
-		for(rdIdx = 0;rdIdx < (CONFIG_MR_SIZE * 2);rdIdx += 64){//MR区逐段读回累计CRC(128B=2段)
+		if((rdCrcMr != crc32_mr) || (rdCrcDm != crc32_dm)){
+			printf("%s,%d,%s:save NVRAM CRC区FAIL!(MR:0x%08X exp:0x%08X, DM:0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, rdCrcMr, crc32_mr, rdCrcDm, crc32_dm);
+			bkFail = 1;
+		}
+		for(rdIdx = 0;rdIdx < (CONFIG_MR_SIZE * 2);rdIdx += 64){//MR区逐段读回逐字节比对(128B=2段)
 			memset(rdBuf, 0, sizeof(rdBuf));
 			epromRead((CONFIG_EPROM_MR_START + rdIdx), rdBuf, 64);
-			crcBackMr = HAL_CRC_Accumulate(&hcrc, (uint32_t*)rdBuf, (64 / 4));
+			if(memcmp(rdBuf, ((uint8_t*)(NVRAM0 + MR_START) + rdIdx), 64) != 0){
+				printf("%s,%d,%s:save NVRAM MR数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_MR_START + rdIdx));
+				bkFail = 1;
+				break;
+			}
 		}
-		__HAL_CRC_DR_RESET(&hcrc);
-		for(rdIdx = 0;rdIdx < (CONFIG_DM_SIZE * 2);rdIdx += 256){//DM区逐段读回累计CRC(2048B=8段)
+		for(rdIdx = 0;rdIdx < (CONFIG_DM_SIZE * 2);rdIdx += 256){//DM区逐段读回逐字节比对(2048B=8段)
 			memset(rdBuf, 0, sizeof(rdBuf));
 			epromRead((CONFIG_EPROM_DM_START + rdIdx), rdBuf, 256);
-			crcBackDm = HAL_CRC_Accumulate(&hcrc, (uint32_t*)rdBuf, (256 / 4));
+			if(memcmp(rdBuf, ((uint8_t*)(NVRAM0 + DM_START) + rdIdx), 256) != 0){
+				printf("%s,%d,%s:save NVRAM DM数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_DM_START + rdIdx));
+				bkFail = 1;
+				break;
+			}
 		}
-		if((crcBackMr != crc32_mr) || (crcBackDm != crc32_dm)){
-			printf("%s,%d,%s:save NVRAM verify FAIL!(MR back:0x%08X exp:0x%08X, DM back:0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackMr, crc32_mr, crcBackDm, crc32_dm);
-		}
-		else{
-			printf("%s,%d,%s:save NVRAM verify pass!(MR:0x%08X,DM:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackMr, crcBackDm);
+		if(bkFail == 0){
+			printf("%s,%d,%s:save NVRAM verify pass!(MR:0x%08X,DM:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 		}
 	}
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
@@ -225,23 +233,28 @@ void sPlcFdramSave(void){//强制将FDRAM存入EPROM
     printf("%s,%d,%s:save FD RAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
 #endif
 	}
-	//写后回读验证: 读回EPROM计算CRC与内存CRC对比
+	//写后回读校验: 逐段读回与内存逐字节比对 + CRC值回读比对(确认写入正确)
 	{
-		uint32_t crcBackFd, rdCrcFd;
+		uint32_t rdCrcFd;
 		uint8_t rdBuf[256];
 		uint16_t rdIdx;
-		crcBackFd = 0;
+		uint8_t bkFail = 0;
 		epromReadDword(CONFIG_EPROM_FD_CRC, &rdCrcFd);
-		for(rdIdx = 0;rdIdx < (CONFIG_FDRAM_SIZE * 2);rdIdx += 256){//FDRAM区逐段读回累计CRC(4096B=16段)
+		if(rdCrcFd != crc32_eprom_fd){
+			printf("%s,%d,%s:save FD RAM CRC区FAIL!(0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, rdCrcFd, crc32_eprom_fd);
+			bkFail = 1;
+		}
+		for(rdIdx = 0;rdIdx < (CONFIG_FDRAM_SIZE * 2);rdIdx += 256){//FDRAM区逐段读回逐字节比对(4096B=16段)
 			memset(rdBuf, 0, sizeof(rdBuf));
 			epromRead((CONFIG_EPROM_FD_START + rdIdx), rdBuf, 256);
-			crcBackFd = HAL_CRC_Accumulate(&hcrc, (uint32_t*)rdBuf, (256 / 4));
+			if(memcmp(rdBuf, ((uint8_t*)FDRAM0 + rdIdx), 256) != 0){
+				printf("%s,%d,%s:save FD RAM 数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_FD_START + rdIdx));
+				bkFail = 1;
+				break;
+			}
 		}
-		if(crcBackFd != crc32_eprom_fd){
-			printf("%s,%d,%s:save FD RAM verify FAIL!(back:0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackFd, crc32_eprom_fd);
-		}
-		else{
-			printf("%s,%d,%s:save FD RAM verify pass!(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crcBackFd);
+		if(bkFail == 0){
+			printf("%s,%d,%s:save FD RAM verify pass!(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
 		}
 	}
 }
@@ -277,6 +290,7 @@ void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
 #if (CONFIG_DEBUG_EPROM == 1)
 		printf("%s,%d,%s:load BK done...\n",__FILE__, __LINE__, __func__);
 #endif
+		RRES(SPCOIL_BK_CRC_FAIL);//还原成功清除BK失败标记
 	}
 }
 
