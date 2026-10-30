@@ -79,6 +79,7 @@ targetBoard_G5_A0
 *.htm
 *.bak
 *.log
+*.uvoptx
 
 # ===== IAR intermediate / build artifacts =====
 *.fed
