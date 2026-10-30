@@ -142,38 +142,63 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	}
 	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
-void sPlcNvramUpdate(void){//更新NVRAM->EPROM
+void sPlcNvramUpdate(void){//更新NVRAM->EPROM(优化: 连续变化字节合并段批量写, 减少SPI传输次数与耗时)
 	uint8_t *sp0, *sp1;
 	uint8_t updateFlagMr, updateFlagDm;
-	uint16_t i;
+	uint8_t inSeg;
+	uint16_t i, segStart;
 	uint32_t crc32_mr, crc32_dm;
-	//储存MR
+	//储存MR(变化字节按连续区间合并, 每次epromWrite写一整段, 代替逐字节epromWriteByte)
 	updateFlagMr = 0;
 	sp0 = (uint8_t*)(NVRAM0 + MR_START);
 	sp1 = (uint8_t*)(NVRAM1 + MR_START);
+	segStart = 0;
+	inSeg = 0;
 	for(i = 0;i < (CONFIG_MR_SIZE * 2);i ++){//储存MR
 		if(*sp0 != *sp1){
-			epromWriteByte((i + CONFIG_EPROM_MR_START), sp0);
-			updateFlagMr |= 0xFF;
+			if(inSeg == 0){
+				segStart = i;
+				inSeg = 1;
+			}
+			updateFlagMr = 0xFF;
+		}
+		else if(inSeg == 1){//连续变化段结束, 整段批量写
+			epromWrite((CONFIG_EPROM_MR_START + segStart), ((uint8_t*)(NVRAM0 + MR_START) + segStart), (i - segStart));
+			inSeg = 0;
 		}
 		sp0 ++;
 		sp1 ++;
+	}
+	if(inSeg == 1){//尾部变化段
+		epromWrite((CONFIG_EPROM_MR_START + segStart), ((uint8_t*)(NVRAM0 + MR_START) + segStart), (i - segStart));
 	}
 	if(updateFlagMr){
 		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
 		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//在的指定地址开始写入32位数
 	}
-	//储存DM
+	//储存DM(同上)
 	updateFlagDm = 0;
 	sp0 = (uint8_t*)(NVRAM0 + DM_START);
 	sp1 = (uint8_t*)(NVRAM1 + DM_START);
-	for(i = 0;i < (CONFIG_DM_SIZE * 2);i ++){//储存MR
+	segStart = 0;
+	inSeg = 0;
+	for(i = 0;i < (CONFIG_DM_SIZE * 2);i ++){//储存DM
 		if(*sp0 != *sp1){
-			epromWriteByte((i + CONFIG_EPROM_DM_START), sp0);
-			updateFlagDm |= 0xFF;
+			if(inSeg == 0){
+				segStart = i;
+				inSeg = 1;
+			}
+			updateFlagDm = 0xFF;
+		}
+		else if(inSeg == 1){//连续变化段结束, 整段批量写
+			epromWrite((CONFIG_EPROM_DM_START + segStart), ((uint8_t*)(NVRAM0 + DM_START) + segStart), (i - segStart));
+			inSeg = 0;
 		}
 		sp0 ++;
 		sp1 ++;
+	}
+	if(inSeg == 1){//尾部变化段
+		epromWrite((CONFIG_EPROM_DM_START + segStart), ((uint8_t*)(NVRAM0 + DM_START) + segStart), (i - segStart));
 	}
 	if(updateFlagDm){
 		crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
