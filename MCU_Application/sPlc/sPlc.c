@@ -5,6 +5,7 @@
  *----------------------------------------------------------------------------*/
 
 #include "sPlc.h"
+extern void restoreDefault(void);//预设方案恢复默认设置(MainAppLib层, DM区CRC校验失败时使用)
 //避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
 /*****************************************************************************/
 #pragma pack(push, 4)
@@ -57,6 +58,7 @@ void sPlcAssertRegisterAddress(uint16_t adr){//检查寄存器地址
 void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	uint32_t crc32_mr, crc32_dm;
 	uint32_t crc32_eprom_mr, crc32_eprom_dm;
+	uint8_t crcFailMr = 0, crcFailDm = 0;//CRC校验失败标志
 	memset((uint8_t*)NVRAM0, 0x0, (CONFIG_NVRAM_SIZE * 2));
 	//从EPROM中恢复MR NVRAM
 	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//从EPROM中恢复MR
@@ -66,12 +68,30 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//从EPROM中恢复DM
 	epromReadDword(CONFIG_EPROM_DM_CRC, &crc32_eprom_dm);
 	crc32_dm = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
-	
+
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
 	printf("%s,%d,%s:MR EPROM CRC:0x%08X,MR CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_mr, crc32_mr);
 	printf("%s,%d,%s:DM EPROM CRC:0x%08X,DM CALC CRC:0x%08X\n",__FILE__, __LINE__, __func__, crc32_eprom_dm, crc32_dm);
-	if((crc32_eprom_mr != crc32_mr) && (crc32_eprom_dm != crc32_dm)){
-		printf("%s,%d,%s:load NVRAM crc fail...\n",__FILE__, __LINE__, __func__);
+	if(crc32_eprom_mr != crc32_mr){
+		crcFailMr = 1;
+	}
+	if(crc32_eprom_dm != crc32_dm){
+		crcFailDm = 1;
+	}
+	if(crcFailMr){//MR区域CRC校验失败: 重新初始化MR(清空并写回EPROM+CRC)
+		printf("%s,%d,%s:load MR crc fail, re-init MR...\n",__FILE__, __LINE__, __func__);
+		memset((uint8_t*)(NVRAM0 + MR_START), 0x0, (CONFIG_MR_SIZE * 2));//重新初始化MR
+		epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));
+		crc32_mr = HAL_CRC_Calculate(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
+		epromWriteDword(CONFIG_EPROM_MR_CRC, &crc32_mr);//更新MR CRC
+	}
+	if(crcFailDm){//DM区域CRC校验失败: 使用预设方案恢复设置(恢复默认DM设置与默认方案, 内部已保存)
+		printf("%s,%d,%s:load DM crc fail, restore default scheme...\n",__FILE__, __LINE__, __func__);
+		restoreDefault();//使用预设方案恢复设置
+	}
+	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));//恢复后同步NVRAM镜像
+	if(crcFailMr || crcFailDm){
+		printf("%s,%d,%s:load NVRAM crc fail, re-init done...\n",__FILE__, __LINE__, __func__);
 	}
 	else{
 		printf("%s,%d,%s:load NVRAM done...\n",__FILE__, __LINE__, __func__);
