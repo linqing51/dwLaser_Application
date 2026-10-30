@@ -104,10 +104,7 @@ extern uint32_t	UniqueId[3];//处理器序列号
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
-#ifdef CONFIG_BKRAM_SIZE
-#define CONFIG_BKSRAM_BASE_ADDR								(0x40024000UL)//STM32F405 BKPSRAM 4K 掉电保持区起始地址
-#define BKRAM																	((int16_t *)CONFIG_BKSRAM_BASE_ADDR)//BK 2K区块 直接映射硬件BKSRAM
-#endif
+extern int16_t BKRAM0[CONFIG_BKRAM_SIZE / 2], BKRAM1[CONFIG_BKRAM_SIZE / 2];//真掉电存储寄存器(BKSRAM起始/中间各2K字节)
 extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒
