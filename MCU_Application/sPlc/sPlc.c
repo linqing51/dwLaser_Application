@@ -5,6 +5,7 @@
  *----------------------------------------------------------------------------*/
 
 #include "sPlc.h"
+#include "elog_ext.h"
 extern void restoreDefault(void);//预设方案恢复默认设置(MainAppLib层, DM区CRC校验失败时使用)
 //避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
 #pragma pack(push, 4)
@@ -115,14 +116,14 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 		epromReadDword(CONFIG_EPROM_MR_CRC, &rdCrcMr);
 		epromReadDword(CONFIG_EPROM_DM_CRC, &rdCrcDm);
 		if((rdCrcMr != crc32_mr) || (rdCrcDm != crc32_dm)){
-			printf("%s,%d,%s:save NVRAM CRC区FAIL!(MR:0x%08X exp:0x%08X, DM:0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, rdCrcMr, crc32_mr, rdCrcDm, crc32_dm);
+			LOG_PRINT(ELOG_LVL_ERROR, "%s,%d,%s:save NVRAM CRC区FAIL!(MR:0x%08X exp:0x%08X, DM:0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, rdCrcMr, crc32_mr, rdCrcDm, crc32_dm);
 			bkFail = 1;
 		}
 		for(rdIdx = 0;rdIdx < (CONFIG_MR_SIZE * 2);rdIdx += 64){//MR区逐段读回逐字节比对(128B=2段)
 			memset(rdBuf, 0, sizeof(rdBuf));
 			epromRead((CONFIG_EPROM_MR_START + rdIdx), rdBuf, 64);
 			if(memcmp(rdBuf, ((uint8_t*)(NVRAM0 + MR_START) + rdIdx), 64) != 0){
-				printf("%s,%d,%s:save NVRAM MR数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_MR_START + rdIdx));
+				LOG_PRINT(ELOG_LVL_ERROR, "%s,%d,%s:save NVRAM MR数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_MR_START + rdIdx));
 				bkFail = 1;
 				break;
 			}
@@ -131,16 +132,16 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 			memset(rdBuf, 0, sizeof(rdBuf));
 			epromRead((CONFIG_EPROM_DM_START + rdIdx), rdBuf, 256);
 			if(memcmp(rdBuf, ((uint8_t*)(NVRAM0 + DM_START) + rdIdx), 256) != 0){
-				printf("%s,%d,%s:save NVRAM DM数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_DM_START + rdIdx));
+				LOG_PRINT(ELOG_LVL_ERROR, "%s,%d,%s:save NVRAM DM数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_DM_START + rdIdx));
 				bkFail = 1;
 				break;
 			}
 		}
 		if(bkFail == 0){
-			printf("%s,%d,%s:save NVRAM verify pass!(MR:0x%08X,DM:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
+			LOG_PRINT(ELOG_LVL_INFO, "%s,%d,%s:save NVRAM verify pass!(MR:0x%08X,DM:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 		}
 	}
-	printf("%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
+	LOG_PRINT(ELOG_LVL_INFO, "%s,%d,%s:save NVRAM done...(MR CRC:0x%08X,DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr, crc32_dm);
 }
 void sPlcNvramUpdate(void){//更新NVRAM->EPROM(优化: 连续变化字节合并段批量写, 减少SPI传输次数与耗时)
 	uint8_t *sp0, *sp1;
@@ -207,10 +208,10 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM(优化: 连续变化字节合并
 	memcpy((uint8_t*)(NVRAM1), (uint8_t*)(NVRAM0), (CONFIG_NVRAM_SIZE * 2));//更新NVRAM1 非保持寄存器
 #if (CONFIG_DEBUG_EPROM == 1)
 	if(updateFlagMr){    
-		printf("%s,%d,%s:update MR NVRAM done...(MR CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr);
+		LOG_PRINT(ELOG_LVL_DEBUG, "%s,%d,%s:update MR NVRAM done...(MR CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_mr);
 	}
 	if(updateFlagDm){
-		printf("%s,%d,%s:update DM NVRAM done...(DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_dm);
+		LOG_PRINT(ELOG_LVL_DEBUG, "%s,%d,%s:update DM NVRAM done...(DM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_dm);
 	}
 #endif
 }
@@ -250,12 +251,12 @@ void sPlcFdramSave(void){//强制将FDRAM存入EPROM
 	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写入32位数
   if(ref != HAL_OK){
 #if (CONFIG_DEBUG_EPROM == 1)
-		printf("%s,%d,%s:save FD RAM fail...\n",__FILE__, __LINE__, __func__);
+		LOG_PRINT(ELOG_LVL_ERROR, "%s,%d,%s:save FD RAM fail...\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	else{
 #if (CONFIG_DEBUG_EPROM == 1)
-    printf("%s,%d,%s:save FD RAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
+    LOG_PRINT(ELOG_LVL_INFO, "%s,%d,%s:save FD RAM done...(FDRAM CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
 #endif
 	}
 	//写后回读校验: 逐段读回与内存逐字节比对 + CRC值回读比对(确认写入正确)
@@ -266,20 +267,20 @@ void sPlcFdramSave(void){//强制将FDRAM存入EPROM
 		uint8_t bkFail = 0;
 		epromReadDword(CONFIG_EPROM_FD_CRC, &rdCrcFd);
 		if(rdCrcFd != crc32_eprom_fd){
-			printf("%s,%d,%s:save FD RAM CRC区FAIL!(0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, rdCrcFd, crc32_eprom_fd);
+			LOG_PRINT(ELOG_LVL_ERROR, "%s,%d,%s:save FD RAM CRC区FAIL!(0x%08X exp:0x%08X)\n",__FILE__, __LINE__, __func__, rdCrcFd, crc32_eprom_fd);
 			bkFail = 1;
 		}
 		for(rdIdx = 0;rdIdx < (CONFIG_FDRAM_SIZE * 2);rdIdx += 256){//FDRAM区逐段读回逐字节比对(4096B=16段)
 			memset(rdBuf, 0, sizeof(rdBuf));
 			epromRead((CONFIG_EPROM_FD_START + rdIdx), rdBuf, 256);
 			if(memcmp(rdBuf, ((uint8_t*)FDRAM0 + rdIdx), 256) != 0){
-				printf("%s,%d,%s:save FD RAM 数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_FD_START + rdIdx));
+				LOG_PRINT(ELOG_LVL_ERROR, "%s,%d,%s:save FD RAM 数据FAIL at:0x%08X!\n",__FILE__, __LINE__, __func__, (unsigned)(CONFIG_EPROM_FD_START + rdIdx));
 				bkFail = 1;
 				break;
 			}
 		}
 		if(bkFail == 0){
-			printf("%s,%d,%s:save FD RAM verify pass!(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
+			LOG_PRINT(ELOG_LVL_INFO, "%s,%d,%s:save FD RAM verify pass!(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_eprom_fd);
 		}
 	}
 }
@@ -330,12 +331,12 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
 	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写入32位数
 	if((ref1 != HAL_OK) || (ref2 != HAL_OK)){
 #if (CONFIG_DEBUG_EPROM == 1)
-		printf("%s,%d,%s:save BK NVRAM fail...\n",__FILE__, __LINE__, __func__);
+		LOG_PRINT(ELOG_LVL_ERROR, "%s,%d,%s:save BK NVRAM fail...\n",__FILE__, __LINE__, __func__);
 #endif
 	}
 	else{
 #if (CONFIG_DEBUG_EPROM == 1)
-		printf("%s,%d,%s:save BK done...(BK CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_bk);
+		LOG_PRINT(ELOG_LVL_INFO, "%s,%d,%s:save BK done...(BK CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_bk);
 #endif
   }
 }
@@ -459,7 +460,8 @@ void sPlcRtcProcess(void){//RTC轮询(万年历同步到NVRAM EM_RTC_*,NVRAM中y
 }
 /*****************************************************************************/
 void sPlcInit(void){//软逻辑初始化	
-	printf("%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
+	elog_init();//日志分级库初始化(默认过滤级别 ELOG_OUTPUT_LVL)
+	LOG_PRINT(ELOG_LVL_INFO, "%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	epromInit();
 	readStm32UniqueID();
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
