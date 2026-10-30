@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -83,7 +83,7 @@ const INFO_MSG_T info_msg = {
 	.LASER_POWER 				 							= "LASER_POWER: 30W+0.5W",
 	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+635nm"
 #endif
-#if defined(MODLE_M1470_640_10_15_02_D200_22_G5W_PK)
+#if defined(MODLE_M1470_640_10_15_02_D200_22_G5W_PK) || defined(MODLE_JL_FC_1470_15W_200_22_1S)
 	.TYPE 						 								= "TYPE: PVGLS 1470/15",
 	.LASER_POWER 				 							= "LASER_POWER: 15W+0.5W",
 	.WAVELENGTH 				 							= "WAVE LENGTH: 1470nm+635nm"
