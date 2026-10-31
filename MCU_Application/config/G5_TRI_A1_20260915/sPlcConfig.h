@@ -34,8 +34,6 @@ extern "C" {
 #define CONFIG_SPLC_USING_LASER_TEST									0//激光器脉冲模式测试
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT														1//检查地址范围
-#define CONFIG_SPLC_CLEAR_CODE												0xA58E
-#define CONFIG_SOFTPLC_TICK														200L//5mS
 /*****************************************************************************/
 //单位byte
 #define CONFIG_MR_SIZE																64L//

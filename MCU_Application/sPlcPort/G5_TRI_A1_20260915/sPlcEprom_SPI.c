@@ -96,7 +96,8 @@ __forceinline HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所有�
 
 __forceinline HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//读1字节 addr: 24位地址（MB85RS2MTA 只用低18位） rdat: 输出1字节
 	HAL_StatusTypeDef ret;
-	uint8_t tempBuf[4];
+	uint8_t tempBuf[4], rxBuf[4];//命令+地址一次收发(减少HAL调用)
+	uint16_t txLen;
 	EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");
   if(CONFIG_EPROM_SIZE > 0x10000){
@@ -104,15 +105,20 @@ __forceinline HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//�
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
 		tempBuf[3] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 4, CONFIG_EPROM_TIMEOUT);
+		txLen = 4;
 	}
 	else{
     tempBuf[0] = READ;
     tempBuf[1] = (addr >> 8)  & 0xFF;
     tempBuf[2] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
+    tempBuf[3] = 0xFF;//占位
+		txLen = 3;
 	}
-	ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, rdat, 1, CONFIG_EPROM_TIMEOUT);
+	//注意: MB85RS FRAM读时序为"命令+地址移入完成后输出数据":
+	//512TPN(16bit地址,txLen=3)数据自第4传输字节起, 2MTA(24bit地址,txLen=4)数据自第5传输字节起,
+	//故统一从rxBuf[txLen]取数
+	ret = HAL_SPI_TransmitReceive(&CONFIG_EPROM_BUS_HANDLE, tempBuf, rxBuf, (uint16_t)(txLen + 1), CONFIG_EPROM_TIMEOUT);
+	*rdat = rxBuf[txLen];
 	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
@@ -121,7 +127,7 @@ __forceinline HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//�
 
 __forceinline HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//写1字节addr: 24位地址wdat: 输入1字节
 	HAL_StatusTypeDef ret;
-	uint8_t tempBuf[4];
+	uint8_t tempBuf[5];//命令+地址+数据一次发送(减少HAL调用)
   epromWriteEnable(true); 
 	EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");
@@ -130,15 +136,16 @@ __forceinline HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//�
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
 		tempBuf[3] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 4, CONFIG_EPROM_TIMEOUT);
+		tempBuf[4] = *wdat;
+    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 5, CONFIG_EPROM_TIMEOUT);
 	}
 	else{
     tempBuf[0] = WRITE;
     tempBuf[1] = (addr >> 8)  & 0xFF;
     tempBuf[2] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
+		tempBuf[3] = *wdat;
+    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 4, CONFIG_EPROM_TIMEOUT);
 	}
-	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, wdat, 1, CONFIG_EPROM_TIMEOUT);
 	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
@@ -147,7 +154,8 @@ __forceinline HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//�
 
 __forceinline HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t len){//批量读addr: 起始地址pBuf: 输出缓冲区len: 字节数
 	HAL_StatusTypeDef ret;
-	uint8_t tempBuf[4];
+	uint8_t tempBuf[4], rxBuf[8];//小批量(≤4B)命令+地址+数据合并收发缓冲
+	uint16_t txLen;
   EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");
   if(CONFIG_EPROM_SIZE > 0x10000){
@@ -155,15 +163,26 @@ __forceinline HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
 		tempBuf[3] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 4, CONFIG_EPROM_TIMEOUT);
+		txLen = 4;
 	}
 	else{
     tempBuf[0] = READ;
     tempBuf[1] = (addr >> 8)  & 0xFF;
     tempBuf[2] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
+		txLen = 3;
 	}
-	ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, pBuf, len, 100);	
+	if(len <= 4){//小批量: 命令+地址与数据一次TransmitReceive完成
+		//注意: MB85RS FRAM读时序为"命令+地址移入完成后输出数据":
+		//512TPN(16bit地址,txLen=3)数据自第4传输字节起, 2MTA(24bit地址,txLen=4)数据自第5传输字节起,
+		//故统一从rxBuf[txLen]取数
+		memset(&tempBuf[txLen], 0xFF, len);
+		ret = HAL_SPI_TransmitReceive(&CONFIG_EPROM_BUS_HANDLE, tempBuf, rxBuf, (uint16_t)(txLen + len), CONFIG_EPROM_TIMEOUT);
+		memcpy(pBuf, &rxBuf[txLen], len);
+	}
+	else{//大批量: 命令/地址与数据分两次(传输大头在数据,合并需大缓冲无收益)
+		ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, txLen, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, pBuf, len, 100);
+	}
 	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
@@ -172,7 +191,8 @@ __forceinline HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t
 
 __forceinline HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uint16_t len){//批量写
 	HAL_StatusTypeDef ret;
-	uint8_t tempBuf[4];
+	uint8_t tempBuf[8];//小批量(≤4B)命令+地址+数据合并缓冲
+	uint16_t txLen;
   epromWriteEnable(true);
 	EPROM_SPI_NSS_SEL;
   __ASM volatile ("NOP");
@@ -181,15 +201,22 @@ __forceinline HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uint16_
 		tempBuf[1] = (addr >> 16) & 0xFF;
 		tempBuf[2] = (addr >> 8)  & 0xFF;
 		tempBuf[3] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 4, CONFIG_EPROM_TIMEOUT);
+		txLen = 4;
 	}
 	else{
     tempBuf[0] = WRITE;
-		tempBuf[1] = (addr >> 8)  & 0xFF;
-		tempBuf[2] =  addr        & 0xFF;
-    ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 3, CONFIG_EPROM_TIMEOUT);
+    tempBuf[1] = (addr >> 8)  & 0xFF;
+    tempBuf[2] =  addr        & 0xFF;
+		txLen = 3;
 	}
-	ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)pBuf, len, CONFIG_EPROM_TIMEOUT);
+	if(len <= 4){//小批量: 命令+地址+数据一次Transmit完成
+		memcpy(&tempBuf[txLen], pBuf, len);
+		ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, (uint16_t)(txLen + len), CONFIG_EPROM_TIMEOUT);
+	}
+	else{//大批量: 命令/地址与数据分两次(传输大头在数据,合并需大缓冲无收益)
+		ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, txLen, CONFIG_EPROM_TIMEOUT);
+		ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)pBuf, len, CONFIG_EPROM_TIMEOUT);
+	}
 	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
   __ASM volatile ("NOP");
