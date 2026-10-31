@@ -206,11 +206,11 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试(含长批量/边界/CRC回�
 		for(i = 0;i < longLen;i ++){
 			bigbuf[i] = (uint8_t)((i * 7 + j) & 0xFF);//确定性模式
 		}
-		crcWrite = HAL_CRC_Calculate(&hcrc, (uint32_t*)bigbuf, (longLen / 4));//写前内存CRC
+		crcWrite = sPlcCrc32Calc(&hcrc, (uint32_t*)bigbuf, (longLen / 4));//写前内存CRC
 		epromWrite(0, bigbuf, longLen);//单次长连续写(从0地址)
 		memset(bigbuf, 0x00, longLen);
 		epromRead(0, bigbuf, longLen);
-		crcRead = HAL_CRC_Calculate(&hcrc, (uint32_t*)bigbuf, (longLen / 4));//读回CRC
+		crcRead = sPlcCrc32Calc(&hcrc, (uint32_t*)bigbuf, (longLen / 4));//读回CRC
 		for(i = 0;i < longLen;i ++){//逐字节回读比对
 			if(bigbuf[i] != (uint8_t)((i * 7 + j) & 0xFF)){
 				printf("%s,%d,%s:long write %uB fail at:0x%08X,exp:0x%02X,got:0x%02X!\r\n", __FILE__, __LINE__, __func__, (unsigned)longLen, (unsigned)i, (unsigned)(uint8_t)((i * 7 + j) & 0xFF), (unsigned)bigbuf[i]);

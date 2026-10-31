@@ -149,6 +149,7 @@ extern void sPlcSpeakerInit(void);//喇叭初始化
 extern void sPlcNvramUpdate(void);//更新NVRAM->EPROM	
 extern void sPlcNvramLoad(void);
 extern void sPlcNvramSave(void);
+extern uint32_t sPlcCrc32Calc(CRC_HandleTypeDef *hcrc, uint32_t *pBuffer, uint32_t BufferLength);//EPROM CRC32计算(计算前强制恢复CRC外设WORDS配置, 防止被libcrc逐字节模式污染)
 extern void sPlcNvramClear(void);//清除NVRAM数据
 extern void sPlcFdramLoad(void);
 extern void sPlcFdramSave(void);

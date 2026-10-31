@@ -31,7 +31,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 	}
 	epromRead(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//从EPROM载入设备配置
 	epromReadDword(CONFIG_EPROM_CFG_CRC, &crc32_eprom_cfg);
-	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
+	crc32_cfg = sPlcCrc32Calc(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
 	if(crc32_eprom_cfg != crc32_cfg){//校验码错误使用默认配置
 		printf("%s,%d,%s:load device config crc fail!!!\n",__FILE__, __LINE__, __func__);
 		printf("%s,%d,%s:using default device config!\n",__FILE__, __LINE__, __func__);
@@ -521,7 +521,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 void saveDeviceConfig(void){//将配置写入EPROM
 	uint32_t crc32_cfg;
 	epromWrite(CONFIG_EPROM_CONFIG_START, (uint8_t*)&deviceConfig, sizeof(deviceConfig));//写入EPROM	
-	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
+	crc32_cfg = sPlcCrc32Calc(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
 	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
 	printf("%s,%d,%s:save device config to eprom done...(CFG CRC:0x%08X)\n",__FILE__, __LINE__, __func__, crc32_cfg);
 }
@@ -576,7 +576,7 @@ void saveCalibrationTable(uint8_t channel){//储存选定通道的功率校准�
 	}
 	epromWriteAddr = CONFIG_EPROM_CONFIG_START + structAddr - memberAddr;//计算EPROM
 	epromWrite(epromWriteAddr, memberAddr, writeSize);//写入EPROM	
-	crc32_cfg = HAL_CRC_Calculate(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
+	crc32_cfg = sPlcCrc32Calc(&hcrc,(uint32_t *)&deviceConfig, (sizeof(deviceConfig) / 4));
 	epromWriteDword(CONFIG_EPROM_CFG_CRC, &crc32_cfg);//写入校验值
 	printf("%s,%d,%s:save laser channle:%d calibration table to eprom done...(CRC:0x%08X)\n",__FILE__, __LINE__, __func__, channel,crc32_cfg);
 }

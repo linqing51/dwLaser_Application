@@ -15,6 +15,7 @@ extern "C" {
 #define CONFIG_DEBUG_ADC															0//调试ADC驱动
 #define CONFIG_DEBUG_RTC															0//调试RTC驱动
 #define CONFIG_DEBUG_EPROM														0//调试EPROM驱动
+#define CONFIG_DEBUG_NVRAM														0//调试NVRAM
 #define CONFIG_DEBUG_IO																0//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
 #define CONFIG_DEBUG_LED														  0//调试指示灯驱动

@@ -82,7 +82,7 @@ void clearEprom(clarmEpromCmd_t cmd){//清除EPROM内容
 			for(i = CONFIG_EPROM_TREATMENT_START; i <= CONFIG_EPROM_TREATMENT_END;i ++){
 				epromWriteByte(i, &var);
 			}
-			for(i = CONFIF_EPROM_TREATMENT_CRC; i <= (CONFIF_EPROM_TREATMENT_CRC + 3);i ++){
+			for(i = CONFIG_EPROM_TREATMENT_CRC; i <= (CONFIG_EPROM_TREATMENT_CRC + 3);i ++){
 				epromWriteByte(i, &var);
 			}
 			break;

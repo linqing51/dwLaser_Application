@@ -2779,16 +2779,36 @@ void dcHmiLoopInit(void){//初始化模块
 	//PID参数初始化
 	loadDeviceConfig();//载入硬件配置
   if(LD(SPCOIL_DM_CRC_FAIL) || (LD(SPCOIL_MR_CRC_FAIL))){//DM或MR校验失败恢复默认设置
+#if (CONFIG_DEBUG_NVRAM == 1)
+    printf("%s,%d,%s:[DIAG]NVRAM CRC FAIL -> restoreDefault() (dm=%d mr=%d)\n",__FILE__, __LINE__, __func__, LD(SPCOIL_DM_CRC_FAIL), LD(SPCOIL_MR_CRC_FAIL));
+#endif
     restoreDefault();//需要添加内容
     RRES(SPCOIL_DM_CRC_FAIL);
     RRES(SPCOIL_MR_CRC_FAIL);
+#if (CONFIG_DEBUG_NVRAM == 1)
+    printf("%s,%d,%s:[DIAG]restoreDefault done, mark cleared (dm=%d mr=%d)\n",__FILE__, __LINE__, __func__, LD(SPCOIL_DM_CRC_FAIL), LD(SPCOIL_MR_CRC_FAIL));
+#endif
   }
   if(LD(SPCOIL_FD_CRC_FAIL)){//FD校验失败恢复默认方案
+#if (CONFIG_DEBUG_NVRAM == 1)
+    printf("%s,%d,%s:[DIAG]FD CRC FAIL -> restoreScheme(1)\n",__FILE__, __LINE__, __func__);
+#endif
     restoreScheme(1);//恢复默认方案
     RRES(SPCOIL_FD_CRC_FAIL);
+#if (CONFIG_DEBUG_NVRAM == 1)
+    printf("%s,%d,%s:[DIAG]restoreScheme done, mark cleared (fd=%d)\n",__FILE__, __LINE__, __func__, LD(SPCOIL_FD_CRC_FAIL));
+#endif
   }
-  if(LD(SPCOIL_BK_CRC_FAIL)){//BK校验失败: 用EPROM还原BKSRAM并重新校验
-    sPlcBkramLoad();//还原+重校验(成功自动清除BK失败标记)
+  if(LD(SPCOIL_BK_CRC_FAIL)){//BK校验失败: 重置BKSRAM默认值并写回EPROM(自愈, 保证下次上电CRC通过)
+#if (CONFIG_DEBUG_NVRAM == 1)
+    printf("%s,%d,%s:[DIAG]BK CRC FAIL -> BKSRAM clear + BkramSave + BkramLoad\n",__FILE__, __LINE__, __func__);
+#endif
+    memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 2));//BKSRAM清默认值
+    sPlcBkramSave();//默认值写回EPROM(含CRC)
+    sPlcBkramLoad();//重校验(成功自动清除BK失败标记)
+#if (CONFIG_DEBUG_NVRAM == 1)
+    printf("%s,%d,%s:[DIAG]BK self-heal done (bk=%d)\n",__FILE__, __LINE__, __func__, LD(SPCOIL_BK_CRC_FAIL));
+#endif
   }
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);

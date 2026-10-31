@@ -15,6 +15,7 @@ extern "C" {
 #define CONFIG_DEBUG_ADC															1//调试ADC驱动
 #define CONFIG_DEBUG_RTC															1//调试RTC驱动
 #define CONFIG_DEBUG_EPROM														1//调试EPROM驱动
+#define CONFIG_DEBUG_NVRAM                            1//调试NVRAM(诊断确认后可改0关闭)
 #define CONFIG_DEBUG_IO																1//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
 #define CONFIG_DEBUG_LED															1//调试指示灯驱动
@@ -35,11 +36,11 @@ extern "C" {
 /*****************************************************************************/
 #define CONFIG_SPLC_ASSERT														1//检查地址范围
 /*****************************************************************************/
-//单位byte
-#define CONFIG_MR_SIZE																64L//
-#define CONFIG_DM_SIZE																1024L
-#define CONFIG_R_SIZE																	64L
-#define CONFIG_EM_SIZE																1024L
+//单位16bye
+#define CONFIG_MR_SIZE											    		  32L//
+#define CONFIG_DM_SIZE																512L
+#define CONFIG_R_SIZE																	32L
+#define CONFIG_EM_SIZE																512L
 #define CONFIG_T_1MS_SIZE															4L
 #define CONFIG_T_10MS_SIZE														4L
 #define CONFIG_T_100MS_SIZE														4L
@@ -54,9 +55,10 @@ extern "C" {
 #define CONFIG_SPREG_SIZE															128L
 #define CONFIG_SPCOIL_SIZE														16L
 #define CONFIG_TMP_SIZE																32L
-#define CONFIG_FDRAM_SIZE															2048L
-#define CONFIG_BKRAM_SIZE															2048L//BK 2K区块(2048*16bit),映射硬件BKSRAM 4K掉电保持区
+#define CONFIG_FDRAM_SIZE															2048L//存档区 32个自定义方案*64字=2048字(勿改小, 否则FDRAM方案索引越界)
+#define CONFIG_BKRAM_SIZE															1024L//BK 2K区块(2048*16bit),映射硬件BKSRAM 4K掉电保持区
 /*****************************************************************************/
+//以下都是NVRAM0/NVRAM1的索引位置 按照16bit排序
 //线圈 保持
 #define MR_START																			0
 #define MR_END   																			(MR_START + CONFIG_MR_SIZE - 1L)

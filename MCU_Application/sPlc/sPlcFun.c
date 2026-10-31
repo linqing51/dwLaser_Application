@@ -479,7 +479,7 @@ void FDSAV(void){//FDRAM->EPROM
 void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
   uint32_t crc32_eprom_fd;
   HAL_StatusTypeDef ref;
-  crc32_eprom_fd = HAL_CRC_Calculate(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
+  crc32_eprom_fd = sPlcCrc32Calc(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
 	ref = epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM0), 128);
 	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写入32位数
   if(ref != HAL_OK){

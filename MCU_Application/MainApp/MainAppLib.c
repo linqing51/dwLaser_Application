@@ -68,6 +68,12 @@ int16_t keyRuleDec(int16_t ps, int16_t min){//减少
 }
 
 void restoreDefault(void){//恢复默认值
+#if (CONFIG_DEBUG_NVRAM == 1)
+	printf("%s,%d,%s:[DIAG]restoreDefault enter\n",__FILE__, __LINE__, __func__);
+#endif
+	//清除早期自测/旧布局遗留数据(如0x55填充), 保证恢复写回干净默认值
+	memset((uint8_t*)(NVRAM0 + MR_START), 0x0, (CONFIG_MR_SIZE * 2));
+	memset((uint8_t*)(NVRAM0 + DM_START), 0x0, (CONFIG_DM_SIZE * 2));
 	RRES(MR_FOOSWITCH_HAND_SWITCH);
 	RRES(MR_BEEP_TONE);
 	RRES(R_FOOTSWITCH_PLUG);
@@ -111,7 +117,9 @@ void restoreDefault(void){//恢复默认值
 #endif
 	FDSAV();//FDRAM全量写回EPROM
   NVFSAVE();//强制NVRAM全量重写EPROM(覆盖损坏字节, 保证下次上电CRC通过)
-
+#if (CONFIG_DEBUG_NVRAM == 1)
+	printf("%s,%d,%s:[DIAG]restoreDefault exit (FDSAV+NVFSAVE done)\n",__FILE__, __LINE__, __func__);
+#endif
 }
 
 uint8_t getLcdDuty(int16_t LcdBrg){//屏幕亮度值转换为占空比

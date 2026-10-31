@@ -6,8 +6,9 @@
 #include "libcrc.h"
 static void crc32HwReset(void){
     __HAL_RCC_CRC_CLK_ENABLE();             /* CRC AHB 时钟 */
-    CRC->CR = CRC_CR_RESET;                 /* DR=0xFFFFFFFF */
-    CRC->CR = (0x1U << 2U) | (0x1U << 5U);  /* REV_IN=BYTE, REV_OUT=1 */
+    __HAL_RCC_CRC_FORCE_RESET();            /* 强制复位外设, 清除REV_IN/POLYSIZE等残留配置(与sPlcCrc32Calc同语义) */
+    __HAL_RCC_CRC_RELEASE_RESET();
+    CRC->CR = 0x00000000U;                  /* 默认: 不反转, 多项式固定0x04C11DB7 */
 }
 static uint32_t crc32HwResult(void){ return CRC->DR; }   /* 直接返回原始值，无校正 */
 
