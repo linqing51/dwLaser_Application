@@ -24,6 +24,9 @@ void sPlcAdcInit(void){//ADC模块初始化
 	}
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adcDmaBuffer0, CONFIG_ADC1_CHANNEL); //启用DMA的ADC转换，AD_DMA 0~3 对应ADC 0~3，这里注意最后一个参数的大小
 	printf("%s,%d,%s:start adc init......\n",__FILE__, __LINE__, __func__);
+#if CONFIG_DEBUG_ADC == 1
+	printf("%s,%d,%s:ADC1 DMA启动 len=%d buffer0=%08X buffer1=%08X alpha=%d%%\n",__FILE__, __LINE__, __func__, CONFIG_ADC1_DMA_BUFFER_SIZE, (uint32_t)adcDmaBuffer0, (uint32_t)adcDmaBuffer1, (int)(ADC_FILTER_ALPHA * 100.0f));
+#endif
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){    //ADC转换完成回调
@@ -65,6 +68,14 @@ void sPlcAdcProcessBuffer(void){//循环采集ADC
 		TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器0温度
 		TNTLC(EM_HT1_TEMP, SPREG_ADC_33, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器1温度(复用HT0参数)
 		TENV(EM_MCU_TEMP, SPREG_ADC_58);//处理器温度
+#if CONFIG_DEBUG_ADC == 1
+		printf("%s,%d,%s:[ADC]sel=0 raw(B0):",__FILE__, __LINE__, __func__);
+		for(i = 0;i < CONFIG_ADC1_CHANNEL;i ++){ printf("%d,", adcDmaBuffer0[i]); }
+		printf("\n");
+		printf("%s,%d,%s:[ADC]sel=0 flt:",__FILE__, __LINE__, __func__);
+		for(i = 0;i < CONFIG_ADC1_CHANNEL;i ++){ printf("%d,", (int)adcFilterBuf[i]); }
+		printf("\n");
+#endif
 	}
 	else{//adcBufferSelect = 1
 		HAL_ADC_Stop_DMA(&hadc1);
@@ -93,6 +104,14 @@ void sPlcAdcProcessBuffer(void){//循环采集ADC
 		TNTLC(EM_HT0_TEMP, SPREG_ADC_32, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器0温度
 		TNTLC(EM_HT1_TEMP, SPREG_ADC_33, CONFIG_HT0_NTC_RS, CONFIG_HT0_NTC_B);//散热器1温度(复用HT0参数)
 		TENV(EM_MCU_TEMP, SPREG_ADC_58);//处理器温度
+#if CONFIG_DEBUG_ADC == 1
+		printf("%s,%d,%s:[ADC]sel=1 raw(B1):",__FILE__, __LINE__, __func__);
+		for(i = 0;i < CONFIG_ADC1_CHANNEL;i ++){ printf("%d,", adcDmaBuffer1[i]); }
+		printf("\n");
+		printf("%s,%d,%s:[ADC]sel=1 flt:",__FILE__, __LINE__, __func__);
+		for(i = 0;i < CONFIG_ADC1_CHANNEL;i ++){ printf("%d,", (int)adcFilterBuf[i]); }
+		printf("\n");
+#endif
 	}
 }
 

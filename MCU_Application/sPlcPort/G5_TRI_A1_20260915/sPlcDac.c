@@ -13,16 +13,25 @@ void sPlcDacInit(void){//DAC初始化
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_2); // 开启DAC输出
 	HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2);//启动TIM9 CH2 PWM输出(TEC驱动, 经GP8101C-SH转模拟电压)
 	//writeDac7311(0);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:DAC1/2初始化输出0, TIM9 CH2 PWM启动\n",__FILE__, __LINE__, __func__);
+#endif
 }
 void UPDAC0(void){//立即从SPREG_DAC_0中更新DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_0] & 0x0FFF;
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:SPREG_DAC_0=%d -> DAC1 OUT=%d(0x%03X)\n",__FILE__, __LINE__, __func__, (int)NVRAM0[SPREG_DAC_0], temp, temp);
+#endif
 }
 void UPDAC1(void){//立即从SPREG_DAC_1中更新DAC0
 	uint16_t temp;
 	temp = NVRAM0[SPREG_DAC_1] & 0x0FFF;
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, temp); // 设置DAC输出值	
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:SPREG_DAC_1=%d -> DAC2 OUT=%d(0x%03X)\n",__FILE__, __LINE__, __func__, (int)NVRAM0[SPREG_DAC_1], temp, temp);
+#endif
 }
 void UPDAC2(void){}
 void UPDAC3(void){}
@@ -32,9 +41,14 @@ void UPDAC6(void){}
 void UPDAC7(void){}
 void UPDAC8(void){//立即从SPREG_DAC_8中更新DAC8(TIM9 CH2 PWM -> GP8101C-SH 模拟电压)
 	uint32_t temp;
+	uint32_t ccr;
 	temp = NVRAM0[SPREG_DAC_8] & 0x0FFF;
 	//SPREG_DAC_8(0~4095)映射为TIM9 CH2占空比CCR2(0~65535), 经GP8101C-SH输出0~满量程模拟电压
-	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, (uint32_t)((float)temp / 4095.0f * 65535.0f));
+	ccr = (uint32_t)((float)temp / 4095.0f * 65535.0f);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, ccr);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:SPREG_DAC_8=%d -> TIM9 CH2 CCR=%d(0x%04X)\n",__FILE__, __LINE__, __func__, (int)NVRAM0[SPREG_DAC_8], ccr, ccr);
+#endif
 }
 void UPDAC9(void){}
 void UPDAC10(void){}
@@ -48,6 +62,9 @@ void UPDAC16(void){
 		NVRAM0[SPREG_DAC_16] = CONFIG_DAC_MAXBIT_CH16;
 	}
 	setRedLaserPwm(NVRAM0[SPREG_DAC_16]);
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:SPREG_DAC_16=%d -> 红激光PWM(635)\n",__FILE__, __LINE__, __func__, (int)NVRAM0[SPREG_DAC_16]);
+#endif
 }
 void UPDAC17(void){
 
@@ -57,7 +74,9 @@ void UPDAC17(void){
 void CLDAC(void){//立即清空全部DAC
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0); // 设置DAC输出值	
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 1); // 设置DAC输出值	
-	
+#if CONFIG_DEBUG_DAC == 1
+	printf("%s,%d,%s:DAC1=0 DAC2=1 清空输出\n",__FILE__, __LINE__, __func__);
+#endif
 }
 
 
