@@ -207,6 +207,7 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define SET_DAC8568_SCK(b)										HAL_GPIO_WritePin(DAC8568_SCK_GPIO_Port, DAC8568_SCK_Pin, b)
 #define SET_DAC8568_DOUT(b)										HAL_GPIO_WritePin(DAC8568_DOUT_GPIO_Port, DAC8568_DOUT_Pin, b)
 //POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
+#define CONFIG_HAS_PWR_INT											1//本板接入LTC2955软关机中断输入
 #define GET_PWR_INT														HAL_GPIO_ReadPin(PWR_INT_GPIO_Port, PWR_INT_Pin)
 //POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
 #define SET_PWR_KILL(b)												__nop()

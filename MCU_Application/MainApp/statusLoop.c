@@ -7,12 +7,14 @@
 /*****************************************************************************/
 void statusLoop(void){//温度轮询轮询
 	bool flag;
+#if CONFIG_SPLC_USING_HDC1080  
 	int16_t temp, humi;
 	if(LDP(SPCOIL_PS1000MS)){//1秒间隔
 		hdc1080_read(&temp, &humi);
 		NVRAM0[EM_HDC1080_TEMP] = temp;
 		NVRAM0[EM_HDC1080_HUMIDITY] = humi;
 	}
+#endif
 	//核心温度检测
 	if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_HIGH){//激光器过热
 		SSET(R_LASER_A_DIODE_TEMP_HIGH);

@@ -32,6 +32,9 @@
 
 #ifndef COMMAND_INTERPRETER_H
 #define COMMAND_INTERPRETER_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 1024
 
@@ -104,6 +107,9 @@ extern void xUsart2Init (uint32_t BaudRate);
 
 
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* COMMAND_INTERPRETER_H */
 
 

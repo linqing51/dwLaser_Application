@@ -22,10 +22,16 @@ void sPlcOutputInit(void){//IO输出初始化
 	SET_BLUE_LED_OFF;
 	SET_TICK_LED_OFF;
 	SET_ERR_LED_OFF;
+#if (CONFIG_DEBUG_IO == 1)
 	printf("%s,%d,%s:output init......\n",__FILE__, __LINE__, __func__);
+#endif
 }
 
 void sPlcOutputRefresh(void){//设置输出IO	
+#if (CONFIG_DEBUG_IO == 1)
+	uint16_t oldY, newY;
+	oldY = (uint16_t)(NVRAM0[Y_START] & 0x00FF);//刷新前Y状态(用于变化检测)
+#endif
 	//YOUT0 绿灯
 	if(LDP(Y_GREEN_LED)){
 		SET_GREEN_LED_ON;
@@ -78,6 +84,14 @@ void sPlcOutputRefresh(void){//设置输出IO
 	if(LDN(Y_TEC)){
 		SET_TEC_GATE_CH0_OFF;
 	}
+#if (CONFIG_DEBUG_IO == 1)
+	newY = (uint16_t)(NVRAM0[Y_START] & 0x00FF);
+	if(oldY != newY){//仅在Y输出状态变化时打印,避免周期刷屏; bits按Y6..Y0顺序
+		printf("%s,%d,%s:Y changed 0x%02X->0x%02X bits:%d%d%d%d%d%d%d\n",
+			__FILE__, __LINE__, __func__, oldY, newY,
+			LD(Y_TEC), LD(Y_BEEM_LED), LD(Y_ERR_LED), LD(Y_TICK_LED), LD(Y_YELLOW_LED), LD(Y_RED_LED), LD(Y_GREEN_LED));
+	}
+#endif
 }
 
 

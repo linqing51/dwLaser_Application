@@ -15,6 +15,9 @@
  *----------------------------------------------------------------------------*/
 #ifndef __ELOG_EXT_H__
 #define __ELOG_EXT_H__
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "elog.h"
 
@@ -23,4 +26,7 @@
  *           如需级别标识可调用 elog_set_fmt(level, ELOG_FMT_LVL) 开启 [A/E/W/I/D/V] 前缀) */
 #define LOG_PRINT(level, fmt, ...)  elog_output(level, "", NULL, NULL, 0, fmt, ##__VA_ARGS__)
 
+#ifdef __cplusplus
+}
+#endif
 #endif

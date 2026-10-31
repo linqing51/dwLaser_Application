@@ -9,10 +9,16 @@ int8_t inputFilter[(X_END - X_START + 1) * 16];//IO输入滤波器缓冲区
 /*****************************************************************************/
 void sPlcInputInit(void){//IO输入滤波器初始化
 	memset((uint8_t*)inputFilter, 0x0, ((X_END - X_START + 1) * 16));
+#if (CONFIG_DEBUG_IO == 1)
 	printf("%s,%d,%s:input init......\n",__FILE__, __LINE__, __func__);
+#endif
 }
 void sPlcInputRefresh(void){//获取输入IO
 	uint8_t	temp;
+#if (CONFIG_DEBUG_IO == 1)
+	uint16_t oldX, newX;
+	oldX = (uint16_t)(NVRAM0[X_START] & 0x00FF);//刷新前X状态(用于变化检测)
+#endif
 	//X0 急停
 	temp = GET_ESTOP_NC;
 	if(temp == 0){//急停常闭
@@ -105,24 +111,39 @@ void sPlcInputRefresh(void){//获取输入IO
 		}
 	}
 		
-	//X5 软关机信号
+	//X6 软关机信号(LTC2955): 对应X_PWR_INT(bit6); 无该硬件的板整块跳过,该位保持0
+#if (CONFIG_HAS_PWR_INT == 1)
 	temp = GET_PWR_INT;
-		if(temp == 0){
-		if(inputFilter[5] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[5] ++;
+	if(temp == 0){
+		if(inputFilter[6] < CONFIG_INPUT_FILTER_TIME){
+			inputFilter[6] ++;
 		}
 		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 5);
+			NVRAM0[X_START] |= (int16_t)(1 << 6);
 		}
 	}
 	else{
-		if(inputFilter[5] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[5] --;
+		if(inputFilter[6] > (CONFIG_INPUT_FILTER_TIME * -1)){
+			inputFilter[6] --;
 		}
 		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 5);
+			NVRAM0[X_START] &= ~(uint16_t)(1 << 6);
 		}
 	}
+#endif
+#if (CONFIG_DEBUG_IO == 1)
+	newX = (uint16_t)(NVRAM0[X_START] & 0x00FF);
+	if(oldX != newX){//仅在滤波后X状态变化时打印,避免周期刷屏; bits按X6..X0顺序, raw为GPIO原始电平
+		printf("%s,%d,%s:X changed 0x%02X->0x%02X bits:%d%d%d%d%d%d%d raw GPIO:%d%d%d%d",
+			__FILE__, __LINE__, __func__, oldX, newX,
+			(newX >> 6) & 1, (newX >> 5) & 1, (newX >> 4) & 1, (newX >> 3) & 1, (newX >> 2) & 1, (newX >> 1) & 1, newX & 1,
+			GET_ESTOP_NC, GET_INTERLOCK_NC, GET_FSWITCH_NO, GET_FSWITCH_NC);
+#if (CONFIG_HAS_PWR_INT == 1)
+		printf(" PWR_INT:%d", GET_PWR_INT);
+#endif
+		printf("\n");
+	}
+#endif
 
 }
 

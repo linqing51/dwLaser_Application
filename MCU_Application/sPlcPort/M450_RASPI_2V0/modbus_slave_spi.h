@@ -5,6 +5,9 @@
  *----------------------------------------------------------------------------*/
 #ifndef __MODBUS_SLAVE_SPI_H
 #define __MODBUS_SLAVE_SPI_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "stm32f4xx_hal.h"
 #include <string.h>
@@ -140,4 +143,6 @@ void Modbus_SPI_RxCplt_Callback(void);  // SPI接收完成回调
 
 
 
+#ifdef __cplusplus
+}
 #endif

@@ -44,6 +44,7 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)//PH15 安全连锁
 #define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)//PG5 脚踏常开
 #define GET_FSWITCH_NC												HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)//PG6 脚踏常闭
+#define CONFIG_HAS_PWR_INT											1//本板接入LTC2955软关机中断输入(PE2)
 #define GET_PWR_INT													HAL_GPIO_ReadPin(POWER_INT_GPIO_Port, POWER_INT_Pin)//PE2 LTC2955软关机中断
 /*****************************************************************************/
 //指示灯(低电平点亮): RED=PI11 GREEN=STA0(PE4) BLUE=PF0 PWR=STA1(PE5) ERR=STA2(PI8) TICK=STA3(PC13)

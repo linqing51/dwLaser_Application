@@ -28,6 +28,9 @@
 
 #ifndef _ELOG_CFG_H_
 #define _ELOG_CFG_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
 /*---------------------------------------------------------------------------*/
 /* enable log output. */
 #define ELOG_OUTPUT_ENABLE
@@ -80,4 +83,7 @@
 /* buffer size for buffered output mode */
 #define ELOG_BUF_OUTPUT_BUF_SIZE                 (ELOG_LINE_BUF_SIZE * 10)
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* _ELOG_CFG_H_ */

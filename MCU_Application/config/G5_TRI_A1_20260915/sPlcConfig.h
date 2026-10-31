@@ -11,15 +11,15 @@
 extern "C" {
 #endif
 /*****************************************************************************/
-#define CONFIG_DEBUG_DAC															1//调试DAC驱动
-#define CONFIG_DEBUG_ADC															1//调试ADC驱动
-#define CONFIG_DEBUG_RTC															1//调试RTC驱动
-#define CONFIG_DEBUG_EPROM														1//调试EPROM驱动
-#define CONFIG_DEBUG_NVRAM                            1//调试NVRAM(诊断确认后可改0关闭)
+#define CONFIG_DEBUG_DAC															0//调试DAC驱动
+#define CONFIG_DEBUG_ADC															0//调试ADC驱动
+#define CONFIG_DEBUG_RTC															0//调试RTC驱动
+#define CONFIG_DEBUG_EPROM														0//调试EPROM驱动
+#define CONFIG_DEBUG_NVRAM                            0//调试NVRAM(诊断确认后可改0关闭)
 #define CONFIG_DEBUG_IO																1//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
-#define CONFIG_DEBUG_LED															1//调试指示灯驱动
-#define CONFIG_DEBUG_AIM															1//调试指示光驱动
+#define CONFIG_DEBUG_LED															0//调试指示灯驱动
+#define CONFIG_DEBUG_AIM															0//调试指示光驱动
 #define CONFIG_DEBUG_LASER														0//调试LASER驱动
 #define CONFIG_DEBUG_SPLC															0//调试SPLC命令
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
@@ -30,6 +30,7 @@ extern "C" {
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
 #define CONFIG_SPLC_USING_RTC													1//使能RTC模块
 #define CONFIG_SPLC_USING_SPWM												1//使能软件PWM功能
+#define CONFIG_SPLC_USING_HDC1080                     0//使用HDC1080传感器
 #define CONFIG_SPLC_USING_FUNTEST											0//功能指令测试
 #define CONFIG_SPLC_USING_EPROM_TEST									0//EPROM 读写测试
 #define CONFIG_SPLC_USING_LASER_TEST									0//激光器脉冲模式测试

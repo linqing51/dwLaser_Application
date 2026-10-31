@@ -23,6 +23,9 @@
 ******************************************************************************/
 #ifndef __CMD_FUN_H
 #define __CMD_FUN_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*----------------------------------------------*
  * 包含头文件                                   *
@@ -129,5 +132,8 @@ static BaseType_t prvSystemInfoCommand( char * pcWriteBuffer, size_t xWriteBuffe
 
 
 
+#ifdef __cplusplus
+}
+#endif
 #endif
 

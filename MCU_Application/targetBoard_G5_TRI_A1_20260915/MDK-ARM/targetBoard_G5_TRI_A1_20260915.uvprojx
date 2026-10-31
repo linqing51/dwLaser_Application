@@ -2904,11 +2904,6 @@
               <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcTimer.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcI2C_HDC1080.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcI2C_HDC1080.c</FilePath>
-            </File>
-            <File>
               <FileName>sPlcEpromSelfTest.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcEpromSelfTest.c</FilePath>

@@ -46,6 +46,9 @@ static uint8_t RtcCheckDate(uint16_t year, uint8_t month, uint8_t day){
 	if((month < 1) || (month > 12)){
 		return 0;
 	}
+	if(day < 1){//修复:原逻辑仅检查day是否大于月天数,day=0会漏过校验写入RTC
+		return 0;
+	}
 	//闰年2月
 	if(month == 2){
 		if(((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)){
@@ -74,6 +77,9 @@ void RtcInitTimeDefault(void){//设置默认时间(仅首次上电/备份域掉�
   sDate.Date   					= 23;
   sDate.WeekDay					= RTC_WEEKDAY_THURSDAY;
   HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+#if (CONFIG_DEBUG_RTC == 1)
+	printf("%s,%d,%s:default time set 2026-04-23 12:00:00\n",__FILE__, __LINE__, __func__);
+#endif
 }
 
 void RtcCheckAndInit(void){//RTC掉电检测与防锁死初始化
@@ -186,6 +192,9 @@ void RtcSetYear(uint8_t tmp){
 	uint16_t year;
 	uint8_t mon, date, hour, min, sec;
 	if(tmp >= 99){
+#if (CONFIG_DEBUG_RTC == 1)
+		printf("%s,%d,%s:year input out of range,clamped to 99\n",__FILE__, __LINE__, __func__);
+#endif
 		tmp = 99;
 	}
 	RtcGetDateTime(&year, &mon, &date, &hour, &min, &sec);
@@ -196,6 +205,9 @@ void RtcSetMonth(uint8_t tmp){
 	uint16_t year;
 	uint8_t mon, date, hour, min, sec;
 	if(tmp >= 12){
+#if (CONFIG_DEBUG_RTC == 1)
+		printf("%s,%d,%s:month input out of range,clamped to 12\n",__FILE__, __LINE__, __func__);
+#endif
 		tmp = 12;
 	}
 	RtcGetDateTime(&year, &mon, &date, &hour, &min, &sec);
@@ -206,6 +218,9 @@ void RtcSetDate(uint8_t tmp){
 	uint16_t year;
 	uint8_t mon, date, hour, min, sec;
 	if(tmp >= 31){
+#if (CONFIG_DEBUG_RTC == 1)
+		printf("%s,%d,%s:date input out of range,clamped to 31(illegal natural date will be rejected)\n",__FILE__, __LINE__, __func__);
+#endif
 		tmp = 31;
 	}
 	RtcGetDateTime(&year, &mon, &date, &hour, &min, &sec);
@@ -216,6 +231,9 @@ void RtcSetHours(uint8_t tmp){
 	uint16_t year;
 	uint8_t mon, date, hour, min, sec;
 	if(tmp >= 24){
+#if (CONFIG_DEBUG_RTC == 1)
+		printf("%s,%d,%s:hour input out of range,clamped to 23\n",__FILE__, __LINE__, __func__);
+#endif
 		tmp = 23;
 	}
 	RtcGetDateTime(&year, &mon, &date, &hour, &min, &sec);
@@ -226,6 +244,9 @@ void RtcSetMinutes(uint8_t tmp){
 	uint16_t year;
 	uint8_t mon, date, hour, min, sec;
 	if(tmp >= 60){
+#if (CONFIG_DEBUG_RTC == 1)
+		printf("%s,%d,%s:minute input out of range,clamped to 59\n",__FILE__, __LINE__, __func__);
+#endif
 		tmp = 59;
 	}
 	RtcGetDateTime(&year, &mon, &date, &hour, &min, &sec);
@@ -236,6 +257,9 @@ void RtcSetSeconds(uint8_t tmp){
 	uint16_t year;
 	uint8_t mon, date, hour, min, sec;
 	if(tmp >= 60){
+#if (CONFIG_DEBUG_RTC == 1)
+		printf("%s,%d,%s:second input out of range,clamped to 59\n",__FILE__, __LINE__, __func__);
+#endif
 		tmp = 59;
 	}
 	RtcGetDateTime(&year, &mon, &date, &hour, &min, &sec);

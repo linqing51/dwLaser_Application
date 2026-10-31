@@ -232,6 +232,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_MCP41010_SCK(b)										HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
 
 //POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
+#define CONFIG_HAS_PWR_INT											0//本板未接LTC2955软关机中断输入(GET_PWR_INT为占位0)
 #define GET_PWR_INT														0
 //POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
 #define SET_PWR_KILL_POWER(b)									__nop()

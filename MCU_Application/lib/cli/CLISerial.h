@@ -32,6 +32,9 @@
 
 #ifndef __CLISERIAL_H
 #define __CLISERIAL_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Scheduler includes. */
 #include "FreeRTOS.h"
@@ -142,5 +145,8 @@ extern void xUsart5Init(uint32_t BaudRate);
 extern UART_HandleTypeDef huart5;
 
 
+#ifdef __cplusplus
+}
+#endif
 #endif
 

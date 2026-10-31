@@ -103,9 +103,10 @@ void sPlcInputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
 		}
 	}	
-	//X5 软关机信号
+	//X6 软关机信号(LTC2955): 对应X_PWR_INT(bit6); 无该硬件的板整块跳过,该位保持0
+#if (CONFIG_HAS_PWR_INT == 1)
 	temp = GET_PWR_INT;
-		if(temp == 0){
+	if(temp == 0){
 		if(inputFilter[6] < CONFIG_INPUT_FILTER_TIME){
 			inputFilter[6] ++;
 		}
@@ -121,6 +122,7 @@ void sPlcInputRefresh(void){//获取输入IO
 			NVRAM0[X_START] &= ~(uint16_t)(1 << 6);
 		}
 	}
+#endif
 
 }
 
