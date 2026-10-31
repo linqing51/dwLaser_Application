@@ -9,7 +9,7 @@ uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
 uint16_t hmiCmdSize;//已缓冲的指令数
 static MSG_ID_T MsgId;//当前显示的信息ID
-uint8_t CcmRamBuf[BOOTLOAD_BUF_SIZE] __attribute__ ((at(CCMDATARAM_BASE)));//Bootload 升级块缓冲 8KB（CCM 头部）
+uint8_t CcmRamBuf[BOOTLOAD_BUF_SIZE] SPLC_PLACE_AT(10000000);//Bootload 升级块缓冲 8KB（CCM 头部）CCMDATARAM_BASE=0x10000000
 /* CCM RAM(0x10000000) 不支持 DMA 访问。当前 FATFS 底层为 USB Host MSC，usbh_conf.c 中
    dma_enable=DISABLE（CPU 轮询搬运），本缓冲经 f_read 读取安全；若未来启用 USB/SDIO DMA，
    禁止将本缓冲直接用作 DMA 目标，需先经 SRAM 中转。

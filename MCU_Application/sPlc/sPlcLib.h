@@ -6,12 +6,16 @@
 #ifndef __SPLCLIB_H__
 #define __SPLCLIB_H__
 /*****************************************************************************/
+#include "compiler.h"
+/*****************************************************************************/
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h>
+#if defined(SPLC_COMPILER_ARMCC)
 #include <INTRINS.H>
+#endif
 #include <ctype.h>
-#include <LIMITS.H>
+#include <limits.h>
 #include <math.h>
 #include "crc16.h"
 #include "delay.h"

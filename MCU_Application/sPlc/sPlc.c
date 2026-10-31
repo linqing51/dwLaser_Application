@@ -12,8 +12,8 @@ extern void restoreDefault(void);//预设方案恢复默认设置(MainAppLib层,
 int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
-int16_t BKRAM0[CONFIG_BKRAM_SIZE / 2] __attribute__((at(CONFIG_BKSRAM_BASE_ADDR)));//BKRAM0: BKSRAM起始(2K字节)
-int16_t BKRAM1[CONFIG_BKRAM_SIZE / 2] __attribute__((at(CONFIG_BKSRAM_BASE_ADDR + (CONFIG_BKRAM_SIZE * 2L / 2L))));//BKRAM1: BKSRAM中间(2K字节) 真掉电存储寄存器
+int16_t BKRAM0[CONFIG_BKRAM_SIZE / 2] SPLC_PLACE_AT(40024000);//BKRAM0: BKSRAM起始(2K字节) CONFIG_BKSRAM_BASE_ADDR=0x40024000
+int16_t BKRAM1[CONFIG_BKRAM_SIZE / 2] SPLC_PLACE_AT(40024400);//BKRAM1: BKSRAM中间(2K字节) 真掉电存储寄存器 0x40024000+1024
 uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
 #pragma pack(pop)
 /*****************************************************************************/

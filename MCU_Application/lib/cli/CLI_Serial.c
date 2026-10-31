@@ -36,6 +36,7 @@
 
 /* Demo application includes. */
 #include "CLISerial.h"
+#include "compiler.h"
 
 
 /*-----------------------------------------------------------*/
@@ -73,7 +74,7 @@ uint16_t UART5_Rx_Len = 0;
 
 
 #if 1
-#pragma import(__use_no_semihosting)             
+SPLC_NO_SEMIHOSTING
 //标准库需要的支持函数                 
 struct __FILE 
 { 

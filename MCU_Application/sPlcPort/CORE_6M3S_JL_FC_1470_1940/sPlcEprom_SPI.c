@@ -32,7 +32,7 @@ void epromInit(void){
   printf("NEW STATUS REGISTER:%02X\n", rtmp);
 }
 
-__forceinline HAL_StatusTypeDef epromReadStatusReg(uint8_t *status){//读状态寄存器
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadStatusReg(uint8_t *status){//读状态寄存器
 	HAL_StatusTypeDef ret;
 	uint8_t cmd = RDSR;
 	EPROM_SPI_NSS_SEL;
@@ -44,7 +44,7 @@ __forceinline HAL_StatusTypeDef epromReadStatusReg(uint8_t *status){//读状态�
 	return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromWriteStatusReg(uint8_t *status){//写状态寄存器
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteStatusReg(uint8_t *status){//写状态寄存器
   HAL_StatusTypeDef ret;
 	uint8_t cmd = WRSR;
 	EPROM_SPI_NSS_SEL;
@@ -56,7 +56,7 @@ __forceinline HAL_StatusTypeDef epromWriteStatusReg(uint8_t *status){//写状态
 	return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromReadDeviceId(uint8_t *id){//读设备ID（4字节：厂商ID+续码+产品ID1+产品ID2）
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadDeviceId(uint8_t *id){//读设备ID（4字节：厂商ID+续码+产品ID1+产品ID2）
 	HAL_StatusTypeDef ret;
 	uint8_t cmd = RDID;
 	EPROM_SPI_NSS_SEL;
@@ -68,7 +68,7 @@ __forceinline HAL_StatusTypeDef epromReadDeviceId(uint8_t *id){//读设备ID（4
 	return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所有写操作前必须调用）
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所有写操作前必须调用）
 	HAL_StatusTypeDef ret;
   uint8_t cmd;
 	EPROM_SPI_NSS_SEL;
@@ -85,7 +85,7 @@ __forceinline HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所有�
   return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//读1字节 addr: 24位地址（MB85RS2MTA 只用低18位） rdat: 输出1字节
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//读1字节 addr: 24位地址（MB85RS2MTA 只用低18位） rdat: 输出1字节
 	HAL_StatusTypeDef ret;
 	uint8_t tempBuf[4];
 	EPROM_SPI_NSS_SEL;
@@ -109,7 +109,7 @@ __forceinline HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//�
 	return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//写1字节addr: 24位地址wdat: 输入1字节
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//写1字节addr: 24位地址wdat: 输入1字节
 	HAL_StatusTypeDef ret;
 	uint8_t tempBuf[4];
   epromWriteEnable(true); 
@@ -134,7 +134,7 @@ __forceinline HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat){//�
 	return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t len){//批量读addr: 起始地址pBuf: 输出缓冲区len: 字节数
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t len){//批量读addr: 起始地址pBuf: 输出缓冲区len: 字节数
 	HAL_StatusTypeDef ret;
 	uint8_t tempBuf[4];
   EPROM_SPI_NSS_SEL;
@@ -158,7 +158,7 @@ __forceinline HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t
 	return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uint16_t len){//批量写
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uint16_t len){//批量写
 	HAL_StatusTypeDef ret;
 	uint8_t tempBuf[4];
   epromWriteEnable(true);
@@ -183,19 +183,19 @@ __forceinline HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uint16_
 	return ret;
 }
 
-__forceinline HAL_StatusTypeDef epromReadHword(uint32_t addr, uint16_t *rdat){//16位读/写
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadHword(uint32_t addr, uint16_t *rdat){//16位读/写
 	return epromRead(addr, (uint8_t*)rdat, 2);
 }
 
-__forceinline HAL_StatusTypeDef epromWriteHword(uint32_t addr, uint16_t *wdat){
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteHword(uint32_t addr, uint16_t *wdat){
 	return epromWrite(addr, (uint8_t*)wdat, 2);
 }
 
-__forceinline HAL_StatusTypeDef epromReadDword(uint32_t addr, uint32_t *rdat){//32位读/写
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadDword(uint32_t addr, uint32_t *rdat){//32位读/写
 	return epromRead(addr, (uint8_t*)rdat, 4);
 }
 
-__forceinline HAL_StatusTypeDef epromWriteDword(uint32_t addr, uint32_t *wdat){
+SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteDword(uint32_t addr, uint32_t *wdat){
 	return epromWrite(addr, (uint8_t*)wdat, 4);
 }
 

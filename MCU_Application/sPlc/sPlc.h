@@ -7,6 +7,8 @@
 #ifndef __SPLC_H__
 #define __SPLC_H__
 /*****************************************************************************/
+#include "compiler.h"
+/*****************************************************************************/
 //stm32
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_tim.h" 
@@ -18,7 +20,7 @@
 #include <stdlib.h> 
 #include <string.h>
 #include <ctype.h>
-#include <LIMITS.H>
+#include <limits.h>
 #include "stdbool.h"
 #include "stdint.h"
 #include "string.h"
