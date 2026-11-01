@@ -4609,8 +4609,48 @@ static void ProcessMessage( PCTRL_MSG msg, uint16_t size ){
 
 
 static void NotifyScreen(uint16_t screen_id){
-    //TODO: 添加用户代码
-
+	//页面切换完成通知(屏幕主动上报,MSG_GET_CURRENT_SCREEN): 页面加载完成后重新下发该页全部显示值,
+	//修复"SetScreen 后立即大批量刷新"在页面冷加载窗口丢帧导致首次进入个别控件不显示(如待机页650指示功率文本)
+	switch(screen_id){
+		case GDDC_PAGE_STANDBY_DUAL_1470_635:
+		case GDDC_PAGE_STANDBY_DUAL_1940_635:
+		case GDDC_PAGE_STANDBY_DUAL_450_980:
+		case GDDC_PAGE_STANDBY_TRI_1470_980_635:
+		case GDDC_PAGE_STANDBY_TRI_1940_1470_635:{
+			updateStandbyDisplay();
+			break;
+		}
+		case GDDC_PAGE_READY:{
+			updateReadyDisplay();
+			break;
+		}
+		case GDDC_PAGE_OPTION:{
+			updateOptionDisplay();
+			break;
+		}
+		case GDDC_PAGE_INFORMATION:{
+			updateInformationDisplay();
+			break;
+		}
+		case GDDC_PAGE_DIAGNOSIS:{
+			updateDiagnosis();
+			break;
+		}
+		case GDDC_PAGE_DIAGNOSIS_RAW:{
+			updateDiagnosisInfoRaw();
+			break;
+		}
+		case GDDC_PAGE_DIAGNOSIS_CALI:{
+			updateDiagnosisCali();
+			break;
+		}
+		case GDDC_PAGE_TREATMENTLOG:{
+			updateTreatmentLogDisplay();
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 //触摸坐标事件响应
