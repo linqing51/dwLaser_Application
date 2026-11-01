@@ -18,6 +18,10 @@ FuzzyPID_HandleTypeDef FuzzyPid_A;
 SmartPID_Controller SmartPid_A;
 #endif
 
+#if (CONFIG_USING_NN_PID == 1)
+NNPid_t NNPid_A;
+#endif
+
 FanController AutoFan0, AutoFan1, AutoFan2, AutoFan3, AutoFan4, AutoFan5, AutoFan6, AutoFan7;// 创建风扇控制器实例
 int16_t LaserTecOutCounter0, LaserTecOut0;
 /*****************************************************************************/
@@ -41,6 +45,9 @@ void tempControlInit(void){
  SmartPID_Init(&SmartPid_A, (float_t)deviceConfig.laserDiodeA_Temp / 10.0F);
 
 #endif	
+#if CONFIG_USING_NN_PID == 1
+	NNPid_Init(&NNPid_A, (float_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+#endif
 	FanController_Init(&AutoFan0, fan_curve_0, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	FanController_Init(&AutoFan1, fan_curve_1, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
 	FanController_Init(&AutoFan2, fan_curve_2, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
@@ -116,6 +123,10 @@ void tempControlLoop(void){//温度风扇控制循环
 			ftmp0 = SmartPID_Compute(&SmartPid_A, (float32_t)NVRAM0[EM_LASER_A_DIODE_TEMP]);
 		}
 		LaserTecOut0 =(int16_t)(ftmp0 * 4095);
+#endif
+#if CONFIG_USING_NN_PID == 1
+		NNPid_SetTarget(&NNPid_A, (float_t)deviceConfig.laserDiodeA_Temp / 10.0F);
+		LaserTecOut0 = (int16_t)(NNPid_Compute(&NNPid_A, (float32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] / 10.0F) * 4095.0F);
 #endif
 		NVRAM0[EM_TPID0_OUT] = LaserTecOut0;
 		NVRAM0[SPREG_DAC_8] = LaserTecOut0;
