@@ -12,8 +12,8 @@ extern void restoreDefault(void);//预设方案恢复默认设置(MainAppLib层,
 int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
-int16_t BKRAM0[CONFIG_BKRAM_SIZE / 2] SPLC_PLACE_AT(40024000);//BKRAM0: BKSRAM起始(2K字节) CONFIG_BKSRAM_BASE_ADDR=0x40024000
-int16_t BKRAM1[CONFIG_BKRAM_SIZE / 2] SPLC_PLACE_AT(40024400);//BKRAM1: BKSRAM中间(2K字节) 真掉电存储寄存器 0x40024000+1024
+int16_t BKRAM0[CONFIG_BKRAM_SIZE] SPLC_PLACE_AT(40024000);//BKRAM0: BKSRAM起始(2K字节) CONFIG_BKSRAM_BASE_ADDR=0x40024000
+int16_t BKRAM1[CONFIG_BKRAM_SIZE] SPLC_PLACE_AT(40024800);//BKRAM1: BKSRAM中间(2K字节) 真掉电存储寄存器 0x40024000+2048
 uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
 #pragma pack(pop)
 /*****************************************************************************/
@@ -389,13 +389,13 @@ void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
 	__HAL_RCC_PWR_CLK_ENABLE();
 	HAL_PWR_EnableBkUpAccess();//解除备份域写保护
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();//使能BKPSRAM接口时钟
-	memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 2));//清空BKSRAM
-	epromRead(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 2));//从EPROM中恢复BK
+	memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 4));//清空BKSRAM
+	epromRead(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 4));//从EPROM中恢复BK
 	epromReadDword(CONFIG_EPROM_BK_CRC, &crc32_eprom_bk);
-	crc32_bk = sPlcCrc32Calc(&hcrc, (uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE / 2));
+	crc32_bk = sPlcCrc32Calc(&hcrc, (uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE));
 	if(crc32_eprom_bk != crc32_bk){
 #if (CONFIG_DEBUG_NVRAM == 1)
-		printf("%s,%d,%s:[DIAG]BK CRC FAIL epromAddr=0x%08X len=%d calc=0x%08X eprom=0x%08X\n",__FILE__, __LINE__, __func__, (unsigned)CONFIG_EPROM_BK_START, (CONFIG_BKRAM_SIZE * 2), crc32_bk, crc32_eprom_bk);
+		printf("%s,%d,%s:[DIAG]BK CRC FAIL epromAddr=0x%08X len=%d calc=0x%08X eprom=0x%08X\n",__FILE__, __LINE__, __func__, (unsigned)CONFIG_EPROM_BK_START, (CONFIG_BKRAM_SIZE * 4), crc32_bk, crc32_eprom_bk);
 		printf("%s,%d,%s:[DIAG]BK SRAM head(8w):%04X %04X %04X %04X %04X %04X %04X %04X\n",__FILE__, __LINE__, __func__,
 			((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[0],((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[1],((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[2],((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[3],
 			((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[4],((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[5],((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[6],((uint16_t*)CONFIG_BKSRAM_BASE_ADDR)[7]);
@@ -423,8 +423,8 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
 	__HAL_RCC_PWR_CLK_ENABLE();
 	HAL_PWR_EnableBkUpAccess();
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
-	crc32_bk = sPlcCrc32Calc(&hcrc, (uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE / 2));
-	ref1 = epromWrite(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 2));
+	crc32_bk = sPlcCrc32Calc(&hcrc, (uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE));
+	ref1 = epromWrite(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 4));
 	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写入32位数
 	if((ref1 != HAL_OK) || (ref2 != HAL_OK)){
 #if (CONFIG_DEBUG_NVRAM == 1)
@@ -449,7 +449,7 @@ void sPlcBkramClear(void){//清除BK数据(含EPROM BK区)
 	HAL_PWR_EnableBkUpAccess();
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
 	clearEprom(CLEAR_EPROM_BKRAM);//清除EPROM BK数据区与CRC
-	memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 2));//清空BKSRAM
+	memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 4));//清空BKSRAM
 #if (CONFIG_DEBUG_NVRAM == 1)
 	printf("%s,%d,%s:clear BK done...\n",__FILE__, __LINE__, __func__);
 #endif

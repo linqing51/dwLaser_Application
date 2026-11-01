@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -349,9 +349,9 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1L)
 #define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + (CONFIG_FDRAM_SIZE * 2L) - 1L)
 
-//BK 2K区块(映射硬件BKSRAM 4K掉电保持区)在EPROM储存地址
+//BK 4K区块(映射硬件BKSRAM 4K掉电保持区)在EPROM储存地址
 #define CONFIG_EPROM_BK_START									(CONFIG_EPROM_FD_END + 1L)
-#define CONFIG_EPROM_BK_END										(CONFIG_EPROM_BK_START + (CONFIG_BKRAM_SIZE * 2L) - 1L)
+#define CONFIG_EPROM_BK_END										(CONFIG_EPROM_BK_START + (CONFIG_BKRAM_SIZE * 4L) - 1L)
 
 #define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L)//4B MR NVRAM CRC32 硬件计算
 #define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L)//4B DM NVRAM CRC32 硬件计算

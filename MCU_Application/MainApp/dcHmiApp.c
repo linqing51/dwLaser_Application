@@ -2804,7 +2804,7 @@ void dcHmiLoopInit(void){//初始化模块
 #if (CONFIG_DEBUG_NVRAM == 1)
     printf("%s,%d,%s:[DIAG]BK CRC FAIL -> BKSRAM clear + BkramSave + BkramLoad\n",__FILE__, __LINE__, __func__);
 #endif
-    memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 2));//BKSRAM清默认值
+    memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 4));//BKSRAM清默认值
     sPlcBkramSave();//默认值写回EPROM(含CRC)
     sPlcBkramLoad();//重校验(成功自动清除BK失败标记)
 #if (CONFIG_DEBUG_NVRAM == 1)
