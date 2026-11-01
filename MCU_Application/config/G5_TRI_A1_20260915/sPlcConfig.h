@@ -703,9 +703,9 @@ typedef enum{//风扇通道
 #define R_DCHMI_DISPLAY_WARN													(R_START * 16 + 89)//HMI显示报警信息
 #define R_DCHMI_KEY_STANDBY_ENABLE										(R_START * 16 + 90)//STANDBY 使能
 //激光控制相关状态
-#define R_LASER_FALG_EMITING                          (R_START * 16 + 125)//激光发射中标志(位125-127, 避开R_STANDBY按键位100-124)
-#define R_LASER_FLAG_REQUEST                          (R_START * 16 + 126)//激光发射脚踏请求
-#define R_LASER_FLAG_EMITOVER                         (R_START * 16 + 127)//激光发射完毕标志
+#define R_LASER_FALG_EMITING                          (R_START * 16 + 95)//激光发射中标志(位95-97, 避开R_STANDBY按键位100-124)
+#define R_LASER_FLAG_REQUEST                          (R_START * 16 + 96)//激光发射脚踏请求
+#define R_LASER_FLAG_EMITOVER                         (R_START * 16 + 97)//激光发射完毕标志
 /*****************************************************************************/
 #define R_STANDBY_KEY_POSWIDTH_ADD_DOWN								(R_START * 16 + 100)
 #define R_STANDBY_KEY_POSWIDTH_ADD_UP									(R_START * 16 + 101)
