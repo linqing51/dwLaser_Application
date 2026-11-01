@@ -622,20 +622,21 @@ void statusLoop(void){//温度轮询轮询
 	else{
 		RRES(R_FAULT);
 	}
+  
 #ifndef LYPE_2V0_20260703_M450
 	if(LD(R_FAULT)){
 		RRES(Y_GREEN_LED);//关闭绿灯
-		RRES(Y_YELLOW_LED);//关闭黄灯
+		RRES(Y_BLUE_LED);//关闭黄灯
 		SSET(Y_RED_LED);//打开红灯
 	}
-	else if(LaserFlag_Emiting){
-		SSET(Y_GREEN_LED);//关闭绿灯
-		RRES(Y_YELLOW_LED);//打开黄灯
+	else if(LD(R_LASER_FALG_EMITING)){
+		SSET(Y_GREEN_LED);//打开绿灯
+		RRES(Y_BLUE_LED);//打开黄灯
 		SSET(Y_RED_LED);//关闭红灯
 	}
 	else{
 		SSET(Y_GREEN_LED);//打开绿灯
-		RRES(Y_YELLOW_LED);//关闭黄灯
+		RRES(Y_BLUE_LED);//关闭黄灯
 		RRES(Y_RED_LED);//关闭红灯
 	}	
 #else

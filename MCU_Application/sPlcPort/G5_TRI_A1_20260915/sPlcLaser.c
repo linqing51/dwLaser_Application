@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -7,8 +7,6 @@
 //TIM11->计时
 #include "sPlc.h"
 /*****************************************************************************/
-int8_t LaserOn_635;
-int8_t LaserOn_535;
 int8_t LaserTimer_Mode;
 int16_t LaserTimer_TCounter;
 int16_t LaserTimer_TMate;
@@ -18,9 +16,6 @@ int16_t LaserTimer_PMate;
 int16_t LaserTimer_POvertime;
 int16_t LaserTimer_ReleaseTime;
 int16_t LaserTimer_ReleaseCounter;
-int8_t LaserFlag_Emiting;//激光发射中标志
-int8_t LaserFlag_Request;//激光发射脚踏请求
-int8_t LaserFlag_Emitover;//激光发射完毕标志
 /*****************************************************************************/
 void laserStop(void);
 void laserStart(void);
@@ -149,8 +144,8 @@ void STLAR(void){//开始发射脉冲
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
 	LaserTimer_ReleaseCounter = 0x0;
-	LaserFlag_Emiting = false;
-	LaserFlag_Emitover = false;
+  RRES(R_LASER_FALG_EMITING);
+  RRES(R_LASER_FLAG_EMITOVER);
 	__HAL_TIM_SET_COUNTER(&CONFIG_LASER_TIM_HANDLE, 0x0);//清零计数值
 	HAL_TIM_Base_Start_IT(&CONFIG_LASER_TIM_HANDLE);//打开计时器
 }
@@ -161,8 +156,8 @@ void EDLAR(void){//停止发射脉冲
 	laserStop();//关闭DAC输出
 	LaserTimer_TCounter = 0X0;
 	LaserTimer_PCounter = 0X0;
-	LaserFlag_Emiting = false;
-	LaserFlag_Emitover = true;
+	RRES(R_LASER_FALG_EMITING);
+  SSET(R_LASER_FLAG_EMITOVER);
 }
 void sPlcLaserInit(void){//激光脉冲功能初始化
 	SET_LASER_CH0_OFF;
@@ -178,59 +173,27 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 	LaserTimer_POvertime = 0;
 	LaserTimer_ReleaseTime = 0;
 	LaserTimer_ReleaseCounter = 0;
-	LaserFlag_Emiting = false;//激光发射中标志
-	LaserFlag_Emitover = false;
+  RRES(R_LASER_FALG_EMITING);//激光发射中标志
+  RRES(R_LASER_FLAG_EMITOVER);
 	printf("%s,%d,%s:laser timer init......\n",__FILE__, __LINE__, __func__);
 }
 void laserStart(void){//按通道选择打开激光
-	if(LaserFlag_Emiting == false){
+	if(LD(R_LASER_FALG_EMITING) == false){
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(MODEL_PVGLS_15W_1470_A0) ||\
-		defined(MODEL_PVGLS_15W_1470_A1) ||\
-		defined(MODEL_PVGLS_10W_1940_A1)
-			SET_LASER_CH0_ON;
-#endif
-#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-			SET_LASER_CH0_ON;
-			SET_LASER_CH1_ON;
-#endif
-#if defined(LYPE_MCU_1V0_20260106)
-			SET_LASER_CH0_ON;
-			SET_LASER_CH1_ON;
-			SET_LASER_CH2_ON;
-			SET_LASER_CH3_ON;
-#endif			
+			SET_LASER_CH0_ON;      			
 		}
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
-#if defined(LDR2P1_G5_A1_20250731_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250910_DUAL) ||\
-		defined(LDR2P1_G5_A1_20250731_TRIP) ||\
-		defined(LDR2P1_G5_A1_20250910_TRIP) ||\
-		defined(MODEL_PVGLS_15W_1470_A0) ||\
-		defined(MODEL_PVGLS_15W_1470_A1) ||\
-		defined(MODEL_PVGLS_10W_1940_A1)
 			SET_LASER_CH1_ON;
-#endif
-#if defined(LDR2P1_RASPI_G9_A1_20250322_DUAL)
-			SET_LASER_CH2_ON;
-#endif
-#if defined(LYPE_MCU_1V0_20260106)
-			SET_LASER_CH4_ON;
-#endif
 		}
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//打开红激光
 			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
 		}
-		LaserFlag_Emiting = true;
+    SSET(R_LASER_FALG_EMITING);
 		SET_BEEM_LED_ON;
 	}
 }
 void laserStop(void){//按通道选择关闭激光
-	if(LaserFlag_Emiting == true){
+	if(LD(R_LASER_FALG_EMITING) == true){
 		SET_LASER_CH0_OFF;		
 		SET_LASER_CH1_OFF;
 		SET_LASER_CH2_OFF;
@@ -241,7 +204,7 @@ void laserStop(void){//按通道选择关闭激光
 		SET_LASER_CH7_OFF;
 		NVRAM0[SPREG_DAC_16] = NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain;
 		UPDAC16();	
-		LaserFlag_Emiting = false;
+    RRES(R_LASER_FALG_EMITING);
 		SET_BEEM_LED_OFF;
 	}
 }
@@ -280,13 +243,11 @@ void setRedLaserPwm(int16_t pwm){//设置红激光占空比 0-100
 		SET_RAIM_SHDN_ON;
 		__nop();__nop();__nop();__nop();__nop();
 		SET_RAIM_TIM_ON;//打开TIM
-		LaserOn_635 = true;
 	}
 	else{
 		SET_RAIM_TIM_OFF;//关闭TIM
 		__nop();__nop();__nop();__nop();__nop();
 		SET_RAIM_SHDN_OFF;
-		LaserOn_635 = false;
 	}
 #if (CONFIG_DEBUG_AIM == 1)
 	printf("%s,%d,%s:set red laser(635) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);
@@ -302,13 +263,11 @@ void setGreenLaserPwm(int16_t pwm){//设置绿激光占空比
 		SET_GAIM_SHDN_ON;
 		__nop();__nop();__nop();__nop();__nop();
 		SET_GAIM_TIM_ON;//打开TIM
-		LaserOn_535 = true;
 	}
 	else{
 		SET_GAIM_TIM_OFF;//关闭TIM
 		__nop();__nop();__nop();__nop();__nop();
 		SET_GAIM_SHDN_OFF;
-		LaserOn_535 = false;
 	}
 #if (CONFIG_DEBUG_AIM == 1)
 	printf("%s,%d,%s:set laser(535) pwm:%d\n",__FILE__, __LINE__, __func__, pwm);

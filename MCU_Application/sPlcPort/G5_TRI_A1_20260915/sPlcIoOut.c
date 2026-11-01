@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -46,17 +46,21 @@ void sPlcOutputRefresh(void){//设置输出IO
 	if(LDN(Y_RED_LED)){
 		SET_RED_LED_OFF;
 	}
-	
-	//YOUT2 黄灯
-	if(LDP(Y_YELLOW_LED)){
-		//绿色+蓝色模拟黄色
+	//YOUT2 蓝灯
+	if(LDP(Y_BLUE_LED)){
 		SET_BLUE_LED_ON;
 	}
-	if(LDN(Y_YELLOW_LED)){
+	if(LDN(Y_BLUE_LED)){
 		SET_BLUE_LED_OFF;
 	}
-	
-	//YOUT3 TICK LED
+	//YOUT3 黄灯
+	if(LDP(Y_YELLOW_LED)){
+		SET_YELLOW_LED_ON;
+	}
+	if(LDN(Y_YELLOW_LED)){
+    SET_YELLOW_LED_OFF;
+	}
+	//YOUT4 TICK LED
 	if(LDP(Y_TICK_LED)){
 		SET_TICK_LED_ON;
 	}
@@ -64,7 +68,7 @@ void sPlcOutputRefresh(void){//设置输出IO
 		SET_TICK_LED_OFF;
 	}
 	
-	//YOUT4 ERR LED
+	//YOUT5 ERR LED
 	if(LDP(Y_ERR_LED)){
 		SET_ERR_LED_ON;
 	}
@@ -72,12 +76,12 @@ void sPlcOutputRefresh(void){//设置输出IO
 		SET_ERR_LED_OFF;
 	}
 	
-	//YOUT5 BEEM LED
+	//YOUT6 BEEM LED
 	if(LDP(Y_BEEM_LED)){
 	}
 	if(LDN(Y_BEEM_LED)){
 	}
-	//YOUT6 TEC
+	//YOUT7 TEC
 	if(LDP(Y_TEC)){
 		SET_TEC_GATE_CH0_ON;
 	}

@@ -7,24 +7,55 @@
 /*****************************************************************************/
 uint32_t	UniqueId[3];//处理器序列号 
 /*****************************************************************************/
-void softDelayUs(uint32_t us){
-	// 粗略估算：1us 大约需要 hclk_mhz 个周期
-	// 这里的 0.9 是经验修正系数，用于补偿 Flash 预取和流水线带来的加速效应
-	// 具体系数需根据实际示波器测量调整
-	uint32_t loops = us * 168; 
-	// 使用 volatile 防止优化
-	volatile uint32_t count = loops;
-	while(count--){
-			__NOP(); // 插入空指令，强制消耗时钟周期
-			__NOP(); // 可以多加几个来增加精度
+/* 初始化 DWT 周期计数器。
+ * DWT 是 Cortex-M3/M4 内核的标准调试单元, 其 CYCCNT 对每个 HCLK 周期
+ * 自增 1, 属于硬件周期计数: 用它做忙等不依赖 Flash 等待周期、指令流水线
+ * 或编译器优化等级, 精度可达单周期。STM32F1(Cortex-M3)、F4(Cortex-M4)均内置。 */
+static uint8_t s_dwt_inited = 0U;
+static void softDelayInit(void){
+	if(s_dwt_inited == 0U){
+		CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;//使能 DWT/ITM 跟踪
+		DWT->CYCCNT = 0U;
+		DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;           //使能周期计数器
+		s_dwt_inited = 1U;
 	}
 }
 
+void softDelayUs(uint32_t us){
+	uint32_t hclk;
+	uint32_t cycles;
+
+	hclk = HAL_RCC_GetHCLKFreq();//动态获取当前 HCLK, 任意频率自动适配
+	/* 目标周期数 = us*HCLK/1e6; 用 64 位中间值防溢出, 并兼容非整数 MHz 的时钟 */
+	cycles = (uint32_t)(((uint64_t)us * (uint64_t)hclk) / 1000000ULL);
+	if(cycles == 0U){
+		cycles = 1U;//极短延时至少等待 1 个周期
+	}
+
+#ifdef DWT_CTRL_CYCCNTENA_Msk
+	{
+		uint32_t start;
+		softDelayInit();
+		start = DWT->CYCCNT;//初始化后取基准
+		/* 无符号差值天然正确处理 CYCCNT 的 32 位回绕(168MHz 下约 25.6s 溢出) */
+		while((DWT->CYCCNT - start) < cycles){
+			__NOP();
+		}
+	}
+#else
+	/* 无 DWT 的内核(如 Cortex-M0/M0+): 按 HCLK 折算 NOP 循环, 仅保证随
+	 * 频率等比缩放, 精度为近似值; F1/F4 走上面的精确分支, 不会进入此处。 */
+	{
+		volatile uint32_t n = cycles;
+		while(n--){
+			__NOP();
+		}
+	}
+#endif
+}
+
 void softDelayMs(uint32_t ms){
-  volatile uint32_t count = ms;
-  while(count--){
-    softDelayUs(1000);
-  }
+	softDelayUs(ms * 1000U);//复用微秒级精确延时
 }
 
 void tickCheckTask(void){//TICK 检测程序

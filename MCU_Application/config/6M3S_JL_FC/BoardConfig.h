@@ -174,8 +174,8 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define SET_FAN2_OFF													__nop()
 #define SET_FAN2_TIM_PWM(b)										__nop()
 
-#define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&htim11, TIM_CHANNEL_1)
-#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&htim11, TIM_CHANNEL_1)
+#define SET_SPK_TIM_ON												HAL_TIM_OC_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_OFF												HAL_TIM_OC_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
 
 #define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2)
 #define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Stop(&htim9, TIM_CHANNEL_2)
@@ -273,6 +273,13 @@ extern USBH_HandleTypeDef hUsbHostHS;//WFS
 #define CONFIG_SPK_HANDLE											htim11//SPK 计时器定义	
 #define CONFIG_SPK_TIM												TIM11
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
+
+/* 蜂鸣器定时器底层硬件资源(板级差异集中在此, 供 sPlcSpeaker.c 完整初始化) */
+#define CONFIG_SPK_TIM_CLK_ENABLE()							__HAL_RCC_TIM11_CLK_ENABLE()
+#define CONFIG_SPK_GPIO_CLK_ENABLE()						__HAL_RCC_GPIOB_CLK_ENABLE()
+#ifndef SPLC_STM32F1
+#define CONFIG_SPK_GPIO_AF											GPIO_AF3_TIM11/* F4 复用编号; F1 固定复用无此项 */
+#endif
 
 #define CONFIG_FAN0_TIM_HANDLE								htim3	
 #define CONFIG_FAN0_TIM												TIM3

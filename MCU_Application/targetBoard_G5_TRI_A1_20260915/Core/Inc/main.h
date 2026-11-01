@@ -87,8 +87,8 @@ void Error_Handler(void);
 #define LAS_LPD_GPIO_Port GPIOC
 #define LAS_FPD_Pin GPIO_PIN_5
 #define LAS_FPD_GPIO_Port GPIOC
-#define HT1_NTC_Pin GPIO_PIN_0
-#define HT1_NTC_GPIO_Port GPIOB
+#define HT0_NTC_Pin GPIO_PIN_0
+#define HT0_NTC_GPIO_Port GPIOB
 #define ESTOP_NC_Pin GPIO_PIN_1
 #define ESTOP_NC_GPIO_Port GPIOB
 #define USB_HS_PSON_Pin GPIO_PIN_2

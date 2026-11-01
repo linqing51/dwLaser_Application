@@ -96,3 +96,4 @@ ld_mcu.bin
 bootload.bin
 **/dciot_build/private/bin/*.bin
 **/MDK-ARM/targetBoard_*/*.sct
+/MCU_Application/targetBoard_G5_A1/MDK-ARM/targetBoard_G5_A1

@@ -2856,7 +2856,7 @@
             <File>
               <FileName>sPlcSpeaker.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcSpeaker.c</FilePath>
+              <FilePath>..\..\sPlcPort\sPlcSpeaker.c</FilePath>
             </File>
             <File>
               <FileName>sPlcRtc.c</FileName>
@@ -2872,11 +2872,6 @@
               <FileName>sPlcDac.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcDac.c</FilePath>
-            </File>
-            <File>
-              <FileName>sPlcEprom_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\sPlcPort\G5_TRI_A1_20260915\sPlcEprom_SPI.c</FilePath>
             </File>
             <File>
               <FileName>sPlcIoIn.c</FileName>
@@ -2907,6 +2902,11 @@
               <FileName>sPlcEpromSelfTest.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\sPlcPort\sPlcEpromSelfTest.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sPlcPort\sPlcEprom_SPI.c</FilePath>
             </File>
           </Files>
         </Group>

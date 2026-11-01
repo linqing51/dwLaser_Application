@@ -46,6 +46,13 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_SPK_TIM												TIM8
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
 
+/* 蜂鸣器定时器底层硬件资源(板级差异集中在此, 供 sPlcSpeaker.c 完整初始化) */
+#define CONFIG_SPK_TIM_CLK_ENABLE()							__HAL_RCC_TIM8_CLK_ENABLE()
+#define CONFIG_SPK_GPIO_CLK_ENABLE()						__HAL_RCC_GPIOC_CLK_ENABLE()
+#ifndef SPLC_STM32F1
+#define CONFIG_SPK_GPIO_AF    											GPIO_AF3_TIM8/* F4 复用编号; F1 固定复用无此项 */
+#endif
+
 #define CONFIG_FAN0_TIM_HANDLE								htim3	
 #define CONFIG_FAN0_TIM												TIM3
 #define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_2
@@ -109,14 +116,19 @@ extern USBH_HandleTypeDef hUsbHostFS;
 
 #define SET_RED_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
 #define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
+#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL, b)
+
 #define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
 #define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
+#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL, b)
+
 #define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
 #define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
-
-#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL, b)
-#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL, b)
 #define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL, b)
+
+#define SET_YELLOW_LED_ON                     __nop()
+#define SET_YELLOW_LED_OFF                    __nop()
+#define SET_YELLOW_LED_DC(b)                  __nop()
 
 #define SET_BEEM_LED_ON												__nop()
 #define SET_BEEM_LED_OFF											__nop()
@@ -203,8 +215,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_FAN2_OFF													__nop()
 #define SET_FAN2_TIM_PWM(b)										__nop()
 
-#define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
-#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_ON												HAL_TIM_OC_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_OFF												HAL_TIM_OC_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
 
 #define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Stop(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
 #define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
@@ -271,7 +283,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 /******************************************************************************/
 //配置ADC
 #define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
-#define CONFIG_ADC1_CHANNEL										13//ADC采集通道
+#define CONFIG_ADC1_CHANNEL										10//ADC采集通道
 #define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱	
 #define CONFIG_ADC1_DMA_BUFFER_SIZE						CONFIG_ADC1_CHANNEL//ADC DMA采集缓冲
 
@@ -303,19 +315,16 @@ extern USBH_HandleTypeDef hUsbHostFS;
 
 #define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
 #define CONFIG_NTC_VREF												3300L//
-#define CONFIG_FIBER_PD_THRESHOLD							350//光纤插入时ADC阈值
+
+#if defined(MODLE_JL_FC_1470_15W_200_22_1S)
+  #define CONFIG_FIBER_PD_THRESHOLD						50//光纤插入时ADC阈值
+#endif
 
 /*****************************************************************************/
 //配置TEC温控(TIM9 CH2 PWM -> GP8101C-SH -> 模拟电压, 逻辑DAC8)
 #define CONFIG_TEC_HT_FF_GAIN								  20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
 #define CONFIG_TEC_SLEW_STEP								  200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
 #define CONFIG_TEC_TEMP_FILTER_ALPHA			  	0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
-
-#define HDC1080_SOFTI2C_DELAY									10//HDC1080 I2C读写频率
-//G5板未装配HDC1080温湿度传感器(6M3S同款空实现), 后续接硬件时改为真实引脚
-#define SET_HDC1080_SCL(b)																__nop()
-#define SET_HDC1080_SDA(b)																__nop()
-#define GET_HDC1080_SDA																		0
 /*****************************************************************************/
 //配置DAC
 #define CONFIG_DAC_MAXBIT_CH0									0xFFF//12BIT STM32

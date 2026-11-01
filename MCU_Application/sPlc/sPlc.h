@@ -10,8 +10,24 @@
 #include "compiler.h"
 /*****************************************************************************/
 //stm32
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_tim.h" 
+/* 自动识别 MCU 系列: 依据 Keil 工程全局芯片宏(STM32F103xE/STM32F407xx 等)。
+ * 命中 F1 系列任一型号时包含 F1 HAL, 否则默认 F4, 现有 F4 工程无需改动。 */
+#if defined(STM32F100x4) || defined(STM32F100x6) || defined(STM32F100x8)  || \
+    defined(STM32F100xB) || defined(STM32F100xC) || defined(STM32F100xD)  || \
+    defined(STM32F100xE) || defined(STM32F101x6) || defined(STM32F101xB)  || \
+    defined(STM32F101x8) || defined(STM32F101xC) || defined(STM32F101xD)  || \
+    defined(STM32F101xE) || defined(STM32F101xG) || defined(STM32F102x6)  || \
+    defined(STM32F102xB) || defined(STM32F102x8) || defined(STM32F103x5)  || \
+    defined(STM32F103x6) || defined(STM32F103x8) || defined(STM32F103xB)  || \
+    defined(STM32F103xC) || defined(STM32F103xD) || defined(STM32F103xE)  || \
+    defined(STM32F103xG) || defined(STM32F105xC) || defined(STM32F107xC)
+  #include "stm32f1xx_hal.h"
+  #include "stm32f1xx_hal_tim.h"
+  #define SPLC_STM32F1 1 /* F1 系列统一标识, 供 GPIO 等差异条件编译 */
+#else
+  #include "stm32f4xx_hal.h"
+  #include "stm32f4xx_hal_tim.h"
+#endif
 /*****************************************************************************/
 //cdev
 #include "math.h"
@@ -131,8 +147,6 @@ extern int16_t LaserTimer_PMate;
 extern int16_t LaserTimer_POvertime;
 extern int16_t LaserTimer_ReleaseTime;
 extern int16_t LaserTimer_ReleaseCounter;
-extern int8_t  LaserFlag_Emiting;//激光发射中标志
-extern int8_t LaserFlag_Emitover;//激光发射完毕标志
 /*****************************************************************************/
 extern void sPlcInit(void);//软逻辑初始化
 extern void sPlcProcessStart(void);//sPLC轮询起始

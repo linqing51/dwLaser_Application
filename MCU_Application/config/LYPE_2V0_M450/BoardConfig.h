@@ -71,8 +71,8 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 //喇叭音频功放与PWM(htim9 CH2 -> PE6),功放使能低有效
 #define SET_SPK_AP_ON												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
 #define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
-#define SET_SPK_TIM_ON												HAL_TIM_PWM_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
-#define SET_SPK_TIM_OFF												HAL_TIM_PWM_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_ON												HAL_TIM_OC_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_OFF												HAL_TIM_OC_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
 //MCP41010数字电位器(音量) 模拟SPI
 #define SET_MCP41010_CS(b)											HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)
 #define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
@@ -192,6 +192,13 @@ extern USBH_HandleTypeDef hUsbHostFS;//UDISK WFS
 #define CONFIG_SPK_HANDLE											htim9//SPK 计时器定义	
 #define CONFIG_SPK_TIM												TIM9
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_2
+
+/* 蜂鸣器定时器底层硬件资源(板级差异集中在此, 供 sPlcSpeaker.c 完整初始化) */
+#define CONFIG_SPK_TIM_CLK_ENABLE()							__HAL_RCC_TIM9_CLK_ENABLE()
+#define CONFIG_SPK_GPIO_CLK_ENABLE()						__HAL_RCC_GPIOE_CLK_ENABLE()
+#ifndef SPLC_STM32F1
+#define CONFIG_SPK_GPIO_AF											GPIO_AF3_TIM9/* F4 复用编号; F1 固定复用无此项 */
+#endif
 
 #define CONFIG_FAN0_TIM_HANDLE								htim8	
 #define CONFIG_FAN0_TIM												TIM8

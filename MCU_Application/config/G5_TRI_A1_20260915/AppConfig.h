@@ -146,11 +146,11 @@ extern "C" {
 #define CONFIG_USING_IMC_PID												  0
 #define CONFIG_USING_ILC_PID												  0
 
-#define CONFIG_LASER_A_DIODE_SET_TEMP									280//激光器温度设定
+#define CONFIG_LASER_A_DIODE_SET_TEMP									150//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP									280//激光器温度设定
 
 #define CONFIG_LASER_A_DIODE_TEMP_HIGH								400//激光器高温极限 46.0C
-#define CONFIG_LASER_A_DIODE_TEMP_LOW									-100//激光器低温极限 -25.0C
+#define CONFIG_LASER_A_DIODE_TEMP_LOW									-100//激光器低温极限 -10.0C
 #define CONFIG_LASER_A_COUPLER_TEMP_HIGH							600//耦合器高温报警
 #define CONFIG_LASER_A_COUPLER_TEMP_LOW								0//耦合器低温报警
 #define CONFIG_LASER_A_CRYST0_TEMP_HIGH								0

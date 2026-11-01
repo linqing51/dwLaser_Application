@@ -16,7 +16,7 @@ extern "C" {
 #define CONFIG_DEBUG_RTC															0//调试RTC驱动
 #define CONFIG_DEBUG_EPROM														0//调试EPROM驱动
 #define CONFIG_DEBUG_NVRAM                            0//调试NVRAM(诊断确认后可改0关闭)
-#define CONFIG_DEBUG_IO																1//调试IO
+#define CONFIG_DEBUG_IO																0//调试IO
 #define CONFIG_DEBUG_SPK															0//调试蜂鸣器驱动
 #define CONFIG_DEBUG_LED															0//调试指示灯驱动
 #define CONFIG_DEBUG_AIM															0//调试指示光驱动
@@ -593,16 +593,17 @@ extern "C" {
 /*****************************************************************************/
 #define Y_GREEN_LED																		(Y_START * 16 + 0)//YOUT0 绿灯开关
 #define Y_RED_LED																			(Y_START * 16 + 1)//YOUT1 红灯开关
-#define Y_YELLOW_LED																	(Y_START * 16 + 2)//YOUT2 蓝灯开关
-#define Y_TICK_LED																		(Y_START * 16 + 3)//YOUT3 板载运行LED指示灯
-#define Y_ERR_LED																			(Y_START * 16 + 4)//YOUT4 板载错误LED指示灯
-#define Y_BEEM_LED																		(Y_START * 16 + 5)//YOUT5 板载错误LED指示灯
-#define Y_TEC																					(Y_START * 16 + 6)//YOUT6 TEC输出
-#define Y_VN5016_INPUT																(Y_START * 16 + 7)//YOUT7 VN5016开通	
-#define Y_VN5016_CSDIS																(Y_START * 16 + 8)//YOUT8 电源电流采集	
-#define Y_PWR_LED																			(Y_START * 16 + 9)//YOUT9 电源指示灯
-#define Y_PWR_SOFTKILL																(Y_START * 16 + 10)//YOUT10 电源管理软关机信号	
-#define Y_ESTOP_RESET																				(Y_START * 16 + 11)//YOUT11 急停复位输出
+#define Y_BLUE_LED																	  (Y_START * 16 + 2)//YOUT2 蓝灯开关
+#define Y_YELLOW_LED                                  (Y_START * 16 + 3)//YOUT3 黄灯开关
+#define Y_TICK_LED																		(Y_START * 16 + 4)//YOUT4 板载运行LED指示灯
+#define Y_ERR_LED																			(Y_START * 16 + 5)//YOUT5 板载错误LED指示灯
+#define Y_BEEM_LED																		(Y_START * 16 + 6)//YOUT6 板载错误LED指示灯
+#define Y_TEC																					(Y_START * 16 + 7)//YOUT7 TEC输出
+#define Y_VN5016_INPUT																(Y_START * 16 + 8)//YOUT8 VN5016开通	
+#define Y_VN5016_CSDIS																(Y_START * 16 + 9)//YOUT9 电源电流采集	
+#define Y_PWR_LED																			(Y_START * 16 + 10)//YOUT10 电源指示灯
+#define Y_PWR_SOFTKILL																(Y_START * 16 + 11)//YOUT11 电源管理软关机信号	
+#define Y_ESTOP_RESET																	(Y_START * 16 + 12)//YOUT11 急停复位输出
 /*****************************************************************************/
 typedef enum{//风扇通道
 	FAN_CH0 = 0, FAN_CH1, FAN_CH2, FAN_CH3, FAN_CH4, FAN_CH5, FAN_CH6, FAN_CH7
@@ -701,6 +702,10 @@ typedef enum{//风扇通道
 #define R_DCHMI_RESTORE_DONE													(R_START * 16 + 88)//HMI从FLASH中恢复设置完成	
 #define R_DCHMI_DISPLAY_WARN													(R_START * 16 + 89)//HMI显示报警信息
 #define R_DCHMI_KEY_STANDBY_ENABLE										(R_START * 16 + 90)//STANDBY 使能
+//激光控制相关状态
+#define R_LASER_FALG_EMITING                          (R_START * 16 + 100)//STANDBY 使能//激光发射中标志
+#define R_LASER_FLAG_REQUEST                          (R_START * 16 + 101)//STANDBY 使能//激光发射脚踏请求
+#define R_LASER_FLAG_EMITOVER                         (R_START * 16 + 102)//STANDBY 使能//激光发射完毕标志
 /*****************************************************************************/
 #define R_STANDBY_KEY_POSWIDTH_ADD_DOWN								(R_START * 16 + 100)
 #define R_STANDBY_KEY_POSWIDTH_ADD_UP									(R_START * 16 + 101)
