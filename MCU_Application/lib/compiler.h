@@ -52,8 +52,13 @@ extern "C" {
  * 统一改用 armlink 在两个编译器下都识别的特殊命名段 ".ARM.__at_0x<hex>"。
  * 参数 hex 必须是【不带 0x 前缀、不带 UL 后缀】的十六进制数字, 例如:
  *   SPLC_PLACE_AT(10000000)  -> section(".ARM.__at_0x10000000")
+ * 固定地址段统一附加 zero_init(UNINIT, 不生成加载段内容):
+ *   1) 消除 Keil Flash 下载时 "No Algorithm found for: <地址>" 警告——下载器无需向
+ *      无烧写算法的 RAM/备份SRAM 等地址写入初始化块;
+ *   2) 语义更正确: 掉电存储区(BKPSRAM)与 CCM 缓冲保持上电原始内容, 不被清零。
+ *   仅适用于 RAM 类绝对地址段; 若需在绝对地址存放带初值的只读数据, 请勿使用本宏。
  */
-#define SPLC_PLACE_AT(hex)     __attribute__((section(".ARM.__at_0x" SPLC_STRINGIFY(hex))))
+#define SPLC_PLACE_AT(hex)     __attribute__((section(".ARM.__at_0x" SPLC_STRINGIFY(hex)), zero_init))
 
 /* ---- 禁用半主机 ----------------------------------------------------------*/
 /* armcc 用 #pragma import(__use_no_semihosting); armclang 不支持 #pragma

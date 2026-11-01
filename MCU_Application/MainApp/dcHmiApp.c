@@ -13,7 +13,8 @@ uint8_t CcmRamBuf[BOOTLOAD_BUF_SIZE] SPLC_PLACE_AT(10000000);//Bootload 升级�
 /* CCM RAM(0x10000000) 不支持 DMA 访问。当前 FATFS 底层为 USB Host MSC，usbh_conf.c 中
    dma_enable=DISABLE（CPU 轮询搬运），本缓冲经 f_read 读取安全；若未来启用 USB/SDIO DMA，
    禁止将本缓冲直接用作 DMA 目标，需先经 SRAM 中转。
-   CCM 剩余空间(0x10002000 起)由 scatter 文件 RW_CCM 区承接普通变量自动分配；
+   CCM 剩余空间(0x10002000 起)当前未由 scatter 文件分配(本分支 .sct 无 RW_CCM 区)，
+   如需在 CCM 放置普通变量需先在 MDK 目标选项中补充 RW_CCM 执行区；
    ADC DMA 采样缓冲(adcDmaBuffer0/1)已标注 dma_ram 区强制留在 SRAM。 */
 uint32_t newBootloadCrc32;
 // 创建风扇控制器实例
