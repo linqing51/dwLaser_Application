@@ -11,12 +11,6 @@ LR_IROM1 0x08000000 0x0000FFFC  {
   }
   RW_IRAM1 0x20000000 0x0001C000  {
    .ANY (+RW +ZI)
-   ; 堆/栈由启动文件(C 版 startup_stm32f405xx.c)定义, 段名按字母序确保放置顺序:
-   ; __heap_base(堆体 HEAP0) -> __heap_limit(堆尾 HEAP1) -> s_startup_stack(栈体 STACK0) -> __initial_sp(栈顶 STACK1)
-   startup_stm32f405xx.o (HEAP0)
-   startup_stm32f405xx.o (HEAP1)
-   startup_stm32f405xx.o (STACK0)
-   startup_stm32f405xx.o (STACK1)
   }
 }
 LR_VER 0x0800FFFC 0x00000004  {

@@ -76,12 +76,9 @@ static const uint16_t morseTable[0x5F] = {
   /* 0x7C '|' */ 0x0000,/* 0x7D '}' */ 0x0000,/* 0x7E '~' */ 0x0000
 };
 
-#if defined(SPLC_COMPILER_ARMCC)	//AC5(armcc): 微库 stdio 仅前向声明 struct __FILE, 此处补全成员定义并提供 __stdout/__stdin
 struct __FILE { int handle; /* Add whatever you need here */ };
 FILE __stdout;
 FILE __stdin;
-#else						//AC6(armclang): 微库 stdio 已定义 struct __FILE, 半主机禁用由 SPLC_NO_SEMIHOSTING 完成, 仅重定向 fputc/fgetc
-#endif
 /*****************************************************************************/
 
 void listNvramTable(void){//输出NVRAM分布表
