@@ -5,6 +5,7 @@
  *----------------------------------------------------------------------------*/
 #include "bootLoader.h"
 #include "usb_host.h"
+#include "compiler.h"	//编译器抽象层(AC5/AC6): 编译器识别/半主机禁用/绝对地址放置宏
 /*****************************************************************************/
 extern USBH_HandleTypeDef hUsbHostFS;//USB主机句柄(定义于usb_host.c)
 extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
@@ -14,7 +15,7 @@ extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 //SECTOR2->16K:BOOTLOADER
 //SECTOR3->16K:BOOTLOADER
 /*****************************************************************************/
-#pragma import(__use_no_semihosting_swi)
+SPLC_NO_SEMIHOSTING	//AC5: #pragma import(__use_no_semihosting); AC6: __asm(.global __use_no_semihosting)
 /*****************************************************************************/
 #define BT_STATE_IDLE														0//空闲
 #define BT_STATE_LOAD_FWINFO										1//EPROM载入固件信息
@@ -78,8 +79,14 @@ uint32_t RamAddress = 0x00;
 static __IO uint32_t LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//文件读写缓冲
 /*****************************************************************************/
-const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   		= '2';
-const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '3';
+//版本号绝对地址放置: AC5 用 at() 属性; AC6 不支持 at 属性, 改用 armlink 两个编译器通用的特殊命名段 .ARM.__at_0x<hex>
+#if defined(SPLC_COMPILER_ARMCLANG)
+#define SPLC_PLACE_AT_RO(addr)	__attribute__((section(".ARM.__at_" SPLC_XSTRINGIFY(addr))))
+#else
+#define SPLC_PLACE_AT_RO(addr)	__attribute__((at(addr)))
+#endif
+const char BootLoadMainVer SPLC_PLACE_AT_RO(BOOTLOAD_MAIN_ADDRESS)   		= '2';
+const char BootLoadMinorVer SPLC_PLACE_AT_RO(BOOTLAOD_MINOR_ADDRESS)  		= '4';
 /*****************************************************************************/
 uint8_t cmdShakeHandOp[] = {0xEE,0x04,0xFF,0xFC,0xFF,0xFF};
 uint8_t cmdShakeHandRespondOp[] = {0xEE,0x55,0xFF,0xFC,0xFF,0xFF};

@@ -18,7 +18,10 @@ extern "C" {
 #include "string.h"
 #include "stddef.h"
 /*****************************************************************************/
+#if defined(__CC_ARM)		//ARM Compiler 5(armcc): 保持原显式包含
 #include "cmsis_armcc.h"
+#endif					//ARM Compiler 6(armclang): 不再显式包含, 由 core_cm4.h 按编译器自动包含
+							//cmsis_armclang.h; 若两 CMSIS 头同时包含, __NOP 等宏重定义且 cmsis_armcc.h 的 __ASM 在 armclang 下语法错误
 /*****************************************************************************/
 #include "usbh_platform.h"
 #include "usbh_core.h"
