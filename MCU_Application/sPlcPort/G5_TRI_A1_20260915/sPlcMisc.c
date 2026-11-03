@@ -547,7 +547,10 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.greenLedDc = CONFIG_GREEN_LED_DEFAULT_DC;
 		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
 		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
-		deviceConfig.redAimGain = CONFIG_LASER_RAIM_DEFAULT_GAIN;
+		deviceConfig.redAimGain = CONFIG_LASER_RAIM_GAIN;
+    deviceConfig.redOffset = CONFIG_LASER_RAIM_OFFSET;
+    deviceConfig.greenAimGain = CONFIG_LASER_GAIM_GAIN;
+    deviceConfig.greenOffset = CONFIG_LASER_GAIM_OFFSET;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 #if defined(LYPE_MCU_1V0_20260106)
 		deviceConfig.normalOpenInterLock = 0;//默认常开联锁

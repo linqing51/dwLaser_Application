@@ -15,6 +15,8 @@ LR_IROM1 0x08000000 0x0000FFFC  {
 }
 LR_VER 0x0800FFFC 0x00000004  {
   ER_VER 0x0800FFFC 0x00000004  {
+   bootloader.o(.ARM.__AT_0x0800FFFC)
+   bootloader.o(.ARM.__AT_0x0800FFFD)
    bootloader.o(.ARM.__AT_0x0800FFFE)
    bootloader.o(.ARM.__AT_0x0800FFFF)
   }

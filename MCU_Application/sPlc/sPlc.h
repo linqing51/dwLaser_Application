@@ -100,7 +100,9 @@ typedef struct{
 	int8_t greenLedDc;//绿灯亮度
 	int8_t blueLedDc;//蓝灯亮度
 	int8_t redAimGain;//红指示光增益
+  int8_t redOffset;//红指示光增益
 	int8_t greenAimGain;//绿指示光增益
+  int8_t greenOffset;//绿指示光增益
 	int16_t fiberDetect;//光纤探测阈值
 	int16_t laserDiodeA_Temp;//激光器A设置温度
 	int16_t laserDiodeB_Temp;//激光器B设置温度
@@ -126,12 +128,14 @@ extern int16_t BKRAM0[CONFIG_BKRAM_SIZE], BKRAM1[CONFIG_BKRAM_SIZE];//真掉电�
 extern uint16_t TimerCounter_10mS;//10毫秒
 extern uint16_t TimerCounter_100mS;//100毫秒
 extern uint16_t TimerCounter_200mS;//200毫秒
+extern uint16_t TimerCounter_250mS;//250毫秒
 extern uint16_t TimerCounter_500mS;//500毫秒
 extern uint16_t TimerCounter_1000mS;//1秒
 extern uint16_t TimerCounter_60000mS;//1分钟
 extern uint8_t TD_10MS_SP;
 extern uint8_t TD_100MS_SP;
 extern uint8_t TD_200MS_SP;
+extern uint8_t TD_250MS_SP;
 extern uint8_t TD_500MS_SP;
 extern uint8_t TD_1000MS_SP;
 extern uint8_t TD_60000MS_SP;

@@ -826,14 +826,14 @@
               <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEprom.c</FilePath>
             </File>
             <File>
-              <FileName>sPlcEprom_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\MCU_Application\sPlcPort\G5_TRI_A1_20260915\sPlcEprom_SPI.c</FilePath>
-            </File>
-            <File>
               <FileName>libcrc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\MCU_Application\lib\libcrc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sPlcEprom_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\MCU_Application\sPlcPort\sPlcEprom_SPI.c</FilePath>
             </File>
           </Files>
         </Group>

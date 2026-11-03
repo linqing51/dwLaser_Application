@@ -20,6 +20,7 @@ uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
 uint16_t TimerCounter_10mS = 0;//10毫秒
 uint16_t TimerCounter_100mS = 0;//100毫秒
 uint16_t TimerCounter_200mS = 0;//200毫秒
+uint16_t TimerCounter_250mS = 0;//250毫秒
 uint16_t TimerCounter_500mS = 0;//500毫秒
 uint16_t TimerCounter_1000mS = 0;//1秒
 uint16_t TimerCounter_60000mS = 0;//1分钟
@@ -27,6 +28,7 @@ uint16_t TimerCounter_60000mS = 0;//1分钟
 uint8_t TD_10MS_SP = 0;
 uint8_t TD_100MS_SP = 0;
 uint8_t TD_200MS_SP = 0;
+uint8_t TD_250MS_SP = 0;
 uint8_t TD_500MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
@@ -590,14 +592,9 @@ void sPlcInit(void){//软逻辑初始化
 #endif
 	SSET(SPCOIL_ON);
 	SSET(SPCOIL_START_UP);
-	
-	
 	sPlcTimerInit();//初始化硬件计时器模块 启动计时器
 	sPlcSpeakerInit();
-	
 	sPlcPortInit();
-	
-	
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;	
 	SET_BLUE_LED_OFF;
@@ -618,6 +615,10 @@ void sPlcProcessStart(void){//sPLC轮询起始
 	if(TD_200MS_SP >= 1){
 		FLIP(SPCOIL_PS200MS);
 		TD_200MS_SP = 0;
+	}
+  if(TD_250MS_SP >= 1){
+		FLIP(SPCOIL_PS250MS);
+		TD_250MS_SP = 0;
 	}
 	if(TD_500MS_SP >= 1){
 		FLIP(SPCOIL_PS500MS);

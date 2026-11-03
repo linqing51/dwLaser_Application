@@ -29,8 +29,6 @@ extern "C" {
 #define LASER_CHANNEL_CH5															(1 << 5)
 #define LASER_CHANNEL_CH6															(1 << 6)
 #define LASER_CHANNEL_CH7															(1 << 7)
-#define LASER_CHANNEL_RAIM														(1 << 8)//红激光指示光
-#define LASER_CHANNEL_GAIM														(1 << 9)//绿激光指示光
 /*****************************************************************************/
 /* 本分支(BOARD: G5_TRI_A1_20260915)激光通道约束注解:
  * 任意时刻只能在同一时间启用一个激光通道(1470nm / 980nm / 635nm 单选),
@@ -63,8 +61,10 @@ extern "C" {
 #define SCHEME_CUSTIOM																0x0000
 /*****************************************************************************/
 //BOOTLOAD配置
+#define BOOTLOAD_LASER_VENDOR                         0x0800FFFC//激光器型号识别码
+#define BOOTLOAD_BOARD_VENDOR                         0x0800FFFD//主板识别码
 #define BOOTLOAD_MAIN_ADDRESS													0x0800FFFE//主版本标识地址															
-#define BOOTLAOD_MINOR_ADDRESS												0x0800FFFF//次版本标识地址
+#define BOOTLOAD_MINOR_ADDRESS												0x0800FFFF//次版本标识地址
 #define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
 #define DEVID_H																				'1'//设备ID
 #define DEVID_L																				'C'//设备ID
@@ -80,7 +80,6 @@ extern "C" {
 #define SAVE_EPROM_FILENAME														"/seprom.bin"//EPROM->UDISK 储存名称
 #define LOAD_EPROM_FILENAME														"/leprom.bin"//UDISK->EPROM 恢复名称
 #define TREATMENTLOG_FILENAME													"/treatment_v1.csv" 
-
 /*****************************************************************************/
 //配置密码
 #define CONFIG_HMI_ADMIN_PASSWORD0										0x3532//管理员密码
@@ -146,7 +145,7 @@ extern "C" {
 #define CONFIG_USING_IMC_PID												  0
 #define CONFIG_USING_ILC_PID												  0
 
-#define CONFIG_LASER_A_DIODE_SET_TEMP									150//激光器温度设定
+#define CONFIG_LASER_A_DIODE_SET_TEMP									280//激光器温度设定
 #define CONFIG_LASER_B_DIODE_SET_TEMP									280//激光器温度设定
 
 #define CONFIG_LASER_A_DIODE_TEMP_HIGH								400//激光器高温极限 46.0C
@@ -220,14 +219,14 @@ extern "C" {
 #define CONFIG_MIN_LASER_POWER_CH7						        1//通道7最小激光功率	
 
 #define CONFIG_MAX_LASER_POWER_GAIM										0//绿指示激光最大功率档
-#define CONFIG_MAX_LASER_POWER_RAIM                   10//指示激光最大功率 10档
+#define CONFIG_MAX_LASER_POWER_RAIM                   10//指示激光最大功率
 #define CONFIG_MIN_LASER_POWER_RAIM                   0//指示激光最小功率
 #define CONFIG_MIN_LASER_POWER_GAIM                   0//指示激光最小功率
 
-#define CONFIG_LASER_RAIM_OFFSET											200
-#define CONFIG_LASER_GAIM_OFFSET											200
-#define CONFIG_LASER_RAIM_DEFAULT_GAIN								100
-#define CONFIG_LASER_GAIM_DEFAULT_GAIN								100
+#define CONFIG_LASER_RAIM_OFFSET											20
+#define CONFIG_LASER_GAIM_OFFSET											1
+#define CONFIG_LASER_RAIM_GAIN								        10
+#define CONFIG_LASER_GAIM_GAIN								        10
 
 #define CONFIG_MAX_LASER_POSWIDTH											16000
 #define CONFIG_MIN_LASER_POSWIDTH											1

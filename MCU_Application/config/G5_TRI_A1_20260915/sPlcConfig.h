@@ -133,9 +133,10 @@ extern "C" {
 #define SPCOIL_PS50MS																	(SPCOIL_START * 16 + 3)//50mS
 #define SPCOIL_PS100MS																(SPCOIL_START * 16 + 4)//100mS
 #define SPCOIL_PS200MS																(SPCOIL_START * 16 + 5)//200mS
-#define SPCOIL_PS500MS																(SPCOIL_START * 16 + 6)//500mS
-#define SPCOIL_PS1000MS																(SPCOIL_START * 16 + 7)//1000mS
-#define SPCOIL_PS1MINS																(SPCOIL_START * 16 + 8)//1mins
+#define SPCOIL_PS250MS                                (SPCOIL_START * 16 + 6)//250mS
+#define SPCOIL_PS500MS																(SPCOIL_START * 16 + 7)//500mS
+#define SPCOIL_PS1000MS																(SPCOIL_START * 16 + 8)//1000mS
+#define SPCOIL_PS1MINS																(SPCOIL_START * 16 + 9)//1mins
 /*****************************************************************************/
 #define SPCOIL_LINK_SEND_BUSY													(SPCOIL_START * 16 + 16)//发送进行中
 #define SPCOIL_LINK_SEND_DONE													(SPCOIL_START * 16 + 17)//发送完成
@@ -279,6 +280,9 @@ extern "C" {
 #define SPREG_BEEM_FREQ												  			(SPREG_START + 111)//蜂鸣器频率        1320+61=1381
 #define SPREG_BEEM_MODE												  			(SPREG_START + 112)//蜂鸣器模式        1320+62=1382
 #define SPREG_BEEM_COUNTER										  			(SPREG_START + 113)//蜂鸣器计时器      1320+63=1383
+/*****************************************************************************/
+#define SPREG_LASER_VENDOR                            (SPREG_START + 126)//激光器型号
+#define SPREG_BOARD_VENDOR                            (SPREG_START + 127)//电路板型号
 /*****************************************************************************/
 //需要存储的方案
 #define EM_LASER_SCHEME_NAME													(EM_START + 0)//方案名称

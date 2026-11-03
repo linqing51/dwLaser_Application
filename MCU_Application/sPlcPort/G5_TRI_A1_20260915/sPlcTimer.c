@@ -13,11 +13,13 @@ void sPlcTimerInit(void){//硬件sTimer计时器初始化
 	TD_10MS_SP = 0;
 	TD_100MS_SP = 0;
 	TD_200MS_SP = 0;
+  TD_250MS_SP = 0;
 	TD_500MS_SP = 0;
 	TD_1000MS_SP = 0;
 	TimerCounter_10mS = 0;//10毫秒
 	TimerCounter_100mS = 0;//100毫秒
 	TimerCounter_200mS = 0;//200毫秒
+  TimerCounter_250mS = 0;//250毫秒
 	TimerCounter_500mS = 0;//500毫秒
 	TimerCounter_1000mS = 0;//1秒
 	TimerCounter_60000mS = 0;//1分钟
@@ -74,6 +76,10 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 		TD_200MS_SP = 1;
 		TimerCounter_200mS = 0;
 	}
+  if(TimerCounter_250mS > 250){//250ms计算
+		TD_250MS_SP = 1;
+		TimerCounter_250mS = 0;
+	}
 	if(TimerCounter_500mS > 500){//500ms计算
 		TD_500MS_SP = 1;
 		TimerCounter_500mS = 0;
@@ -90,6 +96,7 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
 	TimerCounter_10mS ++;//10毫秒
 	TimerCounter_100mS ++;//100毫秒
 	TimerCounter_200mS ++;//200毫秒
+  TimerCounter_250mS ++;//200毫秒
 	TimerCounter_500mS ++;//500毫秒
 	TimerCounter_1000mS ++;//1秒
 	TimerCounter_60000mS ++;//1分钟

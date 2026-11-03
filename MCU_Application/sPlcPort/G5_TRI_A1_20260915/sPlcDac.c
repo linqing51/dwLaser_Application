@@ -41,11 +41,8 @@ void UPDAC6(void){}
 void UPDAC7(void){}
 void UPDAC8(void){//立即从SPREG_DAC_8中更新DAC8(TIM9 CH2 PWM -> GP8101C-SH 模拟电压)
 	uint32_t temp;
-	uint32_t ccr;
 	temp = NVRAM0[SPREG_DAC_8] & 0x0FFF;
-	//SPREG_DAC_8(0~4095)映射为TIM9 CH2占空比CCR2(0~65535), 经GP8101C-SH输出0~满量程模拟电压
-	ccr = (uint32_t)((float)temp / 4095.0f * 65535.0f);
-	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, ccr);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, temp);
 #if CONFIG_DEBUG_DAC == 1
 	printf("%s,%d,%s:SPREG_DAC_8=%d -> TIM9 CH2 CCR=%d(0x%04X)\n",__FILE__, __LINE__, __func__, (int)NVRAM0[SPREG_DAC_8], ccr, ccr);
 #endif

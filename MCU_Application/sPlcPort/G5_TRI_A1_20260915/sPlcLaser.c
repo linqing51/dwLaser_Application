@@ -185,8 +185,8 @@ void laserStart(void){//按通道选择打开激光
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
 			SET_LASER_CH1_ON;
 		}
-		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){//打开红激光
-			setRedLaserPwm(NVRAM0[EM_LASER_POWER_635] * 1000);
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//打开红激光
+			setRedLaserPwm(NVRAM0[EM_LASER_POWER_CH2] * 1000);
 		}
     SSET(R_LASER_FALG_EMITING);
 		SET_BEEM_LED_ON;
@@ -202,7 +202,7 @@ void laserStop(void){//按通道选择关闭激光
 		SET_LASER_CH5_OFF;
 		SET_LASER_CH6_OFF;
 		SET_LASER_CH7_OFF;
-		NVRAM0[SPREG_DAC_16] = NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain;
+		NVRAM0[SPREG_DAC_16] = NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain + deviceConfig.redOffset;
 		UPDAC16();	
     RRES(R_LASER_FALG_EMITING);
 		SET_BEEM_LED_OFF;

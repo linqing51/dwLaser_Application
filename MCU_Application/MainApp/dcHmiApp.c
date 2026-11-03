@@ -3655,11 +3655,11 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_CHANNEL_CH1, NVRAM0[EM_LASER_POWER_CH1], &deviceConfig, true);
 				UPDAC1();
 			}
-			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_RAIM){
+			if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 			}	
-			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
+			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + deviceConfig.redOffset;
 			UPDAC16();//打开红光
 #endif
 
@@ -3680,7 +3680,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				NVRAM0[SPREG_DAC_0] = 0;UPDAC0();
 				NVRAM0[SPREG_DAC_1] = 0;UPDAC1();
 			}	
-			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
+			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + deviceConfig.redOffset;
 			UPDAC16();//打开红光
 #endif
      
@@ -4421,7 +4421,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			UPDAC0();UPDAC1();UPDAC2();UPDAC3();UPDAC4();UPDAC5();UPDAC6();UPDAC7();
 
       SET_RAIM_SHDN_ON;
-			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + CONFIG_LASER_RAIM_OFFSET;
+			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + deviceConfig.redOffset;
 			UPDAC16();
 			
 			SetScreen(NVRAM0[EM_DC_PAGE]);

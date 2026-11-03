@@ -9,7 +9,12 @@
 extern "C" {
 #endif
 /*****************************************************************************/
-#define SW_VERSION																		"4.0a1b1"
+#define SW_VERSION																		"4.1a0b0"
+/*****************************************************************************/
+extern const char BootLoadMainVer;
+extern const char BootLoadMinorVer;
+extern const char BoardVendor;
+extern const char LaserVendor;
 /*****************************************************************************/
 #if defined(CORE_6M3S_JL_FC_1940_1470_635)
 #include ".\6M3S_JL_FC\AppConfig.h"

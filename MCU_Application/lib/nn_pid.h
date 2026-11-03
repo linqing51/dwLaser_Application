@@ -32,6 +32,7 @@ typedef struct {
 	// --- 运算状态 ---
 	float e1, e2;           // 历史误差 e(k-1)、e(k-2)（Δe、Δ²e 计算）
 	float u_prev;           // 上一拍输出（增量累加器，兼积分作用）
+	uint8_t first_run;      // 1=尚未执行首次计算：首拍历史对齐并冻结学习（消除假 Δe）
 	float learn_deadband;   // 学习死区 (℃)，误差绝对值小于此值冻结学习
 	float out_min, out_max; // 输出限幅（制冷比例）
 } NNPid_t;

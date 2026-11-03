@@ -380,21 +380,6 @@ uint8_t loadSchemeFromUdisk(void){//从USB DISK载入FDRAM
 	return 0;
 }
 
-int16_t IncPidCalc(IncPid_t *t, int16_t ref, int16_t fb){//增量PID
-	float tmp0, tmp1, tmp2, fout;
-	t->ek0 = (ref - fb) * -1.0F;
-	if((t->ek0 >= -1) && (t->ek0 <= 1) ){//死区消抖
-		t->ek0 = 0;
-	}
-	tmp0 = t->kp * t->ek0;
-	tmp1 = t->ki * t->ek1;
-	tmp2 = t->kd * t->ek2;
-	fout = tmp0 - tmp1 + tmp2;
-	t->ek2 = t->ek1;
-	t->ek1 = t->ek0;
-	return (int16_t)(fout);
-}	
-
 
 
 

@@ -14,6 +14,28 @@ extern "C" {
 #include "main.h"
 #include "usbh_core.h"
 /*****************************************************************************/
+typedef enum{
+	ENUM_LDR2P1_G5_A1_20260915                               = 0x10,
+	ENUM_CORE_6M3S_RASPI_L2_A1_20260519                      = 0x11,
+	ENUM_LDR2P1_RASPI_G9_A1_20260322                         = 0x12,
+	ENUM_LDR2P1_G5_A1_20251108                               = 0x13,
+	ENUM_LDR2P1_G5_DUAL_A1_20250910                          = 0x14,
+	ENUM_LDR2P1_G9_A1_20250823                               = 0x15,
+  ENUM_LDR2P1_G5_A1_20250731                               = 0x16,
+  ENUM_LDR2P1_1920_M12_20241128                            = 0x17,
+  ENUM_LDR4P1_G5_20240905                                  = 0x18
+}BOARD_VERSION_ENUM;
+
+typedef enum{
+  ENUM_MODLE_JL_FC_1470_15W_200_22_1S                      = 0xA0,
+  ENUM_MODLE_M1470_640_10_15_02_D200_22_G5W_PK             = 0xA1,	
+  ENUM_MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK      = 0xA2,
+  ENUM_MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK      = 0xA3,
+  ENUM_MODLE_M12_1920_10_400S                              = 0xA4,
+  ENUM_MODLE_M1470_640_10_30_05_D200_22_G9_PK              = 0xA5,
+  ENUM_MODLE_M450_980_200_60_D275_22_VI1_GP                = 0xA6
+}LASER_VENDOR_ENUM;
+/*****************************************************************************/
 //定义外部资源
 extern ADC_HandleTypeDef hadc1;
 extern CRC_HandleTypeDef hcrc;
@@ -162,8 +184,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define SET_LASER_CH7_ON											__nop()
 #define SET_LASER_CH7_OFF											__nop()
 
-#define SET_TEC_CH0_ON												__nop()
-#define SET_TEC_CH0_OFF											  __nop()
+#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH0_OFF											  HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_RESET)
 #define SET_TEC_CH1_ON												__nop()
 #define SET_TEC_CH1_OFF												__nop()
 #define SET_TEC_CH2_ON												__nop()

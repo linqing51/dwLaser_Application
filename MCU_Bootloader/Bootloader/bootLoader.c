@@ -61,7 +61,7 @@ extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 #define CONFIG_USB_ENUM_TIMEOUT									10000//等待USB设备枚举完成超时(ms)
 #define CONFIG_USB_MOUNT_RETRY									3//USB枚举/挂载失败断电重启重试次数
 #define CONFIG_FOOT_SWITCH_WINDOW								3000//启动后等待脚踏踩下的时间窗口(ms)
-#define CONFIG_USB_FIRST_MOUNT_DELAY							3000//VBUS上电到首次f_mount的最短延时(ms), 保证U盘内部控制器自检完成
+#define CONFIG_USB_FIRST_MOUNT_DELAY						3000//VBUS上电到首次f_mount的最短延时(ms), 保证U盘内部控制器自检完成
 /*****************************************************************************/
 #define GDDC_RX_BUF_SIZE												128
 #define GDDC_TX_BUF_SIZE												(2048 + 4)
@@ -79,7 +79,9 @@ static __IO uint32_t LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//文件读写缓冲
 /*****************************************************************************/
 const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   		= '2';
-const char BootLoadMinorVer __attribute__((at(BOOTLAOD_MINOR_ADDRESS)))  		= '3';
+const char BootLoadMinorVer __attribute__((at(BOOTLOAD_MINOR_ADDRESS)))  		= '3';
+const char BoardVendor __attribute__((at(BOOTLOAD_BOARD_VENDOR)))  		      = 0x10;
+const char LaserVendor __attribute__((at(BOOTLOAD_LASER_VENDOR)))           = 0xA0;
 /*****************************************************************************/
 uint8_t cmdShakeHandOp[] = {0xEE,0x04,0xFF,0xFC,0xFF,0xFF};
 uint8_t cmdShakeHandRespondOp[] = {0xEE,0x55,0xFF,0xFC,0xFF,0xFF};

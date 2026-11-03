@@ -25,13 +25,14 @@ void NNPid_Init(NNPid_t *pid, float target_temp){
 	pid->w1 = 0.5f;             // 初始比例主导（预留双向调节余量，避免单调饱和）
 	pid->w2 = 0.0f;
 	pid->w3 = 0.0f;
-	pid->eta1 = 0.01f;          // P 通道学习率（e 量级 ℃）
+	pid->eta1 = 0.004f;         // P 通道学习率（e 量级 ℃）：0.01 过大易使权值数拍打满
 	pid->eta2 = 0.001f;         // I 通道学习率（Δe 量级小）
 	pid->eta3 = 0.001f;         // D 通道学习率（Δ²e 量级更小）
 	pid->w_max = 1.0f;          // 权值限幅，防发散
 	pid->learn_deadband = 0.1f; // 0.1℃ 学习死区，抑制 NTC 噪声引起的权值漂移
 	pid->out_min = 0.0f;
 	pid->out_max = 1.0f;
+	pid->first_run = 1;         // 首拍：历史对齐并冻结学习，消除初始化全零造成的假 Δe
 }
 /*****************************************************************************/
 void NNPid_SetTarget(NNPid_t *pid, float target_temp){
@@ -41,6 +42,10 @@ void NNPid_SetTarget(NNPid_t *pid, float target_temp){
 float NNPid_Compute(NNPid_t *pid, float current_temp){
 	float e, x1, x2, x3, z, denom, delta_u, u;
 	e = current_temp - pid->target;    // 误差：温度高于目标为正（单冷需制冷）
+	if(pid->first_run){                // 首拍：历史对齐，消除初始化全零造成的假 Δe/Δ²e
+		pid->e1 = e;
+		pid->e2 = e;
+	}
 	x1 = e;                            // 比例通道输入
 	x2 = e - pid->e1;                  // 误差变化率（增量式中的稳态修正通道）
 	x3 = e - 2.0f * pid->e1 + pid->e2; // 误差加速度（阻尼通道）
@@ -50,9 +55,13 @@ float NNPid_Compute(NNPid_t *pid, float current_temp){
 	u = nnClampf(u, pid->out_min, pid->out_max);
 	/* 改进有监督 Hebb 学习：z = e + Δe（性能指标），Δwi = ηi * z * xi。
 	   误差恒正时 z 随 Δe 变号（趋稳/超调回落时 Δe<0），权值双向调节；
-	   误差小于死区或输出饱和时冻结学习，防止权值漂移与积分饱和。 */
+	   误差小于死区或输出饱和时冻结学习，防止权值漂移与积分饱和。
+	   首拍不学习：先对齐历史再输出，避免权值被假 Δe 污染。 */
 	z = e + x2;
-	if((fabsf(e) > pid->learn_deadband) && (u > pid->out_min) && (u < pid->out_max)){
+	if(pid->first_run){
+		pid->first_run = 0;            // 首拍仅计算输出，不更新权值
+	}
+	else if((fabsf(e) > pid->learn_deadband) && (u > pid->out_min) && (u < pid->out_max)){
 		pid->w1 = nnClampf(pid->w1 + pid->eta1 * z * x1, -pid->w_max, pid->w_max);
 		pid->w2 = nnClampf(pid->w2 + pid->eta2 * z * x2, -pid->w_max, pid->w_max);
 		pid->w3 = nnClampf(pid->w3 + pid->eta3 * z * x3, -pid->w_max, pid->w_max);
