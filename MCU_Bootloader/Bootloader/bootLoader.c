@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -55,7 +55,6 @@ extern ApplicationTypeDef Appli_state;//USB应用状态(定义于usb_host.c)
 #define BT_DONE_UPDATE_EPROM										'I'//更新EPROM完成
 #define BT_DONE_DUMP_EPROM											'J'//下载EPROM完成
 #define BT_FAIL_LCD_RESPOND_ERROR								'K'//LCD 响应错误
-
 #define BT_DONE_FIRMWARE_UPDATE									'L'//
 /*****************************************************************************/
 #define CONFIG_USB_ENUM_TIMEOUT									10000//等待USB设备枚举完成超时(ms)
@@ -79,7 +78,7 @@ static __IO uint32_t LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 uint8_t RAM_Buf[BUFFER_SIZE] = {0x00};//文件读写缓冲
 /*****************************************************************************/
 const char BootLoadMainVer __attribute__((at(BOOTLOAD_MAIN_ADDRESS)))   		= '2';
-const char BootLoadMinorVer __attribute__((at(BOOTLOAD_MINOR_ADDRESS)))  		= '3';
+const char BootLoadMinorVer __attribute__((at(BOOTLOAD_MINOR_ADDRESS)))  		= '4';
 const char BoardVendor __attribute__((at(BOOTLOAD_BOARD_VENDOR)))  		      = 0x10;
 const char LaserVendor __attribute__((at(BOOTLOAD_LASER_VENDOR)))           = 0xA0;
 /*****************************************************************************/
@@ -327,10 +326,10 @@ void bootLoadProcess(void){//bootload 执行程序
 				printf("Bootloader:Read eprom LCD FW CRC32 fail!\n");
 			}
 			printf("Bootloader:Version->%c.%c\n", BootLoadMainVer, BootLoadMinorVer);	
-			printf("Bootloader:Build->%s:%s\n", __DATE__, __TIME__);
+			printf("Bootloader:Board Vendor:0x%02X, Laser Vendor:0x%02X\n", BoardVendor, LaserVendor);
+      printf("Bootloader:Build->%s:%s\n", __DATE__, __TIME__);
 			printf("Bootloader:Bootload Start  :0x%08X,End:0x%08X,Size:0x%08X\n", BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_END_ADDRESS ,BOOTLOADER_FLASH_SIZE);
-			printf("Bootloader:Applicent Start :0x%08X,End:0x%08X,Size:0x%08X\n", APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_END_ADDRESS, APPLICATION_FLASH_SIZE);
-				
+			printf("Bootloader:Applicent Start :0x%08X,End:0x%08X,Size:0x%08X\n", APPLICATION_FLASH_START_ADDRESS, APPLICATION_FLASH_END_ADDRESS, APPLICATION_FLASH_SIZE);			
 			//启动后进入3秒脚踏窗口: 窗口内踩下脚踏进入USB更新, 超时未踩跳APP
 			bootLoadState = BT_STATE_WAIT_FOOT;
 			overTime = HAL_GetTick() + CONFIG_FOOT_SWITCH_WINDOW;
@@ -344,7 +343,7 @@ void bootLoadProcess(void){//bootload 执行程序
 				printf("Bootloader:Wait foot switch:%d Second!\n", releaseTime0);
 				releaseTime1 = releaseTime0;
 			}
-			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//急停未触发
+			if((GET_ESTOP_NC == GPIO_PIN_SET) &&//急停OPEN
 				(GET_FSWITCH_NC == GPIO_PIN_SET) &&//脚踏插入
 				(GET_FSWITCH_NO == GPIO_PIN_RESET)){//脚踏踩下					
 				bootLoadState = BT_STATE_USBHOST_INIT;//进入USB更新APP流程

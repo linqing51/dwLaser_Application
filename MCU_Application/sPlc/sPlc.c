@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -599,6 +599,8 @@ void sPlcInit(void){//软逻辑初始化
 	SET_GREEN_LED_OFF;	
 	SET_BLUE_LED_OFF;
 	RRES(Y_TICK_LED);
+  NVRAM0[SPREG_BOARD_VENDOR] = *((char*)(BOOTLOAD_BOARD_VENDOR));//读取BOARD VENDOR
+  NVRAM0[SPREG_LASER_VENDOR] = *((char*)(BOOTLOAD_LASER_VENDOR));//读取LASER VENDOR
 }
 void sPlcProcessStart(void){//sPLC轮询起始
 	if(TD_10MS_SP >= 1){

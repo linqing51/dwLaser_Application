@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -67,7 +67,7 @@ extern "C" {
 #define BOOTLOAD_MINOR_ADDRESS												0x0800FFFF//次版本标识地址
 #define STM32_UNIQUE_ID_SIZE 													12//MCU序列号  8*12=96Bit
 #define DEVID_H																				'1'//设备ID
-#define DEVID_L																				'C'//设备ID
+#define DEVID_L																				'D'//设备ID
 #define BUFFER_SIZE        														((uint16_t)512*32)//512的整数倍
 #define BOOTLOAD_BUF_SIZE  														((uint16_t)512*16)//Bootload 块缓冲 8KB（CCM，512的整数倍，FATFS扇区对齐）
 #define CONFIG_JUMP_DELAY															5000//检测U盘时间

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -69,10 +69,10 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
 
 /* 蜂鸣器定时器底层硬件资源(板级差异集中在此, 供 sPlcSpeaker.c 完整初始化) */
-#define CONFIG_SPK_TIM_CLK_ENABLE()							__HAL_RCC_TIM8_CLK_ENABLE()
-#define CONFIG_SPK_GPIO_CLK_ENABLE()						__HAL_RCC_GPIOC_CLK_ENABLE()
+#define CONFIG_SPK_TIM_CLK_ENABLE()						__HAL_RCC_TIM8_CLK_ENABLE()
+#define CONFIG_SPK_GPIO_CLK_ENABLE()					__HAL_RCC_GPIOC_CLK_ENABLE()
 #ifndef SPLC_STM32F1
-#define CONFIG_SPK_GPIO_AF    											GPIO_AF3_TIM8/* F4 复用编号; F1 固定复用无此项 */
+#define CONFIG_SPK_GPIO_AF    								GPIO_AF3_TIM8/* F4 复用编号; F1 固定复用无此项 */
 #endif
 
 #define CONFIG_FAN0_TIM_HANDLE								htim3	
