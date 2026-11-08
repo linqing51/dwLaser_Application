@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -1212,16 +1212,25 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 			}
 			break;
 		}
-		case GDDC_PAGE_TREATMENTLOG:{	//病历储存页面
+    
+    
+    case GDDC_PAGE_LIST_TREATMENT:{//显示病历列表
+      switch(control_id){
+        default:break;
+      }
+      break;
+    }
+        
+		case GDDC_PAGE_EDIT_TREATMENT:{	//病历储存页面
 			switch(control_id){
-				case GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME:{//患者姓名录入
+				case GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME:{//患者姓名录入
 					if(str != NULL){
 						strncpy(treatmentLog.name, (const char*)str, sizeof(treatmentLog.name) - 1);
 						treatmentLog.name[sizeof(treatmentLog.name) - 1] = '\0';//截断保护
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE:{//患者年龄录入
+				case GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE:{//患者年龄录入
 					if(str != NULL){
 						int value = 0;
 						if(sscanf((const char*)str, "%d", &value) == 1){

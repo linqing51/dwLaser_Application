@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -586,6 +586,10 @@ extern "C" {
 #define DM_DC_OLD_PASSCODE2														(DM_START + 8)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3														(DM_START + 9)//屏旧密码2-3
 #define DM_LANGUAGE																		(DM_START + 10)//语言代码
+#define DM_TREATMENT_NUM                              (DM_START + 11)//EPROM中已经储存的病历数量
+#define DM_TREATMENT_FW_CRC_L                         (DM_START + 12)//上次运行固件CRC32低16位(固件变化清空病历判据)
+#define DM_TREATMENT_FW_CRC_H                         (DM_START + 13)//上次运行固件CRC32高16位(固件变化清空病历判据)
+
 /*****************************************************************************/
 #define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关
 #define X_INTERLOCK_NC																(X_START * 16 + 1)//XIN1 安全连锁
@@ -735,7 +739,7 @@ typedef enum{//风扇通道
 #define R_STANDBY_KEY_MODE_SP_DOWN										(R_START * 16 + 121)
 #define R_STANDBY_KEY_MODE_MP_DOWN										(R_START * 16 + 122)
 #define R_STANDBY_KEY_MODE_GP_DOWN										(R_START * 16 + 123)
-#define R_STANDBY_KEY_SAVE_TREATMENT_DOWN							(R_START * 16 + 124)
+#define R_STANDBY_KEY_ENTER_LIST_TREATMENT_DOWN				(R_START * 16 + 124)
 /*****************************************************************************/
 #define R_READY_KEY_READY_DOWN												(R_START * 16 + 130)
 #define R_READY_KEY_READY_UP													(R_START * 16 + 131)

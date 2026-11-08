@@ -1,9 +1,10 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
  *----------------------------------------------------------------------------*/
 #include "dcHmiApp.h"
+#include "treatment.h"
 /*****************************************************************************/
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
@@ -295,6 +296,8 @@ void optionKeyEnable(uint8_t enable){//选项界面按键锁定
 void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 	SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
+	SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, enable);
+	SetControlVisiable(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXTDISPLAY_DEBUG, enable);
 }
 
 void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
@@ -364,8 +367,8 @@ void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
 void updateDebugInfo(void){//更新Standby调试信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,FPD:%05d,LPD:%05d,TEC:%05d", \
-	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HT0_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_54], NVRAM0[SPREG_ADC_55], NVRAM0[SPREG_DAC_8]);
+	sprintf(dispBuf, "LT:%05d,HT:%05d,MT:%05d,FPD:%05d,LPD:%05d,TEC:%05d,TR:%05d", \
+	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HT0_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_54], NVRAM0[SPREG_ADC_55], NVRAM0[SPREG_DAC_8], NVRAM0[DM_TREATMENT_NUM]);
 	switch(NVRAM0[EM_DC_PAGE]){
 		case GDDC_PAGE_STANDBY:{
 			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
@@ -373,6 +376,14 @@ void updateDebugInfo(void){//更新Standby调试信息
 		}	
 		case GDDC_PAGE_READY:{
 			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			break;
+		}
+		case GDDC_PAGE_LIST_TREATMENT:{
+			SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			break;
+		}
+		case GDDC_PAGE_EDIT_TREATMENT:{
+			SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
 		default:break;	
@@ -2047,9 +2058,11 @@ void updateInformationDisplay(void){//更新信息界面显示
 	sprintf(dispBuf, "UUID: %08X%08X%08X", UniqueId[0], UniqueId[1], UniqueId[2]);
 	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);	
 }
-void returnStandbyDisplay(void){//返回STANDBY界面
-	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;	
+void returnStandbyDisplay(void){//统一返回STANDBY页面:状态机切回待机并刷新待机页显示
+	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
+	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//显式指定待机页,不依赖寄存器可能已被覆盖的旧值
 	SetScreen(NVRAM0[EM_DC_PAGE]);
+	updateStandbyDisplay();
 }
 void clearReleaseTimeEnergy(void){//清除发射时间与能量显示
 	CLRD(EM_LASER_RELEASE_TIME);
@@ -2575,14 +2588,6 @@ void updateStandbyDisplay(void){//更新方案显示
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM, (uint8_t*)dispBuf);
 	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	updateExtralDisplay();
-	if(treatmentLogValid){//记录有效
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT, true);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT,  true);
-	}
-	else{
-		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT, false);
-		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT, false);
-	}
 }
 
 void updateOptionDisplay(void){//更新选项显示	
@@ -2674,30 +2679,30 @@ void updateReadyDisplay(void){//更新READY显示
 static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *log){
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	if(log == NULL){
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)"--");
-		SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, false);//性别按钮取消选中
-		SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, false);
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_0, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_1, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_2, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_4, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)"--");
+		SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, false);//性别按钮取消选中
+		SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, false);
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_0, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_1, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_2, (uint8_t*)"--");
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_4, (uint8_t*)"--");
 		return;
 	}
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID, (uint8_t*)idText);
+	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)idText);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%s", log->name);
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)dispBuf);
-	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, (log->gender == MALE));//性别用按钮选中状态显示
-	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, (log->gender == FEMALE));
+	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)dispBuf);
+	SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, (log->gender == MALE));//性别用按钮选中状态显示
+	SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, (log->gender == FEMALE));
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d", log->age);
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d J", log->releaseEnergy);
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_0, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_0, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	{
 		int32_t totalSec = log->releaseTime;
@@ -2706,13 +2711,13 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 		}
 		sprintf(dispBuf, "%ld:%02ld", (long)(totalSec / 60), (long)(totalSec % 60));//MM:SS
 	}
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_1, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_1, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d W", log->laserPower);
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_2, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_2, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%s", treatmentProtocolName(log->protocol));
-	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_4, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_4, (uint8_t*)dispBuf);
 }
 
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
@@ -2726,8 +2731,78 @@ void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显�
 	dcHmiShowTreatmentCommon(dispBuf, log);
 }
 
-void updateTreatmentLogDisplay(void){//病历储存页面:显示当前治疗记录(待保存)
+void updateListTreatmentDisplay(void){//病历储存页面:显示当前治疗记录(待保存)
 	dcHmiShowTreatmentCommon("NEW", &treatmentLog);
+}
+
+//病历列表页单页可显示的名字数量(对应GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0-9)
+#define LIST_TREATMENT_WINDOW_SIZE										10
+//病历列表页面状态
+static uint16_t listTreatmentTopIndex = 0;//当前窗口第一个名字对应的EPROM病历索引
+static uint16_t listTreatmentSelectedIndex = 0;//当前选中病历的EPROM索引
+
+//获取EPROM中有效病历数量:数量由DM_TREATMENT_NUM寄存器维护(treatment数据层增删时自动同步)
+static uint16_t listTreatmentGetCount(void){
+	if(NVRAM0[DM_TREATMENT_NUM] < 0){//异常负值防御
+		return 0;
+	}
+	return (uint16_t)NVRAM0[DM_TREATMENT_NUM];
+}
+
+//刷新病历列表页:按窗口起始索引把病历名字写入TEXT_NAME_0-9,并更新KEY_NAME_0-9选中状态
+void refreshListTreatmentDisplay(void){
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	uint16_t recordCount = listTreatmentGetCount();
+	for(uint8_t i = 0; i < LIST_TREATMENT_WINDOW_SIZE; i++){
+		uint16_t recordIndex = (uint16_t)(listTreatmentTopIndex + i);
+		memset(dispBuf, 0x0, sizeof(dispBuf));
+		if(recordIndex < recordCount){
+			treatmentLog_t record;
+			if(treatmentEpromGet(recordIndex, &record) == TREATMENT_EPROM_OK){
+				sprintf(dispBuf, "%s", record.name);
+			}
+		}
+		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0 + i, (uint8_t*)dispBuf);
+		//选中病历对应的按钮高亮,窗口外或空槽位取消高亮
+		SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0 + i,
+			(recordIndex < recordCount) && (recordIndex == listTreatmentSelectedIndex));
+	}
+}
+
+//进入病历列表页:窗口从第一条病历开始,默认选中第一条(数量直接读DM_TREATMENT_NUM,不扫描EPROM)
+void enterListTreatmentPage(void){
+	listTreatmentTopIndex = 0;
+	listTreatmentSelectedIndex = 0;
+	refreshListTreatmentDisplay();
+}
+
+//UP键:名字窗口向前移动一条,已移动到第一条病历(窗口起始索引为0)时不再移动
+void listTreatmentMoveUp(void){
+	if(listTreatmentTopIndex > 0){
+		listTreatmentTopIndex--;
+		refreshListTreatmentDisplay();
+	}
+}
+
+//DOWN键:名字窗口向后移动一条,窗口已包含最后一条病历(末尾索引达到有效数量)时不再移动
+void listTreatmentMoveDown(void){
+	if((uint16_t)(listTreatmentTopIndex + LIST_TREATMENT_WINDOW_SIZE) < listTreatmentGetCount()){
+		listTreatmentTopIndex++;
+		refreshListTreatmentDisplay();
+	}
+}
+
+//选择窗口内第slot个病历(slot 0-9对应KEY_NAME_0-9),空槽位不响应
+void listTreatmentSelect(uint8_t slot){
+	uint16_t recordIndex;
+	if(slot >= LIST_TREATMENT_WINDOW_SIZE){
+		return;
+	}
+	recordIndex = (uint16_t)(listTreatmentTopIndex + slot);
+	if(recordIndex < listTreatmentGetCount()){
+		listTreatmentSelectedIndex = recordIndex;
+		refreshListTreatmentDisplay();
+	}
 }
 
 void updateAcousticDisplay(void){//更新提示音设置
@@ -2811,6 +2886,18 @@ void dcHmiLoopInit(void){//初始化模块
     printf("%s,%d,%s:[DIAG]BK self-heal done (bk=%d)\n",__FILE__, __LINE__, __func__, LD(SPCOIL_BK_CRC_FAIL));
 #endif
   }
+	//固件变化判断: 计算当前固件CRC32与上次保存值比较, 不一致(首次烧录/固件升级/CRC失败恢复默认)则清空病历区块
+	uint32_t curFwCrc = treatmentEpromCalcFwCrc();
+	uint32_t savedFwCrc = (uint32_t)(uint16_t)NVRAM0[DM_TREATMENT_FW_CRC_L]
+	                   | ((uint32_t)(uint16_t)NVRAM0[DM_TREATMENT_FW_CRC_H] << 16);
+	if(curFwCrc != savedFwCrc){
+		treatmentEpromClear();//清空病历区块(逐槽写0xFF,并置DM_TREATMENT_NUM=0)
+		NVRAM0[DM_TREATMENT_FW_CRC_L] = (int16_t)(curFwCrc & 0xFFFFu);
+		NVRAM0[DM_TREATMENT_FW_CRC_H] = (int16_t)((curFwCrc >> 16) & 0xFFFFu);
+	}
+	//校准病历数量:扫描EPROM治疗记录区块得到实际有效病历数,写入DM_TREATMENT_NUM。
+	//固件变化时已在上一步清空,扫描结果为0; 其余情况NVRAM与实际不一致时,以此处扫描结果为准完成自愈
+	NVRAM0[DM_TREATMENT_NUM] = (int16_t)treatmentEpromGetCount();
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);
 	}
@@ -3157,7 +3244,6 @@ void dcHmiLoop(void){//HMI轮训程序
 	}
 	//状态机
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWERUP){//上电步骤
-		treatmentLogValid = false;//记录不可用
 		RRES(SPCOIL_BEEM_ENABLE);//关闭蜂鸣器
 		tempControlInit();
 		sPlcSpeakerEnable();
@@ -3717,19 +3803,26 @@ void dcHmiLoop(void){//HMI轮训程序
 			updateStandbyDisplay();	
 			RRES(R_STANDBY_KEY_SCHEME_LAST_DOWN);
 		}
-		if(LD(R_STANDBY_KEY_SAVE_TREATMENT_DOWN)){
-			//检查U盘是否插入
-			//检查U盘内是否有CSV病历文件
-			//如果没有->跳到询问是否新建
-			//如果有,打开CSV文件
-			//如果打开失败->调到询问是否新建
-			//如果打开成功,读取所有ID字段
-			//获取全部ID字段的数量如果
+		if(LD(R_STANDBY_KEY_ENTER_LIST_TREATMENT_DOWN)){
+      //切换到GDDC_PAGE_LIST_TREATMENT页面
+			//查询储存在EPROM中的有效病历数量
+      //将病历中的名字按在EPROM中储存的先后顺序写到GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0到9中
+      //按GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP按键可以在向前移动名字,移动到病历中第一个时不再移动
+      //按GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN按键可以向后移动名字，移动到病历中最后一个时不再移动
+      //比如EPROM中病历中储存了12个病历名字分别为n0-n11,那么程序先将n0-n9 显示在GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0-9中
+      //按键GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN一次就显示n1-n10,再按一次显示n2-n11,按GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP
+      //显示n1-n10依次内推
+      //点击GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0到9可以选择对应的GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0到9中显示的病历索引
+      //
+      
 			
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SAVE_TREATMENT;
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_TREATMENTLOG;	
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;	
 			SetScreen(NVRAM0[EM_DC_PAGE]);
-			updateTreatmentLogDisplay();//刷新病历储存页面显示
+			//查询EPROM有效病历数量,按储存先后顺序刷新第一页名字(TEXT_NAME_0-9)
+			enterListTreatmentPage();
+			//清除进入标志,避免返回待机状态后标志残留导致再次自动进入本页
+			RRES(R_STANDBY_KEY_ENTER_LIST_TREATMENT_DOWN);
 		}
 		return;
 	}
@@ -3896,15 +3989,12 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_16] = 0;UPDAC16();//关闭红激光
 			NVRAM0[SPREG_DAC_17] = 0;UPDAC17();//关闭绿激光
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);//停止2秒计时器
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
-			SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
-			updateStandbyDisplay();
+			returnStandbyDisplay();//统一返回待机页面:状态机+页面+SetScreen+刷新
 			standbyKeyValue(false);
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){
 				RRES(R_STANDBY_KEY_STNADBY_UP);
 			}
 			updateWarnMsgDisplay(ERR_NO_ERROR);//显示警告信息
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			return;
 		}
 		if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
@@ -3915,7 +4005,6 @@ void dcHmiLoop(void){//HMI轮训程序
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				treatmentLogValid = true;//任意一次激光发射后记录有效
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}
 		}
@@ -3927,7 +4016,6 @@ void dcHmiLoop(void){//HMI轮训程序
 				readyPageTouchEnable(0);
 				NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_EMITING;				
 				STLAR();
-				treatmentLogValid = true;//任意一次激光发射后记录有效
 				SSET(SPCOIL_BEEM_ENABLE);//启动喇叭
 			}	
 		}
@@ -3955,15 +4043,12 @@ void dcHmiLoop(void){//HMI轮训程序
 			UPDAC0();UPDAC1();UPDAC2();UPDAC3();UPDAC4();UPDAC5();UPDAC6();UPDAC7();
 			NVRAM0[SPREG_DAC_16] = 0;NVRAM0[SPREG_DAC_17] = 0;
 			UPDAC16();UPDAC17();
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
-			SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
-			updateStandbyDisplay();
+			returnStandbyDisplay();//统一返回待机页面:状态机+页面+SetScreen+刷新
 			standbyKeyValue(0);
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){
 				RRES(R_STANDBY_KEY_STNADBY_UP);
 			}
 			updateWarnMsgDisplay(ERR_NO_ERROR);//显示警告信息
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 			return;
 		}
 		else if(LD(MR_FOOSWITCH_HAND_SWITCH)){//上升沿触发
@@ -4309,6 +4394,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			sPlcNvramClear();//清空NVRAM
 			sPlcFdramClear();//清空FDRAM
 			sPlcDeviceConfigClear();//清空config
+			treatmentEpromClear();//清空病历治疗区块(逐槽写0xFF,并置DM_TREATMENT_NUM=0)
 			resetGddcHmi();
       softDelayMs(1000);
 			REBOOT();	
@@ -4508,8 +4594,20 @@ void dcHmiLoop(void){//HMI轮训程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_POWEROFF_CONFIRM){//关机确认
 		return;
 	}
-	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_SAVE_TREATMENT){//进入病历储存页面
-		
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LIST_TREATMENT){//显示编辑导入导出EPROM储存的病历
+		if(LD(R_ENGINEER_MODE)){//工程模式显示调试信息
+			if(LDP(SPCOIL_PS1000MS)){
+				updateDebugInfo();
+			}
+		}
+		return;
+	}
+	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_EDIT_TREATMENT){//编辑选择的病历
+		if(LD(R_ENGINEER_MODE)){//工程模式显示调试信息
+			if(LDP(SPCOIL_PS1000MS)){
+				updateDebugInfo();
+			}
+		}
 		return;
 	}
 	
@@ -4644,12 +4742,19 @@ static void NotifyScreen(uint16_t screen_id){
 			updateDiagnosisCali();
 			break;
 		}
-		case GDDC_PAGE_TREATMENTLOG:{
-			updateTreatmentLogDisplay();
+		case GDDC_PAGE_LIST_TREATMENT:{
+			if(LD(R_ENGINEER_MODE)){//工程模式:页面加载完成立即刷新一次,不等下一个1秒节拍
+				updateDebugInfo();
+			}
 			break;
 		}
-		default:
-			break;
+    case GDDC_PAGE_EDIT_TREATMENT:{
+			if(LD(R_ENGINEER_MODE)){
+				updateDebugInfo();
+			}
+      break;
+    }
+		default:break;
 	}
 }
 

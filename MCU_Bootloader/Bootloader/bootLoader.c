@@ -265,6 +265,23 @@ void bootLoadInit(void){//引导程序初始化
 	HAL_Delay(10);
 	
 }
+//固件升级时清空病历治疗区块: 分块写0xFF(与APP空槽标记CONFIG_EPROM_TREATMENT_SLOT_EMPTY一致),
+//不能用clearEprom(CLEAR_EPROM_TREATMENT), 其写0会被APP扫描误判为有效病历
+static HAL_StatusTypeDef clearTreatmentBlock(void){
+	static uint8_t ffBlock[256];
+	uint32_t addr = CONFIG_EPROM_TREATMENT_START;
+	uint32_t remain = CONFIG_EPROM_TREATMENT_SIZE;
+	memset(ffBlock, 0xFF, sizeof(ffBlock));
+	while(remain > 0){
+		uint16_t wrLen = (remain >= sizeof(ffBlock)) ? (uint16_t)sizeof(ffBlock) : (uint16_t)remain;
+		if(epromWrite(addr, ffBlock, wrLen) != HAL_OK){
+			return HAL_ERROR;
+		}
+		addr += wrLen;
+		remain -= wrLen;
+	}
+	return HAL_OK;
+}
 void bootLoadProcess(void){//bootload 执行程序
 	HAL_StatusTypeDef ret;
 	uint8_t fileBuff[256];
@@ -555,6 +572,9 @@ void bootLoadProcess(void){//bootload 执行程序
 			else{
 				printf("Bootloader:Checksum mcu app sucess.\n");
 				clearEprom(CLEAR_EPROM_NVRAM);//清除NVRAM掉电储存区
+				if(clearTreatmentBlock() != HAL_OK){//清空病历治疗区块(写0xFF)
+					bootLoadFailHandler(BT_FAIL_CLEAR_TREATMENT);
+				}
 				clearEprom(CLEAR_EPROM_MCU_FIRMWARE_CRC);
 				epromWriteDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);
 				printf("Bootloader:Update new crc32 sucess,0x08%XH\n", crcFlash);
@@ -606,6 +626,9 @@ void bootLoadProcess(void){//bootload 执行程序
 				crcEpromMcu = crcFlash;//CRC值写入EPROM
 				printf("Bootloader:Check mcu app sucess.\n");
 				clearEprom(CLEAR_EPROM_NVRAM);
+				if(clearTreatmentBlock() != HAL_OK){//清空病历治疗区块(写0xFF)
+					bootLoadFailHandler(BT_FAIL_CLEAR_TREATMENT);
+				}
 				clearEprom(CLEAR_EPROM_MCU_FIRMWARE_CRC);
 				epromWriteDword(CONFIG_EPROM_MCU_FW_CRC, &crcEpromMcu);
 				printf("Bootloader:Update mcu app new crc32 sucess.\n");

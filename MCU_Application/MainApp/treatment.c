@@ -6,7 +6,6 @@
 #include "treatment.h"
 /*****************************************************************************/
 treatmentLog_t treatmentLog;//患者记录全局变量
-uint8_t treatmentLogValid = 0;//当前治疗记录有效性:任意一次激光发射后置1,上电复位/保存病历后清0
 const char* treatmentProtocolName(PROTOCOL_ENUM protocol){//治疗方案名称映射
 	switch(protocol){
 		case ePhlebology: return "Phlebology";
@@ -97,6 +96,7 @@ treatmentEpromErr_t treatmentEpromAdd(const treatmentLog_t *log){//末尾追加�
 	if(epromWrite(treatmentEpromSlotAddr(count), (uint8_t*)&rec, sizeof(rec)) != HAL_OK){
 		return TREATMENT_EPROM_ERR_IO;
 	}
+	NVRAM0[DM_TREATMENT_NUM] = (int16_t)(count + 1);//同步有效病历数量
 	return TREATMENT_EPROM_OK;
 }
 
@@ -130,6 +130,7 @@ treatmentEpromErr_t treatmentEpromInsert(uint16_t index, const treatmentLog_t *l
 	if(epromWrite(treatmentEpromSlotAddr(index), (uint8_t*)&rec, sizeof(rec)) != HAL_OK){
 		return TREATMENT_EPROM_ERR_IO;
 	}
+	NVRAM0[DM_TREATMENT_NUM] = (int16_t)(count + 1);//插入后有效病历数量+1
 	return TREATMENT_EPROM_OK;
 }
 
@@ -151,6 +152,7 @@ treatmentEpromErr_t treatmentEpromDelete(uint16_t index){//删除指定索引病
 	if(treatmentEpromClearSlot(treatmentEpromSlotAddr(count - 1)) != HAL_OK){//清空原末尾槽位
 		return TREATMENT_EPROM_ERR_IO;
 	}
+	NVRAM0[DM_TREATMENT_NUM] = (int16_t)(count - 1);//删除后有效病历数量-1
 	return TREATMENT_EPROM_OK;
 }
 
@@ -173,10 +175,20 @@ treatmentEpromErr_t treatmentEpromUpdate(uint16_t index, const treatmentLog_t *l
 treatmentEpromErr_t treatmentEpromClear(void){//清空整个治疗记录区块
 	for(uint16_t i = 0; i < treatmentEpromGetCapacity(); i++){
 		if(treatmentEpromClearSlot(treatmentEpromSlotAddr(i)) != HAL_OK){
-			return TREATMENT_EPROM_ERR_IO;
+			return TREATMENT_EPROM_ERR_IO;//清空失败:保留原数量,不更新DM_TREATMENT_NUM
 		}
 	}
+	NVRAM0[DM_TREATMENT_NUM] = 0;//清空后有效病历数量为0
 	return TREATMENT_EPROM_OK;
+}
+
+uint32_t treatmentEpromCalcFwCrc(void){//计算当前APP内部Flash固件区CRC32(硬件CRC,与bootloader getOriginAppCrc同算法同范围)
+	uint32_t crc32;
+	crc32Clear();
+	for(uint32_t addr = APPLICATION_FLASH_START_ADDRESS; addr < APPLICATION_FLASH_END_ADDRESS; addr++){
+		crc32 = crc32CalculateAdd(*(__IO uint8_t*)addr);
+	}
+	return crc32;
 }
 
 void treatmentEpromTraverse(treatmentEpromVisitFn fn){//遍历所有有效病历(索引升序)
@@ -195,4 +207,9 @@ void treatmentEpromTraverse(treatmentEpromVisitFn fn){//遍历所有有效病历
 	}
 }
 /*****************************************************************************/
-
+//患者 ID 的编码规则是：
+//AR + 一个空格 + 至少 4 位的递增数字，例如：AR 0001、AR 0002、AR 0011。
+//自动生成、不可手动修改：取现有患者 ID 中最大的数字加 1，不足 4 位时前面补零。
+//新患者分配新 ID：目前 Demo 已有编号到 AR 0010，所以下一位是 AR 0011。
+//已有患者继续使用原 ID：再次治疗时追加治疗记录，不重新编号。
+//同名不代表同一患者：选择已有患者就复用其 ID；选择「Create New Patient」则生成新 ID。

@@ -48,8 +48,8 @@ extern "C" {
 #define FSMSTEP_READY_ERROR													405//脚踏踩下错误
 
 //储存病例
-#define FSMSTEP_SAVE_TREATMENT											450//
-
+#define FSMSTEP_LIST_TREATMENT											450//显示编辑导入导出EPROM储存的病历
+#define FSMSTEP_EDIT_TREATMENT                      460//编辑选择的病历
 //选项状态
 #define FSMSTEP_OPTION															500//选项菜单
 #define FSMSTEP_INFORMATION													600
@@ -91,7 +91,12 @@ void unselectSchemeNum(int16_t index);
 /*****************************************************************************/
 void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
-void updateTreatmentLogDisplay(void);//病历储存页面:显示当前治疗记录(待保存)
+void updateListTreatmentDisplay(void);//病历储存页面:显示当前治疗记录(待保存)
+void refreshListTreatmentDisplay(void);//病历列表页:按当前窗口刷新名字与选中按钮状态
+void enterListTreatmentPage(void);//病历列表页:查询EPROM有效病历数量并显示第一页
+void listTreatmentMoveUp(void);//病历列表页:UP键名字窗口向前移动(到第一条停止)
+void listTreatmentMoveDown(void);//病历列表页:DOWN键名字窗口向后移动(到最后一条停止)
+void listTreatmentSelect(uint8_t slot);//病历列表页:选择窗口内第slot个病历(0-9)
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log);//病历储存页面:显示EPROM历史病历
 void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -41,21 +41,22 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_DUAL_450_980                  10
 #define GDDC_PAGE_STANDBY_TRI_1470_980_635							11
 #define GDDC_PAGE_STANDBY_TRI_1940_1470_635             12
-#define GDDC_PAGE_TREATMENTLOG													13//病例储存页面
-#define GDDC_PAGE_READY																	14
-#define GDDC_PAGE_OPTION																15//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									16//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										17//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_DETAIL													18//方案分类页 自定义
-#define GDDC_PAGE_INFORMATION														19//信息页面
-#define GDDC_PAGE_DIAGNOSIS															20//诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW													21//诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI												22
-#define GDDC_PAGE_RENAME																23//SCHEME更名
-#define GDDC_PAGE_RESTORE																24//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														25//脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM											26//弹出菜单 确认关机
-#define GDDC_PAGE_STATUS_USB														27//
+#define GDDC_PAGE_LIST_TREATMENT			                  13//显示病历列表
+#define GDDC_PAGE_EDIT_TREATMENT									      14//病例编辑
+#define GDDC_PAGE_READY																	15
+#define GDDC_PAGE_OPTION																16//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									17//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										18//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_DETAIL													19//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														20//信息页面
+#define GDDC_PAGE_DIAGNOSIS															21//诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW													22//诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI												23
+#define GDDC_PAGE_RENAME																24//SCHEME更名
+#define GDDC_PAGE_RESTORE																25//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														26//脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM											27//弹出菜单 确认关机
+#define GDDC_PAGE_STATUS_USB														28//
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -133,24 +134,51 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_CH2 				42//功率设定拖动条 635(工作激光)
 #define GDDC_PAGE_STANDBY_PROGRESS_SET_POWER_AIM				43//功率设定拖动条 650(指示激光)
 #define GDDC_PAGE_STANDBY_ICON_MPKEY										44//脉冲模式背景图
-#define GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT						45//储存手术记录
+#define GDDC_PAGE_STANDBY_KEY_ENTER_TREATMENT						45//储存手术记录
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID							 1//患者ID
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME						 2//患者姓名
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE							 3//患者年龄
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_0			 4//方案预览信息0
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_1			 5//方案预览信息1
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_2			 6//方案预览信息2
-#define GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_4			 7//方案预览信息3
-#define GDDC_PAGE_TREATMENT_KEY_MALE										 8//性别-男
-#define GDDC_PAGE_TREATMENT_KEY_FAMALE									 9//性别-女
-#define GDDC_PAGE_TREATMENT_KEY_CANCEL									10
-#define GDDC_PAGE_TREATMENT_KEY_SAVETOUSB								11
-#define GDDC_PAGE_TREATMENT_KEY_LAST										12//上一份病历
-#define GDDC_PAGE_TREATMENT_KEY_NEXT										13//下一份病历
-#define GDDC_PAGE_TREATMENT_KEY_DELETE									14//删除当前病历
-#define GDDC_PAGE_TREATMENT_KEY_INSERT									15//插入当前病历到浏览位置
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0             1
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_1             2
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_2             3
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_3             4
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_4             5
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_5             6
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_6             7
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_7             8
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_8             9
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_9            10
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0             11
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_1             12
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_2             13
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_3             14
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_4             15
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_5             16
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_6             17
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_7             18
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_8             19
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_9             20
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP            21
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN          22
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE             23
+#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE             24
+#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT               25
+#define GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB           26
+#define GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB           27
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CANCLE             28
+#define GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG      99//显示调试信息
+/*****************************************************************************/
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID							   1//患者ID
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME						   2//患者姓名
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE							   3//患者年龄
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_0			   4//方案预览信息0
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_1			   5//方案预览信息1
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_2			   6//方案预览信息2
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_4			   7//方案预览信息3
+#define GDDC_PAGE_EDIT_TREATMENT_KEY_MALE				         8//性别-男
+#define GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE					     9//性别-女
+#define GDDC_PAGE_EDIT_TREATMENT_KEY_OK                 10//确定
+#define GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL						  11//取消
+#define GDDC_PAGE_EDIT_TREATMENT_TEXTDISPLAY_DEBUG      99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//发射功率显示 1470 /1940

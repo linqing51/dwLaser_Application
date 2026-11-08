@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -56,7 +56,6 @@ typedef struct{//定义患者记录
 /*****************************************************************************/
 extern treatmentLog_t treatmentLog;
 /*****************************************************************************/
-extern uint8_t treatmentLogValid;//当前治疗记录有效性:任意一次激光发射后置1,上电复位/保存病历后清0
 const char* treatmentProtocolName(PROTOCOL_ENUM protocol);//治疗方案名称映射
 const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave);//激光波长名称映射
 /*****************************************************************************/
@@ -83,6 +82,7 @@ treatmentEpromErr_t treatmentEpromDelete(uint16_t index);//删除指定索引病
 treatmentEpromErr_t treatmentEpromUpdate(uint16_t index, const treatmentLog_t *log);//覆盖更新指定索引病历(id保持=索引位置)
 treatmentEpromErr_t treatmentEpromGet(uint16_t index, treatmentLog_t *out);//按索引读取病历
 treatmentEpromErr_t treatmentEpromClear(void);//清空整个治疗记录区块
+uint32_t treatmentEpromCalcFwCrc(void);//计算当前APP内部Flash固件区CRC32(固件变化清空判据,与bootloader同算法)
 typedef void (*treatmentEpromVisitFn)(uint16_t index, const treatmentLog_t *log);//遍历回调函数指针类型
 void treatmentEpromTraverse(treatmentEpromVisitFn fn);//遍历所有有效病历(索引升序)
 #endif

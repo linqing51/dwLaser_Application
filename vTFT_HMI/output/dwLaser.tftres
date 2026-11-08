@@ -13,22 +13,23 @@
         <page name="GDDC_PAGE_STANDBY_DUAL_450_980" id="10" />
         <page name="GDDC_PAGE_STANDBY_TRI_1470_980_635" id="11" />
         <page name="GDDC_PAGE_STANDBY_TRI_1940_1470_635" id="12" />
-        <page name="GDDC_PAGE_SAVE_TREATMENT" id="13" />
-        <page name="GDDC_PAGE_READY" id="14" />
-        <page name="GDDC_PAGE_OPTION" id="15" />
-        <page name="GDDC_PAGE_SCHEME_CLASSIFY_DUAL" id="16" />
-        <page name="GDDC_PAGE_SCHEME_CLASSIFY_TRI" id="17" />
-        <page name="GDDC_PAGE_SCHEME_DETAIL" id="18" />
-        <page name="GDDC_PAGE_INFORMATION" id="19" />
-        <page name="GDDC_PAGE_DIAGNOSIS" id="20" />
-        <page name="GDDC_PAGE_DIAGNOSIS_RAW" id="21" />
-        <page name="GDDC_PAGE_DIAGNOSIS_CALI" id="22" />
-        <page name="GDDC_PAGE_RENAME" id="23" />
-        <page name="GDDC_PAGE_RESTORE" id="24" />
-        <page name="GDDC_PAGE_WEAR_SAFETY" id="25" />
-        <page name="GDDC_PAGE_POWEROFF" id="26" />
-        <page name="GDDC_PAGE_STATUS_UDISK_SAVE_DONE" id="27" />
-        <page name="GDDC_PAGE_STATUS_NO_UDISK" id="28" />
+        <page name="GDDC_PAGE_LIST_TREATMENT" id="13" />
+        <page name="GDDC_PAGE_EDIT_TREATMENT" id="14" />
+        <page name="GDDC_PAGE_READY" id="15" />
+        <page name="GDDC_PAGE_OPTION" id="16" />
+        <page name="GDDC_PAGE_SCHEME_CLASSIFY_DUAL" id="17" />
+        <page name="GDDC_PAGE_SCHEME_CLASSIFY_TRI" id="18" />
+        <page name="GDDC_PAGE_SCHEME_DETAIL" id="19" />
+        <page name="GDDC_PAGE_INFORMATION" id="20" />
+        <page name="GDDC_PAGE_DIAGNOSIS" id="21" />
+        <page name="GDDC_PAGE_DIAGNOSIS_RAW" id="22" />
+        <page name="GDDC_PAGE_DIAGNOSIS_CALI" id="23" />
+        <page name="GDDC_PAGE_RENAME" id="24" />
+        <page name="GDDC_PAGE_RESTORE" id="25" />
+        <page name="GDDC_PAGE_WEAR_SAFETY" id="26" />
+        <page name="GDDC_PAGE_POWEROFF" id="27" />
+        <page name="GDDC_PAGE_STATUS_UDISK_SAVE_DONE" id="28" />
+        <page name="GDDC_PAGE_STATUS_NO_UDISK" id="29" />
     </pages>
     <images>
         <image id="0" url="d:\github\dwlaser_application\vtft_hmi\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />

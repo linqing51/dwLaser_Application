@@ -5,10 +5,6 @@
  *----------------------------------------------------------------------------*/
 #include "dcHmiNotifyButton.h"
 /*****************************************************************************/
-//病历储存页面历史浏览状态(仅本文件内使用)
-static uint16_t treatmentViewIndex = 0;//当前浏览的EPROM病历索引
-static treatmentLog_t treatmentViewRecord;//当前浏览病历缓存
-/*****************************************************************************/
 //按钮控件通知当按钮状态改变(或调用GetControlValue)时，执行此函数
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
 void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){ 
@@ -905,9 +901,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_STANDBY_KEY_SAVE_TREATMENT:{
+				case GDDC_PAGE_STANDBY_KEY_ENTER_TREATMENT:{
 					if(state){
-						SSET(R_STANDBY_KEY_SAVE_TREATMENT_DOWN);
+						SSET(R_STANDBY_KEY_ENTER_LIST_TREATMENT_DOWN);
 					}
 					break;
 				}
@@ -915,135 +911,72 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}	
-		case GDDC_PAGE_TREATMENTLOG:{//病历储存页面
+    
+    case GDDC_PAGE_LIST_TREATMENT:{//显示病历列表
+      switch(control_id){
+        case GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP:{//名字窗口向前移动
+          if(state){
+            listTreatmentMoveUp();
+          }
+          break;
+        }
+        case GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN:{//名字窗口向后移动
+          if(state){
+            listTreatmentMoveDown();
+          }
+          break;
+        }
+        case GDDC_PAGE_LIST_TREATMENT_KEY_CANCLE:{//返回STANDBY状态
+          if(state){
+            returnStandbyDisplay();//统一返回待机页面
+          }
+          break;
+        }
+        default:{//KEY_NAME_0-9:选择窗口内对应位置的病历
+          if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0)
+             && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_NAME_9)){
+            listTreatmentSelect((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0));
+          }
+          break;
+        }
+      }
+      break;
+    }
+		case GDDC_PAGE_EDIT_TREATMENT:{//病例详细
 			switch(control_id){
-				case GDDC_PAGE_TREATMENT_KEY_MALE:{//性别-男 选择按钮
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_MALE:{//性别-男 选择按钮
 					if(state){
 						treatmentLog.gender = MALE;
-						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, true);//选中男
-						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, false);//取消女
-						updateTreatmentLogDisplay();//刷新显示
+						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, true);//选中男
+						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, false);//取消女
+						updateListTreatmentDisplay();//刷新显示
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_FAMALE:{//性别-女 选择按钮
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE:{//性别-女 选择按钮
 					if(state){
 						treatmentLog.gender = FEMALE;
-						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, false);//取消男
-						SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, true);//选中女
-						updateTreatmentLogDisplay();//刷新显示
-					}
-					break;
-				}					
-				case GDDC_PAGE_TREATMENT_KEY_CANCEL:{
-					if(state){
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
-						SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
-						updateStandbyDisplay();
-					}
-					break;
-				}				
-				case GDDC_PAGE_TREATMENT_KEY_SAVETOUSB:{//储存当前病历到EPROM
-					if(state){
-						treatmentEpromErr_t ret = treatmentEpromSaveCurrent();
-						if(ret == TREATMENT_EPROM_OK){
-							printf("%s,%d,%s:treatment saved ok,count=%d\n", __FILE__, __LINE__, __func__, treatmentEpromGetCount());
-							treatmentLogValid = 0;//保存完成,当前记录不再有效
-							treatmentLog.releaseTime = 0;//复位本次治疗数据
-							treatmentLog.releaseEnergy = 0;
-							treatmentLog.laserPower = 0;
-							treatmentViewIndex = treatmentEpromGetCount() - 1;//定位到刚保存的病历
-							if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-								dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);//显示已保存病历
-							}
-						}
-						else{
-							printf("%s,%d,%s:treatment save fail,err=%d\n", __FILE__, __LINE__, __func__, ret);
-						}
+						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, false);//取消男
+						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, true);//选中女
+						updateListTreatmentDisplay();//刷新显示
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_LAST:{//浏览上一份病历
+        case GDDC_PAGE_EDIT_TREATMENT_KEY_OK:{//确认修改
+          if(state){
+            
+          }
+          break;
+        }
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL:{//取消修改
 					if(state){
-						uint16_t count = treatmentEpromGetCount();
-						if(count == 0){
-							dcHmiShowTreatmentRecord(0, NULL);
-							break;
-						}
-						if(treatmentViewIndex > 0){
-							treatmentViewIndex--;
-						}
-						if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-							dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
-						}
+						returnStandbyDisplay();//统一返回待机页面
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_NEXT:{//浏览下一份病历
-					if(state){
-						uint16_t count = treatmentEpromGetCount();
-						if(count == 0){
-							dcHmiShowTreatmentRecord(0, NULL);
-							break;
-						}
-						if(treatmentViewIndex < (count - 1)){
-							treatmentViewIndex++;
-						}
-						if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-							dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
-						}
-					}
-					break;
-				}
-				case GDDC_PAGE_TREATMENT_KEY_DELETE:{//删除当前浏览的病历
-					if(state){
-						uint16_t count = treatmentEpromGetCount();
-						if((count > 0) && (treatmentViewIndex < count)){
-							if(treatmentEpromDelete(treatmentViewIndex) == TREATMENT_EPROM_OK){
-								printf("%s,%d,%s:treatment %d deleted,count=%d\n", __FILE__, __LINE__, __func__, treatmentViewIndex, treatmentEpromGetCount());
-								count = treatmentEpromGetCount();
-								if(count > 0){
-									if(treatmentViewIndex >= count){
-										treatmentViewIndex = count - 1;
-									}
-									if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-										dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
-									}
-								}
-								else{
-									treatmentViewIndex = 0;
-									dcHmiShowTreatmentRecord(0, NULL);
-								}
-							}
-						}
-					}
-					break;
-				}
-				case GDDC_PAGE_TREATMENT_KEY_INSERT:{//插入当前病历到浏览位置(后续病历后移)
-					if(state){
-						uint16_t count = treatmentEpromGetCount();
-						if(treatmentViewIndex > count){
-							treatmentViewIndex = count;
-						}
-						treatmentEpromErr_t ret = treatmentEpromInsert(treatmentViewIndex, &treatmentLog);
-						if(ret == TREATMENT_EPROM_OK){
-							printf("%s,%d,%s:treatment inserted at %d,count=%d\n", __FILE__, __LINE__, __func__, treatmentViewIndex, treatmentEpromGetCount());
-							if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-								dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
-							}
-						}
-						else{
-							printf("%s,%d,%s:treatment insert fail,err=%d\n", __FILE__, __LINE__, __func__, ret);
-						}
-					}
-					break;
-				}
-			}
-			break;
-		}
-		
-		
+        default:break;		
+      }
+    }      
 		case GDDC_PAGE_READY:{
 			switch(control_id){
 				case GDDC_PAGE_READY_KEY_READY:{
@@ -1135,11 +1068,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				}
 				case GDDC_PAGE_OPTION_KEY_ENTER_OK:{//OK
 					if(state){
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						//loadScheme();
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
-						SetScreen(NVRAM0[EM_DC_PAGE]);//切换待机页面
-						updateStandbyDisplay();
+						returnStandbyDisplay();//统一返回待机页面
 					}
 					break;
 				}
@@ -1313,10 +1242,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN:{	
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						updateStandbyDisplay();					
+						returnStandbyDisplay();//统一返回待机页面
 					break;
 				}
 				default:break;
@@ -1415,10 +1341,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					break;
 				}
 				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN:{	
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						updateStandbyDisplay();					
+						returnStandbyDisplay();//统一返回待机页面
 					break;
 				}
 				default:break;
@@ -1441,10 +1364,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[DM_SCHEME_INDEX] = NVRAM0[EM_SCHEME_NUM_TMP];//选定方案生效
 						NVRAM0[DM_SCHEME_CLASSIFY] = NVRAM0[EM_SCHEME_CLASSIFY_TMP];
 						loadSelectScheme(NVRAM0[DM_SCHEME_CLASSIFY], NVRAM0[DM_SCHEME_INDEX]);
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-						updateStandbyDisplay();	
+						returnStandbyDisplay();//统一返回待机页面
 					}
 					break;
 				}
@@ -1459,16 +1379,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						SetScreen(NVRAM0[EM_DC_PAGE]);
 #endif
 #if defined(APP_CONFIG_WAVE_1940_635)		
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						updateStandbyDisplay();	
+						returnStandbyDisplay();//统一返回待机页面
 #endif
 #if defined(APP_CONFIG_WAVE_450_980)
-						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;
-						SetScreen(NVRAM0[EM_DC_PAGE]);
-						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
-						updateStandbyDisplay();						
+						returnStandbyDisplay();//统一返回待机页面
 #endif
 #if defined(APP_CONFIG_WAVE_1940_1470_635)
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_DUAL;
