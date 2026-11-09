@@ -160,7 +160,60 @@ static void usbPowerCycle(void){//USB VBUS断电重启,复位U盘主控
 	USBH_Start(&hUsbHostFS);//重新上电并启动USB主机
 }
 
+/*****************************************************************************/
+/* 1ms时基停摆保护(修复: HAL_Delay无超时导致"卡在自检某个颜色上"无法定位)
+ * 原实现直接用HAL_Delay, 它只等uwTick递增; 一旦时基(TIM6/SysTick中断)停摆,
+ * 就会永久死等, 外部只能看到"某个颜色的灯一直亮着", 软件/硬件原因无法区分.
+ * 这里加一个不依赖tick的兜底判据: 连续多轮迭代都没有tick推进 -> 判为时基停摆,
+ * 进入"蓝灯约2Hz慢闪"的确定性指示(与自检三色流水、故障红灯Morse码都不冲突).
+ * 注意: 该指示状态设计上不返回, 现场看到蓝灯慢闪即可直接判为1ms时基丢失. */
+#define BL_TICK_STALL_ITER_LIMIT		2000000UL	//连续无tick推进的迭代上限(正常1ms约2万次, 留约100倍余量)
+#define BL_PANIC_BLINK_LOOPS				2000000UL	//蓝灯慢闪半周期的NOP次数(约0.1~0.3s, 仅量级参考)
+
+static void bootLoadTickStall(void);
+static void bootLoadDelayMs(uint32_t ms);
+
+static void bootLoadTickStall(void){//1ms时基停摆: 蓝灯慢闪, 不依赖tick也不依赖串口
+	volatile uint32_t i;
+	SET_RED_LED_OFF;
+	SET_GREEN_LED_OFF;
+	for(;;){
+		SET_BLUE_LED_ON;
+		for(i = 0;i < BL_PANIC_BLINK_LOOPS;i ++){
+			__NOP();
+		}
+		SET_BLUE_LED_OFF;
+		for(i = 0;i < BL_PANIC_BLINK_LOOPS;i ++){
+			__NOP();
+		}
+	}
+}
+
+static void bootLoadDelayMs(uint32_t ms){//带时基停摆保护的毫秒延时
+	uint32_t t0, lastTick, stallIter, now;
+	t0 = HAL_GetTick();
+	lastTick = t0;
+	stallIter = 0;
+	while(1){
+		now = HAL_GetTick();
+		if((now - t0) >= ms){//无符号相减, 允许uwTick回绕
+			break;
+		}
+		if(now != lastTick){//tick仍在推进
+			lastTick = now;
+			stallIter = 0;
+		}
+		else if(++ stallIter > BL_TICK_STALL_ITER_LIMIT){//tick停摆, 不再死等
+			printf("Bootloader:FATAL->1ms tick stall!\r\n");
+			bootLoadTickStall();
+		}
+	}
+}
+/* 本文件内所有HAL_Delay改用带保护的版本(不改HAL驱动, 也不影响工程内其它文件) */
+#define HAL_Delay(ms)	bootLoadDelayMs(ms)
+/*****************************************************************************/
 void bootLoadInit(void){//引导程序初始化
+	uint8_t i;
 	forceUpdateMcu = 0;
 	forceUpdateLcd = 0;
   printf("Bootloader:Eprom Init\n");
@@ -229,10 +282,18 @@ void bootLoadInit(void){//引导程序初始化
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_ON;
 	HAL_Delay(500);
-	//G
+	//自检通过标记(修复: 原来最后只留绿灯亮到IDLE才熄灭, 导致"第2格绿"和"结尾绿"肉眼无法区分)
+	//改为: 三色全灭后绿短闪3次(100ms亮/100ms灭), 与前面500ms长亮明显不同
 	SET_RED_LED_OFF;
-	SET_GREEN_LED_ON;
+	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
+	for(i = 0;i < 3;i ++){
+		SET_GREEN_LED_ON;
+		HAL_Delay(100);
+		SET_GREEN_LED_OFF;
+		HAL_Delay(100);
+	}
+	SET_GREEN_LED_OFF;//保证返回前指示LED全灭, 后续"灯全灭"即代表自检已通过
 	releaseTime0 = 0;
 	releaseTime1 = 0;
 	bootLoadState = BT_STATE_IDLE; 
@@ -717,7 +778,6 @@ void bootLoadProcess(void){//bootload 执行程序
 				printf("Bootloader:Jump Address:0x%X\n", JumpAddress);
 				Jump_To_Application = (pFunction) JumpAddress;
 				/* Initialize user application's Stack Pointer */
-				__set_MSP(*(__IO uint32_t *) APPLICATION_FLASH_START_ADDRESS);
 				printf("Bootloader:Stack Pointer:0x%X\n", *(__IO uint32_t *) APPLICATION_FLASH_START_ADDRESS);
 				printf("\n\n\n\r\r\r");
 				SET_RED_LED_OFF;
@@ -759,6 +819,10 @@ void bootLoadProcess(void){//bootload 执行程序
 					NVIC->ICPR[i] = 0xFFFFFFFFUL;
 				}
 				__enable_irq();//恢复PRIMASK=0, 让APP从开中断状态启动自行管理
+				/* MSP切换放到跳转前最后一步(修复: 原来提前到打印Jump地址处,
+				 * 之后的HAL_RCC_DeInit()/HAL_DeInit()/printf()都跑在APP的栈上,
+				 * APP栈指针一旦异常就会在跳转前跑飞, 且现场表现为"灯已全灭"极难定位) */
+				__set_MSP(*(__IO uint32_t *) APPLICATION_FLASH_START_ADDRESS);
 				Jump_To_Application();
 			}
 			bootLoadFailHandler(BT_FAIL_VECTOR_TABLE_INVALID);
@@ -906,7 +970,9 @@ static void clearFlash(void){//清除MCU FLASH
 	if (FLASH_If_EraseApplication() != 0x00){//擦除APP FLASH区域失败
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
-	checkBlank(APPLICATION_FLASH_START_ADDRESS, getAppFlashSize());//FLASH 查空(按实际容量, 防超界)
+	if(checkBlank(APPLICATION_FLASH_START_ADDRESS, getAppFlashSize()) == false){//擦除后仍有非0xFF字节, 查空失败
+		bootLoadFailHandler(BT_FAIL_CHECK_BLANK);
+	}
 }
 static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 	uint32_t crc32;
@@ -926,7 +992,10 @@ static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 	while(readflag){
 		SET_RED_LED_ON;
 		/* Read maximum 512 Kbyte from the selected file */
-		f_read(&McuFile, RAM_Buf, BUFFER_SIZE, (void*)&bytesread);
+		retUsbH = f_read(&McuFile, RAM_Buf, BUFFER_SIZE, (void*)&bytesread);
+		if(retUsbH != FR_OK){//U盘读取失败, 避免用残留缓冲算CRC/写Flash
+			bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);
+		}
 		SET_RED_LED_OFF;
 		crc32 = crc32Calculate(RAM_Buf, bytesread);
 		/* Temp variable */
@@ -961,7 +1030,10 @@ static uint32_t getNewLcdAppCrc(char* filePath){//获取待更新LCD APP CRC16
 	while(readflag){
 		/* Read maximum 512 Kbyte from the selected file */
 		SET_RED_LED_ON;
-		f_read(&LcdFile, RAM_Buf, BUFFER_SIZE, (void*)&bytesread);
+		retUsbH = f_read(&LcdFile, RAM_Buf, BUFFER_SIZE, (void*)&bytesread);
+		if(retUsbH != FR_OK){//U盘读取失败, 避免用残留缓冲算CRC
+			bootLoadFailHandler(BT_FAIL_READ_LCD_APP);
+		}
 		SET_RED_LED_OFF;
 		crc32 = crc32Calculate(RAM_Buf, bytesread);
 		/* Temp variable */
@@ -996,7 +1068,9 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
 	HAL_Delay(1000);
-	checkBlank(APPLICATION_FLASH_START_ADDRESS, getAppFlashSize());//FLASH 查空(按实际容量, 防超界)
+	if(checkBlank(APPLICATION_FLASH_START_ADDRESS, getAppFlashSize()) == false){//擦除后仍有非0xFF字节, 查空失败
+		bootLoadFailHandler(BT_FAIL_CHECK_BLANK);
+	}
 	HAL_Delay(1000);
 	printf("Bootloader:Erase mcu application sucess.\n");
 	RamAddress = (uint32_t)&RAM_Buf;//获取RAM缓存区地址
@@ -1008,7 +1082,10 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 	while(readflag){
 		SET_RED_LED_ON;
 		/* Read maximum 512 Kbyte from the selected file */
-		f_read(&McuFile, RAM_Buf, BUFFER_SIZE, (void*)&bytesread);
+		retUsbH = f_read(&McuFile, RAM_Buf, BUFFER_SIZE, (void*)&bytesread);
+		if(retUsbH != FR_OK){//U盘读取失败, 避免用残留缓冲算CRC/写Flash
+			bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);
+		}
 		SET_RED_LED_OFF;
 		crc32 = crc32Calculate(RAM_Buf, bytesread);
 		/* Temp variable */

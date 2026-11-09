@@ -1,8 +1,3 @@
-/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -24,18 +19,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
-#include "can.h"
 #include "crc.h"
 #include "dac.h"
-#include "dma.h"
 #include "fatfs.h"
 #include "rng.h"
-#include "rtc.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
-#include "usb_otg_hs.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -106,9 +97,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_ADC1_Init();
-  MX_CAN2_Init();
   MX_DAC_Init();
   MX_SPI3_Init();
   MX_TIM3_Init();
@@ -124,9 +112,13 @@ int main(void)
   MX_USB_HOST_Init();
   MX_TIM7_Init();
   MX_TIM14_Init();
-  MX_RTC_Init();
-  MX_USB_OTG_HS_HCD_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+	/* 时钟安全系统CSS: HSE在运行中一旦失效(晶振/负载电容/焊接批次问题),
+	 * 硬件自动把SYSCLK切回HSI并产生NMI, 由NMI_Handler给出"蓝灯慢闪"的确定指示.
+	 * 放在外设初始化之后开启: HSE起振阶段LED(TIM4 PWM)和串口都还没就绪,
+	 * 那时开启也无法给出可见指示(那种板子上电即全黑, 走Error_Handler). */
+	SET_BIT(RCC->CR, RCC_CR_CSSON);//F4 HAL未提供__HAL_RCC_CSS_ENABLE宏, 直接置CSSON位
 	bootLoadInit();
 	HAL_FLASH_Unlock();
 	//SET_VN5016_INPUT_OFF;
@@ -162,9 +154,8 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 25;
@@ -194,28 +185,6 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
-
-/**
-  * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
-  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
-  * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
-  * @retval None
-  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  /* USER CODE BEGIN Callback 0 */
-
-  /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6)
-  {
-    HAL_IncTick();
-  }
-  /* USER CODE BEGIN Callback 1 */
-
-  /* USER CODE END Callback 1 */
-}
 
 /**
   * @brief  This function is executed in case of error occurrence.

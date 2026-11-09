@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -20,6 +20,7 @@
 
 #include "libdbg.h"
 #include "compiler.h"
+#include "sPlcConfig.h"
 /*****************************************************************************/
 #ifndef CONFIG_MORSECODE_DOT_MS
 	#define CONFIG_MORSECODE_DOT_MS     					200
@@ -35,6 +36,12 @@
 #endif
 /*****************************************************************************/
 extern UART_HandleTypeDef CONFIG_DEBUG_UART;
+/*****************************************************************************/
+/* printf重定向保护: 原实现等待TXE与HAL_UART_Transmit均无超时, 一旦UART异常
+ * (时钟/使能位/线序问题) printf就会永久阻塞, 整机表现为"卡在打印处", 且灯状态冻结.
+ * 这里改为有界轮询 + 直接写DR, 完全不依赖HAL的uwTick超时(时基停摆时同样不会死等). */
+#define CONFIG_DEBUG_UART_TXE_TIMEOUT		200000UL	//TXE轮询上限(约数ms量级; 正常一个字节约0.1ms)
+volatile uint32_t dbgUartStall = 0;//UART发送阻塞(丢弃字符)计数, 供现场调试观察
 /*****************************************************************************/
 SPLC_NO_SEMIHOSTING
 
@@ -131,9 +138,19 @@ void listEpromTable(void){//输出EPROM分布表
 
 int fputc(int ch,FILE *f){
 	uint8_t dat;
+	uint32_t wait;
 	dat = (ch & 0xFF);
-  while(__HAL_UART_GET_FLAG(&CONFIG_DEBUG_UART, UART_FLAG_TXE) == RESET);//等待 UART5 发送寄存器为空
-	HAL_UART_Transmit(&CONFIG_DEBUG_UART, &dat, 1, HAL_MAX_DELAY);
+	//等待发送寄存器为空: 有界轮询, UART异常时丢弃字符而不是永久阻塞
+	for(wait = 0;wait < CONFIG_DEBUG_UART_TXE_TIMEOUT;wait ++){
+		if(__HAL_UART_GET_FLAG(&CONFIG_DEBUG_UART, UART_FLAG_TXE) != RESET){
+			break;
+		}
+	}
+	if(wait >= CONFIG_DEBUG_UART_TXE_TIMEOUT){//UART卡死: 不再等待
+		dbgUartStall ++;
+		return ch;
+	}
+	CONFIG_DEBUG_UART.Instance->DR = dat;//TXE已置位, 直接写DR即可, 不再走HAL_UART_Transmit
 	return ch;
 }
 

@@ -1,8 +1,3 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -27,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "myConfig.h"//提供SET_*_LED_ON/OFF等板级宏(NMI里给时钟故障指示用)
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,13 +57,9 @@
 
 /* External variables --------------------------------------------------------*/
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
-extern DMA_HandleTypeDef hdma_adc1;
-extern ADC_HandleTypeDef hadc1;
 extern DAC_HandleTypeDef hdac;
 extern TIM_HandleTypeDef htim8;
 extern TIM_HandleTypeDef htim14;
-extern TIM_HandleTypeDef htim6;
-
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -81,7 +73,26 @@ extern TIM_HandleTypeDef htim6;
 void NMI_Handler(void)
 {
   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
-
+  /* CSS(HSE时钟失效)兜底指示: 硬件已先把SYSCLK切回HSI, 这里给"蓝灯约2Hz慢闪"的确定信号.
+   * 与bootloader的"红-绿-蓝三色长亮自检"、"故障红灯Morse码"都不冲突,
+   * 现场看到蓝灯持续慢闪 = 时钟类故障(HSE失效; 与1ms时基停摆同一含义). */
+  if(__HAL_RCC_GET_IT(RCC_IT_CSS) != RESET){
+    volatile uint32_t i;
+    __HAL_RCC_CLEAR_IT(RCC_IT_CSS);//清CSS标志, 避免重复触发
+    SET_RED_LED_OFF;
+    SET_GREEN_LED_OFF;
+    SET_BLUE_LED_OFF;
+    for(;;){
+      SET_BLUE_LED_ON;
+      for(i = 0;i < 2000000UL;i ++){
+        __NOP();
+      }
+      SET_BLUE_LED_OFF;
+      for(i = 0;i < 2000000UL;i ++){
+        __NOP();
+      }
+    }
+  }
   /* USER CODE END NonMaskableInt_IRQn 0 */
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
    while (1)
@@ -197,7 +208,7 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
   /* USER CODE END SysTick_IRQn 0 */
-
+  HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */
@@ -209,20 +220,6 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
-
-/**
-  * @brief This function handles ADC1, ADC2 and ADC3 global interrupts.
-  */
-void ADC_IRQHandler(void)
-{
-  /* USER CODE BEGIN ADC_IRQn 0 */
-
-  /* USER CODE END ADC_IRQn 0 */
-  HAL_ADC_IRQHandler(&hadc1);
-  /* USER CODE BEGIN ADC_IRQn 1 */
-
-  /* USER CODE END ADC_IRQn 1 */
-}
 
 /**
   * @brief This function handles TIM8 update interrupt and TIM13 global interrupt.
@@ -261,27 +258,10 @@ void TIM6_DAC_IRQHandler(void)
   /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
 
   /* USER CODE END TIM6_DAC_IRQn 0 */
-  if (hdac.State != HAL_DAC_STATE_RESET) {
-    HAL_DAC_IRQHandler(&hdac);
-  }
-  HAL_TIM_IRQHandler(&htim6);
+  HAL_DAC_IRQHandler(&hdac);
   /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
 
   /* USER CODE END TIM6_DAC_IRQn 1 */
-}
-
-/**
-  * @brief This function handles DMA2 stream0 global interrupt.
-  */
-void DMA2_Stream0_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA2_Stream0_IRQn 0 */
-
-  /* USER CODE END DMA2_Stream0_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_adc1);
-  /* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
-
-  /* USER CODE END DMA2_Stream0_IRQn 1 */
 }
 
 /**
