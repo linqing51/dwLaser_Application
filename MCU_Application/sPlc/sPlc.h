@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -100,9 +100,11 @@ typedef struct{
 	int8_t greenLedDc;//绿灯亮度
 	int8_t blueLedDc;//蓝灯亮度
 	int8_t redAimGain;//红指示光增益
-  int8_t redOffset;//红指示光增益
+  int8_t redAimOffset;//红指示光增益
+  int8_t redLaserDecay;//红激光衰减系数
 	int8_t greenAimGain;//绿指示光增益
-  int8_t greenOffset;//绿指示光增益
+  int8_t greenAimOffset;//绿指示光增益
+  int16_t greenLaserDecay;//绿光光衰减系数
 	int16_t fiberDetect;//光纤探测阈值
 	int16_t laserDiodeA_Temp;//激光器A设置温度
 	int16_t laserDiodeB_Temp;//激光器B设置温度

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -129,6 +129,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
+    deviceConfig.redLaserDecay = 63;//0.63
 #endif
     
 #if defined(MODLE_M1470_640_10_15_02_D200_22_G5W_PK)//1470 V1
@@ -162,7 +163,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
-		
+		deviceConfig.redLaserDecay = 100;
 #endif
 
 #if defined(MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK) //1470-980 V1
@@ -218,6 +219,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
+    deviceConfig.redLaserDecay = 100;
 #endif
 
 #if defined(MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK)//1470-980-650 V2
@@ -273,6 +275,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
+    deviceConfig.redLaserDecay = 100;
 #endif
 
 #if defined(MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK)
@@ -329,6 +332,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
+    deviceConfig.redLaserDecay = 100;
 #endif
 
 #if defined(MODLE_M12_1920_10_400S)
@@ -362,6 +366,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
+    deviceConfig.redLaserDecay = 100;
 #endif		
 
 #if defined(MODLE_M1470_640_10_30_05_D200_22_G9_PK)
@@ -417,6 +422,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
+    deviceConfig.redLaserDecay = 100;
 #endif
 
 #if defined(MODLE_M450_980_200_60_D275_22_VI1_GP)
@@ -535,7 +541,7 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 			deviceConfig.calibrationPwr6[i] = i;
 			deviceConfig.calibrationPwr7[i] = i;
 		}
-		
+		deviceConfig.redLaserDecay = 100;
 #endif
 
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
@@ -548,9 +554,9 @@ void loadDeviceConfig(void){//从EPROM载入配置文件
 		deviceConfig.redLedDc = CONFIG_RED_LED_DEFAULT_DC;
 		deviceConfig.blueLedDc = CONFIG_BLUE_LED_DEFAULT_DC;
 		deviceConfig.redAimGain = CONFIG_LASER_RAIM_GAIN;
-    deviceConfig.redOffset = CONFIG_LASER_RAIM_OFFSET;
+    deviceConfig.redAimOffset = CONFIG_LASER_RAIM_OFFSET;
     deviceConfig.greenAimGain = CONFIG_LASER_GAIM_GAIN;
-    deviceConfig.greenOffset = CONFIG_LASER_GAIM_OFFSET;
+    deviceConfig.greenAimOffset = CONFIG_LASER_GAIM_OFFSET;
 		deviceConfig.fiberDetect = CONFIG_FIBER_PD_THRESHOLD;
 #if defined(LYPE_MCU_1V0_20260106)
 		deviceConfig.normalOpenInterLock = 0;//默认常开联锁

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -185,8 +185,9 @@ void laserStart(void){//按通道选择打开激光
 		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
 			SET_LASER_CH1_ON;
 		}
-		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//打开红激光
-			setRedLaserPwm(NVRAM0[EM_LASER_POWER_CH2] * 1000);
+		if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//打开红激光		
+      NVRAM0[SPREG_DAC_16] = (int16_t)((float)NVRAM0[EM_LASER_POWER_CH2] * ((float)(deviceConfig.redLaserDecay) / 100.0F) * 1000.0F);
+      UPDAC16();
 		}
     SSET(R_LASER_FALG_EMITING);
 		SET_BEEM_LED_ON;
@@ -202,7 +203,7 @@ void laserStop(void){//按通道选择关闭激光
 		SET_LASER_CH5_OFF;
 		SET_LASER_CH6_OFF;
 		SET_LASER_CH7_OFF;
-		NVRAM0[SPREG_DAC_16] = NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain + deviceConfig.redOffset;
+		NVRAM0[SPREG_DAC_16] = NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain + deviceConfig.redAimOffset;
 		UPDAC16();	
     RRES(R_LASER_FALG_EMITING);
 		SET_BEEM_LED_OFF;

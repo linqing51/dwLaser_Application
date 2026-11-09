@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -93,7 +93,7 @@ void restoreDefault(void){//恢复默认值
 	RRES(R_DISABLE_AUTO_FAN);
 	RRES(R_DISABLE_INTERLOCK_CHECK);
 
-	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 4;
+	NVRAM0[DM_BEEM_VOLUME] = CONFIG_BEEM_MAX_VOLUME / 2;
 	NVRAM0[DM_RAIM_BRG] = CONFIG_MAX_LASER_POWER_RAIM;
 	NVRAM0[DM_GAIM_BRG] = CONFIG_MAX_LASER_POWER_GAIM;
 	NVRAM0[DM_LCD_BRG] = CONFIG_LCD_MAX_DC;
