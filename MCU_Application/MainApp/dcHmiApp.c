@@ -2061,8 +2061,8 @@ void updateInformationDisplay(void){//更新信息界面显示
 void returnStandbyDisplay(void){//统一返回STANDBY页面:状态机切回待机并刷新待机页显示
 	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//显式指定待机页,不依赖寄存器可能已被覆盖的旧值
-	SetScreen(NVRAM0[EM_DC_PAGE]);
-	updateStandbyDisplay();
+	updateStandbyDisplay();//先刷新目标页面控件(指令带screen id,可预刷新后台页面)
+	SetScreen(NVRAM0[EM_DC_PAGE]);//再切换页面,切换时控件已是最新内容,避免上一页控件残留
 }
 void clearReleaseTimeEnergy(void){//清除发射时间与能量显示
 	CLRD(EM_LASER_RELEASE_TIME);
@@ -3783,12 +3783,12 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_READY_LOAD_PARA;	
 			RRES(R_STANDBY_KEY_STNADBY_DOWN);
 			standbyKeyValue(0);
-			//页面切换
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
-			SetScreen(NVRAM0[EM_DC_PAGE]);
+			//先刷新READY页控件(指令带screen id,可预刷新后台页面)
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//指定目标页面
 			readyPageTouchEnable(0);
 			readyKeyValue(1);
 			updateReadyDisplay();
+			SetScreen(NVRAM0[EM_DC_PAGE]);//再切换页面,避免上一页控件残留
 			SET_SAFE_RESET_OFF;//复位急停
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_NEXT_DOWN)){
@@ -3818,9 +3818,9 @@ void dcHmiLoop(void){//HMI轮训程序
 			
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;	
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			//查询EPROM有效病历数量,按储存先后顺序刷新第一页名字(TEXT_NAME_0-9)
+			//先刷新病历列表控件:查询EPROM有效病历数量,按储存先后顺序刷新第一页名字(TEXT_NAME_0-9)
 			enterListTreatmentPage();
+			SetScreen(NVRAM0[EM_DC_PAGE]);//再切换页面,避免上一页控件残留
 			//清除进入标志,避免返回待机状态后标志残留导致再次自动进入本页
 			RRES(R_STANDBY_KEY_ENTER_LIST_TREATMENT_DOWN);
 		}
@@ -3835,8 +3835,8 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(T_100MS_START * 16 + T100MS_READY_BEEM_DELAY) && LDB(R_FOOTSWITCH_PRESS)){
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);
 			readyPageTouchEnable(1);
-			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//切换待机页面
-			SetScreen(NVRAM0[EM_DC_PAGE]);
+			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//指定目标页面
+			//先刷新READY页控件使能状态(指令带screen id,可预刷新)
 			if(LD(R_ACOUSTIC_ENABLE)){
 				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD, true);
 				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_INC, true);
@@ -3849,6 +3849,7 @@ void dcHmiLoop(void){//HMI轮训程序
 				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD, false);
 				SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC, false);
 			}
+			SetScreen(NVRAM0[EM_DC_PAGE]);//控件刷新后再切页,避免控件残留
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LASER_WAIT_TRIGGER;
 		}
 		else{
@@ -4131,8 +4132,8 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN)){//进入诊断状态
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
-			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			updateDiagnosis();//更新文本输入值
+			updateDiagnosis();//先刷新诊断页控件(指令带screen id,可预刷新)
+			SetScreen(NVRAM0[EM_DC_PAGE]);//再切页,避免控件残留
 			RRES(R_OPTION_KEY_ENTER_DIAGNOSIS_DOWN);
 		}
 		return;
@@ -4510,8 +4511,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_16] = (NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain) + deviceConfig.redOffset;
 			UPDAC16();
 			
-			SetScreen(NVRAM0[EM_DC_PAGE]);
-			updateDiagnosisCali();
+			updateDiagnosisCali();//先刷新校准页控件(指令带screen id,可预刷新)
+			SetScreen(NVRAM0[EM_DC_PAGE]);//再切页,避免控件残留
 			//刷新页面数据
 			RRES(R_DIAGNOSIS_GOTO_CORRECTION_DOWN);	
 		}
