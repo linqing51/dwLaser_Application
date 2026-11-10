@@ -32,15 +32,21 @@ extern "C" {
   #endif
 #endif
 /*****************************************************************************/
-uint16_t crc16Calculate(uint8_t *buf, uint32_t len);//CRC16 计算数组
-uint16_t crc16CalculateAdd(uint8_t dat);//CRC16 计算连续字节
-void crc16Clear(void);//清空旧CRC16结果
-void crc16SetCrcOld(uint16_t old);
-/*****************************************************************************/
-uint32_t crc32Calculate(uint8_t *buf, uint32_t len);//CRC32 计算数组
-uint32_t crc32CalculateAdd(uint8_t dat);//CRC32 计算连续字节
-void crc32Clear(void);//清空旧CRC32结果
-void crc32SetCrcOld(uint32_t old);
+/* CRC32 纯软件实现: 不依赖 CRC 外设 / RCC / 中断 / 互斥量, 可重入, 可多任务并发
+ * 算法与 STM32 硬件 CRC 外设 bit 序逐位一致(CRC-32/MPEG-2:
+ * poly 0x04C11DB7 / 初值 0xFFFFFFFF / MSB-first 输入 / 输出不反转 / 无末异或),
+ * 与旧硬件路径算出的值完全相同(便于与历史数据对照; 本工程烧写固件后统一整片
+ * 清除 EPROM, 不依赖存量校验值, 因此不涉及迁移)。
+ * 用法: CRC 中间值由调用者自己持有(初值 CRC32_SW_INIT), 通过返回值传递;
+ *       不同线程各自持有一份, 并发调用互不影响(本库无任何全局可变状态)。
+ */
+#define CRC32_SW_INIT       0xFFFFFFFFu
+
+uint32_t crc32SwUpdate(uint32_t crc, const void *buf, uint32_t len);//字节流分块累加(可跨调用/跨任务)
+uint32_t crc32SwBlock(const void *buf, uint32_t len);//字节流一次算完
+uint32_t crc32SwUpdateWords(uint32_t crc, const void *words, uint32_t nWords);//32位字累加(等价硬件WORDS语义)
+uint32_t crc32SwBlockWords(const void *words, uint32_t nWords);//32位字一次算完(入参需4字节对齐)
+uint32_t crc32SwUpdateFill(uint32_t crc, uint8_t val, uint32_t count);//重复同一字节累加(镜像尾部补0xFF用)
 /*****************************************************************************/
 #ifdef __cplusplus
 }

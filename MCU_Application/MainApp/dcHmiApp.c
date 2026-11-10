@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -44,7 +44,6 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	uint32_t LastPGAddress;
 	uint8_t readflag = TRUE;
 	uint32_t bytesread;//实际文件读取字节数
-	uint32_t i;
 	//警告信息
 	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Please Standby,Do Not Power Off!!"));
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
@@ -86,9 +85,8 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 		return false;
 	}
 	vTaskDelay(800);
-	//计算新固件CRC值（分块读取+硬件CRC流式累加）
-	newBootloadCrc32 = 0;
-	crc32Clear();
+	//计算新固件CRC值（分块读取+纯软件CRC流式累加; 中间值由本函数自己持有, 不依赖任何全局状态）
+	newBootloadCrc32 = CRC32_SW_INIT;
 	LastPGAddress = BOOTLOADER_FLASH_START_ADDRESS;
 	while(readflag){
 		/* 分块读取固件文件，块大小 BOOTLOAD_BUF_SIZE(8KB)，复用 CCM 缓冲 */
@@ -96,7 +94,7 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 		if(bytesread == 0){//文件已读完
 			break;
 		}
-		newBootloadCrc32 = crc32Calculate(CcmRamBuf, bytesread);//CRC32 累加（硬件CRC不重置）
+		newBootloadCrc32 = crc32SwUpdate(newBootloadCrc32, CcmRamBuf, bytesread);//CRC32 累加: 把上一块的结果传进来继续算
 		/* Temp variable */
 		TmpReadSize = bytesread;
 		/* The read data < "BOOTLOAD_BUF_SIZE" 字节 */
@@ -107,8 +105,8 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	}
 	f_close(&BootLoadFile);
 	f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
-	for(i = LastPGAddress;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){//补完剩余CRC
-		newBootloadCrc32 = crc32CalculateAdd(0xFF);
+	if(LastPGAddress < BOOTLOADER_FLASH_END_ADDRESS){//仅在剩余空间为正时补FF: 文件超长时原for循环自然跳过, 这里必须同样跳过, 否则无符号相减回绕成死循环
+		newBootloadCrc32 = crc32SwUpdateFill(newBootloadCrc32, 0xFF, (uint32_t)(BOOTLOADER_FLASH_END_ADDRESS - LastPGAddress));//补完剩余CRC(未编程区域按0xFF参与)
 	}
 	//与已有的固件进行对比并给出提示
 	if(BootloadCrc == newBootloadCrc32){

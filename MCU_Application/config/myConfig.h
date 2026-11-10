@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 /*****************************************************************************/
-#define SW_VERSION																		"4.1a0b0"
+#define SW_VERSION																		"4.1a0b1"
 /*****************************************************************************/
 extern const char BootLoadMainVer;
 extern const char BootLoadMinorVer;

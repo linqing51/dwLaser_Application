@@ -579,7 +579,7 @@ void FDSAV_ONE(int16_t cn){//储存一个方案到EPROM中
 		printf("%s,%d,%s:invalid FD scheme number:%d\n",__FILE__, __LINE__, __func__, cn);
 		return;
 	}
-  crc32_eprom_fd = sPlcCrc32Calc(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
+  crc32_eprom_fd = sPlcCrc32Calc((uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
 	//注意:此处CRC按整区FDRAM计算(历史布局),单方案独立加载时不用于校验,仅保持兼容
 	ref = epromWrite((cn * 128 + CONFIG_EPROM_FD_START), (uint8_t*)(cn * 64 + FDRAM0), 128);
 	if(ref != HAL_OK){

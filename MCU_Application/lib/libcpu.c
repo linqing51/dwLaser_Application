@@ -126,27 +126,13 @@ void resetInit(void){//复位后初始化
 }
 
 uint32_t getOriginBootloadCrc(void){//计算MCU Bootload CRC32
-	uint8_t val;
-	uint32_t i;
-	uint32_t crc32;
-	crc32Clear();
-	for(i = BOOTLOADER_FLASH_START_ADDRESS;i < BOOTLOADER_FLASH_END_ADDRESS;i ++){
-		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
-	}
-	return crc32;	
+	/* 纯软件CRC: FLASH是存储器映射的, 直接整段一次算完(不再逐字节软件累加, 也不再依赖CRC外设) */
+	return crc32SwBlock((const void*)BOOTLOADER_FLASH_START_ADDRESS, (uint32_t)(BOOTLOADER_FLASH_END_ADDRESS - BOOTLOADER_FLASH_START_ADDRESS));	
 }
 
 uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
-	uint8_t val;
-	uint32_t i;
-	uint32_t crc32;
-	crc32Clear();
-	for(i = APPLICATION_FLASH_START_ADDRESS;i < APPLICATION_FLASH_END_ADDRESS;i ++){
-		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
-	}
-	return crc32;	
+	/* 纯软件CRC: 同上, 整段一次算完 */
+	return crc32SwBlock((const void*)APPLICATION_FLASH_START_ADDRESS, (uint32_t)(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS));	
 }
 
 

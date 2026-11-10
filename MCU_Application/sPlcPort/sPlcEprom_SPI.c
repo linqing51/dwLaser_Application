@@ -96,7 +96,7 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所�
 
 SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//读1字节 addr: 24位地址（MB85RS2MTA 只用低18位） rdat: 输出1字节
 	HAL_StatusTypeDef ret;
-	uint8_t tempBuf[4], rxBuf[4];//命令+地址一次收发(减少HAL调用)
+	uint8_t tempBuf[8], rxBuf[8];//命令+地址+数据一次收发: 必须容纳txLen(3或4)+1字节, 原[4]在24bit地址(txLen=4)时rxBuf[4]越界
 	uint16_t txLen;
 	EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");
@@ -154,7 +154,9 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat)
 
 SPLC_FORCE_INLINE HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint16_t len){//批量读addr: 起始地址pBuf: 输出缓冲区len: 字节数
 	HAL_StatusTypeDef ret;
-	uint8_t tempBuf[4], rxBuf[8];//小批量(≤4B)命令+地址+数据合并收发缓冲
+	uint8_t tempBuf[8], rxBuf[8];//小批量(≤4B)命令+地址+数据合并收发缓冲: 必须容纳txLen(3或4)+len(≤4),
+	                             //原tempBuf[4]在txLen=3/len=4时memset(&tempBuf[3],0xFF,4)会越界3字节,
+	                             //-Otime内联后正好踩进本函数的保存寄存器区, 导致调用者指针被改坏
 	uint16_t txLen;
   EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");

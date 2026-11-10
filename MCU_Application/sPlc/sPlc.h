@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -171,7 +171,7 @@ extern void sPlcSpeakerInit(void);//喇叭初始化
 extern void sPlcNvramUpdate(void);//更新NVRAM->EPROM	
 extern void sPlcNvramLoad(void);
 extern void sPlcNvramSave(void);
-extern uint32_t sPlcCrc32Calc(CRC_HandleTypeDef *hcrc, uint32_t *pBuffer, uint32_t BufferLength);//EPROM CRC32计算(计算前强制恢复CRC外设WORDS配置, 防止被libcrc逐字节模式污染)
+extern uint32_t sPlcCrc32Calc(uint32_t *pBuffer, uint32_t BufferLength);//EPROM CRC32计算(纯软件实现, 不碰CRC外设: CRC硬件模块已移除, 无hcrc参数; 可重入, 可多任务并发)
 extern void sPlcNvramClear(void);//清除NVRAM数据
 extern void sPlcFdramLoad(void);
 extern void sPlcFdramSave(void);

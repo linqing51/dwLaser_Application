@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -976,7 +976,6 @@ static void clearFlash(void){//清除MCU FLASH
 }
 static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 	uint32_t crc32;
-	uint32_t i;
 	uint8_t readflag = TRUE;
 	uint16_t bytesread;//实际文件读取字节数
 	retUsbH = f_open(&McuFile, LMCU_FIRMWARE_FILENAME, FA_OPEN_EXISTING | FA_READ);
@@ -987,8 +986,7 @@ static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
 	LastPGAddress = APPLICATION_FLASH_START_ADDRESS;//重置写入地址起点，避免上次残留导致补FF起点错误
-	crc32 = 0;
-	crc32Clear();
+	crc32 = CRC32_SW_INIT;//纯软件CRC: 初值由本函数自己持有, 不使用任何全局CRC状态
 	while(readflag){
 		SET_RED_LED_ON;
 		/* Read maximum 512 Kbyte from the selected file */
@@ -997,7 +995,7 @@ static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 			bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);
 		}
 		SET_RED_LED_OFF;
-		crc32 = crc32Calculate(RAM_Buf, bytesread);
+		crc32 = crc32SwUpdate(crc32, RAM_Buf, bytesread);//把上一块的结果传进来继续累加
 		/* Temp variable */
 		TmpReadSize = bytesread;
 		/* The read data < "BUFFER_SIZE" Kbyte */
@@ -1006,8 +1004,8 @@ static uint32_t getNewMcuAppCrc(void){//获取待更新MCU APP CRC32
 		}
 		LastPGAddress += TmpReadSize;
 	}
-	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//补完剩余CRC
-		crc32 = crc32CalculateAdd(0xFF);
+	if(LastPGAddress < APPLICATION_FLASH_END_ADDRESS){//仅在剩余空间为正时补FF: 文件超长时原for循环自然跳过, 这里同样跳过, 否则无符号相减会回绕成死循环
+		crc32 = crc32SwUpdateFill(crc32, 0xFF, (uint32_t)(APPLICATION_FLASH_END_ADDRESS - LastPGAddress));//补完剩余CRC(未编程区域按0xFF参与)
 	}
 	f_close(&McuFile);
 	
@@ -1025,8 +1023,7 @@ static uint32_t getNewLcdAppCrc(char* filePath){//获取待更新LCD APP CRC16
 	}
 	f_lseek(&LcdFile, 0);//读取指针移动到开头
 	LastPGAddress = APPLICATION_FLASH_START_ADDRESS;//重置写入地址起点，避免残留值污染后续MCU CRC计算
-	crc32 = 0;
-	crc32Clear();
+	crc32 = CRC32_SW_INIT;//纯软件CRC: 初值由本函数自己持有
 	while(readflag){
 		/* Read maximum 512 Kbyte from the selected file */
 		SET_RED_LED_ON;
@@ -1035,7 +1032,7 @@ static uint32_t getNewLcdAppCrc(char* filePath){//获取待更新LCD APP CRC16
 			bootLoadFailHandler(BT_FAIL_READ_LCD_APP);
 		}
 		SET_RED_LED_OFF;
-		crc32 = crc32Calculate(RAM_Buf, bytesread);
+		crc32 = crc32SwUpdate(crc32, RAM_Buf, bytesread);//把上一块的结果传进来继续累加
 		/* Temp variable */
 		TmpReadSize = bytesread;
 		/* The read data < "BUFFER_SIZE" Kbyte */
@@ -1049,7 +1046,6 @@ static uint32_t getNewLcdAppCrc(char* filePath){//获取待更新LCD APP CRC16
 }
 static uint32_t updateMcuApp(void){//更新MCU APP
 	uint32_t crc32;
-	uint32_t i;
 	uint32_t programcounter = 0x00;
 	uint8_t readflag = TRUE;
 	uint32_t bytesread;//实际文件读取字节数
@@ -1077,8 +1073,7 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 	/* Erase address init */
 	LastPGAddress = APPLICATION_FLASH_START_ADDRESS;
 	/* While file still contain data */
-	crc32 = 0;
-	crc32Clear();
+	crc32 = CRC32_SW_INIT;//纯软件CRC: 初值由本函数自己持有
 	while(readflag){
 		SET_RED_LED_ON;
 		/* Read maximum 512 Kbyte from the selected file */
@@ -1087,7 +1082,7 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 			bootLoadFailHandler(BT_FAIL_READ_LMCU_APP);
 		}
 		SET_RED_LED_OFF;
-		crc32 = crc32Calculate(RAM_Buf, bytesread);
+		crc32 = crc32SwUpdate(crc32, RAM_Buf, bytesread);//把上一块的结果传进来继续累加
 		/* Temp variable */
 		TmpReadSize = bytesread;
 		/* The read data < "BUFFER_SIZE" Kbyte */
@@ -1104,8 +1099,8 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		/* Update last programmed address value */
 		LastPGAddress += TmpReadSize;
 	}
-	for(i = LastPGAddress;i < APPLICATION_FLASH_END_ADDRESS;i ++){//补完剩余CRC
-		crc32 = crc32CalculateAdd(0xFF);
+	if(LastPGAddress < APPLICATION_FLASH_END_ADDRESS){//仅在剩余空间为正时补FF: 文件超长时原for循环自然跳过, 这里同样跳过, 否则无符号相减会回绕成死循环
+		crc32 = crc32SwUpdateFill(crc32, 0xFF, (uint32_t)(APPLICATION_FLASH_END_ADDRESS - LastPGAddress));//补完剩余CRC(未编程区域按0xFF参与)
 	}
 	HAL_FLASH_Lock();
 	HAL_Delay(1000);
@@ -1210,8 +1205,7 @@ static uint32_t updateLcdApp(char* filePath){//更新LCD APP单个文件
   //DATA固定为2048字节,不够补0
   //CHECKSUM,2字节,前面2050字节求和后取反
 	signName = 0;
-	crc32 = 0;
-	crc32Clear();
+	crc32 = CRC32_SW_INIT;//纯软件CRC: 初值由本函数自己持有
 	for(fileIndex = 0; fileIndex < fileSize; fileIndex += blockSize){
 		memset(gddcTxBuf, 0x0, sizeof(gddcTxBuf));  
 		gddcTxBuf[0] = signName;
@@ -1223,7 +1217,7 @@ static uint32_t updateLcdApp(char* filePath){//更新LCD APP单个文件
 		SET_RED_LED_ON;
 		retUsbH = f_read(&LcdFile, &gddcTxBuf[2], transferByte, &actualByte);
 		SET_RED_LED_OFF;
-		crc32 = crc32Calculate(&gddcTxBuf[2], actualByte);
+		crc32 = crc32SwUpdate(crc32, &gddcTxBuf[2], actualByte);
 		if(retUsbH != FR_OK){
 			bootLoadFailHandler(BT_FAIL_READ_LCD_APP);
     }
@@ -1267,15 +1261,8 @@ static uint32_t updateLcdApp(char* filePath){//更新LCD APP单个文件
 }
 
 static uint32_t getOriginAppCrc(void){//计算MCU APP CRC32
-	uint8_t val;
-	uint32_t i;
-	uint32_t crc32;
-	crc32Clear();
-	for(i = APPLICATION_FLASH_START_ADDRESS;i < APPLICATION_FLASH_END_ADDRESS;i ++){
-		val = *(__IO uint8_t*)(i);
-		crc32 = crc32CalculateAdd(val);//CRC32计算连续字节
-	}
-	return crc32;	
+	/* 纯软件CRC: FLASH存储器映射, 直接整段一次算完(不再逐字节软件累加, 也不再依赖CRC外设) */
+	return crc32SwBlock((const void*)APPLICATION_FLASH_START_ADDRESS, (uint32_t)(APPLICATION_FLASH_END_ADDRESS - APPLICATION_FLASH_START_ADDRESS));	
 }
 /*****************************************************************************/
 //触摸屏程序

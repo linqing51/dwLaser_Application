@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -25,6 +25,7 @@ extern "C" {
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
 #define CONFIG_DEBUG_IIC_EXPAND												0//调试I2C总线扩展器
 #define CONFIG_DEBUG_IIC_HDC1080											0//调试I2C 板载温湿度传感器
+#define CONFIG_FAULT_DIAG														1//调试HardFault现场: 1=向调试串口输出CFSR/HFSR/MMFAR/BFAR与异常栈帧
 #define CONFIG_INPUT_FILTER_TIME											10//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -9,9 +9,9 @@
 extern void restoreDefault(void);//预设方案恢复默认设置(MainAppLib层, DM区CRC校验失败时使用)
 //避免指针和动态RAM分配 移植大部分8BIT和16BIT单片机效率低存在问题
 #pragma pack(push, 4)
-int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
-int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
-int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
+SPLC_ALIGN(4) int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器 (强制4字节对齐: 大量(uint32_t*)强转给CRC/memcpy, 仅2字节对齐时会UNALIGNED UsageFault)
+SPLC_ALIGN(4) int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次 (同上)
+SPLC_ALIGN(4) int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器 (强制4字节对齐: 与NVRAM同理, 会被(uint32_t*)强转喂给CRC——sPlc.c/sPlcFun.c多处)
 int16_t BKRAM0[CONFIG_BKRAM_SIZE] SPLC_PLACE_AT(40024000);//BKRAM0: BKSRAM起始(2K字节) CONFIG_BKSRAM_BASE_ADDR=0x40024000
 int16_t BKRAM1[CONFIG_BKRAM_SIZE] SPLC_PLACE_AT(40024800);//BKRAM1: BKSRAM中间(2K字节) 真掉电存储寄存器 0x40024000+2048
 uint32_t BootloadCrc, ApplicationCrc;//当前固件校验码
@@ -33,7 +33,7 @@ uint8_t TD_500MS_SP = 0;
 uint8_t TD_1000MS_SP = 0;
 uint8_t TD_60000MS_SP = 0;
 /******************************************************************************/
-deviceConfig_t deviceConfig;
+SPLC_ALIGN(4) deviceConfig_t deviceConfig;//设备配置 (强制4字节对齐: deviceConfig_t成员全是int16/int8/char, 自然对齐只有2; 代码里用(uint32_t*)&deviceConfig喂给CRC)
 deviceLogInfo_t deviceLogInfo;
 /*****************************************************************************/
 void sPlcErrorHandler(uint16_t errCode){
@@ -59,28 +59,15 @@ void sPlcAssertRegisterAddress(uint16_t adr){//检查寄存器地址
 	adr = ~adr;
 #endif
 }
-uint32_t sPlcCrc32Calc(CRC_HandleTypeDef *hcrc, uint32_t *pBuffer, uint32_t BufferLength){//EPROM CRC32: 计算前RCC强制复位CRC外设(同步复位确保DR=0xFFFFFFFF/CR=0), 消除任何状态残留
-	__HAL_RCC_CRC_CLK_ENABLE();
-	__HAL_RCC_CRC_FORCE_RESET();
-	__HAL_RCC_CRC_RELEASE_RESET();
-	CRC->CR = 0x00000000U;//复位后CR应为0(REV_IN=WORDS, REV_OUT=0)
-	return HAL_CRC_Calculate(hcrc, pBuffer, BufferLength);
+uint32_t sPlcCrc32Calc(uint32_t *pBuffer, uint32_t BufferLength){//EPROM CRC32: 纯软件实现, 不碰CRC外设/RCC, 不关中断
+	/* CRC 硬件模块已从本工程移除(crc.c/crc.h 不再存在), 因此不再有 hcrc 形参。
+	   CRC 由 libcrc 的纯软件算法计算, 无外设状态、无全局状态。
+	   可重入: 中间值全在栈上, 多个任务并发调用各算各的, 互不影响, 因此不需要
+	   互斥量, 也不需要 PRIMASK 包住 RCC 的读-改-写。 */
+	return crc32SwBlockWords(pBuffer, BufferLength);//与硬件WORDS语义逐位一致: 字内按高字节->低字节喂
 }
-uint32_t sPlcCrc32Soft(uint32_t *pBuffer, uint32_t BufferLength){//标准CRC-32软件计算(与HAL硬件WORDS语义一致: poly 0x04C11DB7/初值0xFFFFFFFF/无输出异或), 用于对照验证硬件外设
-	uint32_t crc = 0xFFFFFFFFu;
-	uint32_t i;
-	for(i = 0; i < BufferLength; i++){
-		uint32_t v = pBuffer[i];
-		int32_t b;
-		for(b = 31; b >= 0; b--){
-			uint32_t bit = (crc >> 31) & 1u;
-			crc <<= 1;
-			if(((v >> b) & 1u) != bit){
-				crc ^= 0x04C11DB7u;
-			}
-		}
-	}
-	return crc;//与HAL DR一致(不做0xFFFFFFFF异或)
+uint32_t sPlcCrc32Soft(uint32_t *pBuffer, uint32_t BufferLength){//标准CRC-32软件计算(与HAL硬件WORDS语义一致: poly 0x04C11DB7/初值0xFFFFFFFF/无输出异或); 保留此接口供对照/回归时使用, 实现已并入libcrc
+	return crc32SwBlockWords(pBuffer, BufferLength);
 }
 void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	volatile uint32_t crc32_mr, crc32_dm;//volatile: 防止-O1优化寄存器复用覆盖局部变量(此前被踩成0x93FFFFFF导致误判)
@@ -90,11 +77,11 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 	//从EPROM中恢复MR NVRAM
 	epromRead(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//从EPROM中恢复MR
 	epromReadDword(CONFIG_EPROM_MR_CRC, &crc32_eprom_mr);
-	crc32_mr = sPlcCrc32Calc(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
+	crc32_mr = sPlcCrc32Calc((uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
 	//从EPROM中恢复DM NVRAM
 	epromRead(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//从EPROM中恢复DM
 	epromReadDword(CONFIG_EPROM_DM_CRC, &crc32_eprom_dm);
-	crc32_dm = sPlcCrc32Calc(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
+	crc32_dm = sPlcCrc32Calc((uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 
 	memcpy((uint8_t*)NVRAM1, (uint8_t*)NVRAM0, (CONFIG_NVRAM_SIZE * 2));
 	if(crc32_eprom_mr != crc32_mr){
@@ -134,7 +121,7 @@ void sPlcNvramLoad(void){//从EPROM中载入NVRAM MR和DM
 void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 	volatile uint32_t crc32_mr, crc32_dm;//volatile: 防止-O1优化寄存器复用覆盖
 	//MR NVRAM写入EPROM
-	crc32_mr = sPlcCrc32Calc(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
+	crc32_mr = sPlcCrc32Calc((uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
 	epromWrite(CONFIG_EPROM_MR_START, (uint8_t*)(NVRAM0 + MR_START), (CONFIG_MR_SIZE * 2));//将NVRAM中MR储存入EPROM
 	{
 		uint32_t crcTmp = crc32_mr;//volatile->非volatile拷贝后传址
@@ -146,7 +133,7 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 #endif
 	//DM NVRAM写入EPROM
 	epromWrite(CONFIG_EPROM_DM_START, (uint8_t*)(NVRAM0 + DM_START), (CONFIG_DM_SIZE * 2));//将NVRAM中DM储存入EPROM
-	crc32_dm = sPlcCrc32Calc(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
+	crc32_dm = sPlcCrc32Calc((uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 	{
 		uint32_t crcTmp = crc32_dm;//volatile->非volatile拷贝后传址
 		epromWriteDword(CONFIG_EPROM_DM_CRC, &crcTmp);//在的指定地址开始写入32位数
@@ -241,7 +228,7 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM(优化: 连续变化字节合并
 		epromWrite((CONFIG_EPROM_MR_START + segStart), ((uint8_t*)(NVRAM0 + MR_START) + segStart), (i - segStart));
 	}
 	if(updateFlagMr){
-		crc32_mr = sPlcCrc32Calc(&hcrc,(uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
+		crc32_mr = sPlcCrc32Calc((uint32_t *)(NVRAM0 + MR_START), (CONFIG_MR_SIZE / 2));
 		{
 			uint32_t crcTmp = crc32_mr;//volatile->非volatile拷贝后传址
 			epromWriteDword(CONFIG_EPROM_MR_CRC, &crcTmp);//在的指定地址开始写入32位数
@@ -275,7 +262,7 @@ void sPlcNvramUpdate(void){//更新NVRAM->EPROM(优化: 连续变化字节合并
 		epromWrite((CONFIG_EPROM_DM_START + segStart), ((uint8_t*)(NVRAM0 + DM_START) + segStart), (i - segStart));
 	}
 	if(updateFlagDm){
-		crc32_dm = sPlcCrc32Calc(&hcrc,(uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
+		crc32_dm = sPlcCrc32Calc((uint32_t *)(NVRAM0 + DM_START), (CONFIG_DM_SIZE / 2));
 		{
 			uint32_t crcTmp = crc32_dm;//volatile->非volatile拷贝后传址
 			epromWriteDword(CONFIG_EPROM_DM_CRC, &crcTmp);//在的指定地址开始写入32位数
@@ -308,7 +295,7 @@ void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 	memset((uint8_t*)FDRAM0, 0x0, (CONFIG_FDRAM_SIZE * 2));//初始化FDRAM(已移除早期自测0x01填充)
   epromRead(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));//从EPROM中恢复MR
 	epromReadDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);
-  crc32_fd = sPlcCrc32Calc(&hcrc, (uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
+  crc32_fd = sPlcCrc32Calc((uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
   memcpy((uint8_t*)FDRAM1, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
   if(crc32_eprom_fd != crc32_fd){
 #if (CONFIG_DEBUG_NVRAM == 1)
@@ -332,7 +319,7 @@ void sPlcFdramLoad(void){//从EPROM中载入FDRAM
 void sPlcFdramSave(void){//强制将FDRAM存入EPROM
 	uint32_t crc32_eprom_fd;
   HAL_StatusTypeDef ref;
-  crc32_eprom_fd = sPlcCrc32Calc(&hcrc,(uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
+  crc32_eprom_fd = sPlcCrc32Calc((uint32_t *)(FDRAM0), (CONFIG_FDRAM_SIZE / 2));
 	ref = epromWrite(CONFIG_EPROM_FD_START, (uint8_t*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));
 	ref = epromWriteDword(CONFIG_EPROM_FD_CRC, &crc32_eprom_fd);//在的指定地址开始写入32位数
   if(ref != HAL_OK){
@@ -394,7 +381,7 @@ void sPlcBkramLoad(void){//从EPROM中载入BK(映射BKSRAM)
 	memset((uint8_t*)CONFIG_BKSRAM_BASE_ADDR, 0x0, (CONFIG_BKRAM_SIZE * 4));//清空BKSRAM
 	epromRead(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 4));//从EPROM中恢复BK
 	epromReadDword(CONFIG_EPROM_BK_CRC, &crc32_eprom_bk);
-	crc32_bk = sPlcCrc32Calc(&hcrc, (uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE));
+	crc32_bk = sPlcCrc32Calc((uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE));
 	if(crc32_eprom_bk != crc32_bk){
 #if (CONFIG_DEBUG_NVRAM == 1)
 		printf("%s,%d,%s:[DIAG]BK CRC FAIL epromAddr=0x%08X len=%d calc=0x%08X eprom=0x%08X\n",__FILE__, __LINE__, __func__, (unsigned)CONFIG_EPROM_BK_START, (CONFIG_BKRAM_SIZE * 4), crc32_bk, crc32_eprom_bk);
@@ -425,7 +412,7 @@ void sPlcBkramSave(void){//BKSRAM->EPROM 强制保存
 	__HAL_RCC_PWR_CLK_ENABLE();
 	HAL_PWR_EnableBkUpAccess();
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
-	crc32_bk = sPlcCrc32Calc(&hcrc, (uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE));
+	crc32_bk = sPlcCrc32Calc((uint32_t *)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE));
 	ref1 = epromWrite(CONFIG_EPROM_BK_START, (uint8_t*)CONFIG_BKSRAM_BASE_ADDR, (CONFIG_BKRAM_SIZE * 4));
 	ref2 = epromWriteDword(CONFIG_EPROM_BK_CRC, &crc32_bk);//在的指定地址开始写入32位数
 	if((ref1 != HAL_OK) || (ref2 != HAL_OK)){

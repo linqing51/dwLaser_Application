@@ -59,22 +59,22 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试(含长批量/边界/CRC回�
 		}
 	}
 	//3.随机字节顺序写入+CRC比对(写/读各自累计CRC)
-	__HAL_CRC_DR_RESET(&hcrc);//清空之前CRC32结果
+	crcWrite = CRC32_SW_INIT;//清空之前CRC32结果
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
 		epromWriteByte((i + 0), ((uint8_t*)&tempWrite + 0));
 		epromWriteByte((i + 1), ((uint8_t*)&tempWrite + 1));
 		epromWriteByte((i + 2), ((uint8_t*)&tempWrite + 2));
 		epromWriteByte((i + 3), ((uint8_t*)&tempWrite + 3));
-		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
+		crcWrite = crc32SwUpdateWords(crcWrite, &tempWrite, 1);
 	}
-	__HAL_CRC_DR_RESET(&hcrc);
+	crcRead = CRC32_SW_INIT;
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadByte((i + 0), ((uint8_t*)&tempRead + 0));
 		epromReadByte((i + 1), ((uint8_t*)&tempRead + 1));
 		epromReadByte((i + 2), ((uint8_t*)&tempRead + 2));
 		epromReadByte((i + 3), ((uint8_t*)&tempRead + 3));
-		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
+		crcRead = crc32SwUpdateWords(crcRead, &tempRead, 1);
 	}
 	if(crcRead == crcWrite){
 		printf("%s,%d,%s:byte(8bit) sequential write+CRC pass!\r\n", __FILE__, __LINE__, __func__);
@@ -84,18 +84,18 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试(含长批量/边界/CRC回�
 		res = false;
 	}
 	//4.字(16bit)顺序写入+CRC比对
-	__HAL_CRC_DR_RESET(&hcrc);
+	crcWrite = CRC32_SW_INIT;
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
 		epromWriteHword((i + 0), ((uint16_t*)&tempWrite + 0));
 		epromWriteHword((i + 2), ((uint16_t*)&tempWrite + 1));
-		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
+		crcWrite = crc32SwUpdateWords(crcWrite, &tempWrite, 1);
 	}
-	__HAL_CRC_DR_RESET(&hcrc);
+	crcRead = CRC32_SW_INIT;
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadHword((i + 0), ((uint16_t*)&tempRead + 0));
 		epromReadHword((i + 2), ((uint16_t*)&tempRead + 1));
-		crcRead = HAL_CRC_Accumulate(&hcrc, (uint32_t*)&tempRead, 1);
+		crcRead = crc32SwUpdateWords(crcRead, (uint32_t*)&tempRead, 1);
 	}
 	if(crcRead == crcWrite){
 		printf("%s,%d,%s:hword(16bit) sequential write+CRC pass!\r\n", __FILE__, __LINE__, __func__);
@@ -119,16 +119,16 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试(含长批量/边界/CRC回�
 		res = false;
 	}
 	//5.双字(32bit)顺序写入+CRC比对
-	__HAL_CRC_DR_RESET(&hcrc);
+	crcWrite = CRC32_SW_INIT;
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		tempWrite = HAL_RNG_GetRandomNumber(&hrng);
 		epromWriteDword(i, &tempWrite);
-		crcWrite = HAL_CRC_Accumulate(&hcrc, &tempWrite, 1);
+		crcWrite = crc32SwUpdateWords(crcWrite, &tempWrite, 1);
 	}
-	__HAL_CRC_DR_RESET(&hcrc);
+	crcRead = CRC32_SW_INIT;
 	for(i = 0;i < CONFIG_EPROM_SIZE;i += 4){
 		epromReadDword(i, &tempRead);
-		crcRead = HAL_CRC_Accumulate(&hcrc, &tempRead, 1);
+		crcRead = crc32SwUpdateWords(crcRead, &tempRead, 1);
 	}
 	if(crcRead == crcWrite){
 		printf("%s,%d,%s:dword(32bit) sequential write+CRC pass!\r\n", __FILE__, __LINE__, __func__);
@@ -206,11 +206,11 @@ uint8_t sPlcEpromTest(void){//EPROM 读写自测试(含长批量/边界/CRC回�
 		for(i = 0;i < longLen;i ++){
 			bigbuf[i] = (uint8_t)((i * 7 + j) & 0xFF);//确定性模式
 		}
-		crcWrite = sPlcCrc32Calc(&hcrc, (uint32_t*)bigbuf, (longLen / 4));//写前内存CRC
+		crcWrite = sPlcCrc32Calc((uint32_t*)bigbuf, (longLen / 4));//写前内存CRC
 		epromWrite(0, bigbuf, longLen);//单次长连续写(从0地址)
 		memset(bigbuf, 0x00, longLen);
 		epromRead(0, bigbuf, longLen);
-		crcRead = sPlcCrc32Calc(&hcrc, (uint32_t*)bigbuf, (longLen / 4));//读回CRC
+		crcRead = sPlcCrc32Calc((uint32_t*)bigbuf, (longLen / 4));//读回CRC
 		for(i = 0;i < longLen;i ++){//逐字节回读比对
 			if(bigbuf[i] != (uint8_t)((i * 7 + j) & 0xFF)){
 				printf("%s,%d,%s:long write %uB fail at:0x%08X,exp:0x%02X,got:0x%02X!\r\n", __FILE__, __LINE__, __func__, (unsigned)longLen, (unsigned)i, (unsigned)(uint8_t)((i * 7 + j) & 0xFF), (unsigned)bigbuf[i]);

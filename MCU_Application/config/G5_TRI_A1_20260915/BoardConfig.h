@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -38,7 +38,6 @@ typedef enum{
 /*****************************************************************************/
 //定义外部资源
 extern ADC_HandleTypeDef hadc1;
-extern CRC_HandleTypeDef hcrc;
 extern RNG_HandleTypeDef hrng;
 extern DAC_HandleTypeDef hdac;//LAS0 LAS1
 extern SPI_HandleTypeDef hspi3;//EPROM SPI3

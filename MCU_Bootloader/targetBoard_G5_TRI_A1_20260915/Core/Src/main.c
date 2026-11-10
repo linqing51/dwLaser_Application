@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
-#include "crc.h"
 #include "dac.h"
 #include "fatfs.h"
 #include "rng.h"
@@ -106,7 +105,6 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   MX_TIM4_Init();
-  MX_CRC_Init();
   MX_RNG_Init();
   MX_FATFS_Init();
   MX_USB_HOST_Init();

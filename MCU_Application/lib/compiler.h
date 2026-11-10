@@ -60,6 +60,21 @@ extern "C" {
  */
 #define SPLC_PLACE_AT(hex)     __attribute__((section(".ARM.__at_0x" SPLC_STRINGIFY(hex)), zero_init))
 
+/* ---- 强制对齐 ------------------------------------------------------------*/
+/* 在 #pragma pack(4) 之类的紧凑布局下, int16_t 数组只能保证 2 字节对齐(自然对齐);
+ * 而这类数组常被强转成 (uint32_t*) 交给 CRC / memcpy / memset 使用, 后两者的
+ * aeabi 实现用 LDM/STM 批量搬运, Cortex-M4 对 LDM/STM 不支持非对齐访问, 指针一旦
+ * 落在 2 mod 4 就直接 UNALIGNED UsageFault。
+ * armcc 用 __align(n) 类型限定符(必须写在声明最前面); armclang 用 GCC 的
+ * __attribute__((aligned(n))), 放在声明最前面同样有效。用法:
+ *   SPLC_ALIGN(4) int16_t NVRAM0[CONFIG_NVRAM_SIZE];
+ */
+#if defined(SPLC_COMPILER_ARMCC)
+  #define SPLC_ALIGN(n)    __align(n)
+#else
+  #define SPLC_ALIGN(n)    __attribute__((aligned(n)))
+#endif
+
 /* ---- 禁用半主机 ----------------------------------------------------------*/
 /* armcc 用 #pragma import(__use_no_semihosting); armclang 不支持 #pragma
  * import, 改用声明全局符号的内联汇编。Cortex-M 上原 __use_no_semihosting_swi
