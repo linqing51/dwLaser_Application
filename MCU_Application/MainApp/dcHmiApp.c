@@ -5,6 +5,7 @@
  *----------------------------------------------------------------------------*/
 #include "dcHmiApp.h"
 #include "treatment.h"
+#include "minicsvApp.h"//U盘CSV导入导出/U盘在位检测
 /*****************************************************************************/
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
@@ -2727,7 +2728,7 @@ void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显�
 		return;
 	}
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d", index);//病历序号=索引位置
+	sprintf(dispBuf, "AR %04u", (unsigned int)log->id);//患者ID取自记录本身(与患者绑定), 规则见treatment.c注释
 	dcHmiShowTreatmentCommon(dispBuf, log);
 }
 
@@ -2737,9 +2738,19 @@ void updateListTreatmentDisplay(void){//病历储存页面:显示当前治疗记
 
 //病历列表页单页可显示的名字数量(对应GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0-9)
 #define LIST_TREATMENT_WINDOW_SIZE										10
-//病历列表页面状态
-static uint16_t listTreatmentTopIndex = 0;//当前窗口第一个名字对应的EPROM病历索引
-static uint16_t listTreatmentSelectedIndex = 0;//当前选中病历的EPROM索引
+//病历相关运行状态集中管理: 列表页窗口/选中 + U盘提示页状态机 + 待存病历快照
+typedef struct{
+	uint16_t topIndex;//列表窗口第一个名字对应的EPROM病历索引
+	uint16_t selectedIndex;//当前选中病历的EPROM索引
+	uint16_t usbState;//U盘提示页状态: 0空闲 1保存页待写 2保存已写完 3无U盘页 4载入确认页 5载入执行中
+	uint16_t usbCount;//本次保存/载入的病历条数
+	uint16_t driveStep;//上一拍HMI治疗步骤(用于识别停光, 开机为0不等于发射中步骤)
+	uint8_t  usbOp;//1=保存 2=载入(用于无U盘页的提示文字)
+	uint8_t  usbErr;//U盘操作结果(0=成功)
+	uint8_t  pendingValid;//1=本次治疗确实发射过且尚未落成病历
+	treatmentLog_t pending;//待存病历快照(功率/波长/方案/发射时间/发射能量)
+}listTreatmentCtx_t;
+static listTreatmentCtx_t listTreatmentCtx;//病历页相关运行状态(开机全为0, 全部放ZI段)
 
 //获取EPROM中有效病历数量:数量由DM_TREATMENT_NUM寄存器维护(treatment数据层增删时自动同步)
 static uint16_t listTreatmentGetCount(void){
@@ -2754,40 +2765,43 @@ void refreshListTreatmentDisplay(void){
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	uint16_t recordCount = listTreatmentGetCount();
 	for(uint8_t i = 0; i < LIST_TREATMENT_WINDOW_SIZE; i++){
-		uint16_t recordIndex = (uint16_t)(listTreatmentTopIndex + i);
+		uint16_t recordIndex = (uint16_t)(listTreatmentCtx.topIndex + i);
 		memset(dispBuf, 0x0, sizeof(dispBuf));
 		if(recordIndex < recordCount){
 			treatmentLog_t record;
 			if(treatmentEpromGet(recordIndex, &record) == TREATMENT_EPROM_OK){
-				sprintf(dispBuf, "%s", record.name);
+				sprintf(dispBuf, "AR %04u/%s", (unsigned int)record.id, record.name);//显示规则: ID/人名(ID已与患者绑定, 见treatment.c注释)
 			}
 		}
 		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0 + i, (uint8_t*)dispBuf);
 		//选中病历对应的按钮高亮,窗口外或空槽位取消高亮
 		SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0 + i,
-			(recordIndex < recordCount) && (recordIndex == listTreatmentSelectedIndex));
+			(recordIndex < recordCount) && (recordIndex == listTreatmentCtx.selectedIndex));
 	}
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "TOTAL:%u/%u", (unsigned int)recordCount, (unsigned int)treatmentEpromGetCapacity());//有效病历数量/区块可容纳数量
+	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_TOTAL, (uint8_t*)dispBuf);
 }
 
 //进入病历列表页:窗口从第一条病历开始,默认选中第一条(数量直接读DM_TREATMENT_NUM,不扫描EPROM)
 void enterListTreatmentPage(void){
-	listTreatmentTopIndex = 0;
-	listTreatmentSelectedIndex = 0;
+	listTreatmentCtx.topIndex = 0;
+	listTreatmentCtx.selectedIndex = 0;
 	refreshListTreatmentDisplay();
 }
 
 //UP键:名字窗口向前移动一条,已移动到第一条病历(窗口起始索引为0)时不再移动
 void listTreatmentMoveUp(void){
-	if(listTreatmentTopIndex > 0){
-		listTreatmentTopIndex--;
+	if(listTreatmentCtx.topIndex > 0){
+		listTreatmentCtx.topIndex--;
 		refreshListTreatmentDisplay();
 	}
 }
 
 //DOWN键:名字窗口向后移动一条,窗口已包含最后一条病历(末尾索引达到有效数量)时不再移动
 void listTreatmentMoveDown(void){
-	if((uint16_t)(listTreatmentTopIndex + LIST_TREATMENT_WINDOW_SIZE) < listTreatmentGetCount()){
-		listTreatmentTopIndex++;
+	if((uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE) < listTreatmentGetCount()){
+		listTreatmentCtx.topIndex++;
 		refreshListTreatmentDisplay();
 	}
 }
@@ -2798,11 +2812,356 @@ void listTreatmentSelect(uint8_t slot){
 	if(slot >= LIST_TREATMENT_WINDOW_SIZE){
 		return;
 	}
-	recordIndex = (uint16_t)(listTreatmentTopIndex + slot);
+	recordIndex = (uint16_t)(listTreatmentCtx.topIndex + slot);
 	if(recordIndex < listTreatmentGetCount()){
-		listTreatmentSelectedIndex = recordIndex;
+		listTreatmentCtx.selectedIndex = recordIndex;
 		refreshListTreatmentDisplay();
 	}
+}
+
+//删除当前选中病历: 后续病历前移并重新编号(treatment层同步DM_TREATMENT_NUM), 删完刷新列表与总数
+void listTreatmentDelete(void){
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	uint16_t count = listTreatmentGetCount();
+	treatmentEpromErr_t err;
+	treatmentLog_t rec;
+	if(count == 0U){//没有病历可删
+		memset(dispBuf, 0x0, sizeof(dispBuf));
+		sprintf(dispBuf, "NO RECORD");
+		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+		return;
+	}
+	if(listTreatmentCtx.selectedIndex >= count){//选中索引越界时退到最后一条
+		listTreatmentCtx.selectedIndex = (uint16_t)(count - 1U);
+	}
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	if(treatmentEpromGet(listTreatmentCtx.selectedIndex, &rec) == TREATMENT_EPROM_OK){//提示正在删除的是哪个ID(直接取记录里的id字段)
+		sprintf(dispBuf, "DEL AR %04u...", (unsigned int)rec.id);
+	}
+	else{
+		sprintf(dispBuf, "DEL...");
+	}
+	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	err = treatmentEpromDelete(listTreatmentCtx.selectedIndex);//删除(后续病历前移, 各患者ID保持不变)
+	if(err != TREATMENT_EPROM_OK){
+		memset(dispBuf, 0x0, sizeof(dispBuf));
+		sprintf(dispBuf, "DEL ERR:%d", (int)err);
+		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+		return;
+	}
+	count--;//有效病历数量-1
+	if(count == 0U){//删空: 窗口与选中回到第一条
+		listTreatmentCtx.selectedIndex = 0;
+		listTreatmentCtx.topIndex = 0;
+	}
+	else{
+		if(listTreatmentCtx.selectedIndex >= count){//删的是最后一条: 选中新的最后一条
+			listTreatmentCtx.selectedIndex = (uint16_t)(count - 1U);
+		}
+		if(count <= LIST_TREATMENT_WINDOW_SIZE){//病历不足一页: 窗口从头开始
+			listTreatmentCtx.topIndex = 0;
+		}
+		else if((uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE) > count){//窗口尾部越过新末尾: 前移到刚好显示末尾
+			listTreatmentCtx.topIndex = (uint16_t)(count - LIST_TREATMENT_WINDOW_SIZE);
+		}
+	}
+	refreshListTreatmentDisplay();
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "DEL OK, NUM:%d", NVRAM0[DM_TREATMENT_NUM]);
+	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+}
+
+/*****************************************************************************/
+//待存病历快照: 在停光那一刻把本次实际治疗参数(发射时间/能量/功率/波长/方案)整条存下来,
+//避免停光后操作员在待机页改方案或功率, 造成"存档参数与本次实际发射不匹配"; 没有实际发射时保持无效
+
+static void listTreatmentPendingCapture(void){//停光时调用: 补齐最后一段累计后整条快照
+	int32_t trigTicks;
+	updateReleaseTimeEnergy();//用停光前的当前参数刷新累计时间/能量, 补齐最后一个100ms节拍
+	trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光实际打开时间(20ms计数)
+	if(trigTicks <= 0){//本次没有实际发射: 不产生待存病历
+		return;
+	}
+	listTreatmentCtx.pending = treatmentLog;//整条快照: 功率/波长/方案/发射时间/发射能量
+	listTreatmentCtx.pendingValid = 1U;
+}
+
+static void listTreatmentStepWatch(void){//监视治疗步骤: 从"发射中"切走即视为停光, 抓取待存病历快照
+	uint16_t stepNow = (uint16_t)NVRAM0[EM_HMI_OPERA_STEP];
+	if((listTreatmentCtx.driveStep == (uint16_t)FSMSTEP_LASER_EMITING) && (stepNow != (uint16_t)FSMSTEP_LASER_EMITING)){
+		listTreatmentPendingCapture();
+	}
+	listTreatmentCtx.driveStep = stepNow;
+}
+
+//姓名非空判定(全部为空格等同于没填)
+static uint8_t listTreatmentNameValid(const char *name){
+	uint8_t i;
+	if(name == NULL){
+		return 0U;
+	}
+	for(i = 0U; i < sizeof(treatmentLog.name); i++){
+		if(name[i] == '\0'){
+			break;
+		}
+		if((name[i] != ' ') && (name[i] != '\t')){
+			return 1U;
+		}
+	}
+	return 0U;
+}
+
+void listTreatmentCreateStart(void){//CREATE按键: 本次治疗确实发射过激光才允许新建病历(编辑页确认后追加到区块末尾)
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	int32_t trigTicks;
+	if(listTreatmentCtx.pendingValid == 0U){//没抓到停光快照(极短发射/步骤跳变): 再用发射时间计数判断
+		trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光实际打开时间(20ms计数)
+		if(trigTicks <= 0){//本次没有实际发射: 不允许凭空新建病历
+			memset(dispBuf, 0x0, sizeof(dispBuf));
+			sprintf(dispBuf, "CREATE:NO LASER");
+			SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			return;
+		}
+		listTreatmentCtx.pending = treatmentLog;//漏抓兜底: 直接用当前累计值
+		listTreatmentCtx.pendingValid = 1U;
+	}
+	//用停光快照还原本次实际治疗参数(与之后是否改方案/功率无关), 再清空患者信息等待录入
+	treatmentLog.releaseEnergy = listTreatmentCtx.pending.releaseEnergy;
+	treatmentLog.releaseTime = listTreatmentCtx.pending.releaseTime;
+	treatmentLog.laserPower = listTreatmentCtx.pending.laserPower;
+	treatmentLog.laserWave = listTreatmentCtx.pending.laserWave;
+	treatmentLog.protocol = listTreatmentCtx.pending.protocol;
+	memset(treatmentLog.name, 0x0, sizeof(treatmentLog.name));
+	treatmentLog.age = 0U;
+	treatmentLog.gender = (GENDER_ENUM)0;
+	treatmentLog.id = 0U;//ID由treatmentEpromAdd在保存时按规则分配, 这里只占位
+	updateListTreatmentDisplay();//先刷新编辑页控件(标题显示NEW), 再切页避免残留
+	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_EDIT_TREATMENT;
+	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_EDIT_TREATMENT;
+	SetScreen(NVRAM0[EM_DC_PAGE]);
+}
+
+void listTreatmentCreateConfirm(void){//编辑页OK: 校验患者信息后把当前治疗记录追加到EPROM末尾
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	treatmentEpromErr_t err;
+	treatmentLog_t rec;
+	uint16_t count;
+	if(listTreatmentNameValid(treatmentLog.name) == 0U){//姓名必须录入
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET NAME");
+		return;
+	}
+	if((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE)){//性别必须选择
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET GENDER");
+		return;
+	}
+	if((treatmentLog.age == 0U) || (treatmentLog.age > 120U)){//年龄范围检查
+		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET AGE");
+		return;
+	}
+	err = treatmentEpromAdd(&treatmentLog);//末尾追加: 自动分配新患者ID, 已有病历位置不变
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	if(err == TREATMENT_EPROM_OK){
+		clearReleaseTimeEnergy();//本次发射已落成病历: 清发射计数, 防止同一台治疗被重复新建
+		listTreatmentCtx.pendingValid = 0U;//本次治疗已落成病历, 避免重复新建
+		count = listTreatmentGetCount();
+		if(count > 0U){
+			listTreatmentCtx.topIndex = (uint16_t)((count > LIST_TREATMENT_WINDOW_SIZE) ? (count - LIST_TREATMENT_WINDOW_SIZE) : 0U);//窗口滚到最后一页
+			listTreatmentCtx.selectedIndex = (uint16_t)(count - 1U);
+			if(treatmentEpromGet((uint16_t)(count - 1U), &rec) == TREATMENT_EPROM_OK){
+				sprintf(dispBuf, "NEW AR %04u", (unsigned int)rec.id);
+			}
+		}
+	}
+	else if(err == TREATMENT_EPROM_ERR_FULL){
+		sprintf(dispBuf, "TREAT FULL");
+	}
+	else{
+		sprintf(dispBuf, "SAVE ERR:%d", (int)err);
+	}
+	refreshListTreatmentDisplay();
+	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+	SetScreen(GDDC_PAGE_LIST_TREATMENT);
+}
+
+void listTreatmentCreateCancel(void){//编辑页CANCEL: 放弃本次新建, 返回病历列表页(EPROM不变)
+	refreshListTreatmentDisplay();
+	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+	SetScreen(GDDC_PAGE_LIST_TREATMENT);
+}
+
+/*****************************************************************************/
+//U盘提示/确认页面流程(非阻塞): 按键只负责检测U盘/切页/起计时, 保存与载入的整块读写都在dcHmiLoop中执行一次
+//最小显示时间由 T100MS_UDISK_PAGE_DELAY + CONFIG_UDISK_PAGE_MIN_DELAY_TIME 控制
+//载入必须先弹确认页: 按"覆盖"才允许动EPROM, 按"取消"直接回列表页(避免未授权就覆盖机内病历)
+
+//触摸放行判断: 提示页显示期间屏蔽一切触摸, 载入确认页只放行"覆盖"和"取消"
+uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id){
+	if(listTreatmentCtx.usbState == 0U){
+		return 1U;//空闲: 正常响应
+	}
+	if(listTreatmentCtx.usbState == 4U){
+		if(screen_id != GDDC_PAGE_LOAD_UDISK){
+			return 0U;
+		}
+		if((control_id == GDDC_PAGE_LOAD_UDISK_KEY_COVER) || (control_id == GDDC_PAGE_LOAD_UDISK_KEY_CANCEL)){
+			return 1U;
+		}
+		return 0U;
+	}
+	return 0U;//其余提示页面显示期间: 不响应任何触摸操作
+}
+
+uint8_t listTreatmentUsbBusy(void){//提示页/确认页显示中
+	return (listTreatmentCtx.usbState != 0U) ? 1U : 0U;
+}
+
+static uint16_t listTreatmentUsbPageOf(uint16_t state){//返回该状态对应的提示页面ID(用于判断页面是否被别处切走)
+	if(state == 3U){
+		return GDDC_PAGE_NO_UDISK;
+	}
+	if((state == 4U) || (state == 5U)){
+		return GDDC_PAGE_LOAD_UDISK;
+	}
+	return GDDC_PAGE_SAVING_UDISK;
+}
+
+static void listTreatmentUsbShowPage(uint16_t state, uint16_t page){//切到提示页面(调用前按需启动最小显示计时)
+	listTreatmentCtx.usbState = state;
+	NVRAM0[EM_DC_PAGE] = page;
+	SetScreen(page);
+}
+
+void listTreatmentSaveUsbStart(void){//SAVE_USB按键: 先检测U盘, 在位弹保存页(写入在轮询中执行), 不在位弹无U盘页
+	if(listTreatmentCtx.usbState != 0U){
+		return;//上一次操作未结束
+	}
+	listTreatmentCtx.usbOp = 1U;
+	listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
+	listTreatmentCtx.usbCount = 0U;
+	SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB, 0);//复位自锁按钮
+	T100MS(T100MS_UDISK_PAGE_DELAY, false, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//复位最小显示时间计时
+	T100MS(T100MS_UDISK_PAGE_DELAY, true, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//启动计时
+	if(treatmentUsbDiskPresent() == 0U){//U盘不在位
+		listTreatmentUsbShowPage(3U, GDDC_PAGE_NO_UDISK);
+		return;
+	}
+	listTreatmentUsbShowPage(1U, GDDC_PAGE_SAVING_UDISK);
+}
+
+void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 先检测U盘, 在位弹载入确认页(不直接读盘, 防止未确认就覆盖机内病历)
+	if(listTreatmentCtx.usbState != 0U){
+		return;
+	}
+	listTreatmentCtx.usbOp = 2U;
+	listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
+	listTreatmentCtx.usbCount = 0U;
+	SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB, 0);//复位自锁按钮
+	if(treatmentUsbDiskPresent() == 0U){//U盘不在位: 提示页(最小显示时间后回列表)
+		T100MS(T100MS_UDISK_PAGE_DELAY, false, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);
+		T100MS(T100MS_UDISK_PAGE_DELAY, true, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);
+		listTreatmentUsbShowPage(3U, GDDC_PAGE_NO_UDISK);
+		return;
+	}
+	listTreatmentUsbShowPage(4U, GDDC_PAGE_LOAD_UDISK);//确认页: 等"覆盖/取消"
+}
+
+void listTreatmentLoadUsbCover(void){//载入确认页"覆盖": 授权覆盖机内病历(实际读取在轮询里执行一次)
+	if(listTreatmentCtx.usbState != 4U){
+		return;
+	}
+	SetButtonValue(GDDC_PAGE_LOAD_UDISK, GDDC_PAGE_LOAD_UDISK_KEY_COVER, 0);//复位自锁按钮
+	listTreatmentCtx.usbState = 5U;
+}
+
+void listTreatmentLoadUsbCancel(void){//载入确认页"取消": 不动EPROM, 直接回病历列表页
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	if(listTreatmentCtx.usbState != 4U){
+		return;
+	}
+	SetButtonValue(GDDC_PAGE_LOAD_UDISK, GDDC_PAGE_LOAD_UDISK_KEY_CANCEL, 0);
+	listTreatmentCtx.usbState = 0U;
+	refreshListTreatmentDisplay();
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	sprintf(dispBuf, "LOAD CANCEL");
+	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+	SetScreen(GDDC_PAGE_LIST_TREATMENT);
+}
+
+void listTreatmentUsbLoop(void){//U盘提示/确认页面轮询: 执行一次保存或载入, 最小显示时间到后回病历列表页
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	uint16_t prevState;
+	if(listTreatmentCtx.usbState == 0U){
+		return;
+	}
+	if(NVRAM0[EM_DC_PAGE] != listTreatmentUsbPageOf(listTreatmentCtx.usbState)){//页面被别处切走(如关机确认/休眠): 放弃本次流程
+		listTreatmentCtx.usbState = 0U;//退出忙状态, 否则触摸会被一直屏蔽
+		return;
+	}
+	if(listTreatmentCtx.usbState == 4U){//载入确认页: 等用户按键, 不占时间也不做读写
+		return;
+	}
+	if(listTreatmentCtx.usbState == 1U){//保存页已显示: 执行一次全量写入
+		listTreatmentCtx.usbErr = (uint8_t)treatmentLogSaveToUdisk(&listTreatmentCtx.usbCount);
+		listTreatmentCtx.usbState = 2U;
+	}
+	if(listTreatmentCtx.usbState == 5U){//载入执行中: 执行一次全量读取覆盖(已按"覆盖"授权)
+		listTreatmentCtx.usbErr = (uint8_t)treatmentLogLoadFromUdisk(&listTreatmentCtx.usbCount);
+		listTreatmentCtx.usbState = 0U;
+		enterListTreatmentPage();//病历已被整份替换: 名字窗口与选中回到第一条
+		memset(dispBuf, 0x0, sizeof(dispBuf));
+		if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
+			sprintf(dispBuf, "LOAD USB OK:%u", (unsigned int)listTreatmentCtx.usbCount);
+		}
+		else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
+			sprintf(dispBuf, "LOAD USB:NO UDISK");
+		}
+		else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_OPEN){
+			sprintf(dispBuf, "LOAD USB:NO FILE");
+		}
+		else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_FORMAT){
+			sprintf(dispBuf, "LOAD USB:BAD FILE");
+		}
+		else{
+			sprintf(dispBuf, "LOAD USB ERR:%d", (int)listTreatmentCtx.usbErr);
+		}
+		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+		NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+		SetScreen(GDDC_PAGE_LIST_TREATMENT);
+		return;
+	}
+	T100MS(T100MS_UDISK_PAGE_DELAY, true, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//提示页显示期间维持计时
+	if(!LD(T_100MS_START * 16 + T100MS_UDISK_PAGE_DELAY)){//最小显示时间未到: 继续停留在提示页面
+		return;
+	}
+	T100MS(T100MS_UDISK_PAGE_DELAY, false, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//停止计时
+	prevState = listTreatmentCtx.usbState;
+	listTreatmentCtx.usbState = 0U;//先退出忙状态(允许后续触摸), 再切回列表页
+	refreshListTreatmentDisplay();//保存不改变病历, 保留当前名字窗口与选中
+	memset(dispBuf, 0x0, sizeof(dispBuf));
+	if(prevState == 3U){//无U盘提示页
+		if(listTreatmentCtx.usbOp == 2U){
+			sprintf(dispBuf, "LOAD USB:NO UDISK");
+		}
+		else{
+			sprintf(dispBuf, "SAVE USB:NO UDISK");
+		}
+	}
+	else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
+		sprintf(dispBuf, "SAVE USB OK:%u", (unsigned int)listTreatmentCtx.usbCount);
+	}
+	else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_EMPTY){
+		sprintf(dispBuf, "SAVE USB:NO RECORD");
+	}
+	else{
+		sprintf(dispBuf, "SAVE USB ERR:%d", (int)listTreatmentCtx.usbErr);
+	}
+	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+	SetScreen(GDDC_PAGE_LIST_TREATMENT);//切回病历列表页
 }
 
 void updateAcousticDisplay(void){//更新提示音设置
@@ -3235,6 +3594,8 @@ void dcHmiLoop(void){//HMI轮训程序
 	statusLoop();
 	tempControlLoop();
 	gddcHmiLoop();
+	listTreatmentUsbLoop();//U盘提示页面轮询(非阻塞)
+	listTreatmentStepWatch();//监视停光: 抓取待新建病历快照
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){//休眠软关机
 		return;
 	}

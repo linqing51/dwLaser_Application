@@ -28,8 +28,9 @@
         <page name="GDDC_PAGE_RESTORE" id="25" />
         <page name="GDDC_PAGE_WEAR_SAFETY" id="26" />
         <page name="GDDC_PAGE_POWEROFF" id="27" />
-        <page name="GDDC_PAGE_STATUS_UDISK_SAVE_DONE" id="28" />
-        <page name="GDDC_PAGE_STATUS_NO_UDISK" id="29" />
+        <page name="GDDC_PAGE_SAVING_UDISK" id="28" />
+        <page name="GDDC_PAGE_NO_UDISK" id="29" />
+        <page name="GDDC_PAGE_LOAD_UDISK" id="30" />
     </pages>
     <images>
         <image id="0" url="d:\github\dwlaser_application\vtft_hmi\Images\1.1_GDDC_PAGE_POWERUP_1470.jpg" effect_width="1024" effect_height="600" />
@@ -77,7 +78,7 @@
         <image id="42" url="d:\github\dwlaser_application\vtft_hmi\Images\Yes.png" effect_width="212" effect_height="62" />
         <image id="43" url="d:\github\dwlaser_application\vtft_hmi\Images\27_GDDC_PAGE_WEAR_SAFETY.jpg" effect_width="330" effect_height="168" />
         <image id="44" url="d:\github\dwlaser_application\vtft_hmi\Images\32_GDDC_PAGE_POWEROFF_0.jpg" effect_width="431" effect_height="200" />
-        <image id="45" url="d:\github\dwlaser_application\vtft_hmi\Images\33_GDDC_PAGE_STATUS_UDISK_SAVE_DONE.png" effect_width="188" effect_height="57" />
+        <image id="45" url="d:\github\dwlaser_application\vtft_hmi\Images\Diagnosis_button_0.jpg" effect_width="330" effect_height="168" />
         <image id="46" url="d:\github\dwlaser_application\vtft_hmi\Images\34_GDDC_PAGE_STATUS_NO_UDISK.png" effect_width="330" effect_height="168" />
     </images>
     <waves />

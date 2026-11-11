@@ -25,6 +25,12 @@ extern "C" {
 #define CONFIG_DEBUG_WSW															0//调试无线脚踏
 #define CONFIG_DEBUG_IIC_EXPAND												0//调试I2C总线扩展器
 #define CONFIG_DEBUG_IIC_HDC1080											0//调试I2C 板载温湿度传感器
+/*****************************************************************************/
+//虚拟病历生成(测试数据填充): 模块常驻编译, 由诊断页按钮GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL触发生成
+#define CONFIG_TREATMENT_DEMO_COUNT										0//按钮触发时生成数量(超过容量按容量截断; 0=填满整个区块, 覆盖末尾边界)
+#define CONFIG_TREATMENT_DEMO_SEED										20261111//随机种子(0=按运行时刻取, 同种子数据可复现)
+#define CONFIG_TREATMENT_DEMO_VERBOSE									1//串口输出生成/校验摘要
+/*****************************************************************************/
 #define CONFIG_INPUT_FILTER_TIME											10//输入数字滤波扫描周期 1mS * N
 /*****************************************************************************/
 #define CONFIG_SPLC_USING_ADC													1//使能ADC模块
@@ -822,6 +828,7 @@ typedef enum{//风扇通道
 #define T100MS_ENTER_PASSCODE_DELAY										1
 #define T100MS_READY_BEEM_DELAY												2//进入READY状态后蜂鸣器响延迟
 #define T100MS_PULSE_BEEM_DELAY												3//脉冲模式蜂鸣器延迟
+#define T100MS_UDISK_PAGE_DELAY												4//U盘提示页面最小显示时间计时器
 /*****************************************************************************/
 #define T10MS_POSWIDTH_ADD_KEYDOWN_DELAY							0
 #define T10MS_POSWIDTH_DEC_KEYDOWN_DELAY							1

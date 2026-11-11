@@ -4,11 +4,16 @@
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
  *----------------------------------------------------------------------------*/
 #include "dcHmiNotifyButton.h"
+#include "treatment.h"
+#include "minicsvApp.h"//U盘CSV导入导出(治疗记录)
 /*****************************************************************************/
 //按钮控件通知当按钮状态改变(或调用GetControlValue)时，执行此函数
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
 void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){ 
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	if(!listTreatmentUsbButtonAllowed(screen_id, control_id)){//提示页显示期间屏蔽触摸, 载入确认页只放行"覆盖/取消"
+		return;
+	}
 	//PASSCODE 密码输入页面
 	switch(screen_id){
 		case GDDC_PAGE_PASSCODE:{//等待密码输入
@@ -932,6 +937,32 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           }
           break;
         }
+        case GDDC_PAGE_LIST_TREATMENT_KEY_DELETE:{//删除当前选中的病历
+          if(state){
+            listTreatmentDelete();
+            SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_DELETE, 0);//删除结束后复位按钮状态, 保证下次按下仍能触发
+          }
+          break;
+        }
+        case GDDC_PAGE_LIST_TREATMENT_KEY_CREATE:{//新建病历: 本次治疗实际发射过激光才允许进入编辑页
+          if(state){
+            listTreatmentCreateStart();
+            SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CREATE, 0);//复位自锁按钮
+          }
+          break;
+        }
+        case GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB:{//检测U盘并弹出保存提示页面(写入与等待在dcHmiLoop中非阻塞完成)
+          if(state){
+            listTreatmentSaveUsbStart();
+          }
+          break;
+        }
+        case GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB:{//先检测U盘并弹出载入确认页面, 按"覆盖"才真正读取(整个流程非阻塞)
+          if(state){
+            listTreatmentLoadUsbStart();
+          }
+          break;
+        }
         default:{//KEY_NAME_0-9:选择窗口内对应位置的病历
           if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0)
              && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_NAME_9)){
@@ -942,6 +973,26 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
       }
       break;
     }
+		case GDDC_PAGE_LOAD_UDISK:{//载入确认页面
+			switch(control_id){
+				case GDDC_PAGE_LOAD_UDISK_KEY_COVER:{//覆盖: 授权用U盘文件覆盖机内病历
+					if(state){
+						listTreatmentLoadUsbCover();
+					}
+					break;
+				}
+				case GDDC_PAGE_LOAD_UDISK_KEY_CANCEL:{//取消: 保留机内病历, 返回病历列表页
+					if(state){
+						listTreatmentLoadUsbCancel();
+					}
+					break;
+				}
+				default:{
+					break;
+				}
+			}
+			break;
+		}
 		case GDDC_PAGE_EDIT_TREATMENT:{//病例详细
 			switch(control_id){
 				case GDDC_PAGE_EDIT_TREATMENT_KEY_MALE:{//性别-男 选择按钮
@@ -962,15 +1013,17 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-        case GDDC_PAGE_EDIT_TREATMENT_KEY_OK:{//确认修改
-          if(state){
-            
-          }
-          break;
-        }
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL:{//取消修改
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_OK:{//确认新建: 校验后追加到EPROM末尾
 					if(state){
-						returnStandbyDisplay();//统一返回待机页面
+						listTreatmentCreateConfirm();
+						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_OK, 0);//复位自锁按钮
+					}
+					break;
+				}
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL:{//取消新建: 返回病历列表页, EPROM不变
+					if(state){
+						listTreatmentCreateCancel();
+						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL, 0);//复位自锁按钮
 					}
 					break;
 				}
@@ -1655,6 +1708,28 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						SSET(R_DIAGNOSIS_GOTO_RAW_DOWN);
 					}
+					break;
+				}
+				case GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL:{//病历自动填充测试: 按键触发, 先清空区块再按配置数量生成虚拟病历
+					if(state){
+						uint16_t demoCount = (uint16_t)CONFIG_TREATMENT_DEMO_COUNT;
+						uint16_t demoWritten = 0U;
+						uint8_t demoErr;
+						if(demoCount == 0U){//配置为0: 按区块容量填满, 覆盖到最后一个槽位(边界测试)
+							demoCount = treatmentEpromGetCapacity();
+						}
+						demoErr = (uint8_t)treatmentDemoGenerate(demoCount, (uint32_t)CONFIG_TREATMENT_DEMO_SEED, 1U, &demoWritten);
+						memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
+						if(demoErr == (uint8_t)TREATMENT_DEMO_OK){//生成后DM_TREATMENT_NUM已由生成模块回读校准
+							sprintf(dispBuf, "DEMO FILL:%u OK, NUM:%d", demoWritten, NVRAM0[DM_TREATMENT_NUM]);
+						}
+						else{
+							sprintf(dispBuf, "DEMO FILL ERR:%d", (int)demoErr);
+						}
+						SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4, (uint8_t*)dispBuf);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL, 0);//按钮为自锁型, 填充完成后复位为弹起, 文字回到Fill Demo
+					}
+					break;
 				}
 				default:break;
 			}

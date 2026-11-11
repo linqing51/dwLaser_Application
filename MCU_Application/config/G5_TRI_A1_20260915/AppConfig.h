@@ -130,6 +130,7 @@ extern "C" {
 /*****************************************************************************/
 #define CONFIG_WAIT_HMI_DELAY_TIME										20
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								90
+#define CONFIG_UDISK_PAGE_MIN_DELAY_TIME								10//U盘提示页面最小显示时间(单位100ms, 10=1秒), 可调
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100

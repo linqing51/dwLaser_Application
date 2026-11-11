@@ -56,7 +56,9 @@ extern "C" {
 #define GDDC_PAGE_RESTORE																25//弹出菜单 确认恢复默认值
 #define GDDC_PAGE_WEAR_SAFETY														26//脚踏安全警告
 #define GDDC_PAGE_POWEROFF_CONFIRM											27//弹出菜单 确认关机
-#define GDDC_PAGE_STATUS_USB														28//
+#define GDDC_PAGE_SAVING_UDISK													28//
+#define GDDC_PAGE_NO_UDISK                              29
+#define GDDC_PAGE_LOAD_UDISK                            30
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -147,24 +149,25 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_7             8
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_8             9
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_9            10
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0             11
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_1             12
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_2             13
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_3             14
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_4             15
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_5             16
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_6             17
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_7             18
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_8             19
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_9             20
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP            21
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN          22
-#define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE             23
-#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE             24
-#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT               25
-#define GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB           26
-#define GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB           27
-#define GDDC_PAGE_LIST_TREATMENT_KEY_CANCLE             28
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_TOTAL             11
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0             20
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_1             21
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_2             22
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_3             23
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_4             24
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_5             25
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_6             26
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_7             27
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_8             28
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_9             29
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP            30
+#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN          31
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE             32
+#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE             33
+#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT               34
+#define GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB           35
+#define GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB           36
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CANCLE             37
 #define GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG      99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID							   1//患者ID
@@ -216,6 +219,9 @@ extern "C" {
 /*****************************************************************************/
 #define GDDC_PAGE_RESTORE_KEY_CANCEL										1//取消恢复默认值
 #define GDDC_PAGE_RESTORE_KEY_YES												2//确认恢复默认值
+/*****************************************************************************/
+#define GDDC_PAGE_LOAD_UDISK_KEY_COVER                  1//覆盖
+#define GDDC_PAGE_LOAD_UDISK_KEY_CANCEL                 2//取消
 /*****************************************************************************/
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY				1		
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY				2
@@ -329,6 +335,7 @@ extern "C" {
 #define GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO			313//确认不更新固件
 #define GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK							314//默认常开安全连锁
 #define GDDC_PAGE_DISGNOSIS_KEY_RAW_DATE								315//进去RAW数据信息
+#define GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL                316//病历自动填充测试
 #define GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK								99
 /*****************************************************************************/
 #define GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO0						1
