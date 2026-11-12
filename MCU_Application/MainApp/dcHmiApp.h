@@ -91,8 +91,10 @@ void unselectSchemeNum(int16_t index);
 /*****************************************************************************/
 void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
-void updateTreatmentLogDisplay(void);//病历储存页面:显示当前治疗记录(待保存)
-void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log);//病历储存页面:显示EPROM历史病历
+void updateTreatmentLogDisplay(void);//病历储存页面:显示当前治疗记录(待保存会话)
+void dcHmiShowTreatmentRecord(uint16_t flatIndex);//病历储存页面:显示EPROM历史病历(患者ID + 第n/N条)
+uint16_t dcHmiTreatmentFlatIndexOf(uint16_t patientIndex, uint8_t recIndex);//患者块索引+病历序号 → 扁平索引
+void dcHmiTreatmentResetView(void);//病历浏览状态复位(进入病历页面时回到待保存会话)
 void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);
 void returnStandbyDisplay(void);

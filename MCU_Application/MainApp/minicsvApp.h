@@ -16,6 +16,9 @@ extern "C" {
 #include <stdio.h>
 #include "dcHmiApp.h"
 /******************************************************************************/
+void MiniCSV_ReadCsvFile(const char* file_path);//逐行读取并解析CSV(示例)
+uint16_t MiniCSV_ExportAllPatients(const char* file_path);//导出全部患者病历到CSV, 返回写入条数
+/******************************************************************************/
 #ifdef __cplusplus
 }
 #endif

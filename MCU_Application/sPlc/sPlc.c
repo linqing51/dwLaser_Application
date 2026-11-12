@@ -164,7 +164,7 @@ void sPlcNvramSave(void){//强制将NVRAM存入EPROM
 				break;
 			}
 		}
-		for(rdIdx = 0;rdIdx < (CONFIG_DM_SIZE * 2);rdIdx += 256){//DM区逐段读回逐字节比对(2048B=8段)
+		for(rdIdx = 0;rdIdx < (CONFIG_DM_SIZE * 2);rdIdx += 256){//DM区逐段读回逐字节比对(按256B一段, 当前DM=128字=256B即1段)
 			memset(rdBuf, 0, sizeof(rdBuf));
 			epromRead((CONFIG_EPROM_DM_START + rdIdx), rdBuf, 256);
 			if(memcmp(rdBuf, ((uint8_t*)(NVRAM0 + DM_START) + rdIdx), 256) != 0){

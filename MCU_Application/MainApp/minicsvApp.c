@@ -4,22 +4,25 @@
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
  *----------------------------------------------------------------------------*/
 #include "minicsvApp.h"
-
-
-
-//患者 ID 的编码规则是：
-//1. AR + 一个空格 + 至少 4 位的递增数字，例如：AR 0001、AR 0002、AR 0011。
-//- 自动生成、不可手动修改：取现有患者 ID 中最大的数字加 1，不足 4 位时前面补零。
-//- 新患者分配新 ID：目前 Demo 已有编号到 AR 0010，所以下一位是 AR 0011。
-//- 已有患者继续使用原 ID：再次治疗时追加治疗记录，不重新编号。
-//- 同名不代表同一患者：选择已有患者就复用其 ID；选择「Create New Patient」则生成新 ID。
-
-
 /*****************************************************************************/
 /* 全局静态缓冲区，不要放在栈上！STM32栈很小 */
 static char csv_file_buf[1024];     /* FATFS读取文件块缓冲区 */
 static char csv_work_buf[512];      /* MiniCSV解析工作缓冲区 */
 static char csv_write_buf[512];     /* CSV行输出序列化缓冲区 */
+static char csv_col_buf[10][48];    /* 单行10列文本缓冲(患者ID/序号/姓名/性别/年龄/功率/波长/方案/能量/时间) */
+/*****************************************************************************/
+/* 病历导出列定义: 一行 = 一条病历(患者信息随行重复, 便于第三方软件按行过滤) */
+#define CSV_COL_PATIENT_ID											0
+#define CSV_COL_RECORD_NO												1
+#define CSV_COL_NAME														2
+#define CSV_COL_GENDER													3
+#define CSV_COL_AGE														4
+#define CSV_COL_POWER													5
+#define CSV_COL_WAVE													6
+#define CSV_COL_PROTOCOL												7
+#define CSV_COL_ENERGY													8
+#define CSV_COL_TIME														9
+#define CSV_COL_COUNT														10
 /*****************************************************************************/
 /**
  * @brief 示例1：读取SD/U盘上csv文件，逐行解析
@@ -59,118 +62,105 @@ void MiniCSV_ReadCsvFile(const char* file_path){
 }
 
 /**
- * @brief 示例2：构造一行CSV数据，写入文件
+ * @brief 取CSV表头(字段顺序与csvWriteRecordRow一致)
  */
-void MiniCSV_WriteCsvFile(const char* file_path, treatmentLog_t *plog){
-	FIL file;
-	FRESULT fr;
-	MiniCSV_StatusTypeDef csv_ret;
+static const char* csvHeaderLine(void){
+	return "PatientID,Record,Name,Gender,Age,Power(W),Wave,Protocol,Energy(J),Time(s)\r\n";
+}
+
+/**
+ * @brief 把一条病历写成一行CSV追加到已打开文件
+ */
+static FRESULT csvWriteRecordRow(FIL *file, uint16_t patientId, uint8_t recNo, const char *name, uint8_t gender, uint8_t age, const treatmentRecord_t *rec){
 	MiniCSV_RowTypeDef csv_row;
-	UINT write_len;
-	uint16_t out_len;
+	MiniCSV_StatusTypeDef csv_ret;
+	uint16_t out_len = 0;
+	UINT write_len = 0;
+	FRESULT fr;
 
-	/* 重置行结构 */
 	memset(&csv_row, 0, sizeof(csv_row));
+	memset(csv_col_buf, 0, sizeof(csv_col_buf));
 
-	printf("Free heap: %d bytes\n", xPortGetFreeHeapSize());
-  printf("Min ever:  %d bytes\n", xPortGetMinimumEverFreeHeapSize());
-	
-	char *pf0 = (char *)pvPortMalloc(64);
-	configASSERT(pf0 != NULL);
-	memset(pf0, 0, 64);
-	sprintf(pf0, "%u", plog->id);
-	
-	char *pf1 = (char *)pvPortMalloc(64);
-	configASSERT(pf1 != NULL);
-	memset(pf1, 0, 64);
-	sprintf(pf1, "%s", plog->name);
-	
-	char *pf2 = (char *)pvPortMalloc(64);
-	configASSERT(pf2 != NULL);
-	memset(pf2, 0, 64);
-	sprintf(pf2, "%s", (plog->gender == MALE) ? "Male" : "Female");
-	
-	char *pf3 = (char *)pvPortMalloc(64);
-	configASSERT(pf3 != NULL);
-	memset(pf3, 0, 64);
-	sprintf(pf3, "%u", plog->age);
-	
-	char *pf4 = (char *)pvPortMalloc(64);
-	configASSERT(pf4 != NULL);
-	memset(pf4, 0, 64);
-	sprintf(pf4, "%d", plog->laserPower);
-	
-	char *pf5 = (char *)pvPortMalloc(64);
-	configASSERT(pf5 != NULL);
-	memset(pf5, 0, 64);
-	sprintf(pf5, "%s", treatmentLaserWaveName(plog->laserWave));
-	
-	char *pf6 = (char *)pvPortMalloc(64);
-	configASSERT(pf6 != NULL);
-	memset(pf6, 0, 64);
-	sprintf(pf6, "%s", treatmentProtocolName(plog->protocol));
-		
-	char *pf7 = (char *)pvPortMalloc(64);
-	configASSERT(pf7 != NULL);
-	memset(pf7, 0, 64);
-	sprintf(pf7, "%ld", (long)plog->releaseEnergy);
-	
-	char *pf8 = (char *)pvPortMalloc(64);
-	configASSERT(pf8 != NULL);
-	memset(pf8, 0, 64);
-	sprintf(pf8, "%ld", (long)plog->releaseTime);
+	sprintf(csv_col_buf[CSV_COL_PATIENT_ID], "%04u", patientId);//患者ID与界面显示一致(4位补零)
+	sprintf(csv_col_buf[CSV_COL_RECORD_NO], "%u", (unsigned)recNo);//该患者内的病历序号(从1开始)
+	strncpy(csv_col_buf[CSV_COL_NAME], name, sizeof(csv_col_buf[CSV_COL_NAME]) - 1);
+	csv_col_buf[CSV_COL_NAME][sizeof(csv_col_buf[CSV_COL_NAME]) - 1] = '\0';//截断保护
+	sprintf(csv_col_buf[CSV_COL_GENDER], "%s", ((gender == MALE) ? "Male" : "Female"));
+	sprintf(csv_col_buf[CSV_COL_AGE], "%u", (unsigned)age);
+	sprintf(csv_col_buf[CSV_COL_POWER], "%d", rec->laserPower);
+	sprintf(csv_col_buf[CSV_COL_WAVE], "%s", treatmentLaserWaveName((LASER_WAVE_ENUM)rec->laserWave));
+	sprintf(csv_col_buf[CSV_COL_PROTOCOL], "%s", treatmentProtocolName((PROTOCOL_ENUM)rec->protocol));
+	sprintf(csv_col_buf[CSV_COL_ENERGY], "%ld", (long)rec->releaseEnergy);
+	sprintf(csv_col_buf[CSV_COL_TIME], "%ld", (long)rec->releaseTime);
 
-	printf("Free heap: %d bytes\n", xPortGetFreeHeapSize());
-  printf("Min ever:  %d bytes\n", xPortGetMinimumEverFreeHeapSize());
-	
-	csv_row.fields[0] = pf0;csv_row.field_len[0] = strlen(pf0);
+	for(uint8_t i = 0; i < CSV_COL_COUNT; i++){
+		csv_row.fields[i] = csv_col_buf[i];
+		csv_row.field_len[i] = (uint16_t)strlen(csv_col_buf[i]);
+	}
+	csv_row.field_count = CSV_COL_COUNT;
 
-	csv_row.fields[1] = pf1;csv_row.field_len[1] = strlen(pf1);
-
-	csv_row.fields[2] = pf2;csv_row.field_len[2] = strlen(pf2);
-
-	csv_row.fields[3] = pf3;csv_row.field_len[3] = strlen(pf3);
-
-	csv_row.fields[4] = pf4;csv_row.field_len[4] = strlen(pf4);
-
-	csv_row.fields[5] = pf5;csv_row.field_len[5] = strlen(pf5);
-	
-	csv_row.fields[6] = pf6;csv_row.field_len[6] = strlen(pf6);
-	
-	csv_row.fields[7] = pf7;csv_row.field_len[7] = strlen(pf7);
-
-	csv_row.fields[8] = pf8;csv_row.field_len[8] =strlen(pf8);
-
-	csv_row.field_count = 9U;
-
-	/* 序列化为CSV行文本 */
 	csv_ret = MiniCSV_WriteOneRow(&csv_row, csv_write_buf, sizeof(csv_write_buf), &out_len);
 	if(csv_ret != MINICSV_OK){
-		goto csv_cleanup;
+		return FR_INT_ERR;
 	}
-	
-	
-	
-	
-	fr = f_open(&file, TREATMENTLOG_FILENAME, FA_OPEN_ALWAYS | FA_WRITE);
+	fr = f_write(file, csv_write_buf, out_len, &write_len);
 	if(fr != FR_OK){
-		goto csv_cleanup;
+		return fr;
 	}
-	f_lseek(&file, f_size(&file)); /* 追加模式，跳到文件末尾 */
+	return ((write_len == out_len) ? FR_OK : FR_INT_ERR);
+}
 
-	fr = f_write(&file, csv_write_buf, out_len, &write_len);
+/**
+ * @brief 导出全部患者病历到CSV(每行一条病历, 首行为表头)
+ * @param  file_path: 目标文件路径, 例如 TREATMENTLOG_FILENAME
+ * @retval 实际写入的病历条数; 0表示失败或无病历
+ * @note   患者信息随每条病历重复写入, 便于Excel/第三方系统直接按行处理
+ */
+uint16_t MiniCSV_ExportAllPatients(const char* file_path){
+	FIL file;
+	FRESULT fr;
+	UINT write_len = 0;
+	uint16_t patient_count;
+	uint16_t written = 0;
+	treatmentPatient_t patient;
+	treatmentRecord_t rec;
+
+	if(file_path == NULL){
+		return 0;
+	}
+	patient_count = treatmentEpromPatientCount();
+	if(patient_count == 0){
+		return 0;
+	}
+	fr = f_open(&file, file_path, FA_OPEN_ALWAYS | FA_WRITE);
+	if(fr != FR_OK){
+		return 0;
+	}
+	if(f_size(&file) == 0){//新文件: 先写表头
+		fr = f_write(&file, csvHeaderLine(), (UINT)strlen(csvHeaderLine()), &write_len);
+		if(fr != FR_OK){
+			f_close(&file);
+			return 0;
+		}
+	}
+	f_lseek(&file, f_size(&file));//追加模式: 跳到文件末尾
+	for(uint16_t p = 0; p < patient_count; p++){
+		if(treatmentEpromPatientGet(p, &patient) != TREATMENT_EPROM_OK){
+			break;
+		}
+		for(uint8_t r = 0; r < patient.recordCount; r++){
+			if(treatmentEpromRecordGet(p, r, &rec) != TREATMENT_EPROM_OK){
+				break;
+			}
+			if(csvWriteRecordRow(&file, patient.patientId, (uint8_t)(r + 1u), patient.name, patient.gender, patient.age, &rec) != FR_OK){
+				break;
+			}
+			written++;
+		}
+	}
 	f_close(&file);
-
-	csv_cleanup:
-	vPortFree(pf0);pf0 = NULL;  // 防野指针
-	vPortFree(pf1);pf1 = NULL;  // 防野指针
-	vPortFree(pf2);pf2 = NULL;  // 防野指针
-	vPortFree(pf3);pf3 = NULL;  // 防野指针
-	vPortFree(pf4);pf4 = NULL;  // 防野指针
-	vPortFree(pf5);pf5 = NULL;  // 防野指针
-	vPortFree(pf6);pf6 = NULL;  // 防野指针
-	vPortFree(pf7);pf7 = NULL;  // 防野指针
-	vPortFree(pf8);pf8 = NULL;  // 防野指针
+	printf("%s,%d,%s:exported %u records, %u patients\n", __FILE__, __LINE__, __func__, (unsigned)written, (unsigned)patient_count);
+	return written;
 }
 
 /**
@@ -181,7 +171,7 @@ void vMiniCSVTestTask(void *pvParameters){
 
 	for(;;){
 			MiniCSV_ReadCsvFile("0:/test.csv");
-			MiniCSV_WriteCsvFile("0:/test.csv", &treatmentLog);
+			MiniCSV_ExportAllPatients(TREATMENTLOG_FILENAME);
 			vTaskDelay(pdMS_TO_TICKS(5000));
 	}
 }

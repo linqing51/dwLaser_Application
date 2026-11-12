@@ -2668,10 +2668,10 @@ void updateReadyDisplay(void){//更新READY显示
 }
 
 /*****************************************************************************/
-//病历储存页面:显示病历信息(idText: ID显示文本; log: 病历数据指针, NULL显示为空)
-static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *log){
+//病历储存页面:显示一张病历卡(患者信息 + 一条治疗参数), rec==NULL时清空显示
+static void dcHmiShowTreatmentCard(const char *idText, const char *name, uint8_t age, uint8_t gender, const treatmentRecord_t *rec){
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	if(log == NULL){
+	if(rec == NULL){
 		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID, (uint8_t*)"--");
 		SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)"--");
 		SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, false);//性别按钮取消选中
@@ -2686,19 +2686,19 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_ID, (uint8_t*)idText);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%s", log->name);
+	sprintf(dispBuf, "%s", name);
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_NAME, (uint8_t*)dispBuf);
-	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, (log->gender == MALE));//性别用按钮选中状态显示
-	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, (log->gender == FEMALE));
+	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_MALE, (gender == MALE));//性别用按钮选中状态显示
+	SetButtonValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_KEY_FAMALE, (gender == FEMALE));
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d", log->age);
+	sprintf(dispBuf, "%d", age);
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_AGE, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d J", log->releaseEnergy);
+	sprintf(dispBuf, "%ld J", (long)rec->releaseEnergy);
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_0, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	{
-		int32_t totalSec = log->releaseTime;
+		int32_t totalSec = rec->releaseTime;
 		if(totalSec < 0){
 			totalSec = 0;
 		}
@@ -2706,26 +2706,50 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 	}
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_1, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d W", log->laserPower);
+	sprintf(dispBuf, "%d W", rec->laserPower);
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_2, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%s", treatmentProtocolName(log->protocol));
+	sprintf(dispBuf, "%s / %s", treatmentLaserWaveName((LASER_WAVE_ENUM)rec->laserWave), treatmentProtocolName((PROTOCOL_ENUM)rec->protocol));//波长/方案
 	SetTextValue(GDDC_PAGE_TREATMENTLOG, GDDC_PAGE_TREATMENT_TEXTDISPLAY_SNAPSHOT_4, (uint8_t*)dispBuf);
 }
 
-void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	if(log == NULL){
-		dcHmiShowTreatmentCommon("--", NULL);
+void dcHmiShowTreatmentRecord(uint16_t flatIndex){//显示EPROM历史病历: 患者ID + "第n/N条"
+	char idText[CONFIG_DCHMI_DISKBUF_SIZE];
+	treatmentPatient_t patient;
+	treatmentRecord_t rec;
+	uint16_t patientIndex = 0;
+	uint8_t recIndex = 0;
+	if((treatmentEpromFlatLocate(flatIndex, &patientIndex, &recIndex) != TREATMENT_EPROM_OK)
+		|| (treatmentEpromPatientGet(patientIndex, &patient) != TREATMENT_EPROM_OK)
+		|| (treatmentEpromRecordGet(patientIndex, recIndex, &rec) != TREATMENT_EPROM_OK)){
+		dcHmiShowTreatmentCard("--", "--", 0, 0, NULL);
 		return;
 	}
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d", index);//病历序号=索引位置
-	dcHmiShowTreatmentCommon(dispBuf, log);
+	memset(idText, 0x0, sizeof(idText));
+	sprintf(idText, "%04u  %u/%u", patient.patientId, (unsigned)(recIndex + 1u), (unsigned)patient.recordCount);//患者ID + 病历序号/条数
+	dcHmiShowTreatmentCard(idText, patient.name, patient.age, patient.gender, &rec);
 }
 
-void updateTreatmentLogDisplay(void){//病历储存页面:显示当前治疗记录(待保存)
-	dcHmiShowTreatmentCommon("NEW", &treatmentLog);
+uint16_t dcHmiTreatmentFlatIndexOf(uint16_t patientIndex, uint8_t recIndex){//患者块索引+病历序号 → 扁平索引(界面定位用)
+	uint16_t acc = 0;
+	for(uint16_t i = 0; i < patientIndex; i++){
+		acc = (uint16_t)(acc + treatmentEpromRecordCount(i));
+	}
+	return (uint16_t)(acc + recIndex);
+}
+
+void updateTreatmentLogDisplay(void){//病历储存页面:显示当前治疗记录(待保存会话)
+	char idText[CONFIG_DCHMI_DISKBUF_SIZE];
+	treatmentRecord_t rec;
+	memset(idText, 0x0, sizeof(idText));
+	if(treatmentLog.patientId != 0){
+		sprintf(idText, "%04u(+)", treatmentLog.patientId);//(+)=保存时追加到该患者
+	}
+	else{
+		sprintf(idText, "NEW");//新患者, 保存时自动分配ID
+	}
+	treatmentLogToRecord(&treatmentLog, &rec);
+	dcHmiShowTreatmentCard(idText, treatmentLog.name, treatmentLog.age, (uint8_t)treatmentLog.gender, &rec);
 }
 
 void updateAcousticDisplay(void){//更新提示音设置
@@ -3727,6 +3751,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_SAVE_TREATMENT;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_TREATMENTLOG;	
 			SetScreen(NVRAM0[EM_DC_PAGE]);
+			dcHmiTreatmentResetView();//浏览状态复位:先显示待保存会话
 			updateTreatmentLogDisplay();//刷新病历储存页面显示
 		}
 		return;

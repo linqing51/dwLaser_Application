@@ -6,8 +6,14 @@
 #include "dcHmiNotifyButton.h"
 /*****************************************************************************/
 //病历储存页面历史浏览状态(仅本文件内使用)
-static uint16_t treatmentViewIndex = 0;//当前浏览的EPROM病历索引
-static treatmentLog_t treatmentViewRecord;//当前浏览病历缓存
+static uint16_t treatmentViewFlatIndex = 0;//当前浏览病历的扁平索引(患者块顺序×病历顺序)
+static uint8_t  treatmentViewActive = 0;//0=页面显示待保存会话, 1=页面显示已存病历
+/*****************************************************************************/
+//病历浏览状态复位: 回到"待保存会话"显示(进入病历页面时调用)
+void dcHmiTreatmentResetView(void){
+	treatmentViewFlatIndex = 0;
+	treatmentViewActive = 0;
+}
 /*****************************************************************************/
 //按钮控件通知当按钮状态改变(或调用GetControlValue)时，执行此函数
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
@@ -944,97 +950,132 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}				
-				case GDDC_PAGE_TREATMENT_KEY_SAVETOUSB:{//储存当前病历到EPROM
+				case GDDC_PAGE_TREATMENT_KEY_SAVETOUSB:{//存储当前病历到EPROM(新患者自动建档 / 复诊追加到已有患者)
 					if(state){
-						treatmentEpromErr_t ret = treatmentEpromSaveCurrent();
+						uint16_t patientIndex = 0;
+						uint8_t recIndex = 0;
+						treatmentEpromErr_t ret = treatmentEpromSaveSession(&treatmentLog, &patientIndex, &recIndex);
 						if(ret == TREATMENT_EPROM_OK){
-							printf("%s,%d,%s:treatment saved ok,count=%d\n", __FILE__, __LINE__, __func__, treatmentEpromGetCount());
+							printf("%s,%d,%s:treatment saved,patient=%u record=%u patients=%d records=%d\n", __FILE__, __LINE__, __func__, (unsigned)patientIndex, (unsigned)recIndex, treatmentEpromPatientCount(), treatmentEpromFlatRecordCount());
 							treatmentLogValid = 0;//保存完成,当前记录不再有效
+							treatmentLog.patientId = 0;//下一次保存默认按新患者建档
 							treatmentLog.releaseTime = 0;//复位本次治疗数据
 							treatmentLog.releaseEnergy = 0;
 							treatmentLog.laserPower = 0;
-							treatmentViewIndex = treatmentEpromGetCount() - 1;//定位到刚保存的病历
-							if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-								dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);//显示已保存病历
-							}
+							treatmentViewActive = 1;//定位到刚保存的病历
+							treatmentViewFlatIndex = dcHmiTreatmentFlatIndexOf(patientIndex, recIndex);
+							dcHmiShowTreatmentRecord(treatmentViewFlatIndex);//显示已保存病历
 						}
-						else{
+						else{//TREATMENT_EPROM_ERR_FULL=患者表满或该患者病历已满(需先删旧病历)
 							printf("%s,%d,%s:treatment save fail,err=%d\n", __FILE__, __LINE__, __func__, ret);
 						}
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_LAST:{//浏览上一份病历
+				case GDDC_PAGE_TREATMENT_KEY_LAST:{//浏览上一条病历(跨患者按"患者顺序×病历顺序"翻页)
 					if(state){
-						uint16_t count = treatmentEpromGetCount();
+						uint16_t count = treatmentEpromFlatRecordCount();
 						if(count == 0){
-							dcHmiShowTreatmentRecord(0, NULL);
+							treatmentViewActive = 0;
+							dcHmiShowTreatmentRecord(0);//无病历:显示空卡
 							break;
 						}
-						if(treatmentViewIndex > 0){
-							treatmentViewIndex--;
+						if(!treatmentViewActive){//从待保存会话切到浏览:定位到最新一条
+							treatmentViewActive = 1;
+							treatmentViewFlatIndex = (uint16_t)(count - 1);
 						}
-						if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-							dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
+						else if(treatmentViewFlatIndex > 0){
+							treatmentViewFlatIndex--;
 						}
+						dcHmiShowTreatmentRecord(treatmentViewFlatIndex);
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_NEXT:{//浏览下一份病历
+				case GDDC_PAGE_TREATMENT_KEY_NEXT:{//浏览下一条病历
 					if(state){
-						uint16_t count = treatmentEpromGetCount();
+						uint16_t count = treatmentEpromFlatRecordCount();
 						if(count == 0){
-							dcHmiShowTreatmentRecord(0, NULL);
+							treatmentViewActive = 0;
+							dcHmiShowTreatmentRecord(0);//无病历:显示空卡
 							break;
 						}
-						if(treatmentViewIndex < (count - 1)){
-							treatmentViewIndex++;
+						if(!treatmentViewActive){//从待保存会话切到浏览:定位到最早一条
+							treatmentViewActive = 1;
+							treatmentViewFlatIndex = 0;
 						}
-						if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-							dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
+						else if((uint16_t)(treatmentViewFlatIndex + 1u) < count){
+							treatmentViewFlatIndex++;
 						}
+						dcHmiShowTreatmentRecord(treatmentViewFlatIndex);
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_DELETE:{//删除当前浏览的病历
-					if(state){
-						uint16_t count = treatmentEpromGetCount();
-						if((count > 0) && (treatmentViewIndex < count)){
-							if(treatmentEpromDelete(treatmentViewIndex) == TREATMENT_EPROM_OK){
-								printf("%s,%d,%s:treatment %d deleted,count=%d\n", __FILE__, __LINE__, __func__, treatmentViewIndex, treatmentEpromGetCount());
-								count = treatmentEpromGetCount();
-								if(count > 0){
-									if(treatmentViewIndex >= count){
-										treatmentViewIndex = count - 1;
-									}
-									if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-										dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
-									}
+				case GDDC_PAGE_TREATMENT_KEY_DELETE:{//删除当前浏览的这一条病历(该患者最后一条被删时连患者档案一起删)
+					if(state && treatmentViewActive){
+						uint16_t patientIndex = 0;
+						uint8_t recIndex = 0;
+						uint16_t count = treatmentEpromFlatRecordCount();
+						if((count > 0) && (treatmentViewFlatIndex < count)
+							&& (treatmentEpromFlatLocate(treatmentViewFlatIndex, &patientIndex, &recIndex) == TREATMENT_EPROM_OK)){
+							if(treatmentEpromRecordDelete(patientIndex, recIndex) == TREATMENT_EPROM_OK){
+								printf("%s,%d,%s:record deleted,patient=%u record=%u patients=%d records=%d\n", __FILE__, __LINE__, __func__, (unsigned)patientIndex, (unsigned)recIndex, treatmentEpromPatientCount(), treatmentEpromFlatRecordCount());
+								if(treatmentEpromRecordCount(patientIndex) == 0){//该患者已无病历: 一并删除患者档案, 释放患者表空间
+									treatmentEpromPatientDelete(patientIndex);
+								}
+								count = treatmentEpromFlatRecordCount();
+								if(count == 0){
+									treatmentViewActive = 0;
+									treatmentViewFlatIndex = 0;
+									dcHmiShowTreatmentRecord(0);//已无任何病历
 								}
 								else{
-									treatmentViewIndex = 0;
-									dcHmiShowTreatmentRecord(0, NULL);
+									if(treatmentViewFlatIndex >= count){
+										treatmentViewFlatIndex = (uint16_t)(count - 1);
+									}
+									dcHmiShowTreatmentRecord(treatmentViewFlatIndex);
 								}
+							}
+							else{
+								printf("%s,%d,%s:record delete fail\n", __FILE__, __LINE__, __func__);
 							}
 						}
 					}
 					break;
 				}
-				case GDDC_PAGE_TREATMENT_KEY_INSERT:{//插入当前病历到浏览位置(后续病历后移)
+				case GDDC_PAGE_TREATMENT_KEY_INSERT:{//复诊:把当前待保存病历追加到患者病历末尾; 无患者时按新患者建档
 					if(state){
-						uint16_t count = treatmentEpromGetCount();
-						if(treatmentViewIndex > count){
-							treatmentViewIndex = count;
-						}
-						treatmentEpromErr_t ret = treatmentEpromInsert(treatmentViewIndex, &treatmentLog);
-						if(ret == TREATMENT_EPROM_OK){
-							printf("%s,%d,%s:treatment inserted at %d,count=%d\n", __FILE__, __LINE__, __func__, treatmentViewIndex, treatmentEpromGetCount());
-							if(treatmentEpromGet(treatmentViewIndex, &treatmentViewRecord) == TREATMENT_EPROM_OK){
-								dcHmiShowTreatmentRecord(treatmentViewIndex, &treatmentViewRecord);
+						treatmentRecord_t rec;
+						uint16_t patientIndex = 0;
+						uint8_t outRecIndex = 0;
+						uint8_t patientFound = 0;
+						treatmentLogToRecord(&treatmentLog, &rec);
+						if(treatmentLog.patientId != 0){//会话已指定患者:优先追加到该患者
+							if(treatmentEpromPatientFind(treatmentLog.patientId, &patientIndex) == TREATMENT_EPROM_OK){
+								patientFound = 1;
 							}
 						}
-						else{
-							printf("%s,%d,%s:treatment insert fail,err=%d\n", __FILE__, __LINE__, __func__, ret);
+						if((!patientFound) && treatmentViewActive){//否则取当前浏览病历所属患者
+							uint8_t recIndex = 0;
+							if(treatmentEpromFlatLocate(treatmentViewFlatIndex, &patientIndex, &recIndex) == TREATMENT_EPROM_OK){
+								patientFound = 1;
+							}
+						}
+						treatmentEpromErr_t ret;
+						if(patientFound){//复诊:追加到该患者病历末尾
+							ret = treatmentEpromRecordAdd(patientIndex, &rec, &outRecIndex);
+						}
+						else{//没有可追加的患者:按新患者建档并保存首条病历
+							ret = treatmentEpromSaveSession(&treatmentLog, &patientIndex, &outRecIndex);
+						}
+						if(ret == TREATMENT_EPROM_OK){
+							printf("%s,%d,%s:treatment appended,patient=%u record=%u\n", __FILE__, __LINE__, __func__, (unsigned)patientIndex, (unsigned)outRecIndex);
+							treatmentLog.patientId = treatmentEpromPatientIdAt(patientIndex);//会话记住该患者, 后续保存继续追加
+							treatmentViewActive = 1;
+							treatmentViewFlatIndex = dcHmiTreatmentFlatIndexOf(patientIndex, outRecIndex);
+							dcHmiShowTreatmentRecord(treatmentViewFlatIndex);
+						}
+						else{//ERR_FULL=患者表满或该患者病历已满, 需先删旧病历
+							printf("%s,%d,%s:treatment append fail,err=%d\n", __FILE__, __LINE__, __func__, ret);
 						}
 					}
 					break;
