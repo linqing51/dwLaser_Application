@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -128,11 +128,18 @@ extern "C" {
 #define CONFIG_DEFAULT_SPK_FREQ												1100//蜂鸣器默认频率
 #define CONFIG_ACOUSITC_SPK_FREQ											1400//蜂鸣器变声频率
 /*****************************************************************************/
-#define CONFIG_WAIT_HMI_DELAY_TIME										20
+#define CONFIG_WAIT_HMI_DELAY_TIME										50
 #define CONFIG_WAIT_PASSWORD_DELAY_TIME								90
 #define CONFIG_KEY_REPEAT_DELAY_TIME									80
 #define CONFIG_STANDBY_BEEM_DELAY_TIME								20
 #define CONFIG_WFSWITCH_DISCONNECT_DELAY_TIME					10//无线脚踏掉线超时 10mS * 100
+/*****************************************************************************/
+//开机真握手配置(依据《大彩串口屏指令集V5.1》2.1 握手: 主机发"EE 04", 设备回"EE 55"表示握手成功)
+//CONFIG_HMI_POWERUP_HANDSHAKE: 1=启用真握手(周期发握手命令, 收到0x55才继续, 超时按旧逻辑兜底放行);
+//                              0=不启用, 沿用固定时间盲等(CONFIG_WAIT_HMI_DELAY_TIME)
+#define CONFIG_HMI_POWERUP_HANDSHAKE									1
+#define CONFIG_HMI_HANDSHAKE_RETRY_TICKS							5//握手命令重发间隔, 单位100ms(5=500ms)
+#define CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS						50//握手总超时, 单位100ms(50=5.0s); 超时后打印警告并兜底放行, 避免屏异常时卡死开机流程
 /*****************************************************************************/
 //配置环境信息
 #define CONFIG_USING_CLASSIC_PID											0

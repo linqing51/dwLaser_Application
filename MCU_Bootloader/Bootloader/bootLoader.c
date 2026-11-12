@@ -142,7 +142,7 @@ static uint8_t cmpByte(uint8_t *psrc, uint8_t *pdist, uint16_t len){
 
 static void usbPowerCycle(void){//USB VBUS断电重启,复位U盘主控
 	USBH_Stop(&hUsbHostFS);//关闭VBUS并停止USB主机
-	HAL_Delay(1000);//掉电1秒,让U盘主控彻底复位
+	softDelayMs(1000);//掉电1秒,让U盘主控彻底复位
 	/*重置USBH状态机(与DeInitStateMachine关键字段一致) */
 	hUsbHostFS.gState = HOST_IDLE;
 	hUsbHostFS.EnumState = ENUM_IDLE;
@@ -161,56 +161,9 @@ static void usbPowerCycle(void){//USB VBUS断电重启,复位U盘主控
 }
 
 /*****************************************************************************/
-/* 1ms时基停摆保护(修复: HAL_Delay无超时导致"卡在自检某个颜色上"无法定位)
- * 原实现直接用HAL_Delay, 它只等uwTick递增; 一旦时基(TIM6/SysTick中断)停摆,
- * 就会永久死等, 外部只能看到"某个颜色的灯一直亮着", 软件/硬件原因无法区分.
- * 这里加一个不依赖tick的兜底判据: 连续多轮迭代都没有tick推进 -> 判为时基停摆,
- * 进入"蓝灯约2Hz慢闪"的确定性指示(与自检三色流水、故障红灯Morse码都不冲突).
- * 注意: 该指示状态设计上不返回, 现场看到蓝灯慢闪即可直接判为1ms时基丢失. */
-#define BL_TICK_STALL_ITER_LIMIT		2000000UL	//连续无tick推进的迭代上限(正常1ms约2万次, 留约100倍余量)
-#define BL_PANIC_BLINK_LOOPS				2000000UL	//蓝灯慢闪半周期的NOP次数(约0.1~0.3s, 仅量级参考)
-
-static void bootLoadTickStall(void);
-static void bootLoadDelayMs(uint32_t ms);
-
-static void bootLoadTickStall(void){//1ms时基停摆: 蓝灯慢闪, 不依赖tick也不依赖串口
-	volatile uint32_t i;
-	SET_RED_LED_OFF;
-	SET_GREEN_LED_OFF;
-	for(;;){
-		SET_BLUE_LED_ON;
-		for(i = 0;i < BL_PANIC_BLINK_LOOPS;i ++){
-			__NOP();
-		}
-		SET_BLUE_LED_OFF;
-		for(i = 0;i < BL_PANIC_BLINK_LOOPS;i ++){
-			__NOP();
-		}
-	}
-}
-
-static void bootLoadDelayMs(uint32_t ms){//带时基停摆保护的毫秒延时
-	uint32_t t0, lastTick, stallIter, now;
-	t0 = HAL_GetTick();
-	lastTick = t0;
-	stallIter = 0;
-	while(1){
-		now = HAL_GetTick();
-		if((now - t0) >= ms){//无符号相减, 允许uwTick回绕
-			break;
-		}
-		if(now != lastTick){//tick仍在推进
-			lastTick = now;
-			stallIter = 0;
-		}
-		else if(++ stallIter > BL_TICK_STALL_ITER_LIMIT){//tick停摆, 不再死等
-			printf("Bootloader:FATAL->1ms tick stall!\r\n");
-			bootLoadTickStall();
-		}
-	}
-}
-/* 本文件内所有HAL_Delay改用带保护的版本(不改HAL驱动, 也不影响工程内其它文件) */
-#define HAL_Delay(ms)	bootLoadDelayMs(ms)
+/* 毫秒延时统一使用纯软件忙等 softDelayMs(libcpu.c, 基于 Cortex-M4 DWT 的 CYCCNT 周期计数):
+ * 不依赖 1ms 时基(TIM6/SysTick), 时基停摆不再导致延时死等; 按 HCLK 周期数判定,
+ * 精度与中断/Flash等待状态无关, 本文件内不再调用 HAL_Delay。 */
 /*****************************************************************************/
 void bootLoadInit(void){//引导程序初始化
 	uint8_t i;
@@ -218,8 +171,8 @@ void bootLoadInit(void){//引导程序初始化
 	forceUpdateLcd = 0;
   printf("Bootloader:Eprom Init\n");
   epromInit();
-  listEpromTable();
-	listNvramTable();
+  //listEpromTable();
+	//listNvramTable();
 	SET_SPK_AP_OFF;//关闭蜂鸣器
 	printf("Bootloader:OUTPUT->SKP_EN       = LOW\n");
 	//关闭指示激光
@@ -271,17 +224,17 @@ void bootLoadInit(void){//引导程序初始化
 	SET_RED_LED_ON;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_OFF;
-	HAL_Delay(500);
+	softDelayMs(500);
 	//G
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_ON;
 	SET_BLUE_LED_OFF;
-	HAL_Delay(500);
+	softDelayMs(500);
 	//B
 	SET_RED_LED_OFF;
 	SET_GREEN_LED_OFF;
 	SET_BLUE_LED_ON;
-	HAL_Delay(500);
+	softDelayMs(500);
 	//自检通过标记(修复: 原来最后只留绿灯亮到IDLE才熄灭, 导致"第2格绿"和"结尾绿"肉眼无法区分)
 	//改为: 三色全灭后绿短闪3次(100ms亮/100ms灭), 与前面500ms长亮明显不同
 	SET_RED_LED_OFF;
@@ -289,9 +242,9 @@ void bootLoadInit(void){//引导程序初始化
 	SET_BLUE_LED_OFF;
 	for(i = 0;i < 3;i ++){
 		SET_GREEN_LED_ON;
-		HAL_Delay(100);
+		softDelayMs(100);
 		SET_GREEN_LED_OFF;
-		HAL_Delay(100);
+		softDelayMs(100);
 	}
 	SET_GREEN_LED_OFF;//保证返回前指示LED全灭, 后续"灯全灭"即代表自检已通过
 	releaseTime0 = 0;
@@ -323,7 +276,7 @@ void bootLoadInit(void){//引导程序初始化
 	else{
 		printf("Bootloader:INPUT->INTERLOCK     = LOW\n");
 	}	
-	HAL_Delay(10);
+	softDelayMs(10);
 	
 }
 void bootLoadProcess(void){//bootload 执行程序
@@ -646,7 +599,7 @@ void bootLoadProcess(void){//bootload 执行程序
 			//等待60秒 LCD FLASH写入完成后重启
 			//重启HMI
 			dp_display_text_num(cmdResetHmiOp, strlen((char*)cmdResetHmiOp));	
-			HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);
+			softDelayMs(5000);softDelayMs(5000);softDelayMs(5000);softDelayMs(5000);softDelayMs(5000);
 			bootLoadState = BT_STATE_RESET;//更新APP
 			break;
 		}
@@ -695,7 +648,7 @@ void bootLoadProcess(void){//bootload 执行程序
 			//等待60秒 LCD FLASH写入完成后重启
 			//重启HMI
 			dp_display_text_num(cmdResetHmiOp, strlen((char*)cmdResetHmiOp));	
-			HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);HAL_Delay(5000);
+			softDelayMs(5000);softDelayMs(5000);softDelayMs(5000);softDelayMs(5000);
 			bootLoadState = BT_STATE_RESET;//更新APP
 			break;
 		}		
@@ -1058,16 +1011,16 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		bootLoadFailHandler(BT_FAIL_LMCU_APP_CHECK);
 	}
 	HAL_FLASH_Unlock();
-	HAL_Delay(1000);
+	softDelayMs(1000);
 	__HAL_FLASH_CLEAR_FLAG(FLASH_IF_ALL_CLEAR_FLAGS);
 	if (FLASH_If_EraseApplication() != 0x00){//擦除APP FLASH区域失败
 		bootLoadFailHandler(BT_FAIL_ERASE_MCU_APP);
 	}
-	HAL_Delay(1000);
+	softDelayMs(1000);
 	if(checkBlank(APPLICATION_FLASH_START_ADDRESS, getAppFlashSize()) == false){//擦除后仍有非0xFF字节, 查空失败
 		bootLoadFailHandler(BT_FAIL_CHECK_BLANK);
 	}
-	HAL_Delay(1000);
+	softDelayMs(1000);
 	printf("Bootloader:Erase mcu application sucess.\n");
 	RamAddress = (uint32_t)&RAM_Buf;//获取RAM缓存区地址
 	/* Erase address init */
@@ -1103,7 +1056,7 @@ static uint32_t updateMcuApp(void){//更新MCU APP
 		crc32 = crc32SwUpdateFill(crc32, 0xFF, (uint32_t)(APPLICATION_FLASH_END_ADDRESS - LastPGAddress));//补完剩余CRC(未编程区域按0xFF参与)
 	}
 	HAL_FLASH_Lock();
-	HAL_Delay(1000);
+	softDelayMs(1000);
 	printf("Bootloader:Write mcu app finish.\n");
 	f_close(&McuFile);
 	return crc32;
@@ -1117,9 +1070,9 @@ static void prepareUpdateLcd(void){//LCD远程升级准备
 		printf("Bootloader:DoneHandler,lcd shake hand respond!\n");
 	}
 	dp_display_text_num(cmdResetOp, strlen((char*)cmdResetOp));//切换成大彩指令集
-	HAL_Delay(10);
+	softDelayMs(10);
 	dp_display_text_num(cmdFormatOp, strlen((char*)cmdFormatOp));//格式化文件系统
-	HAL_Delay(3000);
+	softDelayMs(3000);
 }
 static uint32_t updateLcdApp(char* filePath){//更新LCD APP单个文件
 	UART_HandleTypeDef *puart;
@@ -1187,12 +1140,12 @@ static uint32_t updateLcdApp(char* filePath){//更新LCD APP单个文件
 		gddcRxIndex = 0;
 		dp_display_text_num(gddcTxBuf, (strlen(fileCmdPath) + 16));//计算得到命令长度
 		uRet = HAL_UART_Receive(puart, gddcRxBuf, 7, 5000);//串口接收数据 超时10000mS
-		HAL_Delay(10);
+		softDelayMs(10);
 		if(cmpByte(gddcRxBuf, cmdResponse, 7) == true){
 			break;
 		}
 		else{
-			HAL_Delay(10);
+			softDelayMs(10);
 			if(lcdRetry > GDDC_RETRY_TIMES){//发送次数超时
 				bootLoadFailHandler(BT_FAIL_LCD_DOWNLOAD);
 			}
@@ -1249,7 +1202,7 @@ static uint32_t updateLcdApp(char* filePath){//更新LCD APP单个文件
 			}
 			else{//超时或无效SN
 				printf("timeout or invalid SN!\n");
-				HAL_Delay(100);
+				softDelayMs(100);
 				if(lcdRetry > GDDC_RETRY_TIMES){//发送次数超时
 					bootLoadFailHandler(BT_FAIL_LCD_DOWNLOAD);
 				}

@@ -61,7 +61,9 @@
  *      不依赖库锁、HAL节拍(uwTick)、中断, 故障现场不会死等;
  *   2) 只读 SCB 故障状态寄存器与异常入栈帧, 不分配内存、不占大栈;
  *   3) 串口未初始化/异常时静默丢弃输出, 仍落到 while(1) 便于调试器挂接;
- *   4) 诊断完成后把 CONFIG_FAULT_DIAG 改0即可关闭, 不残留任何影响。
+ *   4) 诊断完成后把 CONFIG_FAULT_DIAG 改0即可关闭, 不残留任何影响;
+ *   5) 串口输出一律用 ASCII 英文短标签: 现场调试串口多为 GBK/ASCII 终端, 中文会乱码,
+ *      中文说明只写在源码注释里(不影响输出)。
  ******************************************************************************/
 #define FAULT_DIAG_TXE_TIMEOUT    200000UL      /* 单字节TXE轮询上限(与libdbg.c的fputc同量级) */
 #define FAULT_DIAG_RAM_BASE       0x20000000UL  /* SRAM1 起始 */
@@ -121,25 +123,25 @@ static void faultDiagDumpCfsr(uint32_t cfsr)
   faultDiagPutHex((cfsr >> 16) & 0xFFFFUL, 4);
   faultDiagPuts("\r\n");
 
-  if((cfsr & (1UL << 0))  != 0UL){ faultDiagPuts("  [MM ] IACCVIOL   取指访问违规(MPU/XN)\r\n"); }
-  if((cfsr & (1UL << 1))  != 0UL){ faultDiagPuts("  [MM ] DACCVIOL   数据访问违规\r\n"); }
-  if((cfsr & (1UL << 3))  != 0UL){ faultDiagPuts("  [MM ] MUNSTKERR  异常返回出栈失败\r\n"); }
-  if((cfsr & (1UL << 4))  != 0UL){ faultDiagPuts("  [MM ] MSTKERR    异常入栈失败(多为栈溢出)\r\n"); }
-  if((cfsr & (1UL << 7))  != 0UL){ faultDiagPuts("  [MM ] MMARVALID  MMFAR有效\r\n"); }
+  if((cfsr & (1UL << 0))  != 0UL){ faultDiagPuts("  [MM ] IACCVIOL   instr fetch access violation (MPU/XN)\r\n"); }
+  if((cfsr & (1UL << 1))  != 0UL){ faultDiagPuts("  [MM ] DACCVIOL   data access violation\r\n"); }
+  if((cfsr & (1UL << 3))  != 0UL){ faultDiagPuts("  [MM ] MUNSTKERR  exception return unstack failed\r\n"); }
+  if((cfsr & (1UL << 4))  != 0UL){ faultDiagPuts("  [MM ] MSTKERR    exception entry stack failed (stack overflow?)\r\n"); }
+  if((cfsr & (1UL << 7))  != 0UL){ faultDiagPuts("  [MM ] MMARVALID  MMFAR valid\r\n"); }
 
-  if((cfsr & (1UL << 8))  != 0UL){ faultDiagPuts("  [BUS] IBUSERR    取指总线错误\r\n"); }
-  if((cfsr & (1UL << 9))  != 0UL){ faultDiagPuts("  [BUS] PRECISERR  精确数据总线错误(坏地址见BFAR)\r\n"); }
-  if((cfsr & (1UL << 10)) != 0UL){ faultDiagPuts("  [BUS] IMPRECISERR 非精确总线错误(写缓冲, 多为野指针写)\r\n"); }
-  if((cfsr & (1UL << 11)) != 0UL){ faultDiagPuts("  [BUS] UNSTKERR   异常返回出栈失败\r\n"); }
-  if((cfsr & (1UL << 12)) != 0UL){ faultDiagPuts("  [BUS] STKERR     异常入栈失败(多为栈溢出)\r\n"); }
-  if((cfsr & (1UL << 15)) != 0UL){ faultDiagPuts("  [BUS] BFARVALID  BFAR有效\r\n"); }
+  if((cfsr & (1UL << 8))  != 0UL){ faultDiagPuts("  [BUS] IBUSERR    instr prefetch bus error\r\n"); }
+  if((cfsr & (1UL << 9))  != 0UL){ faultDiagPuts("  [BUS] PRECISERR  precise data bus error (bad addr = BFAR)\r\n"); }
+  if((cfsr & (1UL << 10)) != 0UL){ faultDiagPuts("  [BUS] IMPRECISERR imprecise bus error (write buffer / wild pointer)\r\n"); }
+  if((cfsr & (1UL << 11)) != 0UL){ faultDiagPuts("  [BUS] UNSTKERR   exception return unstack failed\r\n"); }
+  if((cfsr & (1UL << 12)) != 0UL){ faultDiagPuts("  [BUS] STKERR     exception entry stack failed (stack overflow?)\r\n"); }
+  if((cfsr & (1UL << 15)) != 0UL){ faultDiagPuts("  [BUS] BFARVALID  BFAR valid\r\n"); }
 
-  if((cfsr & (1UL << 16)) != 0UL){ faultDiagPuts("  [USG] UNDEFINSTR 未定义指令\r\n"); }
-  if((cfsr & (1UL << 17)) != 0UL){ faultDiagPuts("  [USG] INVSTATE   非法状态(EPSR.T=0, 常见于跳到非Thumb地址)\r\n"); }
-  if((cfsr & (1UL << 18)) != 0UL){ faultDiagPuts("  [USG] INVPC      非法EXC_RETURN\r\n"); }
-  if((cfsr & (1UL << 19)) != 0UL){ faultDiagPuts("  [USG] NOCP       协处理器不存在(未使能FPU却执行浮点指令)\r\n"); }
-  if((cfsr & (1UL << 24)) != 0UL){ faultDiagPuts("  [USG] UNALIGNED  非对齐访问(LDM/STM/LDRD/STRD等)\r\n"); }
-  if((cfsr & (1UL << 25)) != 0UL){ faultDiagPuts("  [USG] DIVBYZERO  除零\r\n"); }
+  if((cfsr & (1UL << 16)) != 0UL){ faultDiagPuts("  [USG] UNDEFINSTR undefined instruction\r\n"); }
+  if((cfsr & (1UL << 17)) != 0UL){ faultDiagPuts("  [USG] INVSTATE   invalid state (EPSR.T=0, jump to non-Thumb addr)\r\n"); }
+  if((cfsr & (1UL << 18)) != 0UL){ faultDiagPuts("  [USG] INVPC      invalid EXC_RETURN\r\n"); }
+  if((cfsr & (1UL << 19)) != 0UL){ faultDiagPuts("  [USG] NOCP       coprocessor absent (FPU disabled but float op used)\r\n"); }
+  if((cfsr & (1UL << 24)) != 0UL){ faultDiagPuts("  [USG] UNALIGNED  unaligned access (LDM/STM/LDRD/STRD)\r\n"); }
+  if((cfsr & (1UL << 25)) != 0UL){ faultDiagPuts("  [USG] DIVBYZERO  divide by zero\r\n"); }
 }
 
 /* 异常入栈帧: R0,R1,R2,R3,R12,LR,PC,xPSR 共8字 */
@@ -151,7 +153,7 @@ static void faultDiagDumpFrame(uint32_t excReturn)
 
   sp = ((excReturn & 0x04UL) != 0UL) ? __get_PSP() : __get_MSP();
   if((sp < FAULT_DIAG_RAM_BASE) || (sp > (FAULT_DIAG_RAM_END - 0x80UL))){
-    faultDiagPuts("SP不在SRAM有效范围, 跳过栈帧解析(疑似栈溢出或SP被破坏)\r\n");
+    faultDiagPuts("SP out of SRAM range, frame dump skipped (stack overflow or SP corrupted?)\r\n");
     return;
   }
 
@@ -194,10 +196,10 @@ void faultDiagDump(uint32_t excReturn)
   faultDiagPuts("HFSR=0x");
   faultDiagPutHex(SCB->HFSR, 8);
   if((SCB->HFSR & (1UL << 30)) != 0UL){
-    faultDiagPuts(" FORCED(由MemManage/BusFault/UsageFault升级)");
+    faultDiagPuts(" FORCED(escalated from MemManage/BusFault/UsageFault)");
   }
   if((SCB->HFSR & (1UL << 1)) != 0UL){
-    faultDiagPuts(" VECTTBL(向量表读取失败)");
+    faultDiagPuts(" VECTTBL(vector table read fault)");
   }
   faultDiagPuts("\r\n");
 
@@ -209,16 +211,16 @@ void faultDiagDump(uint32_t excReturn)
 
   faultDiagPuts("EXC_RETURN=0x");
   faultDiagPutHex(excReturn, 8);
-  faultDiagPuts(((excReturn & 0x04UL) != 0UL) ? " 栈:PSP" : " 栈:MSP");
-  faultDiagPuts(((excReturn & 0x10UL) != 0UL) ? " 无FPU扩展帧\r\n" : " 含FPU扩展帧\r\n");
+  faultDiagPuts(((excReturn & 0x04UL) != 0UL) ? " stack:PSP" : " stack:MSP");
+  faultDiagPuts(((excReturn & 0x10UL) != 0UL) ? " no FPU extended frame\r\n" : " with FPU extended frame\r\n");
 
   faultDiagDumpFrame(excReturn);
 
   if(((SCB->CFSR & (1UL << 9)) != 0UL) && ((SCB->CFSR & (1UL << 15)) != 0UL)){
-    faultDiagPuts("提示: PRECISERR+BFARVALID -> 出错数据地址=BFAR, 出错现场PC=上面的PC\r\n");
+    faultDiagPuts("HINT: PRECISERR+BFARVALID -> fault data addr = BFAR, fault PC = PC above\r\n");
   }
   if((SCB->CFSR & (1UL << 12)) != 0UL){
-    faultDiagPuts("提示: STKERR -> 异常入栈时写内存失败, 请查栈溢出/栈指针越界\r\n");
+    faultDiagPuts("HINT: STKERR -> stacking write fault, check stack overflow / SP range\r\n");
   }
   faultDiagPuts("*** END ***\r\n");
 }

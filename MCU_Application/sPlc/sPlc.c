@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -559,7 +559,9 @@ void sPlcInit(void){//软逻辑初始化
 	elog_init();//日志分级库初始化(默认过滤级别 ELOG_OUTPUT_LVL)
 	LOG_PRINT(ELOG_LVL_INFO, "%s,%d,%s:start App......\n",__FILE__, __LINE__, __func__);
 	epromInit();
-	readStm32UniqueID();
+	listNvramTable();//输出NVRAM分布表
+  listEpromTable();//输出EPROM分布表
+  readStm32UniqueID();
 #if CONFIG_SPLC_USING_EPROM_TEST == 1
   while(1){
     sPlcEpromTest();

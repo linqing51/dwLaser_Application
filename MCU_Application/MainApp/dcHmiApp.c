@@ -5,6 +5,17 @@
  *----------------------------------------------------------------------------*/
 #include "dcHmiApp.h"
 /*****************************************************************************/
+//开机真握手开关默认值(板级 AppConfig.h 未定义时默认关闭, 保持旧的固定时间盲等逻辑, 不影响其他板型)
+#ifndef CONFIG_HMI_POWERUP_HANDSHAKE
+#define CONFIG_HMI_POWERUP_HANDSHAKE 0
+#endif
+#ifndef CONFIG_HMI_HANDSHAKE_RETRY_TICKS
+#define CONFIG_HMI_HANDSHAKE_RETRY_TICKS 5
+#endif
+#ifndef CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS
+#define CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS 50
+#endif
+/*****************************************************************************/
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
 uint16_t hmiCmdSize;//已缓冲的指令数
@@ -3138,6 +3149,119 @@ static void gddcHmiLoop(void){//大彩触摸屏轮询程序
 	}
 }
 
+#if CONFIG_HMI_POWERUP_HANDSHAKE
+/* 开机真握手(依据《大彩串口屏指令集V5.1》2.1 握手: 主机发"EE 04", 设备回"EE 55"表示握手成功)
+ * 进入 FSMSTEP_RESTORE_HMI 后启动100ms定时器#0, 立即发一次握手命令,
+ * 之后每 CONFIG_HMI_HANDSHAKE_RETRY_TICKS 个100ms重发一次;
+ * 从接收队列逐帧解析, 收到握手成功帧(EE 55)立即返回成功;
+ * 超过 CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS 仍无应答则返回超时(由调用方兜底放行, 避免屏异常时卡死开机)。
+ * 参数 done: 0=握手尚未结束(继续等待); 1=已结束(返回值1=成功, 0=超时)
+ * 说明: 握手窗口内队列中的其他帧(触摸/页面通知等开机噪声)直接清空, 避免过期事件在门控打开后误触发。
+ */
+static uint8_t hmiPowerupHandshake(uint8_t *done){
+	static uint8_t hsStarted = 0;
+	static int16_t lastSendTick = 0;
+	int16_t curTick;
+	uint16_t cmdSize;
+	uint8_t hsOk = 0;
+	*done = 0;
+	if(!hsStarted){
+		SetHandShake();
+		lastSendTick = 0;
+		hsStarted = 1;
+		printf("%s,%d,%s:hmi handshake start......\n",__FILE__, __LINE__, __func__);
+	}
+	/* 每轮都以start=true调用T100MS: 保持定时器使能, 并按当前计数器刷新"到点"线圈。
+	 * 注意: T100MS不会清零计数器, 而"到点"标志只在T100MS内部更新——若只在启动时
+	 * 调一次, 即使计数器到点, LD(...)读到的超时标志也永远不会置位(超时失效)。 */
+	T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS);
+	curTick = NVRAM0[TD_100MS_START + T100MS_HMI_POWERUP_DELAY];
+	//按100ms计数间隔重发握手命令
+	if((curTick - lastSendTick) >= CONFIG_HMI_HANDSHAKE_RETRY_TICKS){
+		SetHandShake();
+		lastSendTick = curTick;
+	}
+	//解析队列中的完整帧, 查找握手成功通知(EE 55)
+	while((cmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE)) > 0){
+		if((cmdSize >= 2) && (hmiCmdBuffer[0] == 0xEE) && (hmiCmdBuffer[1] == NOTIFY_HandShake)){
+			hsOk = 1;
+		}
+	}
+	if(hsOk){
+		T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS);
+		queue_reset();//清掉握手窗口内其余开机噪声帧
+		hsStarted = 0;
+		*done = 1;
+		printf("%s,%d,%s:hmi handshake ok at tick %d......\n",__FILE__, __LINE__, __func__, curTick);
+		return 1;
+	}
+	//超时判定: T100MS 到点置位
+	if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
+		T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS);
+		queue_reset();
+		hsStarted = 0;
+		*done = 1;
+		printf("%s,%d,%s:hmi handshake timeout after %d ticks!!!!\n",__FILE__, __LINE__, __func__, CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS);
+		return 0;
+	}
+	return 0;
+}
+#endif
+
+//HMI等待结束后(盲等到点或握手结束)的公共初始化: 标志记账+FLASH恢复+批量控件状态+背光+切开机页
+static void restoreHmiProceed(void){
+	RRES(R_DCHMI_RESET_DOING);
+	SSET(R_DCHMI_RESET_DONE);
+	//HMI从内置FLASH中恢复设置
+	SSET(R_DCHMI_RESTORE_DOING);
+	FlashRestoreControl(HMI_FLASH_DATA_VERSION, HMI_FLASH_DATA_ADDR);
+	RRES(R_DCHMI_RESTORE_DOING);
+	SSET(R_DCHMI_RESTORE_DONE);
+	//设置HMI页面
+	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_WAIT_ENTER_PASSCODE;
+	MsgId = ERR_NO_ERROR;//当前显示的信息ID
+
+	SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, false);
+	SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, true);
+
+	SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, false);
+	SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
+
+	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
+
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_AUTO_FAN, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY, false);
+
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
+
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
+
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
+	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
+
+	SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
+	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP;
+	SetScreen(NVRAM0[EM_DC_PAGE]);
+	//打开蜂鸣器
+	NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
+	NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
+}
+
 static void powerManagementLoop(void){//电源管理轮询程序
 	if(NVRAM0[EM_HMI_OPERA_STEP] != FSMSTEP_HIBERNATE){	
 		if(LDN(X_PWR_INT)){//PMU单元软关机信号
@@ -3208,64 +3332,28 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_RESTORE_HMI){//等待HMI复位
+#if CONFIG_HMI_POWERUP_HANDSHAKE
+		uint8_t hsDone = 0;
+		uint8_t hsOk = hmiPowerupHandshake(&hsDone);
+		if(!hsDone){//握手尚未结束, 保持当前状态继续等待
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;
+			return;
+		}
+		if(!hsOk){//超时兜底: 打印警告后继续, 避免屏异常时开机流程卡死
+			printf("%s,%d,%s:hmi handshake timeout, proceed anyway!!!!\n",__FILE__, __LINE__, __func__);
+		}
+		restoreHmiProceed();
+#else
 		T100MS(T100MS_HMI_POWERUP_DELAY, true, CONFIG_WAIT_HMI_DELAY_TIME);
 		if(LD(T_100MS_START * 16 + T100MS_HMI_POWERUP_DELAY)){
 			printf("%s,%d,%s:hmi delay done......\n",__FILE__, __LINE__, __func__);
 			T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_WAIT_HMI_DELAY_TIME);
-			RRES(R_DCHMI_RESET_DOING);
-			SSET(R_DCHMI_RESET_DONE);	
-			//HMI从内置FLASH中恢复设置	
-			SSET(R_DCHMI_RESTORE_DOING);
-			FlashRestoreControl(HMI_FLASH_DATA_VERSION, HMI_FLASH_DATA_ADDR);
-			RRES(R_DCHMI_RESTORE_DOING);
-			SSET(R_DCHMI_RESTORE_DONE);
-			//设置HMI页面
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_WAIT_ENTER_PASSCODE;
-			MsgId = ERR_NO_ERROR;//当前显示的信息ID
-		
-			SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, false);			
-			SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_STANDBY, true);
-			
-			SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, false);					
-			SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
-
-			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
-			
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_AUTO_FAN, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE, false);	
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK, false);		
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW, false);	
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY, false);	
-			
-			SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
-			
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
-			
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
-			
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
-			
-			SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
-      NVRAM0[EM_DC_PAGE] = GDDC_PAGE_POWERUP;	
-			SetScreen(NVRAM0[EM_DC_PAGE]);	
-			//打开蜂鸣器
-			NVRAM0[SPREG_BEEM_MODE] = BEEM_MODE_0;
-			NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
+			restoreHmiProceed();
 		}
 		else{
-			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;	
+			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RESTORE_HMI;
 		}
+#endif
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_CHECK_FAIL_DISPLAY){//自检错误显示
@@ -4623,7 +4711,11 @@ static void ProcessMessage( PCTRL_MSG msg, uint16_t size ){
             break;  
         } 
     case NOTIFY_HandShake:
-        //NOTIFYHandShake();
+        //握手通知(EE 55): 开机阶段的握手应答在 hmiPowerupHandshake() 内消费;
+        //此处兜底处理握手窗口外(门控已打开)收到的应答
+#if CONFIG_HMI_POWERUP_HANDSHAKE
+        printf("%s,%d,%s:hmi handshake notify received......\n",__FILE__, __LINE__, __func__);
+#endif
         break;
     default:
         break;
