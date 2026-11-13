@@ -45,9 +45,9 @@ extern "C" {
 /*****************************************************************************/
 //单位16bye
 #define CONFIG_MR_SIZE											    		  32L//
-#define CONFIG_DM_SIZE																512L
+#define CONFIG_DM_SIZE																64L
 #define CONFIG_R_SIZE																	32L
-#define CONFIG_EM_SIZE																512L
+#define CONFIG_EM_SIZE																320L
 #define CONFIG_T_1MS_SIZE															4L
 #define CONFIG_T_10MS_SIZE														4L
 #define CONFIG_T_100MS_SIZE														4L
