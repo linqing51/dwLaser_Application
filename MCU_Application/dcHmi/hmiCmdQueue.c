@@ -121,4 +121,22 @@ qsize queue_find_cmd(qdata *buffer,qsize buf_len)
     }
     return 0;                                                         //没有形成完整的一帧
 }
+/*****************************************************************************/
+/* 扫描接收队列中是否出现握手应答(EE 55)。
+ * 该短帧只有"帧头EE + 0x55", 没有帧尾 0xFFFCFFFF, queue_find_cmd 永远不会把它作为
+ * 完整帧返回(恒返回0), 因此开机握手在此单独扫描: 字节照常出队, 一旦发现"帧头EE 后
+ * 紧跟 0x55"立即返回1。0x55 = NOTIFY_HandShake(hmiCmdProcess.h), 此处用字面量避免
+ * 引入额外 include。返回值用本文件原生类型 qdata(unsigned char), 1=握手成功。 */
+qdata queue_detect_handshake(void){
+    qdata prev = 0;
+    qdata cur;
+    while(queue_size() > 0){
+        queue_pop(&cur);
+        if((prev == CMD_HEAD) && (cur == 0x55)){
+            return 1;
+        }
+        prev = cur;
+    }
+    return 0;
+}
 

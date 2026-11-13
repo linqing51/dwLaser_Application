@@ -3162,7 +3162,6 @@ static uint8_t hmiPowerupHandshake(uint8_t *done){
 	static uint8_t hsStarted = 0;
 	static int16_t lastSendTick = 0;
 	int16_t curTick;
-	uint16_t cmdSize;
 	uint8_t hsOk = 0;
 	*done = 0;
 	if(!hsStarted){
@@ -3181,11 +3180,10 @@ static uint8_t hmiPowerupHandshake(uint8_t *done){
 		SetHandShake();
 		lastSendTick = curTick;
 	}
-	//解析队列中的完整帧, 查找握手成功通知(EE 55)
-	while((cmdSize = queue_find_cmd(hmiCmdBuffer, CMD_MAX_SIZE)) > 0){
-		if((cmdSize >= 2) && (hmiCmdBuffer[0] == 0xEE) && (hmiCmdBuffer[1] == NOTIFY_HandShake)){
-			hsOk = 1;
-		}
+	/* 握手应答 EE 55 是无帧尾短帧, queue_find_cmd 只认帧尾 0xFFFCFFFF 会漏判,
+	 * 改用专用扫描函数识别; 否则 hsOk 恒为0, 只能等满5秒超时兜底放行 */
+	if(queue_detect_handshake()){
+		hsOk = 1;
 	}
 	if(hsOk){
 		T100MS(T100MS_HMI_POWERUP_DELAY, false, CONFIG_HMI_HANDSHAKE_TIMEOUT_TICKS);

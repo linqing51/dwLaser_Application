@@ -42,6 +42,8 @@ extern void queue_push(qdata _data);
 *  \return  指令长度，0表示队列中无完整指令
 */
 extern qsize queue_find_cmd(qdata *cmd,qsize buf_len);
+/* 扫描握手应答 EE 55(无帧尾短帧): 命中返回1, 否则0, 供开机握手使用 */
+extern qdata queue_detect_handshake(void);
 /*****************************************************************************/
 #ifdef __cplusplus
 }
