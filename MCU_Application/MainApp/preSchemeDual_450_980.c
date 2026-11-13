@@ -7,15 +7,18 @@
 #include "preScheme.h"
 /*****************************************************************************/
 #if defined(APP_CONFIG_WAVE_450_980)
-myScheme_t sPhlebology[32];//0
-myScheme_t sProctology[32];//1
-myScheme_t sGynecology[32];//2
-myScheme_t sENT[32];//3
-myScheme_t sNeurosurgery[32];//4
-myScheme_t sDermatology[32];//5
-myScheme_t sLiposuction[32];//6
-myScheme_t sDentistry[32];//7
-myScheme_t sTherapy[32];//8
+//本配置(450_980)治疗方案走 FDRAM 路径(见 restoreScheme 中 FDRAM0 初始化),
+//dcHmiApp.c 在本配置下不引用以下 sXxx 符号。这里仅为与 preScheme.h 的 const extern
+//声明保持类型一致而保留, 全零固化在 Flash, 不占 RAM。
+const myScheme_t sPhlebology[32] = {0};//0
+const myScheme_t sProctology[32] = {0};//1
+const myScheme_t sGynecology[32] = {0};//2
+const myScheme_t sENT[32] = {0};//3
+const myScheme_t sNeurosurgery[32] = {0};//4
+const myScheme_t sDermatology[32] = {0};//5
+const myScheme_t sLiposuction[32] = {0};//6
+const myScheme_t sDentistry[32] = {0};//7
+const myScheme_t sTherapy[32] = {0};//8
 /*****************************************************************************/
 void goNextScheme(void){//切换下一个方案
 	if(NVRAM0[DM_SCHEME_INDEX] < (CONFIG_CUSTIOM_SIZE - 1)){

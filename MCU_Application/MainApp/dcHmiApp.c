@@ -5060,6 +5060,9 @@ static void ProcessMessage( PCTRL_MSG msg, uint16_t size ){
             break;  
         } 
     case NOTIFY_HandShake:
+        // [分支范围说明 - run_treatment] 握手通知当前为空处理。
+        // 已知遗留: 缺少主动握手检测, 断链时需等待约 5 秒握手超时; 修复在 master
+        // 提交 b8478dc2(queue_detect_handshake), 经确认本分支暂不修复, 勿在此改动。
         //NOTIFYHandShake();
         break;
     default:

@@ -13,6 +13,14 @@
 extern "C" {
 #endif
 /*****************************************************************************/
+/*===========================================================================
+ * [分支范围说明] 分支: run_treatment
+ * 本分支只进行: ① 病历相关功能; ② 节省 RAM / EPROM 用量优化。
+ * 优化要点: 预设治疗方案 sXxx[32] 运行期永不修改、只在预设基础上临时调整且
+ *   不回存(重启即丢弃), 故全部由 .bss(RAM) 改为 const 初始化器固化在 Flash,
+ *   restoreScheme 不再硬编码填充预设, 仅保留 FDRAM 自定义方案逻辑与 FDSAV()。
+ * 握手 5 秒超时问题本分支暂不修复(见 hmiCmdQueue.c / dcHmiApp.c 内注解)。
+ *===========================================================================*/
 typedef struct{
 	char *name;//治疗名字
 	int16_t channel;//激光通道选择
@@ -29,16 +37,16 @@ typedef struct{
 	int16_t negwidth;
 }myScheme_t;
 /*****************************************************************************/
-extern myScheme_t sPhlebology[32];//0
-extern myScheme_t sProctology[32];//1
-extern myScheme_t sGynecology[32];//2
-extern myScheme_t sENT[32];//3
-extern myScheme_t sNeurosurgery[32];//4
-extern myScheme_t sDermatology[32];//5
-extern myScheme_t sLiposuction[32];//6
-extern myScheme_t sDentistry[32];//7
-extern myScheme_t sTherapy[32];//8
-extern myScheme_t sEndolift[32];//11
+extern const myScheme_t sPhlebology[32];//0
+extern const myScheme_t sProctology[32];//1
+extern const myScheme_t sGynecology[32];//2
+extern const myScheme_t sENT[32];//3
+extern const myScheme_t sNeurosurgery[32];//4
+extern const myScheme_t sDermatology[32];//5
+extern const myScheme_t sLiposuction[32];//6
+extern const myScheme_t sDentistry[32];//7
+extern const myScheme_t sTherapy[32];//8
+extern const myScheme_t sEndolift[32];//11
 /*****************************************************************************/
 void restoreScheme(uint8_t reDef);//治疗方案初始化
 void goNextScheme(void);//切换下一个方案

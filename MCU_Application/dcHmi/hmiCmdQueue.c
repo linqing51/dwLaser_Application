@@ -81,6 +81,17 @@ static qsize queue_size()
 *  \param  buf_len 指令接收缓存区大小
 *  \return  指令长度，0表示队列中无完整指令
 */
+/*===========================================================================
+ * [分支范围说明] 分支: run_treatment
+ * 本分支只进行两类改动:
+ *   1) 病历相关功能(患者ID与治疗记录绑定、病历管理等);
+ *   2) 节省 RAM / EPROM 用量优化(预设方案 myScheme_t 由 .bss 改为 const
+ *      固化在 Flash、串口指令缓冲宏 CMD_MAX_SIZE/QUEUE_MAX_SIZE 调整等)。
+ * 已知遗留(本分支暂不修复):
+ *   此处仅有 queue_find_cmd, 缺少 master 上的 queue_detect_handshake 主动握手
+ *   检测; 当串口屏链路异常/断链时, 需等待约 5 秒握手超时才能重新建立通信。
+ *   该修复位于 master 提交 b8478dc2, 经确认不合并到本分支, 请勿在此改动握手逻辑。
+ *===========================================================================*/
 qsize queue_find_cmd(qdata *buffer,qsize buf_len)
 {
     qsize cmd_size = 0;
