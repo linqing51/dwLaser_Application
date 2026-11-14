@@ -19,12 +19,61 @@ typedef enum {
 	SLEEP   = 0xB9    // 进入睡眠
 }EPROM_CMD_T;
 
+#define CONFIG_EPROM_MANUFACTURER_ID 								0x04//富士通/FRAM厂商码(JEP106)
+static epromIdStatus_t epromIdStatus = EPROM_ID_OK;//开机设备ID核对结果
+
+//按RDID密度码(第4字节)解码容量: 容量字节=2^(密度码+10); 厂商不符或密度码不支持返回0
+uint32_t epromDecodeCapacity(const uint8_t id[4]){
+	uint8_t code;
+	if(id == NULL){
+		return 0UL;
+	}
+	if(id[0] != CONFIG_EPROM_MANUFACTURER_ID){
+		return 0UL;
+	}
+	code = id[3];
+	//密度码有效区间: 6->64KB(2^16) ... 21->2GB(2^31), 保证移位不溢出uint32
+	if((code < 6U) || (code > 21U)){
+		return 0UL;
+	}
+	return (1UL << (code + 10));
+}
+
+epromIdStatus_t epromGetIdStatus(void){
+	return epromIdStatus;
+}
+
+//读取RDID并核对: 厂商/密度码可识别且解码容量==CONFIG_EPROM_SIZE才置OK, 否则记录对应错误
+epromIdStatus_t epromVerifyDeviceId(void){
+	uint8_t id[4];
+	uint32_t decoded;
+	if(epromReadDeviceId(id) != HAL_OK){
+		epromIdStatus = EPROM_ID_ERR_READ;
+		printf("EPROM ID READ FAIL\n");
+		return epromIdStatus;
+	}
+	printf("EPROM ID:%02X%02X%02X%02X\n", id[0], id[1], id[2], id[3]);
+	decoded = epromDecodeCapacity(id);
+	if(decoded == 0UL){
+		epromIdStatus = EPROM_ID_ERR_UNKNOWN;
+		printf("EPROM ID:UNKNOWN/UNSUPPORTED DEVICE\n");
+		return epromIdStatus;
+	}
+	if(decoded != (uint32_t)CONFIG_EPROM_SIZE){
+		epromIdStatus = EPROM_ID_ERR_MISMATCH;
+		printf("EPROM ID MISMATCH: decoded=%lu configured=%lu\n",
+			(unsigned long)decoded, (unsigned long)CONFIG_EPROM_SIZE);
+		return epromIdStatus;
+	}
+	epromIdStatus = EPROM_ID_OK;
+	printf("EPROM ID VERIFY OK:%lu bytes\n", (unsigned long)decoded);
+	return epromIdStatus;
+}
+
 void epromInit(void){
   uint8_t wtmp, rtmp;
-	uint8_t eprom_id[4];
-  EPROM_SPI_NSS_DESEL;	
-	epromReadDeviceId(eprom_id);
-	printf("EPROM ID:%02X%02X%02X%02X\n", eprom_id[0], eprom_id[1], eprom_id[2], eprom_id[3]);
+  EPROM_SPI_NSS_DESEL;
+	epromVerifyDeviceId();//读取并核对设备ID(同时打印), 结果经epromGetIdStatus可查
   wtmp = 0;
   wtmp |= 1 << 7;
   wtmp |= 1 << 1;
@@ -96,7 +145,7 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteEnable(bool en){//写使能（所�
 
 SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){//读1字节 addr: 24位地址（MB85RS2MTA 只用低18位） rdat: 输出1字节
 	HAL_StatusTypeDef ret;
-	uint8_t tempBuf[4], rxBuf[4];//命令+地址一次收发(减少HAL调用)
+	uint8_t tempBuf[4], rxBuf[5];//命令+地址一次收发(减少HAL调用); rxBuf需容纳24位地址(4)+1数据字节
 	uint16_t txLen;
 	EPROM_SPI_NSS_SEL;
 	__ASM volatile ("NOP");

@@ -2779,7 +2779,9 @@ void refreshListTreatmentDisplay(void){
 			(recordIndex < recordCount) && (recordIndex == listTreatmentCtx.selectedIndex));
 	}
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "TOTAL:%u/%u", (unsigned int)recordCount, (unsigned int)treatmentEpromGetCapacity());//有效病历数量/区块可容纳数量
+	//TOTAL同时显示 去重患者人数/治疗记录次数(同一患者多次治疗只计1人, 记录按次数累计)
+	sprintf(dispBuf, "P:%u/R:%u",
+		(unsigned int)treatmentEpromGetPatientCount(), (unsigned int)recordCount);
 	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_TOTAL, (uint8_t*)dispBuf);
 }
 

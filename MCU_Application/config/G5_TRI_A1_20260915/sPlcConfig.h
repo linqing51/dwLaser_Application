@@ -592,9 +592,11 @@ extern "C" {
 #define DM_DC_OLD_PASSCODE2														(DM_START + 8)//屏旧密码0-1
 #define DM_DC_OLD_PASSCODE3														(DM_START + 9)//屏旧密码2-3
 #define DM_LANGUAGE																		(DM_START + 10)//语言代码
-#define DM_TREATMENT_NUM                              (DM_START + 11)//EPROM中已经储存的病历数量
+#define DM_TREATMENT_NUM                              (DM_START + 11)//EPROM中已储存治疗记录总数 R
 #define DM_TREATMENT_FW_CRC_L                         (DM_START + 12)//上次运行固件CRC32低16位(固件变化清空病历判据)
 #define DM_TREATMENT_FW_CRC_H                         (DM_START + 13)//上次运行固件CRC32高16位(固件变化清空病历判据)
+#define DM_TREATMENT_PATIENT_NUM                      (DM_START + 14)//EPROM中已储存患者(人数)总数 P
+#define DM_TREATMENT_NEXT_ID                          (DM_START + 15)//下一个可分配患者编号(单调, 删除不重编号)
 
 /*****************************************************************************/
 #define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关

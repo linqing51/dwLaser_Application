@@ -41,7 +41,18 @@ typedef enum {
 	CLEAR_EPROM_TREATMENT											= 0x09//清除病历/治疗记录区(含CRC)
 }clarmEpromCmd_t;
 /*****************************************************************************/
+/* 开机设备ID(RDID)核对结果: 由epromVerifyDeviceId在epromInit时解码并记录 */
+typedef enum {
+	EPROM_ID_OK = 0,												//设备ID与配置容量一致
+	EPROM_ID_ERR_READ,											//RDID读取失败(SPI通信异常)
+	EPROM_ID_ERR_UNKNOWN,										//厂商码不识别或密度码不支持
+	EPROM_ID_ERR_MISMATCH										//解码容量与CONFIG_EPROM_SIZE不一致
+}epromIdStatus_t;
+/*****************************************************************************/
 void epromInit(void);
+uint32_t epromDecodeCapacity(const uint8_t id[4]);//按RDID密度码解码容量(字节), 不识别返回0
+epromIdStatus_t epromVerifyDeviceId(void);//读取并核对设备ID, 记录/返回核对结果
+epromIdStatus_t epromGetIdStatus(void);//获取最近一次开机设备ID核对结果
 HAL_StatusTypeDef epromReadStatusReg(uint8_t *status);
 HAL_StatusTypeDef epromWriteStatusReg(uint8_t *status);
 HAL_StatusTypeDef epromReadDeviceId(uint8_t *idBuf);

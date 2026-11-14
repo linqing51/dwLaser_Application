@@ -296,6 +296,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_FM25W256G_SIZE									32768//32K
 #define CONFIG_MB85RS512TPN_SIZE							65536//64K
 #define CONFIG_MB85RS2MAT_SIZE								262144//256K
+#define CONFIG_MB85RS1MT_SIZE								131072//128K
+#define CONFIG_MB85RS4MT_SIZE								524288//512K
 #define CONFIG_EPROM_WRITE_ADDR								0xA0//
 #define CONFIG_EPROM_READ_ADDR								0xA1//
 #define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
@@ -384,19 +386,21 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_BK_START									(CONFIG_EPROM_FD_END + 1L)
 #define CONFIG_EPROM_BK_END										(CONFIG_EPROM_BK_START + (CONFIG_BKRAM_SIZE * 4L) - 1L)
 
-#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L)//4B MR NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L)//4B DM NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_BK_CRC - 4L)//4B FD NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_BK_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L)//4B BK NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L)//4B MCU固件CRC32值 软件计算
-#define CONFIG_EPROM_LCD_FW_CRC								(CONFIG_EPROM_TREATMENT_CRC - 4L)//4B LCD固件CRC32值 软件计算
-#define CONFIG_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L)//4B treatment CRC32值 硬件计算
-#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L)//4B deviceConfig CRC32值 硬件计算
-#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L)//4B logInfo CRC32值 硬件计算
+//CRC校验区块: 紧跟BK数据区之后, 自低向高依次排布, 各占4字节; 地址随上游分区尺寸自动浮动
+#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_BK_END + 1L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_MR_CRC + 4L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_DM_CRC + 4L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_BK_CRC										(CONFIG_EPROM_FD_CRC + 4L)//4B BK NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_BK_CRC + 4L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC								(CONFIG_EPROM_MCU_FW_CRC + 4L)//4B LCD固件CRC32值 软件计算
+#define CONFIG_EPROM_TREATMENT_CRC						(CONFIG_EPROM_LCD_FW_CRC + 4L)//4B treatment CRC32值 硬件计算
+#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_TREATMENT_CRC + 4L)//4B deviceConfig CRC32值 硬件计算
+#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_CFG_CRC + 4L)//4B logInfo CRC32值 硬件计算
 
-#define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_TREATMENT_END - (32L * 1536) + 1L)
+//病历(治疗记录)区块: 起始地址紧跟CRC区块之后, 末端到配置区之前; 不再固定32*1536, 自动占满EPROM剩余全部空间
+#define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_LOG_CRC + 4L)
 #define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
-#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(32L*1536)
+#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(浮动:自动占满EPROM剩余空间)
 
 #define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 512L + 1L)//1024B 配置信息区
 #define CONFIG_EPROM_CONFIG_END								(CONFIG_EPROM_LOGINFO_START - 1L)
@@ -404,7 +408,11 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_LOGINFO_END							(CONFIG_EPROM_SIZE - 1L)
 
 #if (CONFIG_EPROM_BK_END >= CONFIG_EPROM_MR_CRC)
-	#error "EPROM 容量不足：存储区域重叠，请调小分区或更换更大容量芯片"
+	#error "EPROM 容量不足：BK数据区与CRC区块重叠，请调小分区或更换更大容量芯片"
+#endif
+//病历区块浮动容量校验: 固定数据区+CRC区(即病历起始)不得越过病历末端(配置区), 否则剩余空间不足
+#if (CONFIG_EPROM_TREATMENT_START > CONFIG_EPROM_TREATMENT_END)
+	#error "EPROM 容量不足：固定数据区与CRC区已侵入病历/配置区，请调小分区或更换更大容量芯片"
 #endif
 /*****************************************************************************/
 #ifdef __cplusplus
