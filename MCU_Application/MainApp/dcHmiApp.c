@@ -2738,6 +2738,11 @@ void updateListTreatmentDisplay(void){//病历储存页面:显示当前治疗记
 
 //病历列表页单页可显示的名字数量(对应GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0-9)
 #define LIST_TREATMENT_WINDOW_SIZE										10
+//病历列表拖动条(PROGRESS_NAME)的取值范围: 0=窗口在第一条, 100=窗口在最后一条(与其他进度条一致的0-100百分比语义)
+#define LIST_TREATMENT_PROGRESS_MAX										100
+//拖动节流参数(基于10ms系统节拍): 每5拍(50ms)最多轻量刷新一次约20fps; 10拍(100ms)无新事件判定松手并完整收尾
+#define LIST_TREATMENT_REFRESH_DIV										5
+#define LIST_TREATMENT_IDLE_STOP										10
 //病历相关运行状态集中管理: 列表页窗口/选中 + U盘提示页状态机 + 待存病历快照
 typedef struct{
 	uint16_t topIndex;//列表窗口第一个名字对应的EPROM病历索引
@@ -2749,6 +2754,11 @@ typedef struct{
 	uint8_t  usbErr;//U盘操作结果(0=成功)
 	uint8_t  pendingValid;//1=本次治疗确实发射过且尚未落成病历
 	treatmentLog_t pending;//待存病历快照(功率/波长/方案/发射时间/发射能量)
+	uint16_t pendingValue;//拖动事件最新值(0-100): 节流时只消费最新值, 丢弃中间被覆盖的事件
+	uint8_t  dragActive;//1=拖动中(走轻量批量刷新), 0=空闲(松手后完整收尾)
+	uint8_t  needRefresh;//1=有尚未消费的新拖动值
+	uint8_t  idleCount;//距上次拖动事件的10ms节拍数, 超过IDLE_STOP判定松手
+	uint8_t  sinceRefresh;//距上次轻量刷新的10ms节拍数, 达到REFRESH_DIV才允许下一次刷新
 }listTreatmentCtx_t;
 static listTreatmentCtx_t listTreatmentCtx;//病历页相关运行状态(开机全为0, 全部放ZI段)
 
@@ -2758,6 +2768,45 @@ static uint16_t listTreatmentGetCount(void){
 		return 0;
 	}
 	return (uint16_t)NVRAM0[DM_TREATMENT_NUM];
+}
+
+//窗口起始索引的合法上限: 记录超过一屏时为"总数-窗口大小", 不足一屏(无需滚动)时为0
+static uint16_t listTreatmentGetMaxTop(void){
+	uint16_t recordCount = listTreatmentGetCount();
+	if(recordCount <= LIST_TREATMENT_WINDOW_SIZE){
+		return 0U;
+	}
+	return (uint16_t)(recordCount - LIST_TREATMENT_WINDOW_SIZE);
+}
+
+//按当前窗口起始索引反向同步拖动条游标: 保证UP/DOWN按键与拖动两条路径下游标和列表位置始终一致
+static void listTreatmentSyncProgress(void){
+	uint16_t maxTop = listTreatmentGetMaxTop();
+	uint32_t barValue = 0U;
+	if(maxTop > 0U){
+		//整数比例: topIndex占可滚动范围的比例换算成0-100, 用uint32先乘后除避免溢出与精度损失
+		barValue = (uint32_t)listTreatmentCtx.topIndex * LIST_TREATMENT_PROGRESS_MAX / (uint32_t)maxTop;
+	}
+	SetProgressValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_PROGRESS_NAME, barValue);
+}
+
+//拖动中轻量刷新: 单个批量帧(0xB3)只更新10个文本, 不发按钮高亮/TOTAL/进度回写, 把串口占用降到最低
+static void listTreatmentRefreshTextBatch(void){
+	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	uint16_t recordCount = listTreatmentGetCount();
+	BatchBegin(GDDC_PAGE_LIST_TREATMENT);
+	for(uint8_t i = 0; i < LIST_TREATMENT_WINDOW_SIZE; i++){
+		uint16_t recordIndex = (uint16_t)(listTreatmentCtx.topIndex + i);
+		memset(dispBuf, 0x0, sizeof(dispBuf));
+		if(recordIndex < recordCount){
+			treatmentLog_t record;
+			if(treatmentEpromGet(recordIndex, &record) == TREATMENT_EPROM_OK){
+				sprintf(dispBuf, "AR %04u/%s", (unsigned int)record.id, record.name);
+			}
+		}
+		BatchSetText((uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0 + i), (uint8_t*)dispBuf);
+	}
+	BatchEnd();
 }
 
 //刷新病历列表页:按窗口起始索引把病历名字写入TEXT_NAME_0-9,并更新KEY_NAME_0-9选中状态
@@ -2783,10 +2832,72 @@ void refreshListTreatmentDisplay(void){
 	sprintf(dispBuf, "P:%u/R:%u",
 		(unsigned int)treatmentEpromGetPatientCount(), (unsigned int)recordCount);
 	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_TOTAL, (uint8_t*)dispBuf);
+	listTreatmentSyncProgress();//同步拖动条游标, 保证进入页面/按键/删除等任何刷新路径下游标与窗口一致
+}
+
+//把0-100拖动值线性映射到合法窗口起始索引(不足一屏时恒为0), 用uint32先乘后除避免溢出
+static void listTreatmentSetTopFromValue(uint32_t value){
+	uint16_t maxTop = listTreatmentGetMaxTop();
+	if(maxTop == 0U){
+		listTreatmentCtx.topIndex = 0U;
+	}
+	else{
+		listTreatmentCtx.topIndex = (uint16_t)(value * (uint32_t)maxTop / LIST_TREATMENT_PROGRESS_MAX);
+	}
+}
+
+//拖动条事件: 只保存最新值并标记, 不立即刷新; 实际刷新由10ms节拍节流消费(避免事件快于带宽时排队堆积)
+void listTreatmentOnProgress(uint32_t value){
+	if(value > LIST_TREATMENT_PROGRESS_MAX){//拖动值钳制到合法范围
+		value = LIST_TREATMENT_PROGRESS_MAX;
+	}
+	listTreatmentCtx.pendingValue = (uint16_t)value;
+	listTreatmentCtx.needRefresh = 1U;
+	listTreatmentCtx.dragActive = 1U;
+	listTreatmentCtx.idleCount = 0U;//重置松手检测, 停止后由节拍计数判定
+}
+
+//病历列表页10ms节拍: 拖动中按固定节奏轻量批量刷新, 检测到松手后完整收尾
+void listTreatmentDragLoop(void){
+	if(!LDP(SPCOIL_PS10MS)){//只在10ms节拍上升沿执行一次
+		return;
+	}
+	if(!listTreatmentCtx.dragActive){//非拖动中不处理
+		return;
+	}
+	listTreatmentCtx.idleCount++;
+	listTreatmentCtx.sinceRefresh++;
+	if(listTreatmentCtx.idleCount >= LIST_TREATMENT_IDLE_STOP){
+		//超过阈值无新事件: 判定松手, 用最后位置完整收尾(按钮高亮/TOTAL/进度游标), 并复位节流状态
+		listTreatmentCtx.dragActive = 0U;
+		listTreatmentCtx.needRefresh = 0U;
+		listTreatmentCtx.idleCount = 0U;
+		listTreatmentCtx.sinceRefresh = 0U;
+		listTreatmentSetTopFromValue(listTreatmentCtx.pendingValue);
+		refreshListTreatmentDisplay();
+		return;
+	}
+	//定频节流: 距上次轻量刷新达到间隔且有新值时才刷新, 中间被覆盖的事件直接丢弃
+	if(listTreatmentCtx.needRefresh && (listTreatmentCtx.sinceRefresh >= LIST_TREATMENT_REFRESH_DIV)){
+		listTreatmentCtx.sinceRefresh = 0U;
+		listTreatmentCtx.needRefresh = 0U;
+		listTreatmentSetTopFromValue(listTreatmentCtx.pendingValue);
+		listTreatmentRefreshTextBatch();
+	}
+}
+
+//非拖动路径(进入页面/UP/DOWN/删除等)主动终止拖动节流, 避免残留dragActive用旧pending值覆盖新窗口位置
+static void listTreatmentCancelDrag(void){
+	listTreatmentCtx.dragActive = 0U;
+	listTreatmentCtx.needRefresh = 0U;
+	listTreatmentCtx.idleCount = 0U;
+	listTreatmentCtx.sinceRefresh = 0U;
 }
 
 //进入病历列表页:窗口从第一条病历开始,默认选中第一条(数量直接读DM_TREATMENT_NUM,不扫描EPROM)
 void enterListTreatmentPage(void){
+	listTreatmentCancelDrag();//清掉可能残留的拖动节流状态
+	listTreatmentCtx.pendingValue = 0U;
 	listTreatmentCtx.topIndex = 0;
 	listTreatmentCtx.selectedIndex = 0;
 	refreshListTreatmentDisplay();
@@ -2794,6 +2905,7 @@ void enterListTreatmentPage(void){
 
 //UP键:名字窗口向前移动一条,已移动到第一条病历(窗口起始索引为0)时不再移动
 void listTreatmentMoveUp(void){
+	listTreatmentCancelDrag();//按键滚动时终止拖动节流, 防止旧pending值弹回窗口
 	if(listTreatmentCtx.topIndex > 0){
 		listTreatmentCtx.topIndex--;
 		refreshListTreatmentDisplay();
@@ -2802,6 +2914,7 @@ void listTreatmentMoveUp(void){
 
 //DOWN键:名字窗口向后移动一条,窗口已包含最后一条病历(末尾索引达到有效数量)时不再移动
 void listTreatmentMoveDown(void){
+	listTreatmentCancelDrag();//按键滚动时终止拖动节流, 防止旧pending值弹回窗口
 	if((uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE) < listTreatmentGetCount()){
 		listTreatmentCtx.topIndex++;
 		refreshListTreatmentDisplay();
@@ -2827,6 +2940,7 @@ void listTreatmentDelete(void){
 	uint16_t count = listTreatmentGetCount();
 	treatmentEpromErr_t err;
 	treatmentLog_t rec;
+	listTreatmentCancelDrag();//删除前终止拖动节流, 避免删除后被旧pending值覆盖
 	if(count == 0U){//没有病历可删
 		memset(dispBuf, 0x0, sizeof(dispBuf));
 		sprintf(dispBuf, "NO RECORD");
@@ -4959,6 +5073,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		return;
 	}
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_LIST_TREATMENT){//显示编辑导入导出EPROM储存的病历
+		listTreatmentDragLoop();//拖动节流: 10ms节拍内定频轻量刷新, 松手完整收尾
 		if(LD(R_ENGINEER_MODE)){//工程模式显示调试信息
 			if(LDP(SPCOIL_PS1000MS)){
 				updateDebugInfo();

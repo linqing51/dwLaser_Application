@@ -150,6 +150,7 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_8             9
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_9            10
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_TOTAL             11
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_FIND_NAME         12
 #define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0             20
 #define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_1             21
 #define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_2             22
@@ -168,6 +169,7 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB           35
 #define GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB           36
 #define GDDC_PAGE_LIST_TREATMENT_KEY_CANCLE             37
+#define GDDC_PAGE_LIST_TREATMENT_PROGRESS_NAME          38
 #define GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG      99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID							   1//患者ID

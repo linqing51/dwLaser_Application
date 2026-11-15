@@ -26,8 +26,9 @@ extern "C" {
 #define CONFIG_DEBUG_IIC_EXPAND												0//调试I2C总线扩展器
 #define CONFIG_DEBUG_IIC_HDC1080											0//调试I2C 板载温湿度传感器
 /*****************************************************************************/
-//虚拟病历生成(测试数据填充): 模块常驻编译, 由诊断页按钮GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL触发生成
-#define CONFIG_TREATMENT_DEMO_COUNT										0//按钮触发时生成数量(超过容量按容量截断; 0=填满整个区块, 覆盖末尾边界)
+//虚拟病历生成(测试数据填充): 模块常驻编译, 由诊断页按钮GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL触发
+//现行为: 随机病人数, 每病人记录数在5-20随机(范围由函数参数控制, 传0,0=默认5-20); 双重越界保险在treatment.c内
+#define CONFIG_TREATMENT_DEMO_COUNT										0//已废弃: 随机填充不再使用固定数量, 宏保留仅为兼容, 不参与逻辑
 #define CONFIG_TREATMENT_DEMO_SEED										20261111//随机种子(0=按运行时刻取, 同种子数据可复现)
 #define CONFIG_TREATMENT_DEMO_VERBOSE									1//串口输出生成/校验摘要
 /*****************************************************************************/

@@ -126,6 +126,17 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 			}
 			break;
 		}
+		case GDDC_PAGE_LIST_TREATMENT:{
+			switch(control_id){
+				case GDDC_PAGE_LIST_TREATMENT_PROGRESS_NAME:{
+					//拖动条驱动列表滚动: 具体映射与边界处理在dcHmiApp.c集中实现
+					listTreatmentOnProgress(value);
+					break;
+				}
+				default:break;
+			}
+			break;
+		}
 	}
 } 
 

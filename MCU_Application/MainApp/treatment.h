@@ -6,7 +6,10 @@
  *      patientRecord_t   20 字节, 每个患者一行, 从区块低端向上增长;
  *      treatmentRecord_t 16 字节, 每次治疗一行, 从区块高端向下增长。
  *  - 患者身份(name 等)只存一次, 治疗记录以 patientId 外键引用, 不再重复。
- *  - 患者数/记录数均无预设上限, 完全由两表之间的剩余空闲空间动态决定。
+ *  - 患者数/记录数默认无预设上限, 由两表之间的剩余空闲空间动态决定;
+ *    同时保留两个可由板级配置覆盖的显式业务上限(0=不预设, 完全由空间决定):
+ *      CONFIG_EPROM_TREATMENT_PATIENT_MAX             可动态分配的最大病人数;
+ *      CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT  每个病人对应的最大病历数。
  *  - 断电原子性:
  *      患者行以 id 字段(0xFFFF=空白)为提交点, 先写正文再写 id;
  *      记录行以 magic 字段为状态机, 先写 PENDING 再翻 COMMIT;
@@ -136,7 +139,14 @@ typedef enum{
 #define PATIENT_NOT_FOUND					TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND
 #define PATIENT_INVALID						TREATMENT_EPROM_ERR_PARAM
 
-/* 每人治疗记录数业务上限: 0 = 不预设, 完全由剩余空间决定(默认); >0 时启用封顶 */
+/* 显式业务上限(默认 0 = 不预设, 完全由剩余空间决定; >0 时启用封顶)。
+ * 板级配置(如 G5 BoardConfig.h)可在包含本头前显式定义, 覆盖此处默认值。 */
+/* 可动态分配的最大病人数 */
+#ifndef CONFIG_EPROM_TREATMENT_PATIENT_MAX
+#define CONFIG_EPROM_TREATMENT_PATIENT_MAX 0
+#endif
+
+/* 每个病人对应的最大病历数(治疗记录数) */
 #ifndef CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT
 #define CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT 0
 #endif
@@ -183,6 +193,7 @@ void treatmentEpromTraverse(treatmentEpromVisitFn fn);
 #ifndef CONFIG_TREATMENT_DEMO_VERBOSE
 #define CONFIG_TREATMENT_DEMO_VERBOSE										0
 #endif
+/* 已废弃: 随机填充不再使用固定数量, 保留仅为兼容, 不参与逻辑 */
 #ifndef CONFIG_TREATMENT_DEMO_COUNT
 #define CONFIG_TREATMENT_DEMO_COUNT											200
 #endif
@@ -197,7 +208,15 @@ typedef enum{
 	TREATMENT_DEMO_ERR_FULL,
 	TREATMENT_DEMO_ERR_VERIFY
 }treatmentDemoErr_t;
-treatmentDemoErr_t treatmentDemoGenerate(uint16_t count, uint32_t seed, uint8_t clearFirst, uint16_t *written);
+/* 随机虚拟病历填充: 随机病人数, 每个病人的记录数在 [recMin, recMax] 内随机。
+ * recMin 与 recMax 同时为 0 时使用默认范围 5..20。
+ * 所有 EPROM 写入经 FreeBytesPR(空隙) + RowWrite/InRegion(区间) 双重越界校验。
+ * patientsWritten/recordsWritten 可为 NULL, 分别返回实际写入的病人数与记录数。 */
+treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed,
+                                         uint8_t recMin, uint8_t recMax,
+                                         uint8_t clearFirst,
+                                         uint16_t *patientsWritten,
+                                         uint16_t *recordsWritten);
 #endif /* defined(CONFIG_EPROM_TREATMENT_START) */
 /*****************************************************************************/
 #ifdef __cplusplus

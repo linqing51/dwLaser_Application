@@ -1710,18 +1710,17 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL:{//病历自动填充测试: 按键触发, 先清空区块再按配置数量生成虚拟病历
+				case GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL:{//病历自动填充: 按键触发, 先清空再随机病人数、每病人随机5-20条记录
 					if(state){
-						uint16_t demoCount = (uint16_t)CONFIG_TREATMENT_DEMO_COUNT;
-						uint16_t demoWritten = 0U;
+						uint16_t demoPatients = 0U, demoRecords = 0U;
 						uint8_t demoErr;
-						if(demoCount == 0U){//配置为0: 按区块容量填满, 覆盖到最后一个槽位(边界测试)
-							demoCount = treatmentEpromGetCapacity();
-						}
-						demoErr = (uint8_t)treatmentDemoGenerate(demoCount, (uint32_t)CONFIG_TREATMENT_DEMO_SEED, 1U, &demoWritten);
+						/* 记录数范围传 0,0 = 默认 5..20; 双重越界保险(FreeBytesPR+InRegion)在填充函数内部保证 */
+						demoErr = (uint8_t)treatmentDemoGenerate((uint32_t)CONFIG_TREATMENT_DEMO_SEED,
+						                                         0U, 0U, 1U,
+						                                         &demoPatients, &demoRecords);
 						memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
-						if(demoErr == (uint8_t)TREATMENT_DEMO_OK){//生成后DM_TREATMENT_NUM已由生成模块回读校准
-							sprintf(dispBuf, "DEMO FILL:%u OK, NUM:%d", demoWritten, NVRAM0[DM_TREATMENT_NUM]);
+						if(demoErr == (uint8_t)TREATMENT_DEMO_OK){
+							sprintf(dispBuf, "FILL P:%u R:%u OK", demoPatients, demoRecords);
 						}
 						else{
 							sprintf(dispBuf, "DEMO FILL ERR:%d", (int)demoErr);

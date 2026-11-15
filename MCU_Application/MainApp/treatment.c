@@ -56,6 +56,22 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave){
 STATIC_ASSERT(sizeof(patientRecord_t)==20U,   patient_row_20);
 STATIC_ASSERT(sizeof(treatmentRecord_t)==16U, record_row_16);
 
+/* 编译期校验: 两个显式业务上限的最坏组合(每个病人都达到记录上限)须能同时容纳于病历区块。
+ * 病人数上限为 0 表示不预设, 该侧不约束; 用 long 保证 32 位常量运算不溢出。 */
+STATIC_ASSERT(
+	(CONFIG_EPROM_TREATMENT_PATIENT_MAX == 0) ||
+	((long)CONFIG_EPROM_TREATMENT_PATIENT_MAX * (long)PAT_BYTES +
+	 (long)CONFIG_EPROM_TREATMENT_PATIENT_MAX *
+	 (long)CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT * (long)REC_BYTES
+	 <= (long)REG_SIZE),
+	patient_limits_fit_region);
+/* 单病人记录上限(若启用)不得超过"全区块仅存记录"时的物理条数 */
+STATIC_ASSERT(
+	(CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT == 0) ||
+	((long)CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT <=
+	 (long)REG_SIZE / (long)REC_BYTES),
+	record_limit_fit_region);
+
 /* 患者表索引 i 地址(低端向上) */
 static uint32_t PatientAddr(uint16_t i){
 	return REG_START + (uint32_t)i * (uint32_t)PAT_BYTES;
@@ -349,6 +365,11 @@ treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *
 	patientRecord_t row;
 	if(in == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
 	p = CntP(); r = CntR();
+#if (CONFIG_EPROM_TREATMENT_PATIENT_MAX > 0)
+	if(p >= (uint16_t)CONFIG_EPROM_TREATMENT_PATIENT_MAX){
+		return TREATMENT_EPROM_ERR_PATIENT_FULL;
+	}
+#endif
 	if(FreeBytesPR(p, r) < PAT_BYTES){ return TREATMENT_EPROM_ERR_FULL; }
 	id = CntNext();
 	if((id == 0U) || (id == CONFIG_EPROM_TREATMENT_SLOT_EMPTY) || (id > PATIENT_ID_LIMIT)){
@@ -377,6 +398,11 @@ static treatmentEpromErr_t EnsurePatientWithId(uint16_t id, const patientRecord_
 		if((id == 0U) || (id == CONFIG_EPROM_TREATMENT_SLOT_EMPTY) || (id > PATIENT_ID_LIMIT)){
 			return TREATMENT_EPROM_ERR_PARAM;
 		}
+#if (CONFIG_EPROM_TREATMENT_PATIENT_MAX > 0)
+		if(p >= (uint16_t)CONFIG_EPROM_TREATMENT_PATIENT_MAX){
+			return TREATMENT_EPROM_ERR_PATIENT_FULL;
+		}
+#endif
 		if(FreeBytesPR(p, r) < PAT_BYTES){ return TREATMENT_EPROM_ERR_FULL; }
 		row = (tpl != NULL) ? *tpl : (patientRecord_t){0};
 		row.id = id;
@@ -862,34 +888,88 @@ static treatmentDemoErr_t demoVerify(uint16_t count){
 	return TREATMENT_DEMO_OK;
 }
 
-treatmentDemoErr_t treatmentDemoGenerate(uint16_t count, uint32_t seed, uint8_t clearFirst, uint16_t *written){
-	uint16_t target, done = 0U;
+/* 默认每病人记录数范围(参数全 0 时启用) */
+#define DEMO_REC_MIN_DEFAULT											5U
+#define DEMO_REC_MAX_DEFAULT											20U
 
-	if(written != NULL){ *written = 0U; }
-	if(count == 0U){ return TREATMENT_DEMO_ERR_PARAM; }
+treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t recMax,
+                                         uint8_t clearFirst,
+                                         uint16_t *patientsWritten, uint16_t *recordsWritten){
+	uint16_t patients = 0U, records = 0U, targetPatients;
+	uint32_t avgRec, capP;
+#if (CONFIG_TREATMENT_DEMO_VERBOSE == 1)
+	uint32_t tickStart;
+#endif
+	if(patientsWritten != NULL){ *patientsWritten = 0U; }
+	if(recordsWritten != NULL){ *recordsWritten = 0U; }
+
+	/* 参数归一化: 两者同时为 0 时使用默认 5..20; 随后修正非法/倒挂范围 */
+	if((recMin == 0U) && (recMax == 0U)){
+		recMin = (uint8_t)DEMO_REC_MIN_DEFAULT;
+		recMax = (uint8_t)DEMO_REC_MAX_DEFAULT;
+	}
+	if(recMin == 0U){ recMin = 1U; }
+	if(recMax < recMin){ recMax = recMin; }
+
 	demoRandSeed(seed);
 	if(clearFirst != 0U){
 		if(treatmentEpromClear() != TREATMENT_EPROM_OK){ return TREATMENT_DEMO_ERR_IO; }
 	}
 #if (CONFIG_TREATMENT_DEMO_VERBOSE == 1)
-	uint32_t tickStart = HAL_GetTick();
+	tickStart = HAL_GetTick();
 #endif
-	target = count;
-	/* 每条 demo 为独立患者(患者20+记录16=36B); 空间满即停, 不把 FULL 当 IO 错误 */
-	while(done < target){
-		treatmentLog_t rec;
+
+	/* 随机病人数: 按记录数范围中值估算物理可容纳病人数, 再在 [1, capP] 内随机;
+	 * 实际写入仍以运行时 FreeBytesPR 物理检查为准, 写不下即安全停止。 */
+	avgRec = ((uint32_t)recMin + (uint32_t)recMax) / 2U;
+	capP = REG_SIZE / ((uint32_t)PAT_BYTES + avgRec * (uint32_t)REC_BYTES);
+	if(capP < 1U){ capP = 1U; }
+	targetPatients = (uint16_t)demoRandRange(1U, capP);
+
+	while(patients < targetPatients){
+		treatmentLog_t base;
 		treatmentEpromErr_t e;
-		demoBuildRecord(treatmentGetNextPatientId(), &rec);
-		e = treatmentEpromAdd(&rec);
-		if(e == TREATMENT_EPROM_ERR_FULL){ break; }
+		uint16_t wantRec, pid, k;
+
+		/* 该病人的目标记录数(每病人独立随机) */
+		wantRec = (uint16_t)demoRandRange((uint32_t)recMin, (uint32_t)recMax);
+
+		/* 第一重保险(空隙): 剩余空间须至少容纳 患者行+首条记录, 否则停止填充 */
+		if(FreeBytesPR(CntP(), CntR()) < (uint32_t)(PAT_BYTES + REC_BYTES)){ break; }
+
+		/* 首条: 建立新患者(随机身份)并写入第 1 条记录; 调用前取 next id 即实际分配 id */
+		pid = treatmentGetNextPatientId();
+		demoBuildRecord(pid, &base);
+		e = treatmentEpromAdd(&base);
+		if((e == TREATMENT_EPROM_ERR_FULL) || (e == TREATMENT_EPROM_ERR_PATIENT_FULL)){ break; }
 		if(e != TREATMENT_EPROM_OK){ return TREATMENT_DEMO_ERR_IO; }
-		done++;
+		records++;
+
+		/* 第 2..wantRec 条: 复用患者身份(id/age/gender/name), 仅治疗参数随机 */
+		for(k = 1U; k < wantRec; k++){
+			treatmentLog_t more;
+			/* 第一重保险(空隙): 剩余空间不足一条记录则结束该病人 */
+			if(FreeBytesPR(CntP(), CntR()) < REC_BYTES){ break; }
+			demoBuildRecord(pid, &more);
+			more.id = pid;
+			more.age = base.age;
+			more.gender = base.gender;
+			(void)memcpy(more.name, base.name, sizeof(more.name));
+			e = treatmentEpromAddToPatient(pid, &more);
+			if((e == TREATMENT_EPROM_ERR_FULL) || (e == TREATMENT_EPROM_ERR_PATIENT_FULL)){ break; }
+			if(e != TREATMENT_EPROM_OK){ return TREATMENT_DEMO_ERR_IO; }
+			records++;
+		}
+		patients++;
 	}
-	if(demoVerify(done) != TREATMENT_DEMO_OK){ return TREATMENT_DEMO_ERR_VERIFY; }
-	if(written != NULL){ *written = done; }
+
+	if(demoVerify(records) != TREATMENT_DEMO_OK){ return TREATMENT_DEMO_ERR_VERIFY; }
+	if(patientsWritten != NULL){ *patientsWritten = patients; }
+	if(recordsWritten != NULL){ *recordsWritten = records; }
 #if (CONFIG_TREATMENT_DEMO_VERBOSE == 1)
-	printf("%s:demo fill ok, count=%u requested=%u cost=%lums free=%lu\n",
-		__func__, done, target, (unsigned long)(HAL_GetTick() - tickStart),
+	printf("%s:random fill ok, patients=%u records=%u targetP=%u cost=%lums free=%lu\n",
+		__func__, patients, records, targetPatients,
+		(unsigned long)(HAL_GetTick() - tickStart),
 		(unsigned long)treatmentGetFreeBytes());
 #endif
 	return TREATMENT_DEMO_OK;
