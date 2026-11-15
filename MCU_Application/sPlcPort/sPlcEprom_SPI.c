@@ -74,9 +74,10 @@ void epromInit(void){
   uint8_t wtmp, rtmp;
   EPROM_SPI_NSS_DESEL;
 	epromVerifyDeviceId();//读取并核对设备ID(同时打印), 结果经epromGetIdStatus可查
+  // 关闭硬件块保护: 病历记录从区块高端向下增长, 历史遗留 BP1=1 会保护高1/2阵列(0x8000-0xFFFF),
+  // 记录写入被 FRAM 静默拒绝(SPI 仍返回成功), 重启后 Recovery 扫描为空、列表空白。
+  // 越界防护由软件 InRegion/FreeBytesPR 保证, 无需硬件块保护, 状态寄存器清0(WPEN/BP1/BP0全0)
   wtmp = 0;
-  wtmp |= 1 << 7;
-  wtmp |= 1 << 1;
   epromReadStatusReg(&rtmp);
   printf("OLD STATUS REGISTER:%02X\n", rtmp);
   epromWriteEnable(true);

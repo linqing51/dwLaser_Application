@@ -691,7 +691,9 @@ treatmentEpromErr_t treatmentEpromClear(void){
 	}
 	SetAt(DM_TREATMENT_PATIENT_NUM, 0U);
 	SetAt(DM_TREATMENT_NUM, 0U);
-	SetAt(DM_TREATMENT_NEXT_ID, 0U);
+	// 清空后下一个患者 ID 从 1 开始(0 为非法哨兵); 若写 0 且 g_ready 已置位,
+	// CntNext()=0 会让 treatmentPatientCreate 误判 FULL、无法新建患者
+	SetAt(DM_TREATMENT_NEXT_ID, 1U);
 	g_nextRecSeq = 1U;
 	return TREATMENT_EPROM_OK;
 }
