@@ -49,9 +49,12 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave){
 #define PAT_BYTES								((uint16_t)sizeof(patientRecord_t))	/*20*/
 #define REC_BYTES								((uint16_t)sizeof(treatmentRecord_t))	/*16*/
 
-/* 编译期尺寸固化: 防止结构调整后尺寸假设失效 */
-_Static_assert(sizeof(patientRecord_t)==20U, "patient row 20");
-_Static_assert(sizeof(treatmentRecord_t)==16U, "record row 16");
+/* 编译期尺寸固化: 防止结构调整后尺寸假设失效。
+ * ARMCC5(本工程,C99)不支持C11关键字_Static_assert, 改用负数组惯用法:
+ * 条件成立时typedef正常; 条件失败则数组尺寸为负, 触发编译错误#94, 等效静态断言。 */
+#define STATIC_ASSERT(cond, ident) typedef char sa_##ident[(cond) ? 1 : -1]
+STATIC_ASSERT(sizeof(patientRecord_t)==20U,   patient_row_20);
+STATIC_ASSERT(sizeof(treatmentRecord_t)==16U, record_row_16);
 
 /* 患者表索引 i 地址(低端向上) */
 static uint32_t PatientAddr(uint16_t i){
