@@ -98,7 +98,8 @@ void listTreatmentMoveUp(void);//病历列表页:UP键名字窗口向前移动(�
 void listTreatmentMoveDown(void);//病历列表页:DOWN键名字窗口向后移动(到最后一条停止)
 void listTreatmentOnProgress(uint32_t value);//病历列表页:拖动事件只暂存最新值, 由节拍节流消费
 void listTreatmentDragLoop(void);//病历列表页10ms节拍: 拖动节流轻量刷新与松手完整收尾
-void listTreatmentSelect(uint8_t slot);//病历列表页:选择窗口内第slot个病历(0-9)
+void listTreatmentSelect(uint8_t slot);//病历列表页:选择窗口内第slot个患者(0-9)
+void listTreatmentSetFindText(const char *text);//病历列表页:FIND_NAME输入查找字母, 实时过滤患者姓名
 void listTreatmentDelete(void);//病历列表页:删除当前选中病历(后续病历前移, ID随记录一起移动, 不重新编号)
 
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id);//触摸放行判断(提示页屏蔽触摸, 载入确认页只放行覆盖/取消)

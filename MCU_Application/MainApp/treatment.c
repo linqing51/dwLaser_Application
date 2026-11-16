@@ -767,7 +767,19 @@ static const char *const demoGivenFemalePool[] = {
 
 static uint32_t demoRandState = 1U;
 static void demoRandSeed(uint32_t seed){
-	if(seed == 0U){ seed = (uint32_t)HAL_GetTick() ^ 0x5A5A5A5AU; }
+	if(seed == 0U){
+		//运行时刻随机种子: 滴答时间 + 芯片96位唯一ID + 上一次PRNG状态混合,
+		//保证每次按键(即使同一毫秒内连点)都得到不同序列
+		uint32_t uid0 = *(const volatile uint32_t*)(UID_BASE);
+		uint32_t uid1 = *(const volatile uint32_t*)(UID_BASE + 4U);
+		uint32_t uid2 = *(const volatile uint32_t*)(UID_BASE + 8U);
+		seed = (uint32_t)HAL_GetTick();
+		seed ^= uid0;
+		seed ^= (uid1 << 7) | (uid1 >> 25);
+		seed ^= (uid2 << 17) | (uid2 >> 15);
+		seed ^= demoRandState;
+		seed ^= 0x5A5A5A5AU;
+	}
 	demoRandState = (seed == 0U) ? 1U : seed;
 }
 static uint32_t demoRandNext(void){

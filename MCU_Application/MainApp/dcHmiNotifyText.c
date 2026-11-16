@@ -1216,6 +1216,10 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
     
     case GDDC_PAGE_LIST_TREATMENT:{//显示病历列表
       switch(control_id){
+        case GDDC_PAGE_LIST_TREATMENT_TEXT_FIND_NAME:{//查找字母输入: 实时过滤下方NAME_0-9患者姓名
+          listTreatmentSetFindText((const char*)str);
+          break;
+        }
         default:break;
       }
       break;

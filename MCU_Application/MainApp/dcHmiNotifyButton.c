@@ -1714,8 +1714,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					if(state){
 						uint16_t demoPatients = 0U, demoRecords = 0U;
 						uint8_t demoErr;
-						/* 记录数范围传 0,0 = 默认 5..20; 双重越界保险(FreeBytesPR+InRegion)在填充函数内部保证 */
-						demoErr = (uint8_t)treatmentDemoGenerate((uint32_t)CONFIG_TREATMENT_DEMO_SEED,
+						//种子固定传0: 每次按键按运行时刻(滴答+芯片UID+上次PRNG状态)取新种子,
+						//保证每次填充的病人数、每人病历数及姓名/性别/年龄/治疗方案/治疗参数均随机
+						//记录数范围传 0,0 = 默认 5..20; 双重越界保险(FreeBytesPR+InRegion)在填充函数内部保证
+						demoErr = (uint8_t)treatmentDemoGenerate(0U,
 						                                         0U, 0U, 1U,
 						                                         &demoPatients, &demoRecords);
 						memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);

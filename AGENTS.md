@@ -3,7 +3,7 @@
 > **本文件是所有 AI 智能体（含任何工具、任何新建会话/工作）在本仓库开展工作前必须首先阅读并严格遵守的规则。**
 > 开始任何编译、修改、提交之前，先完整读完本文件；本文件的约束优先级高于会话中的临时推断。
 > 本规则由仓库所有者确立并要求**永久生效、随仓库分发**，无需用户在每个会话重复说明。
-> 最后更新：2026-11-15。
+> 最后更新：2026-11-16。
 
 ---
 
@@ -86,6 +86,19 @@ UV4.exe -r targetBoard_G5_TRI_A1_20260915.uvprojx -o <日志文件> -j0
 **工具链已知坑（CreateProcess failed）**：若工程 ARM Compiler 选项为 "Use default compiler version 5"（使用默认编译器版本5），命令行可能因全局默认解析异常，把 AC5 工程错误解析到 `ARMCLANG` 目录、却调用 AC5 文件名，拼出不存在的 `...\ARMCLANG\Bin\ArmCC` 而 CreateProcess failed。复位方式：Keil GUI → Options for Target(Alt+F7) → Target → ARM Compiler，明确选具体版本 `V5.06 update 7 (build 960)`（不要用"默认"），保存后工程新增 `<pArmCC>5060960::...\ARMCC</pArmCC>` 即恢复正常。
 
 注意：`uAC6` 切换属于验证操作；验证结束后应使工程文件保持在仓库规定的编译器设置，不要遗留无关改动。
+
+### 本机工具链安装清单（2026-11-16 实测，均不在系统 PATH，须用全路径调用）
+
+| 工具 | 安装根目录 | 可执行文件全路径 | 实测版本 |
+|---|---|---|---|
+| Git for Windows | `C:\Program Files\Git` | `C:\Program Files\Git\cmd\git.exe` | git 2.55.0.windows.3 |
+| Keil MDK（μVision） | `C:\Keil_v5` | `C:\Keil_v5\UV4\UV4.exe` | 5.43.1.0（MDK Plus 5.43） |
+| AC5（armcc） | `C:\Keil_v5` | `C:\Keil_v5\ARM\ARMCC\Bin\armcc.exe` | ARM Compiler 5.06 update 7（build 960） |
+| AC6（armclang） | `C:\Keil_v5` | `C:\Keil_v5\ARM\ARMCLANG\Bin\armclang.exe` | Arm Compiler for Embedded 6.24 |
+
+- `C:\Keil_v5` 下一级目录：`ARM`、`C251`、`C51`、`Eclipse`、`UV4`、`license_terms`。
+- 命令行调用 Git 须用全路径，如 `"C:\Program Files\Git\cmd\git.exe" -C <仓库路径> ...`；路径含空格必须加引号，直接写 `git` 会因不在 PATH 而失败。
+- 上述工具若重新安装或升级导致路径/版本变化，应重新实测并更新本表与"最后更新"日期。
 
 ---
 
