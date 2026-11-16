@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -1216,7 +1216,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
     
     case GDDC_PAGE_LIST_TREATMENT:{//显示病历列表
       switch(control_id){
-        case GDDC_PAGE_LIST_TREATMENT_TEXT_FIND_NAME:{//查找字母输入: 实时过滤下方NAME_0-9患者姓名
+        case GDDC_PAGE_LIST_TREATMENT_TEXT_SEARCH_NAME:{//查找字母输入: 实时过滤下方NAME_0-9患者姓名
           listTreatmentSetFindText((const char*)str);
           break;
         }

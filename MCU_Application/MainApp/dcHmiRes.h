@@ -43,22 +43,25 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_TRI_1940_1470_635             12
 #define GDDC_PAGE_LIST_TREATMENT			                  13//显示病历列表
 #define GDDC_PAGE_EDIT_TREATMENT									      14//病例编辑
-#define GDDC_PAGE_READY																	15
-#define GDDC_PAGE_OPTION																16//选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									17//方案分类页 双波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										18//方案分类页 三波长
-#define GDDC_PAGE_SCHEME_DETAIL													19//方案分类页 自定义
-#define GDDC_PAGE_INFORMATION														20//信息页面
-#define GDDC_PAGE_DIAGNOSIS															21//诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW													22//诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI												23
-#define GDDC_PAGE_RENAME																24//SCHEME更名
-#define GDDC_PAGE_RESTORE																25//弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY														26//脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM											27//弹出菜单 确认关机
-#define GDDC_PAGE_SAVING_UDISK													28//
-#define GDDC_PAGE_NO_UDISK                              29
-#define GDDC_PAGE_LOAD_UDISK                            30
+#define GDDC_PAGE_OPERATOR_USB                          15//USB导入导出
+#define GDDC_PAGE_READY																	16//准备页面
+#define GDDC_PAGE_VERIFY_TREATMENT                      17//核对治疗记录
+#define GDDC_PAGE_DISCARD_TREATMENT                     18//放弃本次治疗记录
+#define GDDC_PAGE_OPTION																19//选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL									20//方案分类页 双波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI										21//方案分类页 三波长
+#define GDDC_PAGE_SCHEME_DETAIL													22//方案分类页 自定义
+#define GDDC_PAGE_INFORMATION														23//信息页面
+#define GDDC_PAGE_DIAGNOSIS															24//诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW													25//诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI												26//诊断页面-功率校准
+#define GDDC_PAGE_RENAME																27//SCHEME更名
+#define GDDC_PAGE_RESTORE																28//弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY														29//脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM											30//弹出菜单 确认关机
+#define GDDC_PAGE_SAVING_UDISK													31//
+#define GDDC_PAGE_NO_UDISK                              32
+#define GDDC_PAGE_LOAD_UDISK                            33
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1											1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2											2
@@ -139,37 +142,39 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_KEY_ENTER_TREATMENT						45//储存手术记录
 #define GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG							99//显示调试信息
 /*****************************************************************************/
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0             1
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_1             2
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_2             3
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_3             4
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_4             5
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_5             6
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_6             7
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_7             8
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_8             9
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_9            10
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_TOTAL             11
-#define GDDC_PAGE_LIST_TREATMENT_TEXT_FIND_NAME         12
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0             20
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_1             21
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_2             22
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_3             23
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_4             24
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_5             25
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_6             26
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_7             27
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_8             28
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_9             29
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP            30
-#define GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN          31
-#define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE             32
-#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE             33
-#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT               34
-#define GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB           35
-#define GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB           36
-#define GDDC_PAGE_LIST_TREATMENT_KEY_CANCLE             37
-#define GDDC_PAGE_LIST_TREATMENT_PROGRESS_NAME          38
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0             1//患者名字
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_1             2//患者名字
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_2             3//患者名字
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_3             4//患者名字
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_4             5//患者名字
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_ID_0               6//患者ID
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_ID_1               7//患者ID
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_ID_2               8//患者ID
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_ID_3               9//患者ID
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_ID_4              10//患者ID
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_0    11//治疗记录数量
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_1    12//治疗记录数量
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_2    13//治疗记录数量
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_3    14//治疗记录数量
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_4    15//治疗记录数量
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY          16//病历容量
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_SEARCH_NAME       17//按姓名或患者编号搜索
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_PAGE_NUM          18//病历页数
+
+#define GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0   20//选择患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_1   21//选择患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_2   22//选择患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_3   23//选择患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_4   24//选择患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0           25//删除患者 
+#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_1           26//删除患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_2           27//删除患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_3           28//删除患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_4           29//删除患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP            30//上一页
+#define GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN          31//下一页
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE              32//关闭
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW         33//新建患者
 #define GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG      99//显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID							   1//患者ID
@@ -184,6 +189,11 @@ extern "C" {
 #define GDDC_PAGE_EDIT_TREATMENT_KEY_OK                 10//确定
 #define GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL						  11//取消
 #define GDDC_PAGE_EDIT_TREATMENT_TEXTDISPLAY_DEBUG      99//显示调试信息
+/*****************************************************************************/
+#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY              1//患者数-治疗记录数
+#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB          2//UDISK 信息
+#define GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK            3//存储到U盘
+#define GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK            4//从U盘载入
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXTDISPLAY_NAME								1//方案名称显示
 #define GDDC_PAGE_READY_TEXTDISPLAY_POWER_CH0						2//发射功率显示 1470 /1940
@@ -204,81 +214,99 @@ extern "C" {
 #define GDDC_PAGE_READY_KEY_READY												17//切换待机按键
 #define GDDC_PAGE_READY_TEXTDISPLAY_DEBUG								99//显示调试信息
 /*****************************************************************************/
-#define GDDC_PAGE_OPTION_KEY_TONE									 			1//蜂鸣器声光同步												
-#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD						2//蜂鸣器音量加
-#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_INC						3//蜂鸣器音量减
-#define GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD								4//液晶屏亮度增加
-#define GDDC_PAGE_OPTION_KEY_LCD_BRG_INC								5//液晶屏亮度减少
-#define GDDC_PAGE_OPTION_KEY_ENTER_OK										6//返回待机页面
-#define GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION					7//进入信息菜单
-#define GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON							8//
-#define GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER							9//进入工程师模式。
-#define GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME				10
-#define GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG						11
-#define GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME						12//蜂鸣器音量调节
-#define GDDC_PAGE_OPTION_PROGRESS_LCD_BRG								13//屏幕亮度调节
-#define GDDC_PAGE_OPTION_KEY_RESTORE										14//恢复默认设置
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_ID               1//患者编号
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_NAME             2//患者姓名
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_AGE              3//患者年龄
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_TIME     4//治疗摘要-日期
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_ENERGY   5//治疗摘要-能量
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_OUTPUT   6//治疗摘要-输出时长
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_POWER    7//治疗摘要-功率
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_SCHEME   8//治疗摘要-方案
+#define GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD       9//保存记录
+#define GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD   10//放弃本次记录
+#define GDDC_PAGE_VERIFY_TREATMENT_KEY_LIST_TREATMENT   11//选择患者
+#define GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER          12//患者性别
 /*****************************************************************************/
-#define GDDC_PAGE_RESTORE_KEY_CANCEL										1//取消恢复默认值
-#define GDDC_PAGE_RESTORE_KEY_YES												2//确认恢复默认值
+#define GDDC_PAGE_DISCARD_TREATMENT_TEXT_NAME             1//名字与ID
+#define GDDC_PAGE_DISCARD_TREATMENT_TEXT_ENERGY           2//能量时间功率
+#define GDDC_PAGE_DISCARD_TREATMENT_KEY_RETURN_           3//返回核对
+#define GDDC_PAGE_DISCARD_TREATMENT_KEY_ABANDON           4//放弃本次记录
 /*****************************************************************************/
-#define GDDC_PAGE_LOAD_UDISK_KEY_COVER                  1//覆盖
-#define GDDC_PAGE_LOAD_UDISK_KEY_CANCEL                 2//取消
+#define GDDC_PAGE_OPTION_KEY_TONE									 			  1//蜂鸣器声光同步												
+#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD						  2//蜂鸣器音量加
+#define GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_INC						  3//蜂鸣器音量减
+#define GDDC_PAGE_OPTION_KEY_LCD_BRG_ADD								  4//液晶屏亮度增加
+#define GDDC_PAGE_OPTION_KEY_LCD_BRG_INC								  5//液晶屏亮度减少
+#define GDDC_PAGE_OPTION_KEY_ENTER_OK										  6//返回待机页面
+#define GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION					  7//进入信息菜单
+#define GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON							  8//
+#define GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER							  9//进入工程师模式。
+#define GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME				 10
+#define GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG						 11
+#define GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME						 12//蜂鸣器音量调节
+#define GDDC_PAGE_OPTION_PROGRESS_LCD_BRG								 13//屏幕亮度调节
+#define GDDC_PAGE_OPTION_KEY_RESTORE										 14//恢复默认设置
 /*****************************************************************************/
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY				1		
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY				2
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_GTNECOLOGY				3	
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENT								4
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_NEUROSURGERY			5
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DERAMATOLOGY			6
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_LIPOSUCTION				7
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DENTISTRY					8
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_THERAPY						9
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM						10
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN						11
-#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENDOLIFT					12
+#define GDDC_PAGE_RESTORE_KEY_CANCEL										  1//取消恢复默认值
+#define GDDC_PAGE_RESTORE_KEY_YES												  2//确认恢复默认值
+/*****************************************************************************/
+#define GDDC_PAGE_LOAD_UDISK_KEY_COVER                    1//覆盖
+#define GDDC_PAGE_LOAD_UDISK_KEY_CANCEL                   2//取消
+/*****************************************************************************/
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY				  1		
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY				  2
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_GTNECOLOGY				  3	
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENT								  4
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_NEUROSURGERY			  5
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DERAMATOLOGY			  6
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_LIPOSUCTION				  7
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DENTISTRY					  8
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_THERAPY						  9
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM						 10
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN						 11
+#define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENDOLIFT					 12
 /*****************************************************************************/
 //方案页面
-#define GDDC_PAGE_SCHEME_KEY_RENAME											1//更名按键
-#define GDDC_PAGE_SCHEME_KEY_OK													2//确定
-#define GDDC_PAGE_SCHEME_KEY_CANCEL											3//取消
-#define GDDC_PAGE_SCHEME_KEY_SELECT_0										4	
-#define GDDC_PAGE_SCHEME_KEY_SELECT_1										5
-#define GDDC_PAGE_SCHEME_KEY_SELECT_2										6
-#define GDDC_PAGE_SCHEME_KEY_SELECT_3										7
-#define GDDC_PAGE_SCHEME_KEY_SELECT_4										8
-#define GDDC_PAGE_SCHEME_KEY_SELECT_5										9
-#define GDDC_PAGE_SCHEME_KEY_SELECT_6										10
-#define GDDC_PAGE_SCHEME_KEY_SELECT_7										11
-#define GDDC_PAGE_SCHEME_KEY_SELECT_8										12
-#define GDDC_PAGE_SCHEME_KEY_SELECT_9										13
-#define GDDC_PAGE_SCHEME_KEY_SELECT_10									14
-#define GDDC_PAGE_SCHEME_KEY_SELECT_11									15
-#define GDDC_PAGE_SCHEME_KEY_SELECT_12									16
-#define GDDC_PAGE_SCHEME_KEY_SELECT_13									17
-#define GDDC_PAGE_SCHEME_KEY_SELECT_14									18
-#define GDDC_PAGE_SCHEME_KEY_SELECT_15									19
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0						20
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1						21
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2						22
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3						23
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4						24
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5						25
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6						26
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7						27
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8						28
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9						29
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10					30
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11					31
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12					32
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13					33
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14					34
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15					35
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0						36
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1						37
-#define GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY						38
-#define GDDC_PAGE_SCHEME_KEY_LAST_PAGE									39
-#define GDDC_PAGE_SCHEME_KEY_NEXT_PAGE									40
+#define GDDC_PAGE_SCHEME_KEY_RENAME											  1//更名按键
+#define GDDC_PAGE_SCHEME_KEY_OK													  2//确定
+#define GDDC_PAGE_SCHEME_KEY_CANCEL											  3//取消
+#define GDDC_PAGE_SCHEME_KEY_SELECT_0										  4	
+#define GDDC_PAGE_SCHEME_KEY_SELECT_1										  5
+#define GDDC_PAGE_SCHEME_KEY_SELECT_2										  6
+#define GDDC_PAGE_SCHEME_KEY_SELECT_3										  7
+#define GDDC_PAGE_SCHEME_KEY_SELECT_4										  8
+#define GDDC_PAGE_SCHEME_KEY_SELECT_5										  9
+#define GDDC_PAGE_SCHEME_KEY_SELECT_6										 10
+#define GDDC_PAGE_SCHEME_KEY_SELECT_7										 11
+#define GDDC_PAGE_SCHEME_KEY_SELECT_8										 12
+#define GDDC_PAGE_SCHEME_KEY_SELECT_9										 13
+#define GDDC_PAGE_SCHEME_KEY_SELECT_10									 14
+#define GDDC_PAGE_SCHEME_KEY_SELECT_11									 15
+#define GDDC_PAGE_SCHEME_KEY_SELECT_12									 16
+#define GDDC_PAGE_SCHEME_KEY_SELECT_13									 17
+#define GDDC_PAGE_SCHEME_KEY_SELECT_14									 18
+#define GDDC_PAGE_SCHEME_KEY_SELECT_15									 19
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0						 20
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1						 21
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2						 22
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3						 23
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4						 24
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5						 25
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6						 26
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7						 27
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8						 28
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9						 29
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10					 30
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11					 31
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12					 32
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13					 33
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14					 34
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15					 35
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0						 36
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1						 37
+#define GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY						 38
+#define GDDC_PAGE_SCHEME_KEY_LAST_PAGE									 39
+#define GDDC_PAGE_SCHEME_KEY_NEXT_PAGE									 40
 /*****************************************************************************/
 #define GDDC_PAGE_INFO_KEY_ENTER_OK											1
 #define GDDC_PAGE_INFO_TEXTDISPLAY_TPYE									2

@@ -92,15 +92,13 @@ void unselectSchemeNum(int16_t index);
 void clearReleaseTimeEnergy(void);
 void updateReleaseTimeEnergy(void);
 void updateListTreatmentDisplay(void);//病历储存页面:显示当前治疗记录(待保存)
-void refreshListTreatmentDisplay(void);//病历列表页:按当前窗口刷新名字与选中按钮状态
-void enterListTreatmentPage(void);//病历列表页:查询EPROM有效病历数量并显示第一页
-void listTreatmentMoveUp(void);//病历列表页:UP键名字窗口向前移动(到第一条停止)
-void listTreatmentMoveDown(void);//病历列表页:DOWN键名字窗口向后移动(到最后一条停止)
-void listTreatmentOnProgress(uint32_t value);//病历列表页:拖动事件只暂存最新值, 由节拍节流消费
-void listTreatmentDragLoop(void);//病历列表页10ms节拍: 拖动节流轻量刷新与松手完整收尾
-void listTreatmentSelect(uint8_t slot);//病历列表页:选择窗口内第slot个患者(0-9)
-void listTreatmentSetFindText(const char *text);//病历列表页:FIND_NAME输入查找字母, 实时过滤患者姓名
-void listTreatmentDelete(void);//病历列表页:删除当前选中病历(后续病历前移, ID随记录一起移动, 不重新编号)
+void refreshListTreatmentDisplay(void);//病历列表页:按当前窗口刷新姓名/ID/病历数与选中按钮状态
+void enterListTreatmentPage(void);//病历列表页:重建患者视图并显示第一页
+void listTreatmentMoveUp(void);//病历列表页:PAGE_UP键向前翻一整页(到第一页停止)
+void listTreatmentMoveDown(void);//病历列表页:PAGE_DOWN键向后翻一整页(到最后一页停止)
+void listTreatmentSelect(uint8_t slot);//病历列表页:选择当前页第slot个患者(0-4)
+void listTreatmentSetFindText(const char *text);//病历列表页:SEARCH_NAME输入查找字母, 实时过滤患者姓名
+void listTreatmentDelete(void);//旧记录式删除逻辑(暂保留, 新UI的DELETE_0-4患者级联删除尚未接线)
 
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id);//触摸放行判断(提示页屏蔽触摸, 载入确认页只放行覆盖/取消)
 uint8_t listTreatmentUsbBusy(void);//提示页/确认页显示中

@@ -919,54 +919,35 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
     
     case GDDC_PAGE_LIST_TREATMENT:{//显示病历列表
       switch(control_id){
-        case GDDC_PAGE_LIST_TREATMENT_KEY_NAME_UP:{//名字窗口向前移动
+        case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP:{//向前翻一整页(5个患者)
           if(state){
             listTreatmentMoveUp();
           }
           break;
         }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_NAME_DOWN:{//名字窗口向后移动
+        case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN:{//向后翻一整页(5个患者)
           if(state){
             listTreatmentMoveDown();
           }
           break;
         }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_CANCLE:{//返回STANDBY状态
+        case GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE:{//返回STANDBY状态
           if(state){
             returnStandbyDisplay();//统一返回待机页面
           }
           break;
         }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_DELETE:{//删除当前选中的病历
-          if(state){
-            listTreatmentDelete();
-            SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_DELETE, 0);//删除结束后复位按钮状态, 保证下次按下仍能触发
-          }
-          break;
-        }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_CREATE:{//新建病历: 本次治疗实际发射过激光才允许进入编辑页
+        case GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW:{//新建病历: 本次治疗实际发射过激光才允许进入编辑页
           if(state){
             listTreatmentCreateStart();
-            SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CREATE, 0);//复位自锁按钮
+            SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW, 0);//复位自锁按钮
           }
           break;
         }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_SAVE_USB:{//检测U盘并弹出保存提示页面(写入与等待在dcHmiLoop中非阻塞完成)
-          if(state){
-            listTreatmentSaveUsbStart();
-          }
-          break;
-        }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_LOAD_USB:{//先检测U盘并弹出载入确认页面, 按"覆盖"才真正读取(整个流程非阻塞)
-          if(state){
-            listTreatmentLoadUsbStart();
-          }
-          break;
-        }
-        default:{//KEY_NAME_0-9:选择窗口内对应位置的病历
-          if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0)
-             && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_NAME_9)){
-            listTreatmentSelect((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_NAME_0));
+        default:{//KEY_SELECT_PATIENT_0-4:选择当前页对应位置的患者
+          if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0)
+             && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_4)){
+            listTreatmentSelect((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0));
           }
           break;
         }
