@@ -68,6 +68,8 @@ dkms.conf
 *.bak
 *.log
 *.uvoptx
+# 命令行编译日志统一存放目录(各工程MDK-ARM/build_logs)
+**/MDK-ARM/build_logs/
 
 # ===== IAR intermediate / build artifacts =====
 *.fed

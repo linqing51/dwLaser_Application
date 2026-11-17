@@ -51,4 +51,5 @@
 - AC5（armcc）：`C:\Keil_v5\ARM\ARMCC\Bin\armcc.exe`
 - AC6（armclang，本分支搁置）：`C:\Keil_v5\ARM\ARMCLANG\Bin\armclang.exe`
 - 命令行完整 Rebuild：`UV4.exe -r <工程.uvprojx> -o <日志文件> -j0`
+- 编译日志统一写入各工程的 `MDK-ARM/build_logs/` 目录（如 `...\G5_TRI_A1_20260915\MDK-ARM\build_logs\ac5_xxx_log.txt`），不要散落在 `MDK-ARM` 根目录；该目录已被 `.gitignore` 忽略，不纳入提交。
 - 若工具路径/版本发生变化，重新实测并更新本文件。
