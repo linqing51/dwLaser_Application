@@ -272,8 +272,8 @@ static uint8_t treatmentCsvParseRecord(const char *line, treatmentLog_t *rec){
 		return 0U;
 	}
 	memset(rec, 0, sizeof(treatmentLog_t));
-	if((treatmentCsvFieldLong(&treatmentCsvRow, 0U, &v) == 0U) || (v < 1L) || (v > (long)(CONFIG_EPROM_TREATMENT_SLOT_EMPTY - 1U))){
-		return 0U;//患者ID须为有效编号
+	if((treatmentCsvFieldLong(&treatmentCsvRow, 0U, &v) == 0U) || (v < 1L) || (v > (long)PATIENT_ID_LIMIT)){
+		return 0U;//患者ID须为有效编号(对齐片上PATIENT_ID_LIMIT)
 	}
 	rec->id = (uint16_t)v;
 	if(treatmentCsvFieldText(&treatmentCsvRow, 1U, rec->name, (uint16_t)sizeof(rec->name)) == 0U){
@@ -291,8 +291,8 @@ static uint8_t treatmentCsvParseRecord(const char *line, treatmentLog_t *rec){
 	else{
 		return 0U;
 	}
-	if((treatmentCsvFieldLong(&treatmentCsvRow, 3U, &v) == 0U) || (v < 1L) || (v > 120L)){
-		return 0U;//年龄
+	if((treatmentCsvFieldLong(&treatmentCsvRow, 3U, &v) == 0U) || (v < 0L) || (v > (long)PATIENT_AGE_LIMIT)){
+		return 0U;//年龄(对齐片上PATIENT_AGE_LIMIT,允许0)
 	}
 	rec->age = (uint8_t)v;
 	if((treatmentCsvFieldLong(&treatmentCsvRow, 4U, &v) == 0U) || (v < 1L) || (v > 32767L)){
