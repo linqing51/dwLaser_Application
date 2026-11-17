@@ -944,27 +944,83 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           }
           break;
         }
-        default:{//KEY_SELECT_PATIENT_0-4:选择当前页对应位置的患者
+        case GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB:{//操作USB: 进入USB导入导出操作页
+          if(state){
+            enterOperatorUsbPage();
+          }
+          break;
+        }
+        default:{
+          //KEY_SELECT_PATIENT_0-4:选择当前页对应位置的患者
           if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0)
              && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_4)){
             listTreatmentSelect((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0));
+          }
+          //KEY_DELETE_0-4:进入删除确认页(不立即删除), 确认后才级联删除该患者
+          else if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0)
+             && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_4)){
+            listTreatmentDeleteStart((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0));
           }
           break;
         }
       }
       break;
     }
-		case GDDC_PAGE_LOAD_UDISK:{//载入确认页面
+    case GDDC_PAGE_DELETE_TREATMENT_CONFIRM:{//删除患者确认页: 确认删除或取消返回列表页
+      switch(control_id){
+        case GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_DELETE:{
+          if(state){
+            listTreatmentDeleteConfirm();
+          }
+          break;
+        }
+        case GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_CANCLE:{
+          if(state){
+            listTreatmentDeleteCancel();
+          }
+          break;
+        }
+        default:break;
+      }
+      break;
+    }
+		case GDDC_PAGE_OPERATOR_USB:{//USB导入导出操作页
 			switch(control_id){
-				case GDDC_PAGE_LOAD_UDISK_KEY_COVER:{//覆盖: 授权用U盘文件覆盖机内病历
+				case GDDC_PAGE_OPERATOR_USB_KEY_BACK:{//返回病历列表页
 					if(state){
-						listTreatmentLoadUsbCover();
+						listTreatmentOperatorUsbBack();
 					}
 					break;
 				}
-				case GDDC_PAGE_LOAD_UDISK_KEY_CANCEL:{//取消: 保留机内病历, 返回病历列表页
+				case GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK:{//存储到U盘: 检测U盘后弹保存提示页(写入在轮询中完成)
 					if(state){
-						listTreatmentLoadUsbCancel();
+						listTreatmentSaveUsbStart();
+					}
+					break;
+				}
+				case GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK:{//从U盘载入: 检测U盘后弹载入确认页(不直接覆盖机内病历)
+					if(state){
+						listTreatmentLoadUsbStart();
+					}
+					break;
+				}
+				default:{
+					break;
+				}
+			}
+			break;
+		}
+		case GDDC_PAGE_OPERATOR_USB_CONFIRM:{//USB操作确认页面(导出/导入共用)
+			switch(control_id){
+				case GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE:{//取消: 不读写, 返回USB操作页
+					if(state){
+						listTreatmentUsbCancel();
+					}
+					break;
+				}
+				case GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM:{//确认: 授权执行(导出/导入在轮询中完成)
+					if(state){
+						listTreatmentUsbConfirm();
 					}
 					break;
 				}

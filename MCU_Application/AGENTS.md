@@ -10,4 +10,6 @@
 4. 自编源码统一使用 **UTF-8 编码**（新建/另存文件带 BOM），严禁 GBK/ANSI 等其他编码，任何编辑保存都必须遵循（详见根 AGENTS.md 第四节）。
 5. 代码风格（详见根 AGENTS.md 第五节）：**2 空格缩进、`//` 注释、大括号与函数名同行**；局部变量小驼峰如 `firstName`、全局变量大驼峰如 `FirstName`；配置宏以 `CONFIG` 开头并集中放入 `AppConfig.h`。Keil 已勾选 Insert spaces for tabs、Tab size=2（按 Tab 即 2 空格）。目标风格仅用于新建/修改部分，不做全库批量重排、不格式化相邻行。
 
+**病历列表页交互规格（页码 `PAGE x/y`、搜索框前缀过滤与字典序排序、CLOSE 按钮返回 `GDDC_PAGE_STANDBY` 待机页、USB 导出/导入确认页 OPERATOR_USB_CONFIRM）已固化为强制要求，动列表页代码前必读：`targetBoard_G5_TRI_A1_20260915/MDK-ARM/病历列表页UI规格.md`。**
+
 **进入任何具体工程前，请先回到根目录阅读完整 AGENTS.md。**

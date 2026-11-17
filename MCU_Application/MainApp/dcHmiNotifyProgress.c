@@ -107,7 +107,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 					}
 					NVRAM0[DM_BEEM_VOLUME] = (int16_t)value;
 					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
+					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
 					break;
 				}
 				case GDDC_PAGE_OPTION_PROGRESS_LCD_BRG:{
@@ -118,7 +118,7 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 						value = CONFIG_LCD_MAX_DC;
 					}
 					NVRAM0[DM_LCD_BRG] = (int16_t)value;
-					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
+					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
 					SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 					break;
 				}					

@@ -94,22 +94,28 @@ void updateReleaseTimeEnergy(void);
 void updateListTreatmentDisplay(void);//病历储存页面:显示当前治疗记录(待保存)
 void refreshListTreatmentDisplay(void);//病历列表页:按当前窗口刷新姓名/ID/病历数与选中按钮状态
 void enterListTreatmentPage(void);//病历列表页:重建患者视图并显示第一页
+void refreshOperatorUsbDisplay(void);//USB操作页:刷新机内病历摘要与U盘在位状态
+void enterOperatorUsbPage(void);//列表页"操作USB"按键:进入USB导入导出操作页
+void listTreatmentOperatorUsbBack(void);//USB操作页返回:回到病历列表页
 void listTreatmentMoveUp(void);//病历列表页:PAGE_UP键向前翻一整页(到第一页停止)
 void listTreatmentMoveDown(void);//病历列表页:PAGE_DOWN键向后翻一整页(到最后一页停止)
 void listTreatmentSelect(uint8_t slot);//病历列表页:选择当前页第slot个患者(0-4)
 void listTreatmentSetFindText(const char *text);//病历列表页:SEARCH_NAME输入查找字母, 实时过滤患者姓名
-void listTreatmentDelete(void);//旧记录式删除逻辑(暂保留, 新UI的DELETE_0-4患者级联删除尚未接线)
+void listTreatmentDelete(void);//旧记录式删除逻辑(暂保留, 新UI的DELETE_0-4走listTreatmentDeleteStart确认页)
+void listTreatmentDeleteStart(uint8_t slot);//列表页DELETE_0-4: 进入删除确认页(不立即删除), 缓存待删除患者
+void listTreatmentDeleteConfirm(void);//删除确认页DELETE: 级联删除患者及其全部病历后返回列表页
+void listTreatmentDeleteCancel(void);//删除确认页CANCLE: 不删除并返回列表页
 
-uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id);//触摸放行判断(提示页屏蔽触摸, 载入确认页只放行覆盖/取消)
-uint8_t listTreatmentUsbBusy(void);//提示页/确认页显示中
-void listTreatmentSaveUsbStart(void);//病历列表页: SAVE_USB按键, 检测U盘并弹出保存/无U盘提示页面(写入在轮询中完成)
-void listTreatmentLoadUsbStart(void);//病历列表页: LOAD_USB按键, 检测U盘并弹出载入确认页面(不直接覆盖机内病历)
-void listTreatmentLoadUsbCover(void);//载入确认页: COVER按键, 授权用U盘文件覆盖机内病历(读取在轮询中完成)
-void listTreatmentLoadUsbCancel(void);//载入确认页: CANCEL按键, 保留机内病历并返回病历列表页
+uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id);//触摸放行判断(写入中屏蔽触摸, 确认页只放行确认/取消)
+uint8_t listTreatmentUsbBusy(void);//确认页/写入中(usbState非0)
+void listTreatmentSaveUsbStart(void);//USB操作页: SAVE_UDISK按键, 进入确认页(不立即写盘, 确认后才CSV导出)
+void listTreatmentLoadUsbStart(void);//USB操作页: LOAD_UDISK按键, 进入确认页(不立即读盘, 确认后才CSV导入覆盖机内病历)
+void listTreatmentUsbConfirm(void);//确认页: CONFIRM按键, 授权执行导出/导入(读写在轮询中完成)
+void listTreatmentUsbCancel(void);//确认页: CANCLE按键, 不读写并返回USB操作页
 void listTreatmentCreateStart(void);//列表页CREATE按键: 本次治疗确实发射过激光后进入编辑页新建病历
 void listTreatmentCreateConfirm(void);//编辑页OK按键: 校验患者信息后把当前治疗记录追加到EPROM末尾
 void listTreatmentCreateCancel(void);//编辑页CANCEL按键: 放弃新建并返回病历列表页
-void listTreatmentUsbLoop(void);//U盘提示页/确认页轮询(执行一次保存或载入, 最小显示时间到后返回列表页)
+void listTreatmentUsbLoop(void);//USB确认页轮询(确认页等待按键, 确认后执行一次导出/导入, 完成回操作页)
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log);//病历储存页面:显示EPROM历史病历
 void updateSchemeInfo(int16_t classify, int16_t cn);
 void updateWarnMsgDisplay(uint8_t id);

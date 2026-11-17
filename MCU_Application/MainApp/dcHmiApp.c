@@ -376,7 +376,7 @@ void updateDebugInfo(void){//更新Standby调试信息
 			break;
 		}	
 		case GDDC_PAGE_READY:{
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
 		case GDDC_PAGE_LIST_TREATMENT:{
@@ -2084,7 +2084,7 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	seconds = temp0 % 60;
 	sprintf(dispBuf1, "%3d:%02d", minute, seconds);//00:00
 	
-	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_TREATMENT_TIME, (uint8_t*)dispBuf1);		
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_TREATMENT_TIME, (uint8_t*)dispBuf1);		
 	treatmentLog.releaseTime = temp0;//发射时间 单位秒
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_CW){//连续模式能量计算
 		temp2 = temp0 * NVRAM0[EM_LASER_POWER_TOTAL];//计算发射能量
@@ -2119,7 +2119,7 @@ void updateReleaseTimeEnergy(void){//刷新发射时间能量
 	p = (int32_t*)(&NVRAM0[EM_LASER_RELEASE_ENERGY]);
 	*p = temp2;
 	sprintf(dispBuf1, "%11.1f J", ((float)temp2 / 10));//00:00
-	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ENERGEY, (uint8_t*)dispBuf1); 
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ENERGEY, (uint8_t*)dispBuf1); 
 	treatmentLog.releaseEnergy = (temp2 + 5) / 10;//已发射能量 单位焦耳(temp2为0.1J计数,四舍五入取整)
 }
 void updateWarnMsgDisplay(MSG_ID_T id){//更新警号显示框
@@ -2137,7 +2137,7 @@ void updateWarnMsgDisplay(MSG_ID_T id){//更新警号显示框
 //	}
 	if((MsgId != id) || (NVRAM0[EM_DC_PAGE] != NVRAM1[EM_DC_PAGE])){
 		msg = getErrorString(id);		
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, (uint8_t*)msg);
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_WARN, (uint8_t*)msg);
 		MsgId = id;
 	}
 }
@@ -2417,19 +2417,19 @@ void updateExtralDisplay(void){//更新额外显示
 		dutyCycle = 1;
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "N/A");	
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY, (uint8_t*)dispBuf);			
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE, (uint8_t*)dispBuf);		
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_FREQUENCY, (uint8_t*)dispBuf);			
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_DUTYCYCLE, (uint8_t*)dispBuf);		
 		averagePower = (float)(NVRAM0[EM_LASER_POWER_TOTAL]) / 10.0F;		
 	}
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		freq = 1000.0F / (float)(NVRAM0[EM_LASER_POSWIDTH] + NVRAM0[EM_LASER_NEGWIDTH]);
 		sprintf(dispBuf, "%5.2f Hz", freq);
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY, (uint8_t*)dispBuf);		
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_FREQUENCY, (uint8_t*)dispBuf);		
 
 		dutyCycle = (float)NVRAM0[EM_LASER_POSWIDTH] / (float)(NVRAM0[EM_LASER_POSWIDTH] + NVRAM0[EM_LASER_NEGWIDTH]);
 		sprintf(dispBuf, "%4.1f %%", dutyCycle * 100.0F);			
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE, (uint8_t*)dispBuf);		
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_DUTYCYCLE, (uint8_t*)dispBuf);		
 		averagePower = dutyCycle * (float)(NVRAM0[EM_LASER_POWER_TOTAL]) / 10.0F;
 	}
 	//平均功率显示
@@ -2453,12 +2453,12 @@ void updateExtralDisplay(void){//更新额外显示
 		}
 	}
 	sprintf(dispBuf, "%3.1f W", averagePower);
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_AVERAGE_POWER, (uint8_t*)dispBuf);		
+	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_AVERAGE_POWER, (uint8_t*)dispBuf);		
 	//总功率显示
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	totalPower = (float)NVRAM0[EM_LASER_POWER_TOTAL] / 10.0F;
 	sprintf(dispBuf, "%3.1f W", totalPower);
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_TOTAL_POWER, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_TOTAL_POWER, (uint8_t*)dispBuf);
 }
 
 void updatePosWidthDisplay(void){//更新正脉宽显示
@@ -2469,7 +2469,7 @@ void updatePosWidthDisplay(void){//更新正脉宽显示
 	else{
 		sprintf(dispBuf, "%d S", (NVRAM0[EM_LASER_POSWIDTH] / 1000));
 	}		
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH, (uint8_t*)dispBuf);		
+	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_POSWIDTH, (uint8_t*)dispBuf);		
 }
 void updateNegWidthDisplay(void){//更新负脉宽显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -2479,8 +2479,11 @@ void updateNegWidthDisplay(void){//更新负脉宽显示
 	else{
 		sprintf(dispBuf, "%d S", (NVRAM0[EM_LASER_NEGWIDTH] / 1000));
 	}
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_NEGWIDTH, (uint8_t*)dispBuf);
 }
+
+//前向声明: 待机页PATIENT_NAME刷新访问器(实现依赖文件后面才定义的listTreatmentCtx, 故先声明原型)
+static void listTreatmentWriteStandbyPatientName(void);
 
 void updateStandbyDisplay(void){//更新方案显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -2510,8 +2513,8 @@ void updateStandbyDisplay(void){//更新方案显示
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD, false);
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_INC, false);
 		
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH, false);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH, false);
+		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_POSWIDTH, false);
+		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_NEGWIDTH, false);
 		
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_ICON_MPKEY, false);
 		
@@ -2521,8 +2524,8 @@ void updateStandbyDisplay(void){//更新方案显示
 		SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_INC, false);	
 		
 		sprintf(dispBuf, "N/A");
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_FREQUENCY, (uint8_t*)dispBuf);			
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DUTYCYCLE, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_FREQUENCY, (uint8_t*)dispBuf);			
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_DUTYCYCLE, (uint8_t*)dispBuf);
 	}
 	if(NVRAM0[EM_LASER_PULSE_MODE] == LASER_MODE_MP){
 		SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_MODE_CW, false);
@@ -2533,8 +2536,8 @@ void updateStandbyDisplay(void){//更新方案显示
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_ADD, true);
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_NEGWIDTH_INC, true);
 		
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_POSWIDTH, true);
-		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NEGWIDTH, true);
+		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_POSWIDTH, true);
+		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_NEGWIDTH, true);
 		
 		SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_ICON_MPKEY, true);
 		
@@ -2550,7 +2553,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH0]) / 10));
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);		
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_SET_POWER_SEL, (uint8_t*)dispBuf);		
 		barValue = NVRAM0[EM_LASER_POWER_CH0] * 100.0F / CONFIG_MAX_LASER_POWER_CH0;
 		if(barValue <= 2){
 			barValue = 2;
@@ -2562,7 +2565,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	}
 	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH1]) / 10));
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_SET_POWER_SEL, (uint8_t*)dispBuf);
 		barValue = NVRAM0[EM_LASER_POWER_CH1] * 100.0F / CONFIG_MAX_LASER_POWER_CH1;
 		if(barValue <= 2){
 			barValue = 2;
@@ -2574,7 +2577,7 @@ void updateStandbyDisplay(void){//更新方案显示
 	}
 	if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//635
 		sprintf(dispBuf, "%3.1f W\n", ((float)(NVRAM0[EM_LASER_POWER_CH2]) / 10));
-		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_SEL, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_SET_POWER_SEL, (uint8_t*)dispBuf);
 		barValue = NVRAM0[EM_LASER_POWER_CH2] * 100.0F / CONFIG_MAX_LASER_POWER_CH2;
 		if(barValue <= 2){
 			barValue = 2;
@@ -2586,8 +2589,9 @@ void updateStandbyDisplay(void){//更新方案显示
 	}	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%d%%\n", NVRAM0[DM_RAIM_BRG] * 10);
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_SET_POWER_AIM, (uint8_t*)dispBuf);
-	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
+	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_SET_POWER_AIM, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
+	listTreatmentWriteStandbyPatientName();//待机页PATIENT_NAME: 经访问器下发当前选中患者名(未选择则清空)
 	updateExtralDisplay();
 }
 
@@ -2608,8 +2612,8 @@ void updateOptionDisplay(void){//更新选项显示
 	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//更新BEEM音量进度条
 	BatchSetProgressValue(GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);//更新LCD亮度
 	BatchEnd();
-	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME ,NVRAM0[DM_BEEM_VOLUME], 1, 0);
-	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG ,NVRAM0[DM_LCD_BRG], 1, 0);
+	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_BEEM_VOLUME ,NVRAM0[DM_BEEM_VOLUME], 1, 0);
+	SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_LCD_BRG ,NVRAM0[DM_LCD_BRG], 1, 0);
 }
 
 void updateReadyDisplay(void){//更新READY显示
@@ -2631,7 +2635,7 @@ void updateReadyDisplay(void){//更新READY显示
 			sprintf(dispBuf, "450nm");
 			treatmentLog.laserWave = WAVE_450;
 #endif     
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
 		case LASER_CHANNEL_CH1:{
@@ -2643,20 +2647,20 @@ void updateReadyDisplay(void){//更新READY显示
 			sprintf(dispBuf, "980nm");
 			treatmentLog.laserWave = WAVE_980;
 #endif
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}
 		case LASER_CHANNEL_CH2:{
 			displayPower = (float)NVRAM0[EM_LASER_POWER_CH2] / 10.0F;
 			sprintf(dispBuf, "635nm");
 			treatmentLog.laserWave = WAVE_635;
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_SHOW_WAVE, (uint8_t*)dispBuf);
 			break;
 		}			
 		default:{
 			sprintf(dispBuf, "1470+980nm");
 			treatmentLog.laserWave = WAVE_1470_980;
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_SHOW_WAVE, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_SHOW_WAVE, (uint8_t*)dispBuf);
 			displayPower = ((float)NVRAM0[EM_LASER_POWER_CH0] + (float)NVRAM0[EM_LASER_POWER_CH1] + (float)NVRAM0[EM_LASER_POWER_CH2])/ 10.0F;
 			break;
 		}
@@ -2668,8 +2672,8 @@ void updateReadyDisplay(void){//更新READY显示
 	if((NVRAM0[DM_SCHEME_CLASSIFY] >= SCHEME_PHLEBOLOGY) && (NVRAM0[DM_SCHEME_CLASSIFY] <= SCHMEM_THERAPY)){
 		treatmentLog.protocol = (PROTOCOL_ENUM)(NVRAM0[DM_SCHEME_CLASSIFY] - SCHEME_PHLEBOLOGY);
 	}
-	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_POWER_TOTAL, (uint8_t*)dispBuf);
-	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_POWER_TOTAL, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_NAME, (uint8_t*)&NVRAM0[EM_LASER_SCHEME_NAME]);
 	clearReleaseTimeEnergy();
 	updateReleaseTimeEnergy();
 	updateAcousticDisplay();
@@ -2733,275 +2737,369 @@ void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显�
 }
 
 void updateListTreatmentDisplay(void){//病历储存页面:显示当前治疗记录(待保存)
-	dcHmiShowTreatmentCommon("NEW", &treatmentLog);
+  dcHmiShowTreatmentCommon("NEW", &treatmentLog);
 }
 
 //病历列表页单页可显示的患者数量(对应GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0-4)
-#define LIST_TREATMENT_WINDOW_SIZE										5
+#define LIST_TREATMENT_WINDOW_SIZE 5
 //病历相关运行状态集中管理: 列表页窗口/选中 + U盘提示页状态机 + 待存病历快照
 typedef struct{
-	uint16_t topIndex;//列表窗口第一个患者在"过滤后患者视图"中的位置(整页翻页, 恒为窗口大小的整数倍)
-	uint16_t selectedIndex;//当前选中患者在"过滤后患者视图"中的位置
-	uint16_t usbState;//U盘提示页状态: 0空闲 1保存页待写 2保存已写完 3无U盘页 4载入确认页 5载入执行中
-	uint16_t usbCount;//本次保存/载入的病历条数
-	uint16_t driveStep;//上一拍HMI治疗步骤(用于识别停光, 开机为0不等于发射中步骤)
-	uint8_t  usbOp;//1=保存 2=载入(用于无U盘页的提示文字)
-	uint8_t  usbErr;//U盘操作结果(0=成功)
-	uint8_t  pendingValid;//1=本次治疗确实发射过且尚未落成病历
-	treatmentLog_t pending;//待存病历快照(功率/波长/方案/发射时间/发射能量)
-	//患者视图过滤: findText为SEARCH_NAME输入的查找字母(空串=不过滤), filteredIndex按患者表顺序缓存命中患者的原始索引
-	char findText[16];
-	uint16_t filteredCount;//过滤后命中的患者数量(视图总数)
-	uint16_t filteredIndex[CONFIG_EPROM_TREATMENT_PATIENT_MAX];//视图位置 -> 患者表原始索引
+  uint16_t topIndex;//列表窗口第一个患者在"过滤后患者视图"中的位置(整页翻页, 恒为窗口大小的整数倍)
+  uint16_t selectedIndex;//当前选中患者在"过滤后患者视图"中的位置
+  uint16_t usbState;//U盘流程状态: 0空闲 6确认页等待按键 7导出/导入执行中(读写在轮询完成)
+  uint16_t usbCount;//本次保存/载入的病历条数
+  uint16_t driveStep;//上一拍HMI治疗步骤(用于识别停光, 开机为0不等于发射中步骤)
+  uint8_t  usbOp;//1=导出(save) 2=导入(load), 决定确认页文案与轮询执行分支
+  uint8_t  usbErr;//U盘操作结果(0=成功)
+  uint8_t  pendingValid;//1=本次治疗确实发射过且尚未落成病历
+  treatmentLog_t pending;//待存病历快照(功率/波长/方案/发射时间/发射能量)
+  //患者视图过滤: findText为SEARCH_NAME输入的查找字母(空串=不过滤), filteredIndex按患者表顺序缓存命中患者的原始索引
+  char findText[16];
+  uint16_t filteredCount;//过滤后命中的患者数量(视图总数)
+  uint16_t filteredIndex[CONFIG_EPROM_TREATMENT_PATIENT_MAX];//视图位置 -> 患者表原始索引
+  //当前选中患者: selectedPatientId为稳定患者编号(0=未选择), 后续治疗记录以该id为外键归属; selectedPatientName供待机页PATIENT_NAME显示
+  uint16_t selectedPatientId;
+  char selectedPatientName[16];
+  //删除确认页: deletePatientId缓存待删除患者编号(0=不在删除确认流程), 确认后级联删除该患者及其全部治疗记录
+  uint16_t deletePatientId;
 }listTreatmentCtx_t;
 static listTreatmentCtx_t listTreatmentCtx;//病历页相关运行状态(开机全为0, 全部放ZI段)
 
+//待机页PATIENT_NAME访问器: 已选患者显示其姓名, 未选择(开机selectedPatientId=0)清空, 保证任何路径回待机页显示一致
+static void listTreatmentWriteStandbyPatientName(void){
+  if(listTreatmentCtx.selectedPatientId != 0U){
+    SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_PATIENT_NAME,
+                 (uint8_t*)listTreatmentCtx.selectedPatientName);
+  }
+  else{
+    SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_PATIENT_NAME, (uint8_t*)"");
+  }
+}
+
 //获取EPROM中有效病历数量:数量由DM_TREATMENT_NUM寄存器维护(treatment数据层增删时自动同步)
 static uint16_t listTreatmentGetCount(void){
-	if(NVRAM0[DM_TREATMENT_NUM] < 0){//异常负值防御
-		return 0;
-	}
-	return (uint16_t)NVRAM0[DM_TREATMENT_NUM];
+  if(NVRAM0[DM_TREATMENT_NUM] < 0){//异常负值防御
+    return 0;
+  }
+  return (uint16_t)NVRAM0[DM_TREATMENT_NUM];
 }
 
-//字母大小写归一(仅ASCII): 过滤匹配时忽略大小写, 非ASCII字节(如UTF-8中文)原样比较
-static char listTreatmentLower(char c){
-	if((c >= 'A') && (c <= 'Z')){
-		return (char)(c + 32);
-	}
-	return c;
-}
-
-//姓名是否命中查找字母: 按SEARCH_NAME输入做前缀匹配(输入"l"命中lin/laner, 输入"la"只命中laner);
-//findText为空串时不过滤全部命中; 姓名提前结束或任一位不同即不匹配
+//姓名是否命中查找字母: 按SEARCH_NAME输入做大小写敏感的前缀匹配(输入"l"不命中大写"L"开头, 输入"la"只命中"la"前缀);
+//findText为空串时不过滤全部命中; 姓名提前结束或任一位不同(含大小写不同)即不匹配
 static uint8_t listTreatmentMatchFind(const char *name){
-	uint8_t i;
-	if(name == NULL){
-		return 0U;
-	}
-	for(i = 0U; i < 16U; i++){
-		char fc = listTreatmentCtx.findText[i];
-		if(fc == '\0'){
-			return 1U;//查找字母已全部匹配完
-		}
-		if(listTreatmentLower(name[i]) != listTreatmentLower(fc)){
-			return 0U;
-		}
-	}
-	return 0U;//findText达到16位仍未结束(理论上findText被限制在15位内, 防御兜底)
+  uint8_t i;
+  if(name == NULL){
+    return 0U;
+  }
+  for(i = 0U; i < 16U; i++){
+    char fc = listTreatmentCtx.findText[i];
+    if(fc == '\0'){
+      return 1U;//查找字母已全部匹配完
+    }
+    if(name[i] != fc){//大小写敏感: 直接逐位比较, 不做大小写归一
+      return 0U;
+    }
+  }
+  return 0U;//findText达到16位仍未结束(理论上findText被限制在15位内, 防御兜底)
 }
 
-//重建过滤视图: 扫描患者主表, 按患者表顺序缓存所有命中患者的原始索引;
+//两个姓名的大小写敏感字典序(ASCII)比较: nameA靠前返回负, 靠后返回正, 完全相同返回0;
+//按字符原始值逐位比较(大写A-Z码值65-90, 排在小写a-z 97-122之前), 短名先结束(如"li"排在"linqing"前), 非ASCII字节按原值比较
+static int16_t listTreatmentCompareName(const char *nameA, const char *nameB){
+  uint8_t i;
+  for(i = 0U; i < 16U; i++){
+    char ca = nameA[i];
+    char cb = nameB[i];
+    if(ca != cb){
+      return (int16_t)((uint8_t)ca - (uint8_t)cb);
+    }
+    if(ca == '\0'){
+      return 0;//两者同时结束
+    }
+  }
+  return 0;
+}
+
+//对过滤视图做稳定插入排序(命中数≤患者上限, 仅在查找输入/数据变化时执行一次):
+//按姓名大小写敏感的ASCII字典序排列, 姓名完全相同者保持原相对顺序; 索引与本地姓名缓存同步移动, 排序不再读EPROM
+static void listTreatmentSortFiltered(char hitName[][16]){
+  uint16_t i;
+  for(i = 1U; i < listTreatmentCtx.filteredCount; i++){
+    uint16_t keyIndex = listTreatmentCtx.filteredIndex[i];
+    char keyName[16];
+    int16_t j;
+    strncpy(keyName, hitName[i], 16U);
+    keyName[15] = '\0';
+    j = (int16_t)i - 1;
+    while((j >= 0) && (listTreatmentCompareName(hitName[j], keyName) > 0)){
+      listTreatmentCtx.filteredIndex[(uint16_t)(j + 1)] = listTreatmentCtx.filteredIndex[(uint16_t)j];
+      strncpy(hitName[(uint16_t)(j + 1)], hitName[(uint16_t)j], 16U);
+      j--;
+    }
+    listTreatmentCtx.filteredIndex[(uint16_t)(j + 1)] = keyIndex;
+    strncpy(hitName[(uint16_t)(j + 1)], keyName, 16U);
+  }
+}
+
+//重建过滤视图: 扫描患者主表, 缓存所有命中患者的原始索引与姓名, 收集后按姓名字典序稳定排序;
 //数据变化(新建/删除/U盘载入)或查找字母变化时重建, 翻页期间复用, 避免每帧重复扫描
 static void listTreatmentRebuildFilter(void){
-	uint16_t total = treatmentGetPatientCount();
-	uint16_t i;
-	listTreatmentCtx.filteredCount = 0U;
-	for(i = 0U; i < total; i++){
-		patientRecord_t pat;
-		if(treatmentPatientGetByIndex(i, &pat) != TREATMENT_EPROM_OK){
-			continue;
-		}
-		if(listTreatmentMatchFind(pat.name) &&
-		   (listTreatmentCtx.filteredCount < (uint16_t)CONFIG_EPROM_TREATMENT_PATIENT_MAX)){
-			listTreatmentCtx.filteredIndex[listTreatmentCtx.filteredCount] = i;
-			listTreatmentCtx.filteredCount++;
-		}
-	}
+  uint16_t total = treatmentGetPatientCount();
+  uint16_t i;
+  char hitName[CONFIG_EPROM_TREATMENT_PATIENT_MAX][16];//命中姓名本地缓存, 供排序比较避免反复物理读EPROM
+  listTreatmentCtx.filteredCount = 0U;
+  for(i = 0U; i < total; i++){
+    patientRecord_t pat;
+    if(treatmentPatientGetByIndex(i, &pat) != TREATMENT_EPROM_OK){
+      continue;
+    }
+    if(listTreatmentMatchFind(pat.name) &&
+       (listTreatmentCtx.filteredCount < (uint16_t)CONFIG_EPROM_TREATMENT_PATIENT_MAX)){
+      listTreatmentCtx.filteredIndex[listTreatmentCtx.filteredCount] = i;
+      strncpy(hitName[listTreatmentCtx.filteredCount], pat.name, 16U);
+      hitName[listTreatmentCtx.filteredCount][15] = '\0';
+      listTreatmentCtx.filteredCount++;
+    }
+  }
+  listTreatmentSortFiltered(hitName);//命中结果按姓名大小写敏感的ASCII字典序稳定排序后再显示
 }
 
 //视图位置 -> 患者行: 视图外位置返回0, 命中返回1并填充患者行
 static uint8_t listTreatmentGetViewPatient(uint16_t viewPos, patientRecord_t *out){
-	if(out == NULL){
-		return 0U;
-	}
-	if(viewPos >= listTreatmentCtx.filteredCount){
-		return 0U;
-	}
-	return (treatmentPatientGetByIndex(listTreatmentCtx.filteredIndex[viewPos], out) == TREATMENT_EPROM_OK)
-	       ? 1U : 0U;
+  if(out == NULL){
+    return 0U;
+  }
+  if(viewPos >= listTreatmentCtx.filteredCount){
+    return 0U;
+  }
+  return (treatmentPatientGetByIndex(listTreatmentCtx.filteredIndex[viewPos], out) == TREATMENT_EPROM_OK)
+         ? 1U : 0U;
+}
+
+//窗口起始索引的合法上限(整页对齐): 视图患者超过一屏时, 取不超过"末位索引"的最大整页边界;
+//不足一屏(无需滚动)时为0。保证topIndex恒为窗口大小的整数倍, 与整页翻页(±窗口大小)及页码计算一致
+static uint16_t listTreatmentGetMaxTop(void){
+  uint16_t viewCount = listTreatmentCtx.filteredCount;
+  if(viewCount <= LIST_TREATMENT_WINDOW_SIZE){
+    return 0U;
+  }
+  return (uint16_t)(((viewCount - 1U) / LIST_TREATMENT_WINDOW_SIZE) * LIST_TREATMENT_WINDOW_SIZE);
 }
 
 //把窗口/选中钳制到当前过滤视图的合法范围(防御: 记录式删除等路径改完索引后视图仍保持一致)
 static void listTreatmentClampWindow(void){
-	uint16_t maxTop;
-	if(listTreatmentCtx.filteredCount == 0U){
-		listTreatmentCtx.topIndex = 0U;
-		listTreatmentCtx.selectedIndex = 0U;
-		return;
-	}
-	maxTop = (listTreatmentCtx.filteredCount > LIST_TREATMENT_WINDOW_SIZE)
-	         ? (uint16_t)(listTreatmentCtx.filteredCount - LIST_TREATMENT_WINDOW_SIZE) : 0U;
-	if(listTreatmentCtx.topIndex > maxTop){
-		listTreatmentCtx.topIndex = maxTop;
-	}
-	if(listTreatmentCtx.selectedIndex >= listTreatmentCtx.filteredCount){
-		listTreatmentCtx.selectedIndex = (uint16_t)(listTreatmentCtx.filteredCount - 1U);
-	}
-}
-
-//窗口起始索引的合法上限: 视图患者超过一屏时为"视图总数-窗口大小", 不足一屏(无需滚动)时为0
-static uint16_t listTreatmentGetMaxTop(void){
-	uint16_t viewCount = listTreatmentCtx.filteredCount;
-	if(viewCount <= LIST_TREATMENT_WINDOW_SIZE){
-		return 0U;
-	}
-	return (uint16_t)(viewCount - LIST_TREATMENT_WINDOW_SIZE);
+  if(listTreatmentCtx.filteredCount == 0U){
+    listTreatmentCtx.topIndex = 0U;
+    listTreatmentCtx.selectedIndex = 0U;
+    return;
+  }
+  //先把窗口起点向下对齐到整页边界(消除非整页路径遗留的偏移), 再夹到合法上限
+  listTreatmentCtx.topIndex = (uint16_t)((listTreatmentCtx.topIndex / LIST_TREATMENT_WINDOW_SIZE)
+                                         * LIST_TREATMENT_WINDOW_SIZE);
+  if(listTreatmentCtx.topIndex > listTreatmentGetMaxTop()){
+    listTreatmentCtx.topIndex = listTreatmentGetMaxTop();
+  }
+  if(listTreatmentCtx.selectedIndex >= listTreatmentCtx.filteredCount){
+    listTreatmentCtx.selectedIndex = (uint16_t)(listTreatmentCtx.filteredCount - 1U);
+  }
 }
 
 //刷新病历列表页:按窗口起始位置把过滤后患者的姓名/ID/病历数写入对应控件,并更新选中按钮状态
 void refreshListTreatmentDisplay(void){
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	uint16_t recordCount = listTreatmentGetCount();
-	uint16_t pageCount;
-	uint16_t pageNow;
-	listTreatmentClampWindow();
-	for(uint8_t i = 0; i < LIST_TREATMENT_WINDOW_SIZE; i++){
-		uint16_t viewPos = (uint16_t)(listTreatmentCtx.topIndex + i);
-		patientRecord_t pat;
-		uint16_t nameCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0 + i);
-		uint16_t idCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_ID_0 + i);
-		uint16_t countCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_0 + i);
-		uint16_t selectCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0 + i);
-		memset(dispBuf, 0x0, sizeof(dispBuf));
-		if(listTreatmentGetViewPatient(viewPos, &pat)){
-			//列表只显示患者姓名: 患者信息存在即显示, 同一患者只出现一次, 与其病历数量无关(含0个病历)
-			strncpy(dispBuf, pat.name, sizeof(pat.name));
-			dispBuf[sizeof(pat.name) - 1U] = '\0';
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)dispBuf);
-			sprintf(dispBuf, "AR %04u", (unsigned int)pat.id);//患者ID(AR编号)
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)dispBuf);
-			sprintf(dispBuf, "%u", (unsigned int)treatmentGetRecordCountForPatient(pat.id));//该患者已有病历数
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)dispBuf);
-		}
-		else{//视图外空槽位: 三类文本全部清空
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)"");
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)"");
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)"");
-		}
-		//选中患者对应的按钮高亮,视图外或空槽位取消高亮
-		SetButtonValue(GDDC_PAGE_LIST_TREATMENT, selectCtrl,
-			(viewPos < listTreatmentCtx.filteredCount) && (viewPos == listTreatmentCtx.selectedIndex));
-	}
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	//CAPACITY保持全局口径: 去重患者人数/治疗记录次数(同一患者多次治疗只计1人, 不受当前过滤影响)
-	sprintf(dispBuf, "P:%u/R:%u",
-		(unsigned int)treatmentEpromGetPatientCount(), (unsigned int)recordCount);
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)dispBuf);
-	//PAGE_NUM: 当前页/总页数(空视图按1页显示, 避免出现0/0)
-	pageCount = (listTreatmentCtx.filteredCount + LIST_TREATMENT_WINDOW_SIZE - 1U) / LIST_TREATMENT_WINDOW_SIZE;
-	if(pageCount == 0U){
-		pageCount = 1U;
-	}
-	pageNow = (uint16_t)(listTreatmentCtx.topIndex / LIST_TREATMENT_WINDOW_SIZE + 1U);
-	sprintf(dispBuf, "PAGE %u/%u", (unsigned int)pageNow, (unsigned int)pageCount);
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_PAGE_NUM, (uint8_t*)dispBuf);
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  uint16_t recordCount = listTreatmentGetCount();
+  uint16_t pageCount;
+  uint16_t pageNow;
+  listTreatmentClampWindow();
+  for(uint8_t i = 0; i < LIST_TREATMENT_WINDOW_SIZE; i++){
+    uint16_t viewPos = (uint16_t)(listTreatmentCtx.topIndex + i);
+    patientRecord_t pat;
+    uint16_t nameCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0 + i);
+    uint16_t idCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_ID_0 + i);
+    uint16_t countCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_0 + i);
+    uint16_t selectCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0 + i);
+    memset(dispBuf, 0x0, sizeof(dispBuf));
+    if(listTreatmentGetViewPatient(viewPos, &pat)){
+      //列表只显示患者姓名: 患者信息存在即显示, 同一患者只出现一次, 与其病历数量无关(含0个病历)
+      strncpy(dispBuf, pat.name, sizeof(pat.name));
+      dispBuf[sizeof(pat.name) - 1U] = '\0';
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)dispBuf);
+      sprintf(dispBuf, "AR %04u", (unsigned int)pat.id);//患者ID(AR编号)
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)dispBuf);
+      sprintf(dispBuf, "%u", (unsigned int)treatmentGetRecordCountForPatient(pat.id));//该患者已有病历数
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)dispBuf);
+    }
+    else{//视图外空槽位: 三类文本全部清空
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)"");
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)"");
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)"");
+    }
+    //选中患者对应的按钮高亮,视图外或空槽位取消高亮
+    SetButtonValue(GDDC_PAGE_LIST_TREATMENT, selectCtrl,
+      (viewPos < listTreatmentCtx.filteredCount) && (viewPos == listTreatmentCtx.selectedIndex));
+  }
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  //CAPACITY保持全局口径: 去重患者人数/治疗记录次数(同一患者多次治疗只计1人, 不受当前过滤影响)
+  sprintf(dispBuf, "P:%u/R:%u",
+    (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)recordCount);
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)dispBuf);
+  //PAGE_NUM: 当前页/总页数(空视图按1页显示, 避免出现0/0)
+  pageCount = (listTreatmentCtx.filteredCount + LIST_TREATMENT_WINDOW_SIZE - 1U) / LIST_TREATMENT_WINDOW_SIZE;
+  if(pageCount == 0U){
+    pageCount = 1U;
+  }
+  pageNow = (uint16_t)(listTreatmentCtx.topIndex / LIST_TREATMENT_WINDOW_SIZE + 1U);
+  sprintf(dispBuf, "PAGE %u/%u", (unsigned int)pageNow, (unsigned int)pageCount);
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_PAGE_NUM, (uint8_t*)dispBuf);
 }
 
 //SEARCH_NAME文本通知: 保存查找字母并重建过滤视图, 新查找下窗口回到第一页(空串=恢复全部患者)
 void listTreatmentSetFindText(const char *text){
-	if(text == NULL){
-		listTreatmentCtx.findText[0] = '\0';
-	}
-	else{
-		strncpy(listTreatmentCtx.findText, text, sizeof(listTreatmentCtx.findText) - 1U);
-		listTreatmentCtx.findText[sizeof(listTreatmentCtx.findText) - 1U] = '\0';
-	}
-	listTreatmentCtx.topIndex = 0U;
-	listTreatmentRebuildFilter();
-	refreshListTreatmentDisplay();
+  if(text == NULL){
+    listTreatmentCtx.findText[0] = '\0';
+  }
+  else{
+    strncpy(listTreatmentCtx.findText, text, sizeof(listTreatmentCtx.findText) - 1U);
+    listTreatmentCtx.findText[sizeof(listTreatmentCtx.findText) - 1U] = '\0';
+  }
+  listTreatmentCtx.topIndex = 0U;
+  listTreatmentRebuildFilter();
+  refreshListTreatmentDisplay();
 }
 
 //进入病历列表页:清空查找字母并重建患者视图, 窗口从第一页开始, 默认选中第一个
 void enterListTreatmentPage(void){
-	listTreatmentCtx.topIndex = 0U;
-	listTreatmentCtx.selectedIndex = 0U;
-	listTreatmentCtx.findText[0] = '\0';
-	listTreatmentRebuildFilter();
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)"");
-	refreshListTreatmentDisplay();
+  listTreatmentCtx.topIndex = 0U;
+  listTreatmentCtx.selectedIndex = 0U;
+  listTreatmentCtx.findText[0] = '\0';
+  listTreatmentRebuildFilter();
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)"");
+  refreshListTreatmentDisplay();
+}
+
+//USB操作页: 刷新机内病历摘要(患者数/记录数)与U盘在位状态, 页面冷加载时预下发避免控件残留
+void refreshOperatorUsbDisplay(void){
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  sprintf(dispBuf, "P:%u/R:%u",
+    (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
+  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY, (uint8_t*)dispBuf);
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  if(treatmentUsbDiskPresent() != 0U){
+    sprintf(dispBuf, "UDISK OK");
+  }
+  else{
+    sprintf(dispBuf, "NO UDISK");
+  }
+  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)dispBuf);
+}
+
+//列表页"操作USB"按键: 进入USB导入导出操作页(保存/载入的U盘检测与读写沿用既有流程)
+void enterOperatorUsbPage(void){
+  NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
+  refreshOperatorUsbDisplay();//先刷新本页控件, 再切页避免上一页控件残留
+  SetScreen(GDDC_PAGE_OPERATOR_USB);
+}
+
+//USB操作页返回: 回到病历列表页(EPROM不改变, 保留当前名字窗口与选中)
+void listTreatmentOperatorUsbBack(void){
+  refreshListTreatmentDisplay();
+  NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+  SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
 
 //PAGE_UP键: 向前翻一整页, 已在第一页(窗口起始位置为0)时不再移动
 void listTreatmentMoveUp(void){
-	if(listTreatmentCtx.topIndex >= LIST_TREATMENT_WINDOW_SIZE){
-		listTreatmentCtx.topIndex = (uint16_t)(listTreatmentCtx.topIndex - LIST_TREATMENT_WINDOW_SIZE);
-		refreshListTreatmentDisplay();
-	}
+  if(listTreatmentCtx.topIndex >= LIST_TREATMENT_WINDOW_SIZE){
+    listTreatmentCtx.topIndex = (uint16_t)(listTreatmentCtx.topIndex - LIST_TREATMENT_WINDOW_SIZE);
+    refreshListTreatmentDisplay();
+  }
 }
 
 //PAGE_DOWN键: 向后翻一整页, 当前页之后已无患者时不再移动
 void listTreatmentMoveDown(void){
-	if((uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE) < listTreatmentCtx.filteredCount){
-		listTreatmentCtx.topIndex = (uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE);
-		refreshListTreatmentDisplay();
-	}
+  if((uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE) < listTreatmentCtx.filteredCount){
+    listTreatmentCtx.topIndex = (uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE);
+    refreshListTreatmentDisplay();
+  }
 }
 
-//选择窗口内第slot个患者(slot 0-4对应KEY_SELECT_PATIENT_0-4),空槽位不响应
+//选择窗口内第slot个患者(slot 0-4对应KEY_SELECT_PATIENT_0-4),空槽位不响应;
+//选中后缓存患者编号/姓名并自动返回待机页(PATIENT_NAME显示该患者), 后续治疗记录归属该患者
 void listTreatmentSelect(uint8_t slot){
-	uint16_t viewPos;
-	if(slot >= LIST_TREATMENT_WINDOW_SIZE){
-		return;
-	}
-	viewPos = (uint16_t)(listTreatmentCtx.topIndex + slot);
-	if(viewPos < listTreatmentCtx.filteredCount){
-		listTreatmentCtx.selectedIndex = viewPos;
-		refreshListTreatmentDisplay();
-	}
+  uint16_t viewPos;
+  patientRecord_t pat;
+  if(slot >= LIST_TREATMENT_WINDOW_SIZE){
+    return;
+  }
+  viewPos = (uint16_t)(listTreatmentCtx.topIndex + slot);
+  if(viewPos >= listTreatmentCtx.filteredCount){//空槽位: 不响应
+    return;
+  }
+  if(listTreatmentGetViewPatient(viewPos, &pat) == 0U){//视图位置取不到患者(数据异常): 不响应
+    return;
+  }
+  listTreatmentCtx.selectedIndex = viewPos;//列表内选中位置(对应SELECT_PATIENT按钮高亮)
+  listTreatmentCtx.selectedPatientId = pat.id;//缓存稳定患者编号, 后续治疗记录以该id为外键归属
+  memset(listTreatmentCtx.selectedPatientName, 0x0, sizeof(listTreatmentCtx.selectedPatientName));
+  strncpy(listTreatmentCtx.selectedPatientName, pat.name, sizeof(listTreatmentCtx.selectedPatientName) - 1U);
+  refreshListTreatmentDisplay();//先刷新列表选中按钮状态
+  returnStandbyDisplay();//自动返回待机页: 内部updateStandbyDisplay会向PATIENT_NAME下发该患者名
 }
 
 //删除当前选中病历: 后续病历前移并重新编号(treatment层同步DM_TREATMENT_NUM), 删完刷新列表与总数
 void listTreatmentDelete(void){
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	uint16_t count = listTreatmentGetCount();
-	treatmentEpromErr_t err;
-	treatmentLog_t rec;
-	//注: 本函数为旧记录式删除逻辑, 新UI的DELETE_0-4患者级联删除尚未接线, 暂保留待重新设计
-	if(count == 0U){//没有病历可删
-		memset(dispBuf, 0x0, sizeof(dispBuf));
-		sprintf(dispBuf, "NO RECORD");
-		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-		return;
-	}
-	if(listTreatmentCtx.selectedIndex >= count){//选中索引越界时退到最后一条
-		listTreatmentCtx.selectedIndex = (uint16_t)(count - 1U);
-	}
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	if(treatmentEpromGet(listTreatmentCtx.selectedIndex, &rec) == TREATMENT_EPROM_OK){//提示正在删除的是哪个ID(直接取记录里的id字段)
-		sprintf(dispBuf, "DEL AR %04u...", (unsigned int)rec.id);
-	}
-	else{
-		sprintf(dispBuf, "DEL...");
-	}
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-	err = treatmentEpromDelete(listTreatmentCtx.selectedIndex);//删除(后续病历前移, 各患者ID保持不变)
-	if(err != TREATMENT_EPROM_OK){
-		memset(dispBuf, 0x0, sizeof(dispBuf));
-		sprintf(dispBuf, "DEL ERR:%d", (int)err);
-		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-		return;
-	}
-	count--;//有效病历数量-1
-	if(count == 0U){//删空: 窗口与选中回到第一条
-		listTreatmentCtx.selectedIndex = 0;
-		listTreatmentCtx.topIndex = 0;
-	}
-	else{
-		if(listTreatmentCtx.selectedIndex >= count){//删的是最后一条: 选中新的最后一条
-			listTreatmentCtx.selectedIndex = (uint16_t)(count - 1U);
-		}
-		if(count <= LIST_TREATMENT_WINDOW_SIZE){//病历不足一页: 窗口从头开始
-			listTreatmentCtx.topIndex = 0;
-		}
-		else if((uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE) > count){//窗口尾部越过新末尾: 前移到刚好显示末尾
-			listTreatmentCtx.topIndex = (uint16_t)(count - LIST_TREATMENT_WINDOW_SIZE);
-		}
-	}
-	refreshListTreatmentDisplay();
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "DEL OK, NUM:%d", NVRAM0[DM_TREATMENT_NUM]);
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  uint16_t count = listTreatmentGetCount();
+  treatmentEpromErr_t err;
+  treatmentLog_t rec;
+  //注: 本函数为旧记录式删除逻辑(无调用者, 暂保留); 新UI的DELETE_0-4患者级联删除已由listTreatmentDeleteStart/Confirm确认页实现
+  if(count == 0U){//没有病历可删
+    memset(dispBuf, 0x0, sizeof(dispBuf));
+    sprintf(dispBuf, "NO RECORD");
+    SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+    return;
+  }
+  if(listTreatmentCtx.selectedIndex >= count){//选中索引越界时退到最后一条
+    listTreatmentCtx.selectedIndex = (uint16_t)(count - 1U);
+  }
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  if(treatmentEpromGet(listTreatmentCtx.selectedIndex, &rec) == TREATMENT_EPROM_OK){//提示正在删除的是哪个ID(直接取记录里的id字段)
+    sprintf(dispBuf, "DEL AR %04u...", (unsigned int)rec.id);
+  }
+  else{
+    sprintf(dispBuf, "DEL...");
+  }
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  err = treatmentEpromDelete(listTreatmentCtx.selectedIndex);//删除(后续病历前移, 各患者ID保持不变)
+  if(err != TREATMENT_EPROM_OK){
+    memset(dispBuf, 0x0, sizeof(dispBuf));
+    sprintf(dispBuf, "DEL ERR:%d", (int)err);
+    SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+    return;
+  }
+  count--;//有效病历数量-1
+  if(count == 0U){//删空: 窗口与选中回到第一条
+    listTreatmentCtx.selectedIndex = 0;
+    listTreatmentCtx.topIndex = 0;
+  }
+  else{
+    if(listTreatmentCtx.selectedIndex >= count){//删的是最后一条: 选中新的最后一条
+      listTreatmentCtx.selectedIndex = (uint16_t)(count - 1U);
+    }
+    if(count <= LIST_TREATMENT_WINDOW_SIZE){//病历不足一页: 窗口从头开始
+      listTreatmentCtx.topIndex = 0;
+    }
+    else if((uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE) > count){//窗口尾部越过新末尾: 前移到刚好显示末尾
+      listTreatmentCtx.topIndex = (uint16_t)(count - LIST_TREATMENT_WINDOW_SIZE);
+    }
+  }
+  refreshListTreatmentDisplay();
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  sprintf(dispBuf, "DEL OK, NUM:%d", NVRAM0[DM_TREATMENT_NUM]);
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
 }
 
 /*****************************************************************************/
@@ -3009,296 +3107,390 @@ void listTreatmentDelete(void){
 //避免停光后操作员在待机页改方案或功率, 造成"存档参数与本次实际发射不匹配"; 没有实际发射时保持无效
 
 static void listTreatmentPendingCapture(void){//停光时调用: 补齐最后一段累计后整条快照
-	int32_t trigTicks;
-	updateReleaseTimeEnergy();//用停光前的当前参数刷新累计时间/能量, 补齐最后一个100ms节拍
-	trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光实际打开时间(20ms计数)
-	if(trigTicks <= 0){//本次没有实际发射: 不产生待存病历
-		return;
-	}
-	listTreatmentCtx.pending = treatmentLog;//整条快照: 功率/波长/方案/发射时间/发射能量
-	listTreatmentCtx.pendingValid = 1U;
+  int32_t trigTicks;
+  updateReleaseTimeEnergy();//用停光前的当前参数刷新累计时间/能量, 补齐最后一个100ms节拍
+  trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光实际打开时间(20ms计数)
+  if(trigTicks <= 0){//本次没有实际发射: 不产生待存病历
+    return;
+  }
+  listTreatmentCtx.pending = treatmentLog;//整条快照: 功率/波长/方案/发射时间/发射能量
+  listTreatmentCtx.pendingValid = 1U;
 }
 
 static void listTreatmentStepWatch(void){//监视治疗步骤: 从"发射中"切走即视为停光, 抓取待存病历快照
-	uint16_t stepNow = (uint16_t)NVRAM0[EM_HMI_OPERA_STEP];
-	if((listTreatmentCtx.driveStep == (uint16_t)FSMSTEP_LASER_EMITING) && (stepNow != (uint16_t)FSMSTEP_LASER_EMITING)){
-		listTreatmentPendingCapture();
-	}
-	listTreatmentCtx.driveStep = stepNow;
+  uint16_t stepNow = (uint16_t)NVRAM0[EM_HMI_OPERA_STEP];
+  if((listTreatmentCtx.driveStep == (uint16_t)FSMSTEP_LASER_EMITING) && (stepNow != (uint16_t)FSMSTEP_LASER_EMITING)){
+    listTreatmentPendingCapture();
+  }
+  listTreatmentCtx.driveStep = stepNow;
 }
 
 //姓名非空判定(全部为空格等同于没填)
 static uint8_t listTreatmentNameValid(const char *name){
-	uint8_t i;
-	if(name == NULL){
-		return 0U;
-	}
-	for(i = 0U; i < sizeof(treatmentLog.name); i++){
-		if(name[i] == '\0'){
-			break;
-		}
-		if((name[i] != ' ') && (name[i] != '\t')){
-			return 1U;
-		}
-	}
-	return 0U;
+  uint8_t i;
+  if(name == NULL){
+    return 0U;
+  }
+  for(i = 0U; i < sizeof(treatmentLog.name); i++){
+    if(name[i] == '\0'){
+      break;
+    }
+    if((name[i] != ' ') && (name[i] != '\t')){
+      return 1U;
+    }
+  }
+  return 0U;
 }
 
 void listTreatmentCreateStart(void){//CREATE按键: 本次治疗确实发射过激光才允许新建病历(编辑页确认后追加到区块末尾)
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	int32_t trigTicks;
-	if(listTreatmentCtx.pendingValid == 0U){//没抓到停光快照(极短发射/步骤跳变): 再用发射时间计数判断
-		trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光实际打开时间(20ms计数)
-		if(trigTicks <= 0){//本次没有实际发射: 不允许凭空新建病历
-			memset(dispBuf, 0x0, sizeof(dispBuf));
-			sprintf(dispBuf, "CREATE:NO LASER");
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-			return;
-		}
-		listTreatmentCtx.pending = treatmentLog;//漏抓兜底: 直接用当前累计值
-		listTreatmentCtx.pendingValid = 1U;
-	}
-	//用停光快照还原本次实际治疗参数(与之后是否改方案/功率无关), 再清空患者信息等待录入
-	treatmentLog.releaseEnergy = listTreatmentCtx.pending.releaseEnergy;
-	treatmentLog.releaseTime = listTreatmentCtx.pending.releaseTime;
-	treatmentLog.laserPower = listTreatmentCtx.pending.laserPower;
-	treatmentLog.laserWave = listTreatmentCtx.pending.laserWave;
-	treatmentLog.protocol = listTreatmentCtx.pending.protocol;
-	memset(treatmentLog.name, 0x0, sizeof(treatmentLog.name));
-	treatmentLog.age = 0U;
-	treatmentLog.gender = (GENDER_ENUM)0;
-	treatmentLog.id = 0U;//ID由treatmentEpromAdd在保存时按规则分配, 这里只占位
-	updateListTreatmentDisplay();//先刷新编辑页控件(标题显示NEW), 再切页避免残留
-	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_EDIT_TREATMENT;
-	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_EDIT_TREATMENT;
-	SetScreen(NVRAM0[EM_DC_PAGE]);
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  int32_t trigTicks;
+  patientRecord_t selPat;//已选患者路径: 按id取出的患者行
+  uint16_t patIndex;//已选患者在患者表内的索引
+  if(listTreatmentCtx.pendingValid == 0U){//没抓到停光快照(极短发射/步骤跳变): 再用发射时间计数判断
+    trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光实际打开时间(20ms计数)
+    if(trigTicks <= 0){//本次没有实际发射: 不允许凭空新建病历
+      memset(dispBuf, 0x0, sizeof(dispBuf));
+      sprintf(dispBuf, "CREATE:NO LASER");
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+      return;
+    }
+    listTreatmentCtx.pending = treatmentLog;//漏抓兜底: 直接用当前累计值
+    listTreatmentCtx.pendingValid = 1U;
+  }
+  //用停光快照还原本次实际治疗参数(与之后是否改方案/功率无关)
+  treatmentLog.releaseEnergy = listTreatmentCtx.pending.releaseEnergy;
+  treatmentLog.releaseTime = listTreatmentCtx.pending.releaseTime;
+  treatmentLog.laserPower = listTreatmentCtx.pending.laserPower;
+  treatmentLog.laserWave = listTreatmentCtx.pending.laserWave;
+  treatmentLog.protocol = listTreatmentCtx.pending.protocol;
+  //患者信息按是否已选患者分路径: 默认清空(新患者, id=0由treatmentEpromAdd分配); 已选则预填该患者(老患者, 保存时id已存在不新建)
+  treatmentLog.id = 0U;
+  treatmentLog.age = 0U;
+  treatmentLog.gender = (GENDER_ENUM)0;
+  memset(treatmentLog.name, 0x0, sizeof(treatmentLog.name));
+  if(listTreatmentCtx.selectedPatientId != 0U){
+    patIndex = 0U;
+    if((treatmentPatientFind(listTreatmentCtx.selectedPatientId, &patIndex) == TREATMENT_EPROM_OK)
+       && (treatmentPatientGetByIndex(patIndex, &selPat) == TREATMENT_EPROM_OK)){
+      treatmentLog.id = selPat.id;
+      treatmentLog.age = selPat.age;
+      treatmentLog.gender = (GENDER_ENUM)selPat.gender;
+      strncpy(treatmentLog.name, selPat.name, sizeof(treatmentLog.name) - 1U);
+    }
+    //选中患者若已被删除等导致查不到: 保持id=0的新患者兜底路径, 避免外键悬空
+  }
+  updateListTreatmentDisplay();//先刷新编辑页控件(标题显示NEW), 再切页避免残留
+  NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_EDIT_TREATMENT;
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_EDIT_TREATMENT;
+  SetScreen(NVRAM0[EM_DC_PAGE]);
 }
 
 void listTreatmentCreateConfirm(void){//编辑页OK: 校验患者信息后把当前治疗记录追加到EPROM末尾
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	treatmentEpromErr_t err;
-	treatmentLog_t rec;
-	uint16_t count;
-	if(listTreatmentNameValid(treatmentLog.name) == 0U){//姓名必须录入
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET NAME");
-		return;
-	}
-	if((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE)){//性别必须选择
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET GENDER");
-		return;
-	}
-	if((treatmentLog.age == 0U) || (treatmentLog.age > 120U)){//年龄范围检查
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET AGE");
-		return;
-	}
-	err = treatmentEpromAdd(&treatmentLog);//末尾追加: 自动分配新患者ID, 已有病历位置不变
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	if(err == TREATMENT_EPROM_OK){
-		clearReleaseTimeEnergy();//本次发射已落成病历: 清发射计数, 防止同一台治疗被重复新建
-		listTreatmentCtx.pendingValid = 0U;//本次治疗已落成病历, 避免重复新建
-		//新患者建在患者表末尾: 清空查找字母保证新患者可见, 重建视图后窗口滚到末尾并选中新患者
-		listTreatmentCtx.findText[0] = '\0';
-		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)"");
-		listTreatmentRebuildFilter();
-		if(listTreatmentCtx.filteredCount > 0U){
-			listTreatmentCtx.selectedIndex = (uint16_t)(listTreatmentCtx.filteredCount - 1U);
-			listTreatmentCtx.topIndex = listTreatmentGetMaxTop();
-			count = listTreatmentGetCount();
-			if(treatmentEpromGet((uint16_t)(count - 1U), &rec) == TREATMENT_EPROM_OK){
-				sprintf(dispBuf, "NEW AR %04u", (unsigned int)rec.id);
-			}
-		}
-	}
-	else if(err == TREATMENT_EPROM_ERR_FULL){
-		sprintf(dispBuf, "TREAT FULL");
-	}
-	else{
-		sprintf(dispBuf, "SAVE ERR:%d", (int)err);
-	}
-	refreshListTreatmentDisplay();
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
-	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
-	SetScreen(GDDC_PAGE_LIST_TREATMENT);
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  treatmentEpromErr_t err;
+  treatmentLog_t rec;
+  uint16_t count;
+  if(listTreatmentNameValid(treatmentLog.name) == 0U){//姓名必须录入
+    SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET NAME");
+    return;
+  }
+  if((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE)){//性别必须选择
+    SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET GENDER");
+    return;
+  }
+  if((treatmentLog.age == 0U) || (treatmentLog.age > 120U)){//年龄范围检查
+    SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET AGE");
+    return;
+  }
+  err = treatmentEpromAdd(&treatmentLog);//末尾追加: 自动分配新患者ID, 已有病历位置不变
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  if(err == TREATMENT_EPROM_OK){
+    clearReleaseTimeEnergy();//本次发射已落成病历: 清发射计数, 防止同一台治疗被重复新建
+    listTreatmentCtx.pendingValid = 0U;//本次治疗已落成病历, 避免重复新建
+    //新患者建在患者表末尾: 清空查找字母保证新患者可见, 重建视图后窗口滚到末尾并选中新患者
+    listTreatmentCtx.findText[0] = '\0';
+    SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)"");
+    listTreatmentRebuildFilter();
+    if(listTreatmentCtx.filteredCount > 0U){
+      listTreatmentCtx.selectedIndex = (uint16_t)(listTreatmentCtx.filteredCount - 1U);
+      listTreatmentCtx.topIndex = listTreatmentGetMaxTop();
+      count = listTreatmentGetCount();
+      if(treatmentEpromGet((uint16_t)(count - 1U), &rec) == TREATMENT_EPROM_OK){
+        sprintf(dispBuf, "NEW AR %04u", (unsigned int)rec.id);
+      }
+    }
+  }
+  else if(err == TREATMENT_EPROM_ERR_FULL){
+    sprintf(dispBuf, "TREAT FULL");
+  }
+  else{
+    sprintf(dispBuf, "SAVE ERR:%d", (int)err);
+  }
+  refreshListTreatmentDisplay();
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+  SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
 
 void listTreatmentCreateCancel(void){//编辑页CANCEL: 放弃本次新建, 返回病历列表页(EPROM不变)
-	refreshListTreatmentDisplay();
-	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
-	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
-	SetScreen(GDDC_PAGE_LIST_TREATMENT);
+  refreshListTreatmentDisplay();
+  NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+  SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
 
 /*****************************************************************************/
-//U盘提示/确认页面流程(非阻塞): 按键只负责检测U盘/切页/起计时, 保存与载入的整块读写都在dcHmiLoop中执行一次
-//最小显示时间由 T100MS_UDISK_PAGE_DELAY + CONFIG_UDISK_PAGE_MIN_DELAY_TIME 控制
-//载入必须先弹确认页: 按"覆盖"才允许动EPROM, 按"取消"直接回列表页(避免未授权就覆盖机内病历)
+//U盘操作确认页流程(非阻塞): SAVE/LOAD按键先进入确认页, 按CONFIRM才在轮询中执行一次整块读写, 按CANCEL直接回操作页
+//导出与导入共用GDDC_PAGE_OPERATOR_USB_CONFIRM页面, 由usbOp区分(1=导出, 2=导入); 导入必须先确认, 避免未授权就覆盖机内病历
 
-//触摸放行判断: 提示页显示期间屏蔽一切触摸, 载入确认页只放行"覆盖"和"取消"
+//触摸放行判断: 写入期间屏蔽一切触摸; 确认页只放行本页的确认与取消按键
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id){
-	if(listTreatmentCtx.usbState == 0U){
-		return 1U;//空闲: 正常响应
-	}
-	if(listTreatmentCtx.usbState == 4U){
-		if(screen_id != GDDC_PAGE_LOAD_UDISK){
-			return 0U;
-		}
-		if((control_id == GDDC_PAGE_LOAD_UDISK_KEY_COVER) || (control_id == GDDC_PAGE_LOAD_UDISK_KEY_CANCEL)){
-			return 1U;
-		}
-		return 0U;
-	}
-	return 0U;//其余提示页面显示期间: 不响应任何触摸操作
+  //删除确认页等待期间: 只放行本页DELETE/CANCLE, 其余控件与页面一律屏蔽(与USB流程互斥)
+  if(listTreatmentCtx.deletePatientId != 0U){
+    if(screen_id != GDDC_PAGE_DELETE_TREATMENT_CONFIRM){
+      return 0U;
+    }
+    if((control_id == GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_DELETE) ||
+       (control_id == GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_CANCLE)){
+      return 1U;
+    }
+    return 0U;
+  }
+  if(listTreatmentCtx.usbState == 0U){
+    return 1U;//空闲: 正常响应
+  }
+  if(listTreatmentCtx.usbState == 6U){//确认页(导出/导入): 只放行CONFIRM/CANCLE
+    if(screen_id != GDDC_PAGE_OPERATOR_USB_CONFIRM){
+      return 0U;
+    }
+    if((control_id == GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM) ||
+       (control_id == GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE)){
+      return 1U;
+    }
+    return 0U;
+  }
+  return 0U;//写入中(状态7): 不响应任何触摸操作
 }
 
 uint8_t listTreatmentUsbBusy(void){//提示页/确认页显示中
-	return (listTreatmentCtx.usbState != 0U) ? 1U : 0U;
+  return (listTreatmentCtx.usbState != 0U) ? 1U : 0U;
 }
 
-static uint16_t listTreatmentUsbPageOf(uint16_t state){//返回该状态对应的提示页面ID(用于判断页面是否被别处切走)
-	if(state == 3U){
-		return GDDC_PAGE_NO_UDISK;
-	}
-	if((state == 4U) || (state == 5U)){
-		return GDDC_PAGE_LOAD_UDISK;
-	}
-	return GDDC_PAGE_SAVING_UDISK;
+static uint16_t listTreatmentUsbPageOf(uint16_t state){//确认页状态(6/7)对应页面ID, 用于判断页面是否被别处切走
+  (void)state;
+  return GDDC_PAGE_OPERATOR_USB_CONFIRM;
 }
 
-static void listTreatmentUsbShowPage(uint16_t state, uint16_t page){//切到提示页面(调用前按需启动最小显示计时)
-	listTreatmentCtx.usbState = state;
-	NVRAM0[EM_DC_PAGE] = page;
-	SetScreen(page);
+//进入USB操作确认页(导出/导入共用): 先按操作类型刷新英文文案再切页, 避免上一页控件残留; 状态6等待用户按键
+static void enterOperatorUsbConfirmPage(void){
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  listTreatmentCtx.usbState = 6U;
+  if(listTreatmentCtx.usbOp == 2U){//导入(LOAD): 替换设备档案确认
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_0,
+      (uint8_t*)"Replace Device Records?");
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_1,
+      (uint8_t*)"Replace all patients and treatment records on the device with the USB backup?");
+    memset(dispBuf, 0x0, sizeof(dispBuf));
+    sprintf(dispBuf, "Backup contents: %u patients · %u treatment records.",
+      (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_2,
+      (uint8_t*)dispBuf);
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_3,
+      (uint8_t*)"The current device records will be replaced. To keep them, export to another USB first. This action cannot be undone.");
+  }
+  else{//导出(SAVE): 导出患者备份确认
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_0,
+      (uint8_t*)"Export Patient Backup?");
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_1,
+      (uint8_t*)"Export patients and saved treatment records to USB?");
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_2,
+      (uint8_t*)"The existing patient backup on this USB will be replaced. The records on the device will be erased.");
+    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_3,
+      (uint8_t*)" ");//预留文本框清空
+  }
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB_CONFIRM;
+  SetScreen(GDDC_PAGE_OPERATOR_USB_CONFIRM);
 }
 
-void listTreatmentSaveUsbStart(void){//SAVE_USB按键: 先检测U盘, 在位弹保存页(写入在轮询中执行), 不在位弹无U盘页
-	if(listTreatmentCtx.usbState != 0U){
-		return;//上一次操作未结束
-	}
-	listTreatmentCtx.usbOp = 1U;
-	listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
-	listTreatmentCtx.usbCount = 0U;
-	SetButtonValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK, 0);//复位自锁按钮
-	T100MS(T100MS_UDISK_PAGE_DELAY, false, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//复位最小显示时间计时
-	T100MS(T100MS_UDISK_PAGE_DELAY, true, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//启动计时
-	if(treatmentUsbDiskPresent() == 0U){//U盘不在位
-		listTreatmentUsbShowPage(3U, GDDC_PAGE_NO_UDISK);
-		return;
-	}
-	listTreatmentUsbShowPage(1U, GDDC_PAGE_SAVING_UDISK);
+void listTreatmentSaveUsbStart(void){//SAVE_USB按键: 不立即写盘, 先进入导出确认页, 由用户确认/取消(实际CSV写入在确认后执行)
+  if(listTreatmentCtx.usbState != 0U){
+    return;//上一次操作未结束
+  }
+  listTreatmentCtx.usbOp = 1U;
+  listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
+  listTreatmentCtx.usbCount = 0U;
+  SetButtonValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK, 0);//复位自锁按钮
+  enterOperatorUsbConfirmPage();//进入导出确认页(状态6), 等待CANCEL/CONFIRM
 }
 
-void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 先检测U盘, 在位弹载入确认页(不直接读盘, 防止未确认就覆盖机内病历)
-	if(listTreatmentCtx.usbState != 0U){
-		return;
-	}
-	listTreatmentCtx.usbOp = 2U;
-	listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
-	listTreatmentCtx.usbCount = 0U;
-	SetButtonValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK, 0);//复位自锁按钮
-	if(treatmentUsbDiskPresent() == 0U){//U盘不在位: 提示页(最小显示时间后回列表)
-		T100MS(T100MS_UDISK_PAGE_DELAY, false, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);
-		T100MS(T100MS_UDISK_PAGE_DELAY, true, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);
-		listTreatmentUsbShowPage(3U, GDDC_PAGE_NO_UDISK);
-		return;
-	}
-	listTreatmentUsbShowPage(4U, GDDC_PAGE_LOAD_UDISK);//确认页: 等"覆盖/取消"
+void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 不立即读盘, 先进入确认页(确认后才读取U盘CSV覆盖机内病历)
+  if(listTreatmentCtx.usbState != 0U){
+    return;
+  }
+  listTreatmentCtx.usbOp = 2U;
+  listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
+  listTreatmentCtx.usbCount = 0U;
+  SetButtonValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK, 0);//复位自锁按钮
+  enterOperatorUsbConfirmPage();//进入确认页(状态6), 等待CANCEL/CONFIRM
 }
 
-void listTreatmentLoadUsbCover(void){//载入确认页"覆盖": 授权覆盖机内病历(实际读取在轮询里执行一次)
-	if(listTreatmentCtx.usbState != 4U){
-		return;
-	}
-	SetButtonValue(GDDC_PAGE_LOAD_UDISK, GDDC_PAGE_LOAD_UDISK_KEY_COVER, 0);//复位自锁按钮
-	listTreatmentCtx.usbState = 5U;
+void listTreatmentUsbConfirm(void){//确认页"确认"(导出/导入通用): 授权执行, 实际读写在轮询里完成一次
+  if(listTreatmentCtx.usbState != 6U){
+    return;
+  }
+  SetButtonValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM, 0);//复位自锁按钮
+  listTreatmentCtx.usbState = 7U;
 }
 
-void listTreatmentLoadUsbCancel(void){//载入确认页"取消": 不动EPROM, 直接回病历列表页
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	if(listTreatmentCtx.usbState != 4U){
-		return;
-	}
-	SetButtonValue(GDDC_PAGE_LOAD_UDISK, GDDC_PAGE_LOAD_UDISK_KEY_CANCEL, 0);
-	listTreatmentCtx.usbState = 0U;
-	refreshListTreatmentDisplay();
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "LOAD CANCEL");
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
-	SetScreen(GDDC_PAGE_LIST_TREATMENT);
+void listTreatmentUsbCancel(void){//确认页"取消"(导出/导入通用): 不读写, 直接返回USB操作页
+  if(listTreatmentCtx.usbState != 6U){
+    return;
+  }
+  SetButtonValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE, 0);//复位自锁按钮
+  listTreatmentCtx.usbState = 0U;
+  refreshOperatorUsbDisplay();//回到操作页并刷新(P/R摘要与U盘状态)
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
+  SetScreen(GDDC_PAGE_OPERATOR_USB);
 }
 
-void listTreatmentUsbLoop(void){//U盘提示/确认页面轮询: 执行一次保存或载入, 最小显示时间到后回病历列表页
-	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
-	uint16_t prevState;
-	if(listTreatmentCtx.usbState == 0U){
-		return;
-	}
-	if(NVRAM0[EM_DC_PAGE] != listTreatmentUsbPageOf(listTreatmentCtx.usbState)){//页面被别处切走(如关机确认/休眠): 放弃本次流程
-		listTreatmentCtx.usbState = 0U;//退出忙状态, 否则触摸会被一直屏蔽
-		return;
-	}
-	if(listTreatmentCtx.usbState == 4U){//载入确认页: 等用户按键, 不占时间也不做读写
-		return;
-	}
-	if(listTreatmentCtx.usbState == 1U){//保存页已显示: 执行一次全量写入
-		listTreatmentCtx.usbErr = (uint8_t)treatmentLogSaveToUdisk(&listTreatmentCtx.usbCount);
-		listTreatmentCtx.usbState = 2U;
-	}
-	if(listTreatmentCtx.usbState == 5U){//载入执行中: 执行一次全量读取覆盖(已按"覆盖"授权)
-		listTreatmentCtx.usbErr = (uint8_t)treatmentLogLoadFromUdisk(&listTreatmentCtx.usbCount);
-		listTreatmentCtx.usbState = 0U;
-		enterListTreatmentPage();//病历已被整份替换: 名字窗口与选中回到第一条
-		memset(dispBuf, 0x0, sizeof(dispBuf));
-		if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
-			sprintf(dispBuf, "LOAD USB OK:%u", (unsigned int)listTreatmentCtx.usbCount);
-		}
-		else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
-			sprintf(dispBuf, "LOAD USB:NO UDISK");
-		}
-		else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_OPEN){
-			sprintf(dispBuf, "LOAD USB:NO FILE");
-		}
-		else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_FORMAT){
-			sprintf(dispBuf, "LOAD USB:BAD FILE");
-		}
-		else{
-			sprintf(dispBuf, "LOAD USB ERR:%d", (int)listTreatmentCtx.usbErr);
-		}
-		SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-		NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
-		SetScreen(GDDC_PAGE_LIST_TREATMENT);
-		return;
-	}
-	T100MS(T100MS_UDISK_PAGE_DELAY, true, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//提示页显示期间维持计时
-	if(!LD(T_100MS_START * 16 + T100MS_UDISK_PAGE_DELAY)){//最小显示时间未到: 继续停留在提示页面
-		return;
-	}
-	T100MS(T100MS_UDISK_PAGE_DELAY, false, CONFIG_UDISK_PAGE_MIN_DELAY_TIME);//停止计时
-	prevState = listTreatmentCtx.usbState;
-	listTreatmentCtx.usbState = 0U;//先退出忙状态(允许后续触摸), 再切回列表页
-	refreshListTreatmentDisplay();//保存不改变病历, 保留当前名字窗口与选中
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	if(prevState == 3U){//无U盘提示页
-		if(listTreatmentCtx.usbOp == 2U){
-			sprintf(dispBuf, "LOAD USB:NO UDISK");
-		}
-		else{
-			sprintf(dispBuf, "SAVE USB:NO UDISK");
-		}
-	}
-	else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
-		sprintf(dispBuf, "SAVE USB OK:%u", (unsigned int)listTreatmentCtx.usbCount);
-	}
-	else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_EMPTY){
-		sprintf(dispBuf, "SAVE USB:NO RECORD");
-	}
-	else{
-		sprintf(dispBuf, "SAVE USB ERR:%d", (int)listTreatmentCtx.usbErr);
-	}
-	SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
-	NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
-	SetScreen(GDDC_PAGE_LIST_TREATMENT);//切回病历列表页
+/*****************************************************************************/
+//删除患者确认流程: DELETE_0-4先进入删除确认页(不立即删除), 确认后级联删除患者及其全部病历, 取消则返回列表页
+
+//列表页DELETE_0-4: 解析窗口内对应患者, 缓存其id并进入删除确认页(英文文案), 等待确认/取消
+void listTreatmentDeleteStart(uint8_t slot){
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  uint16_t viewPos;
+  patientRecord_t pat;
+  if(listTreatmentCtx.deletePatientId != 0U){//已有删除流程在等待确认
+    return;
+  }
+  if(slot >= LIST_TREATMENT_WINDOW_SIZE){
+    return;
+  }
+  viewPos = (uint16_t)(listTreatmentCtx.topIndex + slot);
+  if(viewPos >= listTreatmentCtx.filteredCount){//空槽位: 不响应
+    return;
+  }
+  if(listTreatmentGetViewPatient(viewPos, &pat) == 0U){//视图位置取不到患者: 不响应
+    return;
+  }
+  listTreatmentCtx.deletePatientId = pat.id;//缓存待删除患者编号(非0=进入删除确认流程)
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_0,
+    (uint8_t*)"Delete Patient?");
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  sprintf(dispBuf, "Delete patient %s and all their treatment records?", pat.name);
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_1,
+    (uint8_t*)dispBuf);
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  sprintf(dispBuf, "This patient has %u treatment record(s).",
+    (unsigned int)treatmentGetRecordCountForPatient(pat.id));
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_2,
+    (uint8_t*)dispBuf);
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_3,
+    (uint8_t*)"This action cannot be undone.");
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT_CONFIRM;
+  SetScreen(GDDC_PAGE_DELETE_TREATMENT_CONFIRM);
+}
+
+//删除确认页KEY_DELETE: 确认后级联删除患者及其全部病历, 再重建视图返回列表页
+void listTreatmentDeleteConfirm(void){
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  treatmentEpromErr_t err;
+  uint16_t delId;
+  if(listTreatmentCtx.deletePatientId == 0U){
+    return;
+  }
+  delId = listTreatmentCtx.deletePatientId;
+  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_DELETE, 0);//复位自锁按钮
+  err = treatmentPatientDelete(delId);//级联删除: 该患者全部记录+患者行
+  listTreatmentCtx.deletePatientId = 0U;//退出删除流程
+  if(delId == listTreatmentCtx.selectedPatientId){//删的正是当前选中患者: 清空选中, 避免外键/待机名悬空
+    listTreatmentCtx.selectedPatientId = 0U;
+    memset(listTreatmentCtx.selectedPatientName, 0x0, sizeof(listTreatmentCtx.selectedPatientName));
+  }
+  listTreatmentRebuildFilter();//患者表已变, 重建过滤视图
+  refreshListTreatmentDisplay();//刷新列表(窗口自动夹取)
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  if(err == TREATMENT_EPROM_OK){
+    sprintf(dispBuf, "DEL AR %04u OK", (unsigned int)delId);
+  }
+  else{
+    sprintf(dispBuf, "DEL ERR:%d", (int)err);
+  }
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+  SetScreen(GDDC_PAGE_LIST_TREATMENT);
+}
+
+//删除确认页KEY_CANCLE: 不删除, 清除待删除id并返回列表页
+void listTreatmentDeleteCancel(void){
+  if(listTreatmentCtx.deletePatientId == 0U){
+    return;
+  }
+  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_CANCLE, 0);//复位自锁按钮
+  listTreatmentCtx.deletePatientId = 0U;
+  refreshListTreatmentDisplay();
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+  SetScreen(GDDC_PAGE_LIST_TREATMENT);
+}
+
+void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待按键, 确认后执行一次CSV导出/导入, 完成回USB操作页
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  if(listTreatmentCtx.usbState == 0U){
+    return;
+  }
+  if(NVRAM0[EM_DC_PAGE] != listTreatmentUsbPageOf(listTreatmentCtx.usbState)){//页面被别处切走(如关机确认/休眠): 放弃本次流程
+    listTreatmentCtx.usbState = 0U;//退出忙状态, 否则触摸会被一直屏蔽
+    return;
+  }
+  if(listTreatmentCtx.usbState == 6U){//确认页: 等用户按键, 不做读写
+    return;
+  }
+  //状态7: 已确认, 执行一次导出或导入, 再回操作页并在SUMMARY_USB显示结果
+  memset(dispBuf, 0x0, sizeof(dispBuf));
+  if(listTreatmentCtx.usbOp == 2U){//导入: 读U盘CSV覆盖机内EPROM
+    listTreatmentCtx.usbErr = (uint8_t)treatmentLogLoadFromUdisk(&listTreatmentCtx.usbCount);
+    if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
+      sprintf(dispBuf, "Backup imported from USB. Device records have been replaced.");
+    }
+    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
+      sprintf(dispBuf, "NO UDISK");
+    }
+    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_OPEN){
+      sprintf(dispBuf, "NO FILE");
+    }
+    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_FORMAT){
+      sprintf(dispBuf, "BAD FILE");
+    }
+    else{
+      sprintf(dispBuf, "USB IMPORT FAILED");
+    }
+  }
+  else{//导出: 机内病历写CSV到U盘
+    listTreatmentCtx.usbErr = (uint8_t)treatmentLogSaveToUdisk(&listTreatmentCtx.usbCount);
+    if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
+      sprintf(dispBuf, "USB Backup Successful");
+    }
+    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
+      sprintf(dispBuf, "NO UDISK");
+    }
+    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_EMPTY){
+      sprintf(dispBuf, "NO RECORDS");
+    }
+    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_OPEN){
+      sprintf(dispBuf, "USB OPEN FAILED");
+    }
+    else{
+      sprintf(dispBuf, "USB BACKUP FAILED");
+    }
+  }
+  listTreatmentCtx.usbState = 0U;//先退出忙状态(允许后续触摸)
+  refreshOperatorUsbDisplay();//先刷新P/R摘要与U盘状态
+  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)dispBuf);//再覆盖为本次结果
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
+  SetScreen(GDDC_PAGE_OPERATOR_USB);
 }
 
 void updateAcousticDisplay(void){//更新提示音设置
@@ -3308,29 +3500,29 @@ void updateAcousticDisplay(void){//更新提示音设置
 	if(NVRAM0[EM_LASER_PULSE_MODE] ==LASER_MODE_CW){//CW
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "");
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
 		
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%d S", NVRAM0[EM_ACOUSTIC_TIME]);
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_TIME, (uint8_t*)dispBuf);
 	}
 	if(LD(R_ACOUSTIC_ENABLE)){
 		cycle = NVRAM0[EM_ACOUSTIC_TIME] / NVRAM0[EM_ACOUSTIC_TIME_STEP];
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%d Cycle", cycle);
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
 		
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%d S", NVRAM0[EM_ACOUSTIC_TIME]);
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_TIME, (uint8_t*)dispBuf);
 	}
 	else{
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "");
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_CYCLE, (uint8_t*)dispBuf);
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "N/A");
-		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);		
+		SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_TIME, (uint8_t*)dispBuf);		
 	}
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	ftmp = ((float)(NVRAM0[EM_ACOUSTIC_ENERGY])) / 10.0F;
@@ -3340,7 +3532,7 @@ void updateAcousticDisplay(void){//更新提示音设置
 	else{
 		sprintf(dispBuf, "N/A");
 	}
-	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_ENERGEY, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_ENERGEY, (uint8_t*)dispBuf);
 	//调试信息
 	printf("%s,%d,%s:acoustic time = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_TIME]);
 	printf("%s,%d,%s:acoustic energy = %d\n", __FILE__, __LINE__, __func__, NVRAM0[EM_ACOUSTIC_ENERGY]);
@@ -3791,7 +3983,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetButtonValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, false);					
 			SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SCHEME_SAVE, true);
 
-			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_WARN, " ");//清空警报信息栏
+			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_WARN, " ");//清空警报信息栏
 			
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID, false);
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE, false);
@@ -4581,7 +4773,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[DM_BEEM_VOLUME] < CONFIG_BEEM_MAX_VOLUME){
 				NVRAM0[DM_BEEM_VOLUME] += 1;
 				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
+				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
 				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//更新进度条
 			}
 			RRES(R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN);
@@ -4590,7 +4782,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			if(NVRAM0[DM_BEEM_VOLUME] > 0){
 				NVRAM0[DM_BEEM_VOLUME] -= 1;
 				NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
+				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
 				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME, NVRAM0[DM_BEEM_VOLUME]);//更新进度条
 			}
 			RRES(R_OPTION_KEY_BEEM_VOLUME_DEC_DOWN);
@@ -4598,7 +4790,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(R_OPTION_KEY_LCD_BRG_ADD_DOWN)){					
 			if(NVRAM0[DM_LCD_BRG] < CONFIG_LCD_MAX_DC){
 				NVRAM0[DM_LCD_BRG] += 1;
-				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
+				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
 				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);
 				SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 			}
@@ -4607,7 +4799,7 @@ void dcHmiLoop(void){//HMI轮训程序
 		if(LD(R_OPTION_KEY_LCD_BRG_DEC_DOWN)){					
 			if(NVRAM0[DM_LCD_BRG] > CONFIG_LCD_MIN_DC){
 				NVRAM0[DM_LCD_BRG] -= 1;
-				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXTDISPLAY_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
+				SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_LCD_BRG , NVRAM0[DM_LCD_BRG], 1, 0);
 				SetProgressValue(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_PROGRESS_LCD_BRG, NVRAM0[DM_LCD_BRG]);
 				SetBackLight(getLcdDuty(NVRAM0[DM_LCD_BRG]));
 			}
@@ -4644,7 +4836,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			RtcGetNowTime(&year, &month, &day, &hour, &minute, &second);//获取当前时间可循环调用
 			memset(dispBuf, 0x0, sizeof(dispBuf));
 			sprintf(dispBuf, "Year:%d-Month:%d-Day:%d  Hour:%d-Minute:%d-Second:%d", year, month, day, hour, minute, second);
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_ACOUSTIC_TIME, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_ACOUSTIC_TIME, (uint8_t*)dispBuf);
 		}
 		return;
 	}
@@ -5249,6 +5441,10 @@ static void NotifyScreen(uint16_t screen_id){
 			}
       break;
     }
+		case GDDC_PAGE_OPERATOR_USB:{
+			refreshOperatorUsbDisplay();//页面冷加载完成后再下发一次摘要与U盘状态
+			break;
+		}
 		default:break;
 	}
 }
