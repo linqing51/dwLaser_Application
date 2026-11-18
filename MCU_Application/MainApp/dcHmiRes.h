@@ -43,24 +43,25 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_TRI_1940_1470_635              12 //待机页面
 #define GDDC_PAGE_LIST_TREATMENT                         13 //显示病历列表
 #define GDDC_PAGE_DELETE_TREATMENT_CONFIRM               14 //删除病历确认
-#define GDDC_PAGE_EDIT_TREATMENT                         15 //病例编辑页面
-#define GDDC_PAGE_OPERATOR_USB                           16 //USB导入导出操作页面
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM                   17 //USB操作确认页面
-#define GDDC_PAGE_READY                                  18 //准备页面
-#define GDDC_PAGE_VERIFY_TREATMENT                       19 //核对治疗记录
-#define GDDC_PAGE_DISCARD_TREATMENT                      20 //放弃本次治疗记录
-#define GDDC_PAGE_OPTION                                 21 //选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL                   22 //方案分类页 双波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI                    23 //方案分类页 三波长
-#define GDDC_PAGE_SCHEME_DETAIL                          24 //方案分类页 自定义
-#define GDDC_PAGE_INFORMATION                            25 //信息页面
-#define GDDC_PAGE_DIAGNOSIS                              26 //诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW                          27 //诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI                         28 //诊断页面-功率校准
-#define GDDC_PAGE_RENAME                                 29 //SCHEME更名
-#define GDDC_PAGE_RESTORE                                30 //弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY                            31 //脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM                       32 //弹出菜单 确认关机
+#define GDDC_PAGE_LIST_RECORD                            15 //‌治疗记录页面
+#define GDDC_PAGE_EDIT_TREATMENT                         16 //病例编辑页面
+#define GDDC_PAGE_OPERATOR_USB                           17 //USB导入导出操作页面
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM                   18 //USB操作确认页面
+#define GDDC_PAGE_READY                                  19 //准备页面
+#define GDDC_PAGE_VERIFY_TREATMENT                       20 //核对治疗记录
+#define GDDC_PAGE_DISCARD_TREATMENT                      21 //放弃本次治疗记录
+#define GDDC_PAGE_OPTION                                 22 //选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL                   23 //方案分类页 双波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI                    24 //方案分类页 三波长
+#define GDDC_PAGE_SCHEME_DETAIL                          25 //方案分类页 自定义
+#define GDDC_PAGE_INFORMATION                            26 //信息页面
+#define GDDC_PAGE_DIAGNOSIS                              27 //诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW                          28 //诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI                         29 //诊断页面-功率校准
+#define GDDC_PAGE_RENAME                                 30 //SCHEME更名
+#define GDDC_PAGE_RESTORE                                31 //弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY                            32 //脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM                       33 //弹出菜单 确认关机
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1                      1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2                      2
@@ -98,10 +99,10 @@ extern "C" {
 #define GDDC_PAGE_STANDBY_KEY_POWER_SEL_INC              2 //当前选择功率减小
 #define GDDC_PAGE_STANDBY_KEY_POWER_CH0_ADD              3 //功率增加
 #define GDDC_PAGE_STANDBY_KEY_POWER_CH0_INC              4 //功率减小
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD              5
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_INC              6
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH2_ADD              7
-#define GDDC_PAGE_STANDBY_KEY_POWER_CH2_INC              8
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_ADD              5 //通道1功率增加
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH1_INC              6 //通道1功率减小
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH2_ADD              7 //通道2功率增加
+#define GDDC_PAGE_STANDBY_KEY_POWER_CH2_INC              8 //公道2功率减小
 #define GDDC_PAGE_STANDBY_KEY_POWER_AIM_ADD              9 //指示光亮度加
 #define GDDC_PAGE_STANDBY_KEY_POWER_AIM_INC              10 //指示光亮度减
 #define GDDC_PAGE_STANDBY_KEY_STANDBY                    11 //进入准备
@@ -171,45 +172,63 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_2            27 //删除患者
 #define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_3            28 //删除患者
 #define GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_4            29 //删除患者
-#define GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP             30 //上一页
-#define GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN           31 //下一页
-#define GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE               32 //关闭
-#define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW          33 //新建患者
-#define GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB        34 //操作USB
+#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_0       31 //编辑患者记录
+#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_1       32 //编辑患者记录
+#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_2       33 //编辑患者记录
+#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_3       34 //编辑患者记录
+#define GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_4       35 //编辑患者记录
+#define GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP             36 //上一页
+#define GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN           37 //下一页
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE               38 //关闭
+#define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW          39 //新建患者
+#define GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB        40 //操作USB
 #define GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG       99 //显示调试信息
 /*****************************************************************************/
-#define GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_DELETE     1  //确认删除
-#define GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_CANCLE     2  //取消
-#define GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_0 10 //标题
-#define GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_1 11 //提示信息
-#define GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_2 12 //提示信息
-#define GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_3 13 //提示信息
+#define GDDC_PAGE_DELETE_TREATMENT_KEY_OK                1  //确认删除
+#define GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE            2  //取消
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0        10 //标题
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1        11 //提示信息
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2        12 //提示信息
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_3        13 //提示信息
 /*****************************************************************************/
-#define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID                 1 //患者ID
-#define GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME               2 //患者姓名
-#define GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE                3 //患者年龄
-#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_0         4 //方案预览信息0
-#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_1         5 //方案预览信息1
-#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_2         6 //方案预览信息2
-#define GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_4         7 //方案预览信息3
-#define GDDC_PAGE_EDIT_TREATMENT_KEY_MALE                8 //性别-男
-#define GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE              9 //性别-女
-#define GDDC_PAGE_EDIT_TREATMENT_KEY_OK                  10 //确定
-#define GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL              11 //取消
-#define GDDC_PAGE_EDIT_TREATMENT_TEXTDISPLAY_DEBUG       99 //显示调试信息
+#define GDDC_PAGE_LIST_RECORD_TEXT_NAME					  1//患者名字-ID
+#define GDDC_PAGE_LIST_RECORD_TEXT_SUMMARY_0			  2//显示日期-发射能量-发射时间-功率-波长显示
+#define GDDC_PAGE_LIST_RECORD_TEXT_SUMMARY_1              3//显示治疗方案-激光模式-正脉冲宽度-负脉冲宽度-
+#define GDDC_PAGE_LIST_RECORD_TEXT_PAGE					  4//显示页数
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_0                10//删除第1行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_1                11//删除第2行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_2                12//删除第3行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_3                13//删除第4行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_4                14//删除第5行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP			      15//上一页按键
+#define GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN               16//下一页按键
+#define GDDC_PAGE_LIST_RECODE_KEY_CLOSE                   17//关闭按键
+#define GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT		      18//编辑患者
 /*****************************************************************************/
-#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY              1 //患者数-治疗记录数
-#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB          2 //UDISK 信息
-#define GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK            3 //存储到U盘
-#define GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK            4 //从U盘载入
-#define GDDC_PAGE_OPERATOR_USB_KEY_BACK                  5 //返回病历列表
+#define GDDC_PAGE_DELETE_RECODE_TEXT_NAME                 1//显示患者名字-ID
+#define GDDC_PAGE_DELETE_RECODE_TEXT_SUMMARY_0            2//显示治疗日期-发射能量-发射时间-发射功率
+#define GDDC_PAGE_DELETE_RECODE_KEY_CANCEL                10//取消返回上级菜单
+#define GDDC_PAGE_DELETE_RECODE_KEY_OK                    11//确认删除治疗记录
 /*****************************************************************************/
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_0    1 //标题栏
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_1    2 //信息栏
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_2    3 //信息栏
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_3    4 //信息栏
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE        10 //取消按键
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM       11 //确认按键
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID                  1 //患者ID
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME                2 //患者姓名
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE                 3 //患者年龄
+#define GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER              10 //性别下来菜单
+#define GDDC_PAGE_EDIT_TREATMENT_KEY_SAVE                 20 //保存修改
+#define GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL               21 //取消
+/*****************************************************************************/
+#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY               1 //患者数-治疗记录数
+#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB           2 //UDISK 信息
+#define GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK             3 //存储到U盘
+#define GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK             4 //从U盘载入
+#define GDDC_PAGE_OPERATOR_USB_KEY_BACK                   5 //返回病历列表
+/*****************************************************************************/
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_0     1 //标题栏
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_1     2 //信息栏
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_2     3 //信息栏
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_3     4 //信息栏
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE         10 //取消按键
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM        11 //确认按键
 /*****************************************************************************/
 #define GDDC_PAGE_READY_TEXT_NAME                        1 //方案名称显示
 #define GDDC_PAGE_READY_TEXT_POWER_CH0                   2 //发射功率显示 1470 /1940
@@ -255,10 +274,10 @@ extern "C" {
 #define GDDC_PAGE_OPTION_KEY_LCD_BRG_INC                 5 //液晶屏亮度减少
 #define GDDC_PAGE_OPTION_KEY_ENTER_OK                    6 //返回待机页面
 #define GDDC_PAGE_OPTION_KEY_ENTER_INFORMATION           7 //进入信息菜单
-#define GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON              8 //
+#define GDDC_PAGE_OPTION_KEY_HAND_SWITCH_ON              8 //常开-脉冲 脚踏模式选择
 #define GDDC_PAGE_OPTION_KEY_ENTER_ENGINEER              9 //进入工程师模式。
-#define GDDC_PAGE_OPTION_TEXT_BEEM_VOLUME                10
-#define GDDC_PAGE_OPTION_TEXT_LCD_BRG                    11
+#define GDDC_PAGE_OPTION_TEXT_BEEM_VOLUME                10 //蜂鸣器音量显示
+#define GDDC_PAGE_OPTION_TEXT_LCD_BRG                    11 //屏幕亮度显示
 #define GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME            12 //蜂鸣器音量调节
 #define GDDC_PAGE_OPTION_PROGRESS_LCD_BRG                13 //屏幕亮度调节
 #define GDDC_PAGE_OPTION_KEY_RESTORE                     14 //恢复默认设置
@@ -282,7 +301,6 @@ extern "C" {
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN             11
 #define GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENDOLIFT           12
 /*****************************************************************************/
-//方案页面
 #define GDDC_PAGE_SCHEME_KEY_RENAME                      1 //更名按键
 #define GDDC_PAGE_SCHEME_KEY_OK                          2 //确定
 #define GDDC_PAGE_SCHEME_KEY_CANCEL                      3 //取消
