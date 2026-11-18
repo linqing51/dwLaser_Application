@@ -47,14 +47,14 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave){
 #define REG_END									((uint32_t)CONFIG_EPROM_TREATMENT_END)
 #define REG_SIZE								((uint32_t)CONFIG_EPROM_TREATMENT_SIZE)
 #define PAT_BYTES								((uint16_t)sizeof(patientRecord_t))	/*20*/
-#define REC_BYTES								((uint16_t)sizeof(treatmentRecord_t))	/*16*/
+#define REC_BYTES								((uint16_t)sizeof(treatmentRecord_t))	/*24*/
 
 /* 编译期尺寸固化: 防止结构调整后尺寸假设失效。
  * ARMCC5(本工程,C99)不支持C11关键字_Static_assert, 改用负数组惯用法:
  * 条件成立时typedef正常; 条件失败则数组尺寸为负, 触发编译错误#94, 等效静态断言。 */
 #define STATIC_ASSERT(cond, ident) typedef char sa_##ident[(cond) ? 1 : -1]
 STATIC_ASSERT(sizeof(patientRecord_t)==20U,   patient_row_20);
-STATIC_ASSERT(sizeof(treatmentRecord_t)==16U, record_row_16);
+STATIC_ASSERT(sizeof(treatmentRecord_t)==24U, record_row_24);
 
 /* 编译期校验: 两个显式业务上限的最坏组合(每个病人都达到记录上限)须能同时容纳于病历区块。
  * 病人数上限为 0 表示不预设, 该侧不约束; 用 long 保证 32 位常量运算不溢出。 */
@@ -525,6 +525,13 @@ static void JoinLog(const treatmentRecord_t *rec, const patientRecord_t *pat, tr
 	out->protocol = (PROTOCOL_ENUM)(rec->waveProto & 0x0FU);
 	out->releaseEnergy = rec->releaseEnergy;
 	out->releaseTime = rec->releaseTime;
+	//RTC治疗时刻: 片上存年份后两位, 复合视图还原为完整4位年; 0=未记录保持0
+	out->rtcYear = (rec->rtcYear == 0U) ? 0U : (uint16_t)((uint16_t)rec->rtcYear + 2000U);
+	out->rtcMonth = rec->rtcMonth;
+	out->rtcDay = rec->rtcDay;
+	out->rtcHour = rec->rtcHour;
+	out->rtcMinute = rec->rtcMinute;
+	out->rtcSecond = rec->rtcSecond;
 }
 static void SplitPatient(const treatmentLog_t *log, patientRecord_t *pat){
 	memset(pat, 0, sizeof(*pat));
@@ -543,6 +550,13 @@ static void SplitRecord(const treatmentLog_t *log, treatmentRecord_t *rec){
 	rec->releaseTime = log->releaseTime;
 	rec->waveProto = (uint8_t)(((uint8_t)log->laserWave << 4) | ((uint8_t)log->protocol & 0x0FU));
 	rec->magic = ROW_MAGIC_PENDING;
+	//RTC治疗时刻: 复合视图为完整4位年, 片上收窄为后两位; 0=未记录
+	rec->rtcYear = (log->rtcYear >= 2000U) ? (uint8_t)(log->rtcYear - 2000U) : 0U;
+	rec->rtcMonth = log->rtcMonth;
+	rec->rtcDay = log->rtcDay;
+	rec->rtcHour = log->rtcHour;
+	rec->rtcMinute = log->rtcMinute;
+	rec->rtcSecond = log->rtcSecond;
 }
 
 /*============================================================================

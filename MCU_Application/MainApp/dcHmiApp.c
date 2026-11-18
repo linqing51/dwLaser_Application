@@ -2686,13 +2686,8 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 	if(log == NULL){
 		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"--");
 		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)"--");
-		SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, false);//性别按钮取消选中
-		SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, false);
 		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_0, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_1, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_2, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_4, (uint8_t*)"--");
+		SetSelectorValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER, 0);//性别下拉默认第0项
 		return;
 	}
 	memset(dispBuf, 0x0, sizeof(dispBuf));
@@ -2700,29 +2695,12 @@ static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *l
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%s", log->name);
 	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)dispBuf);
-	SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, (log->gender == MALE));//性别用按钮选中状态显示
-	SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, (log->gender == FEMALE));
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d", log->age);
 	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)dispBuf);
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d J", log->releaseEnergy);
-	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_0, (uint8_t*)dispBuf);
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	{
-		int32_t totalSec = log->releaseTime;
-		if(totalSec < 0){
-			totalSec = 0;
-		}
-		sprintf(dispBuf, "%ld:%02ld", (long)(totalSec / 60), (long)(totalSec % 60));//MM:SS
-	}
-	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_1, (uint8_t*)dispBuf);
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d W", log->laserPower);
-	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_2, (uint8_t*)dispBuf);
-	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%s", treatmentProtocolName(log->protocol));
-	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_SNAPSHOT_4, (uint8_t*)dispBuf);
+	//性别下拉菜单: 选项索引0=Male, 1=Female(屏幕工程下拉项顺序)
+	SetSelectorValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER,
+	                 (uint8_t)((log->gender == FEMALE) ? 1 : 0));
 }
 
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
@@ -2762,6 +2740,14 @@ typedef struct{
   char selectedPatientName[16];
   //删除确认页: deletePatientId缓存待删除患者编号(0=不在删除确认流程), 确认后级联删除该患者及其全部治疗记录
   uint16_t deletePatientId;
+  //LIST_RECORD治疗记录列表: recordPatientId为当前查看患者(0=未进入), recordTop为窗口起始(整页),
+  //recordCount为该患者记录数, recordIndex缓存这些记录的全局索引(单患者上限20)
+  uint16_t recordPatientId;
+  uint16_t recordTop;
+  uint8_t  recordCount;
+  uint16_t recordIndex[CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT];
+  //DELETE_RECODE单条记录删除确认: deleteRecordGlobalIndex缓存待删记录全局索引(0xFFFF=不在流程)
+  uint16_t deleteRecordGlobalIndex;
 }listTreatmentCtx_t;
 static listTreatmentCtx_t listTreatmentCtx;//病历页相关运行状态(开机全为0, 全部放ZI段)
 
@@ -3114,6 +3100,13 @@ static void listTreatmentPendingCapture(void){//停光时调用: 补齐最后一
     return;
   }
   listTreatmentCtx.pending = treatmentLog;//整条快照: 功率/波长/方案/发射时间/发射能量
+  //停光瞬间捕获RTC治疗时刻, 随病历一起落盘(完整4位年)
+  RtcGetDateTime(&listTreatmentCtx.pending.rtcYear,
+                 &listTreatmentCtx.pending.rtcMonth,
+                 &listTreatmentCtx.pending.rtcDay,
+                 &listTreatmentCtx.pending.rtcHour,
+                 &listTreatmentCtx.pending.rtcMinute,
+                 &listTreatmentCtx.pending.rtcSecond);
   listTreatmentCtx.pendingValid = 1U;
 }
 
@@ -3252,8 +3245,8 @@ uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id){
     if(screen_id != GDDC_PAGE_DELETE_TREATMENT_CONFIRM){
       return 0U;
     }
-    if((control_id == GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_DELETE) ||
-       (control_id == GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_CANCLE)){
+    if((control_id == GDDC_PAGE_DELETE_TREATMENT_KEY_OK) ||
+       (control_id == GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE)){
       return 1U;
     }
     return 0U;
@@ -3377,18 +3370,18 @@ void listTreatmentDeleteStart(uint8_t slot){
     return;
   }
   listTreatmentCtx.deletePatientId = pat.id;//缓存待删除患者编号(非0=进入删除确认流程)
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_0,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0,
     (uint8_t*)"Delete Patient?");
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "Delete patient %s and all their treatment records?", pat.name);
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_1,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1,
     (uint8_t*)dispBuf);
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "This patient has %u treatment record(s).",
     (unsigned int)treatmentGetRecordCountForPatient(pat.id));
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_2,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2,
     (uint8_t*)dispBuf);
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_TEXT_SUMMARY_3,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_3,
     (uint8_t*)"This action cannot be undone.");
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT_CONFIRM;
   SetScreen(GDDC_PAGE_DELETE_TREATMENT_CONFIRM);
@@ -3403,7 +3396,7 @@ void listTreatmentDeleteConfirm(void){
     return;
   }
   delId = listTreatmentCtx.deletePatientId;
-  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_DELETE, 0);//复位自锁按钮
+  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_OK, 0);//复位自锁按钮
   err = treatmentPatientDelete(delId);//级联删除: 该患者全部记录+患者行
   listTreatmentCtx.deletePatientId = 0U;//退出删除流程
   if(delId == listTreatmentCtx.selectedPatientId){//删的正是当前选中患者: 清空选中, 避免外键/待机名悬空
@@ -3429,7 +3422,7 @@ void listTreatmentDeleteCancel(void){
   if(listTreatmentCtx.deletePatientId == 0U){
     return;
   }
-  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_CANCLE, 0);//复位自锁按钮
+  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE, 0);//复位自锁按钮
   listTreatmentCtx.deletePatientId = 0U;
   refreshListTreatmentDisplay();
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
@@ -5491,7 +5484,11 @@ static void NotifyMeter(uint16_t screen_id, uint16_t control_id, uint32_t value)
 *  \param state 按钮状态：0松开，1按下
 */
 static void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t item, uint8_t state){
-
+  if(state && (screen_id == GDDC_PAGE_EDIT_TREATMENT) &&
+     (control_id == GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER)){
+    //性别下拉项索引: 0=Male, 1=Female(屏幕工程下拉顺序)
+    treatmentLog.gender = (item == 1U) ? FEMALE : MALE;
+  }
 }
 
 /*! 

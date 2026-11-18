@@ -4,7 +4,7 @@
  * 设计要点:
  *  - 片上只存两类紧凑、自然对齐的定长结构:
  *      patientRecord_t   20 字节, 每个患者一行, 从区块低端向上增长;
- *      treatmentRecord_t 16 字节, 每次治疗一行, 从区块高端向下增长。
+ *      treatmentRecord_t 24 字节, 每次治疗一行, 从区块高端向下增长。
  *  - 患者身份(name 等)只存一次, 治疗记录以 patientId 外键引用, 不再重复。
  *  - 患者数/记录数默认无预设上限, 由两表之间的剩余空闲空间动态决定;
  *    同时保留两个可由板级配置覆盖的显式业务上限(0=不预设, 完全由空间决定):
@@ -72,6 +72,12 @@ typedef struct{
 	GENDER_ENUM gender;                //患者性别
 	LASER_WAVE_ENUM laserWave;         //选择的波长
 	PROTOCOL_ENUM protocol;            //选择的预设方案
+	uint16_t rtcYear;                  //治疗时刻RTC完整年份(2000-2099), 0表示未记录时间
+	uint8_t  rtcMonth;                 //月 1-12
+	uint8_t  rtcDay;                   //日 1-31
+	uint8_t  rtcHour;                  //时 0-23
+	uint8_t  rtcMinute;                //分 0-59
+	uint8_t  rtcSecond;                //秒 0-59
 }treatmentLog_t;
 
 /*----------------------------------------------------------------------------
@@ -86,10 +92,12 @@ typedef struct {
 }patientRecord_t;
 
 /*----------------------------------------------------------------------------
- * 片上结构: 治疗记录行 (16B, 自然对齐)
+ * 片上结构: 治疗记录行 (24B, 自然对齐)
  *   recSeq: 稳定唯一记录序列(压缩/掉电去重依据), 开机扫描重建游标;
  *   waveProto: 高 nibble=laserWave, 低 nibble=protocol(各自取值 ≤9);
- *   magic: 行状态机(见 ROW_MAGIC_*)。
+ *   magic: 行状态机(见 ROW_MAGIC_*);
+ *   rtc*: 治疗时刻(停光瞬间)RTC, rtcYear存年份后两位(实际年=+2000), 0=未记录;
+ *   reserved*: 显式保留对齐字节, 写入时置0, 不依赖编译器隐式填充。
  *----------------------------------------------------------------------------*/
 typedef struct {
 	uint16_t patientId;                //外键 -> patientRecord_t.id
@@ -99,6 +107,14 @@ typedef struct {
 	uint8_t  magic;                    //ROW_MAGIC_* 状态
 	int32_t  releaseEnergy;
 	int32_t  releaseTime;
+	uint8_t  rtcYear;                  //治疗时刻年份后两位(0-99, 实际年=+2000)
+	uint8_t  rtcMonth;                 //月 1-12
+	uint8_t  rtcDay;                   //日 1-31
+	uint8_t  rtcHour;                  //时 0-23
+	uint8_t  rtcMinute;                //分 0-59
+	uint8_t  rtcSecond;                //秒 0-59
+	uint8_t  reserved0;                //保留对齐(置0)
+	uint8_t  reserved1;                //保留对齐(置0)
 }treatmentRecord_t;
 
 extern treatmentLog_t treatmentLog;

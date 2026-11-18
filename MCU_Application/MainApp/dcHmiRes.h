@@ -44,24 +44,25 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT                         13 //显示病历列表
 #define GDDC_PAGE_DELETE_TREATMENT_CONFIRM               14 //删除病历确认
 #define GDDC_PAGE_LIST_RECORD                            15 //‌治疗记录页面
-#define GDDC_PAGE_EDIT_TREATMENT                         16 //病例编辑页面
-#define GDDC_PAGE_OPERATOR_USB                           17 //USB导入导出操作页面
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM                   18 //USB操作确认页面
-#define GDDC_PAGE_READY                                  19 //准备页面
-#define GDDC_PAGE_VERIFY_TREATMENT                       20 //核对治疗记录
-#define GDDC_PAGE_DISCARD_TREATMENT                      21 //放弃本次治疗记录
-#define GDDC_PAGE_OPTION                                 22 //选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL                   23 //方案分类页 双波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI                    24 //方案分类页 三波长
-#define GDDC_PAGE_SCHEME_DETAIL                          25 //方案分类页 自定义
-#define GDDC_PAGE_INFORMATION                            26 //信息页面
-#define GDDC_PAGE_DIAGNOSIS                              27 //诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW                          28 //诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI                         29 //诊断页面-功率校准
-#define GDDC_PAGE_RENAME                                 30 //SCHEME更名
-#define GDDC_PAGE_RESTORE                                31 //弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY                            32 //脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM                       33 //弹出菜单 确认关机
+#define GDDC_PAGE_DELETE_RECODE							 16   //治疗记录删除页面
+#define GDDC_PAGE_EDIT_TREATMENT                         17 //病例编辑页面
+#define GDDC_PAGE_OPERATOR_USB                           18 //USB导入导出操作页面
+#define GDDC_PAGE_OPERATOR_USB_CONFIRM                   19 //USB操作确认页面
+#define GDDC_PAGE_READY                                  20 //准备页面
+#define GDDC_PAGE_VERIFY_TREATMENT                       21 //核对治疗记录
+#define GDDC_PAGE_DISCARD_TREATMENT                      22 //放弃本次治疗记录
+#define GDDC_PAGE_OPTION                                 23 //选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL                   24 //方案分类页 双波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI                    25 //方案分类页 三波长
+#define GDDC_PAGE_SCHEME_DETAIL                          26 //方案分类页 自定义
+#define GDDC_PAGE_INFORMATION                            27 //信息页面
+#define GDDC_PAGE_DIAGNOSIS                              28 //诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW                          29 //诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI                         30 //诊断页面-功率校准
+#define GDDC_PAGE_RENAME                                 31 //SCHEME更名
+#define GDDC_PAGE_RESTORE                                32 //弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY                            33 //脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM                       34 //弹出菜单 确认关机
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1                      1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2                      2
@@ -192,18 +193,26 @@ extern "C" {
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_3        13 //提示信息
 /*****************************************************************************/
 #define GDDC_PAGE_LIST_RECORD_TEXT_NAME					  1//患者名字-ID
-#define GDDC_PAGE_LIST_RECORD_TEXT_SUMMARY_0			  2//显示日期-发射能量-发射时间-功率-波长显示
-#define GDDC_PAGE_LIST_RECORD_TEXT_SUMMARY_1              3//显示治疗方案-激光模式-正脉冲宽度-负脉冲宽度-
-#define GDDC_PAGE_LIST_RECORD_TEXT_PAGE					  4//显示页数
-#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_0                10//删除第1行治疗记录
-#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_1                11//删除第2行治疗记录
-#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_2                12//删除第3行治疗记录
-#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_3                13//删除第4行治疗记录
-#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_4                14//删除第5行治疗记录
-#define GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP			      15//上一页按键
-#define GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN               16//下一页按键
-#define GDDC_PAGE_LIST_RECODE_KEY_CLOSE                   17//关闭按键
-#define GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT		      18//编辑患者
+#define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_0		  2//第1行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
+#define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_1          3//第2行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
+#define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_2	      4//第3行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
+#define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_3          5//第4行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
+#define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_4	      6//第5行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
+#define GDDC_PAGE_LIST_RECORD_TEXT_SCHEME_WIDTH_0         7//第1行治疗记录-显示治疗方案-激光模式-正脉冲宽度-负脉冲宽度
+#define GDDC_PAGE_LIST_RECORD_TEXT_SCHEME_WIDTH_1         8//第2行治疗记录-显示治疗方案-激光模式-正脉冲宽度-负脉冲宽度
+#define GDDC_PAGE_LIST_RECORD_TEXT_SCHEME_WIDTH_2         9//第3行治疗记录-显示治疗方案-激光模式-正脉冲宽度-负脉冲宽度
+#define GDDC_PAGE_LIST_RECORD_TEXT_SCHEME_WIDTH_3         10//第4行治疗记录-显示治疗方案-激光模式-正脉冲宽度-负脉冲宽度
+#define GDDC_PAGE_LIST_RECORD_TEXT_SCHEME_WIDTH_4         11//第5行治疗记录-显示治疗方案-激光模式-正脉冲宽度-负脉冲宽度
+#define GDDC_PAGE_LIST_RECORD_TEXT_PAGE					  12//显示页数
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_0                20//删除第1行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_1                21//删除第2行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_2                22//删除第3行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_3                23//删除第4行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_DELETE_4                24//删除第5行治疗记录
+#define GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP			      25//上一页按键
+#define GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN               26//下一页按键
+#define GDDC_PAGE_LIST_RECODE_KEY_CLOSE                   27//关闭按键
+#define GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT		      28//编辑患者
 /*****************************************************************************/
 #define GDDC_PAGE_DELETE_RECODE_TEXT_NAME                 1//显示患者名字-ID
 #define GDDC_PAGE_DELETE_RECODE_TEXT_SUMMARY_0            2//显示治疗日期-发射能量-发射时间-发射功率

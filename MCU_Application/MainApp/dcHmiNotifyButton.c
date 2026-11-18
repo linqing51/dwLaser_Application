@@ -968,13 +968,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
     }
     case GDDC_PAGE_DELETE_TREATMENT_CONFIRM:{//删除患者确认页: 确认删除或取消返回列表页
       switch(control_id){
-        case GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_DELETE:{
+        case GDDC_PAGE_DELETE_TREATMENT_KEY_OK:{
           if(state){
             listTreatmentDeleteConfirm();
           }
           break;
         }
-        case GDDC_PAGE_DELETE_TREATMENT_CONFIRM_KEY_CANCLE:{
+        case GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE:{
           if(state){
             listTreatmentDeleteCancel();
           }
@@ -1030,43 +1030,25 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}
-		case GDDC_PAGE_EDIT_TREATMENT:{//病例详细
+		case GDDC_PAGE_EDIT_TREATMENT:{//病例编辑页(性别为下拉菜单, 经NotifyMenu处理)
 			switch(control_id){
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_MALE:{//性别-男 选择按钮
-					if(state){
-						treatmentLog.gender = MALE;
-						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, true);//选中男
-						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, false);//取消女
-						updateListTreatmentDisplay();//刷新显示
-					}
-					break;
-				}
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE:{//性别-女 选择按钮
-					if(state){
-						treatmentLog.gender = FEMALE;
-						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_MALE, false);//取消男
-						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_FAMALE, true);//选中女
-						updateListTreatmentDisplay();//刷新显示
-					}
-					break;
-				}
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_OK:{//确认新建: 校验后追加到EPROM末尾
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_SAVE:{//保存: 校验后追加到EPROM
 					if(state){
 						listTreatmentCreateConfirm();
-						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_OK, 0);//复位自锁按钮
+						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_SAVE, 0);//复位自锁按钮
 					}
 					break;
 				}
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL:{//取消新建: 返回病历列表页, EPROM不变
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL:{//取消: 返回病历列表页, EPROM不变
 					if(state){
 						listTreatmentCreateCancel();
 						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL, 0);//复位自锁按钮
 					}
 					break;
 				}
-        default:break;		
-      }
-    }      
+				default:break;
+			}
+		}
 		case GDDC_PAGE_READY:{
 			switch(control_id){
 				case GDDC_PAGE_READY_KEY_READY:{
