@@ -183,14 +183,14 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE               38 //关闭
 #define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW          39 //新建患者
 #define GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB        40 //操作USB
-#define GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG       99 //显示调试信息
+#define GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG       99 //显示调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_DELETE_TREATMENT_KEY_OK                1  //确认删除
 #define GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE            2  //取消
-#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0        10 //标题
-#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1        11 //提示信息
-#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2        12 //提示信息
-#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_3        13 //提示信息
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_NAME_ID        3 //名字-ID
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0      4
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1       5
+#define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2        6
 /*****************************************************************************/
 #define GDDC_PAGE_LIST_RECORD_TEXT_NAME					  1//患者名字-ID
 #define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_0		  2//第1行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
@@ -225,6 +225,7 @@ extern "C" {
 #define GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER              10 //性别下来菜单
 #define GDDC_PAGE_EDIT_TREATMENT_KEY_SAVE                 20 //保存修改
 #define GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL               21 //取消
+#define GDDC_PAGE_EDIT_TREATMENT_TEXT_DEBUG               99 //调试信息
 /*****************************************************************************/
 #define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY               1 //患者数-治疗记录数
 #define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB           2 //UDISK 信息

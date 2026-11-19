@@ -297,8 +297,8 @@ void optionKeyEnable(uint8_t enable){//选项界面按键锁定
 void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 	SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
-	SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, enable);
-	SetControlVisiable(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXTDISPLAY_DEBUG, enable);
+	SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, enable);
+	SetControlVisiable(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_DEBUG, enable);
 }
 
 void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
@@ -380,11 +380,11 @@ void updateDebugInfo(void){//更新Standby调试信息
 			break;
 		}
 		case GDDC_PAGE_LIST_TREATMENT:{
-			SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
 		case GDDC_PAGE_EDIT_TREATMENT:{
-			SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
 		default:break;	
@@ -3045,7 +3045,7 @@ void listTreatmentDelete(void){
   if(count == 0U){//没有病历可删
     memset(dispBuf, 0x0, sizeof(dispBuf));
     sprintf(dispBuf, "NO RECORD");
-    SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+    SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
     return;
   }
   if(listTreatmentCtx.selectedIndex >= count){//选中索引越界时退到最后一条
@@ -3058,12 +3058,12 @@ void listTreatmentDelete(void){
   else{
     sprintf(dispBuf, "DEL...");
   }
-  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
   err = treatmentEpromDelete(listTreatmentCtx.selectedIndex);//删除(后续病历前移, 各患者ID保持不变)
   if(err != TREATMENT_EPROM_OK){
     memset(dispBuf, 0x0, sizeof(dispBuf));
     sprintf(dispBuf, "DEL ERR:%d", (int)err);
-    SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+    SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
     return;
   }
   count--;//有效病历数量-1
@@ -3085,7 +3085,7 @@ void listTreatmentDelete(void){
   refreshListTreatmentDisplay();
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "DEL OK, NUM:%d", NVRAM0[DM_TREATMENT_NUM]);
-  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
 }
 
 /*****************************************************************************/
@@ -3145,7 +3145,7 @@ void listTreatmentCreateStart(void){//CREATE按键: 本次治疗确实发射过�
     if(trigTicks <= 0){//本次没有实际发射: 不允许凭空新建病历
       memset(dispBuf, 0x0, sizeof(dispBuf));
       sprintf(dispBuf, "CREATE:NO LASER");
-      SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+      SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
       return;
     }
     listTreatmentCtx.pending = treatmentLog;//漏抓兜底: 直接用当前累计值
@@ -3221,7 +3221,7 @@ void listTreatmentCreateConfirm(void){//编辑页OK: 校验患者信息后把当
     sprintf(dispBuf, "SAVE ERR:%d", (int)err);
   }
   refreshListTreatmentDisplay();
-  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
@@ -3370,18 +3370,18 @@ void listTreatmentDeleteStart(uint8_t slot){
     return;
   }
   listTreatmentCtx.deletePatientId = pat.id;//缓存待删除患者编号(非0=进入删除确认流程)
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_NAME_ID,
     (uint8_t*)"Delete Patient?");
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "Delete patient %s and all their treatment records?", pat.name);
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0,
     (uint8_t*)dispBuf);
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "This patient has %u treatment record(s).",
     (unsigned int)treatmentGetRecordCountForPatient(pat.id));
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1,
     (uint8_t*)dispBuf);
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_3,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2,
     (uint8_t*)"This action cannot be undone.");
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT_CONFIRM;
   SetScreen(GDDC_PAGE_DELETE_TREATMENT_CONFIRM);
@@ -3412,7 +3412,7 @@ void listTreatmentDeleteConfirm(void){
   else{
     sprintf(dispBuf, "DEL ERR:%d", (int)err);
   }
-  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
