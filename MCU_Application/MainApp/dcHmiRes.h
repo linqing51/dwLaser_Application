@@ -45,24 +45,26 @@ extern "C" {
 #define GDDC_PAGE_DELETE_TREATMENT_CONFIRM               14 //删除病历确认
 #define GDDC_PAGE_LIST_RECORD                            15 //‌治疗记录页面
 #define GDDC_PAGE_DELETE_RECODE							 16   //治疗记录删除页面
-#define GDDC_PAGE_EDIT_TREATMENT                         17 //病例编辑页面
-#define GDDC_PAGE_OPERATOR_USB                           18 //USB导入导出操作页面
-#define GDDC_PAGE_OPERATOR_USB_CONFIRM                   19 //USB操作确认页面
-#define GDDC_PAGE_READY                                  20 //准备页面
-#define GDDC_PAGE_VERIFY_TREATMENT                       21 //核对治疗记录
-#define GDDC_PAGE_DISCARD_TREATMENT                      22 //放弃本次治疗记录
-#define GDDC_PAGE_OPTION                                 23 //选项页面
-#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL                   24 //方案分类页 双波长
-#define GDDC_PAGE_SCHEME_CLASSIFY_TRI                    25 //方案分类页 三波长
-#define GDDC_PAGE_SCHEME_DETAIL                          26 //方案分类页 自定义
-#define GDDC_PAGE_INFORMATION                            27 //信息页面
-#define GDDC_PAGE_DIAGNOSIS                              28 //诊断页面
-#define GDDC_PAGE_DIAGNOSIS_RAW                          29 //诊断页面-原始寄存器
-#define GDDC_PAGE_DIAGNOSIS_CALI                         30 //诊断页面-功率校准
-#define GDDC_PAGE_RENAME                                 31 //SCHEME更名
-#define GDDC_PAGE_RESTORE                                32 //弹出菜单 确认恢复默认值
-#define GDDC_PAGE_WEAR_SAFETY                            33 //脚踏安全警告
-#define GDDC_PAGE_POWEROFF_CONFIRM                       34 //弹出菜单 确认关机
+#define GDDC_PAGE_EDIT_PATIENT                           17 //编辑病人
+#define GDDC_PAGE_REGISTER_PATIENT                       18 //添加病人
+#define GDDC_PAGE_OPERATOR_USB                           19 //USB导入导出操作页面
+#define GDDC_PAGE_OPERATOR_USB_SAVE_CONFIRM              20 //USB储存操作确认页面
+#define GDDC_PAGE_OPERATOR_USB_LOAD_CONFIRM				 21 //USB载入操作确认页面
+#define GDDC_PAGE_READY                                  21 //准备页面
+#define GDDC_PAGE_VERIFY_TREATMENT                       22 //核对治疗记录
+#define GDDC_PAGE_DISCARD_TREATMENT                      23 //放弃本次治疗记录
+#define GDDC_PAGE_OPTION                                 24 //选项页面
+#define GDDC_PAGE_SCHEME_CLASSIFY_DUAL                   25 //方案分类页 双波长
+#define GDDC_PAGE_SCHEME_CLASSIFY_TRI                    26 //方案分类页 三波长
+#define GDDC_PAGE_SCHEME_DETAIL                          27 //方案分类页 自定义
+#define GDDC_PAGE_INFORMATION                            28 //信息页面
+#define GDDC_PAGE_DIAGNOSIS                              29 //诊断页面
+#define GDDC_PAGE_DIAGNOSIS_RAW                          30 //诊断页面-原始寄存器
+#define GDDC_PAGE_DIAGNOSIS_CALI                         31 //诊断页面-功率校准
+#define GDDC_PAGE_RENAME                                 32 //SCHEME更名
+#define GDDC_PAGE_RESTORE                                33 //弹出菜单 确认恢复默认值
+#define GDDC_PAGE_WEAR_SAFETY                            34 //脚踏安全警告
+#define GDDC_PAGE_POWEROFF_CONFIRM                       35 //弹出菜单 确认关机
 //GDDC页面控件编号
 #define GDDC_PAGE_PASSCODE_KEY_NUM1                      1
 #define GDDC_PAGE_PASSCODE_KEY_NUM2                      2
@@ -231,7 +233,7 @@ extern "C" {
 #define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB           2 //UDISK 信息
 #define GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK             3 //存储到U盘
 #define GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK             4 //从U盘载入
-#define GDDC_PAGE_OPERATOR_USB_KEY_BACK                   5 //返回病历列表
+#define GDDC_PAGE_OPERATOR_USB_KEY_CANCEL                   5 //返回病历列表
 /*****************************************************************************/
 #define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_0     1 //标题栏
 #define GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_1     2 //信息栏
