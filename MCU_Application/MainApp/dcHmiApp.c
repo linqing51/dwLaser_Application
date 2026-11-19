@@ -298,7 +298,7 @@ void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
 	SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, enable);
-	SetControlVisiable(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_DEBUG, enable);
+	//患者注册/编辑页不再设置调试文本控件, 无需切换可见性
 }
 
 void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
@@ -383,11 +383,8 @@ void updateDebugInfo(void){//更新Standby调试信息
 			SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
-		case GDDC_PAGE_EDIT_TREATMENT:{
-			SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
-			break;
-		}
-		default:break;	
+		//患者注册/编辑页无调试文本控件, 不在此更新
+		default:break;
 	}
 #if defined(LYPE_MCU_1V0_20260106)
 	sprintf(dispBuf, "LT:%05d,WHT:%05d,WCT%05d,AT%05d,MT:%05d,FPD:%05d,LPD:%05d,PID:%05d", \
@@ -2681,41 +2678,44 @@ void updateReadyDisplay(void){//更新READY显示
 
 /*****************************************************************************/
 //病历储存页面:显示病历信息(idText: ID显示文本; log: 病历数据指针, NULL显示为空)
-static void dcHmiShowTreatmentCommon(const char *idText, const treatmentLog_t *log){
+//注册页与编辑页控件编号完全一致, 仅页面ID不同, 由screenId指定目标页面
+static void dcHmiShowTreatmentCommon(uint16_t screenId, const char *idText, const treatmentLog_t *log){
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	if(log == NULL){
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)"--");
-		SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)"--");
-		SetSelectorValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER, 0);//性别下拉默认第0项
+		SetTextValue(screenId, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"--");
+		SetTextValue(screenId, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)"--");
+		SetTextValue(screenId, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)"--");
+		SetSelectorValue(screenId, GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER, 0);//性别下拉默认第0项
 		return;
 	}
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)idText);
+	SetTextValue(screenId, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)idText);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%s", log->name);
-	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)dispBuf);
+	SetTextValue(screenId, GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d", log->age);
-	SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)dispBuf);
+	SetTextValue(screenId, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)dispBuf);
 	//性别下拉菜单: 选项索引0=Male, 1=Female(屏幕工程下拉项顺序)
-	SetSelectorValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER,
+	SetSelectorValue(screenId, GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER,
 	                 (uint8_t)((log->gender == FEMALE) ? 1 : 0));
 }
 
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	uint16_t screenId = NVRAM0[EM_DC_PAGE];//保持函数签名不变, 目标页面取当前页
+	(void)index;
 	if(log == NULL){
-		dcHmiShowTreatmentCommon("--", NULL);
+		dcHmiShowTreatmentCommon(screenId, "--", NULL);
 		return;
 	}
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "AR %04u", (unsigned int)log->id);//患者ID取自记录本身(与患者绑定), 规则见treatment.c注释
-	dcHmiShowTreatmentCommon(dispBuf, log);
+	dcHmiShowTreatmentCommon(screenId, dispBuf, log);
 }
 
 void updateListTreatmentDisplay(void){//病历储存页面:显示当前治疗记录(待保存)
-  dcHmiShowTreatmentCommon("NEW", &treatmentLog);
+  dcHmiShowTreatmentCommon(NVRAM0[EM_DC_PAGE], "NEW", &treatmentLog);
 }
 
 //病历列表页单页可显示的患者数量(对应GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0-4)
@@ -3173,9 +3173,11 @@ void listTreatmentCreateStart(void){//CREATE按键: 本次治疗确实发射过�
     }
     //选中患者若已被删除等导致查不到: 保持id=0的新患者兜底路径, 避免外键悬空
   }
-  updateListTreatmentDisplay();//先刷新编辑页控件(标题显示NEW), 再切页避免残留
+  //新患者进注册页, 已选老患者进编辑页; 先定页面再刷新, 避免控件残留
+  NVRAM0[EM_DC_PAGE] = (treatmentLog.id == 0U)
+    ? GDDC_PAGE_REGISTER_PATIENT : GDDC_PAGE_EDIT_PATIENT;
+  updateListTreatmentDisplay();
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_EDIT_TREATMENT;
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_EDIT_TREATMENT;
   SetScreen(NVRAM0[EM_DC_PAGE]);
 }
 
@@ -3184,16 +3186,17 @@ void listTreatmentCreateConfirm(void){//编辑页OK: 校验患者信息后把当
   treatmentEpromErr_t err;
   treatmentLog_t rec;
   uint16_t count;
+  //校验提示写入当前所在页面(注册页/编辑页控件编号一致)
   if(listTreatmentNameValid(treatmentLog.name) == 0U){//姓名必须录入
-    SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET NAME");
+    SetTextValue(NVRAM0[EM_DC_PAGE], GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET NAME");
     return;
   }
   if((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE)){//性别必须选择
-    SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET GENDER");
+    SetTextValue(NVRAM0[EM_DC_PAGE], GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET GENDER");
     return;
   }
   if((treatmentLog.age == 0U) || (treatmentLog.age > 120U)){//年龄范围检查
-    SetTextValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET AGE");
+    SetTextValue(NVRAM0[EM_DC_PAGE], GDDC_PAGE_EDIT_TREATMENT_TEXT_ID, (uint8_t*)"SET AGE");
     return;
   }
   err = treatmentEpromAdd(&treatmentLog);//末尾追加: 自动分配新患者ID, 已有病历位置不变
@@ -3254,12 +3257,14 @@ uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id){
   if(listTreatmentCtx.usbState == 0U){
     return 1U;//空闲: 正常响应
   }
-  if(listTreatmentCtx.usbState == 6U){//确认页(导出/导入): 只放行CONFIRM/CANCLE
-    if(screen_id != GDDC_PAGE_OPERATOR_USB_CONFIRM){
+  if(listTreatmentCtx.usbState == 6U){//确认页(导出/导入分两页): 只放行本页OK/CANCEL
+    if((screen_id != GDDC_PAGE_OPERATOR_USB_SAVE) &&
+       (screen_id != GDDC_PAGE_OPERATOR_USB_LOAD)){
       return 0U;
     }
-    if((control_id == GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM) ||
-       (control_id == GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE)){
+    //两个确认页的OK(11)/CANCEL(10)编号一致
+    if((control_id == GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK) ||
+       (control_id == GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL)){
       return 1U;
     }
     return 0U;
@@ -3273,38 +3278,45 @@ uint8_t listTreatmentUsbBusy(void){//提示页/确认页显示中
 
 static uint16_t listTreatmentUsbPageOf(uint16_t state){//确认页状态(6/7)对应页面ID, 用于判断页面是否被别处切走
   (void)state;
-  return GDDC_PAGE_OPERATOR_USB_CONFIRM;
+  //按操作类型返回拆分后的确认页: 导入LOAD, 导出SAVE
+  if(listTreatmentCtx.usbOp == 2U){
+    return GDDC_PAGE_OPERATOR_USB_LOAD;
+  }
+  return GDDC_PAGE_OPERATOR_USB_SAVE;
 }
 
-//进入USB操作确认页(导出/导入共用): 先按操作类型刷新英文文案再切页, 避免上一页控件残留; 状态6等待用户按键
+//进入USB操作确认页: 导出进SAVE页/导入进LOAD页, 先刷新英文文案再切页, 避免上一页控件残留; 状态6等待用户按键
 static void enterOperatorUsbConfirmPage(void){
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  uint16_t page;
   listTreatmentCtx.usbState = 6U;
   if(listTreatmentCtx.usbOp == 2U){//导入(LOAD): 替换设备档案确认
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_0,
+    page = GDDC_PAGE_OPERATOR_USB_LOAD;
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_0,
       (uint8_t*)"Replace Device Records?");
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_1,
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_1,
       (uint8_t*)"Replace all patients and treatment records on the device with the USB backup?");
     memset(dispBuf, 0x0, sizeof(dispBuf));
     sprintf(dispBuf, "Backup contents: %u patients · %u treatment records.",
       (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_2,
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_2,
       (uint8_t*)dispBuf);
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_3,
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_3,
       (uint8_t*)"The current device records will be replaced. To keep them, export to another USB first. This action cannot be undone.");
   }
   else{//导出(SAVE): 导出患者备份确认
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_0,
+    page = GDDC_PAGE_OPERATOR_USB_SAVE;
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_0,
       (uint8_t*)"Export Patient Backup?");
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_1,
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_1,
       (uint8_t*)"Export patients and saved treatment records to USB?");
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_2,
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_2,
       (uint8_t*)"The existing patient backup on this USB will be replaced. The records on the device will be erased.");
-    SetTextValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_TEXT_SUMMARY_3,
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_3,
       (uint8_t*)" ");//预留文本框清空
   }
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB_CONFIRM;
-  SetScreen(GDDC_PAGE_OPERATOR_USB_CONFIRM);
+  NVRAM0[EM_DC_PAGE] = page;
+  SetScreen(page);
 }
 
 void listTreatmentSaveUsbStart(void){//SAVE_USB按键: 不立即写盘, 先进入导出确认页, 由用户确认/取消(实际CSV写入在确认后执行)
@@ -3329,19 +3341,31 @@ void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 不立即读盘, 先进�
   enterOperatorUsbConfirmPage();//进入确认页(状态6), 等待CANCEL/CONFIRM
 }
 
-void listTreatmentUsbConfirm(void){//确认页"确认"(导出/导入通用): 授权执行, 实际读写在轮询里完成一次
+void listTreatmentUsbConfirm(void){//确认页"OK"(导出/导入通用): 授权执行, 实际读写在轮询里完成一次
   if(listTreatmentCtx.usbState != 6U){
     return;
   }
-  SetButtonValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM, 0);//复位自锁按钮
+  //复位当前确认页的OK按键(两页OK编号均为11)
+  if(NVRAM0[EM_DC_PAGE] == GDDC_PAGE_OPERATOR_USB_LOAD){
+    SetButtonValue(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK, 0);
+  }
+  else{
+    SetButtonValue(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 0);
+  }
   listTreatmentCtx.usbState = 7U;
 }
 
-void listTreatmentUsbCancel(void){//确认页"取消"(导出/导入通用): 不读写, 直接返回USB操作页
+void listTreatmentUsbCancel(void){//确认页"CANCEL"(导出/导入通用): 不读写, 直接返回USB操作页
   if(listTreatmentCtx.usbState != 6U){
     return;
   }
-  SetButtonValue(GDDC_PAGE_OPERATOR_USB_CONFIRM, GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE, 0);//复位自锁按钮
+  //复位当前确认页的CANCEL按键(两页CANCEL编号均为10)
+  if(NVRAM0[EM_DC_PAGE] == GDDC_PAGE_OPERATOR_USB_LOAD){
+    SetButtonValue(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL, 0);
+  }
+  else{
+    SetButtonValue(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
+  }
   listTreatmentCtx.usbState = 0U;
   refreshOperatorUsbDisplay();//回到操作页并刷新(P/R摘要与U盘状态)
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
@@ -5428,10 +5452,9 @@ static void NotifyScreen(uint16_t screen_id){
 			}
 			break;
 		}
-    case GDDC_PAGE_EDIT_TREATMENT:{
-			if(LD(R_ENGINEER_MODE)){
-				updateDebugInfo();
-			}
+    case GDDC_PAGE_EDIT_PATIENT:
+    case GDDC_PAGE_REGISTER_PATIENT:{
+      //患者注册/编辑页无调试控件, 页面加载不做调试刷新
       break;
     }
 		case GDDC_PAGE_OPERATOR_USB:{
@@ -5484,9 +5507,9 @@ static void NotifyMeter(uint16_t screen_id, uint16_t control_id, uint32_t value)
 *  \param state 按钮状态：0松开，1按下
 */
 static void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t item, uint8_t state){
-  if(state && (screen_id == GDDC_PAGE_EDIT_TREATMENT) &&
-     (control_id == GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER)){
-    //性别下拉项索引: 0=Male, 1=Female(屏幕工程下拉顺序)
+  if(state && ((screen_id == GDDC_PAGE_EDIT_PATIENT) || (screen_id == GDDC_PAGE_REGISTER_PATIENT))
+     && (control_id == GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER)){
+    //性别下拉项索引: 0=Male, 1=Female(两个页面菜单编号均为10)
     treatmentLog.gender = (item == 1U) ? FEMALE : MALE;
   }
 }

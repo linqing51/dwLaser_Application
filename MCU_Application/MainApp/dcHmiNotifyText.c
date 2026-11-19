@@ -1225,16 +1225,17 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
       break;
     }
         
-		case GDDC_PAGE_EDIT_TREATMENT:{	//病历储存页面
+		case GDDC_PAGE_EDIT_PATIENT:
+		case GDDC_PAGE_REGISTER_PATIENT:{//患者注册/编辑页控件编号一致, 共用文本录入处理
 			switch(control_id){
-				case GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME:{//患者姓名录入
+				case GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME:{//患者姓名录入(两页NAME编号均为2)
 					if(str != NULL){
 						strncpy(treatmentLog.name, (const char*)str, sizeof(treatmentLog.name) - 1);
 						treatmentLog.name[sizeof(treatmentLog.name) - 1] = '\0';//截断保护
 					}
 					break;
 				}
-				case GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE:{//患者年龄录入
+				case GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE:{//患者年龄录入(两页AGE编号均为3)
 					if(str != NULL){
 						int value = 0;
 						if(sscanf((const char*)str, "%d", &value) == 1){

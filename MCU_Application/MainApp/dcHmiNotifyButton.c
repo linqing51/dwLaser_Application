@@ -986,7 +986,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
     }
 		case GDDC_PAGE_OPERATOR_USB:{//USB导入导出操作页
 			switch(control_id){
-				case GDDC_PAGE_OPERATOR_USB_KEY_BACK:{//返回病历列表页
+				case GDDC_PAGE_OPERATOR_USB_KEY_CANCEL:{//返回病历列表页
 					if(state){
 						listTreatmentOperatorUsbBack();
 					}
@@ -1010,15 +1010,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}
-		case GDDC_PAGE_OPERATOR_USB_CONFIRM:{//USB操作确认页面(导出/导入共用)
+		case GDDC_PAGE_OPERATOR_USB_SAVE:{//USB导出确认页
 			switch(control_id){
-				case GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CANCLE:{//取消: 不读写, 返回USB操作页
+				case GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL:{//取消: 不读写, 返回USB操作页
 					if(state){
 						listTreatmentUsbCancel();
 					}
 					break;
 				}
-				case GDDC_PAGE_OPERATOR_USB_CONFIRM_KEY_CONFIRM:{//确认: 授权执行(导出/导入在轮询中完成)
+				case GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK:{//确认: 授权导出(在轮询中完成)
 					if(state){
 						listTreatmentUsbConfirm();
 					}
@@ -1030,19 +1030,58 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			}
 			break;
 		}
-		case GDDC_PAGE_EDIT_TREATMENT:{//病例编辑页(性别为下拉菜单, 经NotifyMenu处理)
+		case GDDC_PAGE_OPERATOR_USB_LOAD:{//USB导入确认页
 			switch(control_id){
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_SAVE:{//保存: 校验后追加到EPROM
+				case GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL:{//取消: 不读写, 返回USB操作页
+					if(state){
+						listTreatmentUsbCancel();
+					}
+					break;
+				}
+				case GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK:{//确认: 授权导入(在轮询中完成)
+					if(state){
+						listTreatmentUsbConfirm();
+					}
+					break;
+				}
+				default:{
+					break;
+				}
+			}
+			break;
+		}
+		case GDDC_PAGE_EDIT_PATIENT:{//老患者编辑页(性别为下拉菜单, 经NotifyMenu处理)
+			switch(control_id){
+				case GDDC_PAGE_EDIT_TREATMENT_KEY_OK:{//保存: 校验后追加到EPROM
 					if(state){
 						listTreatmentCreateConfirm();
-						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_SAVE, 0);//复位自锁按钮
+						SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_OK, 0);//复位自锁按钮
 					}
 					break;
 				}
 				case GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL:{//取消: 返回病历列表页, EPROM不变
 					if(state){
 						listTreatmentCreateCancel();
-						SetButtonValue(GDDC_PAGE_EDIT_TREATMENT, GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL, 0);//复位自锁按钮
+						SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL, 0);//复位自锁按钮
+					}
+					break;
+				}
+				default:break;
+			}
+		}
+		case GDDC_PAGE_REGISTER_PATIENT:{//新患者注册页
+			switch(control_id){
+				case GDDC_PAGE_REGISTER_TREATMENT_KEY_OK:{//保存: 校验后新建患者并追加到EPROM
+					if(state){
+						listTreatmentCreateConfirm();
+						SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_OK, 0);//复位自锁按钮
+					}
+					break;
+				}
+				case GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL:{//取消: 返回病历列表页, EPROM不变
+					if(state){
+						listTreatmentCreateCancel();
+						SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL, 0);//复位自锁按钮
 					}
 					break;
 				}
