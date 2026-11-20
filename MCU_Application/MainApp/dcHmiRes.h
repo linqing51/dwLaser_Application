@@ -239,11 +239,11 @@ extern "C" {
 #define GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL               21 //取消
 #define GDDC_PAGE_REGISTER_TREATMENT_KEY_GENDER               22 //性别选择菜单按键
 /*****************************************************************************/
-#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY                1 //患者数-治疗记录数
-#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB           2 //UDISK 信息
-#define GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK             10 //存储到U盘
-#define GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK             11 //从U盘载入
-#define GDDC_PAGE_OPERATOR_USB_KEY_CANCEL                   12 //返回病历列表
+#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY                 1 //患者数-治疗记录数
+#define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB             2 //UDISK 信息
+#define GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK               3 //存储到U盘
+#define GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK               4 //从U盘载入
+#define GDDC_PAGE_OPERATOR_USB_KEY_CANCEL                   5 //返回病历列表
 /*****************************************************************************/
 #define GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_0     1 //信息栏
 #define GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_1     2 //信息栏

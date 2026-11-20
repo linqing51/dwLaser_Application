@@ -46,14 +46,14 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave){
 #define REG_START								((uint32_t)CONFIG_EPROM_TREATMENT_START)
 #define REG_END									((uint32_t)CONFIG_EPROM_TREATMENT_END)
 #define REG_SIZE								((uint32_t)CONFIG_EPROM_TREATMENT_SIZE)
-#define PAT_BYTES								((uint16_t)sizeof(patientRecord_t))	/*20*/
+#define PAT_BYTES								((uint16_t)sizeof(patientRecord_t))	/*24*/
 #define REC_BYTES								((uint16_t)sizeof(treatmentRecord_t))	/*24*/
 
 /* 编译期尺寸固化: 防止结构调整后尺寸假设失效。
  * ARMCC5(本工程,C99)不支持C11关键字_Static_assert, 改用负数组惯用法:
  * 条件成立时typedef正常; 条件失败则数组尺寸为负, 触发编译错误#94, 等效静态断言。 */
 #define STATIC_ASSERT(cond, ident) typedef char sa_##ident[(cond) ? 1 : -1]
-STATIC_ASSERT(sizeof(patientRecord_t)==20U,   patient_row_20);
+STATIC_ASSERT(sizeof(patientRecord_t)==24U,   patient_row_24);
 STATIC_ASSERT(sizeof(treatmentRecord_t)==24U, record_row_24);
 
 /* 编译期校验: 两个显式业务上限的最坏组合(每个病人都达到记录上限)须能同时容纳于病历区块。
@@ -163,7 +163,7 @@ static void EraseRow(uint32_t addr, uint16_t n){
 /* 患者移动: 先写正文(目标 id 保持 0xFFFF), 再写 id 提交, 最后擦源 */
 static void PatientMove(const patientRecord_t *row, uint16_t src, uint16_t dst){
 	uint32_t d = PatientAddr(dst);
-	(void)RowWrite(d + 2U, &row->age, (uint16_t)(PAT_BYTES - 2U));/*正文18B*/
+	(void)RowWrite(d + 2U, &row->age, (uint16_t)(PAT_BYTES - 2U));/*正文: age+gender+name+尾部对齐填充*/
 	(void)RowWrite(d, &row->id, 2U);/*提交点*/
 	EraseRow(PatientAddr(src), PAT_BYTES);
 }

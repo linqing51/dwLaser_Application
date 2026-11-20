@@ -2726,6 +2726,7 @@ typedef struct{
   uint16_t selectedIndex;//当前选中患者在"过滤后患者视图"中的位置
   uint16_t usbState;//U盘流程状态: 0空闲 6确认页等待按键 7导出/导入执行中(读写在轮询完成)
   uint16_t usbCount;//本次保存/载入的病历条数
+  char usbText[64];//USB操作页SUMMARY_USB当前应显示的内容(默认U盘在位状态, 导出/导入后为本次结果, 取消后为空)
   uint16_t driveStep;//上一拍HMI治疗步骤(用于识别停光, 开机为0不等于发射中步骤)
   uint8_t  usbOp;//1=导出(save) 2=导入(load), 决定确认页文案与轮询执行分支
   uint8_t  usbErr;//U盘操作结果(0=成功)
@@ -2737,7 +2738,7 @@ typedef struct{
   uint16_t filteredIndex[CONFIG_EPROM_TREATMENT_PATIENT_MAX];//视图位置 -> 患者表原始索引
   //当前选中患者: selectedPatientId为稳定患者编号(0=未选择), 后续治疗记录以该id为外键归属; selectedPatientName供待机页PATIENT_NAME显示
   uint16_t selectedPatientId;
-  char selectedPatientName[16];
+  char selectedPatientName[TREATMENT_NAME_SIZE];
   //删除确认页: deletePatientId缓存待删除患者编号(0=不在删除确认流程), 确认后级联删除该患者及其全部治疗记录
   uint16_t deletePatientId;
   //LIST_RECORD治疗记录列表: recordPatientId为当前查看患者(0=未进入), recordTop为窗口起始(整页),
@@ -2793,7 +2794,7 @@ static uint8_t listTreatmentMatchFind(const char *name){
 //按字符原始值逐位比较(大写A-Z码值65-90, 排在小写a-z 97-122之前), 短名先结束(如"li"排在"linqing"前), 非ASCII字节按原值比较
 static int16_t listTreatmentCompareName(const char *nameA, const char *nameB){
   uint8_t i;
-  for(i = 0U; i < 16U; i++){
+  for(i = 0U; i < TREATMENT_NAME_SIZE; i++){
     char ca = nameA[i];
     char cb = nameB[i];
     if(ca != cb){
@@ -2808,22 +2809,22 @@ static int16_t listTreatmentCompareName(const char *nameA, const char *nameB){
 
 //对过滤视图做稳定插入排序(命中数≤患者上限, 仅在查找输入/数据变化时执行一次):
 //按姓名大小写敏感的ASCII字典序排列, 姓名完全相同者保持原相对顺序; 索引与本地姓名缓存同步移动, 排序不再读EPROM
-static void listTreatmentSortFiltered(char hitName[][16]){
+static void listTreatmentSortFiltered(char hitName[][TREATMENT_NAME_SIZE]){
   uint16_t i;
   for(i = 1U; i < listTreatmentCtx.filteredCount; i++){
     uint16_t keyIndex = listTreatmentCtx.filteredIndex[i];
-    char keyName[16];
+    char keyName[TREATMENT_NAME_SIZE];
     int16_t j;
-    strncpy(keyName, hitName[i], 16U);
-    keyName[15] = '\0';
+    strncpy(keyName, hitName[i], TREATMENT_NAME_SIZE);
+    keyName[TREATMENT_NAME_SIZE - 1U] = '\0';
     j = (int16_t)i - 1;
     while((j >= 0) && (listTreatmentCompareName(hitName[j], keyName) > 0)){
       listTreatmentCtx.filteredIndex[(uint16_t)(j + 1)] = listTreatmentCtx.filteredIndex[(uint16_t)j];
-      strncpy(hitName[(uint16_t)(j + 1)], hitName[(uint16_t)j], 16U);
+      strncpy(hitName[(uint16_t)(j + 1)], hitName[(uint16_t)j], TREATMENT_NAME_SIZE);
       j--;
     }
     listTreatmentCtx.filteredIndex[(uint16_t)(j + 1)] = keyIndex;
-    strncpy(hitName[(uint16_t)(j + 1)], keyName, 16U);
+    strncpy(hitName[(uint16_t)(j + 1)], keyName, TREATMENT_NAME_SIZE);
   }
 }
 
@@ -2832,7 +2833,7 @@ static void listTreatmentSortFiltered(char hitName[][16]){
 static void listTreatmentRebuildFilter(void){
   uint16_t total = treatmentGetPatientCount();
   uint16_t i;
-  char hitName[CONFIG_EPROM_TREATMENT_PATIENT_MAX][16];//命中姓名本地缓存, 供排序比较避免反复物理读EPROM
+  char hitName[CONFIG_EPROM_TREATMENT_PATIENT_MAX][TREATMENT_NAME_SIZE];//命中姓名本地缓存, 供排序比较避免反复物理读EPROM
   listTreatmentCtx.filteredCount = 0U;
   for(i = 0U; i < total; i++){
     patientRecord_t pat;
@@ -2842,8 +2843,8 @@ static void listTreatmentRebuildFilter(void){
     if(listTreatmentMatchFind(pat.name) &&
        (listTreatmentCtx.filteredCount < (uint16_t)CONFIG_EPROM_TREATMENT_PATIENT_MAX)){
       listTreatmentCtx.filteredIndex[listTreatmentCtx.filteredCount] = i;
-      strncpy(hitName[listTreatmentCtx.filteredCount], pat.name, 16U);
-      hitName[listTreatmentCtx.filteredCount][15] = '\0';
+      strncpy(hitName[listTreatmentCtx.filteredCount], pat.name, TREATMENT_NAME_SIZE);
+      hitName[listTreatmentCtx.filteredCount][TREATMENT_NAME_SIZE - 1U] = '\0';
       listTreatmentCtx.filteredCount++;
     }
   }
@@ -2963,25 +2964,31 @@ void enterListTreatmentPage(void){
   refreshListTreatmentDisplay();
 }
 
-//USB操作页: 刷新机内病历摘要(患者数/记录数)与U盘在位状态, 页面冷加载时预下发避免控件残留
+//USB操作页SUMMARY_USB文案: 统一由usbText保存, 页面冷加载重发同一内容, 避免本次导出/导入结果被"UDISK OK"覆盖
+static void setOperatorUsbText(const char *text){
+  if(text == NULL){
+    listTreatmentCtx.usbText[0] = '\0';
+    return;
+  }
+  strncpy(listTreatmentCtx.usbText, text, sizeof(listTreatmentCtx.usbText) - 1U);
+  listTreatmentCtx.usbText[sizeof(listTreatmentCtx.usbText) - 1U] = '\0';
+}
+
+//USB操作页: 刷新机内病历摘要(患者数/记录数), SUMMARY_USB按usbText下发(默认U盘在位状态, 导出/导入后为本次结果)
 void refreshOperatorUsbDisplay(void){
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
   memset(dispBuf, 0x0, sizeof(dispBuf));
-  sprintf(dispBuf, "P:%u/R:%u",
+  //机内病历储存概况: 现有患者数量/累计历史治疗记录数(全局去重患者数/记录数, 不受列表过滤影响); 文本控件一律英文显示
+  sprintf(dispBuf, "Existing patients: %u, total treatment records: %u",
     (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
   SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY, (uint8_t*)dispBuf);
-  memset(dispBuf, 0x0, sizeof(dispBuf));
-  if(treatmentUsbDiskPresent() != 0U){
-    sprintf(dispBuf, "UDISK OK");
-  }
-  else{
-    sprintf(dispBuf, "NO UDISK");
-  }
-  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)dispBuf);
+  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)listTreatmentCtx.usbText);
 }
 
 //列表页"操作USB"按键: 进入USB导入导出操作页(保存/载入的U盘检测与读写沿用既有流程)
 void enterOperatorUsbPage(void){
+  //重新进入操作页: SUMMARY_USB回到U盘在位状态, 覆盖上一次残留的导出/导入结果
+  setOperatorUsbText((treatmentUsbDiskPresent() != 0U) ? "UDISK OK" : "NO UDISK");
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
   refreshOperatorUsbDisplay();//先刷新本页控件, 再切页避免上一页控件残留
@@ -3092,6 +3099,19 @@ void listTreatmentDelete(void){
 //待存病历快照: 在停光那一刻把本次实际治疗参数(发射时间/能量/功率/波长/方案)整条存下来,
 //避免停光后操作员在待机页改方案或功率, 造成"存档参数与本次实际发射不匹配"; 没有实际发射时保持无效
 
+//记录治疗时刻RTC(完整4位年): 停光瞬间取当前时刻, 随病历一起落盘
+static void listTreatmentStampRtc(treatmentLog_t *log){
+  if(log == NULL){
+    return;
+  }
+  RtcGetDateTime(&log->rtcYear,
+                 &log->rtcMonth,
+                 &log->rtcDay,
+                 &log->rtcHour,
+                 &log->rtcMinute,
+                 &log->rtcSecond);
+}
+
 static void listTreatmentPendingCapture(void){//停光时调用: 补齐最后一段累计后整条快照
   int32_t trigTicks;
   updateReleaseTimeEnergy();//用停光前的当前参数刷新累计时间/能量, 补齐最后一个100ms节拍
@@ -3101,12 +3121,7 @@ static void listTreatmentPendingCapture(void){//停光时调用: 补齐最后一
   }
   listTreatmentCtx.pending = treatmentLog;//整条快照: 功率/波长/方案/发射时间/发射能量
   //停光瞬间捕获RTC治疗时刻, 随病历一起落盘(完整4位年)
-  RtcGetDateTime(&listTreatmentCtx.pending.rtcYear,
-                 &listTreatmentCtx.pending.rtcMonth,
-                 &listTreatmentCtx.pending.rtcDay,
-                 &listTreatmentCtx.pending.rtcHour,
-                 &listTreatmentCtx.pending.rtcMinute,
-                 &listTreatmentCtx.pending.rtcSecond);
+  listTreatmentStampRtc(&listTreatmentCtx.pending);
   listTreatmentCtx.pendingValid = 1U;
 }
 
@@ -3149,6 +3164,7 @@ void listTreatmentCreateStart(void){//CREATE按键: 本次治疗确实发射过�
       return;
     }
     listTreatmentCtx.pending = treatmentLog;//漏抓兜底: 直接用当前累计值
+    listTreatmentStampRtc(&listTreatmentCtx.pending);//兜底: 用当前时刻补齐治疗时间
     listTreatmentCtx.pendingValid = 1U;
   }
   //用停光快照还原本次实际治疗参数(与之后是否改方案/功率无关)
@@ -3157,6 +3173,13 @@ void listTreatmentCreateStart(void){//CREATE按键: 本次治疗确实发射过�
   treatmentLog.laserPower = listTreatmentCtx.pending.laserPower;
   treatmentLog.laserWave = listTreatmentCtx.pending.laserWave;
   treatmentLog.protocol = listTreatmentCtx.pending.protocol;
+  //治疗时刻RTC随病历落盘(编辑页OK后treatmentEpromAdd写入EPROM)
+  treatmentLog.rtcYear = listTreatmentCtx.pending.rtcYear;
+  treatmentLog.rtcMonth = listTreatmentCtx.pending.rtcMonth;
+  treatmentLog.rtcDay = listTreatmentCtx.pending.rtcDay;
+  treatmentLog.rtcHour = listTreatmentCtx.pending.rtcHour;
+  treatmentLog.rtcMinute = listTreatmentCtx.pending.rtcMinute;
+  treatmentLog.rtcSecond = listTreatmentCtx.pending.rtcSecond;
   //患者信息按是否已选患者分路径: 默认清空(新患者, id=0由treatmentEpromAdd分配); 已选则预填该患者(老患者, 保存时id已存在不新建)
   treatmentLog.id = 0U;
   treatmentLog.age = 0U;
@@ -3290,30 +3313,27 @@ static void enterOperatorUsbConfirmPage(void){
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
   uint16_t page;
   listTreatmentCtx.usbState = 6U;
-  if(listTreatmentCtx.usbOp == 2U){//导入(LOAD): 替换设备档案确认
+  if(listTreatmentCtx.usbOp == 2U){//导入(LOAD): 两条文案分别说明"替换范围"与"备份内容", 数量取进入确认页时的机内值
     page = GDDC_PAGE_OPERATOR_USB_LOAD;
-    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_0,
-      (uint8_t*)"Replace Device Records?");
-    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_1,
-      (uint8_t*)"Replace all patients and treatment records on the device with the USB backup?");
     memset(dispBuf, 0x0, sizeof(dispBuf));
-    sprintf(dispBuf, "Backup contents: %u patients · %u treatment records.",
+    sprintf(dispBuf, "Replace all %u patients and %u treatment records on the device with the USB backup?",
       (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
-    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_2,
-      (uint8_t*)dispBuf);
-    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_3,
-      (uint8_t*)"The current device records will be replaced. To keep them, export to another USB first. This action cannot be undone.");
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_0, (uint8_t*)dispBuf);
+    memset(dispBuf, 0x0, sizeof(dispBuf));
+    sprintf(dispBuf, "Backup contents: %u patients, %u treatment records.",
+      (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_1, (uint8_t*)dispBuf);
+    //屏幕工程LOAD页只保留SUMMARY_0/1两条文案: 第三方文本(控件3)按空串下发, 避免残留旧文案
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_2, (uint8_t*)"");
   }
-  else{//导出(SAVE): 导出患者备份确认
+  else{//导出(SAVE): 文案带本次待导出的患者数/已保存治疗记录数, 屏幕页只有SUMMARY_0/1两个文本框
     page = GDDC_PAGE_OPERATOR_USB_SAVE;
-    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_0,
-      (uint8_t*)"Export Patient Backup?");
+    memset(dispBuf, 0x0, sizeof(dispBuf));
+    sprintf(dispBuf, "Export %u patients and %u saved treatment records to USB?",
+      (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
+    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_0, (uint8_t*)dispBuf);
     SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_1,
-      (uint8_t*)"Export patients and saved treatment records to USB?");
-    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_2,
-      (uint8_t*)"The existing patient backup on this USB will be replaced. The records on the device will be erased.");
-    SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_3,
-      (uint8_t*)" ");//预留文本框清空
+      (uint8_t*)"The existing patient backup in this USB will be replaced. The archives on the device will be cleared.");
   }
   NVRAM0[EM_DC_PAGE] = page;
   SetScreen(page);
@@ -3367,7 +3387,9 @@ void listTreatmentUsbCancel(void){//确认页"CANCEL"(导出/导入通用): 不�
     SetButtonValue(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
   }
   listTreatmentCtx.usbState = 0U;
-  refreshOperatorUsbDisplay();//回到操作页并刷新(P/R摘要与U盘状态)
+  //取消: 返回操作页并清空结果栏, 操作页患者/记录摘要保持进入确认页前的显示不变
+  setOperatorUsbText("");
+  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)"");
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
   SetScreen(GDDC_PAGE_OPERATOR_USB);
 }
@@ -3467,45 +3489,41 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
   }
   //状态7: 已确认, 执行一次导出或导入, 再回操作页并在SUMMARY_USB显示结果
   memset(dispBuf, 0x0, sizeof(dispBuf));
-  if(listTreatmentCtx.usbOp == 2U){//导入: 读U盘CSV覆盖机内EPROM
+  if(listTreatmentCtx.usbOp == 2U){//导入: 读U盘CSV覆盖机内EPROM, 再回读本机与U盘逐条比较; 载入失败或比较不一致统一按失败提示
     listTreatmentCtx.usbErr = (uint8_t)treatmentLogLoadFromUdisk(&listTreatmentCtx.usbCount);
-    if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
+    if((listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK) && (treatmentLogVerifyUdisk() != 0U)){
       sprintf(dispBuf, "Backup imported from USB. Device records have been replaced.");
     }
-    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
-      sprintf(dispBuf, "NO UDISK");
-    }
-    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_OPEN){
-      sprintf(dispBuf, "NO FILE");
-    }
-    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_FORMAT){
-      sprintf(dispBuf, "BAD FILE");
-    }
     else{
-      sprintf(dispBuf, "USB IMPORT FAILED");
+      sprintf(dispBuf, "USB backup import failed!");
     }
   }
-  else{//导出: 机内病历写CSV到U盘
+  else{//导出: 机内病历写CSV到U盘; 成功文案由下方"USB backup: X patients · Y treatment records"统一生成
     listTreatmentCtx.usbErr = (uint8_t)treatmentLogSaveToUdisk(&listTreatmentCtx.usbCount);
-    if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK){
-      sprintf(dispBuf, "USB Backup Successful");
-    }
-    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
-      sprintf(dispBuf, "NO UDISK");
-    }
-    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_EMPTY){
-      sprintf(dispBuf, "NO RECORDS");
-    }
-    else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_OPEN){
-      sprintf(dispBuf, "USB OPEN FAILED");
-    }
-    else{
-      sprintf(dispBuf, "USB BACKUP FAILED");
+    if(listTreatmentCtx.usbErr != (uint8_t)TREATMENT_USB_OK){//失败: 按错误码填结果栏; 成功文案在下方统一生成
+      if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
+        sprintf(dispBuf, "NO UDISK");
+      }
+      else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_EMPTY){
+        sprintf(dispBuf, "NO RECORDS");
+      }
+      else if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_OPEN){
+        sprintf(dispBuf, "USB OPEN FAILED");
+      }
+      else{
+        sprintf(dispBuf, "USB BACKUP FAILED");
+      }
     }
   }
   listTreatmentCtx.usbState = 0U;//先退出忙状态(允许后续触摸)
-  refreshOperatorUsbDisplay();//先刷新P/R摘要与U盘状态
-  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)dispBuf);//再覆盖为本次结果
+  if((listTreatmentCtx.usbOp != 2U) && (listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK)){
+    //导出成功: 结果栏显示本次备份概况(患者数/已写入的治疗记录数), 替代原来的成功提示
+    memset(dispBuf, 0x0, sizeof(dispBuf));
+    sprintf(dispBuf, "USB backup: %u patients · %u treatment records",
+      (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentCtx.usbCount);
+  }
+  setOperatorUsbText(dispBuf);//结果文案交给usbText统一维护, 页面冷加载重发同内容不会覆盖
+  refreshOperatorUsbDisplay();//刷新操作页摘要并下发结果栏
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
   SetScreen(GDDC_PAGE_OPERATOR_USB);
 }

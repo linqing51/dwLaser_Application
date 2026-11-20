@@ -28,6 +28,7 @@ typedef enum{
 
 treatmentUsbErr_t treatmentLogSaveToUdisk(uint16_t *saved);//把机内全部病历写入U盘CSV(覆盖同名文件)
 treatmentUsbErr_t treatmentLogLoadFromUdisk(uint16_t *loaded);//读取U盘CSV并覆盖机内病历(先清空再写入)
+uint8_t treatmentLogVerifyUdisk(void);//载入后核对: 重新读U盘CSV并与本机病历逐条逐字段比较(含治疗时刻, 完全相同返回1)
 uint8_t treatmentUsbDiskPresent(void);//检查USBFS口U盘(MSC)是否已在位(1=在位, 0=不在位)
 
 /******************************************************************************/
