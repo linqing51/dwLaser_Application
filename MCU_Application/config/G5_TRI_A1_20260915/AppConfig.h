@@ -101,6 +101,12 @@ extern "C" {
 #define CONFIG_PVD_IRQ_PREEMPT_PRIORITY  3U
 #define CONFIG_PVD_IRQ_SUB_PRIORITY      0U
 /*****************************************************************************/
+// 患者列表 RAM 内排序: 命中患者数不超过该值时, 批量读患者表后在 RAM 内排序(排序过程零 FRAM 回读);
+// 超过则回退到 FRAM 堆排序。这是 RAM 策略阈值而非业务上限, 不限制写入, 超限仍正确工作
+#define CONFIG_LIST_TREATMENT_RAM_KEYS           256
+// 患者表批量读: 单次 FRAM 事务(地址自增)连续读取的患者行数, 患者行 24B 在低端连续致密存储
+#define CONFIG_LIST_TREATMENT_PATIENT_CHUNK_ROWS  16
+/*****************************************************************************/
 //波长配置
 #define APP_CONFIG_WAVE_1470_635//APP为双波长 1470+650
 #define GDDC_PAGE_POWERUP                             GDDC_PAGE_POWERUP_DUAL_1470_635

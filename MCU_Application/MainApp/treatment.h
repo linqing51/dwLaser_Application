@@ -188,6 +188,7 @@ uint32_t treatmentGetFreeBytes(void);                                       //�
 treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *newId);  //新建患者
 treatmentEpromErr_t treatmentPatientDelete(uint16_t patientId);            //删除患者(级联删除其全部记录)
 treatmentEpromErr_t treatmentPatientGetByIndex(uint16_t index, patientRecord_t *out);    //按表内索引读患者
+uint16_t treatmentPatientReadRows(uint16_t startIndex, uint8_t *buf, uint16_t bufBytes); //连续批量读患者表(24B行连续), 单次/少量事务, 返回实际读取行数
 treatmentEpromErr_t treatmentPatientFind(uint16_t patientId, uint16_t *indexOut);        //按编号定位患者索引
 treatmentEpromErr_t treatmentPatientUpdate(uint16_t patientId, const patientRecord_t *in); //原地更新患者信息(id不变, 仅改姓名/性别/年龄)
 

@@ -6,7 +6,10 @@
 
 - 实现位置：`MainApp/dcHmiApp.c`（过滤/排序/刷新）、`dcHmiNotifyButton.c`（按钮）、`dcHmiNotifyText.c`（文本输入）
 - 控件 ID 定义：`MainApp/dcHmiRes.h`
-- 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者数与记录数**无任何业务硬上限**，两表按剩余空间（`FreeBytesPR`）动态致密增长，总量上限即病历区块物理容量。RAM 侧不再有按业务上限定尺寸的大数组，仅保留一个**紧凑排序索引** `sortedIndex`（`uint16`，2 字节/患者，按物理容量 `TREATMENT_PHYSICAL_PATIENT_CAP` 定尺寸，最坏 4710 字节），只存全局索引、不存整行；翻页/选择经该索引 O(1) 定位，记录扫描用 2 字节 id 轻读，完整行仅在渲染时才读。
+- 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者数与记录数**无任何业务硬上限**，两表按剩余空间（`FreeBytesPR`）动态致密增长，总量上限即病历区块物理容量。RAM 侧不恢复按业务上限定尺寸的整行大数组，仅保留：
+  - **紧凑排序索引** `sortedIndex`（`uint16`，2 字节/患者，按物理容量 `TREATMENT_PHYSICAL_PATIENT_CAP` 定尺寸，最坏 4710 字节），只存全局索引、不存整行；翻页/选择经该索引 O(1) 定位。
+  - **RAM 排序键 + 患者表批量读**：重建时用 `treatmentPatientReadRows()` 分块连续批量读患者表（每块 16 行、1 次 FRAM 事务，地址自增），把命中患者的“全局索引 + 姓名”写入固定大小的 `ramKeys`（256 个），随后在 RAM 内纯 CPU 堆排序、排序过程零 FRAM 回读，再生成 `sortedIndex`。命中数超过 256 时自动回退到 FRAM 堆排序（正确、仅更慢）——这是 RAM 策略阈值，不是业务上限，不限制写入。
+  - 记录侧仍用 2 字节 id 轻读（替代整行 28 字节），完整行仅在渲染时才读。
 
 ---
 
@@ -29,7 +32,7 @@
    - 从第一个不同的字符位决定先后，**大写字母（A–Z，码值 65–90）整体排在小写字母（a–z，97–122）之前**；短名先结束（如 `li` 排在 `linqing` 之前）；姓名完全相同者保持原相对顺序（稳定排序）。
    - 姓名比较沿用 `listTreatmentCompareName`，直接按原始字节 `(uint8_t)` 比较，不做大小写归一；姓名完全相同时，由 `listTreatmentOrderCmp` 再按患者原始存储索引决定先后（全序键），效果等同于稳定排序。
 3. **多字母前缀**：先按输入的多个字母过滤，再按其后一位字母继续字典序比较；本质仍是“前缀匹配 + 全名字典序”。
-4. **紧凑索引 + 一次堆排序，翻页/选择零重扫**：`listTreatmentRebuildFilter()` 单遍扫描患者主表，把命中患者的全局索引按存储顺序收集到 `sortedIndex`，再由 `listTreatmentSortIndices()` 做**原地大顶堆排序**（无递归、栈占用恒定，比较时按需读两行，复杂度 O(N log N)），按全序键（姓名 ASCII + 原始存储索引）排成升序。此后任意翻页、选择都直接经 `sortedIndex` O(1) 定位，不再重复扫描；仅在数据变化（新建/删除/U 盘载入）或查找字母变化时才重建。索引只存 2 字节全局索引，不缓存整行，故不随业务上限放大。
+4. **患者表批量读 + RAM 内排序，翻页/选择零重扫**：`listTreatmentRebuildFilter()` 用 `treatmentPatientReadRows()` 分块连续批量读患者表（每块 16 行、单次 FRAM 事务、地址自增，替代逐行各一次事务），单遍把命中患者的全局索引收集到 `sortedIndex`、并把“全局索引 + 姓名”写入 RAM 键 `ramKeys`。命中数 ≤ 256 时由 `listTreatmentSortKeys()` 做**原地大顶堆排序**（无递归、栈占用恒定，纯内存比较、零 FRAM 回读，O(N log N)），再生成 `sortedIndex`；超过 256 则回退 `listTreatmentSortIndices()` 的 FRAM 堆排序。此后任意翻页、选择都直接经 `sortedIndex` O(1) 定位，不再重复扫描；仅在数据变化（新建/删除/U 盘载入）或查找字母变化时才重建。256 是 RAM 策略阈值而非业务上限，写入不受限。
 
 ### 标准示例（5 个用户：linqing, lijing, ksfjing, harqig, larsein）
 

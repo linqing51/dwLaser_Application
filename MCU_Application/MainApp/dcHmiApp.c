@@ -2829,6 +2829,58 @@ static int16_t listTreatmentOrderCmp(const char *nameA, uint16_t idxA,
   return 0;
 }
 
+//RAM内排序键: 仅缓存排序所需的全局索引+姓名(不缓存整行), 排序过程零FRAM访问
+typedef struct{
+  uint16_t globalIndex;
+  char name[TREATMENT_NAME_SIZE];
+}listPatientKey_t;
+//RAM排序键缓冲(快速路径, 固定大小); 命中数超过该值时改用FRAM堆排序回退
+static listPatientKey_t ramKeys[CONFIG_LIST_TREATMENT_RAM_KEYS];
+//患者表批量读分块缓冲(对齐的患者行数组, 单次FRAM事务读16行)
+static patientRecord_t chunkPat[CONFIG_LIST_TREATMENT_PATIENT_CHUNK_ROWS];
+
+//两个RAM键的全序比较: 复用姓名ASCII+全局索引口径, 纯内存不读FRAM
+static int16_t listTreatmentKeyCmp(const listPatientKey_t *a, const listPatientKey_t *b){
+  return listTreatmentOrderCmp(a->name, a->globalIndex, b->name, b->globalIndex);
+}
+
+//RAM键堆排序下沉: 大顶堆(全序键最大者在根), 无递归、栈占用恒定, 全程零FRAM
+static void listTreatmentSiftDownKeys(listPatientKey_t *arr, uint16_t heapSize, uint16_t root){
+  uint16_t cur = root;
+  while(1){
+    uint16_t left = (uint16_t)(2U * cur + 1U);
+    uint16_t right = (uint16_t)(2U * cur + 2U);
+    uint16_t largest = cur;
+    if((left < heapSize) && (listTreatmentKeyCmp(&arr[left], &arr[largest]) > 0)){
+      largest = left;
+    }
+    if((right < heapSize) && (listTreatmentKeyCmp(&arr[right], &arr[largest]) > 0)){
+      largest = right;
+    }
+    if(largest == cur){ break; }
+    {
+      listPatientKey_t tmp = arr[cur];
+      arr[cur] = arr[largest];
+      arr[largest] = tmp;
+    }
+    cur = largest;
+  }
+}
+
+//对RAM键做原地堆排序(升序), 纯CPU O(N log N), 之后由键序列生成sortedIndex
+static void listTreatmentSortKeys(listPatientKey_t *arr, uint16_t n){
+  if(n < 2U){ return; }
+  for(int32_t k = (int32_t)(n / 2U) - 1; k >= 0; k--){
+    listTreatmentSiftDownKeys(arr, n, (uint16_t)k);
+  }
+  for(uint16_t end = (uint16_t)(n - 1U); end > 0U; end--){
+    listPatientKey_t tmp = arr[0];
+    arr[0] = arr[end];
+    arr[end] = tmp;
+    listTreatmentSiftDownKeys(arr, end, 0U);
+  }
+}
+
 //全序比较两个全局索引对应患者: 读两行(仅排序时一次性发生), 按姓名+原始索引全序键
 static int16_t listTreatmentOrderOfIndices(uint16_t idxA, uint16_t idxB){
   patientRecord_t a, b;
@@ -2872,27 +2924,52 @@ static void listTreatmentSortIndices(uint16_t *arr, uint16_t n){
   }
 }
 
-//重建过滤视图: 单遍扫描患者主表, 把命中患者的全局索引按存储顺序收集, 再按全序键排序;
-//数据变化(新建/删除/U盘载入)或查找字母变化时调用, 翻页期间直接复用排序结果, 不再重复扫描
+//重建过滤视图: 分块批量读患者表(每块1次FRAM事务), 单遍收集命中患者的全局索引与RAM排序键;
+//命中数在RAM键缓冲内则纯内存排序(零FRAM回读), 超限回退FRAM堆排序。数据变化(新建/删除/U盘载入)
+//或查找字母变化时调用, 翻页期间直接复用排序结果, 不再重复扫描
 static void listTreatmentRebuildFilter(void){
   uint16_t total = treatmentGetPatientCount();
+  uint16_t start = 0U;
+  uint16_t hits = 0U;
   listTreatmentCtx.filteredCount = 0U;
-  for(uint16_t i = 0U; i < total; i++){
-    patientRecord_t pat;
-    if(treatmentPatientGetByIndex(i, &pat) != TREATMENT_EPROM_OK){
-      continue;
+  while(start < total){
+    //批量读一个分块(对齐的患者行), 读不到即终止
+    uint16_t rows = treatmentPatientReadRows(start, (uint8_t*)chunkPat, (uint16_t)sizeof(chunkPat));
+    if(rows == 0U){ break; }
+    for(uint16_t r = 0U; r < rows; r++){
+      patientRecord_t *pat = &chunkPat[r];
+      uint16_t globalIndex;
+      if(listTreatmentMatchFind(pat->name) == 0U){
+        continue;
+      }
+      //物理容量保护: 命中数不超过紧凑索引上界(实际由区块容量保证, 防御兜底)
+      if(hits >= TREATMENT_PHYSICAL_PATIENT_CAP){
+        break;
+      }
+      globalIndex = (uint16_t)(start + r);
+      //sortedIndex始终收集全部命中(回退路径也需要), RAM键仅在缓冲容量内填充
+      listTreatmentCtx.sortedIndex[hits] = globalIndex;
+      if(hits < CONFIG_LIST_TREATMENT_RAM_KEYS){
+        ramKeys[hits].globalIndex = globalIndex;
+        memcpy(ramKeys[hits].name, pat->name, TREATMENT_NAME_SIZE);
+      }
+      hits++;
     }
-    if(listTreatmentMatchFind(pat.name) == 0U){
-      continue;
-    }
-    //物理容量保护: 命中数不超过紧凑索引上界(实际由区块容量保证, 防御兜底)
-    if(listTreatmentCtx.filteredCount >= TREATMENT_PHYSICAL_PATIENT_CAP){
-      break;
-    }
-    listTreatmentCtx.sortedIndex[listTreatmentCtx.filteredCount] = i;
-    listTreatmentCtx.filteredCount++;
+    start = (uint16_t)(start + rows);
   }
-  listTreatmentSortIndices(listTreatmentCtx.sortedIndex, listTreatmentCtx.filteredCount);
+  listTreatmentCtx.filteredCount = hits;
+  if(hits <= CONFIG_LIST_TREATMENT_RAM_KEYS){
+    //快速路径: RAM键纯内存排序, 再由键序列生成sortedIndex, 排序过程零FRAM
+    uint16_t k;
+    listTreatmentSortKeys(ramKeys, hits);
+    for(k = 0U; k < hits; k++){
+      listTreatmentCtx.sortedIndex[k] = ramKeys[k].globalIndex;
+    }
+  }
+  else{
+    //回退路径: 命中超过RAM键缓冲, 用FRAM堆排序(正确, 不限制写入, 仅更慢)
+    listTreatmentSortIndices(listTreatmentCtx.sortedIndex, hits);
+  }
 }
 
 //视图位置 -> 患者行: 视图外位置返回0, 命中则经紧凑索引O(1)定位全局索引并回读整行;

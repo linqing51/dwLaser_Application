@@ -372,6 +372,28 @@ treatmentEpromErr_t treatmentPatientGetByIndex(uint16_t index, patientRecord_t *
   return RowRead(PatientAddr(index), out, PAT_BYTES);
 }
 
+// 连续批量读患者表: 患者行 24B 在低端连续致密, 一次 FRAM 事务内地址自增读完整个分块;
+// 按 bufBytes 能容纳的整行数与剩余可用行数取小, 返回实际读取行数, 供 HMI 批量构建排序
+uint16_t treatmentPatientReadRows(uint16_t startIndex, uint8_t *buf, uint16_t bufBytes){
+  uint16_t total;
+  uint16_t availRows;
+  uint16_t wantRows;
+  uint16_t rows;
+  uint16_t len;
+  if((buf == NULL) || (bufBytes == 0U)){ return 0U; }
+  total = CntP();
+  if(startIndex >= total){ return 0U; }
+  availRows = (uint16_t)(total - startIndex);
+  wantRows = (uint16_t)(bufBytes / PAT_BYTES);
+  if(wantRows == 0U){ return 0U; }
+  rows = (wantRows < availRows) ? wantRows : availRows;
+  len = (uint16_t)(rows * PAT_BYTES);
+  if(RowRead(PatientAddr(startIndex), buf, len) != TREATMENT_EPROM_OK){
+    return 0U;
+  }
+  return rows;
+}
+
 // 新建患者(两阶段: 先写正文, id 最后提交)
 treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *newId){
 	uint16_t p, r, id;
