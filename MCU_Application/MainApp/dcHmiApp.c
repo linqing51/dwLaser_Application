@@ -3166,8 +3166,7 @@ void listTreatmentOperatorUsbBack(void){
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
-  //CANCEL自锁键: 返回列表页(本按键功能)完成后才弹起, 并解除互锁
-  treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_CANCEL);
+  //CANCEL自锁键释放已上移到notify层(无条件)
 }
 
 //PAGE_UP键: 向前翻一整页, 已在第一页(窗口起始位置为0)时不再移动
@@ -3589,7 +3588,7 @@ void listTreatmentSaveUsbStart(void){//SAVE_USB按键: 不立即写盘, 先进�
   listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
   listTreatmentCtx.usbCount = 0U;
   enterOperatorUsbConfirmPage();//进入导出确认页(状态6), 等待CANCEL/CONFIRM
-  treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK);//自锁键: 进确认页功能完成后弹起并解除互锁
+  //SAVE自锁键释放已上移到notify层(无条件)
 }
 
 void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 不立即读盘, 先进入确认页(确认后才读取U盘CSV覆盖机内病历)
@@ -3600,7 +3599,7 @@ void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 不立即读盘, 先进�
   listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
   listTreatmentCtx.usbCount = 0U;
   enterOperatorUsbConfirmPage();//进入确认页(状态6), 等待CANCEL/CONFIRM
-  treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK);//自锁键: 进确认页功能完成后弹起并解除互锁
+  //LOAD自锁键释放已上移到notify层(无条件)
 }
 
 void listTreatmentUsbConfirm(void){//确认页"OK"(导出/导入通用): 授权执行, 实际读写在轮询里完成一次
@@ -3612,19 +3611,16 @@ void listTreatmentUsbConfirm(void){//确认页"OK"(导出/导入通用): 授权�
 }
 
 void listTreatmentUsbCancel(void){//确认页"CANCEL"(导出/导入通用): 不读写, 直接返回USB操作页
-  uint16_t confirmPage;
   if(listTreatmentCtx.usbState != 6U){
     return;
   }
-  confirmPage = (listTreatmentCtx.usbOp == 2U) ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
   listTreatmentCtx.usbState = 0U;
   //取消: 返回操作页并清空结果栏, 操作页患者/记录摘要保持进入确认页前的显示不变
   setOperatorUsbText("");
   SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)"");
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
   SetScreen(GDDC_PAGE_OPERATOR_USB);
-  //自锁键: 返回操作页(本按键功能)完成后才弹起, 并解除互锁
-  treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL);
+  //CANCEL自锁键释放已上移到notify层(无条件, 按SAVE/LOAD各自页面下发)
 }
 
 //***************************************************************************
@@ -3675,7 +3671,7 @@ void listTreatmentDeleteConfirm(void){
     return;
   }
   delId = listTreatmentCtx.deletePatientId;
-  treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
+  //自锁键释放已上移到notify层(无条件), 本函数只做级联删除与视图重建
   err = treatmentPatientDelete(delId);//级联删除: 该患者全部记录+患者行
   listTreatmentCtx.deletePatientId = 0U;//退出删除流程
   if(delId == listTreatmentCtx.selectedPatientId){//删的正是当前选中患者: 清空选中, 避免外键/待机名悬空
@@ -3701,7 +3697,7 @@ void listTreatmentDeleteCancel(void){
   if(listTreatmentCtx.deletePatientId == 0U){
     return;
   }
-  treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE);//复位自锁按钮并解除互锁
+  //自锁键释放已上移到notify层(无条件)
   listTreatmentCtx.deletePatientId = 0U;
   refreshListTreatmentDisplay();
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;

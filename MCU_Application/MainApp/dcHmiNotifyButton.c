@@ -970,18 +970,21 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP:{//向前翻一整页(5个患者)
           if(state){
             listTreatmentMoveUp();
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP);//同页释放: 含边界空操作也弹起
           }
           break;
         }
         case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN:{//向后翻一整页(5个患者)
           if(state){
             listTreatmentMoveDown();
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN);//同页释放: 含边界空操作也弹起
           }
           break;
         }
         case GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE:{//返回STANDBY状态
           if(state){
             returnStandbyDisplay();//统一返回待机页面
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE);//切页后释放源按键
           }
           break;
         }
@@ -995,6 +998,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         case GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB:{//操作USB: 进入USB导入导出操作页
           if(state){
             enterOperatorUsbPage();
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB);//切页后释放源按键
           }
           break;
         }
@@ -1003,16 +1007,19 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0)
              && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_4)){
             listTreatmentSelect((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0));
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, control_id);//切页后释放源按键(选中高亮在重新进入时由refresh恢复)
           }
           //KEY_DELETE_0-4:进入删除确认页(不立即删除), 确认后才级联删除该患者
           else if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0)
              && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_4)){
             listTreatmentDeleteStart((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0));
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, control_id);//切页后释放源按键
           }
           //KEY_EDIT_RECORD_0-4:进入该患者的历史治疗记录页(15)
           else if(state && (control_id >= GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_0)
              && (control_id <= GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_4)){
             listTreatmentRecordEnter((uint8_t)(control_id - GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_0));
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, control_id);//切页后释放源按键
           }
           break;
         }
@@ -1086,12 +1093,14 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         case GDDC_PAGE_DELETE_TREATMENT_KEY_OK:{
           if(state){
             listTreatmentDeleteConfirm();
+            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_OK);//notify无条件释放: 含守卫空操作也弹起
           }
           break;
         }
         case GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE:{
           if(state){
             listTreatmentDeleteCancel();
+            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE);//notify无条件释放
           }
           break;
         }
@@ -1104,18 +1113,21 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_OPERATOR_USB_KEY_CANCEL:{//返回病历列表页
 					if(state){
 						listTreatmentOperatorUsbBack();
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_CANCEL);//notify无条件释放
 					}
 					break;
 				}
 				case GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK:{//存储到U盘: 检测U盘后弹保存提示页(写入在轮询中完成)
 					if(state){
 						listTreatmentSaveUsbStart();
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK);//notify无条件释放: 含忙状态空操作也弹起
 					}
 					break;
 				}
 				case GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK:{//从U盘载入: 检测U盘后弹载入确认页(不直接覆盖机内病历)
 					if(state){
 						listTreatmentLoadUsbStart();
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK);//notify无条件释放
 					}
 					break;
 				}
@@ -1130,6 +1142,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL:{//取消: 不读写, 返回USB操作页
 					if(state){
 						listTreatmentUsbCancel();
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL);//notify无条件释放
 					}
 					break;
 				}
@@ -1150,6 +1163,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL:{//取消: 不读写, 返回USB操作页
 					if(state){
 						listTreatmentUsbCancel();
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL);//notify无条件释放
 					}
 					break;
 				}

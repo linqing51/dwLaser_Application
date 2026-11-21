@@ -367,9 +367,11 @@
 1. **触发（Arm）**：在 11 页内任一按键上报 `state = 1`（按下），且当前无在途按键时，互锁立即记录该按键的“画面 + 控件 ID”并进入在途态。
 2. **锁定**：在途期间，凡画面或控件 ID 与在途按键不一致的其他按键上报 `state = 1`，一律拒绝（`NotifyButton` 直接 `return`，不执行任何功能）；锁定对同页其他按键与跨页按键同等生效。
 3. **同一按键重复通知放行**：在途按键自身重复上报 `state = 1`（屏幕重发/轮询）时放行，不视为新按键，保证在途动作自身的事件链路不被自己的锁阻断。
-4. **弹起释放**：
-   - 自锁键（`button_type = 1`）：由固件在对应功能完成后统一调用 `treatmentReleaseButton(screen, control)`，该函数下发 `SetButtonValue(..., 0)` 并同步解除互锁；严禁在功能完成前提前复位。
-   - 瞬态键（按下后屏幕自行补发 `state = 0`）：互锁门收到该键 `state = 0` 时释放对应锁，且只释放与在途按键画面、控件完全一致的锁，防止误清其他按键的锁。
+4. **弹起释放（统一在 notify 层无条件执行）**：
+   - 11 页全部按键均为 `button_type = 1`（自锁型，屏幕不会自行补发 `state = 0`），故**每个按键都在 `NotifyButton` 对应分支 `if(state)` 内、调用功能函数之后无条件调用 `treatmentReleaseButton(screen, control)`**；该函数下发 `SetButtonValue(..., 0)` 并同步解除互锁。
+   - 释放不得放在功能函数内部的守卫之后：即使功能函数因空槽位、边界、忙状态或校验失败而提前 return（空操作），按键仍必须弹起，严禁出现“按下后无任何路径释放”的死锁。
+   - **唯一例外（异步 OK）**：USB 确认页 20/21 的 `KEY_OK` 按下只授权（`usbState` 6→7），实际 CSV 读写在 `listTreatmentUsbLoop` 中完成；该 OK 必须在 loop 工作全部执行完毕后才释放，不在 notify 释放。
+   - 若确认页被别处切走（中止路径），由 loop 对该页 OK/CANCEL 统一弹起（见 16.3）。
 5. 互锁只保存“是否在途 + 画面 ID + 控件 ID”三个标量，不按页面或控件数量分配数组，RAM 开销恒定。
 
 ### 16.3 切页安全解锁（防永久锁死）
@@ -391,4 +393,4 @@
 2. 实现位置：
    - 互锁状态与判定/放行/释放函数（`treatmentIsLockPage`、`treatmentBtnLockArm/Release/Reset`、`treatmentButtonLockAllowed`、`treatmentReleaseButton`）：`MainApp/dcHmiApp.c`，对外声明在 `MainApp/dcHmiApp.h`。
    - 互锁门接入与各自锁键释放点：`MainApp/dcHmiNotifyButton.c`、`MainApp/dcHmiApp.c`。
-3. 本规格为强制规格：任何新增病历相关页面若需要同样的“在途互锁”，必须先在 16.1 表中登记页面 ID，并确认其按键的释放路径（自锁键走 `treatmentReleaseButton`、瞬态键走 `state = 0`），否则该页面按键可能在途后无法正常解锁。
+3. 本规格为强制规格：任何新增病历相关页面若需要同样的“在途互锁”，必须先在 16.1 表中登记页面 ID，并确认其按键在 `NotifyButton` 分支内无条件调用 `treatmentReleaseButton`（异步动作键在其完成路径释放），否则该页面按键可能在途后无法正常解锁。
