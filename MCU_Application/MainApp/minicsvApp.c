@@ -191,24 +191,28 @@ void vMiniCSVTestTask(void *pvParameters){
 
 //***************************************************************************
 //治疗记录导出/导入(U盘CSV): 文件名由TREATMENTLOG_FILENAME定义
-//列顺序: id,name,gender,age,power,wave,protocol,energy,time,rtc
-//rtc=治疗时刻(YYYY-MM-DD HH:MM:SS), 未记录时间时该列留空; 旧版9列备份仍可载入(按未记录时间处理)
+//列顺序: id,name,gender,age,power,wave,protocol,energy,time,rtc,pulseMode,posWidth,negWidth
+//id=患者ID, 导出加"AR "前缀(如"AR 0001"), 导入解析回数字; rtc=治疗时刻(YYYY-MM-DD HH:MM:SS), 未记录留空
+//pulseMode=激光发射模式(CW/Pulse), posWidth/negWidth=正/负脉宽(ms), 仅脉冲模式有意义
+//旧版9列(无rtc及脉冲列)/10列(仅rtc)备份仍可载入: 缺省rtc按未记录时间, 缺省脉冲列按CW处理
 //文件由同一固件生成, 读出时按字符串反查波长/方案枚举, 不做多语言兼容
 //***************************************************************************
-#define TREATMENT_CSV_COLUMNS_MIN											9U  //旧格式最小列数(无rtc列)
-#define TREATMENT_CSV_COLUMNS												10U //当前格式列数(含rtc)
+#define TREATMENT_CSV_COLUMNS_MIN											9U  //旧格式最小列数(无rtc及脉冲列)
+#define TREATMENT_CSV_COLUMNS_RTC											10U //含rtc的中间格式列数(脉冲列之前)
+#define TREATMENT_CSV_COLUMNS												13U //当前格式列数(含rtc+脉冲模式+正负脉宽)
 static char treatmentCsvLineBuf[512];//单行序列化缓冲
 static char treatmentCsvReadBuf[256];//f_gets行缓冲
 static char treatmentCsvWorkBuf[512];//解析工作缓冲
 static MiniCSV_RowTypeDef treatmentCsvRow;//行结构(静态, 避免占用任务栈)
-static const char treatmentCsvHeader[] = "id,name,gender,age,power,wave,protocol,energy,time,rtc";
+static const char treatmentCsvHeader[] = "id,name,gender,age,power,wave,protocol,energy,time,rtc,pulseMode,posWidth,negWidth";
 
 //把一条病历组装成CSV行并序列化, 返回序列化字节数(0=失败)
 static uint16_t treatmentCsvBuildRow(const treatmentLog_t *log){
-	char f0[8], f1[TREATMENT_NAME_SIZE + 4], f2[8], f3[8], f4[8], f5[16], f6[16], f7[16], f8[16], f9[24];
+	char f0[12], f1[TREATMENT_NAME_SIZE + 4], f2[8], f3[8], f4[8], f5[16], f6[16], f7[16], f8[16], f9[24];
+	char f10[8], f11[8], f12[8];
 	uint16_t outLen = 0U;
 
-	sprintf(f0, "%u", (unsigned int)log->id);
+	sprintf(f0, "AR %04u", (unsigned int)log->id);//ID加AR前缀(EPROM内仅存数字)
 	sprintf(f1, "%s", log->name);//姓名已在录入处按TREATMENT_NAME_SIZE-1截断
 	sprintf(f2, "%s", (log->gender == MALE) ? "Male" : "Female");
 	sprintf(f3, "%u", (unsigned int)log->age);
@@ -225,6 +229,10 @@ static uint16_t treatmentCsvBuildRow(const treatmentLog_t *log){
 	else{
 		f9[0] = '\0';//未记录时间: 该列留空
 	}
+	//脉冲模式(CW/Pulse)与正负脉宽(ms)
+	sprintf(f10, "%s", (log->pulseMode == LASER_MODE_MP) ? "Pulse" : "CW");
+	sprintf(f11, "%u", (unsigned int)log->posWidth);
+	sprintf(f12, "%u", (unsigned int)log->negWidth);
 
 	memset(&treatmentCsvRow, 0, sizeof(treatmentCsvRow));
 	treatmentCsvRow.fields[0] = f0; treatmentCsvRow.field_len[0] = (uint16_t)strlen(f0);
@@ -237,6 +245,9 @@ static uint16_t treatmentCsvBuildRow(const treatmentLog_t *log){
 	treatmentCsvRow.fields[7] = f7; treatmentCsvRow.field_len[7] = (uint16_t)strlen(f7);
 	treatmentCsvRow.fields[8] = f8; treatmentCsvRow.field_len[8] = (uint16_t)strlen(f8);
 	treatmentCsvRow.fields[9] = f9; treatmentCsvRow.field_len[9] = (uint16_t)strlen(f9);
+	treatmentCsvRow.fields[10] = f10; treatmentCsvRow.field_len[10] = (uint16_t)strlen(f10);
+	treatmentCsvRow.fields[11] = f11; treatmentCsvRow.field_len[11] = (uint16_t)strlen(f11);
+	treatmentCsvRow.fields[12] = f12; treatmentCsvRow.field_len[12] = (uint16_t)strlen(f12);
 	treatmentCsvRow.field_count = TREATMENT_CSV_COLUMNS;
 
 	if(MiniCSV_WriteOneRow(&treatmentCsvRow, treatmentCsvLineBuf, (uint16_t)sizeof(treatmentCsvLineBuf), &outLen) != MINICSV_OK){
@@ -270,6 +281,19 @@ static uint8_t treatmentCsvFieldLong(const MiniCSV_RowTypeDef *row, uint16_t col
 	return 1U;
 }
 
+//解析患者ID列: 支持"AR 0001"(当前格式, 带AR前缀)与纯数字(旧格式), 成功返回1
+static uint8_t treatmentCsvParseId(const char *text, long *out){
+	long num;
+	if((text[0] == 'A') && (text[1] == 'R') && (text[2] == ' ')){
+		num = strtol(text + 3, NULL, 10);
+	}
+	else{
+		num = strtol(text, NULL, 10);
+	}
+	*out = num;
+	return 1U;
+}
+
 //解析一行CSV为病历记录, 字段非法返回0
 static uint8_t treatmentCsvParseRecord(const char *line, treatmentLog_t *rec){
 	char tmp[24];
@@ -283,7 +307,10 @@ static uint8_t treatmentCsvParseRecord(const char *line, treatmentLog_t *rec){
 		return 0U;
 	}
 	memset(rec, 0, sizeof(treatmentLog_t));
-	if((treatmentCsvFieldLong(&treatmentCsvRow, 0U, &v) == 0U) || (v < 1L) || (v > (long)PATIENT_ID_LIMIT)){
+	rec->pulseMode = LASER_MODE_CW;//旧备份无脉冲列时默认连续模式
+	if((treatmentCsvFieldText(&treatmentCsvRow, 0U, tmp, (uint16_t)sizeof(tmp)) == 0U)
+	   || (treatmentCsvParseId(tmp, &v) == 0U)
+	   || (v < 1L) || (v > (long)PATIENT_ID_LIMIT)){
 		return 0U;//患者ID须为有效编号(对齐片上PATIENT_ID_LIMIT)
 	}
 	rec->id = (uint16_t)v;
@@ -361,6 +388,31 @@ static uint8_t treatmentCsvParseRecord(const char *line, treatmentLog_t *rec){
 			rec->rtcMinute = (uint8_t)tmi;
 			rec->rtcSecond = (uint8_t)ts;
 		}
+	}
+	//第11-13列脉冲模式/正负脉宽(可选): 旧备份无这些列时保持默认CW; 有值但非法返回失败
+	if(treatmentCsvRow.field_count > TREATMENT_CSV_COLUMNS_RTC){
+		if(treatmentCsvFieldText(&treatmentCsvRow, TREATMENT_CSV_COLUMNS_RTC, tmp, (uint16_t)sizeof(tmp)) == 0U){
+			return 0U;
+		}
+		if(strcmp(tmp, "Pulse") == 0){
+			rec->pulseMode = LASER_MODE_MP;
+		}
+		else if(strcmp(tmp, "CW") == 0){
+			rec->pulseMode = LASER_MODE_CW;
+		}
+		else{
+			return 0U;//发射模式名称不认识
+		}
+		if((treatmentCsvFieldLong(&treatmentCsvRow, 11U, &v) == 0U)
+		   || (v < 0L) || (v > 65535L)){
+			return 0U;//正脉宽(ms)
+		}
+		rec->posWidth = (uint16_t)v;
+		if((treatmentCsvFieldLong(&treatmentCsvRow, 12U, &v) == 0U)
+		   || (v < 0L) || (v > 65535L)){
+			return 0U;//负脉宽(ms)
+		}
+		rec->negWidth = (uint16_t)v;
 	}
 	return 1U;
 }
@@ -473,8 +525,8 @@ treatmentUsbErr_t treatmentLogLoadFromUdisk(uint16_t *loaded){
 		if(treatmentCsvReadBuf[0] == '\0'){
 			continue;//空行
 		}
-		if((treatmentCsvReadBuf[0] < '0') || (treatmentCsvReadBuf[0] > '9')){
-			continue;//表头/非数据行
+		if((treatmentCsvReadBuf[0] != 'A') && ((treatmentCsvReadBuf[0] < '0') || (treatmentCsvReadBuf[0] > '9'))){
+			continue;//表头/非数据行(数据行以"AR "开头, 旧格式以数字开头)
 		}
 		if(treatmentCsvParseRecord(treatmentCsvReadBuf, &rec) == 0U){
 			f_close(&file);
@@ -539,7 +591,7 @@ treatmentUsbErr_t treatmentLogLoadFromUdisk(uint16_t *loaded){
 	return TREATMENT_USB_OK;
 }
 
-//两条病历是否完全相同: 比较CSV保存的全部字段(ID/姓名/性别/年龄/功率/波长/方案/能量/治疗时间/治疗时刻)
+//两条病历是否完全相同: 比较CSV保存的全部字段(ID/姓名/性别/年龄/功率/波长/方案/能量/治疗时间/治疗时刻/脉冲模式/正负脉宽)
 static uint8_t treatmentRecordEqual(const treatmentLog_t *a, const treatmentLog_t *b){
 	if((a->id != b->id) || (a->age != b->age) || (a->gender != b->gender)){
 		return 0U;
@@ -548,6 +600,9 @@ static uint8_t treatmentRecordEqual(const treatmentLog_t *a, const treatmentLog_
 		return 0U;
 	}
 	if((a->releaseEnergy != b->releaseEnergy) || (a->releaseTime != b->releaseTime)){
+		return 0U;
+	}
+	if((a->pulseMode != b->pulseMode) || (a->posWidth != b->posWidth) || (a->negWidth != b->negWidth)){
 		return 0U;
 	}
 	if((a->rtcYear != b->rtcYear) || (a->rtcMonth != b->rtcMonth) || (a->rtcDay != b->rtcDay)

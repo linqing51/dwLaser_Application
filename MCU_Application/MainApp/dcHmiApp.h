@@ -115,6 +115,19 @@ void listTreatmentUsbCancel(void);//确认页: CANCLE按键, 不读写并返回U
 void listTreatmentCreateStart(void);//列表页CREATE按键: 本次治疗确实发射过激光后进入编辑页新建病历
 void listTreatmentCreateConfirm(void);//编辑页OK按键: 校验患者信息后把当前治疗记录追加到EPROM末尾
 void listTreatmentCreateCancel(void);//编辑页CANCEL按键: 放弃新建并返回病历列表页
+//历史治疗记录页(15)与单条删除确认页(16)
+void listTreatmentRecordEnter(uint8_t slot);//列表页KEY_EDIT_RECORD: 进入该患者历史治疗记录页
+void refreshListRecordDisplay(void);//记录页: 刷新姓名行/5个记录槽(空槽隐藏)/页码
+void listTreatmentRecordPageUp(void);//记录页PAGE_UP: 记录窗口向前翻5条
+void listTreatmentRecordPageDown(void);//记录页PAGE_DOWN: 记录窗口向后翻5条
+void listTreatmentRecordClose(void);//记录页CLOSE: 返回病历列表页
+void listTreatmentRecordDeleteStart(uint8_t slot);//记录页DELETE: 进入单条删除确认页(16)
+void listTreatmentDeleteRecordConfirm(void);//删除确认页OK: 删除该条记录后回记录页
+void listTreatmentDeleteRecordCancel(void);//删除确认页CANCEL: 不删除回记录页
+void listTreatmentRecordEditPatient(void);//记录页EDIT_PATIENT: 进入患者信息编辑页(17)
+void listTreatmentEditPatientConfirm(void);//患者信息编辑页OK: 原地更新患者信息后回记录页
+void listTreatmentEditPatientCancel(void);//患者信息编辑页CANCEL: 不更新回记录页
+uint8_t listTreatmentIsEditPatientMode(void);//当前编辑页是否为患者信息更新模式
 void listTreatmentUsbLoop(void);//USB确认页轮询(确认页等待按键, 确认后执行一次导出/导入, 完成回操作页)
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log);//病历储存页面:显示EPROM历史病历
 void updateSchemeInfo(int16_t classify, int16_t cn);

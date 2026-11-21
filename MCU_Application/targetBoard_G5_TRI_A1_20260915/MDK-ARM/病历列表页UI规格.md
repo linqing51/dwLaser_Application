@@ -6,7 +6,7 @@
 
 - 实现位置：`MainApp/dcHmiApp.c`（过滤/排序/刷新）、`dcHmiNotifyButton.c`（按钮）、`dcHmiNotifyText.c`（文本输入）
 - 控件 ID 定义：`MainApp/dcHmiRes.h`
-- 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者上限 `CONFIG_EPROM_TREATMENT_PATIENT_MAX = 100`
+- 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者数与记录数**无任何业务硬上限**，两表按剩余空间（`FreeBytesPR`）动态致密增长，RAM 侧不再有按上限定尺寸的大数组，列表仅缓存当前窗口 5 行，其余按需扫描 FRAM，总量上限即病历区块物理容量。
 
 ---
 
@@ -27,9 +27,9 @@
    - 实现沿用 `listTreatmentMatchFind`，比较时直接 `name[i] != findText[i]`，不做大小写归一。
 2. **大小写敏感的 ASCII 字典序稳定排序**：命中结果必须先按字符原始值（ASCII）排序，再写入 `TEXT_NAME_0–4`：
    - 从第一个不同的字符位决定先后，**大写字母（A–Z，码值 65–90）整体排在小写字母（a–z，97–122）之前**；短名先结束（如 `li` 排在 `linqing` 之前）；姓名完全相同者保持原相对顺序（稳定排序）。
-   - 实现沿用 `listTreatmentCompareName`，直接按原始字节 `(uint8_t)` 比较，不做大小写归一。
+   - 姓名比较沿用 `listTreatmentCompareName`，直接按原始字节 `(uint8_t)` 比较，不做大小写归一；姓名完全相同时，由 `listTreatmentOrderCmp` 再按患者原始存储索引决定先后（全序键），效果等同于稳定排序。
 3. **多字母前缀**：先按输入的多个字母过滤，再按其后一位字母继续字典序比较；本质仍是“前缀匹配 + 全名字典序”。
-4. 排序在 `listTreatmentRebuildFilter()` 中基于本地姓名缓存完成（`listTreatmentCompareName` + `listTreatmentSortFiltered`），**不得在排序过程中反复物理读 EPROM**。
+4. 排序不再做全量缓存：`listTreatmentRebuildFilter()` 只统计命中总数并令窗口失效，`listTreatmentCollectWindow()` 用游标逐档扫描 FRAM，求“严格大于游标”的最小命中患者，仅保留当前窗口 5 行；同一窗口内的物理读次数有界，不依赖按上限定尺寸的 RAM 数组。
 
 ### 标准示例（5 个用户：linqing, lijing, ksfjing, harqig, larsein）
 
@@ -140,7 +140,7 @@
 2. `slot` 越界（`>= 5`）直接返回；对应视图位置 `viewPos = topIndex + slot` 若 `>= filteredCount`（空槽位）则不响应。
 3. 命中有效患者时，`listTreatmentSelect` 必须依次完成：
    - 置 `selectedIndex = viewPos`，使列表页对应 `SELECT_PATIENT` 按钮高亮（沿用 `refreshListTreatmentDisplay`）。
-   - 经 `filteredIndex[viewPos]` 与 `listTreatmentGetViewPatient(viewPos, &pat)` 解析出患者原始记录，把稳定患者编号缓存到 `listTreatmentCtx.selectedPatientId`、姓名缓存到 `listTreatmentCtx.selectedPatientName`。
+   - 经 `listTreatmentGetViewPatient(viewPos, &pat)`（窗口未命中时按需扫描 FRAM）解析出患者原始记录，把稳定患者编号缓存到 `listTreatmentCtx.selectedPatientId`、姓名缓存到 `listTreatmentCtx.selectedPatientName`。
    - **自动返回待机页**：统一走 `returnStandbyDisplay()`（切回 `FSMSTEP_STANDBY`、`SetScreen(GDDC_PAGE_STANDBY)`），不得停留在列表页，也不得进入编辑页。
 
 ### 5.3 待机页 TEXT_PATIENT_NAME 显示选中患者名
@@ -224,13 +224,13 @@
 1. **治疗时刻必须落盘**：每条治疗记录保存“停光瞬间”的 RTC 时刻（完整 4 位年 + 月/日/时/分/秒），用于病历追溯；不得只保存不显示、也不得留空。
 2. 数据结构：RAM 复合视图 `treatmentLog_t` 与片上 `treatmentRecord_t` 均带 `rtcYear/rtcMonth/rtcDay/rtcHour/rtcMinute/rtcSecond`，片上存年份后两位（实际年 = +2000，0 = 未记录）。
 3. 采集与保存链路：`listTreatmentPendingCapture()` 在停光瞬间抓取 RTC 存入待存快照 `listTreatmentCtx.pending`；`listTreatmentCreateStart()` 必须把快照的 6 个 RTC 字段回填到 `treatmentLog`，编辑页 `KEY_OK` 后随 `treatmentEpromAdd` 写入 EPROM；漏抓兜底路径（发射时间计数判断）必须用当前 RTC 补齐。
-4. **U 盘 CSV 必须带时间并带回**：第 10 列 `rtc`，格式 `YYYY-MM-DD HH:MM:SS`；未记录时间时该列留空。表头为 `id,name,gender,age,power,wave,protocol,energy,time,rtc`。
-   - 导入解析：列数 ≥ 9 即接受，旧版 9 列备份仍可载入，时间按“未记录”处理；有第 10 列但格式/范围非法则整行载入失败。
-   - 导入回读核对（`treatmentLogVerifyUdisk`）必须同时比较 RTC 6 个字段，不允许跳过时间字段。
+4. **U 盘 CSV 必须带时间并带回**：当前 `rtc` 为第 10 列，格式 `YYYY-MM-DD HH:MM:SS`；未记录时间时该列留空。当前完整表头为 13 列（`id` 加 AR 前缀，`rtc` 后追加 `pulseMode,posWidth,negWidth`），详见第十三至十五节。
+   - 导入解析：列数 ≥ 9 即接受，旧版 9 列/10 列备份仍可载入，时间按“未记录”、脉冲按 CW 处理；有新列但格式/范围非法则整行载入失败。
+   - 导入回读核对（`treatmentLogVerifyUdisk`）必须同时比较 RTC 6 个字段与脉冲三字段，不允许跳过。
    - 客户端如 Excel 另存，需保持该列格式（空格分隔日期与时间，不拆成两列）。
 5. **患者姓名长度 18 个字符**：由 `treatment.h` 的 `CONFIG_TREATMENT_NAME_LEN = 18` 定义，缓冲区 `TREATMENT_NAME_SIZE = 19`（含结束符），`treatmentLog_t.name` 与 `patientRecord_t.name` 共用该长度；固件在姓名录入处按 `TREATMENT_NAME_SIZE - 1` 截断，屏幕输入控件 `text_len_max` 保持 255，以固件截断为准。
 6. 姓名长度改变会改变片上患者行尺寸（当前 24 字节），存量病历与新结构不兼容；沿用既有约定——固件 CRC 变化时 `dcHmiLoopInit` 清空整片 EPROM，不做迁移与向后兼容。
-7. 本节的 RTC 列与姓名长度属于数据规格，任何后续改动必须先更新本节，并同步 `minicsvApp.c` 的列定义（`TREATMENT_CSV_COLUMNS_MIN` / `TREATMENT_CSV_COLUMNS`）与 `treatmentCsvHeader`。
+7. 本节的 RTC 列与姓名长度属于数据规格，任何后续改动必须先更新本节，并同步 `minicsvApp.c` 的列定义（`TREATMENT_CSV_COLUMNS_MIN` / `TREATMENT_CSV_COLUMNS_RTC` / `TREATMENT_CSV_COLUMNS`）与 `treatmentCsvHeader`。
 
 ---
 
@@ -251,3 +251,85 @@
 2. **空槽位**：仍按第十节下发空串，不显示任何内容。
 3. 文案为纯 ASCII（英文字母、冒号、空格与数字），符合根目录 `AI_RULES.md` 显示文本一律英文的至高规格，屏幕现有字体（font 6，ASC_CHS_20）可直接渲染，无需改屏幕工程。
 4. 曾提出的中文“病历数量X”方案：与 `AI_RULES.md` 英文显示至高规格冲突，且屏幕资源无中文字体（`dwLaser.fidx` 仅含 30 个 ASCII 字体，`charset.txt` 不含“病历数量”字形），经确认**不采用**。将来若要恢复中文显示，必须先经仓库所有者人工授权并修改 `AI_RULES.md` 至高规格，再完成屏幕中文字体工程（VisualTFT 配置中文字体、加入字形、重建并烧录屏幕资源），固件按 GB2312/GBK 编码下发。
+
+---
+
+## 十二、USB 三页面按键自锁与程序弹起（强制规格，2026-11-21）
+
+1. **适用范围**：`GDDC_PAGE_OPERATOR_USB`（页面 19）、`GDDC_PAGE_OPERATOR_USB_SAVE`（页面 20）、`GDDC_PAGE_OPERATOR_USB_LOAD`（页面 21）三个页面上的**全部 7 个按键控件**——19 页 `KEY_SAVE_UDISK`（3）、`KEY_LOAD_UDISK`（4）、`KEY_CANCEL`（5）；20/21 页 `KEY_OK`（11）、`KEY_CANCEL`（10）。屏幕工程中 7 个按键均为 `button_type = 1`（自锁型，按下后不自行弹起），该属性为强制配置，不得改为自弹型。
+2. **弹起总则**：按键在屏幕上按下后保持按下态，固件**严禁在功能执行前提前复位**；必须在该按键对应的功能全部执行完毕后，由程序调用 `SetButtonValue(screen, control, 0)` 显式控制弹起。`SetButtonValue` 指令带 screen id，切页后仍可对原页面控件下发。
+3. **各按键弹起时机**：
+   - 19 页 `KEY_SAVE_UDISK` / `KEY_LOAD_UDISK`（3/4）：在 `enterOperatorUsbConfirmPage()` 进入对应确认页（`SetScreen` 20/21）完成后才弹起，不得在进入确认页之前复位。
+   - 19 页 `KEY_CANCEL`（5）：在 `listTreatmentOperatorUsbBack()` 返回列表页（`SetScreen(13)`）完成后才弹起。
+   - 20/21 页 `KEY_OK`（11）：在 `listTreatmentUsbLoop` 状态 7 中 USB 读写（含导入后的回读核对）全部执行完毕、返回操作页（`SetScreen(19)`）后才弹起；确认回调 `listTreatmentUsbConfirm`（6→7）只授权执行，不得弹起。
+   - 20/21 页 `KEY_CANCEL`（10）：在 `listTreatmentUsbCancel()` 返回操作页（`SetScreen(19)`）完成后才弹起，不得在切页之前复位。
+4. **中止路径弹起**：`listTreatmentUsbLoop` 检测到确认页被别处切走（如关机确认/休眠）而放弃流程时，必须同时对该确认页的 `KEY_OK`（11）与 `KEY_CANCEL`（10）下发弹起指令，避免按键永久卡在按下态。
+5. **屏幕工程现状（2026-11-21 核对）**：三个 `.tft`（`GDDC_PAGE_OPERATOR_USB.tft`、`GDDC_PAGE_OPERATOR_USB_SAVE_CONFIRM.tft`、`GDDC_PAGE_OPERATOR_USB_LOAD_CONFIRM.tft`）中 7 个按键均已为 `button_type = 1`，无需改屏幕；本规格只约束固件弹起时机。任何后续新增按键若同样采用自锁型，必须先在本节登记其控件 ID 与弹起时机。
+
+---
+
+## 十三、患者历史治疗记录页 GDDC_PAGE_LIST_RECORD（页面 ID 15，强制规格，2026-11-21）
+
+### 13.1 进入与数据来源
+
+1. 在病历列表页（13）点击 `KEY_EDIT_RECORD_0–4`（控件 31–35），由 `listTreatmentRecordEnter(slot)` 处理：按窗口槽位解析出对应患者，把稳定患者编号写入 `recordPatientId`，再调用 `listTreatmentRecordEnumerate()` 令窗口缓存失效并收集当前窗口，最后 `SetScreen(15)`。
+2. 枚举口径（无条数硬上限、无全量索引数组）：`listTreatmentRecordCollectWindow()` 单次扫描扁平存储（`treatmentEpromGet`），只统计 `log.id == recordPatientId` 的记录总数（`recordCount`，`uint16`），并仅把当前窗口 5 条的全局索引缓存到 `recordWindow[0..4]`；翻页时按 `recordTop` 重新扫描收集对应窗口，记录按存储顺序（即追加/时间先后）呈现，条数仅受区块物理容量约束。
+3. 页面冷加载时（`screen_id` 分发）必须重新枚举并调用 `refreshListRecordDisplay()`，保证掉电重启回到本页时显示与存储一致。
+
+### 13.2 控件与显示格式
+
+1. **姓名行 `TEXT_NAME`（控件 1）**：固定格式 `姓名 - AR 编号`，例如 `John Smith - AR 0001`（AR 前缀规则见第十五节）。
+2. **时间/能量行 `TEXT_TIEM_ENERGY_0–4`（控件 2–6）**，固定格式：
+   `记录时间 - 发射能量 - 发射时间 - 功率 - 波长`
+   示例：`2026-11-10 18:00 - 262.7 J - 00:19 - 30 W - 1470 nm`
+   - 记录时间取 RTC，格式 `YYYY-MM-DD HH:MM`；未记录时间时该段显示 `---- --:--`。
+   - 发射能量底层为 0.1 J（decijoule），显示时除以 10 保留 1 位小数（用整数运算拆整/分，不用浮点）。
+   - 发射时间取秒，格式 `MM:SS`；功率取 `laserPower`，单位 `W`；波长单波长如 `1470 nm`，双波长如 `1470+980 nm`。
+3. **方案/脉宽行 `TEXT_SCHEME_WIDTH_0–4`（控件 7–11）**：
+   - 连续模式：`大类 序号 - CW`，示例 `Phlebology 1 - CW`。
+   - 脉冲模式：`大类 序号 - Pulse - ON 正脉宽 / OFF 负脉宽 ms`，示例 `Phlebology 1 - Pulse - ON 600 / OFF 700 ms`。
+   - 自定义方案（`protocol == eCustiom`）：仅显示 `Custom`，不带序号与模式。
+   - 大类名称复用 `treatmentProtocolName`，序号为 `schemeIndex + 1`。
+4. **页码 `TEXT_PAGE`（控件 12）**：固定格式 `PAGE 当前页/总页数`，例如 `PAGE 1/2`；总页数 = `ceil(recordCount/5)`，无记录时强制 `PAGE 1/1`，严禁 `0/0`。
+5. 全部文案为纯 ASCII，符合根目录 `AI_RULES.md` 英文显示至高规格。
+
+### 13.3 空槽位隐藏（不足 5 条）
+
+1. 当槽位 `i` 的记录位置 `recordTop + i >= recordCount` 时该槽为空（如仅 3 条记录，则槽 3–4 为空）。
+2. 空槽的 `TEXT_TIEM_ENERGY_i`、`TEXT_SCHEME_WIDTH_i` 两个文本控件必须 `SetControlVisiable(..., 0)` 隐藏、不显示任何内容；`KEY_DELETE_i` 必须同时隐藏并 `SetControlEnable(..., 0)` 禁止点击。
+3. 有效槽位每次刷新显式恢复可见/可点状态，不依赖屏幕默认值。
+
+### 13.4 翻页与按键
+
+1. `KEY_PAGE_UP`（25）/`KEY_PAGE_DOWN`（26）：`recordTop` 分别减/加 5，由 `listTreatmentRecordMaxTop()` 夹取到合法整页边界，到首页/末页停止。
+2. `KEY_CLOSE`（27，宏名 `GDDC_PAGE_LIST_RECODE_KEY_CLOSE`）：清空 `recordPatientId` 后返回病历列表页（13）。
+3. `KEY_EDIT_PATIENT`（28，宏名 `GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT`）：跳转患者信息编辑页（17），行为见 13.5。
+4. 本页全部按键在屏幕工程均为 `button_type = 1`（自锁型），固件在对应功能完成后调用 `SetButtonValue(..., 0)` 弹起，严禁功能执行前提前复位。
+
+### 13.5 患者信息编辑（页面 17 复用）
+
+1. 点 `KEY_EDIT_PATIENT` 由 `listTreatmentRecordEditPatient()` 预填该患者姓名/年龄/性别，ID 行显示 `AR 编号`，并置 `editPatientMode = 1`，`SetScreen(17)`。
+2. 编辑页 OK 在该模式下改走 `listTreatmentEditPatientConfirm()`：调用 `treatmentPatientUpdate()` 原地更新患者信息（id 不变、不追加治疗记录），完成后回记录页（15）并清 `editPatientMode = 0`。
+3. 编辑页 CANCEL 在该模式下走 `listTreatmentEditPatientCancel()`：不更新，回记录页（15）。正常新建/追加流程（`editPatientMode = 0`）仍走原 `listTreatmentCreateConfirm/Cancel`，行为不变。
+
+---
+
+## 十四、单条治疗记录删除确认页 GDDC_PAGE_DELETE_RECODE（页面 ID 16，强制规格，2026-11-21）
+
+1. 记录页（15）点击 `KEY_DELETE_0–4`（20–24）由 `listTreatmentRecordDeleteStart(slot)` 缓存待删记录全局索引到 `deleteRecordGlobalIndex`，下发确认文案后 `SetScreen(16)`；不在记录页直接删除。
+2. 控件：`TEXT_NAME`（1）、`TEXT_SUMMARY_0`（2）、`KEY_CANCEL`（10）、`KEY_OK`（11）。
+3. `KEY_OK`：`listTreatmentDeleteRecordConfirm()` 调用 `treatmentRecordDeleteByIndex(idx)` 删除该条（墓碑 + 安全压缩），清空缓存索引、重新枚举并夹取窗口后回记录页（15）。
+4. `KEY_CANCEL`：`listTreatmentDeleteRecordCancel()` 不删除，清空缓存索引后回记录页（15）。
+5. 两个按键均为自锁型，功能完成后程序弹起；本闭环为强制规格，不得改为点 DELETE 直接删除或跳过确认。
+
+---
+
+## 十五、患者 ID 编码规则（AR 前缀，强制规格，2026-11-21）
+
+1. **编码格式**：`AR` + 一个空格 + 至少 4 位递增数字，不足 4 位前面补零，例如 `AR 0001`、`AR 0002`、`AR 0011`。
+2. **EPROM 只存数字**：为节省空间，患者行 `patientRecord_t.id` 与记录外键均只存 `uint16_t` 递增数字，不存 `AR` 前缀或空格；在 HMI 显示与 CSV 导出/导入时由软件自动加/去 `AR ` 前缀。
+3. **自动生成、不可手动修改**：新建患者时取现有患者 ID 中最大数字加 1，不接受手动输入；删除患者不回收、不重编号。
+4. **新患者分配新 ID，老患者复用**：再次治疗选择已有患者时追加治疗记录、沿用原 ID；当前 Demo 已编号到 `AR 0010`，下一位为 `AR 0011`。
+5. **同名不代表同一患者**：选择已有患者即复用其 ID；选择 Create New Patient 则生成新 ID，即使姓名相同也视为不同患者。
+6. **CSV 落地**：导出 ID 列输出 `AR 0001`，导入由 `treatmentCsvParseId()` 解析回数字（同时兼容旧版纯数字列）；ID 数字范围对齐片上 `PATIENT_ID_LIMIT`。
+7. 本规则任何改动必须先更新本节，并同步 HMI 显示、`minicsvApp.c` 前缀处理与 `treatment.c` 分配逻辑。
