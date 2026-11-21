@@ -7,6 +7,50 @@
 #include "treatment.h"
 #include "minicsvApp.h"//U盘CSV导入导出(治疗记录)
 /*****************************************************************************/
+//诊断页全部按键ID(与GDDC_PAGE_DIAGNOSIS.tft枚举一致), 共19个, 自动填充期间用于整页锁键
+static const uint16_t diagnosisKeyList[] = {
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW,         //6
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY,     //7
+  GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK,             //99
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE,  //300
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE,  //301
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID,         //302
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP,        //303
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH,   //304
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK,    //305
+  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_AUTO_FAN,     //306
+  GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION,          //307
+  GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM,           //308
+  GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM,          //309
+  GDDC_PAGE_DISGNOSIS_KEY_CLEAR_CRC,            //310
+  GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ,  //311
+  GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES,  //312
+  GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO,   //313
+  GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK,           //314
+  GDDC_PAGE_DISGNOSIS_KEY_RAW_DATE,             //315
+  GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL              //316
+};
+
+//诊断页按键锁定: enable=0禁用本页按键(自动填充期间防误触), enable=1恢复
+//AUTOFILL(316)自身跳过: 保持可点按状态, 结束后由SetButtonValue复位;
+//UPDATE_BOOTLOAD_YES/NO(312/313)页面初始化时默认隐藏且禁用, 恢复时跳过以保持禁用原状
+static void diagnosisKeysSetEnable(uint8_t enable) {
+  uint16_t i;
+  for(i = 0U; i < (uint16_t)(sizeof(diagnosisKeyList) / sizeof(diagnosisKeyList[0])); i++) {
+    uint16_t key = diagnosisKeyList[i];
+    if(key == GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL) {
+      continue;
+    }
+    if((enable != 0U) &&
+       ((key == GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES) ||
+        (key == GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO))) {
+      continue;
+    }
+    SetControlEnable(GDDC_PAGE_DIAGNOSIS, key, enable);
+    softDelayMs(1);
+  }
+}
+/*****************************************************************************/
 //按钮控件通知当按钮状态改变(或调用GetControlValue)时，执行此函数
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
 void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){ 
@@ -1775,6 +1819,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						//种子固定传0: 每次按键按运行时刻(滴答+芯片UID+上次PRNG状态)取新种子,
 						//保证每次填充的病人数、每人病历数及姓名/性别/年龄/治疗方案/治疗参数均随机
 						//记录数范围传 0,0 = 默认 5..20; 双重越界保险(FreeBytesPR+InRegion)在填充函数内部保证
+						diagnosisKeysSetEnable(0U);//生成期间先禁用本页其他按键, 防止阻塞期间排队触摸误触
 						demoErr = (uint8_t)treatmentDemoGenerate(0U,
 						                                         0U, 0U, 1U,
 						                                         &demoPatients, &demoRecords);
@@ -1786,6 +1831,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 							sprintf(dispBuf, "DEMO FILL ERR:%d", (int)demoErr);
 						}
 						SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4, (uint8_t*)dispBuf);
+						diagnosisKeysSetEnable(1U);//生成结束恢复按键(312/313保持默认隐藏禁用, 不随恢复开放)
 						SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL, 0);//按钮为自锁型, 填充完成后复位为弹起, 文字回到Fill Demo
 					}
 					break;

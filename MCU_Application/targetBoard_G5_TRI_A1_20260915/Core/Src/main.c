@@ -129,7 +129,7 @@ int main(void)
   /* Call PreOsInit function */
   MX_MBEDTLS_Init();
   /* USER CODE BEGIN 2 */
-
+  treatmentPvdInit();
   /* USER CODE END 2 */
 
   /* Init scheduler */

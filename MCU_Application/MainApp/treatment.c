@@ -112,6 +112,24 @@ static void BmpSet(uint32_t bit){
 static uint8_t  g_ready = 0U;
 static uint16_t g_nextRecSeq = 1U;
 
+/*============================================================================
+ * 读缓存(FRAM 始终为权威, 本缓存仅为副本; 掉电后由 Recovery 重建, 不会成为权威)
+ *   patient: 患者表镜像(含 id/age/gender/name), 按患者表索引;
+ *   recCount: 每患者已提交记录数, 按患者表索引;
+ *   热路径(纯追加)增量维护, 冷路径(删除等)置 ready=0, 下次查询时整体重建。
+ *============================================================================*/
+typedef struct {
+  uint8_t ready;
+  uint16_t patientCount;
+  patientRecord_t patient[CONFIG_EPROM_TREATMENT_PATIENT_MAX];
+  uint16_t recCount[CONFIG_EPROM_TREATMENT_PATIENT_MAX];
+} treatmentCache_t;
+static treatmentCache_t Cache;
+
+static void cacheRebuild(void);
+static void cacheEnsure(void);
+static treatmentEpromErr_t writeGateCheck(void);
+
 static uint8_t NameHasNul(const char *name, uint8_t len){
 	for(uint8_t i = 0U; i < len; i++){ if(name[i] == '\0'){ return 1U; } }
 	return 0U;
@@ -238,6 +256,7 @@ static void Recovery(void){
 	SetAt(DM_TREATMENT_NUM, wr);
 	SetAt(DM_TREATMENT_NEXT_ID, (maxId >= PATIENT_ID_LIMIT) ? PATIENT_ID_LIMIT : (uint16_t)(maxId + 1U));
 	g_ready = 1U;
+	cacheRebuild();
 }
 
 /* 运行时致密(开机恢复后无重复; 自身移动即时清源, 故无需位图) */
@@ -279,6 +298,72 @@ static uint16_t CntR(void){ Recovery(); return (uint16_t)RawAt(DM_TREATMENT_NUM)
 static uint16_t CntNext(void){ Recovery(); return (uint16_t)RawAt(DM_TREATMENT_NEXT_ID); }
 
 /*============================================================================
+ * 读缓存实现
+ *============================================================================*/
+/* 镜像内按 id 查患者索引(仅扫描镜像, 无 SPI 事务) */
+static treatmentEpromErr_t cacheFindPatient(uint16_t pid, uint16_t *indexOut){
+  for(uint16_t i = 0U; i < Cache.patientCount; i++){
+    if(Cache.patient[i].id == pid){
+      if(indexOut != NULL){ *indexOut = i; }
+      return TREATMENT_EPROM_OK;
+    }
+  }
+  return TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND;
+}
+
+/* 整体重建: 先致密患者镜像并清零计数, 再扫已提交记录经镜像映射后累加 */
+static void cacheRebuild(void){
+  uint16_t p = CntP();
+  uint16_t r = CntR();
+
+  (void)memset(Cache.patient, 0, sizeof(Cache.patient));
+  (void)memset(Cache.recCount, 0, sizeof(Cache.recCount));
+  for(uint16_t i = 0U; i < p; i++){
+    (void)RowRead(PatientAddr(i), &Cache.patient[i], PAT_BYTES);
+  }
+  for(uint16_t i = 0U; i < r; i++){
+    treatmentRecord_t rec;
+    uint16_t pi;
+    if(RowRead(RecordAddr(i), &rec, REC_BYTES) != TREATMENT_EPROM_OK){ continue; }
+    if(cacheFindPatient(rec.patientId, &pi) == TREATMENT_EPROM_OK){
+      Cache.recCount[pi]++;
+    }
+  }
+  Cache.patientCount = p;
+  Cache.ready = 1U;
+}
+
+/* 冷路径统一入口: 失效后下次查询触发重建 */
+static void cacheInvalidate(void){ Cache.ready = 0U; }
+
+static void cacheEnsure(void){
+  // Recovery 实际执行时会在末尾重建缓存; 若仅缓存被冷路径失效, 这里补一次重建
+  Recovery();
+  if(Cache.ready == 0U){ cacheRebuild(); }
+}
+
+/* 患者新建成功后的增量钩子; 缓存未就绪时改走整体重建, 不做半更新 */
+static void cacheOnPatientCreated(uint16_t index, const patientRecord_t *row){
+  if(Cache.ready == 0U){ cacheRebuild(); return; }
+  Cache.patient[index] = *row;
+  Cache.recCount[index] = 0U;
+  Cache.patientCount = (uint16_t)(index + 1U);
+}
+
+/* 记录追加成功后的增量钩子(患者索引由调用方在提交前捕获) */
+static void cacheOnRecordAdded(uint16_t patientIndex){
+  if(Cache.ready != 0U){ Cache.recCount[patientIndex]++; }
+}
+
+/* 清空: 缓存直接置为空态, 无需重建 */
+static void cacheResetEmpty(void){
+  (void)memset(Cache.patient, 0, sizeof(Cache.patient));
+  (void)memset(Cache.recCount, 0, sizeof(Cache.recCount));
+  Cache.patientCount = 0U;
+  Cache.ready = 1U;
+}
+
+/*============================================================================
  * 原子替换(更新): 新槽位两阶段提交 -> 旧行墓碑/空白 -> 致密
  *   掉电时旧行始终保留到新行提交之后; 撕裂/重复由 Recovery 按稳定 id/recSeq 去重。
  *   需一个空闲槽位; 满盘(无空闲)返回 ERR_FULL, 先删除再更新。
@@ -290,6 +375,8 @@ static treatmentEpromErr_t RecordReplaceAt(uint16_t index, const treatmentRecord
 	uint8_t commit = ROW_MAGIC_COMMIT, tomb = ROW_MAGIC_TOMB;
 	treatmentEpromErr_t e;
 	if(in == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
+	e = writeGateCheck();
+	if(e != TREATMENT_EPROM_OK){ return e; }
 	r = CntR();
 	if(index >= r){ return TREATMENT_EPROM_ERR_PARAM; }
 	if(FreeBytesPR(CntP(), r) < REC_BYTES){ return TREATMENT_EPROM_ERR_FULL; }
@@ -313,6 +400,8 @@ static treatmentEpromErr_t PatientReplaceAt(uint16_t index, const patientRecord_
 	uint16_t blank = CONFIG_EPROM_TREATMENT_SLOT_EMPTY;
 	treatmentEpromErr_t e;
 	if(in == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
+	e = writeGateCheck();
+	if(e != TREATMENT_EPROM_OK){ return e; }
 	p = CntP();
 	if(index >= p){ return TREATMENT_EPROM_ERR_PARAM; }
 	if(FreeBytesPR(p, CntR()) < PAT_BYTES){ return TREATMENT_EPROM_ERR_FULL; }
@@ -326,6 +415,8 @@ static treatmentEpromErr_t PatientReplaceAt(uint16_t index, const patientRecord_
 	if(RowWrite(PatientAddr(p), &row.id, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	if(RowWrite(PatientAddr(index), &blank, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	(void)CompactPatients();
+	// 致密后各患者索引可能整体平移, 镜像不再按原索引对应, 直接失效待重建
+	cacheInvalidate();
 	return TREATMENT_EPROM_OK;
 }
 
@@ -341,22 +432,16 @@ uint32_t treatmentGetFreeBytes(void){
 }
 
 treatmentEpromErr_t treatmentPatientFind(uint16_t pid, uint16_t *indexOut){
-	uint16_t p = CntP();
-	patientRecord_t row;
-	for(uint16_t i = 0U; i < p; i++){
-		if(RowRead(PatientAddr(i), &row, PAT_BYTES) != TREATMENT_EPROM_OK){ continue; }
-		if(row.id == pid){
-			if(indexOut != NULL){ *indexOut = i; }
-			return TREATMENT_EPROM_OK;
-		}
-	}
-	return TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND;
+  cacheEnsure();
+  return cacheFindPatient(pid, indexOut);
 }
 
 treatmentEpromErr_t treatmentPatientGetByIndex(uint16_t index, patientRecord_t *out){
-	if(out == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
-	if(index >= CntP()){ return TREATMENT_EPROM_ERR_PARAM; }
-	return RowRead(PatientAddr(index), out, PAT_BYTES);
+  if(out == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
+  cacheEnsure();
+  if(index >= Cache.patientCount){ return TREATMENT_EPROM_ERR_PARAM; }
+  *out = Cache.patient[index];
+  return TREATMENT_EPROM_OK;
 }
 
 /* 新建患者(两阶段: 先写正文, id 最后提交) */
@@ -364,6 +449,10 @@ treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *
 	uint16_t p, r, id;
 	patientRecord_t row;
 	if(in == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
+	{
+		treatmentEpromErr_t ge = writeGateCheck();
+		if(ge != TREATMENT_EPROM_OK){ return ge; }
+	}
 	p = CntP(); r = CntR();
 #if (CONFIG_EPROM_TREATMENT_PATIENT_MAX > 0)
 	if(p >= (uint16_t)CONFIG_EPROM_TREATMENT_PATIENT_MAX){
@@ -380,6 +469,7 @@ treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *
 	if(RowWrite(PatientAddr(p), &row.id, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	SetAt(DM_TREATMENT_PATIENT_NUM, (uint16_t)(p + 1U));
 	SetAt(DM_TREATMENT_NEXT_ID, (uint16_t)(id + 1U));
+	cacheOnPatientCreated(p, &row);
 	if(newId != NULL){ *newId = id; }
 	return TREATMENT_EPROM_OK;
 }
@@ -395,6 +485,9 @@ static treatmentEpromErr_t EnsurePatientWithId(uint16_t id, const patientRecord_
 	{
 		uint16_t p = CntP(), r = CntR();
 		patientRecord_t row;
+		treatmentEpromErr_t ge;
+		ge = writeGateCheck();
+		if(ge != TREATMENT_EPROM_OK){ return ge; }
 		if((id == 0U) || (id == CONFIG_EPROM_TREATMENT_SLOT_EMPTY) || (id > PATIENT_ID_LIMIT)){
 			return TREATMENT_EPROM_ERR_PARAM;
 		}
@@ -410,6 +503,7 @@ static treatmentEpromErr_t EnsurePatientWithId(uint16_t id, const patientRecord_
 		if(RowWrite(PatientAddr(p), &row.id, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 		SetAt(DM_TREATMENT_PATIENT_NUM, (uint16_t)(p + 1U));
 		if((uint16_t)(id + 1U) > CntNext()){ SetAt(DM_TREATMENT_NEXT_ID, (uint16_t)(id + 1U)); }
+		cacheOnPatientCreated(p, &row);
 		if(indexOut != NULL){ *indexOut = p; }
 	}
 	return TREATMENT_EPROM_OK;
@@ -423,6 +517,10 @@ treatmentEpromErr_t treatmentPatientDelete(uint16_t pid){
 
 	fe = treatmentPatientFind(pid, &pi);
 	if(fe != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND; }
+	{
+		treatmentEpromErr_t ge = writeGateCheck();
+		if(ge != TREATMENT_EPROM_OK){ return ge; }
+	}
 
 	/* 级联: 墓碑该患者全部记录(单字节原子), 再致密 */
 	recMax = REG_SIZE / REC_BYTES;
@@ -443,6 +541,7 @@ treatmentEpromErr_t treatmentPatientDelete(uint16_t pid){
 		(void)RowWrite(PatientAddr(pi), &blank, 2U);
 	}
 	(void)CompactPatients();
+	cacheInvalidate();
 	return TREATMENT_EPROM_OK;
 }
 
@@ -450,28 +549,28 @@ treatmentEpromErr_t treatmentPatientDelete(uint16_t pid){
  * 一级 API: 记录
  *============================================================================*/
 uint16_t treatmentGetRecordCountForPatient(uint16_t pid){
-	uint16_t r = CntR();
-	uint16_t cnt = 0U;
-	treatmentRecord_t rec;
-	for(uint16_t i = 0U; i < r; i++){
-		if(RowRead(RecordAddr(i), &rec, REC_BYTES) != TREATMENT_EPROM_OK){ continue; }
-		if(rec.patientId == pid){ cnt++; }
-	}
-	return cnt;
+	uint16_t pi;
+	cacheEnsure();
+	if(cacheFindPatient(pid, &pi) != TREATMENT_EPROM_OK){ return 0U; }
+	return Cache.recCount[pi];
 }
 
 /* 追加记录(两阶段: 先 PENDING, 再翻 COMMIT) */
 treatmentEpromErr_t treatmentRecordAdd(const treatmentRecord_t *in){
-	uint16_t p, r;
+	uint16_t p, r, pi;
 	treatmentEpromErr_t fe;
 	treatmentRecord_t row;
 	uint8_t commit;
 	if(in == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
-	fe = treatmentPatientFind(in->patientId, NULL);
+	{
+		treatmentEpromErr_t ge = writeGateCheck();
+		if(ge != TREATMENT_EPROM_OK){ return ge; }
+	}
+	cacheEnsure();
+	fe = cacheFindPatient(in->patientId, &pi);
 	if(fe != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND; }
 #if (CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT > 0)
-	if(treatmentGetRecordCountForPatient(in->patientId) >=
-	   (uint16_t)CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT){
+	if(Cache.recCount[pi] >= (uint16_t)CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT){
 		return TREATMENT_EPROM_ERR_PATIENT_FULL;
 	}
 #endif
@@ -486,6 +585,7 @@ treatmentEpromErr_t treatmentRecordAdd(const treatmentRecord_t *in){
 	if(RowWrite(RecordAddr(r) + 7U, &commit, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	SetAt(DM_TREATMENT_NUM, (uint16_t)(r + 1U));
 	g_nextRecSeq++;
+	cacheOnRecordAdded(pi);
 	return TREATMENT_EPROM_OK;
 }
 
@@ -498,10 +598,14 @@ treatmentEpromErr_t treatmentRecordGetByIndex(uint16_t index, treatmentRecord_t 
 /* 删除单条: 墓碑(原子)后致密 */
 treatmentEpromErr_t treatmentRecordDeleteByIndex(uint16_t index){
 	uint8_t tomb;
+	treatmentEpromErr_t ge;
 	if(index >= CntR()){ return TREATMENT_EPROM_ERR_PARAM; }
+	ge = writeGateCheck();
+	if(ge != TREATMENT_EPROM_OK){ return ge; }
 	tomb = ROW_MAGIC_TOMB;
 	if(RowWrite(RecordAddr(index) + 7U, &tomb, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	(void)CompactRecords();
+	cacheInvalidate();
 	return TREATMENT_EPROM_OK;
 }
 
@@ -694,6 +798,9 @@ treatmentEpromErr_t treatmentEpromUpdate(uint16_t index, const treatmentLog_t *l
 treatmentEpromErr_t treatmentEpromClear(void){
 	uint32_t addr = REG_START;
 	uint8_t blank[64];
+	treatmentEpromErr_t ge;
+	ge = writeGateCheck();
+	if(ge != TREATMENT_EPROM_OK){ return ge; }
 	memset(blank, 0xFF, sizeof(blank));
 	while(addr <= REG_END){
 		uint16_t chunk = ((REG_END + 1U - addr) > sizeof(blank))
@@ -709,6 +816,7 @@ treatmentEpromErr_t treatmentEpromClear(void){
 	// CntNext()=0 会让 treatmentPatientCreate 误判 FULL、无法新建患者
 	SetAt(DM_TREATMENT_NEXT_ID, 1U);
 	g_nextRecSeq = 1U;
+	cacheResetEmpty();
 	return TREATMENT_EPROM_OK;
 }
 
@@ -719,6 +827,45 @@ uint32_t treatmentEpromCalcFwCrc(void){
 		crc32 = crc32CalculateAdd(*(__IO uint8_t*)addr);
 	}
 	return crc32;
+}
+
+/*============================================================================
+ * PVD 欠压写入门控
+ *   阈值 2.8V(PVDLEVEL_6), EXTI line16 双沿中断;
+ *   回调只置/清 volatile 标志, 不调用任何 RTOS/FRAM API, 可在高优先级执行。
+ *============================================================================*/
+#define CONFIG_PVD_IRQ_PREEMPT_PRIORITY  3U
+#define CONFIG_PVD_IRQ_SUB_PRIORITY      0U
+
+static volatile uint8_t g_writeBlocked = 0U;
+
+uint8_t treatmentWriteBlocked(void){ return g_writeBlocked; }
+
+/* HAL 弱回调: PVD 中断经 HAL_PWR_PVD_IRQHandler 调用;
+ * PVDO=1 表示 Vdd 已低于阈值(门控关闭新写入), PVDO=0 表示恢复(解除)。 */
+void HAL_PWR_PVDCallback(void){
+	if(__HAL_PWR_GET_FLAG(PWR_FLAG_PVDO) != 0U){
+		g_writeBlocked = 1U;
+	}
+	else {
+		g_writeBlocked = 0U;
+	}
+}
+
+void treatmentPvdInit(void){
+	PWR_PVDTypeDef cfg;
+	cfg.PVDLevel = PWR_PVDLEVEL_6;                 //2.8V
+	cfg.Mode = PWR_PVD_MODE_IT_RISING_FALLING;    //双沿: 跌落与恢复都进中断
+	(void)HAL_PWR_ConfigPVD(&cfg);
+	HAL_NVIC_SetPriority(PVD_IRQn, CONFIG_PVD_IRQ_PREEMPT_PRIORITY, CONFIG_PVD_IRQ_SUB_PRIORITY);
+	HAL_NVIC_EnableIRQ(PVD_IRQn);                 //HAL_PWR_EnablePVD 不使能 NVIC, 须显式开启
+	HAL_PWR_EnablePVD();
+}
+
+/* 写路径统一门控: 开启新事务前调用, 欠压则拒绝; 已在事务内的两阶段写入不受此限 */
+static treatmentEpromErr_t writeGateCheck(void){
+	if(g_writeBlocked != 0U){ return TREATMENT_EPROM_ERR_POWER_LOW; }
+	return TREATMENT_EPROM_OK;
 }
 
 void treatmentEpromTraverse(treatmentEpromVisitFn fn){
@@ -762,18 +909,19 @@ static const demoProfile_t demoProfileTable[] = {
 #define DEMO_PROFILE_NUM								(sizeof(demoProfileTable) / sizeof(demoProfile_t))
 #define DEMO_PROFILE_WEIGHT_TOTAL						100
 
+//测试病历姓名池: 西方常用人名, 首字母大写、其余小写(区分大小写), 组合时"名前姓后"; 名+空格+姓总长不超过18字符
 static const char *const demoSurnamePool[] = {
-	"ZHANG", "WANG", "LI", "ZHAO", "LIU", "CHEN", "YANG", "HUANG", "ZHOU", "WU",
-	"XU", "SUN", "MA", "ZHU", "HU", "GUO", "HE", "GAO", "LIN", "LUO",
-	"ZHENG", "LIANG", "XIE", "SONG", "TANG", "HAN", "FENG", "DENG", "CAO", "PENG"
+	"Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Martinez", "Lopez",
+	"Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez",
+	"Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker", "Hall"
 };
 static const char *const demoGivenMalePool[] = {
-	"WEI", "QIANG", "LEI", "JUN", "TAO", "MING", "BIN", "CHAO", "HONG", "GANG",
-	"KAI", "HAI", "YONG", "JIAN", "ZHI", "FENG", "PENG", "HAO", "SHENG", "BO"
+	"James", "Robert", "John", "Michael", "David", "William", "Richard", "Joseph", "Thomas", "Daniel",
+	"Matthew", "Anthony", "Mark", "Steven", "Paul", "Andrew", "Joshua", "Kevin", "Brian", "George"
 };
 static const char *const demoGivenFemalePool[] = {
-	"MIN", "JING", "YAN", "PING", "HUI", "NA", "FANG", "XIN", "LAN", "XUE",
-	"RUI", "TING", "YI", "QING", "SHAN", "LING", "NING", "MEI", "JIE", "QIAN"
+	"Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Karen",
+	"Lisa", "Nancy", "Betty", "Margaret", "Sandra", "Ashley", "Kimberly", "Emily", "Donna", "Michelle"
 };
 #define DEMO_SURNAME_NUM								(sizeof(demoSurnamePool)/sizeof(demoSurnamePool[0]))
 #define DEMO_GIVEN_MALE_NUM								(sizeof(demoGivenMalePool)/sizeof(demoGivenMalePool[0]))
@@ -841,10 +989,30 @@ static const demoProfile_t* demoPickProfile(void){
 	return &demoProfileTable[(uint16_t)DEMO_PROFILE_NUM - 1U];
 }
 
-static void demoBuildRecord(uint16_t id, treatmentLog_t *rec){
+//姓名对编码: bit15=性别(1女), bit5..9=名字索引, bit0..4=姓氏索引; 两个池均不超过30, 无位冲突
+#define DEMO_NAME_KEY_FEMALE_BIT                    0x8000U
+#define DEMO_NAME_KEY_TRY_LIMIT                     100U
+
+static uint16_t demoEncodeNameKey(uint8_t female, uint32_t givenIdx, uint32_t surnameIdx){
+  return (uint16_t)((female != 0U ? DEMO_NAME_KEY_FEMALE_BIT : 0U) |
+                    ((uint16_t)givenIdx << 5) | (uint16_t)surnameIdx);
+}
+
+static uint8_t demoNameKeyUsed(const uint16_t *usedKeys, uint16_t usedCount, uint16_t key){
+  uint16_t i;
+  if(usedKeys == NULL){ return 0U; }
+  for(i = 0U; i < usedCount; i++){
+    if(usedKeys[i] == key){ return 1U; }
+  }
+  return 0U;
+}
+
+static uint16_t demoBuildRecord(uint16_t id, treatmentLog_t *rec,
+                                const uint16_t *usedKeys, uint16_t usedCount){
 	const demoProfile_t *profile;
 	int16_t power, powerCap;
 	uint32_t timeSec, energy, surnameIdx, givenIdx;
+	uint16_t nameKey, nameTries;
 	uint8_t female;
 
 	profile = demoPickProfile();
@@ -870,15 +1038,30 @@ static void demoBuildRecord(uint16_t id, treatmentLog_t *rec){
 	if(energy < 1U){ energy = 1U; }
 	rec->releaseEnergy = (int32_t)energy;
 
-	surnameIdx = demoRandRange(0U, (uint32_t)DEMO_SURNAME_NUM - 1U);
+	//姓名去重: 传入已用表时重试到未用组合(每性别600对共1200对, 患者上限100, 实际不会耗尽);
+	//usedKeys为NULL时(同一病人的后续记录)只取一次, 其姓名随后被调用方覆盖
+	nameTries = 0U;
+	do{
+		surnameIdx = demoRandRange(0U, (uint32_t)DEMO_SURNAME_NUM - 1U);
+		if(female != 0U){
+			givenIdx = demoRandRange(0U, (uint32_t)DEMO_GIVEN_FEMALE_NUM - 1U);
+		}
+		else{
+			givenIdx = demoRandRange(0U, (uint32_t)DEMO_GIVEN_MALE_NUM - 1U);
+		}
+		nameKey = demoEncodeNameKey(female, givenIdx, surnameIdx);
+		nameTries++;
+	}while((nameTries < DEMO_NAME_KEY_TRY_LIMIT) &&
+	       (demoNameKeyUsed(usedKeys, usedCount, nameKey) != 0U));
+
+	//西方习惯名前姓后(如"Mary Smith"), 大小写混合可验证搜索的大小写敏感口径
 	if(female != 0U){
-		givenIdx = demoRandRange(0U, (uint32_t)DEMO_GIVEN_FEMALE_NUM - 1U);
-		(void)sprintf(rec->name, "%s %s", demoSurnamePool[surnameIdx], demoGivenFemalePool[givenIdx]);
+		(void)sprintf(rec->name, "%s %s", demoGivenFemalePool[givenIdx], demoSurnamePool[surnameIdx]);
 	}
 	else{
-		givenIdx = demoRandRange(0U, (uint32_t)DEMO_GIVEN_MALE_NUM - 1U);
-		(void)sprintf(rec->name, "%s %s", demoSurnamePool[surnameIdx], demoGivenMalePool[givenIdx]);
+		(void)sprintf(rec->name, "%s %s", demoGivenMalePool[givenIdx], demoSurnamePool[surnameIdx]);
 	}
+	return nameKey;
 }
 
 static uint8_t demoNameValid(const char *name){
@@ -923,8 +1106,10 @@ static treatmentDemoErr_t demoVerify(uint16_t count){
 treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t recMax,
                                          uint8_t clearFirst,
                                          uint16_t *patientsWritten, uint16_t *recordsWritten){
-	uint16_t patients = 0U, records = 0U, targetPatients;
-	uint32_t avgRec, capP;
+	uint16_t patients = 0U, records = 0U;
+	//单次填充内已用姓名对(函数级static避免占用主循环栈); 每次调用以usedCount清零重新累计
+	static uint16_t usedKeys[CONFIG_EPROM_TREATMENT_PATIENT_MAX];
+	uint16_t usedCount = 0U;
 #if (CONFIG_TREATMENT_DEMO_VERBOSE == 1)
 	uint32_t tickStart;
 #endif
@@ -947,30 +1132,32 @@ treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t 
 	tickStart = HAL_GetTick();
 #endif
 
-	/* 随机病人数: 按记录数范围中值估算物理可容纳病人数, 再在 [1, capP] 内随机;
-	 * 实际写入仍以运行时 FreeBytesPR 物理检查为准, 写不下即安全停止。 */
-	avgRec = ((uint32_t)recMin + (uint32_t)recMax) / 2U;
-	capP = REG_SIZE / ((uint32_t)PAT_BYTES + avgRec * (uint32_t)REC_BYTES);
-	if(capP < 1U){ capP = 1U; }
-	targetPatients = (uint16_t)demoRandRange(1U, capP);
-
-	while(patients < targetPatients){
+	/* 填满模式: 不再随机病人总数, 持续新建患者直到患者硬上限(PATIENT_FULL)或剩余空间
+	 * 不足以再容纳一个患者行+首条记录; 每患者记录数仍在 [recMin, recMax] 内随机,
+	 * 尾部空间不足时由内部循环安全截断, 写不下即停, 不产生越界 */
+	while(1){
 		treatmentLog_t base;
 		treatmentEpromErr_t e;
-		uint16_t wantRec, pid, k;
+		uint16_t wantRec, pid, k, nameKey;
+
+		/* 停止条件1: 患者数达到硬上限 */
+		if(CntP() >= (uint16_t)CONFIG_EPROM_TREATMENT_PATIENT_MAX){ break; }
+		/* 停止条件2: 剩余空间放不下 患者行+至少1条记录 */
+		if(FreeBytesPR(CntP(), CntR()) < (uint32_t)(PAT_BYTES + REC_BYTES)){ break; }
 
 		/* 该病人的目标记录数(每病人独立随机) */
 		wantRec = (uint16_t)demoRandRange((uint32_t)recMin, (uint32_t)recMax);
 
-		/* 第一重保险(空隙): 剩余空间须至少容纳 患者行+首条记录, 否则停止填充 */
-		if(FreeBytesPR(CntP(), CntR()) < (uint32_t)(PAT_BYTES + REC_BYTES)){ break; }
-
-		/* 首条: 建立新患者(随机身份)并写入第 1 条记录; 调用前取 next id 即实际分配 id */
+		/* 首条: 建立新患者(随机身份, 且姓名不与本次已写入患者重复)并写入第 1 条记录;
+		 * 调用前取 next id 即实际分配 id */
 		pid = treatmentGetNextPatientId();
-		demoBuildRecord(pid, &base);
+		nameKey = demoBuildRecord(pid, &base, usedKeys, usedCount);
 		e = treatmentEpromAdd(&base);
 		if((e == TREATMENT_EPROM_ERR_FULL) || (e == TREATMENT_EPROM_ERR_PATIENT_FULL)){ break; }
 		if(e != TREATMENT_EPROM_OK){ return TREATMENT_DEMO_ERR_IO; }
+		//患者写入成功后登记姓名对, 后续患者不得再取同一全名
+		usedKeys[usedCount] = nameKey;
+		usedCount++;
 		records++;
 
 		/* 第 2..wantRec 条: 复用患者身份(id/age/gender/name), 仅治疗参数随机 */
@@ -978,7 +1165,8 @@ treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t 
 			treatmentLog_t more;
 			/* 第一重保险(空隙): 剩余空间不足一条记录则结束该病人 */
 			if(FreeBytesPR(CntP(), CntR()) < REC_BYTES){ break; }
-			demoBuildRecord(pid, &more);
+			//传NULL跳过查重: 本记录姓名随后被base.name覆盖, 不产生新患者
+			(void)demoBuildRecord(pid, &more, NULL, 0U);
 			more.id = pid;
 			more.age = base.age;
 			more.gender = base.gender;
@@ -995,8 +1183,8 @@ treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t 
 	if(patientsWritten != NULL){ *patientsWritten = patients; }
 	if(recordsWritten != NULL){ *recordsWritten = records; }
 #if (CONFIG_TREATMENT_DEMO_VERBOSE == 1)
-	printf("%s:random fill ok, patients=%u records=%u targetP=%u cost=%lums free=%lu\n",
-		__func__, patients, records, targetPatients,
+	printf("%s:fill-to-cap ok, patients=%u records=%u cost=%lums free=%lu\n",
+		__func__, patients, records,
 		(unsigned long)(HAL_GetTick() - tickStart),
 		(unsigned long)treatmentGetFreeBytes());
 #endif

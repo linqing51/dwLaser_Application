@@ -159,7 +159,8 @@ typedef enum{
 	TREATMENT_EPROM_ERR_EMPTY,        //索引处无记录
 	TREATMENT_EPROM_ERR_IO,           //EPROM 读写失败
 	TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND,
-	TREATMENT_EPROM_ERR_PATIENT_FULL
+	TREATMENT_EPROM_ERR_PATIENT_FULL,
+	TREATMENT_EPROM_ERR_POWER_LOW     //PVD 检测到欠压, 拒绝开启新写入事务
 }treatmentEpromErr_t;
 
 /* 语义别名(存储层内部及新代码使用) */
@@ -215,6 +216,12 @@ treatmentEpromErr_t treatmentEpromUpdate(uint16_t index, const treatmentLog_t *l
 treatmentEpromErr_t treatmentEpromGet(uint16_t index, treatmentLog_t *out);
 treatmentEpromErr_t treatmentEpromClear(void);
 uint32_t treatmentEpromCalcFwCrc(void);
+
+/* PVD 欠压写入门控: 配置 PVD(2.8V 阈值, EXTI line16 双沿中断),
+ * 欠压时内部置门控标志, 写路径在开启新事务前拒绝写入。
+ * 须在开机外设初始化完成后、业务任务启动前调用一次。 */
+void treatmentPvdInit(void);
+uint8_t treatmentWriteBlocked(void);
 typedef void (*treatmentEpromVisitFn)(uint16_t index, const treatmentLog_t *log);
 void treatmentEpromTraverse(treatmentEpromVisitFn fn);
 /*****************************************************************************/
@@ -236,7 +243,9 @@ typedef enum{
 	TREATMENT_DEMO_ERR_FULL,
 	TREATMENT_DEMO_ERR_VERIFY
 }treatmentDemoErr_t;
-/* 随机虚拟病历填充: 随机病人数, 每个病人的记录数在 [recMin, recMax] 内随机。
+/* 虚拟病历填充(填满模式): 不再随机病人总数, 持续新建患者直到患者硬上限
+ * (CONFIG_EPROM_TREATMENT_PATIENT_MAX)或剩余空间放不下一个患者+首条记录;
+ * 每个病人的记录数在 [recMin, recMax] 内随机, 尾部空间不足时安全截断。
  * recMin 与 recMax 同时为 0 时使用默认范围 5..20。
  * 所有 EPROM 写入经 FreeBytesPR(空隙) + RowWrite/InRegion(区间) 双重越界校验。
  * patientsWritten/recordsWritten 可为 NULL, 分别返回实际写入的病人数与记录数。 */

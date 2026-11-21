@@ -2891,7 +2891,8 @@ static void listTreatmentClampWindow(void){
   }
 }
 
-//刷新病历列表页:按窗口起始位置把过滤后患者的姓名/ID/病历数写入对应控件,并更新选中按钮状态
+//刷新病历列表页:按窗口起始位置把过滤后患者的姓名/ID/病历数写入对应控件,并更新选中按钮状态;
+//空槽位三类文本清空, 选择/删除/编辑三个按键隐藏并禁止触摸, 有效槽位恢复显示与使能
 void refreshListTreatmentDisplay(void){
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
   uint16_t recordCount = listTreatmentGetCount();
@@ -2905,22 +2906,34 @@ void refreshListTreatmentDisplay(void){
     uint16_t idCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_ID_0 + i);
     uint16_t countCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_0 + i);
     uint16_t selectCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0 + i);
+    uint16_t deleteCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0 + i);
+    uint16_t editCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_0 + i);
+    uint8_t slotOccupied;
     memset(dispBuf, 0x0, sizeof(dispBuf));
     if(listTreatmentGetViewPatient(viewPos, &pat)){
+      slotOccupied = 1U;
       //列表只显示患者姓名: 患者信息存在即显示, 同一患者只出现一次, 与其病历数量无关(含0个病历)
       strncpy(dispBuf, pat.name, sizeof(pat.name));
       dispBuf[sizeof(pat.name) - 1U] = '\0';
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)dispBuf);
       sprintf(dispBuf, "AR %04u", (unsigned int)pat.id);//患者ID(AR编号)
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)dispBuf);
-      sprintf(dispBuf, "%u", (unsigned int)treatmentGetRecordCountForPatient(pat.id));//该患者已有病历数
+      sprintf(dispBuf, "Records: %u", (unsigned int)treatmentGetRecordCountForPatient(pat.id));//该患者已有病历数, 0条时显示"Records: 0"
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)dispBuf);
     }
     else{//视图外空槽位: 三类文本全部清空
+      slotOccupied = 0U;
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)"");
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)"");
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)"");
     }
+    //有效槽位三个按键显示并允许触摸, 空槽位三个按键隐藏并禁止触摸; 过滤/翻页/重进后槽位状态变化也按此显式恢复
+    SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, selectCtrl, slotOccupied);
+    SetControlEnable(GDDC_PAGE_LIST_TREATMENT, selectCtrl, slotOccupied);
+    SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, deleteCtrl, slotOccupied);
+    SetControlEnable(GDDC_PAGE_LIST_TREATMENT, deleteCtrl, slotOccupied);
+    SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, editCtrl, slotOccupied);
+    SetControlEnable(GDDC_PAGE_LIST_TREATMENT, editCtrl, slotOccupied);
     //选中患者对应的按钮高亮,视图外或空槽位取消高亮
     SetButtonValue(GDDC_PAGE_LIST_TREATMENT, selectCtrl,
       (viewPos < listTreatmentCtx.filteredCount) && (viewPos == listTreatmentCtx.selectedIndex));
@@ -2954,11 +2967,13 @@ void listTreatmentSetFindText(const char *text){
   refreshListTreatmentDisplay();
 }
 
-//进入病历列表页:清空查找字母并重建患者视图, 窗口从第一页开始, 默认选中第一个
+//进入病历列表页:清空查找字母并重建患者视图, 窗口从第一页开始, 默认选中第一个;
+//同时清空屏幕搜索框, 保证CLOSE关闭后再进入页面时上次输入不残留(USB操作页返回不走此函数, 保留搜索内容)
 void enterListTreatmentPage(void){
   listTreatmentCtx.topIndex = 0U;
   listTreatmentCtx.selectedIndex = 0U;
   listTreatmentCtx.findText[0] = '\0';
+  SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_SEARCH_NAME, (uint8_t*)"");
   listTreatmentRebuildFilter();
   SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)"");
   refreshListTreatmentDisplay();
@@ -3498,7 +3513,7 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
       sprintf(dispBuf, "USB backup import failed!");
     }
   }
-  else{//导出: 机内病历写CSV到U盘; 成功文案由下方"USB backup: X patients · Y treatment records"统一生成
+  else{//导出: 机内病历写CSV到U盘; 成功文案由下方"USB backup: X patients, Y treatment records"统一生成
     listTreatmentCtx.usbErr = (uint8_t)treatmentLogSaveToUdisk(&listTreatmentCtx.usbCount);
     if(listTreatmentCtx.usbErr != (uint8_t)TREATMENT_USB_OK){//失败: 按错误码填结果栏; 成功文案在下方统一生成
       if(listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_ERR_MOUNT){
@@ -3519,7 +3534,7 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
   if((listTreatmentCtx.usbOp != 2U) && (listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK)){
     //导出成功: 结果栏显示本次备份概况(患者数/已写入的治疗记录数), 替代原来的成功提示
     memset(dispBuf, 0x0, sizeof(dispBuf));
-    sprintf(dispBuf, "USB backup: %u patients · %u treatment records",
+    sprintf(dispBuf, "USB backup: %u patients, %u treatment records",
       (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentCtx.usbCount);
   }
   setOperatorUsbText(dispBuf);//结果文案交给usbText统一维护, 页面冷加载重发同内容不会覆盖

@@ -64,7 +64,7 @@
 本节为**新增强制规格**，与旧描述冲突时以本节为准。控件编号必须与屏幕工程 `vTFT_HMI/GDDC_PAGE_OPERATOR_USB.tft` 完全一致（`TEXT_SUMMARY` = 1、`TEXT_SUMMARY_USB` = 2、`KEY_SAVE_UDISK` = 3、`KEY_LOAD_UDISK` = 4、`KEY_CANCEL` = 5）；若宏值被改成 10/11/12 等与屏幕工程不符的编号，按键事件无法命中，表现为按键无响应。
 
 1. 列表页 `GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB`（控件 40）按下（`state = 1`）调用 `enterOperatorUsbPage()`：置 `NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT`、`NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB`，先 `refreshOperatorUsbDisplay()` 预刷新本页控件，再 `SetScreen(19)`，避免上一页控件残留。
-2. `TEXT_SUMMARY`（控件 1）显示机内病历储存概况，**文本控件内的显示内容一律英文**（强制规则：任何文本框、标签等文本控件都不得下发中文，含中文文案、全角标点），格式固定为 `Existing patients: X, total treatment records: Y`，即“现有患者数量X，累计历史治疗记录Y”的英文表述：
+2. `TEXT_SUMMARY`（控件 1）显示机内病历储存概况，**文本控件内的显示内容一律英文**（英文显示为全工程至高规格，适用范围与人工授权要求见根目录 `AI_RULES.md`），格式固定为 `Existing patients: X, total treatment records: Y`，即“现有患者数量X，累计历史治疗记录Y”的英文表述：
    - `X` = `treatmentEpromGetPatientCount()`，机内去重患者数；
    - `Y` = `listTreatmentGetCount()`（即 `NVRAM0[DM_TREATMENT_NUM]`，负值防御返回 0），累计历史治疗记录数。
    - 该文本框在进入本页与页面冷加载完成时都必须刷新，不受列表页搜索过滤影响（全局口径）。
@@ -77,7 +77,7 @@
 
 ### 4.1 确认页通用约定
 
-导出确认页 `GDDC_PAGE_OPERATOR_USB_SAVE`（页面 ID 20）与导入确认页 `GDDC_PAGE_OPERATOR_USB_LOAD`（页面 ID 21）分别独立，由 `listTreatmentCtx.usbOp` 区分流程（`1` = 导出 SAVE，`2` = 导入 LOAD）；两个确认页上的文字**一律英文显示**。`KEY_SAVE_UDISK` / `KEY_LOAD_UDISK` **都不立即读写 U 盘**，先进入对应确认页。
+导出确认页 `GDDC_PAGE_OPERATOR_USB_SAVE`（页面 ID 20）与导入确认页 `GDDC_PAGE_OPERATOR_USB_LOAD`（页面 ID 21）分别独立，由 `listTreatmentCtx.usbOp` 区分流程（`1` = 导出 SAVE，`2` = 导入 LOAD）；两个确认页上的文字按根目录 `AI_RULES.md` 至高规格**一律英文显示**。`KEY_SAVE_UDISK` / `KEY_LOAD_UDISK` **都不立即读写 U 盘**，先进入对应确认页。
 
 ### 4.2 导出 SAVE（usbOp = 1，点 KEY_SAVE_UDISK）
 
@@ -91,7 +91,7 @@
 2. `KEY_CANCEL`（控件 10）：取消写入，不修改 U 盘与机内 EPROM，返回操作页 `GDDC_PAGE_OPERATOR_USB`，并**清空**该页 `TEXT_SUMMARY_USB`（写空串）；该页 `TEXT_SUMMARY` 保持进入本页前显示的内容不变。
 3. `KEY_OK`（控件 11）：授权把机内病历转换成 CSV 写入 U 盘，复用 `treatmentLogSaveToUdisk`，文件名由 `TREATMENTLOG_FILENAME` 宏指定（`/treatment_v1.csv`，覆盖同名文件）；实际写入在 `listTreatmentUsbLoop` 中执行一次，不在按键回调里阻塞。
 4. 写入完成后自动返回 `GDDC_PAGE_OPERATOR_USB`，并在 `TEXT_SUMMARY_USB`（操作页控件 2）显示本次备份概况：
-   - 成功：`USB backup: X patients · Y treatment records`
+   - 成功：`USB backup: X patients, Y treatment records`
      - `X` = 机内患者数 `treatmentEpromGetPatientCount()`；`Y` = 本次实际写入 U 盘的治疗记录数 `listTreatmentCtx.usbCount`。
    - 失败按错误码：`NO UDISK` / `NO RECORDS` / `USB OPEN FAILED` / `USB BACKUP FAILED`
 5. 结果栏内容统一保存在 `listTreatmentCtx.usbText`，由 `refreshOperatorUsbDisplay()` 下发；因此回到操作页后的页面冷加载刷新不会把结果覆盖成 `UDISK OK`。重新从列表页进入操作页时，`usbText` 恢复为 U 盘在位状态（`UDISK OK` / `NO UDISK`）。
@@ -162,7 +162,7 @@
 
 ## 六、删除患者确认（KEY_DELETE_0–4 / GDDC_PAGE_DELETE_TREATMENT_CONFIRM）
 
-本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCLE`（控件 2），文本框 `TEXT_SUMMARY_0–3`（控件 10–13）。页面上所有文字一律英文显示。
+本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCLE`（控件 2），文本框 `TEXT_SUMMARY_0–3`（控件 10–13）。页面上所有文字按根目录 `AI_RULES.md` 至高规格一律英文显示。
 
 ### 6.1 列表页进入删除确认页（不立即删除）
 
@@ -202,7 +202,7 @@
 ## 七、维护约束
 
 - 仅在 `run_treatment` 分支、唯一活跃工程 `targetBoard_G5_TRI_A1_20260915` 内修改；遵循仓库根 `AGENTS.md` 的 UTF-8 编码与代码风格要求。
-- **文本控件显示一律英文（强制规则）**：所有通过 `SetTextValue` 下发到文本控件的内容必须为英文，不得使用中文文案或中文全角标点；数量分隔用的中点 `·` 按本文件规格保留。若旧描述与本条冲突，以本条为准；源码注释仍用中文。
+- 文本控件英文显示与非 ASCII 符号转换要求已提升为**全工程至高规格**，统一以根目录 `AI_RULES.md` 的“显示文本一律英文、非 ASCII 符号一律转换”条款为准（适用全部页面，修改或开口子须经仓库所有者人工授权）；本文件不再维护局部规则，原中点 `·` 等非 ASCII 分隔符一律改为 ASCII 符号。
 - 改动后按 `活跃工程说明.md` 做 AC5 Rebuild，**0 Error 才算通过**；无硬件时只能称为“编译级验证”，不得声称上板功能/时序已验证。
 - 若控件 ID、页面编号或本文件描述的规则发生变化，必须同步更新本文件，保持规格与代码一致。
 
@@ -231,3 +231,23 @@
 5. **患者姓名长度 18 个字符**：由 `treatment.h` 的 `CONFIG_TREATMENT_NAME_LEN = 18` 定义，缓冲区 `TREATMENT_NAME_SIZE = 19`（含结束符），`treatmentLog_t.name` 与 `patientRecord_t.name` 共用该长度；固件在姓名录入处按 `TREATMENT_NAME_SIZE - 1` 截断，屏幕输入控件 `text_len_max` 保持 255，以固件截断为准。
 6. 姓名长度改变会改变片上患者行尺寸（当前 24 字节），存量病历与新结构不兼容；沿用既有约定——固件 CRC 变化时 `dcHmiLoopInit` 清空整片 EPROM，不做迁移与向后兼容。
 7. 本节的 RTC 列与姓名长度属于数据规格，任何后续改动必须先更新本节，并同步 `minicsvApp.c` 的列定义（`TREATMENT_CSV_COLUMNS_MIN` / `TREATMENT_CSV_COLUMNS`）与 `treatmentCsvHeader`。
+
+---
+
+## 十、空槽位控件隐藏与搜索框清空（强制规格，2026-11-20）
+
+1. **空槽位判定**：窗口内槽位 `i` 的视图位置 `viewPos = topIndex + i`，当 `viewPos >= filteredCount` 时该槽位为空（搜索命中不足一屏、空视图、末页未满均适用）。用户所述“搜索后只有 2 个对应病人时，槽位 2–4 全部空白”即本条的具体情形；本条对 0–4 任意数量空槽位统一生效，不只限于 2 个病人的场景。
+2. **空槽位文本**：`TEXT_NAME_i`、`TEXT_ID_i`、`TEXT_RECORD_COUNT_i` 三个文本框一律下发空串，不显示任何内容。
+3. **空槽位按键**：`KEY_SELECT_PATIENT_i`、`KEY_DELETE_i`、`KEY_EDIT_RECORD_i` 三个按键必须同时 `SetControlVisiable(..., 0)` 隐藏、`SetControlEnable(..., 0)` 禁止触摸；各回调函数既有的空槽位 `viewPos >= filteredCount` 直接返回防护继续保留，作为双保险。
+4. **有效槽位恢复**：每次 `refreshListTreatmentDisplay()` 对全部 5 个槽位显式下发状态——有效槽位三个按键 `SetControlVisiable/Enable(..., 1)`，保证过滤、翻页、删除后重新占用的槽位按键能正常显示与触摸，不依赖屏幕工程的默认控件状态。
+5. **搜索框清空**：每次经 `enterListTreatmentPage()` 进入本页（含点 `KEY_CLOSE` 回到待机页后再次进入），除清空 RAM 中 `findText` 外，必须向 `GDDC_PAGE_LIST_TREATMENT_TEXT_SEARCH_NAME` 下发空串，使屏幕搜索框同步清空，随后按空串重建视图、显示全部患者。
+6. **例外路径**：`listTreatmentOperatorUsbBack()` 从 USB 操作页返回时保留当前搜索内容与窗口位置，不清空搜索框，不适用本条第 5 点。
+
+---
+
+## 十一、病历数量文本框 TEXT_RECORD_COUNT_0–4 显示格式（强制规格，2026-11-20）
+
+1. **有效槽位（有对应病人）**：`TEXT_RECORD_COUNT_i` 显示固定英文格式 `Records: X`，其中 `X = treatmentGetRecordCountForPatient(pat.id)`，即该患者实际已记录的病历数量；**X 可以为 0**，此时显示 `Records: 0`。
+2. **空槽位**：仍按第十节下发空串，不显示任何内容。
+3. 文案为纯 ASCII（英文字母、冒号、空格与数字），符合根目录 `AI_RULES.md` 显示文本一律英文的至高规格，屏幕现有字体（font 6，ASC_CHS_20）可直接渲染，无需改屏幕工程。
+4. 曾提出的中文“病历数量X”方案：与 `AI_RULES.md` 英文显示至高规格冲突，且屏幕资源无中文字体（`dwLaser.fidx` 仅含 30 个 ASCII 字体，`charset.txt` 不含“病历数量”字形），经确认**不采用**。将来若要恢复中文显示，必须先经仓库所有者人工授权并修改 `AI_RULES.md` 至高规格，再完成屏幕中文字体工程（VisualTFT 配置中文字体、加入字形、重建并烧录屏幕资源），固件按 GB2312/GBK 编码下发。
