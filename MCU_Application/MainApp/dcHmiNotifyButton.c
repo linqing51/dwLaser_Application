@@ -55,6 +55,10 @@ static void diagnosisKeysSetEnable(uint8_t enable) {
 //screen_id 画面ID;control_id 控件ID;state 按钮状态：0弹起，1按下
 void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){ 
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+	//按键互锁: 某按键在途(按下到清零)期间, 其他按键一律拒绝
+	if(!treatmentButtonLockAllowed(screen_id, control_id, state)){
+		return;
+	}
 	if(!listTreatmentUsbButtonAllowed(screen_id, control_id)){//提示页显示期间屏蔽触摸, 载入确认页只放行"覆盖/取消"
 		return;
 	}
@@ -984,7 +988,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         case GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW:{//新建病历: 本次治疗实际发射过激光才允许进入编辑页
           if(state){
             listTreatmentCreateStart();
-            SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1020,28 +1024,28 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         case GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP:{//记录窗口向前翻页
           if(state){
             listTreatmentRecordPageUp();
-            SetButtonValue(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP);//复位自锁按钮并解除互锁
           }
           break;
         }
         case GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN:{//记录窗口向后翻页
           if(state){
             listTreatmentRecordPageDown();
-            SetButtonValue(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN);//复位自锁按钮并解除互锁
           }
           break;
         }
         case GDDC_PAGE_LIST_RECODE_KEY_CLOSE:{//返回病历列表页(13)
           if(state){
             listTreatmentRecordClose();
-            SetButtonValue(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECODE_KEY_CLOSE, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECODE_KEY_CLOSE);//复位自锁按钮并解除互锁
           }
           break;
         }
         case GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT:{//进入患者信息编辑页(17)
           if(state){
             listTreatmentRecordEditPatient();
-            SetButtonValue(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1050,7 +1054,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           if(state && (control_id >= GDDC_PAGE_LIST_RECORD_KEY_DELETE_0)
              && (control_id <= GDDC_PAGE_LIST_RECORD_KEY_DELETE_4)){
             listTreatmentRecordDeleteStart((uint8_t)(control_id - GDDC_PAGE_LIST_RECORD_KEY_DELETE_0));
-            SetButtonValue(GDDC_PAGE_LIST_RECORD, control_id, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, control_id);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1062,14 +1066,14 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         case GDDC_PAGE_DELETE_RECODE_KEY_OK:{
           if(state){
             listTreatmentDeleteRecordConfirm();
-            SetButtonValue(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_KEY_OK, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_KEY_OK);//复位自锁按钮并解除互锁
           }
           break;
         }
         case GDDC_PAGE_DELETE_RECODE_KEY_CANCEL:{
           if(state){
             listTreatmentDeleteRecordCancel();
-            SetButtonValue(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_KEY_CANCEL, 0);//复位自锁按钮
+            treatmentReleaseButton(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_KEY_CANCEL);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1171,7 +1175,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						else{
 							listTreatmentCreateConfirm();
 						}
-						SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_OK, 0);//复位自锁按钮
+						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
 					}
 					break;
 				}
@@ -1183,7 +1187,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						else{
 							listTreatmentCreateCancel();
 						}
-						SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL, 0);//复位自锁按钮
+						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL);//复位自锁按钮并解除互锁
 					}
 					break;
 				}
@@ -1195,14 +1199,14 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				case GDDC_PAGE_REGISTER_TREATMENT_KEY_OK:{//保存: 校验后新建患者并追加到EPROM
 					if(state){
 						listTreatmentCreateConfirm();
-						SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_OK, 0);//复位自锁按钮
+						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
 					}
 					break;
 				}
 				case GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL:{//取消: 返回病历列表页, EPROM不变
 					if(state){
 						listTreatmentCreateCancel();
-						SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL, 0);//复位自锁按钮
+						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL);//复位自锁按钮并解除互锁
 					}
 					break;
 				}

@@ -3166,8 +3166,8 @@ void listTreatmentOperatorUsbBack(void){
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
-  //CANCEL自锁键: 返回列表页(本按键功能)完成后才弹起
-  SetButtonValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_CANCEL, 0);
+  //CANCEL自锁键: 返回列表页(本按键功能)完成后才弹起, 并解除互锁
+  treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_CANCEL);
 }
 
 //PAGE_UP键: 向前翻一整页, 已在第一页(窗口起始位置为0)时不再移动
@@ -3432,6 +3432,81 @@ void listTreatmentCreateCancel(void){//编辑页CANCEL: 放弃本次新建, 返�
 //导出与导入共用GDDC_PAGE_OPERATOR_USB_CONFIRM页面, 由usbOp区分(1=导出, 2=导入); 导入必须先确认, 避免未授权就覆盖机内病历
 
 //触摸放行判断: 写入期间屏蔽一切触摸; 确认页只放行本页的确认与取消按键
+//============================================================================
+// 病历相关页面按键互锁: 任一按键按下(置1)到被单片机清零(置0)期间, 其他按键一律锁定
+//============================================================================
+static uint8_t  g_btnLockActive = 0U;//1=有按键处于"在途"状态
+static uint16_t g_btnLockScreen = 0U;//在途按键所在画面
+static uint16_t g_btnLockControl = 0U;//在途按键控件ID
+
+//画面是否属于需要按键互锁的11个病历相关页面
+static uint8_t treatmentIsLockPage(uint16_t screen){
+  switch(screen){
+    case GDDC_PAGE_LIST_TREATMENT:
+    case GDDC_PAGE_DELETE_TREATMENT_CONFIRM:
+    case GDDC_PAGE_LIST_RECORD:
+    case GDDC_PAGE_DELETE_RECODE:
+    case GDDC_PAGE_EDIT_PATIENT:
+    case GDDC_PAGE_REGISTER_PATIENT:
+    case GDDC_PAGE_OPERATOR_USB:
+    case GDDC_PAGE_OPERATOR_USB_SAVE:
+    case GDDC_PAGE_OPERATOR_USB_LOAD:
+    case GDDC_PAGE_VERIFY_TREATMENT:
+    case GDDC_PAGE_DISCARD_TREATMENT:
+      return 1U;
+    default:
+      return 0U;
+  }
+}
+
+static void treatmentBtnLockArm(uint16_t screen, uint16_t control){
+  g_btnLockActive = 1U;
+  g_btnLockScreen = screen;
+  g_btnLockControl = control;
+}
+
+//仅当释放的是当前在途按键时才解锁(防止误清其他按键的锁)
+static void treatmentBtnLockRelease(uint16_t screen, uint16_t control){
+  if((g_btnLockActive != 0U) && (g_btnLockScreen == screen) && (g_btnLockControl == control)){
+    g_btnLockActive = 0U;
+    g_btnLockScreen = 0U;
+    g_btnLockControl = 0U;
+  }
+}
+
+//画面切换/异常路径强制解锁, 防止在途按键被切走后整页永久锁死
+static void treatmentBtnLockReset(void){
+  g_btnLockActive = 0U;
+  g_btnLockScreen = 0U;
+  g_btnLockControl = 0U;
+}
+
+//按键互锁放行门: 非锁定页不干预; 按下时若已有在途按键则只放行同一按键(重复通知), 拒绝其他按键;
+//弹起(瞬态键state=0)时释放对应锁。返回1=放行, 0=锁定
+uint8_t treatmentButtonLockAllowed(uint16_t screen, uint16_t control, uint8_t state){
+  if(treatmentIsLockPage(screen) == 0U){
+    return 1U;
+  }
+  if(state == 0U){
+    treatmentBtnLockRelease(screen, control);
+    return 1U;
+  }
+  if(g_btnLockActive == 0U){
+    treatmentBtnLockArm(screen, control);
+    return 1U;
+  }
+  if((g_btnLockScreen == screen) && (g_btnLockControl == control)){
+    return 1U;
+  }
+  return 0U;
+}
+
+//在途按键复位包装: 下发清零并同步解除互锁, 供各页自锁键复位统一调用
+void treatmentReleaseButton(uint16_t screen, uint16_t control){
+  SetButtonValue(screen, control, 0);
+  treatmentBtnLockRelease(screen, control);
+}
+
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id){
   //删除确认页等待期间: 只放行本页DELETE/CANCLE, 其余控件与页面一律屏蔽(与USB流程互斥)
   if(listTreatmentCtx.deletePatientId != 0U){
@@ -3514,7 +3589,7 @@ void listTreatmentSaveUsbStart(void){//SAVE_USB按键: 不立即写盘, 先进�
   listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
   listTreatmentCtx.usbCount = 0U;
   enterOperatorUsbConfirmPage();//进入导出确认页(状态6), 等待CANCEL/CONFIRM
-  SetButtonValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK, 0);//自锁键: 进确认页功能完成后弹起
+  treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK);//自锁键: 进确认页功能完成后弹起并解除互锁
 }
 
 void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 不立即读盘, 先进入确认页(确认后才读取U盘CSV覆盖机内病历)
@@ -3525,7 +3600,7 @@ void listTreatmentLoadUsbStart(void){//LOAD_USB按键: 不立即读盘, 先进�
   listTreatmentCtx.usbErr = (uint8_t)TREATMENT_USB_ERR_MOUNT;
   listTreatmentCtx.usbCount = 0U;
   enterOperatorUsbConfirmPage();//进入确认页(状态6), 等待CANCEL/CONFIRM
-  SetButtonValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK, 0);//自锁键: 进确认页功能完成后弹起
+  treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK);//自锁键: 进确认页功能完成后弹起并解除互锁
 }
 
 void listTreatmentUsbConfirm(void){//确认页"OK"(导出/导入通用): 授权执行, 实际读写在轮询里完成一次
@@ -3548,8 +3623,8 @@ void listTreatmentUsbCancel(void){//确认页"CANCEL"(导出/导入通用): 不�
   SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)"");
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
   SetScreen(GDDC_PAGE_OPERATOR_USB);
-  //自锁键: 返回操作页(本按键功能)完成后才弹起
-  SetButtonValue(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
+  //自锁键: 返回操作页(本按键功能)完成后才弹起, 并解除互锁
+  treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL);
 }
 
 //***************************************************************************
@@ -3600,7 +3675,7 @@ void listTreatmentDeleteConfirm(void){
     return;
   }
   delId = listTreatmentCtx.deletePatientId;
-  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_OK, 0);//复位自锁按钮
+  treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
   err = treatmentPatientDelete(delId);//级联删除: 该患者全部记录+患者行
   listTreatmentCtx.deletePatientId = 0U;//退出删除流程
   if(delId == listTreatmentCtx.selectedPatientId){//删的正是当前选中患者: 清空选中, 避免外键/待机名悬空
@@ -3626,7 +3701,7 @@ void listTreatmentDeleteCancel(void){
   if(listTreatmentCtx.deletePatientId == 0U){
     return;
   }
-  SetButtonValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE, 0);//复位自锁按钮
+  treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE);//复位自锁按钮并解除互锁
   listTreatmentCtx.deletePatientId = 0U;
   refreshListTreatmentDisplay();
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
@@ -3947,9 +4022,9 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
   if(NVRAM0[EM_DC_PAGE] != listTreatmentUsbPageOf(listTreatmentCtx.usbState)){//页面被别处切走(如关机确认/休眠): 放弃本次流程
     uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
       ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
-    //中止路径: 本确认页OK/CANCEL都可能处于按下态, 统一弹起避免按键永久锁死
-    SetButtonValue(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 0);
-    SetButtonValue(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
+    //中止路径: 本确认页OK/CANCEL都可能处于按下态, 统一弹起并解除互锁避免按键永久锁死
+    treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK);
+    treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL);
     listTreatmentCtx.usbState = 0U;//退出忙状态, 否则触摸会被一直屏蔽
     return;
   }
@@ -3995,11 +4070,11 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
   refreshOperatorUsbDisplay();//刷新操作页摘要并下发结果栏
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
   SetScreen(GDDC_PAGE_OPERATOR_USB);
-  //OK自锁键: 读写/回读功能全部执行完毕并返回操作页后才弹起
+  //OK自锁键: 读写/回读功能全部执行完毕并返回操作页后才弹起, 并解除互锁
   {
     uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
       ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
-    SetButtonValue(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 0);
+    treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK);
   }
 }
 
@@ -5906,6 +5981,11 @@ static void ProcessMessage( PCTRL_MSG msg, uint16_t size ){
 static void NotifyScreen(uint16_t screen_id){
 	//页面切换完成通知(屏幕主动上报,MSG_GET_CURRENT_SCREEN): 页面加载完成后重新下发该页全部显示值,
 	//修复"SetScreen 后立即大批量刷新"在页面冷加载窗口丢帧导致首次进入个别控件不显示(如待机页650指示功率文本)
+	//切页安全解锁: 新页面与在途按键所在页不同(原页面被切走, 其按键无法正常复位), 强制解除互锁防止新页面永久锁死;
+	//同一页面的加载通知不解锁, 避免在途动作期间被误放行
+	if((g_btnLockActive != 0U) && (g_btnLockScreen != screen_id)){
+		treatmentBtnLockReset();
+	}
 	switch(screen_id){
 		case GDDC_PAGE_STANDBY_DUAL_1470_635:
 		case GDDC_PAGE_STANDBY_DUAL_1940_635:

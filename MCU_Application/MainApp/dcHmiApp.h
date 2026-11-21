@@ -107,6 +107,8 @@ void listTreatmentDeleteConfirm(void);//删除确认页DELETE: 级联删除患�
 void listTreatmentDeleteCancel(void);//删除确认页CANCLE: 不删除并返回列表页
 
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id);//触摸放行判断(写入中屏蔽触摸, 确认页只放行确认/取消)
+uint8_t treatmentButtonLockAllowed(uint16_t screen_id, uint16_t control_id, uint8_t state);//按键互锁门(在途期间锁定其他按键)
+void treatmentReleaseButton(uint16_t screen_id, uint16_t control_id);//在途按键清零并解除互锁
 uint8_t listTreatmentUsbBusy(void);//确认页/写入中(usbState非0)
 void listTreatmentSaveUsbStart(void);//USB操作页: SAVE_UDISK按键, 进入确认页(不立即写盘, 确认后才CSV导出)
 void listTreatmentLoadUsbStart(void);//USB操作页: LOAD_UDISK按键, 进入确认页(不立即读盘, 确认后才CSV导入覆盖机内病历)
