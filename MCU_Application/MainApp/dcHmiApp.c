@@ -2740,11 +2740,11 @@ typedef struct{
   uint8_t  pendingValid;//1=本次治疗确实发射过且尚未落成病历
   treatmentLog_t pending;//待存病历快照(功率/波长/方案/发射时间/发射能量)
   //患者视图过滤: findText为SEARCH_NAME输入的查找字母(空串=不过滤), filteredCount为命中总数;
-  //不缓存全量索引, 仅按当前窗口(5)按需扫描, 结果存windowRow, windowTop为其对应窗口起点(0xFFFF=待重建)
+  //紧凑索引sortedIndex存命中患者的全局索引(按姓名+原始索引全序排序), 仅2字节/条, 物理上限4710字节;
+  //窗口/选择直接按索引O(1)定位, 渲染时才回读整行, 不再为每次翻页做全表多轮扫描
   char findText[16];
   uint16_t filteredCount;//过滤后命中的患者数量(视图总数)
-  uint16_t windowTop;//windowRow当前对应的窗口起点(0xFFFF=缓存失效, 需重新扫描)
-  patientRecord_t windowRow[LIST_TREATMENT_WINDOW_SIZE];//当前窗口命中患者行(按姓名排序后)
+  uint16_t sortedIndex[TREATMENT_PHYSICAL_PATIENT_CAP];//命中患者全局索引, 已按显示顺序排序
   //当前选中患者: selectedPatientId为稳定患者编号(0=未选择), 后续治疗记录以该id为外键归属; selectedPatientName供待机页PATIENT_NAME显示
   uint16_t selectedPatientId;
   char selectedPatientName[TREATMENT_NAME_SIZE];
@@ -2829,90 +2829,86 @@ static int16_t listTreatmentOrderCmp(const char *nameA, uint16_t idxA,
   return 0;
 }
 
-//重建过滤视图: 仅扫描患者主表统计命中总数(不缓存索引/姓名), 并令窗口缓存失效;
-//数据变化(新建/删除/U盘载入)或查找字母变化时调用, 翻页期间复用
+//全序比较两个全局索引对应患者: 读两行(仅排序时一次性发生), 按姓名+原始索引全序键
+static int16_t listTreatmentOrderOfIndices(uint16_t idxA, uint16_t idxB){
+  patientRecord_t a, b;
+  if(treatmentPatientGetByIndex(idxA, &a) != TREATMENT_EPROM_OK){ return 0; }
+  if(treatmentPatientGetByIndex(idxB, &b) != TREATMENT_EPROM_OK){ return 0; }
+  return listTreatmentOrderCmp(a.name, idxA, b.name, idxB);
+}
+
+//堆排序下沉: 维护"全序键最大者在根"的大顶堆, 比较时按需读FRAM, 无递归、栈占用恒定
+static void listTreatmentSiftDown(uint16_t *arr, uint16_t heapSize, uint16_t root){
+  uint16_t cur = root;
+  while(1){
+    uint16_t left = (uint16_t)(2U * cur + 1U);
+    uint16_t right = (uint16_t)(2U * cur + 2U);
+    uint16_t largest = cur;
+    if((left < heapSize) && (listTreatmentOrderOfIndices(arr[left], arr[largest]) > 0)){
+      largest = left;
+    }
+    if((right < heapSize) && (listTreatmentOrderOfIndices(arr[right], arr[largest]) > 0)){
+      largest = right;
+    }
+    if(largest == cur){ break; }
+    uint16_t tmp = arr[cur];
+    arr[cur] = arr[largest];
+    arr[largest] = tmp;
+    cur = largest;
+  }
+}
+
+//对命中全局索引做原地堆排序(升序), 一次性O(N log N)比较, 之后任意翻页/选择O(1)
+static void listTreatmentSortIndices(uint16_t *arr, uint16_t n){
+  if(n < 2U){ return; }
+  for(int32_t k = (int32_t)(n / 2U) - 1; k >= 0; k--){
+    listTreatmentSiftDown(arr, n, (uint16_t)k);
+  }
+  for(uint16_t end = (uint16_t)(n - 1U); end > 0U; end--){
+    uint16_t tmp = arr[0];
+    arr[0] = arr[end];
+    arr[end] = tmp;
+    listTreatmentSiftDown(arr, end, 0U);
+  }
+}
+
+//重建过滤视图: 单遍扫描患者主表, 把命中患者的全局索引按存储顺序收集, 再按全序键排序;
+//数据变化(新建/删除/U盘载入)或查找字母变化时调用, 翻页期间直接复用排序结果, 不再重复扫描
 static void listTreatmentRebuildFilter(void){
   uint16_t total = treatmentGetPatientCount();
-  uint16_t i;
   listTreatmentCtx.filteredCount = 0U;
-  for(i = 0U; i < total; i++){
+  for(uint16_t i = 0U; i < total; i++){
     patientRecord_t pat;
     if(treatmentPatientGetByIndex(i, &pat) != TREATMENT_EPROM_OK){
       continue;
     }
-    if(listTreatmentMatchFind(pat.name)){
-      listTreatmentCtx.filteredCount++;
+    if(listTreatmentMatchFind(pat.name) == 0U){
+      continue;
     }
+    //物理容量保护: 命中数不超过紧凑索引上界(实际由区块容量保证, 防御兜底)
+    if(listTreatmentCtx.filteredCount >= TREATMENT_PHYSICAL_PATIENT_CAP){
+      break;
+    }
+    listTreatmentCtx.sortedIndex[listTreatmentCtx.filteredCount] = i;
+    listTreatmentCtx.filteredCount++;
   }
-  listTreatmentCtx.windowTop = 0xFFFFU;//窗口缓存失效, 下次取视图时重新扫描
+  listTreatmentSortIndices(listTreatmentCtx.sortedIndex, listTreatmentCtx.filteredCount);
 }
 
-//按需收集当前窗口: 从第0名起逐档求"严格大于游标"的最小命中患者, 推进到窗口末位, 仅保留最后5行;
-//常量内存(游标+最佳+单个患者行), 不依赖患者数量; 代价是每次重建窗口需多次扫描, 仅在翻页/刷新时发生
-static void listTreatmentCollectWindow(void){
-  uint16_t total = treatmentGetPatientCount();
-  uint16_t end = (uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE);
-  char cursorName[TREATMENT_NAME_SIZE];
-  char bestName[TREATMENT_NAME_SIZE];
-  uint16_t cursorIndex = 0U, bestIndex = 0U;
-  uint8_t haveCursor = 0U;
-  uint8_t slot;
-  for(slot = 0U; slot < LIST_TREATMENT_WINDOW_SIZE; slot++){
-    memset(&listTreatmentCtx.windowRow[slot], 0, sizeof(listTreatmentCtx.windowRow[slot]));
-  }
-  if(end > listTreatmentCtx.filteredCount){ end = listTreatmentCtx.filteredCount; }
-  for(uint16_t rank = 0U; rank < end; rank++){
-    uint8_t haveBest = 0U;
-    for(uint16_t i = 0U; i < total; i++){
-      patientRecord_t pat;
-      if(treatmentPatientGetByIndex(i, &pat) != TREATMENT_EPROM_OK){
-        continue;
-      }
-      if(listTreatmentMatchFind(pat.name) == 0U){
-        continue;
-      }
-      if((haveCursor != 0U) &&
-         (listTreatmentOrderCmp(pat.name, i, cursorName, cursorIndex) <= 0)){
-        continue;//已落在游标(含)之前, 跳过
-      }
-      if((haveBest == 0U) ||
-         (listTreatmentOrderCmp(pat.name, i, bestName, bestIndex) < 0)){
-        bestIndex = i;
-        (void)strncpy(bestName, pat.name, TREATMENT_NAME_SIZE);
-        bestName[TREATMENT_NAME_SIZE - 1U] = '\0';
-        haveBest = 1U;
-      }
-    }
-    if(haveBest == 0U){ break; }//理论不会发生(命中数已提前统计), 防御兜底
-    cursorIndex = bestIndex;
-    (void)strncpy(cursorName, bestName, TREATMENT_NAME_SIZE);
-    cursorName[TREATMENT_NAME_SIZE - 1U] = '\0';
-    haveCursor = 1U;
-    if(rank >= listTreatmentCtx.topIndex){
-      //窗口内槽位: 回读该患者完整行(仅窗口5次, 不增加算法复杂度)
-      (void)treatmentPatientGetByIndex(bestIndex,
-        &listTreatmentCtx.windowRow[(uint8_t)(rank - listTreatmentCtx.topIndex)]);
-    }
-  }
-  listTreatmentCtx.windowTop = listTreatmentCtx.topIndex;
-}
-
-//视图位置 -> 患者行: 视图外位置返回0, 命中返回1并填充患者行(按需确保当前窗口已收集)
+//视图位置 -> 患者行: 视图外位置返回0, 命中则经紧凑索引O(1)定位全局索引并回读整行;
+//不再依赖窗口缓存, 任意有效视图位置都可取, 每次仅1次FRAM行读
 static uint8_t listTreatmentGetViewPatient(uint16_t viewPos, patientRecord_t *out){
+  uint16_t globalIndex;
   if(out == NULL){
     return 0U;
   }
   if(viewPos >= listTreatmentCtx.filteredCount){
     return 0U;
   }
-  if(listTreatmentCtx.windowTop != listTreatmentCtx.topIndex){
-    listTreatmentCollectWindow();
+  globalIndex = listTreatmentCtx.sortedIndex[viewPos];
+  if(treatmentPatientGetByIndex(globalIndex, out) != TREATMENT_EPROM_OK){
+    return 0U;
   }
-  if((viewPos < listTreatmentCtx.topIndex) ||
-     (viewPos >= (uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE))){
-    return 0U;//请求位置不在当前窗口(防御)
-  }
-  *out = listTreatmentCtx.windowRow[(uint8_t)(viewPos - listTreatmentCtx.topIndex)];
   return 1U;
 }
 
@@ -2951,31 +2947,55 @@ void refreshListTreatmentDisplay(void){
   uint16_t recordCount = listTreatmentGetCount();
   uint16_t pageCount;
   uint16_t pageNow;
+  patientRecord_t windowPat[LIST_TREATMENT_WINDOW_SIZE];
+  uint16_t windowRecCount[LIST_TREATMENT_WINDOW_SIZE];
   listTreatmentClampWindow();
+  //第一步: 预读当前窗口患者行(最多5次FRAM行读), 记录数先清零
+  for(uint8_t i = 0U; i < LIST_TREATMENT_WINDOW_SIZE; i++){
+    uint16_t viewPos = (uint16_t)(listTreatmentCtx.topIndex + i);
+    memset(&windowPat[i], 0, sizeof(windowPat[i]));
+    windowRecCount[i] = 0U;
+    (void)listTreatmentGetViewPatient(viewPos, &windowPat[i]);
+  }
+  //第二步: 单遍记录id轻读(2字节/条), 一次性统计窗口各患者记录数;
+  //替代原先每个患者一次全表28字节扫描(5次), 字节量降约14倍
+  {
+    uint16_t totalRec = treatmentEpromGetCount();
+    for(uint16_t r = 0U; r < totalRec; r++){
+      uint16_t rid;
+      if(treatmentRecordGetPatientIdByIndex(r, &rid) != TREATMENT_EPROM_OK){
+        break;
+      }
+      for(uint8_t s = 0U; s < LIST_TREATMENT_WINDOW_SIZE; s++){
+        if((windowPat[s].id != 0U) && (rid == windowPat[s].id)){
+          windowRecCount[s]++;
+          break;
+        }
+      }
+    }
+  }
+  //第三步: 按预读结果渲染各槽位(渲染循环内不再产生FRAM访问)
   for(uint8_t i = 0; i < LIST_TREATMENT_WINDOW_SIZE; i++){
     uint16_t viewPos = (uint16_t)(listTreatmentCtx.topIndex + i);
-    patientRecord_t pat;
     uint16_t nameCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0 + i);
     uint16_t idCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_ID_0 + i);
     uint16_t countCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_0 + i);
     uint16_t selectCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0 + i);
     uint16_t deleteCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0 + i);
     uint16_t editCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_0 + i);
-    uint8_t slotOccupied;
+    uint8_t slotOccupied = (windowPat[i].id != 0U) ? 1U : 0U;
     memset(dispBuf, 0x0, sizeof(dispBuf));
-    if(listTreatmentGetViewPatient(viewPos, &pat)){
-      slotOccupied = 1U;
+    if(slotOccupied != 0U){
       //列表只显示患者姓名: 患者信息存在即显示, 同一患者只出现一次, 与其病历数量无关(含0个病历)
-      strncpy(dispBuf, pat.name, sizeof(pat.name));
-      dispBuf[sizeof(pat.name) - 1U] = '\0';
+      strncpy(dispBuf, windowPat[i].name, sizeof(windowPat[i].name));
+      dispBuf[sizeof(windowPat[i].name) - 1U] = '\0';
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)dispBuf);
-      sprintf(dispBuf, "AR %04u", (unsigned int)pat.id);//患者ID(AR编号)
+      sprintf(dispBuf, "AR %04u", (unsigned int)windowPat[i].id);//患者ID(AR编号)
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)dispBuf);
-      sprintf(dispBuf, "Records: %u", (unsigned int)treatmentGetRecordCountForPatient(pat.id));//该患者已有病历数, 0条时显示"Records: 0"
+      sprintf(dispBuf, "Records: %u", (unsigned int)windowRecCount[i]);//该患者已有病历数, 0条时显示"Records: 0"
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)dispBuf);
     }
     else{//视图外空槽位: 三类文本全部清空
-      slotOccupied = 0U;
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, nameCtrl, (uint8_t*)"");
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, idCtrl, (uint8_t*)"");
       SetTextValue(GDDC_PAGE_LIST_TREATMENT, countCtrl, (uint8_t*)"");
@@ -3556,8 +3576,8 @@ static void listRecordWaveText(uint8_t wave, char *buf){
   }
 }
 
-//按需收集当前患者记录窗口: 单次扫描扁平记录, 统计该患者记录总数, 并仅缓存当前窗口(5)的全局索引;
-//常量内存(单个复合视图+窗口5), 不依赖记录数量; 记录按存储顺序(即追加/时间顺序)枚举
+//按需收集当前患者记录窗口: 单遍扫描扁平记录, 用2字节id轻读过滤并统计该患者记录总数,
+//仅缓存当前窗口(5)的全局索引, 完整行在渲染时才读; 记录按存储顺序(即追加/时间顺序)枚举
 static void listTreatmentRecordCollectWindow(void){
   uint16_t total = treatmentEpromGetCount();
   uint16_t n = 0U;//该患者记录的累计序号
@@ -3567,11 +3587,12 @@ static void listTreatmentRecordCollectWindow(void){
     listTreatmentCtx.recordWindow[slot] = 0U;
   }
   for(uint16_t i = 0U; i < total; i++){
-    treatmentLog_t log;
-    if(treatmentEpromGet(i, &log) != TREATMENT_EPROM_OK){
+    uint16_t rowId;
+    //id轻读: 仅读外键2字节(替代整行28字节), 写不下/读失败即终止
+    if(treatmentRecordGetPatientIdByIndex(i, &rowId) != TREATMENT_EPROM_OK){
       break;
     }
-    if(log.id == listTreatmentCtx.recordPatientId){
+    if(rowId == listTreatmentCtx.recordPatientId){
       if((n >= listTreatmentCtx.recordTop) &&
          (n < (uint16_t)(listTreatmentCtx.recordTop + LIST_RECORD_WINDOW_SIZE))){
         listTreatmentCtx.recordWindow[(uint8_t)(n - listTreatmentCtx.recordTop)] = i;

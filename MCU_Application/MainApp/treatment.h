@@ -145,6 +145,9 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave);
 #define CONFIG_EPROM_TREATMENT_RECORD_SIZE								(sizeof(treatmentRecord_t))
 #define CONFIG_EPROM_TREATMENT_SLOT_EMPTY								0xFFFFu
 
+// 物理容量(紧凑索引数组上界): 由区块字节数/患者行尺寸推导, 是物理上限而非业务限制, 不参与写入封顶
+#define TREATMENT_PHYSICAL_PATIENT_CAP								((uint16_t)(CONFIG_EPROM_TREATMENT_SIZE / CONFIG_EPROM_PATIENT_RECORD_SIZE))
+
 // 行状态机(刻意避开 0x00 与 0xFF, 使 clearEprom 的 0x00 与空白 FRAM 的 0xFF 都被识别为非有效)
 #define ROW_MAGIC_BLANK													0xFFu
 #define ROW_MAGIC_PENDING												0x33u
@@ -191,6 +194,7 @@ treatmentEpromErr_t treatmentPatientUpdate(uint16_t patientId, const patientReco
 treatmentEpromErr_t treatmentRecordAdd(const treatmentRecord_t *in);        //追加治疗记录(外键须存在)
 treatmentEpromErr_t treatmentRecordDeleteByIndex(uint16_t index);           //删除单条记录(墓碑+安全压缩)
 treatmentEpromErr_t treatmentRecordGetByIndex(uint16_t index, treatmentRecord_t *out);   //按索引读记录
+treatmentEpromErr_t treatmentRecordGetPatientIdByIndex(uint16_t index, uint16_t *idOut); //按索引只读外键id(2字节, 轻量扫描用)
 treatmentEpromErr_t treatmentRecordUpdateByIndex(uint16_t index, const treatmentRecord_t *in); //更新记录
 
 //============================================================================

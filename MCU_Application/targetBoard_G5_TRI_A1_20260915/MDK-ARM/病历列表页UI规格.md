@@ -6,7 +6,7 @@
 
 - 实现位置：`MainApp/dcHmiApp.c`（过滤/排序/刷新）、`dcHmiNotifyButton.c`（按钮）、`dcHmiNotifyText.c`（文本输入）
 - 控件 ID 定义：`MainApp/dcHmiRes.h`
-- 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者数与记录数**无任何业务硬上限**，两表按剩余空间（`FreeBytesPR`）动态致密增长，RAM 侧不再有按上限定尺寸的大数组，列表仅缓存当前窗口 5 行，其余按需扫描 FRAM，总量上限即病历区块物理容量。
+- 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者数与记录数**无任何业务硬上限**，两表按剩余空间（`FreeBytesPR`）动态致密增长，总量上限即病历区块物理容量。RAM 侧不再有按业务上限定尺寸的大数组，仅保留一个**紧凑排序索引** `sortedIndex`（`uint16`，2 字节/患者，按物理容量 `TREATMENT_PHYSICAL_PATIENT_CAP` 定尺寸，最坏 4710 字节），只存全局索引、不存整行；翻页/选择经该索引 O(1) 定位，记录扫描用 2 字节 id 轻读，完整行仅在渲染时才读。
 
 ---
 
@@ -29,7 +29,7 @@
    - 从第一个不同的字符位决定先后，**大写字母（A–Z，码值 65–90）整体排在小写字母（a–z，97–122）之前**；短名先结束（如 `li` 排在 `linqing` 之前）；姓名完全相同者保持原相对顺序（稳定排序）。
    - 姓名比较沿用 `listTreatmentCompareName`，直接按原始字节 `(uint8_t)` 比较，不做大小写归一；姓名完全相同时，由 `listTreatmentOrderCmp` 再按患者原始存储索引决定先后（全序键），效果等同于稳定排序。
 3. **多字母前缀**：先按输入的多个字母过滤，再按其后一位字母继续字典序比较；本质仍是“前缀匹配 + 全名字典序”。
-4. 排序不再做全量缓存：`listTreatmentRebuildFilter()` 只统计命中总数并令窗口失效，`listTreatmentCollectWindow()` 用游标逐档扫描 FRAM，求“严格大于游标”的最小命中患者，仅保留当前窗口 5 行；同一窗口内的物理读次数有界，不依赖按上限定尺寸的 RAM 数组。
+4. **紧凑索引 + 一次堆排序，翻页/选择零重扫**：`listTreatmentRebuildFilter()` 单遍扫描患者主表，把命中患者的全局索引按存储顺序收集到 `sortedIndex`，再由 `listTreatmentSortIndices()` 做**原地大顶堆排序**（无递归、栈占用恒定，比较时按需读两行，复杂度 O(N log N)），按全序键（姓名 ASCII + 原始存储索引）排成升序。此后任意翻页、选择都直接经 `sortedIndex` O(1) 定位，不再重复扫描；仅在数据变化（新建/删除/U 盘载入）或查找字母变化时才重建。索引只存 2 字节全局索引，不缓存整行，故不随业务上限放大。
 
 ### 标准示例（5 个用户：linqing, lijing, ksfjing, harqig, larsein）
 
@@ -140,7 +140,7 @@
 2. `slot` 越界（`>= 5`）直接返回；对应视图位置 `viewPos = topIndex + slot` 若 `>= filteredCount`（空槽位）则不响应。
 3. 命中有效患者时，`listTreatmentSelect` 必须依次完成：
    - 置 `selectedIndex = viewPos`，使列表页对应 `SELECT_PATIENT` 按钮高亮（沿用 `refreshListTreatmentDisplay`）。
-   - 经 `listTreatmentGetViewPatient(viewPos, &pat)`（窗口未命中时按需扫描 FRAM）解析出患者原始记录，把稳定患者编号缓存到 `listTreatmentCtx.selectedPatientId`、姓名缓存到 `listTreatmentCtx.selectedPatientName`。
+   - 经 `listTreatmentGetViewPatient(viewPos, &pat)`（经紧凑索引 `sortedIndex[viewPos]` O(1) 定位全局索引，再单次回读整行）解析出患者原始记录，把稳定患者编号缓存到 `listTreatmentCtx.selectedPatientId`、姓名缓存到 `listTreatmentCtx.selectedPatientName`。
    - **自动返回待机页**：统一走 `returnStandbyDisplay()`（切回 `FSMSTEP_STANDBY`、`SetScreen(GDDC_PAGE_STANDBY)`），不得停留在列表页，也不得进入编辑页。
 
 ### 5.3 待机页 TEXT_PATIENT_NAME 显示选中患者名
@@ -247,7 +247,7 @@
 
 ## 十一、病历数量文本框 TEXT_RECORD_COUNT_0–4 显示格式（强制规格，2026-11-20）
 
-1. **有效槽位（有对应病人）**：`TEXT_RECORD_COUNT_i` 显示固定英文格式 `Records: X`，其中 `X = treatmentGetRecordCountForPatient(pat.id)`，即该患者实际已记录的病历数量；**X 可以为 0**，此时显示 `Records: 0`。
+1. **有效槽位（有对应病人）**：`TEXT_RECORD_COUNT_i` 显示固定英文格式 `Records: X`，其中 `X` 为该患者实际已记录的病历数量；**X 可以为 0**，此时显示 `Records: 0`。`X` 由 `refreshListTreatmentDisplay()` 预读窗口 5 行后，**单遍记录 id 轻读（2 字节/条）一次性统计**窗口各患者的记录数，不再为每个患者各做一次整行全表扫描。
 2. **空槽位**：仍按第十节下发空串，不显示任何内容。
 3. 文案为纯 ASCII（英文字母、冒号、空格与数字），符合根目录 `AI_RULES.md` 显示文本一律英文的至高规格，屏幕现有字体（font 6，ASC_CHS_20）可直接渲染，无需改屏幕工程。
 4. 曾提出的中文“病历数量X”方案：与 `AI_RULES.md` 英文显示至高规格冲突，且屏幕资源无中文字体（`dwLaser.fidx` 仅含 30 个 ASCII 字体，`charset.txt` 不含“病历数量”字形），经确认**不采用**。将来若要恢复中文显示，必须先经仓库所有者人工授权并修改 `AI_RULES.md` 至高规格，再完成屏幕中文字体工程（VisualTFT 配置中文字体、加入字形、重建并烧录屏幕资源），固件按 GB2312/GBK 编码下发。
@@ -273,7 +273,7 @@
 ### 13.1 进入与数据来源
 
 1. 在病历列表页（13）点击 `KEY_EDIT_RECORD_0–4`（控件 31–35），由 `listTreatmentRecordEnter(slot)` 处理：按窗口槽位解析出对应患者，把稳定患者编号写入 `recordPatientId`，再调用 `listTreatmentRecordEnumerate()` 令窗口缓存失效并收集当前窗口，最后 `SetScreen(15)`。
-2. 枚举口径（无条数硬上限、无全量索引数组）：`listTreatmentRecordCollectWindow()` 单次扫描扁平存储（`treatmentEpromGet`），只统计 `log.id == recordPatientId` 的记录总数（`recordCount`，`uint16`），并仅把当前窗口 5 条的全局索引缓存到 `recordWindow[0..4]`；翻页时按 `recordTop` 重新扫描收集对应窗口，记录按存储顺序（即追加/时间先后）呈现，条数仅受区块物理容量约束。
+2. 枚举口径（无条数硬上限、无整行缓存数组）：`listTreatmentRecordCollectWindow()` 单遍扫描扁平记录，用 `treatmentRecordGetPatientIdByIndex()` **只读记录行首 2 字节外键 id**（替代整行 28 字节），按 `rowId == recordPatientId` 过滤并统计记录总数（`recordCount`，`uint16`），仅把当前窗口 5 条的全局索引缓存到 `recordWindow[0..4]`；翻页时按 `recordTop` 重新轻扫收集对应窗口，完整行在渲染时才读，记录按存储顺序（即追加/时间先后）呈现，条数仅受区块物理容量约束。
 3. 页面冷加载时（`screen_id` 分发）必须重新枚举并调用 `refreshListRecordDisplay()`，保证掉电重启回到本页时显示与存储一致。
 
 ### 13.2 控件与显示格式

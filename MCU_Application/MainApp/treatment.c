@@ -527,6 +527,13 @@ treatmentEpromErr_t treatmentRecordGetByIndex(uint16_t index, treatmentRecord_t 
 	return RowRead(RecordAddr(index), out, REC_BYTES);
 }
 
+// 轻量读外键: patientId是treatmentRecord_t首字段(2字节), 只读2字节替代整行28字节, 供记录页/计数扫描
+treatmentEpromErr_t treatmentRecordGetPatientIdByIndex(uint16_t index, uint16_t *idOut){
+	if(idOut == NULL){ return TREATMENT_EPROM_ERR_PARAM; }
+	if(index >= CntR()){ return TREATMENT_EPROM_ERR_PARAM; }
+	return RowRead(RecordAddr(index), idOut, 2U);
+}
+
 // 删除单条: 墓碑(原子)后致密
 treatmentEpromErr_t treatmentRecordDeleteByIndex(uint16_t index){
 	uint8_t tomb;
