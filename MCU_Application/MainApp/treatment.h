@@ -3,27 +3,27 @@
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
  *----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------
- * 病历存储模块 (归一化双结构 + 双区对向增长 + 断电原子提交)
- *
- * 设计要点:
- *  - 片上只存两类紧凑、自然对齐的定长结构:
- *      patientRecord_t   24 字节, 每个患者一行, 从区块低端向上增长;
- *      treatmentRecord_t 24 字节, 每次治疗一行, 从区块高端向下增长。
- *  - 患者身份(name 等)只存一次, 治疗记录以 patientId 外键引用, 不再重复。
- *  - 患者数/记录数默认无预设上限, 由两表之间的剩余空闲空间动态决定;
- *    同时保留两个可由板级配置覆盖的显式业务上限(0=不预设, 完全由空间决定):
- *      CONFIG_EPROM_TREATMENT_PATIENT_MAX             可动态分配的最大病人数;
- *      CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT  每个病人对应的最大病历数。
- *  - 断电原子性:
- *      患者行以 id 字段(0xFFFF=空白)为提交点, 先写正文再写 id;
- *      记录行以 magic 字段为状态机, 先写 PENDING 再翻 COMMIT;
- *      删除=单字节墓碑(TOMB), 随后基于空洞指针做安全压缩(可重入、可去重)。
- *  - 开机 Sanitize 为权威扫描恢复: 分类 blank/pending/commit/tomb, 去重、
- *    外键完整性校验、回收孤儿, 重建 P/R/nextId, 容忍 0xFF 与 0x00 两种空白态。
- *  - treatmentLog_t 仅为 RAM 内复合视图(供 HMI/CSV 复用), 不落 EPROM。
- *  - 所有地址计算均做 [START,END] 区间与空闲空间校验, 防止越界。
- *----------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------
+// 病历存储模块 (归一化双结构 + 双区对向增长 + 断电原子提交)
+//
+// 设计要点:
+// - 片上只存两类紧凑、自然对齐的定长结构:
+//     patientRecord_t   24 字节, 每个患者一行, 从区块低端向上增长;
+//     treatmentRecord_t 24 字节, 每次治疗一行, 从区块高端向下增长。
+// - 患者身份(name 等)只存一次, 治疗记录以 patientId 外键引用, 不再重复。
+// - 患者数/记录数默认无预设上限, 由两表之间的剩余空闲空间动态决定;
+//   同时保留两个可由板级配置覆盖的显式业务上限(0=不预设, 完全由空间决定):
+//     CONFIG_EPROM_TREATMENT_PATIENT_MAX             可动态分配的最大病人数;
+//     CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT  每个病人对应的最大病历数。
+// - 断电原子性:
+//     患者行以 id 字段(0xFFFF=空白)为提交点, 先写正文再写 id;
+//     记录行以 magic 字段为状态机, 先写 PENDING 再翻 COMMIT;
+//     删除=单字节墓碑(TOMB), 随后基于空洞指针做安全压缩(可重入、可去重)。
+// - 开机 Sanitize 为权威扫描恢复: 分类 blank/pending/commit/tomb, 去重、
+//   外键完整性校验、回收孤儿, 重建 P/R/nextId, 容忍 0xFF 与 0x00 两种空白态。
+// - treatmentLog_t 仅为 RAM 内复合视图(供 HMI/CSV 复用), 不落 EPROM。
+// - 所有地址计算均做 [START,END] 区间与空闲空间校验, 防止越界。
+//----------------------------------------------------------------------------
 #ifndef __TREATMENT_H__
 #define __TREATMENT_H__
 /*****************************************************************************/
@@ -33,20 +33,20 @@ extern "C" {
 /*****************************************************************************/
 #include "sPlc.h"
 /*****************************************************************************/
-/* 患者姓名长度: 最多 CONFIG_TREATMENT_NAME_LEN 个字符(不含结束符), 缓冲区另加 1 字节结束符;
-   片上患者行与 RAM 复合视图共用同一长度, 改此值即同时改变 EPROM 患者行尺寸(存量病历按固件CRC变化整片清空) */
+// 患者姓名长度: 最多 CONFIG_TREATMENT_NAME_LEN 个字符(不含结束符), 缓冲区另加 1 字节结束符;
+// 片上患者行与 RAM 复合视图共用同一长度, 改此值即同时改变 EPROM 患者行尺寸(存量病历按固件CRC变化整片清空)
 #ifndef CONFIG_TREATMENT_NAME_LEN
 #define CONFIG_TREATMENT_NAME_LEN										18
 #endif
 #define TREATMENT_NAME_SIZE													(CONFIG_TREATMENT_NAME_LEN + 1)
-/*****************************************************************************/
-/* 性别 */
+//***************************************************************************
+// 性别
 typedef enum{
 	MALE = 1,
 	FEMALE = 2
 }GENDER_ENUM;
 
-/* 激光波长 */
+// 激光波长
 typedef enum{
 	WAVE_450 = 1,
 	WAVE_915,
@@ -59,7 +59,7 @@ typedef enum{
 	WAVE_1470_980
 }LASER_WAVE_ENUM;
 
-/* 工作协议 */
+// 工作协议
 typedef enum{
 	ePhlebology = 0,
 	eProctology,
@@ -73,7 +73,7 @@ typedef enum{
 	eCustiom
 }PROTOCOL_ENUM;
 /*****************************************************************************/
-/* RAM 内复合视图(仅内存使用; 存储层负责与片上结构 split/join) */
+// RAM 内复合视图(仅内存使用; 存储层负责与片上结构 split/join)
 typedef struct{
 	uint16_t id;                       //患者编号
 	uint8_t  age;
@@ -92,10 +92,10 @@ typedef struct{
 	uint8_t  rtcSecond;                //秒 0-59
 }treatmentLog_t;
 
-/*----------------------------------------------------------------------------
- * 片上结构: 患者主表行 (24B, 自然对齐)
- *   id 兼作提交点: 0xFFFF=空白/未提交, 有效非零 id=已提交。
- *----------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------
+// 片上结构: 患者主表行 (24B, 自然对齐)
+//  id 兼作提交点: 0xFFFF=空白/未提交, 有效非零 id=已提交。
+//----------------------------------------------------------------------------
 typedef struct {
 	uint16_t id;                       //稳定患者编号(单调, 删除不重编号)
 	uint8_t  age;
@@ -103,14 +103,14 @@ typedef struct {
 	char     name[TREATMENT_NAME_SIZE];//患者姓名(最多CONFIG_TREATMENT_NAME_LEN个字符)
 }patientRecord_t;
 
-/*----------------------------------------------------------------------------
- * 片上结构: 治疗记录行 (24B, 自然对齐)
- *   recSeq: 稳定唯一记录序列(压缩/掉电去重依据), 开机扫描重建游标;
- *   waveProto: 高 nibble=laserWave, 低 nibble=protocol(各自取值 ≤9);
- *   magic: 行状态机(见 ROW_MAGIC_*);
- *   rtc*: 治疗时刻(停光瞬间)RTC, rtcYear存年份后两位(实际年=+2000), 0=未记录;
- *   reserved*: 显式保留对齐字节, 写入时置0, 不依赖编译器隐式填充。
- *----------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------
+// 片上结构: 治疗记录行 (24B, 自然对齐)
+//  recSeq: 稳定唯一记录序列(压缩/掉电去重依据), 开机扫描重建游标;
+//  waveProto: 高 nibble=laserWave, 低 nibble=protocol(各自取值 ≤9);
+//  magic: 行状态机(见 ROW_MAGIC_*);
+//  rtc*: 治疗时刻(停光瞬间)RTC, rtcYear存年份后两位(实际年=+2000), 0=未记录;
+//  reserved*: 显式保留对齐字节, 写入时置0, 不依赖编译器隐式填充。
+//----------------------------------------------------------------------------
 typedef struct {
 	uint16_t patientId;                //外键 -> patientRecord_t.id
 	uint16_t recSeq;                   //稳定唯一记录序列
@@ -135,23 +135,23 @@ const char* treatmentProtocolName(PROTOCOL_ENUM protocol);
 const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave);
 /*****************************************************************************/
 #if defined(CONFIG_EPROM_TREATMENT_START)
-/* 片上定长行尺寸 */
+// 片上定长行尺寸
 #define CONFIG_EPROM_PATIENT_RECORD_SIZE								(sizeof(patientRecord_t))
 #define CONFIG_EPROM_TREATMENT_RECORD_SIZE								(sizeof(treatmentRecord_t))
 #define CONFIG_EPROM_TREATMENT_SLOT_EMPTY								0xFFFFu
 
-/* 行状态机(刻意避开 0x00 与 0xFF, 使 clearEprom 的 0x00 与空白 FRAM 的 0xFF 都被识别为非有效) */
+// 行状态机(刻意避开 0x00 与 0xFF, 使 clearEprom 的 0x00 与空白 FRAM 的 0xFF 都被识别为非有效)
 #define ROW_MAGIC_BLANK													0xFFu
 #define ROW_MAGIC_PENDING												0x33u
 #define ROW_MAGIC_COMMIT												0x5Au
 #define ROW_MAGIC_TOMB													0xA5u
 
-/* 患者/记录元数据硬边界(受 u16 与 DM int16 宽度约束) */
+// 患者/记录元数据硬边界(受 u16 与 DM int16 宽度约束)
 #define PATIENT_ID_LIMIT												32767u
 #define RECORD_SEQ_LIMIT												65534u
 #define PATIENT_AGE_LIMIT												150u
 
-/* 错误码: 保留基线 TREATMENT_EPROM_ERR_* 语义, 新增患者/记录级别名 */
+// 错误码: 保留基线 TREATMENT_EPROM_ERR_* 语义, 新增患者/记录级别名
 typedef enum{
 	TREATMENT_EPROM_OK = 0,
 	TREATMENT_EPROM_ERR_PARAM,        //参数错误(索引越界/指针为空)
@@ -163,26 +163,26 @@ typedef enum{
 	TREATMENT_EPROM_ERR_POWER_LOW     //PVD 检测到欠压, 拒绝开启新写入事务
 }treatmentEpromErr_t;
 
-/* 语义别名(存储层内部及新代码使用) */
+// 语义别名(存储层内部及新代码使用)
 #define PATIENT_FULL						TREATMENT_EPROM_ERR_FULL
 #define PATIENT_NOT_FOUND					TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND
 #define PATIENT_INVALID						TREATMENT_EPROM_ERR_PARAM
 
-/* 显式业务上限(默认 0 = 不预设, 完全由剩余空间决定; >0 时启用封顶)。
- * 板级配置(如 G5 BoardConfig.h)可在包含本头前显式定义, 覆盖此处默认值。 */
-/* 可动态分配的最大病人数 */
+// 显式业务上限(默认 0 = 不预设, 完全由剩余空间决定; >0 时启用封顶)。
+// 板级配置(如 G5 BoardConfig.h)可在包含本头前显式定义, 覆盖此处默认值。
+// 可动态分配的最大病人数
 #ifndef CONFIG_EPROM_TREATMENT_PATIENT_MAX
 #define CONFIG_EPROM_TREATMENT_PATIENT_MAX 0
 #endif
 
-/* 每个病人对应的最大病历数(治疗记录数) */
+// 每个病人对应的最大病历数(治疗记录数)
 #ifndef CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT
 #define CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT 0
 #endif
 
-/*============================================================================
- * 一级 API: 患者 / 记录 归一化操作
- *============================================================================*/
+//============================================================================
+// 一级 API: 患者 / 记录 归一化操作
+//============================================================================
 uint16_t treatmentGetNextPatientId(void);                                   //下一个可分配患者编号
 uint16_t treatmentGetPatientCount(void);                                    //当前患者数
 uint16_t treatmentGetRecordCount(void);                                     //当前治疗记录总数
@@ -199,9 +199,9 @@ treatmentEpromErr_t treatmentRecordDeleteByIndex(uint16_t index);           //�
 treatmentEpromErr_t treatmentRecordGetByIndex(uint16_t index, treatmentRecord_t *out);   //按索引读记录
 treatmentEpromErr_t treatmentRecordUpdateByIndex(uint16_t index, const treatmentRecord_t *in); //更新记录
 
-/*============================================================================
- * 扁平复合视图 API (供 HMI/CSV 复用, 内部映射到归一化存储)
- *============================================================================*/
+//============================================================================
+// 扁平复合视图 API (供 HMI/CSV 复用, 内部映射到归一化存储)
+//============================================================================
 uint16_t treatmentEpromGetCapacity(void);                                   //全为记录时可容纳条数上限
 uint16_t treatmentEpromGetCount(void);                                      //当前治疗记录总数
 uint16_t treatmentEpromGetPatientCount(void);                               //患者(人数)
@@ -217,25 +217,25 @@ treatmentEpromErr_t treatmentEpromGet(uint16_t index, treatmentLog_t *out);
 treatmentEpromErr_t treatmentEpromClear(void);
 uint32_t treatmentEpromCalcFwCrc(void);
 
-/* PVD 欠压写入门控: 配置 PVD(2.8V 阈值, EXTI line16 双沿中断),
- * 欠压时内部置门控标志, 写路径在开启新事务前拒绝写入。
- * 须在开机外设初始化完成后、业务任务启动前调用一次。 */
+// PVD 欠压写入门控: 配置 PVD(2.8V 阈值, EXTI line16 双沿中断),
+// 欠压时内部置门控标志, 写路径在开启新事务前拒绝写入。
+// 须在开机外设初始化完成后、业务任务启动前调用一次。
 void treatmentPvdInit(void);
 uint8_t treatmentWriteBlocked(void);
 typedef void (*treatmentEpromVisitFn)(uint16_t index, const treatmentLog_t *log);
 void treatmentEpromTraverse(treatmentEpromVisitFn fn);
-/*****************************************************************************/
+//***************************************************************************
 #ifndef CONFIG_TREATMENT_DEMO_VERBOSE
 #define CONFIG_TREATMENT_DEMO_VERBOSE										0
 #endif
-/* 已废弃: 随机填充不再使用固定数量, 保留仅为兼容, 不参与逻辑 */
+// 已废弃: 随机填充不再使用固定数量, 保留仅为兼容, 不参与逻辑
 #ifndef CONFIG_TREATMENT_DEMO_COUNT
 #define CONFIG_TREATMENT_DEMO_COUNT											200
 #endif
 #ifndef CONFIG_TREATMENT_DEMO_SEED
 #define CONFIG_TREATMENT_DEMO_SEED											0
 #endif
-/* 虚拟病历生成: 直接写入本区块, 各子项按真实治疗场景自洽模拟 */
+// 虚拟病历生成: 直接写入本区块, 各子项按真实治疗场景自洽模拟
 typedef enum{
 	TREATMENT_DEMO_OK = 0,
 	TREATMENT_DEMO_ERR_PARAM,
@@ -243,19 +243,19 @@ typedef enum{
 	TREATMENT_DEMO_ERR_FULL,
 	TREATMENT_DEMO_ERR_VERIFY
 }treatmentDemoErr_t;
-/* 虚拟病历填充(填满模式): 不再随机病人总数, 持续新建患者直到患者硬上限
- * (CONFIG_EPROM_TREATMENT_PATIENT_MAX)或剩余空间放不下一个患者+首条记录;
- * 每个病人的记录数在 [recMin, recMax] 内随机, 尾部空间不足时安全截断。
- * recMin 与 recMax 同时为 0 时使用默认范围 5..20。
- * 所有 EPROM 写入经 FreeBytesPR(空隙) + RowWrite/InRegion(区间) 双重越界校验。
- * patientsWritten/recordsWritten 可为 NULL, 分别返回实际写入的病人数与记录数。 */
+// 虚拟病历填充(填满模式): 不再随机病人总数, 持续新建患者直到患者硬上限
+// (CONFIG_EPROM_TREATMENT_PATIENT_MAX)或剩余空间放不下一个患者+首条记录;
+// 每个病人的记录数在 [recMin, recMax] 内随机, 尾部空间不足时安全截断。
+// recMin 与 recMax 同时为 0 时使用默认范围 5..20。
+// 所有 EPROM 写入经 FreeBytesPR(空隙) + RowWrite/InRegion(区间) 双重越界校验。
+// patientsWritten/recordsWritten 可为 NULL, 分别返回实际写入的病人数与记录数。
 treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed,
                                          uint8_t recMin, uint8_t recMax,
                                          uint8_t clearFirst,
                                          uint16_t *patientsWritten,
                                          uint16_t *recordsWritten);
-#endif /* defined(CONFIG_EPROM_TREATMENT_START) */
-/*****************************************************************************/
+#endif // defined(CONFIG_EPROM_TREATMENT_START)
+//***************************************************************************
 #ifdef __cplusplus
 }
 #endif

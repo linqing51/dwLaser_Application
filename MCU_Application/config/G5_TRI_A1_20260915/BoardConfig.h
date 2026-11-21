@@ -402,8 +402,8 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
 #define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(浮动:自动占满EPROM剩余空间)
 
-/* 病历显式业务上限(在浮动区块动态分配之上的可配置硬封顶; 0=不预设, 完全由空间决定)。
- * 两值的最坏组合(每个病人都达到记录上限)须能同时容纳于病历区块, 见下方编译期断言。 */
+// 病历显式业务上限(在浮动区块动态分配之上的可配置硬封顶; 0=不预设, 完全由空间决定)。
+// 两值的最坏组合(每个病人都达到记录上限)须能同时容纳于病历区块, 见下方编译期断言。
 #define CONFIG_EPROM_TREATMENT_PATIENT_MAX							100//可动态分配的最大病人数
 #define CONFIG_EPROM_TREATMENT_RECORD_MAX_PER_PATIENT				20//每个病人对应的最大病历数
 

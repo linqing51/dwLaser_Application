@@ -15,7 +15,7 @@ extern "C" {
 #include <string.h>
 #include <stdio.h>
 #include "dcHmiApp.h"
-/*****************************************************************************/
+//***************************************************************************
 //治疗记录导出/导入U盘(U盘CSV文件, 文件名由TREATMENTLOG_FILENAME定义)
 typedef enum{
 	TREATMENT_USB_OK = 0,//成功

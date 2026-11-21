@@ -97,6 +97,10 @@ extern "C" {
 //定义电源管理
 #define CONFIG_PMU_NULL
 /*****************************************************************************/
+// PVD 欠压检测中断优先级(病历写入门控使用, 见 treatment.c)
+#define CONFIG_PVD_IRQ_PREEMPT_PRIORITY  3U
+#define CONFIG_PVD_IRQ_SUB_PRIORITY      0U
+/*****************************************************************************/
 //波长配置
 #define APP_CONFIG_WAVE_1470_635//APP为双波长 1470+650
 #define GDDC_PAGE_POWERUP                             GDDC_PAGE_POWERUP_DUAL_1470_635

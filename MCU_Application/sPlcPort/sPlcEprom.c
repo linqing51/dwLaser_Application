@@ -7,7 +7,7 @@
 #include "sPlcEprom.h"
 #include <stdio.h>
 /*****************************************************************************/
-/* 分块填充 [start,end]: 以固定值逐块写; 写失败经调试串口报警, 返回 0 */
+// 分块填充 [start,end]: 以固定值逐块写; 写失败经调试串口报警, 返回 0
 static uint8_t FillRange(uint32_t start, uint32_t end, uint8_t value,
                          const char *tag, const char *stage){
 	uint8_t buf[64];
@@ -27,7 +27,7 @@ static uint8_t FillRange(uint32_t start, uint32_t end, uint8_t value,
 	return 1U;
 }
 
-/* 回读校验 [start,end] 全为 0x00; 读失败或任一字节不符即报警, 返回 0 */
+// 回读校验 [start,end] 全为 0x00; 读失败或任一字节不符即报警, 返回 0
 static uint8_t VerifyRangeZero(uint32_t start, uint32_t end, const char *tag){
 	uint8_t rb[64];
 	uint32_t a = start;
@@ -52,8 +52,8 @@ static uint8_t VerifyRangeZero(uint32_t start, uint32_t end, const char *tag){
 	return 1U;
 }
 
-/* 验证式清除: 先 0xFF 全填充 -> 再 0x00 全填充 -> 回读确认全 0;
- * 任一环节失败均通过调试串口报警。最终态为 0x00, 与历史清除结果一致。 */
+// 验证式清除: 先 0xFF 全填充 -> 再 0x00 全填充 -> 回读确认全 0;
+// 任一环节失败均通过调试串口报警。最终态为 0x00, 与历史清除结果一致。
 static uint8_t VerifiedClear(uint32_t start, uint32_t end, const char *tag){
 	if(end < start){ return 0U; }
 	if(FillRange(start, end, 0xFFU, tag, "0xFF") == 0U){ return 0U; }

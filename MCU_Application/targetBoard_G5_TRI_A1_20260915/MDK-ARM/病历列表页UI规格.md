@@ -48,7 +48,7 @@
 
 ---
 
-## 三、关闭按钮 GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE（控件 ID 32）
+## 三、关闭按钮 GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE（控件 ID 38）
 
 1. 点击该按钮必须回到待机页 `GDDC_PAGE_STANDBY`，不得跳到其他页面、也不得仅关闭弹窗而停留原页。
 2. `GDDC_PAGE_STANDBY` 是板级别名，在 G5 工程 `config/G5_TRI_A1_20260915/AppConfig.h` 中映射为 `GDDC_PAGE_STANDBY_DUAL_1470_635`；维护时一律引用 `GDDC_PAGE_STANDBY`，不要硬编码具体板型待机页。
@@ -162,17 +162,17 @@
 
 ## 六、删除患者确认（KEY_DELETE_0–4 / GDDC_PAGE_DELETE_TREATMENT_CONFIRM）
 
-本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCLE`（控件 2），文本框 `TEXT_SUMMARY_0–3`（控件 10–13）。页面上所有文字按根目录 `AI_RULES.md` 至高规格一律英文显示。
+本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCLE`（控件 2），文本框控件 3–6（`TEXT_NAME_ID`=3、`TEXT_SUMMARY_0`=4、`TEXT_SUMMARY_1`=5、`TEXT_SUMMARY_2`=6）。页面上所有文字按根目录 `AI_RULES.md` 至高规格一律英文显示。
 
 ### 6.1 列表页进入删除确认页（不立即删除）
 
 1. 点 `KEY_DELETE_0–4`（控件 25–29）调用 `listTreatmentDeleteStart(slot)`，`slot = control_id - GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_0`（取值 0–4），分别对应窗口内 `TEXT_NAME_0–4` 的患者。
 2. `slot` 越界（`>= 5`）直接返回；`viewPos = topIndex + slot` 若 `>= filteredCount`（空槽位）不响应；视图位置取不到患者也不响应。
 3. 命中后把该患者稳定编号缓存到 `listTreatmentCtx.deletePatientId`（非 0 即表示处于删除确认流程），**先只进入确认页、不得在列表页直接删除**；确认页文案（英文）：
-   - `TEXT_SUMMARY_0`（控件 10，标题）：`Delete Patient?`
-   - `TEXT_SUMMARY_1`（控件 11，动态）：`Delete patient <name> and all their treatment records?`（`<name>` 为该患者姓名原文）
-   - `TEXT_SUMMARY_2`（控件 12，动态）：`This patient has <n> treatment record(s).`（`<n>` = `treatmentGetRecordCountForPatient(id)`，该患者已有病历数）
-   - `TEXT_SUMMARY_3`（控件 13）：`This action cannot be undone.`
+   - `TEXT_NAME_ID`（控件 3，标题）：`Delete Patient?`
+   - `TEXT_SUMMARY_0`（控件 4，动态）：`Delete patient <name> and all their treatment records?`（`<name>` 为该患者姓名原文）
+   - `TEXT_SUMMARY_1`（控件 5，动态）：`This patient has <n> treatment record(s).`（`<n>` = `treatmentGetRecordCountForPatient(id)`，该患者已有病历数）
+   - `TEXT_SUMMARY_2`（控件 6）：`This action cannot be undone.`
 4. 置 `NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT_CONFIRM` 后 `SetScreen(14)`，等待用户确认或取消。
 
 ### 6.2 确认删除（KEY_DELETE）
@@ -195,7 +195,7 @@
 2. `deletePatientId` 与其他运行状态一致放 `listTreatmentCtx`（RAM/ZI），开机为 0（不在删除流程），不新增 EPROM 寄存器、不做掉电持久化。
 3. 本闭环为强制规格：任何时刻维护都必须保留“先确认后删除”，不得改为点 DELETE 直接删除、不得跳过确认页。
 
-**屏幕工程待办（重要）**：删除确认页 14 需在大彩 VisualTFT 工程 `vTFT_HMI/dwLaser.tftprj` 中按控件 ID 1–2、10–13 建立按钮与文本框，否则 `SetScreen(14)` 无对应页面；固件侧控件 ID 已就绪。
+**屏幕工程现状（2026-11-21 核对）**：删除确认页 14 已在大彩 VisualTFT 工程导出的 `vTFT_HMI/GDDC_PAGE_DELETE_TREATMENT_CONFIRM.tft` 中建立——按钮控件 1–2、文本控件 3–6，与固件 `dcHmiRes.h` 的宏值完全一致，`SetScreen(14)` 可正常命中。
 
 ---
 

@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿//----------------------------------------------------------------------------
+// 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+// 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+// 请以 UTF-8 编码保存, 并在文件头保留本注释。
+//----------------------------------------------------------------------------
 #ifndef __DCHMIRES_H__
 #define __DCHMIRES_H__
 /*****************************************************************************/
@@ -186,14 +186,14 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW          39 //新建患者
 #define GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB        40 //操作USB
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG       99 //显示调试信息
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_DELETE_TREATMENT_KEY_OK                1  //确认删除
 #define GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE            2  //取消
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_NAME_ID        3 //名字-ID
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0      4
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1       5
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2        6
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_LIST_RECORD_TEXT_NAME					  1//患者名字-ID
 #define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_0		  2//第1行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
 #define GDDC_PAGE_LIST_RECORD_TEXT_TIEM_ENERGY_1          3//第2行治疗记录-显示日期-发射能量-发射时间-功率-波长显示
@@ -215,12 +215,12 @@ extern "C" {
 #define GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN               26//下一页按键
 #define GDDC_PAGE_LIST_RECODE_KEY_CLOSE                   27//关闭按键
 #define GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT		      28//编辑患者
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_DELETE_RECODE_TEXT_NAME                 1//显示患者名字-ID
 #define GDDC_PAGE_DELETE_RECODE_TEXT_SUMMARY_0            2//显示治疗日期-发射能量-发射时间-发射功率
 #define GDDC_PAGE_DELETE_RECODE_KEY_CANCEL                10//取消返回上级菜单
 #define GDDC_PAGE_DELETE_RECODE_KEY_OK                    11//确认删除治疗记录
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID                  1 //患者ID
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME                2 //患者姓名
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE                 3 //患者年龄
@@ -229,7 +229,7 @@ extern "C" {
 #define GDDC_PAGE_EDIT_TREATMENT_KEY_OK                   20 //保存修改
 #define GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL               21 //取消
 #define GDDC_PAGE_EDIT_TREATMENT_KEY_GENDER               22 //性别选择菜单按键
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_REGISTER_TREATMENT_TEXT_ID                  1 //患者ID
 #define GDDC_PAGE_REGISTER_TREATMENT_TEXT_NAME                2 //患者姓名
 #define GDDC_PAGE_REGISTER_TREATMENT_TEXT_AGE                 3 //患者年龄
@@ -238,27 +238,27 @@ extern "C" {
 #define GDDC_PAGE_REGISTER_TREATMENT_KEY_OK                   20 //保存修改
 #define GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL               21 //取消
 #define GDDC_PAGE_REGISTER_TREATMENT_KEY_GENDER               22 //性别选择菜单按键
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY                 1 //患者数-治疗记录数
 #define GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB             2 //UDISK 信息
 #define GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK               3 //存储到U盘
 #define GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK               4 //从U盘载入
 #define GDDC_PAGE_OPERATOR_USB_KEY_CANCEL                   5 //返回病历列表
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_0     1 //信息栏
 #define GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_1     2 //信息栏
 #define GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_2     3 //信息栏
 #define GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_3     4 //信息栏
 #define GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL         10 //取消按键
 #define GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK        11 //确认按键
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_0     1//信息栏
 #define GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_1      2//信息栏
 #define GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_2      3//信息栏
 #define GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_3      4//信息栏
 #define GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL          10//取消按键
 #define GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK              11//确认按键
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_READY_TEXT_NAME                        1 //方案名称显示
 #define GDDC_PAGE_READY_TEXT_POWER_CH0                   2 //发射功率显示 1470 /1940
 #define GDDC_PAGE_READY_TEXT_POWER_CH1                   3 //发射功率显示 980
@@ -277,7 +277,7 @@ extern "C" {
 #define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC            16 //提示音时间减小
 #define GDDC_PAGE_READY_KEY_READY                        17 //切换待机按键
 #define GDDC_PAGE_READY_TEXT_DEBUG                       99 //显示调试信息
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_ID               1 //患者编号
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_NAME             2 //患者姓名
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_AGE              3 //患者年龄
@@ -290,7 +290,7 @@ extern "C" {
 #define GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD    10 //放弃本次记录
 #define GDDC_PAGE_VERIFY_TREATMENT_KEY_LIST_TREATMENT    11 //选择患者
 #define GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER           12 //患者性别
-/*****************************************************************************/
+//***************************************************************************
 #define GDDC_PAGE_DISCARD_TREATMENT_TEXT_NAME            1 //名字与ID
 #define GDDC_PAGE_DISCARD_TREATMENT_TEXT_ENERGY          2 //能量时间功率
 #define GDDC_PAGE_DISCARD_TREATMENT_KEY_RETURN_          3 //返回核对
