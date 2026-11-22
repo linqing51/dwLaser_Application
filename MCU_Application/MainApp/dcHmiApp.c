@@ -2757,7 +2757,7 @@ typedef struct{
   uint16_t recordCount;//该患者记录总数(无上限, 仅受区块物理容量约束)
   uint16_t recordWindowTop;//recordWindow当前对应窗口起点(0xFFFF=缓存失效)
   uint16_t recordWindow[LIST_RECORD_WINDOW_SIZE];//当前窗口记录在扁平表中的全局索引
-  //DELETE_RECODE单条记录删除确认: deleteRecordGlobalIndex缓存待删记录全局索引(0xFFFF=不在流程)
+  //DELETE_RECORD单条记录删除确认: deleteRecordGlobalIndex缓存待删记录全局索引(0xFFFF=不在流程)
   uint16_t deleteRecordGlobalIndex;
   //EDIT_PATIENT患者信息编辑模式: 0=正常新建/追加流程, 1=从记录页进入只更新患者信息(不追加记录)
   uint8_t editPatientMode;
@@ -3444,7 +3444,7 @@ static uint8_t treatmentIsLockPage(uint16_t screen){
     case GDDC_PAGE_LIST_TREATMENT:
     case GDDC_PAGE_DELETE_TREATMENT_CONFIRM:
     case GDDC_PAGE_LIST_RECORD:
-    case GDDC_PAGE_DELETE_RECODE:
+    case GDDC_PAGE_DELETE_RECORD:
     case GDDC_PAGE_EDIT_PATIENT:
     case GDDC_PAGE_REGISTER_PATIENT:
     case GDDC_PAGE_OPERATOR_USB:
@@ -3507,13 +3507,13 @@ void treatmentReleaseButton(uint16_t screen, uint16_t control){
 }
 
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id){
-  //删除确认页等待期间: 只放行本页DELETE/CANCLE, 其余控件与页面一律屏蔽(与USB流程互斥)
+  //删除确认页等待期间: 只放行本页DELETE/CANCEL, 其余控件与页面一律屏蔽(与USB流程互斥)
   if(listTreatmentCtx.deletePatientId != 0U){
     if(screen_id != GDDC_PAGE_DELETE_TREATMENT_CONFIRM){
       return 0U;
     }
     if((control_id == GDDC_PAGE_DELETE_TREATMENT_KEY_OK) ||
-       (control_id == GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE)){
+       (control_id == GDDC_PAGE_DELETE_TREATMENT_KEY_CANCEL)){
       return 1U;
     }
     return 0U;
@@ -3574,7 +3574,7 @@ static void enterOperatorUsbConfirmPage(void){
       (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentGetCount());
     SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_0, (uint8_t*)dispBuf);
     SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_1,
-      (uint8_t*)"The existing patient backup in this USB will be replaced. The archives on the device will be cleared.");
+      (uint8_t*)"The existing patient backup in this USB will be replaced.");
   }
   NVRAM0[EM_DC_PAGE] = page;
   SetScreen(page);
@@ -3692,7 +3692,7 @@ void listTreatmentDeleteConfirm(void){
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
 
-//删除确认页KEY_CANCLE: 不删除, 清除待删除id并返回列表页
+//删除确认页KEY_CANCEL: 不删除, 清除待删除id并返回列表页
 void listTreatmentDeleteCancel(void){
   if(listTreatmentCtx.deletePatientId == 0U){
     return;
@@ -3928,12 +3928,12 @@ void listTreatmentRecordDeleteStart(uint8_t slot){
     return;
   }
   listTreatmentCtx.deleteRecordGlobalIndex = listTreatmentCtx.recordWindow[slot];
-  SetTextValue(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_TEXT_NAME,
+  SetTextValue(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_TEXT_NAME,
                (uint8_t*)"Delete Record?");
-  SetTextValue(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_TEXT_SUMMARY_0,
+  SetTextValue(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_TEXT_SUMMARY_0,
                (uint8_t*)"Delete this treatment record?");
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_RECODE;
-  SetScreen(GDDC_PAGE_DELETE_RECODE);
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_RECORD;
+  SetScreen(GDDC_PAGE_DELETE_RECORD);
 }
 
 //删除确认页OK: 删除该条记录, 重新枚举后回记录页(15)
@@ -6032,7 +6032,7 @@ static void NotifyScreen(uint16_t screen_id){
       refreshListRecordDisplay();
       break;
     }
-    case GDDC_PAGE_DELETE_RECODE:{
+    case GDDC_PAGE_DELETE_RECORD:{
       //单条删除确认页内容在进入时已下发, 冷加载无需额外刷新
       break;
     }

@@ -1042,17 +1042,17 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           }
           break;
         }
-        case GDDC_PAGE_LIST_RECODE_KEY_CLOSE:{//返回病历列表页(13)
+        case GDDC_PAGE_LIST_RECORD_KEY_CLOSE:{//返回病历列表页(13)
           if(state){
             listTreatmentRecordClose();
-            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECODE_KEY_CLOSE);//复位自锁按钮并解除互锁
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_CLOSE);//复位自锁按钮并解除互锁
           }
           break;
         }
-        case GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT:{//进入患者信息编辑页(17)
+        case GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT:{//进入患者信息编辑页(17)
           if(state){
             listTreatmentRecordEditPatient();
-            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT);//复位自锁按钮并解除互锁
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1068,19 +1068,19 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
       }
       break;
     }
-    case GDDC_PAGE_DELETE_RECODE:{//单条治疗记录删除确认页: 确认删除或取消返回记录页
+    case GDDC_PAGE_DELETE_RECORD:{//单条治疗记录删除确认页: 确认删除或取消返回记录页
       switch(control_id){
-        case GDDC_PAGE_DELETE_RECODE_KEY_OK:{
+        case GDDC_PAGE_DELETE_RECORD_KEY_OK:{
           if(state){
             listTreatmentDeleteRecordConfirm();
-            treatmentReleaseButton(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_KEY_OK);//复位自锁按钮并解除互锁
+            treatmentReleaseButton(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_KEY_OK);//复位自锁按钮并解除互锁
           }
           break;
         }
-        case GDDC_PAGE_DELETE_RECODE_KEY_CANCEL:{
+        case GDDC_PAGE_DELETE_RECORD_KEY_CANCEL:{
           if(state){
             listTreatmentDeleteRecordCancel();
-            treatmentReleaseButton(GDDC_PAGE_DELETE_RECODE, GDDC_PAGE_DELETE_RECODE_KEY_CANCEL);//复位自锁按钮并解除互锁
+            treatmentReleaseButton(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_KEY_CANCEL);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1097,10 +1097,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           }
           break;
         }
-        case GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE:{
+        case GDDC_PAGE_DELETE_TREATMENT_KEY_CANCEL:{
           if(state){
             listTreatmentDeleteCancel();
-            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE);//notify无条件释放
+            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCEL);//notify无条件释放
           }
           break;
         }

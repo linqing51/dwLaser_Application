@@ -28,9 +28,9 @@
 1. **前缀匹配、大小写敏感（不忽略大小写）**：搜索框输入按姓名前缀**逐位直接比较**，任一位大小写不同即不匹配，输入字母全部命中才匹配；空串 = 不过滤、显示全部患者。
    - 输入小写 `l` 只命中小写 l 开头的姓名，**不**命中大写 `L` 开头；输入 `li` 只命中 `li` 开头的姓名。
    - 实现沿用 `listTreatmentMatchFind`，比较时直接 `name[i] != findText[i]`，不做大小写归一。
-2. **大小写敏感的 ASCII 字典序稳定排序**：命中结果必须先按字符原始值（ASCII）排序，再写入 `TEXT_NAME_0–4`：
-   - 从第一个不同的字符位决定先后，**大写字母（A–Z，码值 65–90）整体排在小写字母（a–z，97–122）之前**；短名先结束（如 `li` 排在 `linqing` 之前）；姓名完全相同者保持原相对顺序（稳定排序）。
-   - 姓名比较沿用 `listTreatmentCompareName`，直接按原始字节 `(uint8_t)` 比较，不做大小写归一；姓名完全相同时，由 `listTreatmentOrderCmp` 再按患者原始存储索引决定先后（全序键），效果等同于稳定排序。
+2. **大小写敏感的 ASCII 字典序全序排序**：命中结果必须先按字符原始值（ASCII）排序，再写入 `TEXT_NAME_0–4`：
+   - 从第一个不同的字符位决定先后，**大写字母（A–Z，码值 65–90）整体排在小写字母（a–z，97–122）之前**；短名先结束（如 `li` 排在 `linqing` 之前）。
+   - 姓名比较沿用 `listTreatmentCompareName`，直接按原始字节 `(uint8_t)` 比较，不做大小写归一；姓名完全相同时，由 `listTreatmentOrderCmp` 再按患者原始存储索引决定先后。即排序键为“姓名 → 原始存储索引”的**全序键**，以原始索引为最终 tie-break，保证结果唯一确定；大顶堆排序本身不要求稳定，全序键已消除并列，无需依赖排序算法的稳定性。
 3. **多字母前缀**：先按输入的多个字母过滤，再按其后一位字母继续字典序比较；本质仍是“前缀匹配 + 全名字典序”。
 4. **患者表批量读 + RAM 内排序，翻页/选择零重扫**：`listTreatmentRebuildFilter()` 用 `treatmentPatientReadRows()` 分块连续批量读患者表（每块 16 行、单次 FRAM 事务、地址自增，替代逐行各一次事务），单遍把命中患者的全局索引收集到 `sortedIndex`、并把“全局索引 + 姓名”写入 RAM 键 `ramKeys`。命中数 ≤ 256 时由 `listTreatmentSortKeys()` 做**原地大顶堆排序**（无递归、栈占用恒定，纯内存比较、零 FRAM 回读，O(N log N)），再生成 `sortedIndex`；超过 256 则回退 `listTreatmentSortIndices()` 的 FRAM 堆排序。此后任意翻页、选择都直接经 `sortedIndex` O(1) 定位，不再重复扫描；仅在数据变化（新建/删除/U 盘载入）或查找字母变化时才重建。256 是 RAM 策略阈值而非业务上限，写入不受限。
 
@@ -88,8 +88,8 @@
    - `TEXT_SUMMARY_0`（控件 1，动态）：`Export X patients and Y saved treatment records to USB?`
      - “确认将共 X 位患者及共 Y 条已保存的治疗记录导出至 USB？”
      - `X` = 机内患者数 `treatmentEpromGetPatientCount()`；`Y` = 机内治疗记录数 `listTreatmentGetCount()`（即 `NVRAM0[DM_TREATMENT_NUM]`，负值防御返回 0），取**进入本页时**的机内当前值。
-   - `TEXT_SUMMARY_1`（控件 2）：`The existing patient backup in this USB will be replaced. The archives on the device will be cleared.`
-     - “此 USB 中的原有患者备份将被替换。设备中的档案将被清除。”
+   - `TEXT_SUMMARY_1`（控件 2）：`The existing patient backup in this USB will be replaced.`
+     - “此 USB 中的原有患者备份将被替换。”
    - 原 `TEXT_SUMMARY_2/3` 文案作废，本页不再向控件 3/4 写入。
 2. `KEY_CANCEL`（控件 10）：取消写入，不修改 U 盘与机内 EPROM，返回操作页 `GDDC_PAGE_OPERATOR_USB`，并**清空**该页 `TEXT_SUMMARY_USB`（写空串）；该页 `TEXT_SUMMARY` 保持进入本页前显示的内容不变。
 3. `KEY_OK`（控件 11）：授权把机内病历转换成 CSV 写入 U 盘，复用 `treatmentLogSaveToUdisk`，文件名由 `TREATMENTLOG_FILENAME` 宏指定（`/treatment_v1.csv`，覆盖同名文件）；实际写入在 `listTreatmentUsbLoop` 中执行一次，不在按键回调里阻塞。
@@ -98,7 +98,7 @@
      - `X` = 机内患者数 `treatmentEpromGetPatientCount()`；`Y` = 本次实际写入 U 盘的治疗记录数 `listTreatmentCtx.usbCount`。
    - 失败按错误码：`NO UDISK` / `NO RECORDS` / `USB OPEN FAILED` / `USB BACKUP FAILED`
 5. 结果栏内容统一保存在 `listTreatmentCtx.usbText`，由 `refreshOperatorUsbDisplay()` 下发；因此回到操作页后的页面冷加载刷新不会把结果覆盖成 `UDISK OK`。重新从列表页进入操作页时，`usbText` 恢复为 U 盘在位状态（`UDISK OK` / `NO UDISK`）。
-6. 导出流程**只写 U 盘、不删除机内病历**（强制规格，见第八节，优先于任何功能改动）；`TEXT_SUMMARY_1` 中的 `The archives on the device will be cleared.` 仅为确认页提示文案，不代表实际行为，不得据此实现清空。
+6. 导出流程**只写 U 盘、不删除机内病历**（强制规格，见第八节，优先于任何功能改动）；确认页只提示 U 盘原有备份将被替换，**不得出现任何“设备档案将被清除”的文案**，也不得据此实现清空。
 
 ### 4.3 导入 LOAD（usbOp = 2，点 KEY_LOAD_UDISK）
 
@@ -119,11 +119,9 @@
 
 ### 4.4 通用触摸与状态约束
 
-1. 确认页等待期间（状态 6）只放行 CANCLE/CONFIRM，读写执行期间（状态 7）屏蔽一切触摸。
+1. 确认页等待期间（状态 6）只放行 CANCEL/CONFIRM，读写执行期间（状态 7）屏蔽一切触摸。
 2. 确认/取消回调导出/导入通用：`listTreatmentUsbConfirm`（状态 6→7）、`listTreatmentUsbCancel`（状态 6→0 回操作页）。
 3. 若确认页被别处切走（如关机确认/休眠），轮询检测到当前页不符即放弃本次流程并退出忙状态，避免触摸被永久屏蔽。
-
-**屏幕工程现状（2026-11-20 核对）**：确认页已在屏幕工程 `vTFT_HMI/dwLaser.tftprj` 中建立——导出确认页为 `GDDC_PAGE_OPERATOR_USB_SAVE_CONFIRM.tft`（页面 ID 20），导入确认页为 `GDDC_PAGE_OPERATOR_USB_LOAD_CONFIRM.tft`（页面 ID 21）。导出确认页只有 `TEXT_SUMMARY_0/1`（控件 1/2），与本页规格一致；导入确认页建了 `TEXT_SUMMARY_0/1/2`（控件 1/2/3），固件只用控件 1/2，控件 3 保留但下发空串，`TEXT_SUMMARY_3`（控件 4）未建立、固件不写入。
 
 ---
 
@@ -165,7 +163,7 @@
 
 ## 六、删除患者确认（KEY_DELETE_0–4 / GDDC_PAGE_DELETE_TREATMENT_CONFIRM）
 
-本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCLE`（控件 2），文本框控件 3–6（`TEXT_NAME_ID`=3、`TEXT_SUMMARY_0`=4、`TEXT_SUMMARY_1`=5、`TEXT_SUMMARY_2`=6）。页面上所有文字按根目录 `AI_RULES.md` 至高规格一律英文显示。
+本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCEL`（控件 2），文本框控件 3–6（`TEXT_NAME_ID`=3、`TEXT_SUMMARY_0`=4、`TEXT_SUMMARY_1`=5、`TEXT_SUMMARY_2`=6）。页面上所有文字按根目录 `AI_RULES.md` 至高规格一律英文显示。
 
 ### 6.1 列表页进入删除确认页（不立即删除）
 
@@ -187,18 +185,16 @@
    - 若被删患者正是当前选中患者（`deletePatientId == selectedPatientId`），同时清空 `selectedPatientId`/`selectedPatientName`，避免后续病历外键与待机页患者名悬空。
    - 调用 `listTreatmentRebuildFilter()` + `refreshListTreatmentDisplay()` 重建患者视图（窗口由 `listTreatmentClampWindow` 自动夹取到合法范围），再返回列表页 `GDDC_PAGE_LIST_TREATMENT`。
 
-### 6.3 取消删除（KEY_CANCLE）
+### 6.3 取消删除（KEY_CANCEL）
 
-1. 点确认页 `KEY_CANCLE`（控件 2）调用 `listTreatmentDeleteCancel()`；仅当 `deletePatientId != 0` 时执行。
+1. 点确认页 `KEY_CANCEL`（控件 2）调用 `listTreatmentDeleteCancel()`；仅当 `deletePatientId != 0` 时执行。
 2. 不做任何 EPROM 删除，清除 `deletePatientId`，刷新并返回列表页 `GDDC_PAGE_LIST_TREATMENT`，患者表与病历保持原样。
 
 ### 6.4 触摸放行与状态约束
 
-1. 删除确认页等待期间，触摸总闸 `listTreatmentUsbButtonAllowed` 只放行本页 `KEY_DELETE`/`KEY_CANCLE`，其余控件与其他页面触摸一律屏蔽；删除为本地同步操作，在确认回调内一次执行完毕，不设异步忙状态。
+1. 删除确认页等待期间，触摸总闸 `listTreatmentUsbButtonAllowed` 只放行本页 `KEY_DELETE`/`KEY_CANCEL`，其余控件与其他页面触摸一律屏蔽；删除为本地同步操作，在确认回调内一次执行完毕，不设异步忙状态。
 2. `deletePatientId` 与其他运行状态一致放 `listTreatmentCtx`（RAM/ZI），开机为 0（不在删除流程），不新增 EPROM 寄存器、不做掉电持久化。
 3. 本闭环为强制规格：任何时刻维护都必须保留“先确认后删除”，不得改为点 DELETE 直接删除、不得跳过确认页。
-
-**屏幕工程现状（2026-11-21 核对）**：删除确认页 14 已在大彩 VisualTFT 工程导出的 `vTFT_HMI/GDDC_PAGE_DELETE_TREATMENT_CONFIRM.tft` 中建立——按钮控件 1–2、文本控件 3–6，与固件 `dcHmiRes.h` 的宏值完全一致，`SetScreen(14)` 可正常命中。
 
 ---
 
@@ -257,17 +253,12 @@
 
 ---
 
-## 十二、USB 三页面按键自锁与程序弹起（强制规格，2026-11-21）
+## 十二、USB 三页面按键自锁（强制规格，2026-11-21）
 
 1. **适用范围**：`GDDC_PAGE_OPERATOR_USB`（页面 19）、`GDDC_PAGE_OPERATOR_USB_SAVE`（页面 20）、`GDDC_PAGE_OPERATOR_USB_LOAD`（页面 21）三个页面上的**全部 7 个按键控件**——19 页 `KEY_SAVE_UDISK`（3）、`KEY_LOAD_UDISK`（4）、`KEY_CANCEL`（5）；20/21 页 `KEY_OK`（11）、`KEY_CANCEL`（10）。屏幕工程中 7 个按键均为 `button_type = 1`（自锁型，按下后不自行弹起），该属性为强制配置，不得改为自弹型。
-2. **弹起总则**：按键在屏幕上按下后保持按下态，固件**严禁在功能执行前提前复位**；必须在该按键对应的功能全部执行完毕后，由程序调用 `SetButtonValue(screen, control, 0)` 显式控制弹起。`SetButtonValue` 指令带 screen id，切页后仍可对原页面控件下发。
-3. **各按键弹起时机**：
-   - 19 页 `KEY_SAVE_UDISK` / `KEY_LOAD_UDISK`（3/4）：在 `enterOperatorUsbConfirmPage()` 进入对应确认页（`SetScreen` 20/21）完成后才弹起，不得在进入确认页之前复位。
-   - 19 页 `KEY_CANCEL`（5）：在 `listTreatmentOperatorUsbBack()` 返回列表页（`SetScreen(13)`）完成后才弹起。
-   - 20/21 页 `KEY_OK`（11）：在 `listTreatmentUsbLoop` 状态 7 中 USB 读写（含导入后的回读核对）全部执行完毕、返回操作页（`SetScreen(19)`）后才弹起；确认回调 `listTreatmentUsbConfirm`（6→7）只授权执行，不得弹起。
-   - 20/21 页 `KEY_CANCEL`（10）：在 `listTreatmentUsbCancel()` 返回操作页（`SetScreen(19)`）完成后才弹起，不得在切页之前复位。
-4. **中止路径弹起**：`listTreatmentUsbLoop` 检测到确认页被别处切走（如关机确认/休眠）而放弃流程时，必须同时对该确认页的 `KEY_OK`（11）与 `KEY_CANCEL`（10）下发弹起指令，避免按键永久卡在按下态。
-5. **屏幕工程现状（2026-11-21 核对）**：三个 `.tft`（`GDDC_PAGE_OPERATOR_USB.tft`、`GDDC_PAGE_OPERATOR_USB_SAVE_CONFIRM.tft`、`GDDC_PAGE_OPERATOR_USB_LOAD_CONFIRM.tft`）中 7 个按键均已为 `button_type = 1`，无需改屏幕；本规格只约束固件弹起时机。任何后续新增按键若同样采用自锁型，必须先在本节登记其控件 ID 与弹起时机。
+2. **弹起机制不另立规则**：这 7 个按键的释放位置、无条件弹起（含空操作）、切页安全解锁与中止路径，**统一遵循第十六节**，由 `treatmentReleaseButton` 经 `NotifyButton` 层处理，本节不再维护各自的弹起时机，避免与第十六节口径漂移。
+3. **唯一需在本节点明的异步特性**：20/21 页 `KEY_OK`（11）按下只授权（`usbState` 6→7），实际 CSV 读写（含导入后的回读核对）在 `listTreatmentUsbLoop` 中完成，故该 OK 按第十六节的异步例外在 loop 工作完成后释放，而非 notify 立即释放。
+4. 任何后续在这三页新增的自锁按键，先在本节登记控件 ID，其释放仍统一遵循第十六节。
 
 ---
 
@@ -305,9 +296,9 @@
 ### 13.4 翻页与按键
 
 1. `KEY_PAGE_UP`（25）/`KEY_PAGE_DOWN`（26）：`recordTop` 分别减/加 5，由 `listTreatmentRecordMaxTop()` 夹取到合法整页边界，到首页/末页停止。
-2. `KEY_CLOSE`（27，宏名 `GDDC_PAGE_LIST_RECODE_KEY_CLOSE`）：清空 `recordPatientId` 后返回病历列表页（13）。
-3. `KEY_EDIT_PATIENT`（28，宏名 `GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT`）：跳转患者信息编辑页（17），行为见 13.5。
-4. 本页全部按键在屏幕工程均为 `button_type = 1`（自锁型），固件在对应功能完成后调用 `SetButtonValue(..., 0)` 弹起，严禁功能执行前提前复位。
+2. `KEY_CLOSE`（27，宏名 `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`）：清空 `recordPatientId` 后返回病历列表页（13）。
+3. `KEY_EDIT_PATIENT`（28，宏名 `GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`）：跳转患者信息编辑页（17），行为见 13.5。
+4. 本页全部按键在屏幕工程均为 `button_type = 1`（自锁型）；其释放统一遵循第十六节（notify 层无条件 `treatmentReleaseButton`），本节不另写弹起时机。
 
 ### 13.5 患者信息编辑（页面 17 复用）
 
@@ -317,13 +308,13 @@
 
 ---
 
-## 十四、单条治疗记录删除确认页 GDDC_PAGE_DELETE_RECODE（页面 ID 16，强制规格，2026-11-21）
+## 十四、单条治疗记录删除确认页 GDDC_PAGE_DELETE_RECORD（页面 ID 16，强制规格，2026-11-21）
 
 1. 记录页（15）点击 `KEY_DELETE_0–4`（20–24）由 `listTreatmentRecordDeleteStart(slot)` 缓存待删记录全局索引到 `deleteRecordGlobalIndex`，下发确认文案后 `SetScreen(16)`；不在记录页直接删除。
 2. 控件：`TEXT_NAME`（1）、`TEXT_SUMMARY_0`（2）、`KEY_CANCEL`（10）、`KEY_OK`（11）。
 3. `KEY_OK`：`listTreatmentDeleteRecordConfirm()` 调用 `treatmentRecordDeleteByIndex(idx)` 删除该条（墓碑 + 安全压缩），清空缓存索引、重新枚举并夹取窗口后回记录页（15）。
 4. `KEY_CANCEL`：`listTreatmentDeleteRecordCancel()` 不删除，清空缓存索引后回记录页（15）。
-5. 两个按键均为自锁型，功能完成后程序弹起；本闭环为强制规格，不得改为点 DELETE 直接删除或跳过确认。
+5. 两个按键均为自锁型，其释放统一遵循第十六节（notify 层无条件 `treatmentReleaseButton`）；本闭环为强制规格，不得改为点 DELETE 直接删除或跳过确认。
 
 ---
 
@@ -332,7 +323,7 @@
 1. **编码格式**：`AR` + 一个空格 + 至少 4 位递增数字，不足 4 位前面补零，例如 `AR 0001`、`AR 0002`、`AR 0011`。
 2. **EPROM 只存数字**：为节省空间，患者行 `patientRecord_t.id` 与记录外键均只存 `uint16_t` 递增数字，不存 `AR` 前缀或空格；在 HMI 显示与 CSV 导出/导入时由软件自动加/去 `AR ` 前缀。
 3. **自动生成、不可手动修改**：新建患者时取现有患者 ID 中最大数字加 1，不接受手动输入；删除患者不回收、不重编号。
-4. **新患者分配新 ID，老患者复用**：再次治疗选择已有患者时追加治疗记录、沿用原 ID；当前 Demo 已编号到 `AR 0010`，下一位为 `AR 0011`。
+4. **新患者分配新 ID，老患者复用**：再次治疗选择已有患者时追加治疗记录、沿用原 ID；新建患者的具体编号由数据层按当前最大 ID 递增分配（某个时点的已分配编号属于运行数据，不在本强制规格中记录）。
 5. **同名不代表同一患者**：选择已有患者即复用其 ID；选择 Create New Patient 则生成新 ID，即使姓名相同也视为不同患者。
 6. **CSV 落地**：导出 ID 列输出 `AR 0001`，导入由 `treatmentCsvParseId()` 解析回数字（同时兼容旧版纯数字列）；ID 数字范围对齐片上 `PATIENT_ID_LIMIT`。
 7. 本规则任何改动必须先更新本节，并同步 HMI 显示、`minicsvApp.c` 前缀处理与 `treatment.c` 分配逻辑。
@@ -350,7 +341,7 @@
 | 13 | `GDDC_PAGE_LIST_TREATMENT` |
 | 14 | `GDDC_PAGE_DELETE_TREATMENT_CONFIRM` |
 | 15 | `GDDC_PAGE_LIST_RECORD` |
-| 16 | `GDDC_PAGE_DELETE_RECODE` |
+| 16 | `GDDC_PAGE_DELETE_RECORD` |
 | 17 | `GDDC_PAGE_EDIT_PATIENT` |
 | 18 | `GDDC_PAGE_REGISTER_PATIENT` |
 | 19 | `GDDC_PAGE_OPERATOR_USB` |
@@ -394,3 +385,18 @@
    - 互锁状态与判定/放行/释放函数（`treatmentIsLockPage`、`treatmentBtnLockArm/Release/Reset`、`treatmentButtonLockAllowed`、`treatmentReleaseButton`）：`MainApp/dcHmiApp.c`，对外声明在 `MainApp/dcHmiApp.h`。
    - 互锁门接入与各自锁键释放点：`MainApp/dcHmiNotifyButton.c`、`MainApp/dcHmiApp.c`。
 3. 本规格为强制规格：任何新增病历相关页面若需要同样的“在途互锁”，必须先在 16.1 表中登记页面 ID，并确认其按键在 `NotifyButton` 分支内无条件调用 `treatmentReleaseButton`（异步动作键在其完成路径释放），否则该页面按键可能在途后无法正常解锁。
+
+---
+
+## 附录 A：变更日志与历史核对记录
+
+> 本附录只记录“某时点的屏幕工程/数据状态”与每次规格变更，不承载强制规则；正文各节只保留不随时间变化的规则。下列状态为对应日期的核对快照，最新状态以实际屏幕工程与代码为准。
+
+1. **2026-11-20**：USB 确认页在屏幕工程 `vTFT_HMI/dwLaser.tftprj` 中建立——导出确认页 `GDDC_PAGE_OPERATOR_USB_SAVE_CONFIRM.tft`（页面 20）仅控件 1/2；导入确认页 `GDDC_PAGE_OPERATOR_USB_LOAD_CONFIRM.tft`（页面 21）建控件 1/2/3，固件只用 1/2，控件 3 下发空串、控件 4 未建立不写入。
+2. **2026-11-21**：删除患者确认页 14 在 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM.tft` 中建立（按钮 1–2、文本 3–6），与 `dcHmiRes.h` 宏值一致；同日核对 USB 三页（19/20/21）共 7 个按键均为 `button_type = 1`。
+3. **2026-11-22**：
+   - 导出确认页文案删去 `The archives on the device will be cleared.`，`TEXT_SUMMARY_1` 只保留“U 盘原有备份将被替换”，与第八节“导出不清空”口径一致；
+   - 宏名拼写更正：`..._KEY_CANCLE` → `..._KEY_CANCEL`、`..._RECODE` → `..._RECORD`（控件数字 ID 不变，.tft 内部 name 保留旧拼写、不影响通信）；
+   - 第十二节、13.4、第十四节的弹起细节收敛为统一引用第十六节，不再各自维护；
+   - 排序措辞改为“姓名 → 原始存储索引”的全序键（原始索引为最终 tie-break），不再称堆排序为稳定排序；
+   - 正文各时点快照移入本附录，强制规格只保留规则。

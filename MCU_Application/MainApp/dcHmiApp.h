@@ -104,7 +104,7 @@ void listTreatmentSetFindText(const char *text);//病历列表页:SEARCH_NAME输
 void listTreatmentDelete(void);//旧记录式删除逻辑(暂保留, 新UI的DELETE_0-4走listTreatmentDeleteStart确认页)
 void listTreatmentDeleteStart(uint8_t slot);//列表页DELETE_0-4: 进入删除确认页(不立即删除), 缓存待删除患者
 void listTreatmentDeleteConfirm(void);//删除确认页DELETE: 级联删除患者及其全部病历后返回列表页
-void listTreatmentDeleteCancel(void);//删除确认页CANCLE: 不删除并返回列表页
+void listTreatmentDeleteCancel(void);//删除确认页CANCEL: 不删除并返回列表页
 
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id);//触摸放行判断(写入中屏蔽触摸, 确认页只放行确认/取消)
 uint8_t treatmentButtonLockAllowed(uint16_t screen_id, uint16_t control_id, uint8_t state);//按键互锁门(在途期间锁定其他按键)
@@ -113,7 +113,7 @@ uint8_t listTreatmentUsbBusy(void);//确认页/写入中(usbState非0)
 void listTreatmentSaveUsbStart(void);//USB操作页: SAVE_UDISK按键, 进入确认页(不立即写盘, 确认后才CSV导出)
 void listTreatmentLoadUsbStart(void);//USB操作页: LOAD_UDISK按键, 进入确认页(不立即读盘, 确认后才CSV导入覆盖机内病历)
 void listTreatmentUsbConfirm(void);//确认页: CONFIRM按键, 授权执行导出/导入(读写在轮询中完成)
-void listTreatmentUsbCancel(void);//确认页: CANCLE按键, 不读写并返回USB操作页
+void listTreatmentUsbCancel(void);//确认页: CANCEL按键, 不读写并返回USB操作页
 void listTreatmentCreateStart(void);//列表页CREATE按键: 本次治疗确实发射过激光后进入编辑页新建病历
 void listTreatmentCreateConfirm(void);//编辑页OK按键: 校验患者信息后把当前治疗记录追加到EPROM末尾
 void listTreatmentCreateCancel(void);//编辑页CANCEL按键: 放弃新建并返回病历列表页

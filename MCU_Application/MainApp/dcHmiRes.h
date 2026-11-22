@@ -44,7 +44,7 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT                         13 //显示病历列表
 #define GDDC_PAGE_DELETE_TREATMENT_CONFIRM               14 //删除病历确认
 #define GDDC_PAGE_LIST_RECORD                            15 //‌治疗记录页面
-#define GDDC_PAGE_DELETE_RECODE							             16 //治疗记录删除页面
+#define GDDC_PAGE_DELETE_RECORD							             16 //治疗记录删除页面
 #define GDDC_PAGE_EDIT_PATIENT                           17 //编辑病人
 #define GDDC_PAGE_REGISTER_PATIENT                       18 //添加病人
 #define GDDC_PAGE_OPERATOR_USB                           19 //USB导入导出操作页面
@@ -188,7 +188,7 @@ extern "C" {
 #define GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG       99 //显示调试信息
 //***************************************************************************
 #define GDDC_PAGE_DELETE_TREATMENT_KEY_OK                1  //确认删除
-#define GDDC_PAGE_DELETE_TREATMENT_KEY_CANCLE            2  //取消
+#define GDDC_PAGE_DELETE_TREATMENT_KEY_CANCEL            2  //取消
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_NAME_ID        3 //名字-ID
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0      4
 #define GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1       5
@@ -213,13 +213,13 @@ extern "C" {
 #define GDDC_PAGE_LIST_RECORD_KEY_DELETE_4                24//删除第5行治疗记录
 #define GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP			      25//上一页按键
 #define GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN               26//下一页按键
-#define GDDC_PAGE_LIST_RECODE_KEY_CLOSE                   27//关闭按键
-#define GDDC_PAGE_LIST_RECODE_KEY_EDIT_PATIENT		      28//编辑患者
+#define GDDC_PAGE_LIST_RECORD_KEY_CLOSE                   27//关闭按键
+#define GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT		      28//编辑患者
 //***************************************************************************
-#define GDDC_PAGE_DELETE_RECODE_TEXT_NAME                 1//显示患者名字-ID
-#define GDDC_PAGE_DELETE_RECODE_TEXT_SUMMARY_0            2//显示治疗日期-发射能量-发射时间-发射功率
-#define GDDC_PAGE_DELETE_RECODE_KEY_CANCEL                10//取消返回上级菜单
-#define GDDC_PAGE_DELETE_RECODE_KEY_OK                    11//确认删除治疗记录
+#define GDDC_PAGE_DELETE_RECORD_TEXT_NAME                 1//显示患者名字-ID
+#define GDDC_PAGE_DELETE_RECORD_TEXT_SUMMARY_0            2//显示治疗日期-发射能量-发射时间-发射功率
+#define GDDC_PAGE_DELETE_RECORD_KEY_CANCEL                10//取消返回上级菜单
+#define GDDC_PAGE_DELETE_RECORD_KEY_OK                    11//确认删除治疗记录
 //***************************************************************************
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_ID                  1 //患者ID
 #define GDDC_PAGE_EDIT_TREATMENT_TEXT_NAME                2 //患者姓名
