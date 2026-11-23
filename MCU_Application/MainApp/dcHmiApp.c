@@ -48,7 +48,7 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	uint32_t bytesread;//实际文件读取字节数
 	uint32_t i;
 	//警告信息
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Please Standby,Do Not Power Off!!"));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Please Standby,Do Not Power Off!!"));
 #if defined(LDR2P1_G5_A1_20250731_DUAL) || defined(LDR2P1_G5_A1_20250731_TRIP)
 	SET_USB_FS_SEL_LEGACY_ON;
 	SET_USB_FS_PSON_LEGACY_ON;
@@ -66,7 +66,7 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	retUsbH = f_mount(&USBH_fatfs, (const TCHAR*)FATFS_ROOT, 1);
 	if(retUsbH != FR_OK){//挂载U盘失败
 		printf("Bootloader:Mount Fatfs errror:%d!\n", retUsbH);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Mount usb disk errror,exit update!"));
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Mount usb disk errror,exit update!"));
 		return false;
 	}
 	vTaskDelay(6000);
@@ -75,7 +75,7 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	if(retUsbH != FR_OK){//读取失败跳过固件更新直接运行程序
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 		printf("BootLoader:Open %s fail,unmount usb disk,ECODE=0x%02XH\n", BOOTLOAD_FILENAME, retUsbH);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Open file errror,exit update!"));
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Open file errror,exit update!"));
 		return false;
 	}
 	//检查文件大小
@@ -84,7 +84,7 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 		f_close(&BootLoadFile);
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 		printf("BootLoader:File %s is over length, close file and unmount disk!\n", BOOTLOAD_FILENAME);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("File is over length,exit update!"));
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("File is over length,exit update!"));
 		return false;
 	}
 	vTaskDelay(800);
@@ -115,13 +115,13 @@ uint8_t updateBootloadReq(void){//更新BOOTLOAD请求 1:可以更新  0：不�
 	//与已有的固件进行对比并给出提示
 	if(BootloadCrc == newBootloadCrc32){
 		printf("BootLoader:old crc%08X: and new crc:%08X is same,skip update!\n", BootloadCrc , newBootloadCrc32);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"File is same,skip update...");
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)"File is same,skip update...");
 		vTaskDelay(800);
 		return false;
 	}
 	else{
 		printf("BootLoader:old crc%08X: and new crc:%08X is not same,need confirm update!\n", BootloadCrc , newBootloadCrc32);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"Confirm update...YES OR NO!!!");
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)"Confirm update...YES OR NO!!!");
 		
 		SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, true);
 		SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, true);
@@ -148,13 +148,13 @@ void confirmBootloadUpdate(void){//执行Bootload更新（分块边读边写：�
 	res = f_open(&BootLoadFile, (const TCHAR*)(BOOTLOAD_FILENAME), FA_OPEN_EXISTING | FA_READ);
 	if(res != FR_OK){//打开失败，保留旧固件
 		printf("BootLoader:Open %s fail,exit update!\n", BOOTLOAD_FILENAME);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Open file fail,Game Over!"));
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Open file fail,Game Over!"));
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 		return;
 	}
 	if(f_size(&BootLoadFile) > BOOTLOADER_FLASH_SIZE){//超长防护
 		printf("BootLoader:File is over length, exit update!\n");
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("File is over length,exit update!"));
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("File is over length,exit update!"));
 		f_close(&BootLoadFile);
 		HAL_FLASH_Lock();//恢复锁定
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
@@ -163,7 +163,7 @@ void confirmBootloadUpdate(void){//执行Bootload更新（分块边读边写：�
 	f_lseek(&BootLoadFile, 0);//读取指针移动到开头
 	HAL_FLASH_Unlock();//解锁FLASH锁定（无时序敏感，提前到循环外）
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start update new bootload..."));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Start update new bootload..."));
 
 	while(readflag){
 		/* 正常上下文读一块（USB MSC 底层轮询需中断驱动，禁止在关中断段读取） */
@@ -186,14 +186,14 @@ void confirmBootloadUpdate(void){//执行Bootload更新（分块边读边写：�
 				(void)xTaskResumeAll();
 				HAL_FLASH_Lock();//恢复锁定
 				printf("BootLoader:Erase bootload fail, GameOver!!!!!\n");
-				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
+				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
 				f_close(&BootLoadFile);
 				f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 				return;
 			}
 			if(checkBlank(BOOTLOADER_FLASH_START_ADDRESS, BOOTLOADER_FLASH_SIZE)){//FLASH 查空
 				printf("Bootloader:Check mcu booload blank sucess.\n");
-				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload sucessful..."));
+				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Erase bootload sucessful..."));
 			}
 			else{
 				SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
@@ -201,7 +201,7 @@ void confirmBootloadUpdate(void){//执行Bootload更新（分块边读边写：�
 				(void)xTaskResumeAll();
 				HAL_FLASH_Lock();//恢复锁定
 				printf("Bootloader:Check mcu booload blank not empty!\n");
-				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
+				SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Erase bootload fail,Game Over!"));
 				f_close(&BootLoadFile);
 				f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 				return;
@@ -225,20 +225,20 @@ void confirmBootloadUpdate(void){//执行Bootload更新（分块边读边写：�
 	}
 	HAL_FLASH_Lock();
 	printf("BootLoader:Update new bootload done...\n");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"Update new bootload done...");
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)"Update new bootload done...");
 	softDelayMs(1000);
 	//检查已写入的Bootload是否正确（全区读回：未写的0xFF填充区与文件CRC的补全逻辑一致）
 	printf("BootLoader:Start checksum new bootload...\n");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Start checksum new bootload..."));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Start checksum new bootload..."));
 	BootloadCrc = getOriginBootloadCrc();
 	softDelayMs(1000);
 	if(BootloadCrc == newBootloadCrc32){
 		printf("BootLoader:Checksum bootload pass,flash crc:%08X, file crc:%08X\n", BootloadCrc , newBootloadCrc32);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Checksum bootload pass,power cycle the system"));
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Checksum bootload pass,power cycle the system"));
 	}
 	else{
 		printf("BootLoader:Checksum bootload fail,flash crc:%08X, file crc:%08X\n,Game Over!!!\n", BootloadCrc , newBootloadCrc32);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)("Checksum bootload fail,Game Over!!!"));
+		SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)("Checksum bootload fail,Game Over!!!"));
 		f_close(&BootLoadFile);
 		f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
 	}
@@ -263,7 +263,7 @@ void exitBootloadUpdate(void){//退出Bootload更新
 	SET_USBA1_SEL_ON;//切换为内部USB
 	SET_USBA0_PSON_ON;//打开内部USB供电
 #endif
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)(""));
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);	
@@ -295,8 +295,8 @@ void optionKeyEnable(uint8_t enable){//选项界面按键锁定
 	SetControlEnable(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_KEY_RESTORE, enable);
 }
 void standbyDebugInfoVisiable(int8_t enable){//Standby调试信息可见
-	SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
-	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, enable);
+	SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_DEBUG, enable);
+	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_TEXT_DEBUG, enable);
 	SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, enable);
 	//患者注册/编辑页不再设置调试文本控件, 无需切换可见性
 }
@@ -305,63 +305,63 @@ void updateDiagnosisCaliInfo(void){//更新功率校准动态信息
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_LASER_A_DIODE_TEMP] / 10.0F));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_DIODE_TEMP, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_DIODE_TEMP, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_HWATER_TEMP] / 10.0F));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_HWATER_TEMP, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_HWATER_TEMP, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%4.1fC", (NVRAM0[EM_CWATER_TEMP] / 10.0F));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CWATER_TEMP, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CWATER_TEMP, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1f%%", ((float)NVRAM0[EM_TPID0_OUT] * 100.0F / CONFIG_DAC_MAXBIT_CH8));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_PID0, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_PID0, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1f%%", ((float)NVRAM0[EM_TPID1_OUT] * 100.0F / CONFIG_DAC_MAXBIT_CH9));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_PID1, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_PID1, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%04d", NVRAM0[EM_HT0_TEMP]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_HT0, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_HT0, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%04d", NVRAM0[EM_HT1_TEMP]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_HT1, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_HT1, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH0_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH0, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH0, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH1_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH1, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH1, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH2_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH2, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH2, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH3_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH3, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH3, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH4_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH4, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH4, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH5_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH5, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH5, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH6_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH6, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH6, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "%5.1fA", NVRAM0[EM_LD_CH7_CURRENT] / 10.0F);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CDISP_CH7, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CDISP_CH7, (uint8_t*)dispBuf);
 
 }
 
@@ -372,7 +372,7 @@ void updateDebugInfo(void){//更新Standby调试信息
 	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_HT0_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[SPREG_ADC_54], NVRAM0[SPREG_ADC_55], NVRAM0[SPREG_DAC_8], NVRAM0[DM_TREATMENT_NUM]);
 	switch(NVRAM0[EM_DC_PAGE]){
 		case GDDC_PAGE_STANDBY:{
-			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}	
 		case GDDC_PAGE_READY:{
@@ -392,11 +392,11 @@ void updateDebugInfo(void){//更新Standby调试信息
 	NVRAM0[EM_LASER_FPD], NVRAM0[EM_LASER_LPD], NVRAM0[EM_TPID0_OUT]);
 	switch(NVRAM0[EM_DC_PAGE]){
 		case GDDC_PAGE_STANDBY:{
-			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_TEXT_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}	
 		case GDDC_PAGE_READY:{
-			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXTDISPLAY_DEBUG, (uint8_t*)dispBuf);
+			SetTextValue(GDDC_PAGE_READY, GDDC_PAGE_READY_TEXT_DEBUG, (uint8_t*)dispBuf);
 			break;
 		}
 		default:break;	
@@ -410,104 +410,104 @@ void updateDiagnosisCali(void){//跟新诊断-校准页面静态信息
 	for(i = 0;i < 20; i++){//CH0
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr0[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P5 + i), (uint8_t*)dispBuf);
 	}
 	for(i = 0;i < 20; i++){//CH1
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr1[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P5 + i), (uint8_t*)dispBuf);
 	}
 	for(i = 0;i < 20; i++){//CH2
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr2[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P5 + i), (uint8_t*)dispBuf);
 	}
 	for(i = 0;i < 20; i++){//CH3
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr3[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P5 + i), (uint8_t*)dispBuf);
 	}	
 	for(i = 0;i < 20; i++){//CH4
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr4[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P5 + i), (uint8_t*)dispBuf);
 	}
 	for(i = 0;i < 20; i++){//CH5
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr5[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P5 + i), (uint8_t*)dispBuf);
 	}
 	for(i = 0;i < 20; i++){//CH6
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr6[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P5 + i), (uint8_t*)dispBuf);
 	}
 	for(i = 0;i < 20; i++){//CH7
 		memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 		sprintf(dispBuf, "%4.1f", deviceConfig.calibrationPwr7[i] / 10.0F);
-		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P5 + i), (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, (GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P5 + i), (uint8_t*)dispBuf);
 	}
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH0, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH0, (uint8_t*)dispBuf);
 	
   memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH1, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH1, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH2, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH2, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH3, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH3, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH4, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH4, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH5, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH5, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH6, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH6, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "000");
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH7, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH7, (uint8_t*)dispBuf);
 	
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH0, false);
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH1, false);
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH2, false);
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH3, false);
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH4, false);
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH5, false);
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH6, false);
-	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH0, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH1, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH2, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH3, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH4, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH5, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH6, false);
+	SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH7, false);
 }
 
 void updateDiagnosis(void){//更新诊断信信息
 	//uint8_t i;
 	//char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	//从NVRAM中更新文本框	
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_YEAR , deviceConfig.mfg_year, 1, 0);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_MONTH , deviceConfig.mfg_month, 1, 0);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DAY , deviceConfig.mfg_day, 1, 0);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SN, (uint8_t*)deviceConfig.serialNumber);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_YEAR , deviceConfig.mfg_year, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_MONTH , deviceConfig.mfg_month, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_DAY , deviceConfig.mfg_day, 1, 0);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_SN, (uint8_t*)deviceConfig.serialNumber);
 	
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RED_LED_DC , deviceConfig.redLedDc, 1, 0);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_GREEN_LED_DC , deviceConfig.greenLedDc, 1, 0);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_BLUE_LED_DC , deviceConfig.blueLedDc, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_RED_LED_DC , deviceConfig.redLedDc, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_GREEN_LED_DC , deviceConfig.greenLedDc, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_BLUE_LED_DC , deviceConfig.blueLedDc, 1, 0);
 	
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SET_AIM_GAIN, deviceConfig.redAimGain, 1, 0);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIBER_DETECT, deviceConfig.fiberDetect, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_SET_AIM_GAIN, deviceConfig.redAimGain, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIBER_DETECT, deviceConfig.fiberDetect, 1, 0);
 	
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_A_TEMP, deviceConfig.laserDiodeA_Temp, 1, 0);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_B_TEMP, deviceConfig.laserDiodeB_Temp, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_DIODE_A_TEMP, deviceConfig.laserDiodeA_Temp, 1, 0);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_DIODE_B_TEMP, deviceConfig.laserDiodeB_Temp, 1, 0);
 	
 	SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, true);	
 	SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
@@ -517,8 +517,8 @@ void updateDiagnosis(void){//更新诊断信信息
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES, false);
 	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO, false);
 
-	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)"");
+	SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, false);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)"");
 	
 	if(deviceConfig.normalOpenInterLock == 0){
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK, true);
@@ -536,7 +536,7 @@ void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	NVRAM0[SPREG_ADC_4], NVRAM0[SPREG_ADC_5], NVRAM0[SPREG_ADC_6], NVRAM0[SPREG_ADC_7], \
 	NVRAM0[SPREG_ADC_8], NVRAM0[SPREG_ADC_9], NVRAM0[SPREG_ADC_10], NVRAM0[SPREG_ADC_11], \
 	NVRAM0[SPREG_ADC_12], NVRAM0[SPREG_ADC_13], NVRAM0[SPREG_ADC_14], NVRAM0[SPREG_ADC_15]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO0, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO0, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "A16-A31:%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d", \
@@ -544,7 +544,7 @@ void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	NVRAM0[SPREG_ADC_20], NVRAM0[SPREG_ADC_21], NVRAM0[SPREG_ADC_22], NVRAM0[SPREG_ADC_23], \
 	NVRAM0[SPREG_ADC_24], NVRAM0[SPREG_ADC_25], NVRAM0[SPREG_ADC_26], NVRAM0[SPREG_ADC_27], \
 	NVRAM0[SPREG_ADC_28], NVRAM0[SPREG_ADC_29], NVRAM0[SPREG_ADC_30], NVRAM0[SPREG_ADC_31]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO1, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO1, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "A32-A47:%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d", \
@@ -552,19 +552,19 @@ void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	NVRAM0[SPREG_ADC_36], NVRAM0[SPREG_ADC_37], NVRAM0[SPREG_ADC_38], NVRAM0[SPREG_ADC_39], \
 	NVRAM0[SPREG_ADC_40], NVRAM0[SPREG_ADC_41], NVRAM0[SPREG_ADC_42], NVRAM0[SPREG_ADC_43], \
 	NVRAM0[SPREG_ADC_44], NVRAM0[SPREG_ADC_45], NVRAM0[SPREG_ADC_46], NVRAM0[SPREG_ADC_47]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO2, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "A48-A55:%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d", \
 	NVRAM0[SPREG_ADC_48], NVRAM0[SPREG_ADC_49], NVRAM0[SPREG_ADC_50], NVRAM0[SPREG_ADC_51], \
 	NVRAM0[SPREG_ADC_52], NVRAM0[SPREG_ADC_53], NVRAM0[SPREG_ADC_54], NVRAM0[SPREG_ADC_55]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO3, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO3, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "A56-A63:%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d", \
 	NVRAM0[SPREG_ADC_56], NVRAM0[SPREG_ADC_57], NVRAM0[SPREG_ADC_58], NVRAM0[SPREG_ADC_59], \
 	NVRAM0[SPREG_ADC_60], 0, 0, 0);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO4, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO4, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "D0-17:%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d,%05d", \
@@ -573,7 +573,7 @@ void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	NVRAM0[SPREG_DAC_8], NVRAM0[SPREG_DAC_9], NVRAM0[SPREG_DAC_10], NVRAM0[SPREG_DAC_11], \
 	NVRAM0[SPREG_DAC_12], NVRAM0[SPREG_DAC_13], NVRAM0[SPREG_DAC_14], NVRAM0[SPREG_DAC_15], \
 	NVRAM0[SPREG_DAC_16], NVRAM0[SPREG_DAC_17]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO5, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO5, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "X0-31:%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d", \
@@ -585,7 +585,7 @@ void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	LD(X_START * 16 + 20), LD(X_START * 16 + 21), LD(X_START * 16 + 22) ,LD(X_START * 16 + 23), \
 	LD(X_START * 16 + 24), LD(X_START * 16 + 25), LD(X_START * 16 + 26) ,LD(X_START * 16 + 27), \
 	LD(X_START * 16 + 28), LD(X_START * 16 + 29), LD(X_START * 16 + 30) ,LD(X_START * 16 + 31));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO6, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO6, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "Y0-31:%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d,%1d", \
@@ -597,43 +597,43 @@ void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	LD(Y_START * 16 + 20), LD(Y_START * 16 + 21), LD(Y_START * 16 + 22) ,LD(Y_START * 16 + 23), \
 	LD(Y_START * 16 + 24), LD(Y_START * 16 + 25), LD(Y_START * 16 + 26) ,LD(Y_START * 16 + 27), \
 	LD(Y_START * 16 + 28), LD(Y_START * 16 + 29), LD(Y_START * 16 + 30) ,LD(Y_START * 16 + 31));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO7, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO7, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "DIODE-AT:%05d,COUPLE-AT:%05d,CRYSTAL-AT0:%05d,CRYSTAL-AT01:%05d", \
 	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_LASER_A_COUPLER_TEMP], NVRAM0[EM_LASER_A_CRYST0_TEMP], NVRAM0[EM_LASER_A_CRYST1_TEMP]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO8, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO8, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "DIODE-BT:%05d,COUPLE-BT:%05d,CRYSTAL-BT0:%05d,CRYSTAL-BT01:%05d", \
 	NVRAM0[EM_LASER_B_DIODE_TEMP], NVRAM0[EM_LASER_B_COUPLER_TEMP], NVRAM0[EM_LASER_B_CRYST0_TEMP], NVRAM0[EM_LASER_B_CRYST1_TEMP]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO9, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO9, (uint8_t*)dispBuf);
 
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "HT0:%05d,HT1:%05d,HT2:%05d,HT3:%05d,WHT:%05d,WCT:%05d", \
 	NVRAM0[EM_HT0_TEMP], NVRAM0[EM_HT1_TEMP], NVRAM0[EM_HT2_TEMP], NVRAM0[EM_HT3_TEMP], NVRAM0[EM_HWATER_TEMP], NVRAM0[EM_CWATER_TEMP]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO10, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO10, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "AT0:%05d,AT1:%05d,TMCU:%05d,VBAT:%05d,SET DIODE-AT:%05d,SET DIODE_BT:%05d,TEC0:%05d,TEC1:%05d", \
 	NVRAM0[EM_AMBIENT0_TEMP], NVRAM0[EM_AMBIENT1_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_MBAT_TEMP], deviceConfig.laserDiodeA_Temp, deviceConfig.laserDiodeB_Temp,NVRAM0[EM_TPID0_OUT], NVRAM0[EM_TPID1_OUT]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO11, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO11, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "FAN0-3 GET:%05d,%05d,%05d,%05d,FAN0-3 SET:%05d,%05d,%05d,%05d", \
 	NVRAM0[EM_FAN0_GET_SPEED], NVRAM0[EM_FAN1_GET_SPEED], NVRAM0[EM_FAN2_GET_SPEED], NVRAM0[EM_FAN3_GET_SPEED], \
 	NVRAM0[EM_FAN0_SET_SPEED], NVRAM0[EM_FAN1_SET_SPEED], NVRAM0[EM_FAN2_SET_SPEED], NVRAM0[EM_FAN3_SET_SPEED]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO12, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO12, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "FAN4-7 GET:%05d,%05d,%05d,%05d,FAN4-7 SET:%05d,%05d,%05d,%05d", \
 	NVRAM0[EM_FAN4_GET_SPEED], NVRAM0[EM_FAN5_GET_SPEED], NVRAM0[EM_FAN6_GET_SPEED], NVRAM0[EM_FAN7_GET_SPEED], \
 	NVRAM0[EM_FAN4_SET_SPEED], NVRAM0[EM_FAN5_SET_SPEED], NVRAM0[EM_FAN6_SET_SPEED], NVRAM0[EM_FAN7_SET_SPEED]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO13, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO13, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "HDC1080 TEMP:%05d, HDC1080 HUMIDITY:%05d", NVRAM0[EM_HDC1080_TEMP], NVRAM0[EM_HDC1080_HUMIDITY]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXTDISPLAY_INFO14, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS_RAW, GDDC_PAGE_DIAGNOSIS_RAW_TEXT_INFO14, (uint8_t*)dispBuf);
 }
 
 void updateDiagnosisInfo(void){//更新诊断信息
@@ -641,31 +641,31 @@ void updateDiagnosisInfo(void){//更新诊断信息
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "FSNC:%1d,FSNO:%1d,ESTOP:%d,ILOCK:%1d,FB:%1d,FPD:%05d,LPD:%05d,RESET:%1d", \
 	LD(X_FOOTSWITCH_NC), LD(X_FOOTSWITCH_NO), LD(X_ESTOP_NC), LD(X_INTERLOCK_NC), LD(X_FIBER_PROBE),NVRAM0[SPREG_ADC_47],NVRAM0[SPREG_ADC_48],LD(Y_ESTOP_RESET));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO0, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_INFO0, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "LDT:%05d,COT:%05d,CRYT0:%05d,CRYT1:%05d,HT0:%05d,HT1:%05d,HT2:%05d,HT3:%05d", \
 	NVRAM0[EM_LASER_A_DIODE_TEMP], NVRAM0[EM_LASER_A_COUPLER_TEMP], NVRAM0[EM_LASER_A_CRYST0_TEMP], NVRAM0[EM_LASER_A_CRYST1_TEMP], \
 	NVRAM0[EM_HT0_TEMP], NVRAM0[EM_HT1_TEMP], NVRAM0[EM_HT2_TEMP], NVRAM0[EM_HT3_TEMP]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO1, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_INFO1, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "WHOTT:%05d,WCOLT:%05d,MCUT:%05d,BATT:%05d", \
 	NVRAM0[EM_HWATER_TEMP], NVRAM0[EM_CWATER_TEMP], NVRAM0[EM_MCU_TEMP], NVRAM0[EM_MBAT_TEMP]);
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO2, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_INFO2, (uint8_t*)dispBuf);
 		
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "FAN:%05d,WFSW NC:%1d,WFSW NO:%1d", \
 	NVRAM0[EM_FAN0_SET_SPEED], LD(SPCOIL_WFSWITCH_PLUG), LD(SPCOIL_WFSWITCH_NO));
-	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO3, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_INFO3, (uint8_t*)dispBuf);
 	
 	//刷新RTC
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_YEAR, (NVRAM0[EM_RTC_YEAR] + 2000), 0, 4);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MONTH, NVRAM0[EM_RTC_MONTH], 0, 2);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_DAY, NVRAM0[EM_RTC_DAY], 0, 2);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_HOURS, NVRAM0[EM_RTC_HOURS], 0, 2);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MINUTES, NVRAM0[EM_RTC_MINUTES], 0, 2);
-	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_SECONDS, NVRAM0[EM_RTC_SECONDS], 0, 2);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_RTC_YEAR, (NVRAM0[EM_RTC_YEAR] + 2000), 0, 4);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_RTC_MONTH, NVRAM0[EM_RTC_MONTH], 0, 2);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_RTC_DAY, NVRAM0[EM_RTC_DAY], 0, 2);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_RTC_HOURS, NVRAM0[EM_RTC_HOURS], 0, 2);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_RTC_MINUTES, NVRAM0[EM_RTC_MINUTES], 0, 2);
+	SetTextInt32(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_RTC_SECONDS, NVRAM0[EM_RTC_SECONDS], 0, 2);
 }
 
 void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方案名称
@@ -676,18 +676,18 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 	switch(classify){
 #if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1470_980_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 		case SCHEME_PHLEBOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Phlebology");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Phlebology");
 			if(strlen((char*)sPhlebology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sPhlebology[0].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sPhlebology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sPhlebology[1].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sPhlebology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sPhlebology[2].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			//方案3-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -710,22 +710,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -738,30 +738,30 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;			
 		}
 		case SCHEME_PROCTOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Proctology");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Proctology");
 			if(strlen((char*)sProctology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sProctology[0].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sProctology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sProctology[1].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sProctology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sProctology[2].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sProctology[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sProctology[3].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sProctology[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sProctology[4].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sProctology[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 				strcpy(dispBuf, (char*)(sProctology[5].name));
-				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+				SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 			}	
 			//方案6-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -784,22 +784,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -812,71 +812,71 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}
 		case SCHEME_GYNECOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Gynecology");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Gynecology");
 			if(index < 16){//方案0-15
 				if(strlen((char*)sGynecology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[5].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[6].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[6].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[7].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[7].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[8].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[8].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_8, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[9].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[9].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_9, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[10].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[10].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_10, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[11].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[11].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_11, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[12].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[12].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_12, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[13].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[13].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_13, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[14].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[14].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_14, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[15].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[15].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_15, (uint8_t*)dispBuf);
 				}			
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
@@ -898,22 +898,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				BatchEnd();
 				
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, true);
 				BatchEnd();
 				
 				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -925,31 +925,31 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			else{
 				if(strlen((char*)sGynecology[16].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[16].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[17].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[17].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 				}				
 				if(strlen((char*)sGynecology[18].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[18].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[19].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[19].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[20].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[20].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[21].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[21].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sGynecology[22].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sGynecology[22].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 				}
 				
 				//方案5-15禁止选择
@@ -973,22 +973,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				BatchEnd();
 				
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 				BatchEnd();
 
 				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, true);
@@ -1001,70 +1001,70 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;				
 		}
 		case SCHEME_ENT:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- ENT");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- ENT");
 			if(strlen((char*)sENT[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[5].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[6].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[6].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[7].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[7].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[8].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[8].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_8, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[9].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[9].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_9, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[10].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[10].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_10, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[11].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[11].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_11, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[12].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[12].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_12, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[13].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[13].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_13, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[14].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[14].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_14, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sENT[15].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sENT[15].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_15, (uint8_t*)dispBuf);
 			}	
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
 			BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_0, true);
@@ -1086,22 +1086,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 					
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, true);
 			BatchEnd();
 				
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -1115,27 +1115,27 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 		}
 #endif
 		case SCHEME_NEUROSURGERY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Neurosurgery");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Neurosurgery");
 #if defined(APP_CONFIG_WAVE_1470_980_635)
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sNeurosurgery[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sNeurosurgery[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sNeurosurgery[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sNeurosurgery[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 			}
 			//方案4-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1158,36 +1158,36 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 #endif
 #if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			if(strlen((char*)sNeurosurgery[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sNeurosurgery[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sNeurosurgery[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sNeurosurgery[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			//方案4-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1210,22 +1210,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, false);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, false);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 #endif
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -1238,42 +1238,42 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}
 		case SCHEME_DERMATOLOGY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Dermatology");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Dermatology");
 			if(strlen((char*)sDermatology[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sDermatology[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sDermatology[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sDermatology[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sDermatology[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sDermatology[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[5].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sDermatology[6].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[6].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sDermatology[7].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[7].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sDermatology[8].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDermatology[8].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_8, (uint8_t*)dispBuf);
 			}	
 			//方案8-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1296,22 +1296,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);			
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -1324,34 +1324,34 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}
 		case SCHEME_LIPOSUCTION:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Liposuction");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Liposuction");
 			if(strlen((char*)sLiposuction[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}				
 			if(strlen((char*)sLiposuction[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sLiposuction[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sLiposuction[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sLiposuction[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sLiposuction[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[5].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sLiposuction[6].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sLiposuction[6].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 			}		
 			//方案7-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1374,22 +1374,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);			
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -1402,71 +1402,71 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}
 		case SCHEME_DENTISTRY:{	
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Dentistry");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Dentistry");
 			if(index < 16){//方案0-15
 				if(strlen((char*)sDentistry[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[5].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[6].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[6].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[7].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[7].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[8].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[8].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_8, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[9].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[9].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_9, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[10].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[10].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_10, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[11].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[11].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_11, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[12].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[12].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_12, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[13].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[13].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_13, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[14].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[14].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_14, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[15].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[15].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_15, (uint8_t*)dispBuf);
 				}	
 				//方案0-15禁止选择
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1489,22 +1489,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				BatchEnd();
 			
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);			
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, true);
 				BatchEnd();
 
 				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -1518,31 +1518,31 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			else{
 				if(strlen((char*)sDentistry[16].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[16].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 				}	
 				if(strlen((char*)sDentistry[17].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[17].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[18].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[18].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[19].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[19].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[20].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[20].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[21].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[21].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)sDentistry[22].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sDentistry[22].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 				}
 				//方案0-15禁止选择
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1564,22 +1564,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 				BatchSetEnable(GDDC_PAGE_SCHEME_KEY_SELECT_15, false);
 				BatchEnd();
 				BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);			
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-				BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);			
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+				BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 				BatchEnd();			
 				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, true);
 				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,true);
@@ -1592,39 +1592,39 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			break;
 		}
 		case SCHMEM_THERAPY:{
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Therapy");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Therapy");
 #if defined(APP_CONFIG_WAVE_1470_980_635)
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sTherapy[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sTherapy[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sTherapy[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sTherapy[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sTherapy[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[5].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sTherapy[6].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[6].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sTherapy[7].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[7].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 			}		
 			//方案8-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1647,36 +1647,36 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 #endif
 #if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
 			if(strlen((char*)sTherapy[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sTherapy[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sTherapy[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sTherapy[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}	
 			//方案8-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1699,22 +1699,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, false);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, false);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 #endif
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -1728,50 +1728,50 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 		}	
 		case SCHEME_ENDOLIFT:{
 #if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Endolift");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Endolift");
 			if(strlen((char*)sEndolift[0].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[0].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sEndolift[1].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[1].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sEndolift[2].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[2].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sEndolift[3].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[3].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sEndolift[4].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[4].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sEndolift[5].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[5].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sEndolift[6].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[6].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 			}
 			if(strlen((char*)sEndolift[7].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[7].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sEndolift[8].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[8].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_8, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sEndolift[9].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[9].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_9, (uint8_t*)dispBuf);
 			}	
 			if(strlen((char*)sEndolift[10].name) <= CONFIG_SCHEME_NAME_SIZE){
 					strcpy(dispBuf, (char*)(sEndolift[10].name));
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_10, (uint8_t*)dispBuf);
 			}			
 			//方案8-15禁止选择
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
@@ -1794,22 +1794,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);			
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, false);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);			
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, false);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, false);
 			BatchEnd();
 
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
@@ -1825,76 +1825,76 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 		}
 		case SCHEME_CUSTIOM:{
 #if defined(APP_CONFIG_WAVE_1470_980_635)
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Custom");
 #endif
 			
 #if defined(APP_CONFIG_WAVE_1470_635) || defined(APP_CONFIG_WAVE_1940_1470_635)
-			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_CLASSIFY, "- Custom");
+			SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_CLASSIFY, "- Custom");
 #endif
 			if(index < 16){
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_0])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_0], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_1])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_1], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_2])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_2], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_3])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_3], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_4])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_4], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_5])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_5], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_6])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_6], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_7])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_7], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_8])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_8], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_8, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_9])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_9], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_9, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_10])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_10], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_10, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_11])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_11], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_11, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_12])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_12], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_12, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_13])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_13], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_13, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_14])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_14], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_14, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_15])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_15], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_15, (uint8_t*)dispBuf);
 				}
 				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, false);
 				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,false);
@@ -1905,67 +1905,67 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			else{
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_16])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_16], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_0, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_17])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_17], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_1, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_18])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_18], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_2, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_19])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_19], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_3, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_20])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_20], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_4, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_21])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_21], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_5, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_22])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_22], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_6, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_23])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_23], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_7, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_24])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_24], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_8, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_25])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_25], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_9, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_26])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_26], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_10, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_27])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_27], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_11, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_28])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_28], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_12, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_29])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_29], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_13, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_30])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_30], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_14, (uint8_t*)dispBuf);
 				}
 				if(strlen((char*)(&FDRAM1[FD_SCHEME_START_31])) <= CONFIG_SCHEME_NAME_SIZE){
 					memcpy(dispBuf, (char*)&FDRAM1[FD_SCHEME_START_31], CONFIG_SCHEME_NAME_SIZE);
-					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, (uint8_t*)dispBuf);
+					SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_SCHEME_15, (uint8_t*)dispBuf);
 				}
 				SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_LAST_PAGE, true);
 				SetControlVisiable(GDDC_PAGE_SCHEME_DETAIL,GDDC_PAGE_SCHEME_KEY_LAST_PAGE,true);
@@ -1993,22 +1993,22 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 			BatchEnd();
 			
 			BatchBegin(GDDC_PAGE_SCHEME_DETAIL);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_1, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_2, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_3, true);		
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_4, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_5, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_6, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_7, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_8, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_9, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_10, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_11, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_12, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_13, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_14, true);
-			BatchSetVisible(GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_15, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_0, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_1, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_2, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_3, true);		
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_4, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_5, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_6, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_7, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_8, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_9, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_10, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_11, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_12, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_13, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_14, true);
+			BatchSetVisible(GDDC_PAGE_SCHEME_TEXT_SCHEME_15, true);
 			BatchEnd();
 			
 			SetControlEnable(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_RENAME, true);
@@ -2017,44 +2017,44 @@ void updateSchemeDetail(int16_t classify, int16_t index){//更新选项界面方
 		default:{break;}
 	}
 	unselectSchemeAll();
-	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)"");
-	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)"");
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_DETAIL0, (uint8_t*)"");
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_DETAIL1, (uint8_t*)"");
 }
 
 void updateInformationDisplay(void){//更新信息界面显示
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
 	char *pMain, *pMonir;
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_TPYE, (uint8_t*)info_msg.TYPE);		
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_TPYE, (uint8_t*)info_msg.TYPE);		
 
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	sprintf(dispBuf, "SN: %s", (uint8_t*)deviceConfig.serialNumber);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SN, (uint8_t*)dispBuf);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_LASER_WAVELENGTH, (uint8_t*)info_msg.WAVELENGTH);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MAX_LASER_POWER, (uint8_t*)info_msg.LASER_POWER);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_SN, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_LASER_WAVELENGTH, (uint8_t*)info_msg.WAVELENGTH);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_MAX_LASER_POWER, (uint8_t*)info_msg.LASER_POWER);
 	
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	sprintf(dispBuf, "%s", (char*)HW_VERSION);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_HARDWAR_VERSIONE, (uint8_t*)dispBuf);
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_HARDWAR_VERSIONE, (uint8_t*)dispBuf);
 	
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	pMain = (char*)(BOOTLOAD_MAIN_ADDRESS);
 	pMonir = (char*)(BOOTLOAD_MINOR_ADDRESS);
 	if((*pMain >='0' && *pMain <= '9') && (*pMonir >= '0' && *pMonir <= '9')){
 		sprintf(dispBuf, "%s-%s:%s  Bootload Ver: %c.%c", (char*)SW_VERSION, __DATE__, __TIME__, *pMain, *pMonir);
-		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SOFTWARE_VERSION, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_SOFTWARE_VERSION, (uint8_t*)dispBuf);
 	}
 	else{
 		sprintf(dispBuf, "%s-%s:%s; No Bootload!!!", (char*)SW_VERSION,  __DATE__, __TIME__);
-		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_SOFTWARE_VERSION, (uint8_t*)dispBuf);
+		SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_SOFTWARE_VERSION, (uint8_t*)dispBuf);
 	}
 	
 	memset(dispBuf, 0x0,sizeof(dispBuf));
 	sprintf(dispBuf, "MANUFACTURE DATE: %4d-%2d-%2d", deviceConfig.mfg_year, deviceConfig.mfg_month, deviceConfig.mfg_day);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_MANUFACTURE_DATE, (uint8_t*)dispBuf);			
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_MANUFACTURE_DATE, (uint8_t*)dispBuf);			
 	
 	memset(dispBuf, 0x0, CONFIG_DCHMI_DISKBUF_SIZE);
 	sprintf(dispBuf, "UUID: %08X%08X%08X", UniqueId[0], UniqueId[1], UniqueId[2]);
-	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXTDISPLAY_UUID, (uint8_t*)dispBuf);	
+	SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFO_TEXT_UUID, (uint8_t*)dispBuf);	
 }
 void returnStandbyDisplay(void){//统一返回STANDBY页面:状态机切回待机并刷新待机页显示
 	NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
@@ -2347,8 +2347,8 @@ void updateSchemeInfo(int16_t classify, int16_t index){//更新SCHEME 详细参�
 		}
 		default:break;
 	}
-	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL0, (uint8_t*)dispBuf1);
-	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXTDISPLAY_DETAIL1, (uint8_t*)dispBuf2);
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_DETAIL0, (uint8_t*)dispBuf1);
+	SetTextValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_TEXT_DETAIL1, (uint8_t*)dispBuf2);
 }
 
 void unselectSchemeNum(int16_t index){//反选方案条
@@ -2701,9 +2701,9 @@ static void dcHmiShowTreatmentCommon(uint16_t screenId, const char *idText, cons
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d", log->age);
 	SetTextValue(screenId, GDDC_PAGE_EDIT_TREATMENT_TEXT_AGE, (uint8_t*)dispBuf);
-	//性别下拉菜单: 选项索引0=Male, 1=Female(屏幕工程下拉项顺序)
+	//性别下拉菜单: 屏幕工程选项顺序"FeMale;Male"(索引0=女FEMALE, 1=男MALE)
 	SetSelectorValue(screenId, GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER,
-	                 (uint8_t)((log->gender == FEMALE) ? 1 : 0));
+	                 (uint8_t)((log->gender == FEMALE) ? 0 : 1));
 }
 
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
@@ -2761,6 +2761,10 @@ typedef struct{
   uint16_t deleteRecordGlobalIndex;
   //EDIT_PATIENT患者信息编辑模式: 0=正常新建/追加流程, 1=从记录页进入只更新患者信息(不追加记录)
   uint8_t editPatientMode;
+  //REGISTER_PATIENT注册页: registerReturnPage为进入注册页之前的来源页(13=CREATE_NEW手动, 22=核对页SAVE_RECORD),
+  //CANCEL/完成后返回该页; verifySelectMode=1表示列表页正被核对页用来选择已有患者, 选中后回核对页而非待机页
+  uint16_t registerReturnPage;
+  uint8_t verifySelectMode;
 }listTreatmentCtx_t;
 static listTreatmentCtx_t listTreatmentCtx;//病历页相关运行状态(开机全为0, 全部放ZI段)
 
@@ -3051,9 +3055,18 @@ void refreshListTreatmentDisplay(void){
       }
     }
   }
+  //进入/重进本页先建立"全部按键未按下"基线: 显式清零页面13全部20个按钮(20-29, 31-40),
+  //不依赖切页前后无应答的逐个复位; 选中患者仍由selectedPatientId/Name记录, 不再用按钮down态高亮
+  for(uint16_t btn = GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0;
+      btn <= GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_4; btn++){
+    SetButtonValue(GDDC_PAGE_LIST_TREATMENT, btn, 0);
+  }
+  for(uint16_t btn = GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_0;
+      btn <= GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB; btn++){
+    SetButtonValue(GDDC_PAGE_LIST_TREATMENT, btn, 0);
+  }
   //第三步: 按预读结果渲染各槽位(渲染循环内不再产生FRAM访问)
   for(uint8_t i = 0; i < LIST_TREATMENT_WINDOW_SIZE; i++){
-    uint16_t viewPos = (uint16_t)(listTreatmentCtx.topIndex + i);
     uint16_t nameCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_0 + i);
     uint16_t idCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_ID_0 + i);
     uint16_t countCtrl = (uint16_t)(GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_0 + i);
@@ -3084,9 +3097,6 @@ void refreshListTreatmentDisplay(void){
     SetControlEnable(GDDC_PAGE_LIST_TREATMENT, deleteCtrl, slotOccupied);
     SetControlVisiable(GDDC_PAGE_LIST_TREATMENT, editCtrl, slotOccupied);
     SetControlEnable(GDDC_PAGE_LIST_TREATMENT, editCtrl, slotOccupied);
-    //选中患者对应的按钮高亮,视图外或空槽位取消高亮
-    SetButtonValue(GDDC_PAGE_LIST_TREATMENT, selectCtrl,
-      (viewPos < listTreatmentCtx.filteredCount) && (viewPos == listTreatmentCtx.selectedIndex));
   }
   memset(dispBuf, 0x0, sizeof(dispBuf));
   //CAPACITY保持全局口径: 去重患者人数/治疗记录次数(同一患者多次治疗只计1人, 不受当前过滤影响)
@@ -3142,6 +3152,12 @@ static void setOperatorUsbText(const char *text){
 //USB操作页: 刷新机内病历摘要(患者数/记录数), SUMMARY_USB按usbText下发(默认U盘在位状态, 导出/导入后为本次结果)
 void refreshOperatorUsbDisplay(void){
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  //进入/重进先建立"全部按键未按下"基线: 显式清零本页SAVE/LOAD/CANCEL三个自锁键,
+  //不依赖切页前后的逐个复位, 与页面13进入即全键未按下的规则保持一致
+  for(uint16_t btn = GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK;
+      btn <= GDDC_PAGE_OPERATOR_USB_KEY_CLOSE; btn++){
+    SetButtonValue(GDDC_PAGE_OPERATOR_USB, btn, 0);
+  }
   memset(dispBuf, 0x0, sizeof(dispBuf));
   //机内病历储存概况: 现有患者数量/累计历史治疗记录数(全局去重患者数/记录数, 不受列表过滤影响); 文本控件一律英文显示
   sprintf(dispBuf, "Existing patients: %u, total treatment records: %u",
@@ -3162,6 +3178,9 @@ void enterOperatorUsbPage(void){
 
 //USB操作页返回: 回到病历列表页(EPROM不改变, 保留当前名字窗口与选中)
 void listTreatmentOperatorUsbBack(void){
+  //从USB流程返回: 导入可能已整体替换EPROM, RAM里的filteredCount/sortedIndex/ramKeys是旧数据,
+  //必须先按当前findText重建过滤再渲染, 否则会显示空白/旧数量(关闭重进才正常); findText与窗口保留
+  listTreatmentRebuildFilter();
   refreshListTreatmentDisplay();
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
@@ -3187,6 +3206,7 @@ void listTreatmentMoveDown(void){
 
 //选择窗口内第slot个患者(slot 0-4对应KEY_SELECT_PATIENT_0-4),空槽位不响应;
 //选中后缓存患者编号/姓名并自动返回待机页(PATIENT_NAME显示该患者), 后续治疗记录归属该患者
+static void listTreatmentEnterVerifyPage(void);
 void listTreatmentSelect(uint8_t slot){
   uint16_t viewPos;
   patientRecord_t pat;
@@ -3200,7 +3220,16 @@ void listTreatmentSelect(uint8_t slot){
   if(listTreatmentGetViewPatient(viewPos, &pat) == 0U){//视图位置取不到患者(数据异常): 不响应
     return;
   }
-  listTreatmentCtx.selectedIndex = viewPos;//列表内选中位置(对应SELECT_PATIENT按钮高亮)
+  if(listTreatmentCtx.verifySelectMode != 0U){//核对页选择已有患者: 载入该患者并回核对页, 不回待机
+    listTreatmentCtx.verifySelectMode = 0U;
+    treatmentLog.id = pat.id;
+    treatmentLog.age = pat.age;
+    treatmentLog.gender = (GENDER_ENUM)pat.gender;
+    memcpy(treatmentLog.name, pat.name, TREATMENT_NAME_SIZE);
+    listTreatmentEnterVerifyPage();
+    return;
+  }
+  listTreatmentCtx.selectedIndex = viewPos;//列表内选中位置(仅内部状态, 按钮未按下基线见refreshListTreatmentDisplay)
   listTreatmentCtx.selectedPatientId = pat.id;//缓存稳定患者编号, 后续治疗记录以该id为外键归属
   memset(listTreatmentCtx.selectedPatientName, 0x0, sizeof(listTreatmentCtx.selectedPatientName));
   strncpy(listTreatmentCtx.selectedPatientName, pat.name, sizeof(listTreatmentCtx.selectedPatientName) - 1U);
@@ -3295,6 +3324,10 @@ static void listTreatmentStepWatch(void){//监视治疗步骤: 从"发射中"切
   uint16_t stepNow = (uint16_t)NVRAM0[EM_HMI_OPERA_STEP];
   if((listTreatmentCtx.driveStep == (uint16_t)FSMSTEP_LASER_EMITING) && (stepNow != (uint16_t)FSMSTEP_LASER_EMITING)){
     listTreatmentPendingCapture();
+    //正常停光(回等待触发)且有有效待存: 自动弹核对页; ESTOP/回待机等路径不弹, 仍由其原导航处理
+    if((listTreatmentCtx.pendingValid != 0U) && (stepNow == (uint16_t)FSMSTEP_LASER_WAIT_TRIGGER)){
+      listTreatmentVerifyAfterLaser();
+    }
   }
   listTreatmentCtx.driveStep = stepNow;
 }
@@ -3427,6 +3460,235 @@ void listTreatmentCreateCancel(void){//编辑页CANCEL: 放弃本次新建, 返�
 }
 
 //***************************************************************************
+// 新建患者注册页(18) + 激光核对页(22)/放弃页(23)流程(见规格第十七节)
+// 两入口: 激光停光自动弹核对页(22)后SAVE_RECORD; 列表页(13)CREATE_NEW手动新建
+//***************************************************************************
+static void listTreatmentEnterRegisterPage(void);
+static void listTreatmentEnterVerifyPage(void);
+static void listTreatmentRefreshVerifyDisplay(void);
+static void listTreatmentGoListPage(void);
+
+// 回病历列表页(13): 刷新并切页
+static void listTreatmentGoListPage(void){
+  refreshListTreatmentDisplay();
+  NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+  SetScreen(GDDC_PAGE_LIST_TREATMENT);
+}
+
+// 进入注册页: 建立按键未按下基线、清空提示, 显示预生成的最小空缺ID, 再切页
+static void listTreatmentEnterRegisterPage(void){
+  char idBuf[16];
+  uint16_t suggestId = treatmentPatientSuggestId();
+  SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_OK, 0);
+  SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL, 0);
+  SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_TEXT_SUMMARY_0, (uint8_t*)"");
+  if(suggestId != 0U){
+    sprintf(idBuf, "%04u", (unsigned int)suggestId);
+  }
+  else{
+    sprintf(idBuf, "----");
+  }
+  dcHmiShowTreatmentCommon(GDDC_PAGE_REGISTER_PATIENT, idBuf, &treatmentLog);
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_REGISTER_PATIENT;
+  SetScreen(GDDC_PAGE_REGISTER_PATIENT);
+}
+
+// 列表页CREATE_NEW: 手动新建患者(不要求激光发射), 清空患者字段后进注册页
+void listTreatmentRegisterNewPatient(void){
+  treatmentLog.id = 0U;
+  treatmentLog.age = 0U;
+  treatmentLog.gender = (GENDER_ENUM)0;
+  memset(treatmentLog.name, 0, sizeof(treatmentLog.name));
+  listTreatmentCtx.registerReturnPage = GDDC_PAGE_LIST_TREATMENT;
+  listTreatmentEnterRegisterPage();
+}
+
+// 注册页OK: 校验姓名/年龄(1-150)/性别, 通过则新建患者(仅建患者);
+// 若本次有激光待存记录则一并把治疗记录归属到新患者
+void listTreatmentRegisterConfirm(void){
+  patientRecord_t pat;
+  uint16_t newId = 0U;
+  treatmentEpromErr_t ce;
+  uint8_t hadPending = listTreatmentCtx.pendingValid;
+  if((listTreatmentNameValid(treatmentLog.name) == 0U)
+     || ((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE))
+     || (treatmentLog.age == 0U) || (treatmentLog.age > PATIENT_AGE_LIMIT)){
+    SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_TEXT_SUMMARY_0,
+                 (uint8_t*)"Invalid input, please re-enter!");
+    return;
+  }
+  memset(&pat, 0, sizeof(pat));
+  pat.age = treatmentLog.age;
+  pat.gender = (uint8_t)treatmentLog.gender;
+  memcpy(pat.name, treatmentLog.name, TREATMENT_NAME_SIZE);
+  ce = treatmentPatientCreate(&pat, &newId);
+  if(ce != TREATMENT_EPROM_OK){
+    SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_TEXT_SUMMARY_0,
+                 (uint8_t*)"Save failed, please retry!");
+    return;
+  }
+  if(hadPending != 0U){//激光流程: 患者已建, 把本次治疗记录归属到新患者
+    treatmentLog.id = newId;
+    (void)treatmentEpromAddToPatient(newId, &treatmentLog);
+    listTreatmentCtx.pendingValid = 0U;
+    returnStandbyDisplay();//记录已落盘, 回待机页
+  }
+  listTreatmentGoListPage();//手动新建: 回列表页
+}
+
+// 注册页CANCEL: 不写入, 按来源页返回(核对页22/列表页13), 激光待存记录保留
+void listTreatmentRegisterCancel(void){
+  if(listTreatmentCtx.registerReturnPage == GDDC_PAGE_VERIFY_TREATMENT){
+    listTreatmentEnterVerifyPage();
+  }
+  else{
+    listTreatmentGoListPage();
+  }
+}
+
+// 核对页渲染: 把待存治疗(已在treatmentLog)写入核对页各控件
+static void listTreatmentRefreshVerifyDisplay(void){
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  char idBuf[16];
+  uint16_t suggestId;
+  int32_t energyWhole, energyFrac;
+  uint16_t mm, ss;
+  suggestId = treatmentPatientSuggestId();
+  if(suggestId != 0U){
+    sprintf(idBuf, "%04u", (unsigned int)suggestId);
+  }
+  else{
+    sprintf(idBuf, "----");
+  }
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_ID, (uint8_t*)idBuf);
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_NAME,
+               (uint8_t*)treatmentLog.name);
+  if(treatmentLog.age != 0U){
+    sprintf(dispBuf, "%u", (unsigned int)treatmentLog.age);
+  }
+  else{
+    sprintf(dispBuf, "");
+  }
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_AGE, (uint8_t*)dispBuf);
+  //性别菜单(0=FeMale,1=Male)与性别文本
+  if(treatmentLog.gender == FEMALE){
+    SetSelectorValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER, 0);
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER, (uint8_t*)"FeMale");
+  }
+  else if(treatmentLog.gender == MALE){
+    SetSelectorValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER, 1);
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER, (uint8_t*)"Male");
+  }
+  else{
+    SetSelectorValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER, 0);
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER, (uint8_t*)"");
+  }
+  //治疗时刻
+  if(treatmentLog.rtcYear >= 2000U){
+    sprintf(dispBuf, "%04u-%02u-%02u %02u:%02u",
+            (unsigned int)treatmentLog.rtcYear, (unsigned int)treatmentLog.rtcMonth,
+            (unsigned int)treatmentLog.rtcDay, (unsigned int)treatmentLog.rtcHour,
+            (unsigned int)treatmentLog.rtcMinute);
+  }
+  else{
+    sprintf(dispBuf, "----");
+  }
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_TIME, (uint8_t*)dispBuf);
+  //能量(0.1J)
+  energyWhole = treatmentLog.releaseEnergy / 10;
+  energyFrac = treatmentLog.releaseEnergy % 10;
+  if(energyFrac < 0){ energyFrac = -energyFrac; }
+  sprintf(dispBuf, "%d.%d J", (int)energyWhole, (int)energyFrac);
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_ENERGY, (uint8_t*)dispBuf);
+  //输出时长
+  mm = (uint16_t)(treatmentLog.releaseTime / 60);
+  ss = (uint16_t)(treatmentLog.releaseTime % 60);
+  sprintf(dispBuf, "%02u:%02u", (unsigned int)mm, (unsigned int)ss);
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_OUT_TIME, (uint8_t*)dispBuf);
+  //功率
+  sprintf(dispBuf, "%d W", (int)treatmentLog.laserPower);
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_POWER, (uint8_t*)dispBuf);
+  //方案
+  if(treatmentLog.protocol == eCustiom){
+    sprintf(dispBuf, "Custom");
+  }
+  else if(treatmentLog.pulseMode == LASER_MODE_MP){
+    sprintf(dispBuf, "%s %u - Pulse", treatmentProtocolName(treatmentLog.protocol),
+            (unsigned int)treatmentLog.schemeIndex + 1U);
+  }
+  else{
+    sprintf(dispBuf, "%s %u - CW", treatmentProtocolName(treatmentLog.protocol),
+            (unsigned int)treatmentLog.schemeIndex + 1U);
+  }
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_SCHEME, (uint8_t*)dispBuf);
+}
+
+// 进入核对页: 渲染并切页(不复制快照, 调用方负责treatmentLog内容)
+static void listTreatmentEnterVerifyPage(void){
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_VERIFY_TREATMENT;
+  listTreatmentRefreshVerifyDisplay();
+  SetScreen(GDDC_PAGE_VERIFY_TREATMENT);
+}
+
+// 激光停光后自动进入核对页: 用待存快照填充treatmentLog, 再进核对页
+void listTreatmentVerifyAfterLaser(void){
+  if(listTreatmentCtx.pendingValid != 0U){
+    treatmentLog = listTreatmentCtx.pending;
+  }
+  treatmentLog.id = 0U;//新患者路径
+  listTreatmentEnterVerifyPage();
+}
+
+// 核对页SAVE_RECORD: 已选已有患者则直接归属记录; 新患者进注册页填写
+void listTreatmentVerifySaveRecord(void){
+  if(treatmentLog.id != 0U){
+    (void)treatmentEpromAddToPatient(treatmentLog.id, &treatmentLog);
+    listTreatmentCtx.pendingValid = 0U;
+    returnStandbyDisplay();
+    return;
+  }
+  listTreatmentCtx.registerReturnPage = GDDC_PAGE_VERIFY_TREATMENT;
+  listTreatmentEnterRegisterPage();
+}
+
+// 核对页SELECT_TREATMENT: 列表页进入"选择已有患者"模式, 选中后回核对页
+void listTreatmentVerifySelect(void){
+  listTreatmentCtx.verifySelectMode = 1U;
+  enterListTreatmentPage();
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
+  SetScreen(GDDC_PAGE_LIST_TREATMENT);
+}
+
+// 核对页DISCARD_RECORD: 进入放弃页(23)
+void listTreatmentVerifyDiscard(void){
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
+  int32_t energyWhole, energyFrac;
+  SetButtonValue(GDDC_PAGE_DISCARD_TREATMENT, GDDC_PAGE_DISCARD_TREATMENT_KEY_RETURN, 0);
+  SetButtonValue(GDDC_PAGE_DISCARD_TREATMENT, GDDC_PAGE_DISCARD_TREATMENT_KEY_CANCEL, 0);
+  SetTextValue(GDDC_PAGE_DISCARD_TREATMENT, GDDC_PAGE_DISCARD_TREATMENT_TEXT_NAME,
+               (uint8_t*)treatmentLog.name);
+  energyWhole = treatmentLog.releaseEnergy / 10;
+  energyFrac = treatmentLog.releaseEnergy % 10;
+  if(energyFrac < 0){ energyFrac = -energyFrac; }
+  sprintf(dispBuf, "%d.%d J", (int)energyWhole, (int)energyFrac);
+  SetTextValue(GDDC_PAGE_DISCARD_TREATMENT, GDDC_PAGE_DISCARD_TREATMENT_TEXT_ENERGY, (uint8_t*)dispBuf);
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DISCARD_TREATMENT;
+  SetScreen(GDDC_PAGE_DISCARD_TREATMENT);
+}
+
+// 放弃页RETURN: 不放弃, 回核对页(22)
+void listTreatmentDiscardReturn(void){
+  listTreatmentEnterVerifyPage();
+}
+
+// 放弃页CANCEL: 确认放弃本次记录, 清除待存, 回待机页
+void listTreatmentDiscardCancel(void){
+  listTreatmentCtx.pendingValid = 0U;
+  returnStandbyDisplay();
+}
+
+//***************************************************************************
 //U盘操作确认页流程(非阻塞): SAVE/LOAD按键先进入确认页, 按CONFIRM才在轮询中执行一次整块读写, 按CANCEL直接回操作页
 //导出与导入共用GDDC_PAGE_OPERATOR_USB_CONFIRM页面, 由usbOp区分(1=导出, 2=导入); 导入必须先确认, 避免未授权就覆盖机内病历
 
@@ -3442,7 +3704,7 @@ static uint16_t g_btnLockControl = 0U;//在途按键控件ID
 static uint8_t treatmentIsLockPage(uint16_t screen){
   switch(screen){
     case GDDC_PAGE_LIST_TREATMENT:
-    case GDDC_PAGE_DELETE_TREATMENT_CONFIRM:
+    case GDDC_PAGE_DELETE_TREATMENT:
     case GDDC_PAGE_LIST_RECORD:
     case GDDC_PAGE_DELETE_RECORD:
     case GDDC_PAGE_EDIT_PATIENT:
@@ -3509,7 +3771,7 @@ void treatmentReleaseButton(uint16_t screen, uint16_t control){
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id){
   //删除确认页等待期间: 只放行本页DELETE/CANCEL, 其余控件与页面一律屏蔽(与USB流程互斥)
   if(listTreatmentCtx.deletePatientId != 0U){
-    if(screen_id != GDDC_PAGE_DELETE_TREATMENT_CONFIRM){
+    if(screen_id != GDDC_PAGE_DELETE_TREATMENT){
       return 0U;
     }
     if((control_id == GDDC_PAGE_DELETE_TREATMENT_KEY_OK) ||
@@ -3576,6 +3838,13 @@ static void enterOperatorUsbConfirmPage(void){
     SetTextValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_1,
       (uint8_t*)"The existing patient backup in this USB will be replaced.");
   }
+  //进入确认页建立"全部按键未按下且可用"基线: 先显式清零OK/CANCEL自锁键按下态(屏幕会保留
+  //自锁键运行态、不随切页复位, 不主动清零会出现两键同时显示按下), 再恢复触摸使能;
+  //与页面13/19进入即清零一致, 两确认页OK=11/CANCEL=10编号一致
+  SetButtonValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 0);
+  SetButtonValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
+  SetControlEnable(page, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 1);
+  SetControlEnable(page, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 1);
   NVRAM0[EM_DC_PAGE] = page;
   SetScreen(page);
 }
@@ -3608,6 +3877,14 @@ void listTreatmentUsbConfirm(void){//确认页"OK"(导出/导入通用): 授权�
   }
   //OK按键保持按下: 待listTreatmentUsbLoop中功能执行完毕后再弹起
   listTreatmentCtx.usbState = 7U;
+  //U盘读写期间锁定同页CANCEL: 状态7触摸门(互锁+USB门)已屏蔽全部操作, 这里再显式弹起CANCEL
+  //并禁用其触摸, 明确禁止中途取消(两确认页CANCEL编号一致为10); 下次进入确认页时统一恢复
+  {
+    uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
+      ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
+    SetButtonValue(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
+    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
+  }
 }
 
 void listTreatmentUsbCancel(void){//确认页"CANCEL"(导出/导入通用): 不读写, 直接返回USB操作页
@@ -3615,10 +3892,12 @@ void listTreatmentUsbCancel(void){//确认页"CANCEL"(导出/导入通用): 不�
     return;
   }
   listTreatmentCtx.usbState = 0U;
-  //取消: 返回操作页并清空结果栏, 操作页患者/记录摘要保持进入确认页前的显示不变
+  //取消: 清空结果栏返回操作页。进入确认页前的LOAD/SAVE释放帧在切页前下发, 但屏幕对自锁键
+  //运行态保留不可靠, 故返回前用refreshOperatorUsbDisplay重建"全部按键未按下"基线(含SAVE/LOAD/CANCEL),
+  //否则LOAD键会停在按下态; usbText已置空, 该函数同时把SUMMARY_USB下发为空
   setOperatorUsbText("");
-  SetTextValue(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB, (uint8_t*)"");
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
+  refreshOperatorUsbDisplay();//先清键+刷新控件(当前页仍为确认页, 帧目标操作页), 再切页
   SetScreen(GDDC_PAGE_OPERATOR_USB);
   //CANCEL自锁键释放已上移到notify层(无条件, 按SAVE/LOAD各自页面下发)
 }
@@ -3645,21 +3924,21 @@ void listTreatmentDeleteStart(uint8_t slot){
     return;
   }
   listTreatmentCtx.deletePatientId = pat.id;//缓存待删除患者编号(非0=进入删除确认流程)
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_NAME_ID,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT, GDDC_PAGE_DELETE_TREATMENT_TEXT_NAME_ID,
     (uint8_t*)"Delete Patient?");
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "Delete patient %s and all their treatment records?", pat.name);
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_0,
     (uint8_t*)dispBuf);
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "This patient has %u treatment record(s).",
     (unsigned int)treatmentGetRecordCountForPatient(pat.id));
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_1,
     (uint8_t*)dispBuf);
-  SetTextValue(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2,
+  SetTextValue(GDDC_PAGE_DELETE_TREATMENT, GDDC_PAGE_DELETE_TREATMENT_TEXT_SUMMARY_2,
     (uint8_t*)"This action cannot be undone.");
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT_CONFIRM;
-  SetScreen(GDDC_PAGE_DELETE_TREATMENT_CONFIRM);
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT;
+  SetScreen(GDDC_PAGE_DELETE_TREATMENT);
 }
 
 //删除确认页KEY_DELETE: 确认后级联删除患者及其全部病历, 再重建视图返回列表页
@@ -3790,6 +4069,13 @@ void listTreatmentRecordEnter(uint8_t slot){
   listTreatmentCtx.editPatientMode = 0U;
   listTreatmentRecordEnumerate();
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_RECORD;
+  //先建立"全部按键未按下"基线并渲染, 再切页(与页面13/19进入路径一致); 不依赖屏幕冷加载
+  //回传(DeviceScreenNotify=0时该回传不可靠), 否则进入即空白且按键停在按下态。控件20-28均为按钮
+  for(uint16_t btn = GDDC_PAGE_LIST_RECORD_KEY_DELETE_0;
+      btn <= GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT; btn++){
+    SetButtonValue(GDDC_PAGE_LIST_RECORD, btn, 0);
+  }
+  refreshListRecordDisplay();
   SetScreen(GDDC_PAGE_LIST_RECORD);
 }
 
@@ -3894,6 +4180,7 @@ void refreshListRecordDisplay(void){
 void listTreatmentRecordPageUp(void){
   if(listTreatmentCtx.recordTop >= LIST_RECORD_WINDOW_SIZE){
     listTreatmentCtx.recordTop = (uint16_t)(listTreatmentCtx.recordTop - LIST_RECORD_WINDOW_SIZE);
+    refreshListRecordDisplay();
   }
 }
 
@@ -3902,6 +4189,7 @@ void listTreatmentRecordPageDown(void){
   uint16_t maxTop = listTreatmentRecordMaxTop();
   if(listTreatmentCtx.recordTop < maxTop){
     listTreatmentCtx.recordTop = (uint16_t)(listTreatmentCtx.recordTop + LIST_RECORD_WINDOW_SIZE);
+    refreshListRecordDisplay();
   }
 }
 
@@ -4010,6 +4298,17 @@ uint8_t listTreatmentIsEditPatientMode(void){
   return listTreatmentCtx.editPatientMode;
 }
 
+//供NotifyButton判断列表页是否处于核对页"选择已有患者"模式
+uint8_t listTreatmentIsVerifySelectMode(void){
+  return listTreatmentCtx.verifySelectMode;
+}
+
+//核对选择模式下不选择而关闭列表: 取消该模式, 回核对页
+void listTreatmentVerifySelectCancel(void){
+  listTreatmentCtx.verifySelectMode = 0U;
+  listTreatmentEnterVerifyPage();
+}
+
 void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待按键, 确认后执行一次CSV导出/导入, 完成回USB操作页
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
   if(listTreatmentCtx.usbState == 0U){
@@ -4021,6 +4320,9 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
     //中止路径: 本确认页OK/CANCEL都可能处于按下态, 统一弹起并解除互锁避免按键永久锁死
     treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK);
     treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL);
+    //恢复按键可用基线(读写期间CANCEL曾被禁用), 便于下次进入确认页状态一致
+    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 1);
+    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 1);
     listTreatmentCtx.usbState = 0U;//退出忙状态, 否则触摸会被一直屏蔽
     return;
   }
@@ -4064,14 +4366,15 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
   }
   setOperatorUsbText(dispBuf);//结果文案交给usbText统一维护, 页面冷加载重发同内容不会覆盖
   refreshOperatorUsbDisplay();//刷新操作页摘要并下发结果栏
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
-  SetScreen(GDDC_PAGE_OPERATOR_USB);
-  //OK自锁键: 读写/回读功能全部执行完毕并返回操作页后才弹起, 并解除互锁
+  //OK自锁键: 功能已全部执行完毕, 必须在切回操作页之前(确认页仍为当前页)下发清零,
+  //切页后屏幕无法可靠清零旧页控件, 会导致OK键视觉停在按下态
   {
     uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
       ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
     treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK);
   }
+  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
+  SetScreen(GDDC_PAGE_OPERATOR_USB);
 }
 
 void updateAcousticDisplay(void){//更新提示音设置
@@ -4577,8 +4880,8 @@ void dcHmiLoop(void){//HMI轮训程序
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW, false);	
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY, false);	
 			
-			SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, (uint8_t*)(""));
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, false);
+			SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, (uint8_t*)(""));
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, false);
 			
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, true);
@@ -5618,7 +5921,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_RENAME;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_RENAME;
 			//将EM_SCHEME_NUM_TMP指向的名称更新RENAME输入框
-			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME, (uint8_t*)(FDRAM1 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
+			SetTextValue(GDDC_PAGE_RENAME, GDDC_PAGE_RENAME_TEXT_NEWNAME, (uint8_t*)(FDRAM1 + (NVRAM0[EM_SCHEME_NUM_TMP] * 64)));
 			SetScreen(NVRAM0[EM_DC_PAGE]);
 			RRES(R_SCHEME_KEY_RENAME_DOWN);
 		}
@@ -5691,7 +5994,7 @@ void dcHmiLoop(void){//HMI轮训程序
 			REBOOT();	
 		}
 		else if(LD(R_UPDATE_BOOTLOAD_REQ)){//更新Boot load请求
-			SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIRMWARE_INFO, true);
+			SetControlVisiable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_FIRMWARE_INFO, true);
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 			SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ, false);
 			if(updateBootloadReq()){
@@ -5736,32 +6039,32 @@ void dcHmiLoop(void){//HMI轮训程序
 			SET_SAFE_RESET_ON;
 			NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_CORRECTION;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS_CALI;
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH0, true);	
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH1, true);	
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH2, true);	
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH3, true);
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4, true);
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5, true);
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6, true);
-			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7, true);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH0, true);	
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH1, true);	
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH2, true);	
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH3, true);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH4, true);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH5, true);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH6, true);
+			SetControlEnable(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH7, true);
 
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH0, false);
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH1, false);
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH2, false);
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH3, false);
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4, false);
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5, false);
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6, false);
-      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH0, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH1, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH2, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH3, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH4, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH5, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH6, false);
+      SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH7, false);
       
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH0, 0, 0, 3);
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH1, 0, 0, 3);
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH2, 0, 0, 3);
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH3, 0, 0, 3);
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH4, 0, 0, 3);
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH5, 0, 0, 3);
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH6, 0, 0, 3);
-      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH7, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH0, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH1, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH2, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH3, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH4, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH5, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH6, 0, 0, 3);
+      SetTextInt32( GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH7, 0, 0, 3);
       
 			SET_LASER_CH0_OFF;SET_LASER_CH1_OFF;SET_LASER_CH2_OFF;SET_LASER_CH3_OFF;
 			SET_LASER_CH4_OFF;SET_LASER_CH5_OFF;SET_LASER_CH6_OFF;SET_LASER_CH7_OFF;
@@ -5810,14 +6113,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			UPDAC16();UPDAC17();
 			SET_RAIM_SHDN_OFF;
 			SET_GAIM_SHDN_OFF;
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH0, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH1, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH2, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH3, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH0, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH1, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH2, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH3, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH4, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH5, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH6, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH7, false);
       RRES(R_LASER_FALG_EMITING);
       NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_DIAGNOSIS;
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DIAGNOSIS;
@@ -5840,14 +6143,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			SET_LASER_CH5_OFF;
 			SET_LASER_CH6_OFF;
 			SET_LASER_CH7_OFF;
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH0, false);	
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH1, false);	
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH2, false);	
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH3, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6, false);
-			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH0, false);	
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH1, false);	
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH2, false);	
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH3, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH4, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH5, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH6, false);
+			SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH7, false);
 			SET_RAIM_SHDN_OFF;
 			SET_GAIM_SHDN_OFF;			
 		}
@@ -6086,10 +6389,17 @@ static void NotifyMeter(uint16_t screen_id, uint16_t control_id, uint32_t value)
 *  \param state 按钮状态：0松开，1按下
 */
 static void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t item, uint8_t state){
-  if(state && ((screen_id == GDDC_PAGE_EDIT_PATIENT) || (screen_id == GDDC_PAGE_REGISTER_PATIENT))
+  if(state == 0U){
+    return;
+  }
+  //三页性别菜单选项顺序均为"FeMale;Male": 索引0=女(FEMALE), 1=男(MALE)
+  if(((screen_id == GDDC_PAGE_EDIT_PATIENT) || (screen_id == GDDC_PAGE_REGISTER_PATIENT))
      && (control_id == GDDC_PAGE_EDIT_TREATMENT_MENU_GENDER)){
-    //性别下拉项索引: 0=Male, 1=Female(两个页面菜单编号均为10)
-    treatmentLog.gender = (item == 1U) ? FEMALE : MALE;
+    treatmentLog.gender = (item == 1U) ? MALE : FEMALE;
+  }
+  else if((screen_id == GDDC_PAGE_VERIFY_TREATMENT)
+          && (control_id == GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER)){
+    treatmentLog.gender = (item == 1U) ? MALE : FEMALE;
   }
 }
 

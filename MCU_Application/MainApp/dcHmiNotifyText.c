@@ -19,11 +19,11 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 	switch(screen_id){
 		case GDDC_PAGE_RENAME:{
 			switch(control_id){
-				case GDDC_PAGE_RENAME_TEXTDISPLAY_NEWNAME:{
+				case GDDC_PAGE_RENAME_TEXT_NEWNAME:{
 					tmp = NVRAM0[EM_SCHEME_NUM_TMP];
 					if(strlen((const char*)str) <= CONFIG_SCHEME_NAME_SIZE){
 						strcpy((char*)&FDRAM1[tmp * 64 + FD_LASER_SCHEME_NAME], (char*)str);
-						SetTextValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_TEXTDISPLAY_SCHEME_0 + tmp), str);
+						SetTextValue(GDDC_PAGE_SCHEME_DETAIL, (GDDC_PAGE_SCHEME_TEXT_SCHEME_0 + tmp), str);
 						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 						SSET(R_RENAME_TEXTDISPLAY_READ_DONE);
 					}
@@ -35,11 +35,11 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 		}
 		case GDDC_PAGE_DIAGNOSIS:{
 			switch(control_id){
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SN:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_SN:{
 					strncpy(deviceConfig.serialNumber, (const char*)str, sizeof(deviceConfig.serialNumber));
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_YEAR:{				
+				case GDDC_PAGE_DIAGNOSIS_TEXT_YEAR:{				
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue < 2022){
 						sValue = 2022;
@@ -50,7 +50,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.mfg_year = sValue;
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_MONTH:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_MONTH:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 12){
 						sValue = 12;
@@ -61,7 +61,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.mfg_month = sValue;
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DAY:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_DAY:{
 				sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 31){
 						sValue = 31;
@@ -72,7 +72,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.mfg_day = sValue;
 					break;	
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RED_LED_DC:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_RED_LED_DC:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 100){
 						sValue = 100;
@@ -83,7 +83,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.redLedDc = sValue;
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_GREEN_LED_DC:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_GREEN_LED_DC:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 100){
 						sValue = 100;
@@ -94,7 +94,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.greenLedDc = sValue;
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_BLUE_LED_DC:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_BLUE_LED_DC:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 100){
 						sValue = 100;
@@ -105,7 +105,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.blueLedDc = sValue;	
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_SET_AIM_GAIN:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_SET_AIM_GAIN:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 100){
 						sValue = 100;
@@ -116,7 +116,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.redAimGain = sValue;	
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_FIBER_DETECT:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_FIBER_DETECT:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 4095){
 						sValue = 4095;
@@ -127,7 +127,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.fiberDetect = sValue;
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_A_TEMP:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_DIODE_A_TEMP:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 400){
 						sValue = 400;
@@ -138,7 +138,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.laserDiodeA_Temp = sValue;
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_DIODE_B_TEMP:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_DIODE_B_TEMP:{
 					sscanf((const char*)str, "%d", &sValue);
 					if(sValue > 400){
 						sValue = 400;
@@ -149,32 +149,32 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 					deviceConfig.laserDiodeB_Temp = sValue;
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_YEAR:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_RTC_YEAR:{
 					sscanf((const char*)str, "%d", &sValue);
 					RtcSetYear(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MONTH:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_RTC_MONTH:{
 					sscanf((const char*)str, "%d", &sValue);
 					RtcSetMonth(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_DAY:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_RTC_DAY:{
 					sscanf((const char*)str, "%d", &sValue);
 					RtcSetDate(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_HOURS:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_RTC_HOURS:{
 					sscanf((const char*)str, "%d", &sValue);
 					RtcSetHours(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_MINUTES:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_RTC_MINUTES:{
 					sscanf((const char*)str, "%d", &sValue);
 					RtcSetMinutes(sValue);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_RTC_SECONDS:{
+				case GDDC_PAGE_DIAGNOSIS_TEXT_RTC_SECONDS:{
 					sscanf((const char*)str, "%d", &sValue);
 					RtcSetSeconds(sValue);
 					break;
@@ -185,1024 +185,1024 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
 		}
 		case GDDC_PAGE_DIAGNOSIS_CALI:{
 			switch(control_id){
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH0:{//CH0 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH0:{//CH0 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH0] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch0 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH0]);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH1:{//CH1 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH1:{//CH1 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH1] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch1 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH1]);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH2:{//CH2 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH2:{//CH2 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH2] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch2 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH2]);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH3:{//CH3 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH3:{//CH3 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH3] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch3 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH3]);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH4:{//CH4 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH4:{//CH4 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH4] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch4 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH4]);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH5:{//CH5 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH5:{//CH5 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH5] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch5 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH5]);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH6:{//CH6 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH6:{//CH6 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH6] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch6 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH6]);
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_TEXTDISPLAY_CSET_CH7:{//CH7 校准电流输入
+				case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_CSET_CH7:{//CH7 校准电流输入
 					sscanf((const char*)str, "%d", &sValue);
 					NVRAM0[EM_CALI_CUR_SET_CH7] = (int16_t)(sValue);
 					printf("%s,%d,%s:set ch7 cur:%03d!\n",__FILE__, __LINE__, __func__, NVRAM0[EM_CALI_CUR_SET_CH7]);
 					break;
 				}
 				//CH0 校准数据输入
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P5:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[0] = (uint16_t)(fValue * 10.0F); 
 					printf("%s,%d,%s:set ch0 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[0]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[1]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[2]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[3]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[4] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch0 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[4]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[5] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[5]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[6] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[6]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[7] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[7]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[8] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[8]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[9] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[9]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[10] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[10]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[11] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[11]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[12] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[12]);	
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[13] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[13]);	
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[14] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[14]);	
 					break;
 				}
 				
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[15]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[16]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[17]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[18]);	
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_0P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_0P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr0[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[19]);	
 					break;
 				}
 				//CH1 校准数据输入
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P5:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[0] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[0]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[1]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[2]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[3]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[4] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[4]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[5] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[5]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[6] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[6]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[7] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[7]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[8] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[8]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[9] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[9]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[10] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[10]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[11] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[11]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[12] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[12]);
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[13] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[13]);
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[14] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[14]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[15]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[16]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[17]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[18]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_1P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_1P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr1[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr1[19]);
 					break;
 				}
 				//CH2 校准数据
-					case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P5:{
+					case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[0] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[0]);						
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[1]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[2]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[3]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[4] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch2 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[4]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[5] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch2 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[5]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[6] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch2 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[6]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[7] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch2 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[7]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[8] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch2 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[8]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[9] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch2 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[9]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[10] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch2 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[10]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[11] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch2 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[11]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[12] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[12]);
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[13] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[13]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[14] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[14]);
 					break;
 				}				
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[15]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[16]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[17]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[18]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_2P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_2P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr2[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr2[19]);
 					break;
 				}
 				//CH3 校准数据
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P5:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[0] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch0 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[0]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch1 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[1]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch2 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[2]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[3]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[4] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[4]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[5] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[5]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[6] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[6]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[7] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[7]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[8] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch3 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[8]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[9] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch3 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[9]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[10] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[10]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[11] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[11]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[12] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[12]);
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[13] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[13]);
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[14] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[14]);
 					break;
 				}				
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[15]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[16]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[17]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[18]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_3P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_3P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr3[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch3 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr3[19]);
 					break;
 				}
 				//CH4 校准数据
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P5:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[0] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[0]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[1]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[2]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[3]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[4] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch4 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[4]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[5] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch4 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[5]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[6] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch4 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[6]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[7] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch4 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[7]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[8] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch4 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[8]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[9] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch4 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[9]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[10] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch4 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[10]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[11] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch4 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[11]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[12] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch4 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[12]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[13] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch4 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[13]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[14] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch4 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[14]);					
 					break;
 				}				
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[15]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[16]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[17]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[18]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_4P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_4P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr4[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch4 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr4[19]);
 					break;
 				}
 				//CH5 校准数据
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P5:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[0] = (uint16_t)(fValue * 10.0F); 
 					printf("%s,%d,%s:set ch5 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[0]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[1]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[2]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[3]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[4] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch5 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[4]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[5] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch5 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[5]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[6] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch5 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[6]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[7] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch5 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[7]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[8] = (uint16_t)(fValue * 10.0F);			
 					printf("%s,%d,%s:set ch5 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[8]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[9] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch5 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[9]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[10] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch5 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[10]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[11] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch5 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[11]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[12] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[12]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[13] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch5 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[13]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[14] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch5 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[14]);					
 					break;
 				}				
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[15]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[16]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[17]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[18]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_5P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_5P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr5[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch5 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr5[19]);
 					break;
 				}
 				//CH6 校准数据
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P5:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[0] = (uint16_t)(fValue * 10.0F); 		
 					printf("%s,%d,%s:set ch6 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[0]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[1]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[2]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[3]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[4] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch6 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[4]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[5] = (uint16_t)(fValue * 10.0F);				
 					printf("%s,%d,%s:set ch6 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[5]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[6] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch6 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[6]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[7] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[7]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[8] = (uint16_t)(fValue * 10.0F);			
 					printf("%s,%d,%s:set ch6 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[8]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[9] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch6 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[9]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[10] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[10]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[11] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch6 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[11]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[12] = (uint16_t)(fValue * 10.0F);		
 					printf("%s,%d,%s:set ch6 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[12]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[13] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[13]);
 					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[14] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[14]);
 					
 					break;
 				}				
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[15]);
 
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[16]);
 
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[17]);
 
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[18]);
 
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_6P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_6P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr6[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch6 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[19]);					
 					break;
 				}
 				//CH7 校准数据
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P5:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P5:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[0] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[0]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[0]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P10:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P10:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[1] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[1]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[1]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P15:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P15:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[2] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[2]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[2]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P20:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P20:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[3] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[3]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[3]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P25:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P25:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[4] = (uint16_t)(fValue * 10.0F);	
 					printf("%s,%d,%s:set ch7 calibration power table[4]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[4]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P30:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P30:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[5] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[5]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[5]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P35:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P35:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[6] = (uint16_t)(fValue * 10.0F);					
 					printf("%s,%d,%s:set ch7 calibration power table[6]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[6]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P40:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P40:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[7] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[7]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[7]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P45:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P45:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[8] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[8]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[8]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P50:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P50:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[9] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[9]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[9]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P55:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P55:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[10] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[10]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[10]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P60:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P60:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[11] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[11]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[11]);					
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P65:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P65:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[12] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[12]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[12]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P70:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P70:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[13] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[13]);					
 				break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P75:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P75:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[14] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[14]);
 					break;
 				}				
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P80:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P80:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[15] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[15]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[15]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P85:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P85:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[16] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[16]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[16]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P90:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P90:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[17] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[17]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[17]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P95:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P95:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[18] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[18]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[18]);
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_CALI_TEXTDISPLAY_7P100:{
+				case GDDC_PAGE_DISGNOSIS_CALI_TEXT_7P100:{
 					sscanf((const char*)str, "%f", &fValue);
 					deviceConfig.calibrationPwr7[19] = (uint16_t)(fValue * 10.0F);
 					printf("%s,%d,%s:set ch7 calibration power table[19]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr7[19]);

@@ -171,21 +171,46 @@ static void RecordMove(const treatmentRecord_t *row, uint16_t src, uint16_t dst)
 // 开机权威扫描恢复 (Recovery)
 //  容忍 0xFF(空白 FRAM) 与 0x00(clearEprom) 两种空白态;
 //  分类 blank/pending/commit/tomb, 去重、外键完整性、回收孤儿, 重建计数。
-//============================================================================
+//  几何安全: 患者表(低端)与记录表(高端)是覆盖同一物理区块的两套下标, 这里以存储计数推导
+//  互不重叠的扫描上界, 并在遇到空白间隙时停止, 保证任一阶段的擦除/墓碑都不会落到对端表。
 static void Recovery(void){
 	uint16_t wp = 0U, wr = 0U, maxId = 0U;
 	uint32_t maxSeq = 0UL;
-	uint32_t patMax = REG_SIZE / PAT_BYTES;
-	uint32_t recMax = REG_SIZE / REC_BYTES;
+	uint32_t physPat = REG_SIZE / PAT_BYTES;
+	uint32_t physRec = REG_SIZE / REC_BYTES;
+	// 存储计数仅作下界提示(计数总是在提交点之后才递增, 故不会多算; 断电可能少算 1 行)。
+	// 这里必须用 RawAt 直读, 不能调 CntP/CntR(二者内部会再次进入 Recovery 形成递归)。
+	int16_t pcStore = RawAt(DM_TREATMENT_PATIENT_NUM);
+	int16_t rcStore = RawAt(DM_TREATMENT_NUM);
+	uint32_t pc = (pcStore > 0) ? (uint32_t)pcStore : 0UL;
+	uint32_t rc = (rcStore > 0) ? (uint32_t)rcStore : 0UL;
+	uint32_t recStartAddr;
+	uint32_t patEndAddr;
+	uint32_t patScanMax;
+	uint32_t recScanMax;
 
 	if(g_ready != 0U){ return; }
 
-	// ---- Phase 1: 患者表 校验/去重/致密 ----
+	if(pc > physPat){ pc = physPat; }
+	if(rc > physRec){ rc = physRec; }
+	// 已计数患者区末端 / 已计数记录区始端
+	recStartAddr = (REG_END + 1U) - rc * REC_BYTES;
+	patEndAddr = REG_START + pc * PAT_BYTES;
+	// 患者扫描上界: 槽位整行止于 recStartAddr 之前, 几何上不触及记录区
+	patScanMax = (recStartAddr - REG_START) / PAT_BYTES;
+	if(patScanMax > physPat){ patScanMax = physPat; }
+	// 记录扫描上界: 槽位始端不低于 patEndAddr, 几何上不触及患者区
+	recScanMax = (REG_END + 1U - patEndAddr) / REC_BYTES;
+	if(recScanMax > physRec){ recScanMax = physRec; }
+
+	// ---- Phase 1: 患者表 校验/去重/致密(仅低端) ----
 	BmpClear();
-	for(uint32_t s32 = 0U; s32 < patMax; s32++){
+	for(uint32_t s32 = 0U; s32 < patScanMax; s32++){
 		uint16_t s = (uint16_t)s32;
 		patientRecord_t row;
 		if(RowRead(PatientAddr(s), &row, PAT_BYTES) != TREATMENT_EPROM_OK){ continue; }
+		// 空白槽(0xFF 或 0x00 空白态)即致密表尽头/空闲区开始: 停止, 绝不向记录区擦除
+		if((row.id == CONFIG_EPROM_TREATMENT_SLOT_EMPTY) || (row.id == 0U)){ break; }
 		if(PatientRowValid(&row) == 0U){ EraseRow(PatientAddr(s), PAT_BYTES); continue; }
 		if(BmpTest(row.id) != 0U){ EraseRow(PatientAddr(s), PAT_BYTES); continue; }// 重复 id
 		BmpSet(row.id);
@@ -195,22 +220,24 @@ static void Recovery(void){
 	}
 
 	// ---- Phase 2a: 外键孤儿(患者不存在)的已提交记录 -> 墓碑; 位图仍为患者 id ----
-	for(uint32_t s32 = 0U; s32 < recMax; s32++){
+	for(uint32_t s32 = 0U; s32 < recScanMax; s32++){
 		uint16_t s = (uint16_t)s32;
 		treatmentRecord_t row;
 		uint8_t tomb = ROW_MAGIC_TOMB;
 		if(RowRead(RecordAddr(s), &row, REC_BYTES) != TREATMENT_EPROM_OK){ continue; }
+		if((row.magic == 0xFFU) || (row.magic == 0x00U)){ break; }// 空白间隙, 停止
 		if((row.magic == ROW_MAGIC_COMMIT) && (BmpTest(row.patientId) == 0U)){
 			(void)RowWrite(RecordAddr(s) + 7U, &tomb, 1U);
 		}
 	}
 
-	// ---- Phase 2b: 记录表 校验/去重/致密 ----
+	// ---- Phase 2b: 记录表 校验/去重/致密(仅高端) ----
 	BmpClear();
-	for(uint32_t s32 = 0U; s32 < recMax; s32++){
+	for(uint32_t s32 = 0U; s32 < recScanMax; s32++){
 		uint16_t s = (uint16_t)s32;
 		treatmentRecord_t row;
 		if(RowRead(RecordAddr(s), &row, REC_BYTES) != TREATMENT_EPROM_OK){ continue; }
+		if((row.magic == 0xFFU) || (row.magic == 0x00U)){ break; }// 空白间隙, 停止
 		if(row.magic != ROW_MAGIC_COMMIT){ EraseRow(RecordAddr(s), REC_BYTES); continue; }
 		if(RecordContentValid(&row) == 0U){ EraseRow(RecordAddr(s), REC_BYTES); continue; }
 		if(BmpTest(row.recSeq) != 0U){ EraseRow(RecordAddr(s), REC_BYTES); continue; }// 重复序列
@@ -230,9 +257,14 @@ static void Recovery(void){
 }
 
 // 运行时致密(开机恢复后无重复; 自身移动即时清源, 故无需位图)
+// 前向声明: 致密范围取自当前计数(CntP/CntR 定义在本节之后), 有效行恒致密在计数区间内
+static uint16_t CntP(void);
+static uint16_t CntR(void);
 static uint16_t CompactPatients(void){
 	uint16_t w = 0U;
-	uint32_t patMax = REG_SIZE / PAT_BYTES;
+	// 仅扫描本表当前已占用下标: 患者槽与记录槽是覆盖同一物理区块的两套独立下标, 若按
+	// REG_SIZE/PAT_BYTES 扫满整个区块, 高端患者槽会越过空闲区覆盖到记录表, 把对端有效行擦除
+	uint32_t patMax = (uint32_t)CntP();
 	for(uint32_t s32 = 0U; s32 < patMax; s32++){
 		uint16_t s = (uint16_t)s32;
 		patientRecord_t row;
@@ -248,7 +280,8 @@ static uint16_t CompactPatients(void){
 }
 static uint16_t CompactRecords(void){
 	uint16_t w = 0U;
-	uint32_t recMax = REG_SIZE / REC_BYTES;
+	// 同 CompactPatients: 只在记录表当前计数范围内致密, 避免低端记录槽越过空闲区擦除患者表
+	uint32_t recMax = (uint32_t)CntR();
 	for(uint32_t s32 = 0U; s32 < recMax; s32++){
 		uint16_t s = (uint16_t)s32;
 		treatmentRecord_t row;
@@ -266,6 +299,33 @@ static uint16_t CompactRecords(void){
 static uint16_t CntP(void){ Recovery(); return (uint16_t)RawAt(DM_TREATMENT_PATIENT_NUM); }
 static uint16_t CntR(void){ Recovery(); return (uint16_t)RawAt(DM_TREATMENT_NUM); }
 static uint16_t CntNext(void){ Recovery(); return (uint16_t)RawAt(DM_TREATMENT_NEXT_ID); }
+
+// 最小空闲患者编号位图尺寸(字节): n 个患者的最小空缺正整数编号恒 <= n+1(抽屉原理),
+// 故按"物理患者容量+1"位预留即可, 最坏约 295 字节
+#define FIRST_FREE_PATIENT_ID_BITMAP_BYTES (((TREATMENT_PHYSICAL_PATIENT_CAP + 1U) + 7U) / 8U)
+
+// 计算最小空闲患者编号: 单遍扫描患者表, 把落在 1..n 内的已用编号置位,
+// 再从编号 1 起找首个未置位者; 若 1..n 全部占用则返回 n+1。
+// 不依赖 NEXT_ID 高水位, 删除患者留下的空缺会被优先复用。
+static uint16_t FirstFreePatientId(void){
+  uint16_t n = CntP();
+  uint8_t seen[FIRST_FREE_PATIENT_ID_BITMAP_BYTES];
+  memset(seen, 0, sizeof(seen));
+  for(uint16_t i = 0U; i < n; i++){
+    patientRecord_t row;
+    if(RowRead(PatientAddr(i), &row, PAT_BYTES) != TREATMENT_EPROM_OK){ continue; }
+    if((row.id >= 1U) && (row.id <= n)){
+      uint16_t b = (uint16_t)(row.id - 1U);
+      seen[b / 8U] |= (uint8_t)(1U << (b % 8U));
+    }
+  }
+  for(uint16_t b = 0U; b < n; b++){
+    if((seen[b / 8U] & (uint8_t)(1U << (b % 8U))) == 0U){
+      return (uint16_t)(b + 1U);
+    }
+  }
+  return (uint16_t)(n + 1U);
+}
 
 //============================================================================
 // 按需扫描(无 RAM 镜像, 每次直接读 FRAM; 仅占用单行工作变量, 与患者/记录数量无关)
@@ -355,6 +415,14 @@ static treatmentEpromErr_t PatientReplaceAt(uint16_t index, const patientRecord_
 // 一级 API: 患者
 //============================================================================
 uint16_t treatmentGetNextPatientId(void){ return CntNext(); }
+// 建议的新建患者编号(最小空缺优先, 无空缺取最大+1); 超出编号上限返回 0 表示无法再分配
+uint16_t treatmentPatientSuggestId(void){
+  uint16_t id = FirstFreePatientId();
+  if((id == 0U) || (id == CONFIG_EPROM_TREATMENT_SLOT_EMPTY) || (id > PATIENT_ID_LIMIT)){
+    return 0U;
+  }
+  return id;
+}
 uint16_t treatmentGetPatientCount(void){ return CntP(); }
 uint16_t treatmentGetRecordCount(void){ return CntR(); }
 
@@ -405,7 +473,7 @@ treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *
 	}
 	p = CntP(); r = CntR();
 	if(FreeBytesPR(p, r) < PAT_BYTES){ return TREATMENT_EPROM_ERR_FULL; }
-	id = CntNext();
+	id = FirstFreePatientId();//最小空缺优先, 无空缺取最大+1
 	if((id == 0U) || (id == CONFIG_EPROM_TREATMENT_SLOT_EMPTY) || (id > PATIENT_ID_LIMIT)){
 		return TREATMENT_EPROM_ERR_FULL;
 	}
@@ -413,7 +481,8 @@ treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *
 	(void)RowWrite(PatientAddr(p) + 2U, &row.age, (uint16_t)(PAT_BYTES - 2U));// 正文
 	if(RowWrite(PatientAddr(p), &row.id, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	SetAt(DM_TREATMENT_PATIENT_NUM, (uint16_t)(p + 1U));
-	SetAt(DM_TREATMENT_NEXT_ID, (uint16_t)(id + 1U));
+	//高水位仅在新编号超过它时推进, 补空缺编号不会拉低 NEXT_ID
+	if((uint16_t)(id + 1U) > CntNext()){ SetAt(DM_TREATMENT_NEXT_ID, (uint16_t)(id + 1U)); }
 	if(newId != NULL){ *newId = id; }
 	return TREATMENT_EPROM_OK;
 }
@@ -974,6 +1043,39 @@ static uint8_t demoNameExistsInStorage(const char *name){
   return 0U;
 }
 
+//演示记录随机治疗时刻的完整年份范围; 下限避开2000(片上存0, 与"无时间"哨兵冲突无法回显)
+#define DEMO_RTC_YEAR_MIN                          2001U
+#define DEMO_RTC_YEAR_MAX                          2099U
+
+//某年某月的合法天数, 处理闰年2月(闰年规则与RtcCheckDate一致)
+static uint8_t demoDaysInMonth(uint16_t year, uint8_t month){
+  static const uint8_t monthDays[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+  uint8_t days = monthDays[month - 1U];
+  if(month == 2U){
+    if(((year % 4U == 0U) && (year % 100U != 0U)) || (year % 400U == 0U)){
+      days = 29U;
+    }
+  }
+  return days;
+}
+
+//给演示记录随机附一条合规RTC: 年月日时分秒均在合法范围, 日期与月份/闰年匹配
+static void demoStampRandomRtc(treatmentLog_t *rec){
+  uint16_t year;
+  uint8_t month;
+  if(rec == NULL){
+    return;
+  }
+  year = (uint16_t)demoRandRange(DEMO_RTC_YEAR_MIN, DEMO_RTC_YEAR_MAX);
+  month = (uint8_t)demoRandRange(1U, 12U);
+  rec->rtcYear = year;
+  rec->rtcMonth = month;
+  rec->rtcDay = (uint8_t)demoRandRange(1U, demoDaysInMonth(year, month));
+  rec->rtcHour = (uint8_t)demoRandRange(0U, 23U);
+  rec->rtcMinute = (uint8_t)demoRandRange(0U, 59U);
+  rec->rtcSecond = (uint8_t)demoRandRange(0U, 59U);
+}
+
 static void demoBuildRecord(uint16_t id, treatmentLog_t *rec){
 	const demoProfile_t *profile;
 	int16_t power, powerCap;
@@ -1034,6 +1136,8 @@ static void demoBuildRecord(uint16_t id, treatmentLog_t *rec){
 		nameTries++;
 	}while((nameTries < DEMO_NAME_TRY_LIMIT) &&
 	       (demoNameExistsInStorage(rec->name) != 0U));
+	//随机附合规治疗时刻(年月日时分秒合法, 与月/闰年匹配), 使记录页显示真实格式时间而非横线
+	demoStampRandomRtc(rec);
 }
 
 static uint8_t demoNameValid(const char *name){

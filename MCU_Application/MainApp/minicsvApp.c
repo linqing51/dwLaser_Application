@@ -562,8 +562,8 @@ treatmentUsbErr_t treatmentLogLoadFromUdisk(uint16_t *loaded){
 		if(treatmentCsvReadBuf[0] == '\0'){
 			continue;
 		}
-		if((treatmentCsvReadBuf[0] < '0') || (treatmentCsvReadBuf[0] > '9')){
-			continue;
+		if((treatmentCsvReadBuf[0] != 'A') && ((treatmentCsvReadBuf[0] < '0') || (treatmentCsvReadBuf[0] > '9'))){
+			continue;//与预检(528)一致: 数据行以"AR "开头, 旧格式以数字开头
 		}
 		if(treatmentCsvParseRecord(treatmentCsvReadBuf, &rec) == 0U){
 			continue;//预检已保证不会到这里
@@ -638,8 +638,8 @@ uint8_t treatmentLogVerifyUdisk(void){
 		return 0U;
 	}
 	while(f_gets(treatmentCsvReadBuf, (int)sizeof(treatmentCsvReadBuf), &file) != NULL){
-		if((treatmentCsvReadBuf[0] < '0') || (treatmentCsvReadBuf[0] > '9')){
-			continue;//空行/表头/非数据行
+		if((treatmentCsvReadBuf[0] != 'A') && ((treatmentCsvReadBuf[0] < '0') || (treatmentCsvReadBuf[0] > '9'))){
+			continue;//空行/表头/非数据行(数据行以"AR "开头, 旧格式以数字开头)
 		}
 		//U盘行数比本机多 / 行解析失败 / 本机读取失败 / 任一字段不同: 判为不相同
 		if((i >= localCount)

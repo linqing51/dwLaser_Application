@@ -130,6 +130,18 @@ void listTreatmentRecordEditPatient(void);//记录页EDIT_PATIENT: 进入患者�
 void listTreatmentEditPatientConfirm(void);//患者信息编辑页OK: 原地更新患者信息后回记录页
 void listTreatmentEditPatientCancel(void);//患者信息编辑页CANCEL: 不更新回记录页
 uint8_t listTreatmentIsEditPatientMode(void);//当前编辑页是否为患者信息更新模式
+//新建患者注册页(18)/激光核对页(22)/放弃页(23), 见规格第十七节
+void listTreatmentRegisterNewPatient(void);//列表页CREATE_NEW: 手动新建患者(不要求激光), 进入注册页
+void listTreatmentRegisterConfirm(void);//注册页OK: 校验后新建患者(激光流程同时落记录)
+void listTreatmentRegisterCancel(void);//注册页CANCEL: 按来源页返回, EPROM不变
+void listTreatmentVerifyAfterLaser(void);//激光停光后自动进入核对页
+void listTreatmentVerifySaveRecord(void);//核对页SAVE_RECORD: 新患者进注册页, 已有患者直接落记录
+void listTreatmentVerifySelect(void);//核对页SELECT_TREATMENT: 列表页选择已有患者
+void listTreatmentVerifyDiscard(void);//核对页DISCARD_RECORD: 进入放弃页
+void listTreatmentDiscardReturn(void);//放弃页RETURN: 回核对页
+void listTreatmentDiscardCancel(void);//放弃页CANCEL: 确认放弃, 回待机页
+uint8_t listTreatmentIsVerifySelectMode(void);//列表页是否处于核对选择模式
+void listTreatmentVerifySelectCancel(void);//核对选择模式关闭列表: 回核对页
 void listTreatmentUsbLoop(void);//USB确认页轮询(确认页等待按键, 确认后执行一次导出/导入, 完成回操作页)
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log);//病历储存页面:显示EPROM历史病历
 void updateSchemeInfo(int16_t classify, int16_t cn);

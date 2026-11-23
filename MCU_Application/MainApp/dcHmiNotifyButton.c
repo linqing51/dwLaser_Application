@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -372,7 +372,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, true);					
 
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
-					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXTDISPLAY, (uint8_t*)(dispBuf));					
+					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXT, (uint8_t*)(dispBuf));					
 										
 					updateStandbyDisplay();
 					SetScreen(NVRAM0[EM_DC_PAGE]);					
@@ -983,22 +983,27 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         }
         case GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE:{//返回STANDBY状态
           if(state){
-            returnStandbyDisplay();//统一返回待机页面
+            if(listTreatmentIsVerifySelectMode()){//核对选择模式: 不回待机, 回核对页
+              listTreatmentVerifySelectCancel();
+            }
+            else{
+              returnStandbyDisplay();//统一返回待机页面
+            }
             treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE);//切页后释放源按键
           }
           break;
         }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW:{//新建病历: 本次治疗实际发射过激光才允许进入编辑页
+        case GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW:{//手动新建患者: 直接进入注册页(不要求本次发射激光)
           if(state){
-            listTreatmentCreateStart();
+            listTreatmentRegisterNewPatient();
             treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW);//复位自锁按钮并解除互锁
           }
           break;
         }
         case GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB:{//操作USB: 进入USB导入导出操作页
           if(state){
+            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB);//先释放再切页: 当前页仍在时下发清零
             enterOperatorUsbPage();
-            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB);//切页后释放源按键
           }
           break;
         }
@@ -1044,15 +1049,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         }
         case GDDC_PAGE_LIST_RECORD_KEY_CLOSE:{//返回病历列表页(13)
           if(state){
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_CLOSE);//先释放再切页: 当前页仍在时下发清零
             listTreatmentRecordClose();
-            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_CLOSE);//复位自锁按钮并解除互锁
           }
           break;
         }
         case GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT:{//进入患者信息编辑页(17)
           if(state){
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);//先释放再切页
             listTreatmentRecordEditPatient();
-            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1060,8 +1065,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           //KEY_DELETE_0-4:进入单条记录删除确认页(16), 确认后才删除
           if(state && (control_id >= GDDC_PAGE_LIST_RECORD_KEY_DELETE_0)
              && (control_id <= GDDC_PAGE_LIST_RECORD_KEY_DELETE_4)){
+            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, control_id);//先释放再切页: 当前页仍在时下发清零
             listTreatmentRecordDeleteStart((uint8_t)(control_id - GDDC_PAGE_LIST_RECORD_KEY_DELETE_0));
-            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, control_id);//复位自锁按钮并解除互锁
           }
           break;
         }
@@ -1088,19 +1093,19 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
       }
       break;
     }
-    case GDDC_PAGE_DELETE_TREATMENT_CONFIRM:{//删除患者确认页: 确认删除或取消返回列表页
+    case GDDC_PAGE_DELETE_TREATMENT:{//删除患者确认页: 确认删除或取消返回列表页
       switch(control_id){
         case GDDC_PAGE_DELETE_TREATMENT_KEY_OK:{
           if(state){
             listTreatmentDeleteConfirm();
-            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_OK);//notify无条件释放: 含守卫空操作也弹起
+            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT, GDDC_PAGE_DELETE_TREATMENT_KEY_OK);//notify无条件释放: 含守卫空操作也弹起
           }
           break;
         }
         case GDDC_PAGE_DELETE_TREATMENT_KEY_CANCEL:{
           if(state){
             listTreatmentDeleteCancel();
-            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT_CONFIRM, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCEL);//notify无条件释放
+            treatmentReleaseButton(GDDC_PAGE_DELETE_TREATMENT, GDDC_PAGE_DELETE_TREATMENT_KEY_CANCEL);//notify无条件释放
           }
           break;
         }
@@ -1110,24 +1115,24 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
     }
 		case GDDC_PAGE_OPERATOR_USB:{//USB导入导出操作页
 			switch(control_id){
-				case GDDC_PAGE_OPERATOR_USB_KEY_CANCEL:{//返回病历列表页
+				case GDDC_PAGE_OPERATOR_USB_KEY_CLOSE:{//返回病历列表页
 					if(state){
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_CLOSE);//先释放再切页: 当前页仍在时下发清零
 						listTreatmentOperatorUsbBack();
-						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_CANCEL);//notify无条件释放
 					}
 					break;
 				}
 				case GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK:{//存储到U盘: 检测U盘后弹保存提示页(写入在轮询中完成)
 					if(state){
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK);//先释放再切页: 当前页仍在时下发清零
 						listTreatmentSaveUsbStart();
-						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK);//notify无条件释放: 含忙状态空操作也弹起
 					}
 					break;
 				}
 				case GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK:{//从U盘载入: 检测U盘后弹载入确认页(不直接覆盖机内病历)
 					if(state){
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK);//先释放再切页: 当前页仍在时下发清零
 						listTreatmentLoadUsbStart();
-						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB, GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK);//notify无条件释放
 					}
 					break;
 				}
@@ -1141,8 +1146,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			switch(control_id){
 				case GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL:{//取消: 不读写, 返回USB操作页
 					if(state){
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL);//先释放再切页: 当前页仍在时下发清零
 						listTreatmentUsbCancel();
-						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL);//notify无条件释放
 					}
 					break;
 				}
@@ -1162,8 +1167,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			switch(control_id){
 				case GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL:{//取消: 不读写, 返回USB操作页
 					if(state){
+						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL);//先释放再切页: 当前页仍在时下发清零
 						listTreatmentUsbCancel();
-						treatmentReleaseButton(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL);//notify无条件释放
 					}
 					break;
 				}
@@ -1208,19 +1213,64 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 				default:break;
 			}
 		}
-		case GDDC_PAGE_REGISTER_PATIENT:{//新患者注册页
+		case GDDC_PAGE_VERIFY_TREATMENT:{//激光核对页
 			switch(control_id){
-				case GDDC_PAGE_REGISTER_TREATMENT_KEY_OK:{//保存: 校验后新建患者并追加到EPROM
-					if(state){
-						listTreatmentCreateConfirm();
-						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
+				case GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD:{
+					if(state){//先释放再动作: 动作内部可能切页, 保证本页仍当前时清零
+						treatmentReleaseButton(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD);
+						listTreatmentVerifySaveRecord();
 					}
 					break;
 				}
-				case GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL:{//取消: 返回病历列表页, EPROM不变
+				case GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD:{
 					if(state){
-						listTreatmentCreateCancel();
+						treatmentReleaseButton(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD);
+						listTreatmentVerifyDiscard();
+					}
+					break;
+				}
+				case GDDC_PAGE_VERIFY_TREATMENT_KEY_SELECT_TREATMENT:{
+					if(state){
+						treatmentReleaseButton(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SELECT_TREATMENT);
+						listTreatmentVerifySelect();
+					}
+					break;
+				}
+				default:break;
+			}
+		}
+		case GDDC_PAGE_DISCARD_TREATMENT:{//放弃本次记录页
+			switch(control_id){
+				case GDDC_PAGE_DISCARD_TREATMENT_KEY_RETURN:{
+					if(state){
+						treatmentReleaseButton(GDDC_PAGE_DISCARD_TREATMENT, GDDC_PAGE_DISCARD_TREATMENT_KEY_RETURN);
+						listTreatmentDiscardReturn();
+					}
+					break;
+				}
+				case GDDC_PAGE_DISCARD_TREATMENT_KEY_CANCEL:{
+					if(state){
+						treatmentReleaseButton(GDDC_PAGE_DISCARD_TREATMENT, GDDC_PAGE_DISCARD_TREATMENT_KEY_CANCEL);
+						listTreatmentDiscardCancel();
+					}
+					break;
+				}
+				default:break;
+			}
+		}
+		case GDDC_PAGE_REGISTER_PATIENT:{//新患者注册页
+			switch(control_id){
+				case GDDC_PAGE_REGISTER_TREATMENT_KEY_OK:{//保存: 校验后新建患者(激光流程同时落记录)
+					if(state){
+						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
+						listTreatmentRegisterConfirm();
+					}
+					break;
+				}
+				case GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL:{//取消: 按来源页返回, EPROM不变
+					if(state){
 						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL);//复位自锁按钮并解除互锁
+						listTreatmentRegisterCancel();
 					}
 					break;
 				}
@@ -1925,7 +1975,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						else{
 							sprintf(dispBuf, "DEMO FILL ERR:%d", (int)demoErr);
 						}
-						SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXTDISPLAY_INFO4, (uint8_t*)dispBuf);
+						SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_INFO4, (uint8_t*)dispBuf);
 						diagnosisKeysSetEnable(1U);//生成结束恢复按键(312/313保持默认隐藏禁用, 不随恢复开放)
 						SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL, 0);//按钮为自锁型, 填充完成后复位为弹起, 文字回到Fill Demo
 					}
@@ -1965,64 +2015,64 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH0:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH0:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH0);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH0, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH0, false);
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH1:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH1:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH1);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH1, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH1, false);
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH2:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH2:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH2);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH2, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH2, false);
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH3:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH3:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH3);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH3, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH3, false);
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH4:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH4:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH4);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH4, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH4, false);
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH5:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH5:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH5);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH5, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH5, false);
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH6:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH6:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH6);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH6, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH6, false);
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH7:{
 					if(state){
 						saveCalibrationTable(LASER_DAC_CHANNEL_CH7);
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_SAVE_CH7, false);
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS_CALI, GDDC_PAGE_DIAGNOSIS_CALI_KEY_SAVE_CH7, false);
 					}
 					break;
 				}
 				
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH0:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH0:{
 					if(state){
 						NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, NVRAM0[EM_CALI_CUR_SET_CH0], &deviceConfig, false);
 						UPDAC0();
@@ -2030,7 +2080,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH1:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH1:{
 					if(state){
 						NVRAM0[SPREG_DAC_1] = fitLaserToCode(LASER_DAC_CHANNEL_CH1, NVRAM0[EM_CALI_CUR_SET_CH1], &deviceConfig, false);
 						UPDAC1();
@@ -2038,7 +2088,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH2:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH2:{
 					if(state){
 						NVRAM0[SPREG_DAC_2] = fitLaserToCode(LASER_DAC_CHANNEL_CH2, NVRAM0[EM_CALI_CUR_SET_CH2], &deviceConfig, false);
 						UPDAC2();
@@ -2046,7 +2096,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}					
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH3:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH3:{
 					if(state){
 						NVRAM0[SPREG_DAC_3] = fitLaserToCode(LASER_DAC_CHANNEL_CH3, NVRAM0[EM_CALI_CUR_SET_CH3], &deviceConfig, false);
 						UPDAC3();
@@ -2054,7 +2104,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH4:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH4:{
 					if(state){
 						NVRAM0[SPREG_DAC_4] = fitLaserToCode(LASER_DAC_CHANNEL_CH4, NVRAM0[EM_CALI_CUR_SET_CH4], &deviceConfig, false);
 						UPDAC4();
@@ -2062,7 +2112,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH5:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH5:{
 					if(state){
 						NVRAM0[SPREG_DAC_5] = fitLaserToCode(LASER_DAC_CHANNEL_CH5, NVRAM0[EM_CALI_CUR_SET_CH5], &deviceConfig, false);
 						UPDAC5();
@@ -2070,7 +2120,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH6:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH6:{
 					if(state){
 						NVRAM0[SPREG_DAC_6] = fitLaserToCode(LASER_DAC_CHANNEL_CH6, NVRAM0[EM_CALI_CUR_SET_CH6], &deviceConfig, false);
 						UPDAC6();
@@ -2078,7 +2128,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_UPDATE_CH7:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH7:{
 					if(state){
 						NVRAM0[SPREG_DAC_7] = fitLaserToCode(LASER_DAC_CHANNEL_CH7, NVRAM0[EM_CALI_CUR_SET_CH7], &deviceConfig, false);
 						UPDAC7();
@@ -2086,7 +2136,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH0:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH0:{
 					if(state){
 						SET_LASER_CH0_ON;
 						printf("SET LASER CH0 PWM ON\n");
@@ -2097,7 +2147,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH1:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH1:{
 					if(state){
 						SET_LASER_CH1_ON;
 						printf("SET LASER CH1 PWM ON\n");
@@ -2108,7 +2158,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH2:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH2:{
 					if(state){
 						SET_LASER_CH2_ON;
 						printf("SET LASER CH2 PWM ON\n");
@@ -2119,7 +2169,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH3:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH3:{
 					if(state){
 						SET_LASER_CH3_ON;
 						printf("SET LASER CH3 PWM ON\n");
@@ -2130,7 +2180,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH4:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH4:{
 					if(state){
 						SET_LASER_CH4_ON;
 						printf("SET LASER CH4 PWM ON\n");
@@ -2141,7 +2191,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH5:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH5:{
 					if(state){
 						SET_LASER_CH5_ON;
 						printf("SET LASER CH5 PWM ON\n");
@@ -2152,7 +2202,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH6:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH6:{
 					if(state){
 						SET_LASER_CH6_ON;
 						printf("SET LASER CH6 PWM ON\n");
@@ -2163,7 +2213,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_LAS_PWM_CH7:{
+				case GDDC_PAGE_DIAGNOSIS_CALI_KEY_LAS_PWM_CH7:{
 					if(state){
 						SET_LASER_CH7_ON;
 						printf("SET LASER CH7 PWM ON\n");
@@ -2174,7 +2224,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-        case GDDC_PAGE_DIAGNOSIS_CALI_BUTTON_AUTOTUNE:{
+        case GDDC_PAGE_DIAGNOSIS_CALI_KEY_AUTOTUNE:{
           if(state){
             //PID_StartTune(&ClassicPid_A);
           }
@@ -2186,7 +2236,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_POWEROFF_CONFIRM:{
 			switch(control_id){
-				case GDDC_PAGE_POWEROFF_BUTTON_YES:{
+				case GDDC_PAGE_POWEROFF_KEY_YES:{
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;//进入关机确认状态
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_START;	
@@ -2195,7 +2245,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_POWEROFF_BUTTON_CANCEL:{
+				case GDDC_PAGE_POWEROFF_KEY_CANCEL:{
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//退出关机确认状态												
 						SetScreen(NVRAM0[EM_DC_PAGE]);

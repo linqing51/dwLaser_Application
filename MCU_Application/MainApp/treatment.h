@@ -179,7 +179,8 @@ typedef enum{
 //============================================================================
 // 一级 API: 患者 / 记录 归一化操作
 //============================================================================
-uint16_t treatmentGetNextPatientId(void);                                   //下一个可分配患者编号
+uint16_t treatmentGetNextPatientId(void);                                   //下一个可分配患者编号(高水位)
+uint16_t treatmentPatientSuggestId(void);                                  //建议新建编号(最小空缺优先, 无空缺取最大+1; 无法分配返回0)
 uint16_t treatmentGetPatientCount(void);                                    //当前患者数
 uint16_t treatmentGetRecordCount(void);                                     //当前治疗记录总数
 uint16_t treatmentGetRecordCountForPatient(uint16_t patientId);             //指定患者的记录数

@@ -20,6 +20,7 @@
 3. 当前页 = `topIndex / 5 + 1`。
 4. `topIndex` 必须恒为 5 的整数倍（整页对齐）：任何路径改完 `topIndex` 后，由 `listTreatmentClampWindow` 先向下对齐到整页边界、再夹到合法上限 `listTreatmentGetMaxTop()`，保证页码与窗口位置一致、且“上一页/下一页”按钮不会失效。
 5. 所有会改变窗口或过滤的路径（翻页、搜索、新建、删除、U 盘导入、返回列表）都必须调用 `refreshListTreatmentDisplay()`，以同步刷新该文本框。
+6. **U 盘导入（整体替换 EPROM）后必须先重建过滤**：导入会清空并改写全部患者/记录，RAM 中的 `filteredCount`、`sortedIndex`、`ramKeys` 是导入前的旧值；从 USB 流程返回列表页（`listTreatmentOperatorUsbBack`）时必须先 `listTreatmentRebuildFilter()`（按当前 `findText` 重建，保留搜索与窗口）再 `refreshListTreatmentDisplay()`，否则会显示空白/旧数量，只能关闭重进才正常。
 
 ---
 
@@ -140,7 +141,7 @@
 1. 点 `KEY_SELECT_PATIENT_0–4`（控件 20–24）调用 `listTreatmentSelect(slot)`，其中 `slot = control_id - GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0`（取值 0–4），分别对应窗口内 `TEXT_NAME_0–4` 的患者。
 2. `slot` 越界（`>= 5`）直接返回；对应视图位置 `viewPos = topIndex + slot` 若 `>= filteredCount`（空槽位）则不响应。
 3. 命中有效患者时，`listTreatmentSelect` 必须依次完成：
-   - 置 `selectedIndex = viewPos`，使列表页对应 `SELECT_PATIENT` 按钮高亮（沿用 `refreshListTreatmentDisplay`）。
+   - 置 `selectedIndex = viewPos` 记录列表内选中位置；该字段仅作内部状态使用，不再驱动 `SELECT_PATIENT` 按钮高亮。
    - 经 `listTreatmentGetViewPatient(viewPos, &pat)`（经紧凑索引 `sortedIndex[viewPos]` O(1) 定位全局索引，再单次回读整行）解析出患者原始记录，把稳定患者编号缓存到 `listTreatmentCtx.selectedPatientId`、姓名缓存到 `listTreatmentCtx.selectedPatientName`。
    - **自动返回待机页**：统一走 `returnStandbyDisplay()`（切回 `FSMSTEP_STANDBY`、`SetScreen(GDDC_PAGE_STANDBY)`），不得停留在列表页，也不得进入编辑页。
 
@@ -161,9 +162,9 @@
 
 ---
 
-## 六、删除患者确认（KEY_DELETE_0–4 / GDDC_PAGE_DELETE_TREATMENT_CONFIRM）
+## 六、删除患者确认（KEY_DELETE_0–4 / GDDC_PAGE_DELETE_TREATMENT）
 
-本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCEL`（控件 2），文本框控件 3–6（`TEXT_NAME_ID`=3、`TEXT_SUMMARY_0`=4、`TEXT_SUMMARY_1`=5、`TEXT_SUMMARY_2`=6）。页面上所有文字按根目录 `AI_RULES.md` 至高规格一律英文显示。
+本部分固化“列表页删除按钮 → 进入删除确认页 → 确认后级联删除患者及其全部病历”的强制闭环。涉及控件：列表页 `KEY_DELETE_0–4`（控件 25–29）、确认页 `GDDC_PAGE_DELETE_TREATMENT`（页面 ID 14），确认页按钮 `KEY_DELETE`（控件 1）、`KEY_CANCEL`（控件 2），文本框控件 3–6（`TEXT_NAME_ID`=3、`TEXT_SUMMARY_0`=4、`TEXT_SUMMARY_1`=5、`TEXT_SUMMARY_2`=6）。页面上所有文字按根目录 `AI_RULES.md` 至高规格一律英文显示。
 
 ### 6.1 列表页进入删除确认页（不立即删除）
 
@@ -174,7 +175,7 @@
    - `TEXT_SUMMARY_0`（控件 4，动态）：`Delete patient <name> and all their treatment records?`（`<name>` 为该患者姓名原文）
    - `TEXT_SUMMARY_1`（控件 5，动态）：`This patient has <n> treatment record(s).`（`<n>` = `treatmentGetRecordCountForPatient(id)`，该患者已有病历数）
    - `TEXT_SUMMARY_2`（控件 6）：`This action cannot be undone.`
-4. 置 `NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT_CONFIRM` 后 `SetScreen(14)`，等待用户确认或取消。
+4. 置 `NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_TREATMENT` 后 `SetScreen(14)`，等待用户确认或取消。
 
 ### 6.2 确认删除（KEY_DELETE）
 
@@ -259,6 +260,8 @@
 2. **弹起机制不另立规则**：这 7 个按键的释放位置、无条件弹起（含空操作）、切页安全解锁与中止路径，**统一遵循第十六节**，由 `treatmentReleaseButton` 经 `NotifyButton` 层处理，本节不再维护各自的弹起时机，避免与第十六节口径漂移。
 3. **唯一需在本节点明的异步特性**：20/21 页 `KEY_OK`（11）按下只授权（`usbState` 6→7），实际 CSV 读写（含导入后的回读核对）在 `listTreatmentUsbLoop` 中完成，故该 OK 按第十六节的异步例外在 loop 工作完成后释放，而非 notify 立即释放。
 4. 任何后续在这三页新增的自锁按键，先在本节登记控件 ID，其释放仍统一遵循第十六节。
+5. **进入确认页的按键基线与读写期间 CANCEL 锁定（强制）**：进入 20/21 页时，固件必须在 `SetScreen` 前显式对本页 `KEY_OK`（11）、`KEY_CANCEL`（10）下发 `SetButtonValue(...,0)` 并恢复触摸使能，建立“两键均未按下且可用”基线——屏幕会保留自锁键运行态、不随切页复位，不主动清零会出现进入即两键同时显示按下。`KEY_OK` 按下进入状态 7 后，除触摸门屏蔽一切操作外，还须显式弹起 `KEY_CANCEL` 并 `SetControlEnable(...,0)` 禁用其触摸，禁止读写中途取消；下次进入确认页时由进入基线统一恢复。
+6. **确认页 CANCEL 返回操作页时重建 19 页按键基线（强制）**：点 20/21 页 `KEY_CANCEL`（状态 6→0）返回操作页 19 时，进入确认页前对 19 页 SAVE/LOAD 下发的释放帧在切页前已发，但屏幕对自锁键运行态保留不可靠，LOAD 键可能停在按下态。故 `listTreatmentUsbCancel` 在 `SetScreen(19)` 前必须调用 `refreshOperatorUsbDisplay()`（此时确认页仍为当前页，帧目标操作页），重建 19 页 SAVE/LOAD/CANCEL“全部未按下”基线并清空 `SUMMARY_USB`，再切页。
 
 ---
 
@@ -266,7 +269,9 @@
 
 ### 13.1 进入与数据来源
 
-1. 在病历列表页（13）点击 `KEY_EDIT_RECORD_0–4`（控件 31–35），由 `listTreatmentRecordEnter(slot)` 处理：按窗口槽位解析出对应患者，把稳定患者编号写入 `recordPatientId`，再调用 `listTreatmentRecordEnumerate()` 令窗口缓存失效并收集当前窗口，最后 `SetScreen(15)`。
+1. 在病历列表页（13）点击 `KEY_EDIT_RECORD_0–4`（控件 31–35），由 `listTreatmentRecordEnter(slot)` 处理：按窗口槽位解析出对应患者，把稳定患者编号写入 `recordPatientId`，再调用 `listTreatmentRecordEnumerate()` 令窗口缓存失效并收集当前窗口；随后在 `SetScreen(15)` **之前**先对本页控件 20–28（DELETE/PAGE_UP/PAGE_DOWN/CLOSE/EDIT_PATIENT，均为按钮）统一下发 `SetButtonValue(...,0)` 建立“全部按键未按下”基线，并调用 `refreshListRecordDisplay()` 完成渲染，最后才切页。
+   - **入口按钮区分（不得混淆）**：进入本页的是 `KEY_EDIT_RECORD_0–4`（31–35）；同页 `KEY_SELECT_PATIENT_0–4`（20–24）按第五节只做“选中患者并自动返回待机页”，不进入本页。
+   - **为何在进入函数内渲染（强制）**：本工程 `DeviceScreenNotify=0`，屏幕冷加载回传（`NotifyScreen`）不可靠，不能只靠它渲染；进入函数先“清键+渲染”再切页，与页面 13/19 进入路径一致，否则会出现进入即空白、按键停在按下态。`NotifyScreen` 的冷加载分支保留为兜底重发。
 2. 枚举口径（无条数硬上限、无整行缓存数组）：`listTreatmentRecordCollectWindow()` 单遍扫描扁平记录，用 `treatmentRecordGetPatientIdByIndex()` **只读记录行首 2 字节外键 id**（替代整行 28 字节），按 `rowId == recordPatientId` 过滤并统计记录总数（`recordCount`，`uint16`），仅把当前窗口 5 条的全局索引缓存到 `recordWindow[0..4]`；翻页时按 `recordTop` 重新轻扫收集对应窗口，完整行在渲染时才读，记录按存储顺序（即追加/时间先后）呈现，条数仅受区块物理容量约束。
 3. 页面冷加载时（`screen_id` 分发）必须重新枚举并调用 `refreshListRecordDisplay()`，保证掉电重启回到本页时显示与存储一致。
 
@@ -277,6 +282,7 @@
    `记录时间 - 发射能量 - 发射时间 - 功率 - 波长`
    示例：`2026-11-10 18:00 - 262.7 J - 00:19 - 30 W - 1470 nm`
    - 记录时间取 RTC，格式 `YYYY-MM-DD HH:MM`；未记录时间时该段显示 `---- --:--`。
+   - **各数据来源的时间口径**：①AUTOFILL 演示记录由 `demoBuildRecord` 生成，末尾经 `demoStampRandomRtc` 随机附一条合规 RTC——完整年取 2001–2099（`demoRandRange`），月 1–12，日按 `demoDaysInMonth` 取 1..当月天数（闰年规则与 `RtcCheckDate` 一致，2 月闰年 29 天），时 0–23、分 0–59、秒 0–59，故演示记录均显示真实格式时间；②CSV 导入记录仅当源文件第 10 列 RTC 非空才带时间，空列即无时间（显 `----`）；③真实治疗记录在停光瞬间由 `RtcGetDateTime` 盖章，只要硬件 RTC 已正确校时即显示完整时间。已知边界：片上 `rtcYear` 用 0 表示“无时间”，而 2000 年（`sDate.Year=0`）落盘也为 0，二者无法区分；因此随机年份下限刻意避开 2000、从 2001 起（落盘 1–99，永不为 0），保证可回读显时间。
    - 发射能量底层为 0.1 J（decijoule），显示时除以 10 保留 1 位小数（用整数运算拆整/分，不用浮点）。
    - 发射时间取秒，格式 `MM:SS`；功率取 `laserPower`，单位 `W`；波长单波长如 `1470 nm`，双波长如 `1470+980 nm`。
 3. **方案/脉宽行 `TEXT_SCHEME_WIDTH_0–4`（控件 7–11）**：
@@ -292,17 +298,20 @@
 1. 当槽位 `i` 的记录位置 `recordTop + i >= recordCount` 时该槽为空（如仅 3 条记录，则槽 3–4 为空）。
 2. 空槽的 `TEXT_TIEM_ENERGY_i`、`TEXT_SCHEME_WIDTH_i` 两个文本控件必须 `SetControlVisiable(..., 0)` 隐藏、不显示任何内容；`KEY_DELETE_i` 必须同时隐藏并 `SetControlEnable(..., 0)` 禁止点击。
 3. 有效槽位每次刷新显式恢复可见/可点状态，不依赖屏幕默认值。
+4. **删除后不足 5 条的具体口径（强制）**：删除一条后若该患者总记录只剩 4 条，则第 5 槽（`i = 4`）为空——`TEXT_TIEM_ENERGY_4`（控件 6）、`TEXT_SCHEME_WIDTH_4`（控件 11）必须清空（隐藏、不显示任何内容），`KEY_DELETE_4`（控件 24）必须隐藏并 `SetControlEnable(..., 0)` 禁止按下；其余空槽同理。该规则由 `refreshListRecordDisplay()` 在每次删除确认返回后统一执行，不依赖手动刷新。
 
 ### 13.4 翻页与按键
 
-1. `KEY_PAGE_UP`（25）/`KEY_PAGE_DOWN`（26）：`recordTop` 分别减/加 5，由 `listTreatmentRecordMaxTop()` 夹取到合法整页边界，到首页/末页停止。
-2. `KEY_CLOSE`（27，宏名 `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`）：清空 `recordPatientId` 后返回病历列表页（13）。
-3. `KEY_EDIT_PATIENT`（28，宏名 `GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`）：跳转患者信息编辑页（17），行为见 13.5。
-4. 本页全部按键在屏幕工程均为 `button_type = 1`（自锁型）；其释放统一遵循第十六节（notify 层无条件 `treatmentReleaseButton`），本节不另写弹起时机。
+1. `KEY_PAGE_UP`（25）/`KEY_PAGE_DOWN`（26）：`recordTop` 分别减/加 5，由 `listTreatmentRecordMaxTop()` 夹取到合法整页边界，到首页/末页停止；**窗口确实移动后必须在函数内调用 `refreshListRecordDisplay()` 重新渲染**（仅改 `recordTop` 不渲染则画面不更新）。
+2. `KEY_CLOSE`（27，宏名 `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`）：notify 先 `treatmentReleaseButton` 弹起本键，再由 `listTreatmentRecordClose()` 清空 `recordPatientId` 并返回病历列表页（13）。
+3. `KEY_EDIT_PATIENT`（28，宏名 `GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`）：notify 先释放本键，再由 `listTreatmentRecordEditPatient()` 跳转患者信息编辑页（17），行为见 13.5。
+4. 本页全部按键在屏幕工程均为 `button_type = 1`（自锁型）。**释放时序（强制）**：所有按键一律在 notify 层“先 `treatmentReleaseButton`（当前页仍在时下发清零）再执行切页/动作”，禁止先切页再发释放帧（设备切走后可能忽略该帧导致按键残留）；统一遵循第十六节。
 
 ### 13.5 患者信息编辑（页面 17 复用）
 
-1. 点 `KEY_EDIT_PATIENT` 由 `listTreatmentRecordEditPatient()` 预填该患者姓名/年龄/性别，ID 行显示 `AR 编号`，并置 `editPatientMode = 1`，`SetScreen(17)`。
+> **命名口径（避免歧义）**：本页页面 ID 宏为 `GDDC_PAGE_EDIT_PATIENT`（=17，`SetScreen` 跳转目标）；本页控件统一以 `GDDC_PAGE_EDIT_TREATMENT_*` 为前缀（如 `..._TEXT_ID`、`..._KEY_OK`）。即现场所称“EDIT_TREATMENT 页面”即页面 17，二者指同一页面，固件不混用。
+
+1. 点 `KEY_EDIT_PATIENT` 由 `listTreatmentRecordEditPatient()` 预填该患者姓名/年龄/性别，ID 行显示 `AR 编号`，并置 `editPatientMode = 1`，`SetScreen(GDDC_PAGE_EDIT_PATIENT)`。
 2. 编辑页 OK 在该模式下改走 `listTreatmentEditPatientConfirm()`：调用 `treatmentPatientUpdate()` 原地更新患者信息（id 不变、不追加治疗记录），完成后回记录页（15）并清 `editPatientMode = 0`。
 3. 编辑页 CANCEL 在该模式下走 `listTreatmentEditPatientCancel()`：不更新，回记录页（15）。正常新建/追加流程（`editPatientMode = 0`）仍走原 `listTreatmentCreateConfirm/Cancel`，行为不变。
 
@@ -339,7 +348,7 @@
 | 页面 ID | 页面宏 |
 |---|---|
 | 13 | `GDDC_PAGE_LIST_TREATMENT` |
-| 14 | `GDDC_PAGE_DELETE_TREATMENT_CONFIRM` |
+| 14 | `GDDC_PAGE_DELETE_TREATMENT` |
 | 15 | `GDDC_PAGE_LIST_RECORD` |
 | 16 | `GDDC_PAGE_DELETE_RECORD` |
 | 17 | `GDDC_PAGE_EDIT_PATIENT` |
@@ -347,8 +356,8 @@
 | 19 | `GDDC_PAGE_OPERATOR_USB` |
 | 20 | `GDDC_PAGE_OPERATOR_USB_SAVE` |
 | 21 | `GDDC_PAGE_OPERATOR_USB_LOAD` |
-| 23 | `GDDC_PAGE_VERIFY_TREATMENT` |
-| 24 | `GDDC_PAGE_DISCARD_TREATMENT` |
+| 22 | `GDDC_PAGE_VERIFY_TREATMENT` |
+| 23 | `GDDC_PAGE_DISCARD_TREATMENT` |
 
 2. 目标：任一按键按下（置 1）后，到该按键被单片机重新清零（置 0）的这段“在途”时间内，**同页及跨页的其他所有按键都必须锁定、无法按下**，防止在途动作（FRAM 读写、切页、删除、U 盘读写等）未完成时误触其他按键。
 3. 非上述 11 页的页面（待机、方案、诊断、校准、选项、READY 等）不参与本互锁，其按键行为保持原样，互锁门对这些页面直接放行。
@@ -378,13 +387,57 @@
    - 第二道 `listTreatmentUsbButtonAllowed(screen, control)`：既有的 USB 忙/删除确认流程状态门（删除确认等待、U 盘读写忙等期间屏蔽无关触摸），保留不变。
 2. 两道门职责不同、不得互相替代：互锁门管“单键在途期间其他键不可按”，状态门管“特定业务流程期间只放行指定控件”；新增业务流程状态门时应接在互锁门之后，不得绕过互锁门。
 
-### 16.5 未启用页面与实现位置
+### 16.5 页面实现位置与启用状态
 
-1. 页面 23 `GDDC_PAGE_VERIFY_TREATMENT`、页面 24 `GDDC_PAGE_DISCARD_TREATMENT` 当前固件尚未建立 `SetScreen`/`NotifyButton` 分支（未启用），但已纳入互锁页面判定；将来启用时其按键自动适用本规格，无需再改互锁门。
+1. 页面 22 `GDDC_PAGE_VERIFY_TREATMENT`、页面 23 `GDDC_PAGE_DISCARD_TREATMENT` 已建立 `SetScreen`/`NotifyButton` 分支并启用（激光停光自动弹出核对页 22，放弃记录进入放弃页 23），其按键在 `NotifyButton` 分支内无条件 `treatmentReleaseButton`，与本规格一致；页面重编号后原 `GDDC_PAGE_READY` 顺延为 24。
 2. 实现位置：
    - 互锁状态与判定/放行/释放函数（`treatmentIsLockPage`、`treatmentBtnLockArm/Release/Reset`、`treatmentButtonLockAllowed`、`treatmentReleaseButton`）：`MainApp/dcHmiApp.c`，对外声明在 `MainApp/dcHmiApp.h`。
    - 互锁门接入与各自锁键释放点：`MainApp/dcHmiNotifyButton.c`、`MainApp/dcHmiApp.c`。
 3. 本规格为强制规格：任何新增病历相关页面若需要同样的“在途互锁”，必须先在 16.1 表中登记页面 ID，并确认其按键在 `NotifyButton` 分支内无条件调用 `treatmentReleaseButton`（异步动作键在其完成路径释放），否则该页面按键可能在途后无法正常解锁。
+
+### 16.6 进入/重进页面的按键未按下基线
+
+1. 页面在被显示前必须保证其上全部按键处于未按下（`SetButtonValue(...,0)`）状态，不得依赖按键在切页前后无应答的逐个复位；进入与重新进入（含从其他页返回、翻页、过滤重建）同等适用。
+2. 页面 13 的该基线在 `refreshListTreatmentDisplay()` 内、渲染槽位之前建立：对全部 20 个按钮（控件 20–29、31–40，经 `SELECT_PATIENT_0…DELETE_4` 与 `EDIT_RECORD_0…OPERATOR_USB` 两段符号宏循环）显式清零；进入路径均先 refresh 再 `SetScreen`，故页面显示前清零已生效。
+3. 选中患者不再用按钮 down 态高亮，其归属由 `selectedPatientId/Name` 保持（见第五节）；其他页面若出现同类残留按下，按本基线在其 refresh 中显式清零。
+
+---
+
+## 十七、新建患者注册页 GDDC_PAGE_REGISTER_PATIENT（页面 ID 18，强制规格，2026-11-22）
+
+### 17.1 两个进入入口
+
+新建患者有两条等价入口，均跳转到注册页 `GDDC_PAGE_REGISTER_PATIENT`（18）：
+
+1. **激光发射完成后**：自动弹出核对页 `GDDC_PAGE_VERIFY_TREATMENT`（页面 22），点击 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）进入注册页；
+2. **列表页手动新建**：在 `GDDC_PAGE_LIST_TREATMENT`（页面 13）点击 `GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW`（控件 39）进入注册页。该入口不要求本次必须发射过激光。
+
+### 17.2 按键出口
+
+- `GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL`（控件 21；编辑页对应 `GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL`）：**不写入任何数据**，返回进入本页之前的上一个页面——入口 1 回核对页 22，入口 2 回列表页 13。
+- `GDDC_PAGE_REGISTER_TREATMENT_KEY_OK`（控件 20；编辑页对应 `GDDC_PAGE_EDIT_TREATMENT_KEY_OK`）：校验通过后**新建一个患者**（仅建立患者，不追加治疗记录），随后返回对应页面。
+
+### 17.3 患者 ID 自动生成（TEXT_ID，控件 1）
+
+进入注册页时，`GDDC_PAGE_REGISTER_TREATMENT_TEXT_ID`（控件 1；编辑页对应 `GDDC_PAGE_EDIT_TREATMENT_TEXT_ID`）自动生成并显示下一个患者 ID：
+
+1. **无空缺**：取机内最大 ID 加 1。例如最后一个 ID 为 `0098`，则生成 `0099`；
+2. **有空缺优先补空缺**：若最大 ID 之前存在一个或多个空缺，取其中**最小**的空缺 ID。例如机内有 `0001`–`0011`、`0013`、`0098`，则生成 `0012`；
+3. ID 以 4 位数字显示、不足补零；取值范围 `1 … PATIENT_ID_LIMIT（32767）`，`AR ` 前缀的显示口径按第十五节。
+
+### 17.4 姓名、年龄、性别字段
+
+- **姓名** `GDDC_PAGE_REGISTER_TREATMENT_TEXT_NAME`（控件 2）：输入内容作为患者名称；长度超过系统约定 `CONFIG_TREATMENT_NAME_LEN`（18 个字符）时，**截断到 18 个字符**并补字符串结束符。
+- **年龄** `GDDC_PAGE_REGISTER_TREATMENT_TEXT_AGE`（控件 3）：对应数值作为患者年龄，**按实际人类有效年龄判断**输入是否合法（非数字、负数、0 或超出人类有效年龄上限均判非法）。
+- **性别** `GDDC_PAGE_REGISTER_TREATMENT_TEXT_GENDER`（控件 4）与性别下拉菜单（控件 10）：`FeMale` 代表女（`FEMALE = 2`），`Male` 代表男（`MALE = 1`）。
+
+### 17.5 非法输入提示
+
+姓名、年龄、性别中**任一项缺失或不符合人类实际情况**时，禁止写入并停留在注册页，在 `GDDC_PAGE_REGISTER_TREATMENT_TEXT_SUMMARY_0`（控件 5）显示：
+
+> "Invalid input, please re-enter!"
+
+用户重新填写至全部合法后，按 OK 才允许新建患者。
 
 ---
 
@@ -392,11 +445,24 @@
 
 > 本附录只记录“某时点的屏幕工程/数据状态”与每次规格变更，不承载强制规则；正文各节只保留不随时间变化的规则。下列状态为对应日期的核对快照，最新状态以实际屏幕工程与代码为准。
 
-1. **2026-11-20**：USB 确认页在屏幕工程 `vTFT_HMI/dwLaser.tftprj` 中建立——导出确认页 `GDDC_PAGE_OPERATOR_USB_SAVE_CONFIRM.tft`（页面 20）仅控件 1/2；导入确认页 `GDDC_PAGE_OPERATOR_USB_LOAD_CONFIRM.tft`（页面 21）建控件 1/2/3，固件只用 1/2，控件 3 下发空串、控件 4 未建立不写入。
-2. **2026-11-21**：删除患者确认页 14 在 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM.tft` 中建立（按钮 1–2、文本 3–6），与 `dcHmiRes.h` 宏值一致；同日核对 USB 三页（19/20/21）共 7 个按键均为 `button_type = 1`。
+1. **2026-11-20**：USB 确认页在屏幕工程 `vTFT_HMI/dwLaser.tftprj` 中建立——导出确认页 `GDDC_PAGE_OPERATOR_USB_SAVE.tft`（页面 20）仅控件 1/2；导入确认页 `GDDC_PAGE_OPERATOR_USB_LOAD.tft`（页面 21）建控件 1/2/3，固件只用 1/2，控件 3 下发空串、控件 4 未建立不写入。
+2. **2026-11-21**：删除患者确认页 14 在 `GDDC_PAGE_DELETE_TREATMENT.tft` 中建立（按钮 1–2、文本 3–6），与 `dcHmiRes.h` 宏值一致；同日核对 USB 三页（19/20/21）共 7 个按键均为 `button_type = 1`。
 3. **2026-11-22**：
    - 导出确认页文案删去 `The archives on the device will be cleared.`，`TEXT_SUMMARY_1` 只保留“U 盘原有备份将被替换”，与第八节“导出不清空”口径一致；
    - 宏名拼写更正：`..._KEY_CANCLE` → `..._KEY_CANCEL`、`..._RECODE` → `..._RECORD`（控件数字 ID 不变，.tft 内部 name 保留旧拼写、不影响通信）；
    - 第十二节、13.4、第十四节的弹起细节收敛为统一引用第十六节，不再各自维护；
    - 排序措辞改为“姓名 → 原始存储索引”的全序键（原始索引为最终 tie-break），不再称堆排序为稳定排序；
    - 正文各时点快照移入本附录，强制规格只保留规则。
+   - 页面 13 建立进入/重进“按键未按下”基线：`refreshListTreatmentDisplay` 对全部 20 个按钮（20–29、31–40）显式清零，取消 `SELECT_PATIENT` 按钮 down 态高亮（见 16.6）。
+   - 新增第十七节：新建患者注册页（18）规格，固化两个入口（核对页 22 的 SAVE_RECORD、列表页 13 的 CREATE_NEW）、CANCEL 返回上一页、OK 仅建患者、ID 自动补最小空缺（无空缺取最大 ID+1）、姓名超长截断、年龄/性别校验与非法输入 SUMMARY_0 提示。固件已对齐（最小空缺 ID 位图分配、仅建患者路径、SUMMARY_0 英文提示、核对页 22/放弃页 23 接线与激光停光自动弹页），并通过 AC5 Rebuild：0 Error、2 Warning（usbh_cdc.c 固定基线），hex 正常生成（Code=238156，ZI=121204）。
+4. **2026-11-22（全工程合规审计）**：按 AI_RULES.md 两条至高规格与本规格全面核对——显示文本无 ASCII 违背、控件类型与驱动接口零跨类误用、无 CANCLE/RECODE 残留、自编源码全部 UTF-8、停止维护工程零改动、EPROM 块保护关闭与固件 CRC 变化清空均符合。同步修正 16.1 表与 16.5 的过时页面编号（核对页 22、放弃页 23，READY 顺延 24）及"未启用"表述，与当前 dcHmiRes.h 及固件实现一致。
+5. **2026-11-22（历史旧命名修复）**：按 AI_RULES.md 至高规格 2，将 `dcHmiRes.h` 全部历史控件类型词统一为合规名——`BUTTON`→`KEY`、`TEXTDISPLAY`→`TEXT`，并同步页面改名（删除确认页 `GDDC_PAGE_DELETE_TREATMENT_CONFIRM`→`GDDC_PAGE_DELETE_TREATMENT`，USB 确认页去掉 `_CONFIRM`）。自编代码共 780 处控件引用 + 11 处页面引用整词替换，禁止新旧并存；控件数字 ID、对外函数签名均不变。AC5 Rebuild：0 Error、2 Warning（usbh_cdc.c 固定基线），hex 正常生成，Code/ZI 与改前完全一致（Code=238156，ZI=121204），证明纯改名、零行为变化。`R_` 前缀的 PLC 内部继电器/标志资源（如 `R_RENAME_TEXTDISPLAY_READ_DONE`）不属 HMI 控件命名空间，保持原样。
+6. **2026-11-22（修复 USB 导入失败 #86）**：导出 CSV 数据行以 `AR ` 前缀开头（第十五节），但导入第二遍写入与 `treatmentLogVerifyUdisk` 的行首过滤只放行数字开头行、误跳过全部 `AR ` 行，导致预检计数正确却零写入、回读核对失败，统一提示 `USB backup import failed!`。将两处过滤改为与第一遍预检一致（同时接受 `AR ` 与数字开头），字段校验逻辑不变。主机端按完整字段规则复算 1875 行全部通过，区块容量 2019 条足以容纳。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线），hex 正常生成（Code=238172，较改前 +16，ZI=121204 不变）。无硬件，仅完成编译级与数据级验证，导入实际写 FRAM 与回读结果待上板确认。
+7. **2026-11-23（修复确认页 20/21 按键状态 #87/#88）**：进入确认页时未显式清零自锁键，屏幕保留运行态导致进入即 OK/CANCEL 同时显示按下；OK 确认后仅靠 `SetControlEnable` 禁用 CANCEL，未显式弹起、视觉与状态基线不完整。修复：`enterOperatorUsbConfirmPage` 在 `SetScreen` 前对 OK/CANCEL 先 `SetButtonValue(...,0)` 再恢复触摸使能；`listTreatmentUsbConfirm` 状态 7 时对 CANCEL 先 `SetButtonValue(...,0)` 再 `SetControlEnable(...,0)`。功能上状态 7 本就由互锁门 + USB 触摸门屏蔽一切操作，CANCEL 不可能真正取消，本次补齐显式基线与锁定。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线），hex 正常生成（Code=238196，较改前 +24，ZI=121204 不变）。无硬件，按下态视觉与禁用灰化效果待上板确认。
+8. **2026-11-23（修复导入后列表页未刷新 #89）**：导入整体替换 EPROM 后，RAM 中的 `filteredCount`/`sortedIndex`/`ramKeys` 仍为导入前旧值；从 USB 操作页 CANCEL 返回列表页（`listTreatmentOperatorUsbBack`）只调 `refreshListTreatmentDisplay` 重渲染、未重建过滤，导入前若为 0 条则 `filteredCount=0`，整页渲染空白，须关闭重进才正常。修复：该返回路径在渲染前先 `listTreatmentRebuildFilter()`（按当前 `findText` 重建，保留搜索与窗口）。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线），hex 正常生成（Code=238200，较改前 +4，ZI=121204 不变）。无硬件，返回即显示姓名/记录数的实际效果待上板确认。
+9. **2026-11-23（修复取消载入后 LOAD 键卡按下 #90）**：点 LOAD_UDISK 进确认页后再 CANCEL 返回操作页，进入确认页前对 LOAD 下发的释放帧在切页前已发，但屏幕对自锁键运行态保留不可靠，LOAD 键停在按下态。修复：`listTreatmentUsbCancel`（导出/导入确认页通用）在 `SetScreen(19)` 前调用 `refreshOperatorUsbDisplay()`，重建 19 页 SAVE/LOAD/CANCEL 全部未按下基线并清空 `SUMMARY_USB`，同时删去原来单独的 `SetTextValue` 空串。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线），hex 正常生成（Code=238196，ZI=121204 不变）。无硬件，LOAD 键实际弹起效果待上板确认。
+10. **2026-11-23（补强历史记录页 15 软件规格 #91）**：按现场梳理固化本页全量行为——入口为列表页 `KEY_EDIT_RECORD_0–4`（明确 `KEY_SELECT_PATIENT_0–4` 只回待机、不进本页）；`TEXT_NAME` 显示“姓名 - AR 编号”，`TEXT_TIEM_ENERGY_0–4` 按“记录时间 - 能量 J - 发射时间 MM:SS - 功率 W - 波长”五字段、`TEXT_SCHEME_WIDTH_0–4` 按 CW/Pulse（含正/负脉宽）显示；DELETE 走删除确认页、PAGE_UP/DOWN 翻页、`TEXT_PAGE` 显示 `PAGE 当前/总页`、CLOSE 返回列表页、EDIT_PATIENT 进编辑页 17；删除后不足 5 条时空槽两文本清空、对应 DELETE 隐藏并禁用（新增第 4 条具体口径）。经核对当前固件 `refreshListRecordDisplay()` 已实现上述全部行为，本次为文档对齐、无代码改动，显示仍为英文 ASCII。
+11. **2026-11-23（确认入口更正并明确编辑页命名 #91）**：现场更正本页入口为列表页 `KEY_EDIT_RECORD_0–4`（与固件一致，此前口述的 SELECT_PATIENT 作废）；同时明确“EDIT_TREATMENT 页面”即页面 17——页面 ID 宏为 `GDDC_PAGE_EDIT_PATIENT`，其控件前缀为 `GDDC_PAGE_EDIT_TREATMENT_*`，已在 13.5 加注。本次仍为文档对齐、无代码改动，无需重新编译。
+12. **2026-11-23（修复记录页进入空白与按键不弹起 #92）**：现场反馈进入页面 15 无任何显示、按键进入非弹起态且操作后不弹起。根因：本页是 11 个病历页中唯一进入函数不重置按键、不渲染、只靠屏幕冷加载回传（`NotifyScreen`）的页面，而本工程 `DeviceScreenNotify=0` 使该回传不可靠，故空白且按键残留；另翻页函数只改 `recordTop` 不重渲染，CLOSE/EDIT_PATIENT/DELETE 均“先切页再发释放帧”，设备切走后可能忽略。修复：①`listTreatmentRecordEnter` 在 `SetScreen` 前对控件 20–28 统一清零并调 `refreshListRecordDisplay()` 渲染；②翻页窗口移动后在函数内重渲染；③上述按键在 notify 改为“先释放再切页/动作”。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线），hex 正常生成（Code=238236，较改前 +40，ZI=121204 不变）。无硬件，显示与实际弹起效果待上板确认。
+13. **2026-11-23（诊断记录时间全显 `---- --:--` #93）**：现场反馈所有记录时间段均为横线。经核对显示逻辑（`log.rtcYear >= 2000` 才显示时间，否则 `----`）与 record↔log 换算（落盘减 2000、回读加 2000，0 为“无时间”哨兵）均正确，结论为数据本身无 RTC：AUTOFILL 的 `demoBuildRecord` 从不写 `rtcYear`、导入 CSV 的 RTC 列为空；真实治疗记录由停光时 `RtcGetDateTime` 盖章，RTC 正确校时即可显示。本次为诊断与文档补充、无代码改动，无需重新编译。已在 13.2.2 注明数据来源口径与 2000 年哨兵边界。
+14. **2026-11-23（AUTOFILL 演示记录随机附合规时间 #94）**：承接 #93，所有者拍板 AUTOFILL 演示记录需带随机合规 RTC。改动均在 `treatment.c`：新增局部宏 `DEMO_RTC_YEAR_MIN/MAX`（2001–2099）、`demoDaysInMonth`（含闰年 2 月，规则同 `RtcCheckDate`）与 `demoStampRandomRtc`（复用 `demoRandRange` 生成年/月/日/时/分/秒，日期与月/闰年匹配），并在 `demoBuildRecord` 末尾调用。年份下限刻意避开 2000，使落盘值为 1–99 永不为 0，规避“无时间”哨兵冲突、保证回读显时间。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线），hex 正常生成（Code=238404，较 #92 +168，RO-data=18592 +12，ZI=121204 不变）。主机按同规则模拟 10 万条记录交叉校验零非法、片上年份不含 0。无硬件，页面 15 实际时间显示待上板确认。
