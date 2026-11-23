@@ -70,6 +70,8 @@ dkms.conf
 *.uvoptx
 # 命令行编译日志统一存放目录(各工程MDK-ARM/build_logs)
 **/MDK-ARM/build_logs/
+# 仓库根目录本地分析脚本与构建日志(临时产物, 不入库)
+/build_logs/
 
 # ===== IAR intermediate / build artifacts =====
 *.fed

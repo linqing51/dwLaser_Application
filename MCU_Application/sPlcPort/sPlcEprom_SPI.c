@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
  * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
  * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  * 请以 UTF-8 编码保存, 并在文件头保留本注释。
@@ -149,7 +149,6 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){
 	uint8_t tempBuf[4], rxBuf[5];//命令+地址一次收发(减少HAL调用); rxBuf需容纳24位地址(4)+1数据字节
 	uint16_t txLen;
 	EPROM_SPI_NSS_SEL;
-	__ASM volatile ("NOP");
   if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = READ;
 		tempBuf[1] = (addr >> 16) & 0xFF;
@@ -169,9 +168,7 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromReadByte(uint32_t addr, uint8_t *rdat){
 	//故统一从rxBuf[txLen]取数
 	ret = HAL_SPI_TransmitReceive(&CONFIG_EPROM_BUS_HANDLE, tempBuf, rxBuf, (uint16_t)(txLen + 1), CONFIG_EPROM_TIMEOUT);
 	*rdat = rxBuf[txLen];
-	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
-  __ASM volatile ("NOP");
 	return ret;
 }
 
@@ -180,7 +177,6 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat)
 	uint8_t tempBuf[5];//命令+地址+数据一次发送(减少HAL调用)
   epromWriteEnable(true); 
 	EPROM_SPI_NSS_SEL;
-	__ASM volatile ("NOP");
   if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = WRITE;
 		tempBuf[1] = (addr >> 16) & 0xFF;
@@ -196,9 +192,7 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromWriteByte(uint32_t addr, uint8_t *wdat)
 		tempBuf[3] = *wdat;
     ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, 4, CONFIG_EPROM_TIMEOUT);
 	}
-	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
-  __ASM volatile ("NOP");
 	return ret;
 }
 
@@ -207,7 +201,6 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint
 	uint8_t tempBuf[4], rxBuf[8];//小批量(≤4B)命令+地址+数据合并收发缓冲
 	uint16_t txLen;
   EPROM_SPI_NSS_SEL;
-	__ASM volatile ("NOP");
   if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = READ;
 		tempBuf[1] = (addr >> 16) & 0xFF;
@@ -233,9 +226,7 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromRead(uint32_t addr, uint8_t *pBuf, uint
 		ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, txLen, CONFIG_EPROM_TIMEOUT);
 		ret = HAL_SPI_Receive(&CONFIG_EPROM_BUS_HANDLE, pBuf, len, 100);
 	}
-	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
-  __ASM volatile ("NOP");
 	return ret;
 }
 
@@ -245,7 +236,6 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uin
 	uint16_t txLen;
   epromWriteEnable(true);
 	EPROM_SPI_NSS_SEL;
-  __ASM volatile ("NOP");
   if(CONFIG_EPROM_SIZE > 0x10000){
     tempBuf[0] = WRITE;
 		tempBuf[1] = (addr >> 16) & 0xFF;
@@ -267,9 +257,7 @@ SPLC_FORCE_INLINE HAL_StatusTypeDef epromWrite(uint32_t addr, uint8_t *pBuf, uin
 		ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, tempBuf, txLen, CONFIG_EPROM_TIMEOUT);
 		ret = HAL_SPI_Transmit(&CONFIG_EPROM_BUS_HANDLE, (uint8_t*)pBuf, len, CONFIG_EPROM_TIMEOUT);
 	}
-	__ASM volatile ("NOP");
   EPROM_SPI_NSS_DESEL;
-  __ASM volatile ("NOP");
 	return ret;
 }
 
