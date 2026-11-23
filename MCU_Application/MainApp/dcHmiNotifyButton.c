@@ -9,26 +9,26 @@
 /*****************************************************************************/
 //诊断页全部按键ID(与GDDC_PAGE_DIAGNOSIS.tft枚举一致), 共19个, 自动填充期间用于整页锁键
 static const uint16_t diagnosisKeyList[] = {
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW,         //6
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY,     //7
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_FLOW,         //6
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_HUMIDITY,     //7
   GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK,             //99
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE,  //300
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE,  //301
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID,         //302
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP,        //303
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH,   //304
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK,    //305
-  GDDC_PAGE_DISGNOSIS_KEY_DISABLE_AUTO_FAN,     //306
-  GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION,          //307
-  GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM,           //308
-  GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM,          //309
-  GDDC_PAGE_DISGNOSIS_KEY_CLEAR_CRC,            //310
-  GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ,  //311
-  GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES,  //312
-  GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO,   //313
-  GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK,           //314
-  GDDC_PAGE_DISGNOSIS_KEY_RAW_DATE,             //315
-  GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL              //316
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_TEMPERATURE,  //300
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_FIBER_PROBE,  //301
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_RFID,         //302
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_ESTOP,        //303
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_FOOTSWITCH,   //304
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_INTERLOCK,    //305
+  GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_AUTO_FAN,     //306
+  GDDC_PAGE_DIAGNOSIS_KEY_CALIBRATION,          //307
+  GDDC_PAGE_DIAGNOSIS_KEY_SAVE_EPROM,           //308
+  GDDC_PAGE_DIAGNOSIS_KEY_CLEAR_EPROM,          //309
+  GDDC_PAGE_DIAGNOSIS_KEY_CLEAR_CRC,            //310
+  GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_REQ,  //311
+  GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_YES,  //312
+  GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_NO,   //313
+  GDDC_PAGE_DIAGNOSIS_KEY_OPEN_ILOCK,           //314
+  GDDC_PAGE_DIAGNOSIS_KEY_RAW_DATE,             //315
+  GDDC_PAGE_DIAGNOSIS_KEY_AUTOFILL              //316
 };
 
 //诊断页按键锁定: enable=0禁用本页按键(自动填充期间防误触), enable=1恢复
@@ -38,12 +38,12 @@ static void diagnosisKeysSetEnable(uint8_t enable) {
   uint16_t i;
   for(i = 0U; i < (uint16_t)(sizeof(diagnosisKeyList) / sizeof(diagnosisKeyList[0])); i++) {
     uint16_t key = diagnosisKeyList[i];
-    if(key == GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL) {
+    if(key == GDDC_PAGE_DIAGNOSIS_KEY_AUTOFILL) {
       continue;
     }
     if((enable != 0U) &&
-       ((key == GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES) ||
-        (key == GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO))) {
+       ((key == GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_YES) ||
+        (key == GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_NO))) {
       continue;
     }
     SetControlEnable(GDDC_PAGE_DIAGNOSIS, key, enable);
@@ -372,7 +372,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH2, true);					
 
 					NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
-					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXT, (uint8_t*)(dispBuf));					
+					SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXT_CODE, (uint8_t*)(dispBuf));					
 										
 					updateStandbyDisplay();
 					SetScreen(NVRAM0[EM_DC_PAGE]);					
@@ -385,7 +385,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		case GDDC_PAGE_NEW_PASSCODE:{//新密码输入页面
 			dispBuf[4] = 0x0;
 			switch(control_id){
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM1:{//按键1
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM1:{//按键1
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0031;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -407,7 +407,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM2:{//按键2	
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM2:{//按键2	
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0032;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -429,7 +429,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM3:{//按键3
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM3:{//按键3
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0033;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -451,7 +451,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM4:{//按键4
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM4:{//按键4
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0034;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -473,7 +473,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM5:{//按键5
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM5:{//按键5
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0035;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -495,7 +495,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM6:{//按键6
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM6:{//按键6
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0036;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -517,7 +517,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM7:{//按键7
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM7:{//按键7
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0037;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -539,7 +539,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM8:{//按键8
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM8:{//按键8
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0038;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -561,7 +561,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM9:{//按键9
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM9:{//按键9
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0039;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -583,7 +583,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;	
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_NUM0:{//按键0
+				case GDDC_PAGE_NEW_PASSCODE_KEY_NUM0:{//按键0
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 0){
 						NVRAM0[EM_DC_NEW_PASSCODE0] |= 0x0030;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 1;
@@ -605,7 +605,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_CANCEL:{
+				case GDDC_PAGE_NEW_PASSCODE_KEY_CANCEL:{
 					CLR(EM_DC_NEW_PASSCODE0);
 					CLR(EM_DC_NEW_PASSCODE1);
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引 
@@ -614,7 +614,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;	
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_BACKSPACE:{
+				case GDDC_PAGE_NEW_PASSCODE_KEY_BACKSPACE:{
 					if(NVRAM0[EM_DC_PASSCODE_INDEX] == 4){
 						NVRAM0[EM_DC_NEW_PASSCODE1] &= 0x00FF;
 						NVRAM0[EM_DC_PASSCODE_INDEX] = 0x3;
@@ -636,7 +636,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_SAVE:{
+				case GDDC_PAGE_NEW_PASSCODE_KEY_SAVE:{
 					if((NVRAM0[EM_DC_PASSCODE_INDEX] >= 4) && (NVRAM0[EM_DC_NEW_PASSCODE0] != 0x0000) && (NVRAM0[EM_DC_NEW_PASSCODE0] != 0x0000)){
 						NVRAM0[DM_DC_OLD_PASSCODE0] = NVRAM0[EM_DC_NEW_PASSCODE0];
 						NVRAM0[DM_DC_OLD_PASSCODE1] = NVRAM0[EM_DC_NEW_PASSCODE1];
@@ -660,7 +660,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					SetTextValue(screen_id, 15, (uint8_t*)(dispBuf));
 					break;
 				}
-				case GDDC_PAGE_NEWPASSCODE_KEY_BACK:{//放弃新密码修改
+				case GDDC_PAGE_NEW_PASSCODE_KEY_BACK:{//放弃新密码修改
 					CLR(EM_DC_NEW_PASSCODE0);
 					CLR(EM_DC_NEW_PASSCODE1);
 					CLR(EM_DC_PASSCODE_INDEX);//清空密码显示位索引 
@@ -1186,7 +1186,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_EDIT_PATIENT:{//老患者编辑页(性别为下拉菜单, 经NotifyMenu处理)
 			switch(control_id){
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_OK:{//保存: 记录页进入=更新患者信息; 正常流程=校验后追加到EPROM
+				case GDDC_PAGE_EDIT_PATIENT_KEY_OK:{//保存: 记录页进入=更新患者信息; 正常流程=校验后追加到EPROM
 					if(state){
 						if(listTreatmentIsEditPatientMode()){
 							listTreatmentEditPatientConfirm();
@@ -1194,11 +1194,11 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						else{
 							listTreatmentCreateConfirm();
 						}
-						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
+						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_OK);//复位自锁按钮并解除互锁
 					}
 					break;
 				}
-				case GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL:{//取消: 记录页进入=回记录页; 正常流程=返回病历列表页, EPROM不变
+				case GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL:{//取消: 记录页进入=回记录页; 正常流程=返回病历列表页, EPROM不变
 					if(state){
 						if(listTreatmentIsEditPatientMode()){
 							listTreatmentEditPatientCancel();
@@ -1206,7 +1206,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						else{
 							listTreatmentCreateCancel();
 						}
-						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL);//复位自锁按钮并解除互锁
+						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL);//复位自锁按钮并解除互锁
 					}
 					break;
 				}
@@ -1260,16 +1260,16 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_REGISTER_PATIENT:{//新患者注册页
 			switch(control_id){
-				case GDDC_PAGE_REGISTER_TREATMENT_KEY_OK:{//保存: 校验后新建患者(激光流程同时落记录)
+				case GDDC_PAGE_REGISTER_PATIENT_KEY_OK:{//保存: 校验后新建患者(激光流程同时落记录)
 					if(state){
-						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_OK);//复位自锁按钮并解除互锁
+						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_OK);//复位自锁按钮并解除互锁
 						listTreatmentRegisterConfirm();
 					}
 					break;
 				}
-				case GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL:{//取消: 按来源页返回, EPROM不变
+				case GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL:{//取消: 按来源页返回, EPROM不变
 					if(state){
-						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL);//复位自锁按钮并解除互锁
+						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL);//复位自锁按钮并解除互锁
 						listTreatmentRegisterCancel();
 					}
 					break;
@@ -1336,13 +1336,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_ADD:{
+				case GDDC_PAGE_OPTION_KEY_BEEP_VOLUME_ADD:{
 					if(state){
 						SSET(R_OPTION_KEY_BEEM_VOLUME_ADD_DOWN);
 					}
 					break;					
 				}
-				case GDDC_PAGE_OPTION_KEY_BEEM_VOLUME_INC:{
+				case GDDC_PAGE_OPTION_KEY_BEEP_VOLUME_INC:{
 					if(state){
 						SSET(R_OPTION_KEY_BEEM_VOLUME_DEC_DOWN);
 					}
@@ -1415,7 +1415,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_INFORMATION:{
 			switch(control_id){
-				case GDDC_PAGE_INFO_KEY_ENTER_OK:{
+				case GDDC_PAGE_INFORMATION_KEY_ENTER_OK:{
 					if(state){
 						SSET(R_INFORMATION_KEY_OK_DOWN);
 					}
@@ -1430,7 +1430,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_SCHEME_CLASSIFY_TRI:{
 			switch(control_id){
-				case  GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY:{
+				case  GDDC_PAGE_SCHEME_CLASSIFY_KEY_PHLEBOLOGY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_PHLEBOLOGY;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0; 
@@ -1441,7 +1441,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}					
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_PROCTOLOGY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_PROCTOLOGY;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1452,7 +1452,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_GTNECOLOGY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_GTNECOLOGY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_GYNECOLOGY;	
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1463,7 +1463,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENT:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_ENT:{
 					if(state){	
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_ENT;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1474,7 +1474,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}			
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_NEUROSURGERY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_NEUROSURGERY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_NEUROSURGERY;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1485,7 +1485,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}				
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DERAMATOLOGY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_DERMATOLOGY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_DERMATOLOGY;			
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1496,7 +1496,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_LIPOSUCTION:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_LIPOSUCTION:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_LIPOSUCTION;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1507,7 +1507,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_DENTISTRY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_DENTISTRY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_DENTISTRY;	
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1518,7 +1518,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_THERAPY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_THERAPY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHMEM_THERAPY;	
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1529,7 +1529,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}				
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_CUSTOM:{
 					if(state){		
 						memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));						
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;											
@@ -1541,7 +1541,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN:{	
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_RETURN:{	
 						returnStandbyDisplay();//统一返回待机页面
 					break;
 				}
@@ -1551,7 +1551,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_SCHEME_CLASSIFY_DUAL:{
 			switch(control_id){
-				case  GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PHLEBOLOGY:{
+				case  GDDC_PAGE_SCHEME_CLASSIFY_KEY_PHLEBOLOGY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_PHLEBOLOGY;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0; 
@@ -1562,7 +1562,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}					
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_PROCTOLOGY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_PROCTOLOGY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_PROCTOLOGY;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1573,7 +1573,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_GTNECOLOGY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_GTNECOLOGY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_GYNECOLOGY;	
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1584,7 +1584,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}		
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_NEUROSURGERY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_NEUROSURGERY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_NEUROSURGERY;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1595,7 +1595,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}				
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_LIPOSUCTION:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_LIPOSUCTION:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_LIPOSUCTION;
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1606,7 +1606,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_THERAPY:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_THERAPY:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHMEM_THERAPY;	
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1617,7 +1617,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_ENDOLIFT:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_ENDOLIFT:{
 					if(state){
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_ENDOLIFT;	
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
@@ -1628,7 +1628,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_CUSTOM:{
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_CUSTOM:{
 					if(state){		
 						memcpy((char*)FDRAM1, (char*)FDRAM0, (CONFIG_FDRAM_SIZE * 2));						
 						NVRAM0[EM_SCHEME_CLASSIFY_TMP] = SCHEME_CUSTIOM;											
@@ -1640,7 +1640,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHMEM_CLASSIFY_KEY_RETURN:{	
+				case GDDC_PAGE_SCHEME_CLASSIFY_KEY_RETURN:{	
 						returnStandbyDisplay();//统一返回待机页面
 					break;
 				}
@@ -1650,13 +1650,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_SCHEME_DETAIL:{
 			switch(control_id){
-				case GDDC_PAGE_SCHEME_KEY_RENAME:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_RENAME:{
 					if(state){
 						SSET(R_SCHEME_KEY_RENAME_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_OK:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_OK:{
 					if(state){
 						if(NVRAM0[EM_SCHEME_CLASSIFY_TMP] == SCHEME_CUSTIOM){
 							memcpy((char*)FDRAM0, (char*)FDRAM1, (CONFIG_FDRAM_SIZE * 2));
@@ -1668,7 +1668,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_CANCEL:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_CANCEL:{
 					if(state){
 #if defined(APP_CONFIG_WAVE_1470_980_635)						
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_SCHEME_CLASSIFY_TRI;
@@ -1691,116 +1691,116 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_0:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_0:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_0_DOWN);
 					}
 					break;
 				}	
-				case GDDC_PAGE_SCHEME_KEY_SELECT_1:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_1:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_1_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_2:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_2:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_2_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_3:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_3:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_3_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_4:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_4:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_4_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_5:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_5:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_5_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_6:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_6:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_6_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_7:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_7:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_7_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_8:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_8:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_8_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_9:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_9:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_9_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_10:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_10:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_10_DOWN);
 					}						
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_11:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_11:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_11_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_12:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_12:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_12_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_13:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_13:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_13_DOWN);
 					}					
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_14:{	
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_14:{	
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_14_DOWN);
 					}				
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_SELECT_15:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_15:{
 					if(state){
 						SSET(R_SCHEME_KEY_SCHEME_SELECT_15_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_NEXT_PAGE:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_NEXT_PAGE:{
 					if(state){
 						NVRAM0[EM_SCHEME_NUM_TMP] = 16;
 						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
-						SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_SELECT_0, 1);
+						SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_0, 1);
 						updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);						
 					}
 					break;
 				}
-				case GDDC_PAGE_SCHEME_KEY_LAST_PAGE:{
+				case GDDC_PAGE_SCHEME_DETAIL_KEY_LAST_PAGE:{
 					if(state){
 						NVRAM0[EM_SCHEME_NUM_TMP] = 0;
 						updateSchemeDetail(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
-						SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_KEY_SELECT_0, 1);	
+						SetButtonValue(GDDC_PAGE_SCHEME_DETAIL, GDDC_PAGE_SCHEME_DETAIL_KEY_SELECT_0, 1);	
 						updateSchemeInfo(NVRAM0[EM_SCHEME_CLASSIFY_TMP], NVRAM0[EM_SCHEME_NUM_TMP]);
 					}
 					break;
@@ -1818,7 +1818,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FOOTSWITCH:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_FOOTSWITCH:{
 					if(state){
 						SSET(R_DISABLE_FOOTSWITCH_CHECK);
 					}
@@ -1827,7 +1827,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}					
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_TEMPERATURE:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_TEMPERATURE:{
 					if(state){
 						SSET(R_DISABLE_TEMPERATURE_CHECK);
 					}
@@ -1836,7 +1836,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}					
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_ESTOP:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_ESTOP:{
 					if(state){
 						SSET(R_DISABLE_ESTOP_CHECK);
 					}
@@ -1845,7 +1845,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_INTERLOCK:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_INTERLOCK:{
 					if(state){
 						SSET(R_DISABLE_INTERLOCK_CHECK);
 					}
@@ -1854,7 +1854,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}					
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_RFID:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_RFID:{
 					if(state){
 						SSET(R_DISABLE_RFID_CHECK);
 					}
@@ -1863,7 +1863,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FIBER_PROBE:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_FIBER_PROBE:{
 					if(state){
 						SSET(R_DISABLE_FIBER_PROBE_CHECK);
 					}
@@ -1872,7 +1872,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_HUMIDITY:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_HUMIDITY:{
 					if(state){
 						SSET(R_DISABLE_HUMIDITY_CHECK);
 					}
@@ -1881,7 +1881,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_AUTO_FAN:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_AUTO_FAN:{
 					if(state){
 						SSET(R_DISABLE_AUTO_FAN);
 					}
@@ -1890,7 +1890,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}				
-				case GDDC_PAGE_DISGNOSIS_KEY_DISABLE_FLOW:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_DISABLE_FLOW:{
 					if(state){
 						SSET(R_DISABLE_FLOW_CHECK);
 					}
@@ -1899,50 +1899,50 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_CALIBRATION:{//切换入功率校正页面
+				case GDDC_PAGE_DIAGNOSIS_KEY_CALIBRATION:{//切换入功率校正页面
 					if(state){
 						SSET(R_DIAGNOSIS_GOTO_CORRECTION_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_EPROM:{//清空EPROM
+				case GDDC_PAGE_DIAGNOSIS_KEY_CLEAR_EPROM:{//清空EPROM
 					if(state){
 						SSET(R_CLEAR_EPROM);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_CLEAR_CRC:{//清空固件CRC
+				case GDDC_PAGE_DIAGNOSIS_KEY_CLEAR_CRC:{//清空固件CRC
 					if(state){
 						SetControlEnable(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK, false);
 						SSET(R_CLEAR_CRC);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_SAVE_EPROM:{//储存EPROM
+				case GDDC_PAGE_DIAGNOSIS_KEY_SAVE_EPROM:{//储存EPROM
 					if(state){
 						SSET(R_SAVE_EPROM);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_REQ:{//更新BOOTLOAD请求
+				case GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_REQ:{//更新BOOTLOAD请求
 					if(state){
 						SSET(R_UPDATE_BOOTLOAD_REQ);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_YES:{//计算U盘BOOTLOAD文件CRC值
+				case GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_YES:{//计算U盘BOOTLOAD文件CRC值
 					if(state){
 						SSET(R_UPDATE_BOOTLOAD_YES);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_UPDATE_BOOTLOAD_NO:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_UPDATE_BOOTLOAD_NO:{
 					if(state){
 						SSET(R_UPDATE_BOOTLOAD_NO);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_OPEN_ILOCK:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_OPEN_ILOCK:{
 					if(state){
 						deviceConfig.normalOpenInterLock = 0;//按下设置为联锁常闭
 					}
@@ -1951,13 +1951,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_RAW_DATE:{
+				case GDDC_PAGE_DIAGNOSIS_KEY_RAW_DATE:{
 					if(state){
 						SSET(R_DIAGNOSIS_GOTO_RAW_DOWN);
 					}
 					break;
 				}
-				case GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL:{//病历自动填充: 按键触发, 先清空再持续新建患者直到区块写满, 每患者随机5-19条记录
+				case GDDC_PAGE_DIAGNOSIS_KEY_AUTOFILL:{//病历自动填充: 按键触发, 先清空再持续新建患者直到区块写满, 每患者随机5-19条记录
 					if(state){
 						uint16_t demoPatients = 0U, demoRecords = 0U;
 						uint8_t demoErr;
@@ -1977,7 +1977,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						}
 						SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_INFO4, (uint8_t*)dispBuf);
 						diagnosisKeysSetEnable(1U);//生成结束恢复按键(312/313保持默认隐藏禁用, 不随恢复开放)
-						SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DISGNOSIS_KEY_AUTOFILL, 0);//按钮为自锁型, 填充完成后复位为弹起, 文字回到Fill Demo
+						SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_AUTOFILL, 0);//按钮为自锁型, 填充完成后复位为弹起, 文字回到Fill Demo
 					}
 					break;
 				}
@@ -2236,7 +2236,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 		}
 		case GDDC_PAGE_POWEROFF_CONFIRM:{
 			switch(control_id){
-				case GDDC_PAGE_POWEROFF_KEY_YES:{
+				case GDDC_PAGE_POWEROFF_CONFIRM_KEY_YES:{
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_HIBERNATE;//进入关机确认状态
 						NVRAM0[EM_DC_PAGE] = GDDC_PAGE_START;	
@@ -2245,7 +2245,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}
-				case GDDC_PAGE_POWEROFF_KEY_CANCEL:{
+				case GDDC_PAGE_POWEROFF_CONFIRM_KEY_CANCEL:{
 					if(state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;//退出关机确认状态												
 						SetScreen(NVRAM0[EM_DC_PAGE]);

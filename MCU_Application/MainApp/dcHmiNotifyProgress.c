@@ -101,13 +101,13 @@ void NotifyProgress(uint16_t screen_id, uint16_t control_id, uint32_t value){
 		}
 		case GDDC_PAGE_OPTION:{
 			switch(control_id){
-				case GDDC_PAGE_OPTION_PROGRESS_BEEM_VOLUME:{
+				case GDDC_PAGE_OPTION_PROGRESS_BEEP_VOLUME:{
 					if(value > CONFIG_BEEM_MAX_VOLUME){
 						value = CONFIG_BEEM_MAX_VOLUME;
 					}
 					NVRAM0[DM_BEEM_VOLUME] = (int16_t)value;
 					NVRAM0[SPREG_BEEM_VOLUME] = NVRAM0[DM_BEEM_VOLUME];
-					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_BEEM_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
+					SetTextInt32(GDDC_PAGE_OPTION, GDDC_PAGE_OPTION_TEXT_BEEP_VOLUME , NVRAM0[DM_BEEM_VOLUME], 1, 0);
 					break;
 				}
 				case GDDC_PAGE_OPTION_PROGRESS_LCD_BRG:{

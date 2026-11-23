@@ -414,12 +414,12 @@
 
 ### 17.2 按键出口
 
-- `GDDC_PAGE_REGISTER_TREATMENT_KEY_CANCEL`（控件 21；编辑页对应 `GDDC_PAGE_EDIT_TREATMENT_KEY_CANCEL`）：**不写入任何数据**，返回进入本页之前的上一个页面——入口 1 回核对页 22，入口 2 回列表页 13。
-- `GDDC_PAGE_REGISTER_TREATMENT_KEY_OK`（控件 20；编辑页对应 `GDDC_PAGE_EDIT_TREATMENT_KEY_OK`）：校验通过后**新建一个患者**（仅建立患者，不追加治疗记录），随后返回对应页面。
+- `GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL`（控件 21；编辑页对应 `GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL`）：**不写入任何数据**，返回进入本页之前的上一个页面——入口 1 回核对页 22，入口 2 回列表页 13。
+- `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`（控件 20；编辑页对应 `GDDC_PAGE_EDIT_PATIENT_KEY_OK`）：校验通过后**新建一个患者**（仅建立患者，不追加治疗记录），随后返回对应页面。
 
 ### 17.3 患者 ID 自动生成（TEXT_ID，控件 1）
 
-进入注册页时，`GDDC_PAGE_REGISTER_TREATMENT_TEXT_ID`（控件 1；编辑页对应 `GDDC_PAGE_EDIT_TREATMENT_TEXT_ID`）自动生成并显示下一个患者 ID：
+进入注册页时，`GDDC_PAGE_REGISTER_PATIENT_TEXT_ID`（控件 1；编辑页对应 `GDDC_PAGE_EDIT_PATIENT_TEXT_ID`）自动生成并显示下一个患者 ID：
 
 1. **无空缺**：取机内最大 ID 加 1。例如最后一个 ID 为 `0098`，则生成 `0099`；
 2. **有空缺优先补空缺**：若最大 ID 之前存在一个或多个空缺，取其中**最小**的空缺 ID。例如机内有 `0001`–`0011`、`0013`、`0098`，则生成 `0012`；
@@ -427,13 +427,13 @@
 
 ### 17.4 姓名、年龄、性别字段
 
-- **姓名** `GDDC_PAGE_REGISTER_TREATMENT_TEXT_NAME`（控件 2）：输入内容作为患者名称；长度超过系统约定 `CONFIG_TREATMENT_NAME_LEN`（18 个字符）时，**截断到 18 个字符**并补字符串结束符。
-- **年龄** `GDDC_PAGE_REGISTER_TREATMENT_TEXT_AGE`（控件 3）：对应数值作为患者年龄，**按实际人类有效年龄判断**输入是否合法（非数字、负数、0 或超出人类有效年龄上限均判非法）。
-- **性别** `GDDC_PAGE_REGISTER_TREATMENT_TEXT_GENDER`（控件 4）与性别下拉菜单（控件 10）：`FeMale` 代表女（`FEMALE = 2`），`Male` 代表男（`MALE = 1`）。
+- **姓名** `GDDC_PAGE_REGISTER_PATIENT_TEXT_NAME`（控件 2）：输入内容作为患者名称；长度超过系统约定 `CONFIG_TREATMENT_NAME_LEN`（18 个字符）时，**截断到 18 个字符**并补字符串结束符。
+- **年龄** `GDDC_PAGE_REGISTER_PATIENT_TEXT_AGE`（控件 3）：对应数值作为患者年龄，**按实际人类有效年龄判断**输入是否合法（非数字、负数、0 或超出人类有效年龄上限均判非法）。
+- **性别** `GDDC_PAGE_REGISTER_PATIENT_TEXT_GENDER`（控件 4）与性别下拉菜单（控件 10）：`FeMale` 代表女（`FEMALE = 2`），`Male` 代表男（`MALE = 1`）。
 
 ### 17.5 非法输入提示
 
-姓名、年龄、性别中**任一项缺失或不符合人类实际情况**时，禁止写入并停留在注册页，在 `GDDC_PAGE_REGISTER_TREATMENT_TEXT_SUMMARY_0`（控件 5）显示：
+姓名、年龄、性别中**任一项缺失或不符合人类实际情况**时，禁止写入并停留在注册页，在 `GDDC_PAGE_REGISTER_PATIENT_TEXT_SUMMARY_0`（控件 5）显示：
 
 > "Invalid input, please re-enter!"
 
