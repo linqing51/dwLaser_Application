@@ -22,21 +22,22 @@ typedef enum {
 #define CONFIG_EPROM_MANUFACTURER_ID 								0x04//富士通/FRAM厂商码(JEP106)
 static epromIdStatus_t epromIdStatus = EPROM_ID_OK;//开机设备ID核对结果
 
-//按RDID密度码(第4字节)解码容量: 容量字节=2^(密度码+10); 厂商不符或密度码不支持返回0
+//按RDID密度码解码容量(字节): 富士通MB85RS系列密度字段在Product ID第1字节(id[2])低5位,
+//容量字节=2^(密度码+10); 密度码3=64Kbit(8KB) ... 7=1Mbit(128KB), 厂商不符或不支持返回0
 uint32_t epromDecodeCapacity(const uint8_t id[4]){
-	uint8_t code;
+	uint8_t density;
 	if(id == NULL){
 		return 0UL;
 	}
 	if(id[0] != CONFIG_EPROM_MANUFACTURER_ID){
 		return 0UL;
 	}
-	code = id[3];
-	//密度码有效区间: 6->64KB(2^16) ... 21->2GB(2^31), 保证移位不溢出uint32
-	if((code < 6U) || (code > 21U)){
+	density = id[2] & 0x1FU;
+	//密度码有效区间: 3->8KB(2^13) ... 7->128KB(2^17), 保证移位不溢出uint32
+	if((density < 3U) || (density > 7U)){
 		return 0UL;
 	}
-	return (1UL << (code + 10));
+	return (1UL << (density + 10));
 }
 
 epromIdStatus_t epromGetIdStatus(void){

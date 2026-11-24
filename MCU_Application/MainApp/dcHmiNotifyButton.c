@@ -967,17 +967,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
     
     case GDDC_PAGE_LIST_TREATMENT:{//显示病历列表
       switch(control_id){
-        case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP:{//向前翻一整页(5个患者)
+        case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP:{//向前翻一整页: 动作期禁用+去抖, 清零/使能/解锁由延迟释放轮询在手指抬起后处理
           if(state){
-            listTreatmentMoveUp();
-            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP);//同页释放: 含边界空操作也弹起
+            listTreatmentPageKey(0U);
           }
           break;
         }
-        case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN:{//向后翻一整页(5个患者)
+        case GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN:{//向后翻一整页: 动作期禁用+去抖, 清零/使能/解锁由延迟释放轮询在手指抬起后处理
           if(state){
-            listTreatmentMoveDown();
-            treatmentReleaseButton(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN);//同页释放: 含边界空操作也弹起
+            listTreatmentPageKey(1U);
           }
           break;
         }
@@ -1033,16 +1031,16 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
     }
     case GDDC_PAGE_LIST_RECORD:{//患者历史治疗记录页: 浏览/翻页/删除/编辑患者
       switch(control_id){
-        case GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP:{//记录窗口向前翻页
+        case GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP:{//记录窗口向前翻页(经软件去抖, 快速连按只生效一次)
           if(state){
-            listTreatmentRecordPageUp();
+            listTreatmentRecordPageKey(0U);
             treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP);//复位自锁按钮并解除互锁
           }
           break;
         }
-        case GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN:{//记录窗口向后翻页
+        case GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN:{//记录窗口向后翻页(经软件去抖, 快速连按只生效一次)
           if(state){
-            listTreatmentRecordPageDown();
+            listTreatmentRecordPageKey(1U);
             treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN);//复位自锁按钮并解除互锁
           }
           break;
@@ -1056,7 +1054,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         }
         case GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT:{//进入患者信息编辑页(17)
           if(state){
-            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);//先释放再切页
+            //源按钮释放已纳入RecordEditPatient的画面冻结事务, 避免在当前页可见弹起过程
             listTreatmentRecordEditPatient();
           }
           break;
@@ -1065,8 +1063,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           //KEY_DELETE_0-4:进入单条记录删除确认页(16), 确认后才删除
           if(state && (control_id >= GDDC_PAGE_LIST_RECORD_KEY_DELETE_0)
              && (control_id <= GDDC_PAGE_LIST_RECORD_KEY_DELETE_4)){
-            treatmentReleaseButton(GDDC_PAGE_LIST_RECORD, control_id);//先释放再切页: 当前页仍在时下发清零
-            listTreatmentRecordDeleteStart((uint8_t)(control_id - GDDC_PAGE_LIST_RECORD_KEY_DELETE_0));
+            //禁用DELETE键关闭触摸窗口后再切页, 不在手指仍触摸时清零(避免卡按下); 锁与视觉由确认页返回路径统一处理
+            listTreatmentRecordDeleteKey((uint8_t)(control_id - GDDC_PAGE_LIST_RECORD_KEY_DELETE_0));
           }
           break;
         }
@@ -1185,33 +1183,39 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			break;
 		}
 		case GDDC_PAGE_EDIT_PATIENT:{//老患者编辑页(性别为下拉菜单, 经NotifyMenu处理)
+			printf("@NAV editPatient key screen=%u ctrl=%u state=%u mode=%u\n",
+				(unsigned)screen_id, (unsigned)control_id, (unsigned)state,
+				(unsigned)listTreatmentIsEditPatientMode());
 			switch(control_id){
 				case GDDC_PAGE_EDIT_PATIENT_KEY_OK:{//保存: 记录页进入=更新患者信息; 正常流程=校验后追加到EPROM
 					if(state){
 						if(listTreatmentIsEditPatientMode()){
+							//edit模式: Confirm内部画面冻结事务已释放源按钮, 此处不再重复
 							listTreatmentEditPatientConfirm();
 						}
 						else{
 							listTreatmentCreateConfirm();
+							treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_OK);//create模式: 复位自锁按钮并解除互锁
 						}
-						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_OK);//复位自锁按钮并解除互锁
 					}
 					break;
 				}
 				case GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL:{//取消: 记录页进入=回记录页; 正常流程=返回病历列表页, EPROM不变
 					if(state){
 						if(listTreatmentIsEditPatientMode()){
+							//edit模式: Cancel内部画面冻结事务已释放源按钮, 此处不再重复
 							listTreatmentEditPatientCancel();
 						}
 						else{
 							listTreatmentCreateCancel();
+							treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL);//create模式: 复位自锁按钮并解除互锁
 						}
-						treatmentReleaseButton(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL);//复位自锁按钮并解除互锁
 					}
 					break;
 				}
 				default:break;
 			}
+			break;
 		}
 		case GDDC_PAGE_VERIFY_TREATMENT:{//激光核对页
 			switch(control_id){

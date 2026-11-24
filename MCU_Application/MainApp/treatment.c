@@ -48,6 +48,10 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave){
 #define REG_SIZE								((uint32_t)CONFIG_EPROM_TREATMENT_SIZE)
 #define PAT_BYTES								((uint16_t)sizeof(patientRecord_t))	// 24
 #define REC_BYTES								((uint16_t)sizeof(treatmentRecord_t))	// 28
+// 字段偏移统一用 offsetof 取编译器真实布局, 不写死魔法数字:
+// 结构字段增减时偏移自动跟随, 从根本上消除"数据偏移"(正文/magic写错位置)隐患。
+#define PAT_BODY_OFFSET						((uint32_t)offsetof(patientRecord_t, age))	// 患者正文(age)起始偏移
+#define REC_MAGIC_OFFSET					((uint32_t)offsetof(treatmentRecord_t, magic))	// 记录magic状态字段偏移
 
 // 编译期尺寸固化: 防止结构调整后尺寸假设失效。
 // ARMCC5(本工程,C99)不支持C11关键字_Static_assert, 改用负数组惯用法:
@@ -152,7 +156,7 @@ static void EraseRow(uint32_t addr, uint16_t n){
 // 患者移动: 先写正文(目标 id 保持 0xFFFF), 再写 id 提交, 最后擦源
 static void PatientMove(const patientRecord_t *row, uint16_t src, uint16_t dst){
 	uint32_t d = PatientAddr(dst);
-	(void)RowWrite(d + 2U, &row->age, (uint16_t)(PAT_BYTES - 2U));// 正文: age+gender+name+尾部对齐填充
+	(void)RowWrite(d + PAT_BODY_OFFSET, &row->age, (uint16_t)(PAT_BYTES - PAT_BODY_OFFSET));// 正文: age+gender+name+尾部对齐填充
 	(void)RowWrite(d, &row->id, 2U);// 提交点
 	EraseRow(PatientAddr(src), PAT_BYTES);
 }
@@ -163,7 +167,7 @@ static void RecordMove(const treatmentRecord_t *row, uint16_t src, uint16_t dst)
 	uint8_t commit = ROW_MAGIC_COMMIT;
 	out.magic = ROW_MAGIC_PENDING;
 	(void)RowWrite(d, &out, REC_BYTES);
-	(void)RowWrite(d + 7U, &commit, 1U);// 提交点
+	(void)RowWrite(d + REC_MAGIC_OFFSET, &commit, 1U);// 提交点
 	EraseRow(RecordAddr(src), REC_BYTES);
 }
 
@@ -227,7 +231,7 @@ static void Recovery(void){
 		if(RowRead(RecordAddr(s), &row, REC_BYTES) != TREATMENT_EPROM_OK){ continue; }
 		if((row.magic == 0xFFU) || (row.magic == 0x00U)){ break; }// 空白间隙, 停止
 		if((row.magic == ROW_MAGIC_COMMIT) && (BmpTest(row.patientId) == 0U)){
-			(void)RowWrite(RecordAddr(s) + 7U, &tomb, 1U);
+			(void)RowWrite(RecordAddr(s) + REC_MAGIC_OFFSET, &tomb, 1U);
 		}
 	}
 
@@ -380,8 +384,8 @@ static treatmentEpromErr_t RecordReplaceAt(uint16_t index, const treatmentRecord
 	row.recSeq = old.recSeq;// 稳定序列不可改
 	row.magic = ROW_MAGIC_PENDING;
 	if(RowWrite(RecordAddr(r), &row, REC_BYTES) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
-	if(RowWrite(RecordAddr(r) + 7U, &commit, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
-	if(RowWrite(RecordAddr(index) + 7U, &tomb, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
+	if(RowWrite(RecordAddr(r) + REC_MAGIC_OFFSET, &commit, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
+	if(RowWrite(RecordAddr(index) + REC_MAGIC_OFFSET, &tomb, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	(void)CompactRecords();
 	return TREATMENT_EPROM_OK;
 }
@@ -402,7 +406,7 @@ static treatmentEpromErr_t PatientReplaceAt(uint16_t index, const patientRecord_
 	if(e != TREATMENT_EPROM_OK){ return e; }
 	row = *in;
 	row.id = old.id;// 稳定 id 不可改
-	if(RowWrite(PatientAddr(p) + 2U, &row.age, (uint16_t)(PAT_BYTES - 2U)) != TREATMENT_EPROM_OK){
+	if(RowWrite(PatientAddr(p) + PAT_BODY_OFFSET, &row.age, (uint16_t)(PAT_BYTES - PAT_BODY_OFFSET)) != TREATMENT_EPROM_OK){
 		return TREATMENT_EPROM_ERR_IO;
 	}
 	if(RowWrite(PatientAddr(p), &row.id, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
@@ -478,7 +482,7 @@ treatmentEpromErr_t treatmentPatientCreate(const patientRecord_t *in, uint16_t *
 		return TREATMENT_EPROM_ERR_FULL;
 	}
 	row = *in; row.id = id;
-	(void)RowWrite(PatientAddr(p) + 2U, &row.age, (uint16_t)(PAT_BYTES - 2U));// 正文
+	(void)RowWrite(PatientAddr(p) + PAT_BODY_OFFSET, &row.age, (uint16_t)(PAT_BYTES - PAT_BODY_OFFSET));// 正文
 	if(RowWrite(PatientAddr(p), &row.id, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	SetAt(DM_TREATMENT_PATIENT_NUM, (uint16_t)(p + 1U));
 	//高水位仅在新编号超过它时推进, 补空缺编号不会拉低 NEXT_ID
@@ -507,7 +511,7 @@ static treatmentEpromErr_t EnsurePatientWithId(uint16_t id, const patientRecord_
 		if(FreeBytesPR(p, r) < PAT_BYTES){ return TREATMENT_EPROM_ERR_FULL; }
 		row = (tpl != NULL) ? *tpl : (patientRecord_t){0};
 		row.id = id;
-		(void)RowWrite(PatientAddr(p) + 2U, &row.age, (uint16_t)(PAT_BYTES - 2U));
+		(void)RowWrite(PatientAddr(p) + PAT_BODY_OFFSET, &row.age, (uint16_t)(PAT_BYTES - PAT_BODY_OFFSET));
 		if(RowWrite(PatientAddr(p), &row.id, 2U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 		SetAt(DM_TREATMENT_PATIENT_NUM, (uint16_t)(p + 1U));
 		if((uint16_t)(id + 1U) > CntNext()){ SetAt(DM_TREATMENT_NEXT_ID, (uint16_t)(id + 1U)); }
@@ -537,7 +541,7 @@ treatmentEpromErr_t treatmentPatientUpdate(uint16_t patientId, const patientReco
     return TREATMENT_EPROM_ERR_PARAM;
   }
   //正文从 age 偏移开始覆盖(长度=PAT_BYTES-2), id 字段不写
-  if(RowWrite(PatientAddr(index) + 2U, &row.age, (uint16_t)(PAT_BYTES - 2U)) != TREATMENT_EPROM_OK){
+  if(RowWrite(PatientAddr(index) + PAT_BODY_OFFSET, &row.age, (uint16_t)(PAT_BYTES - PAT_BODY_OFFSET)) != TREATMENT_EPROM_OK){
     return TREATMENT_EPROM_ERR_IO;
   }
   return TREATMENT_EPROM_OK;
@@ -563,7 +567,7 @@ treatmentEpromErr_t treatmentPatientDelete(uint16_t pid){	uint16_t pi;
 		uint8_t tomb = ROW_MAGIC_TOMB;
 		if(RowRead(RecordAddr(s), &row, REC_BYTES) != TREATMENT_EPROM_OK){ continue; }
 		if((row.patientId == pid) && (row.magic == ROW_MAGIC_COMMIT)){
-			(void)RowWrite(RecordAddr(s) + 7U, &tomb, 1U);
+			(void)RowWrite(RecordAddr(s) + REC_MAGIC_OFFSET, &tomb, 1U);
 		}
 	}
 	(void)CompactRecords();
@@ -606,7 +610,7 @@ treatmentEpromErr_t treatmentRecordAdd(const treatmentRecord_t *in){
 	row.magic = ROW_MAGIC_PENDING;
 	if(RowWrite(RecordAddr(r), &row, REC_BYTES) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	commit = ROW_MAGIC_COMMIT;
-	if(RowWrite(RecordAddr(r) + 7U, &commit, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
+	if(RowWrite(RecordAddr(r) + REC_MAGIC_OFFSET, &commit, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	SetAt(DM_TREATMENT_NUM, (uint16_t)(r + 1U));
 	g_nextRecSeq++;
 	return TREATMENT_EPROM_OK;
@@ -625,6 +629,29 @@ treatmentEpromErr_t treatmentRecordGetPatientIdByIndex(uint16_t index, uint16_t 
 	return RowRead(RecordAddr(index), idOut, 2U);
 }
 
+// 连续批量读记录行(单事务地址自增): 从startIndex起, 读bufBytes能容纳的若干完整REC_BYTES行, 返回行数。
+// 记录高端向下(索引越大地址越低), 本批覆盖索引[startIndex,startIndex+rows), 最低地址属于最大索引,
+// 故从该最低地址连续向上读, 数据按"索引递减"顺序填入buf; 计数只取每行首字段patientId, 不依赖顺序。
+uint16_t treatmentRecordReadRows(uint16_t startIndex, uint8_t *buf, uint16_t bufBytes){
+	uint16_t total;
+	uint16_t availRows;
+	uint16_t wantRows;
+	uint16_t rows;
+	uint32_t lowAddr;
+	if((buf == NULL) || (bufBytes == 0U)){ return 0U; }
+	total = CntR();
+	if(startIndex >= total){ return 0U; }
+	availRows = (uint16_t)(total - startIndex);
+	wantRows = (uint16_t)(bufBytes / REC_BYTES);
+	if(wantRows == 0U){ return 0U; }
+	rows = (wantRows < availRows) ? wantRows : availRows;
+	lowAddr = RecordAddr((uint16_t)(startIndex + rows - 1U));
+	if(RowRead(lowAddr, buf, (uint16_t)(rows * REC_BYTES)) != TREATMENT_EPROM_OK){
+		return 0U;
+	}
+	return rows;
+}
+
 // 删除单条: 墓碑(原子)后致密
 treatmentEpromErr_t treatmentRecordDeleteByIndex(uint16_t index){
 	uint8_t tomb;
@@ -633,7 +660,7 @@ treatmentEpromErr_t treatmentRecordDeleteByIndex(uint16_t index){
 	ge = writeGateCheck();
 	if(ge != TREATMENT_EPROM_OK){ return ge; }
 	tomb = ROW_MAGIC_TOMB;
-	if(RowWrite(RecordAddr(index) + 7U, &tomb, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
+	if(RowWrite(RecordAddr(index) + REC_MAGIC_OFFSET, &tomb, 1U) != TREATMENT_EPROM_OK){ return TREATMENT_EPROM_ERR_IO; }
 	(void)CompactRecords();
 	return TREATMENT_EPROM_OK;
 }
@@ -1268,4 +1295,32 @@ treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t 
 		(unsigned long)treatmentGetFreeBytes());
 #endif
 	return TREATMENT_DEMO_OK;
+}
+
+//============================================================================
+// 结构化诊断快照(主机侧 host_diag 自动读取/解析, 形成"写诊断->读诊断->判定"闭环)
+//  统一输出 @DIAG key=value 行, 以 BEGIN/END 界定一次完整快照; 纯只读,
+//  系统就绪后 CntP/CntR 内 Recovery 立即返回, 无副作用、无额外 FRAM 写入。
+//============================================================================
+void treatmentDumpDiagnostics(void){
+  uint16_t patientCount = treatmentGetPatientCount();
+  uint16_t recordCount = treatmentGetRecordCount();
+  uint16_t capacity = (uint16_t)(REG_SIZE / REC_BYTES);
+  uint32_t freeBytes = treatmentGetFreeBytes();
+  printf("@DIAG BEGIN\n");
+  printf("@DIAG patBytes=%u\n", (unsigned)PAT_BYTES);
+  printf("@DIAG recBytes=%u\n", (unsigned)REC_BYTES);
+  printf("@DIAG patBodyOffset=%lu\n", (unsigned long)PAT_BODY_OFFSET);
+  printf("@DIAG recMagicOffset=%lu\n", (unsigned long)REC_MAGIC_OFFSET);
+  printf("@DIAG regStart=%lu\n", (unsigned long)REG_START);
+  printf("@DIAG regEnd=%lu\n", (unsigned long)REG_END);
+  printf("@DIAG regSize=%lu\n", (unsigned long)REG_SIZE);
+  printf("@DIAG capacity=%u\n", (unsigned)capacity);
+  printf("@DIAG patientCount=%u\n", (unsigned)patientCount);
+  printf("@DIAG recordCount=%u\n", (unsigned)recordCount);
+  printf("@DIAG nextPatientId=%u\n", (unsigned)treatmentGetNextPatientId());
+  printf("@DIAG freeBytes=%lu\n", (unsigned long)freeBytes);
+  printf("@DIAG pvdBlocked=%u\n", (unsigned)treatmentWriteBlocked());
+  printf("@DIAG deviceIdStatus=%d\n", (int)epromGetIdStatus());
+  printf("@DIAG END\n");
 }

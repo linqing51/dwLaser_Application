@@ -526,7 +526,9 @@ void updateDiagnosis(void){//更新诊断信信息
 	else{
 			SetButtonValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_KEY_OPEN_ILOCK, false);
 	}
-	
+	//清空上次运行残留的自动填充结果(GDDC_PAGE_DIAGNOSIS_TEXT_INFO4): 该控件仅AUTOFILL结束时一次性写入,
+	//不随updateDiagnosisInfo周期刷新, 故进入本页时主动复位, 避免显示上一次程序的FILL结果
+	SetTextValue(GDDC_PAGE_DIAGNOSIS, GDDC_PAGE_DIAGNOSIS_TEXT_INFO4, (uint8_t*)"");
 }
 void updateDiagnosisInfoRaw(void){//更新诊断信息-RAW值
 	char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
@@ -2701,9 +2703,9 @@ static void dcHmiShowTreatmentCommon(uint16_t screenId, const char *idText, cons
 	memset(dispBuf, 0x0, sizeof(dispBuf));
 	sprintf(dispBuf, "%d", log->age);
 	SetTextValue(screenId, GDDC_PAGE_EDIT_PATIENT_TEXT_AGE, (uint8_t*)dispBuf);
-	//性别下拉菜单: 屏幕工程选项顺序"FeMale;Male"(索引0=女FEMALE, 1=男MALE)
+	//性别下拉菜单: 屏幕工程选项顺序"Male;Female"(索引0=男MALE, 1=女FEMALE)
 	SetSelectorValue(screenId, GDDC_PAGE_EDIT_PATIENT_MENU_GENDER,
-	                 (uint8_t)((log->gender == FEMALE) ? 0 : 1));
+	                 (uint8_t)((log->gender == MALE) ? 0 : 1));
 }
 
 void dcHmiShowTreatmentRecord(uint16_t index, const treatmentLog_t *log){//显示EPROM历史病历
@@ -2761,6 +2763,8 @@ typedef struct{
   uint16_t deleteRecordGlobalIndex;
   //EDIT_PATIENT患者信息编辑模式: 0=正常新建/追加流程, 1=从记录页进入只更新患者信息(不追加记录)
   uint8_t editPatientMode;
+  //EDIT_PATIENT编辑页(17)返回目标页: 记录页进入=15, 正常新建流程=13; OK/CANCEL后显式回到该页, 不依赖隐式状态
+  uint16_t editReturnPage;
   //REGISTER_PATIENT注册页: registerReturnPage为进入注册页之前的来源页(13=CREATE_NEW手动, 22=核对页SAVE_RECORD),
   //CANCEL/完成后返回该页; verifySelectMode=1表示列表页正被核对页用来选择已有患者, 选中后回核对页而非待机页
   uint16_t registerReturnPage;
@@ -2842,6 +2846,9 @@ typedef struct{
 static listPatientKey_t ramKeys[CONFIG_LIST_TREATMENT_RAM_KEYS];
 //患者表批量读分块缓冲(对齐的患者行数组, 单次FRAM事务读16行)
 static patientRecord_t chunkPat[CONFIG_LIST_TREATMENT_PATIENT_CHUNK_ROWS];
+//记录行批量读分块缓冲(28B对齐, 单事务地址自增读8行); 仅refresh串行使用, 替代逐行2字节事务
+#define LIST_TREATMENT_RECORD_CHUNK_ROWS 8U
+static treatmentRecord_t listRecordChunk[LIST_TREATMENT_RECORD_CHUNK_ROWS];
 
 //两个RAM键的全序比较: 复用姓名ASCII+全局索引口径, 纯内存不读FRAM
 static int16_t listTreatmentKeyCmp(const listPatientKey_t *a, const listPatientKey_t *b){
@@ -3023,6 +3030,8 @@ static void listTreatmentClampWindow(void){
 
 //刷新病历列表页:按窗口起始位置把过滤后患者的姓名/ID/病历数写入对应控件,并更新选中按钮状态;
 //空槽位三类文本清空, 选择/删除/编辑三个按键隐藏并禁止触摸, 有效槽位恢复显示与使能
+//翻页键(PAGE_UP/PAGE_DOWN)的使能不在本函数内管理, 统一由listTreatmentUpdatePageKeys在进入/动作完成/切页返回路径显式调用
+static void listTreatmentUpdatePageKeys(void);//前置声明: 按当前topIndex/边界设置两键使能
 void refreshListTreatmentDisplay(void){
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
   uint16_t recordCount = listTreatmentGetCount();
@@ -3038,21 +3047,27 @@ void refreshListTreatmentDisplay(void){
     windowRecCount[i] = 0U;
     (void)listTreatmentGetViewPatient(viewPos, &windowPat[i]);
   }
-  //第二步: 单遍记录id轻读(2字节/条), 一次性统计窗口各患者记录数;
-  //替代原先每个患者一次全表28字节扫描(5次), 字节量降约14倍
+  //第二步: 连续批量读记录行(单事务地址自增, 8行/块), 提取每行首字段patientId统计窗口各患者记录数;
+  //替代逐行2字节独立事务(最多2019次), 消除每事务命令/地址开销, 数据时钟占主导, 耗时由约百ms降到约20-30ms
   {
     uint16_t totalRec = treatmentEpromGetCount();
-    for(uint16_t r = 0U; r < totalRec; r++){
-      uint16_t rid;
-      if(treatmentRecordGetPatientIdByIndex(r, &rid) != TREATMENT_EPROM_OK){
+    uint16_t pos = 0U;
+    while(pos < totalRec){
+      uint16_t got = treatmentRecordReadRows(pos, (uint8_t*)listRecordChunk,
+                                             (uint16_t)sizeof(listRecordChunk));
+      if(got == 0U){
         break;
       }
-      for(uint8_t s = 0U; s < LIST_TREATMENT_WINDOW_SIZE; s++){
-        if((windowPat[s].id != 0U) && (rid == windowPat[s].id)){
-          windowRecCount[s]++;
-          break;
+      for(uint16_t k = 0U; k < got; k++){
+        uint16_t rid = listRecordChunk[k].patientId;
+        for(uint8_t s = 0U; s < LIST_TREATMENT_WINDOW_SIZE; s++){
+          if((windowPat[s].id != 0U) && (rid == windowPat[s].id)){
+            windowRecCount[s]++;
+            break;
+          }
         }
       }
+      pos = (uint16_t)(pos + got);
     }
   }
   //进入/重进本页先建立"全部按键未按下"基线: 显式清零页面13全部20个按钮(20-29, 31-40),
@@ -3111,6 +3126,7 @@ void refreshListTreatmentDisplay(void){
   pageNow = (uint16_t)(listTreatmentCtx.topIndex / LIST_TREATMENT_WINDOW_SIZE + 1U);
   sprintf(dispBuf, "PAGE %u/%u", (unsigned int)pageNow, (unsigned int)pageCount);
   SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_PAGE_NUM, (uint8_t*)dispBuf);
+  //注: 翻页键使能/禁用统一由listTreatmentUpdatePageKeys管理(动作期禁用+边界禁用), 本函数只渲染文本、不碰使能(与页面15同构)
 }
 
 //SEARCH_NAME文本通知: 保存查找字母并重建过滤视图, 新查找下窗口回到第一页(空串=恢复全部患者)
@@ -3125,6 +3141,7 @@ void listTreatmentSetFindText(const char *text){
   listTreatmentCtx.topIndex = 0U;
   listTreatmentRebuildFilter();
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//查找过滤后窗口回到首页, 按新视图重算两键使能
 }
 
 //进入病历列表页:清空查找字母并重建患者视图, 窗口从第一页开始, 默认选中第一个;
@@ -3137,6 +3154,7 @@ void enterListTreatmentPage(void){
   listTreatmentRebuildFilter();
   SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_CAPACITY, (uint8_t*)"");
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//进入页面: 建立两键使能基线(首页即禁用PAGE_UP), 再由后续切屏显示
 }
 
 //USB操作页SUMMARY_USB文案: 统一由usbText保存, 页面冷加载重发同一内容, 避免本次导出/导入结果被"UDISK OK"覆盖
@@ -3182,6 +3200,7 @@ void listTreatmentOperatorUsbBack(void){
   //必须先按当前findText重建过滤再渲染, 否则会显示空白/旧数量(关闭重进才正常); findText与窗口保留
   listTreatmentRebuildFilter();
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//USB返回: 切屏前按重建后视图恢复两键使能
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
@@ -3202,6 +3221,69 @@ void listTreatmentMoveDown(void){
     listTreatmentCtx.topIndex = (uint16_t)(listTreatmentCtx.topIndex + LIST_TREATMENT_WINDOW_SIZE);
     refreshListTreatmentDisplay();
   }
+}
+
+//页面13翻页键去抖(参考值-非实测验收线): 仅兜底禁用命令到达前已入队的重复帧, 与释放窗口对齐避免双重限速
+#define LIST_PAGE_DEBOUNCE_MS 150U
+//延迟释放(参考值-非实测验收线): 动作结束后保持禁用, 等手指确定抬起再清零/使能, 规避"活动触摸压过主机写0";
+//批量读使动作缩短到约20-30ms, 150ms覆盖快速轻点的接触时长, 兼顾跟手(约6.7页/秒)
+#define LIST_PAGE_RELEASE_DELAY_MS 150U
+static uint32_t s_listPageLastTick = 0U;      //最近一次有效翻页的HAL_GetTick
+static uint8_t  s_listPageReleasePending = 0U;//有一次翻页待延迟释放
+static uint32_t s_listPageReleaseTick = 0U;   //最后一次按下的HAL_GetTick, 释放计时基准
+static uint16_t s_listPageControl = 0U;       //本次按下的源控件, 用于精确解除互锁
+static void treatmentBtnLockRelease(uint16_t screen, uint16_t control);//前置声明: 延迟释放时解除互锁
+
+//按当前(已钳制)topIndex/最大整页边界设置两键使能: 首页禁用PAGE_UP, 末页禁用PAGE_DOWN; 0条/不足1页时两键均禁用
+static void listTreatmentUpdatePageKeys(void){
+  uint16_t maxTop = listTreatmentGetMaxTop();
+  SetControlEnable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP,
+                   (listTreatmentCtx.topIndex > 0U) ? 1U : 0U);
+  SetControlEnable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN,
+                   (listTreatmentCtx.topIndex < maxTop) ? 1U : 0U);
+}
+
+//翻页键统一入口(由notify在state=1调用): dir 0=PAGE_UP 1=PAGE_DOWN
+//不再与活动触摸竞争清零: 动作开始立即禁用两键 -> 去抖翻页(阻塞渲染) -> 保持禁用并装填延迟释放, 由主循环在手指抬起后清零/使能
+void listTreatmentPageKey(uint8_t dir){
+  uint32_t now;
+  uint16_t srcCtrl;
+  srcCtrl = (dir != 0U) ? GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN
+                        : GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP;
+  //1) 立即关闭两键触摸: 随后阻塞刷新期间屏幕物理上不接受新连按、不产生第二次state=1
+  SetControlEnable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP, 0U);
+  SetControlEnable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN, 0U);
+  //2) 去抖决定是否翻页(翻页函数只移动窗口+渲染, refresh不碰使能, 按键全程保持禁用)
+  now = HAL_GetTick();
+  if((now - s_listPageLastTick) >= LIST_PAGE_DEBOUNCE_MS){
+    s_listPageLastTick = now;
+    if(dir != 0U){
+      listTreatmentMoveDown();
+    }
+    else{
+      listTreatmentMoveUp();
+    }
+  }
+  //3) 不立即清零/使能: 保持禁用并(重新)装填延迟释放; 每次连按都刷新计时, 保证最后一次按下后再等满RELEASE_DELAY
+  s_listPageReleasePending = 1U;
+  s_listPageReleaseTick = now;
+  s_listPageControl = srcCtrl;
+}
+
+//非阻塞延迟释放轮询(在dcHmiLoop每拍调用): 最后一次按下后经过RELEASE_DELAY, 手指已抬起。
+//此时两键仍禁用、键上无活动触摸, 先清零再按位置恢复使能, 并精确解除互锁——从机制上避免清零被活动触摸压过
+void listTreatmentPageReleaseLoop(void){
+  if(s_listPageReleasePending == 0U){
+    return;
+  }
+  if((HAL_GetTick() - s_listPageReleaseTick) < LIST_PAGE_RELEASE_DELAY_MS){
+    return;
+  }
+  s_listPageReleasePending = 0U;
+  SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP, 0U);
+  SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN, 0U);
+  listTreatmentUpdatePageKeys();
+  treatmentBtnLockRelease(GDDC_PAGE_LIST_TREATMENT, s_listPageControl);
 }
 
 //选择窗口内第slot个患者(slot 0-4对应KEY_SELECT_PATIENT_0-4),空槽位不响应;
@@ -3285,6 +3367,7 @@ void listTreatmentDelete(void){
     }
   }
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//删除记录后窗口可能已夹取, 按新位置重算两键使能
   memset(dispBuf, 0x0, sizeof(dispBuf));
   sprintf(dispBuf, "DEL OK, NUM:%d", NVRAM0[DM_TREATMENT_NUM]);
   SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
@@ -3396,6 +3479,11 @@ void listTreatmentCreateStart(void){//CREATE按键: 本次治疗确实发射过�
     //选中患者若已被删除等导致查不到: 保持id=0的新患者兜底路径, 避免外键悬空
   }
   //新患者进注册页, 已选老患者进编辑页; 先定页面再刷新, 避免控件残留
+  if(treatmentLog.id != 0U){
+    //正常流程进编辑页(17): 非患者信息更新模式, OK/CANCEL后回病历列表页13
+    listTreatmentCtx.editPatientMode = 0U;
+    listTreatmentCtx.editReturnPage = GDDC_PAGE_LIST_TREATMENT;
+  }
   NVRAM0[EM_DC_PAGE] = (treatmentLog.id == 0U)
     ? GDDC_PAGE_REGISTER_PATIENT : GDDC_PAGE_EDIT_PATIENT;
   updateListTreatmentDisplay();
@@ -3446,6 +3534,7 @@ void listTreatmentCreateConfirm(void){//编辑页OK: 校验患者信息后把当
     sprintf(dispBuf, "SAVE ERR:%d", (int)err);
   }
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//新建确认返回: 切屏前恢复两键使能
   SetTextValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_TEXT_DEBUG, (uint8_t*)dispBuf);
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
@@ -3454,6 +3543,7 @@ void listTreatmentCreateConfirm(void){//编辑页OK: 校验患者信息后把当
 
 void listTreatmentCreateCancel(void){//编辑页CANCEL: 放弃本次新建, 返回病历列表页(EPROM不变)
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//取消新建返回: 切屏前恢复两键使能
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
@@ -3468,9 +3558,13 @@ static void listTreatmentEnterVerifyPage(void);
 static void listTreatmentRefreshVerifyDisplay(void);
 static void listTreatmentGoListPage(void);
 
-// 回病历列表页(13): 刷新并切页
+// 回病历列表页(13): 重建过滤视图并刷新、切页
 static void listTreatmentGoListPage(void){
+  //患者表可能已变(注册OK新建患者): RAM里的sortedIndex/filteredCount/ramKeys是进入注册页前的旧缓存,
+  //必须先按当前findText重建过滤再渲染, 否则新患者不显示(关闭回STANDBY重进才正常); CANCEL路径EPROM未变, 重建结果一致亦无害
+  listTreatmentRebuildFilter();
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//注册/核对/放弃流程返回: 切屏前恢复两键使能
   NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_LIST_TREATMENT;
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
@@ -3490,6 +3584,20 @@ static void listTreatmentEnterRegisterPage(void){
     sprintf(idBuf, "----");
   }
   dcHmiShowTreatmentCommon(GDDC_PAGE_REGISTER_PATIENT, idBuf, &treatmentLog);
+  //性别文本控件: 进入注册页即按当前患者性别自动刷新(男Male/女Female), 未选择则清空;
+  //dcHmiShowTreatmentCommon只更新性别菜单, 文本需在此单独下发, 否则切页后TEXT_GENDER残留旧值
+  if(treatmentLog.gender == MALE){
+    SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_GENDER,
+                 (uint8_t*)"Male");
+  }
+  else if(treatmentLog.gender == FEMALE){
+    SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_GENDER,
+                 (uint8_t*)"Female");
+  }
+  else{
+    SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_GENDER,
+                 (uint8_t*)"");
+  }
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_REGISTER_PATIENT;
   SetScreen(GDDC_PAGE_REGISTER_PATIENT);
 }
@@ -3554,7 +3662,8 @@ static void listTreatmentRefreshVerifyDisplay(void){
   uint16_t suggestId;
   int32_t energyWhole, energyFrac;
   uint16_t mm, ss;
-  suggestId = treatmentPatientSuggestId();
+  suggestId = (treatmentLog.id != 0U)
+    ? treatmentLog.id : treatmentPatientSuggestId();//已选已有患者显其真实id, 新患者显预生成最小空缺id
   if(suggestId != 0U){
     sprintf(idBuf, "%04u", (unsigned int)suggestId);
   }
@@ -3571,14 +3680,14 @@ static void listTreatmentRefreshVerifyDisplay(void){
     sprintf(dispBuf, "");
   }
   SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_AGE, (uint8_t*)dispBuf);
-  //性别菜单(0=FeMale,1=Male)与性别文本
-  if(treatmentLog.gender == FEMALE){
+  //性别菜单(0=Male,1=Female)与性别文本
+  if(treatmentLog.gender == MALE){
     SetSelectorValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER, 0);
-    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER, (uint8_t*)"FeMale");
-  }
-  else if(treatmentLog.gender == MALE){
-    SetSelectorValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER, 1);
     SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER, (uint8_t*)"Male");
+  }
+  else if(treatmentLog.gender == FEMALE){
+    SetSelectorValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER, 1);
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER, (uint8_t*)"Female");
   }
   else{
     SetSelectorValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER, 0);
@@ -3631,12 +3740,33 @@ static void listTreatmentEnterVerifyPage(void){
   SetScreen(GDDC_PAGE_VERIFY_TREATMENT);
 }
 
-// 激光停光后自动进入核对页: 用待存快照填充treatmentLog, 再进核对页
+// 核对页预填已选患者: 选中患者仍存在则把id/年龄/性别/姓名填入treatmentLog并返回1;
+// 未选择或已查不到(被删除)返回0, 调用方走新患者路径, 避免外键悬空
+static uint8_t listTreatmentPrefillSelectedPatient(void){
+  patientRecord_t selPat;
+  uint16_t patIndex = 0U;
+  if(listTreatmentCtx.selectedPatientId == 0U){
+    return 0U;
+  }
+  if((treatmentPatientFind(listTreatmentCtx.selectedPatientId, &patIndex) != TREATMENT_EPROM_OK)
+     || (treatmentPatientGetByIndex(patIndex, &selPat) != TREATMENT_EPROM_OK)){
+    return 0U;
+  }
+  treatmentLog.id = selPat.id;
+  treatmentLog.age = selPat.age;
+  treatmentLog.gender = (GENDER_ENUM)selPat.gender;
+  memset(treatmentLog.name, 0x0, sizeof(treatmentLog.name));
+  strncpy(treatmentLog.name, selPat.name, sizeof(treatmentLog.name) - 1U);
+  return 1U;
+}
+
+// 激光停光后自动进入核对页: 用待存快照填充treatmentLog; 已选患者则自动归属其名下, 否则走新患者路径
 void listTreatmentVerifyAfterLaser(void){
   if(listTreatmentCtx.pendingValid != 0U){
     treatmentLog = listTreatmentCtx.pending;
   }
-  treatmentLog.id = 0U;//新患者路径
+  treatmentLog.id = 0U;//默认新患者路径
+  (void)listTreatmentPrefillSelectedPatient();//已选患者: 覆盖为其id/信息, 本次记录自动归属该患者
   listTreatmentEnterVerifyPage();
 }
 
@@ -3877,13 +4007,14 @@ void listTreatmentUsbConfirm(void){//确认页"OK"(导出/导入通用): 授权�
   }
   //OK按键保持按下: 待listTreatmentUsbLoop中功能执行完毕后再弹起
   listTreatmentCtx.usbState = 7U;
-  //U盘读写期间锁定同页CANCEL: 状态7触摸门(互锁+USB门)已屏蔽全部操作, 这里再显式弹起CANCEL
-  //并禁用其触摸, 明确禁止中途取消(两确认页CANCEL编号一致为10); 下次进入确认页时统一恢复
+  //U盘读写期间本页OK/CANCEL全部物理禁用(SetControlEnable 0): 按键触摸不产生任何通知,
+  //既禁止中途取消, 也禁止读取过程中重复按OK持续下发state=1; 完成后在返回路径统一恢复使能
   {
     uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
       ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
     SetButtonValue(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
     SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
+    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 0);
   }
 }
 
@@ -3959,6 +4090,7 @@ void listTreatmentDeleteConfirm(void){
   }
   listTreatmentRebuildFilter();//患者表已变, 重建过滤视图
   refreshListTreatmentDisplay();//刷新列表(窗口自动夹取)
+  listTreatmentUpdatePageKeys();//删除患者确认返回: 切屏前按重建后视图恢复两键使能
   memset(dispBuf, 0x0, sizeof(dispBuf));
   if(err == TREATMENT_EPROM_OK){
     sprintf(dispBuf, "DEL AR %04u OK", (unsigned int)delId);
@@ -3979,6 +4111,7 @@ void listTreatmentDeleteCancel(void){
   //自锁键释放已上移到notify层(无条件)
   listTreatmentCtx.deletePatientId = 0U;
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//删除取消返回: 切屏前恢复两键使能
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
@@ -4047,6 +4180,7 @@ static uint16_t listTreatmentRecordMaxTop(void){
 }
 
 //从病历列表页(13)KEY_EDIT_RECORD进入: slot为该页窗口内的槽位(0-4)
+static void listTreatmentRecordUpdatePageKeys(void);//前置声明: 按当前位置设置两键使能(动作期/边界禁用)
 void listTreatmentRecordEnter(uint8_t slot){
   uint16_t viewPos;
   patientRecord_t pat;
@@ -4076,6 +4210,7 @@ void listTreatmentRecordEnter(uint8_t slot){
     SetButtonValue(GDDC_PAGE_LIST_RECORD, btn, 0);
   }
   refreshListRecordDisplay();
+  listTreatmentRecordUpdatePageKeys();//建立两键使能基线(首页即禁用PAGE_UP), 再切页
   SetScreen(GDDC_PAGE_LIST_RECORD);
 }
 
@@ -4174,6 +4309,46 @@ void refreshListRecordDisplay(void){
   pageNow = (uint16_t)(listTreatmentCtx.recordTop / LIST_RECORD_WINDOW_SIZE + 1U);
   sprintf(dispBuf, "PAGE %u/%u", (unsigned int)pageNow, (unsigned int)pageCount);
   SetTextValue(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_TEXT_PAGE, (uint8_t*)dispBuf);
+  //注: 翻页键的使能/禁用统一由listTreatmentRecordUpdatePageKeys管理(动作期禁用+边界禁用), 本函数只渲染文本
+}
+
+//按当前(已钳制)recordTop/maxTop设置两键触摸使能: 首页禁用PAGE_UP, 末页禁用PAGE_DOWN, 0条时两键均禁用
+static void listTreatmentRecordUpdatePageKeys(void){
+  uint16_t maxTop = listTreatmentRecordMaxTop();
+  SetControlEnable(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP,
+                   (listTreatmentCtx.recordTop > 0U) ? 1U : 0U);
+  SetControlEnable(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN,
+                   (listTreatmentCtx.recordTop < maxTop) ? 1U : 0U);
+}
+
+//翻页键软件去抖(参考值-非实测验收线): 冷却窗口内已在队列中的重复帧不重复翻页(正常情况下动作期
+//禁用后屏幕不会再产生新的连按通知, 该窗口仅兜底禁用命令到达前已进入队列的帧)
+#define RECORD_PAGE_DEBOUNCE_MS 250U
+static uint32_t s_recordPageLastTick = 0U;//最近一次有效翻页的HAL_GetTick
+
+//翻页键统一入口(由notify在state=1调用): dir 0=PAGE_UP 1=PAGE_DOWN
+//确定性防连按: 动作一开始立即禁用两键关闭触摸窗口 -> 翻页(阻塞渲染) -> 完成后清零按下态再按新边界恢复使能
+void listTreatmentRecordPageKey(uint8_t dir){
+  uint32_t now;
+  //1) 立即关闭两键触摸: 随后的阻塞刷新期间, 屏幕物理上不接受任何新的连按、不产生第二次state=1
+  SetControlEnable(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP, 0U);
+  SetControlEnable(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN, 0U);
+  //2) 去抖并执行翻页(翻页函数只移动窗口+渲染文本, 不再管理按键使能)
+  now = HAL_GetTick();
+  if((now - s_recordPageLastTick) >= RECORD_PAGE_DEBOUNCE_MS){
+    s_recordPageLastTick = now;
+    if(dir != 0U){
+      listTreatmentRecordPageDown();
+    }
+    else{
+      listTreatmentRecordPageUp();
+    }
+  }
+  //3) 翻页完成(手指已抬起)后先清零按下视觉, 再按新位置恢复两键使能(边界方向保持禁用)
+  SetButtonValue(GDDC_PAGE_LIST_RECORD,
+                 (dir != 0U) ? GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN
+                             : GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP, 0U);
+  listTreatmentRecordUpdatePageKeys();
 }
 
 //向前翻页(记录窗口上移5条)
@@ -4198,13 +4373,43 @@ void listTreatmentRecordClose(void){
   listTreatmentCtx.recordPatientId = 0U;
   listTreatmentCtx.editPatientMode = 0U;
   refreshListTreatmentDisplay();
+  listTreatmentUpdatePageKeys();//记录页关闭返回: 切屏前恢复两键使能
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT;
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
 
+//DELETE键统一入口(由notify在state=1调用): 先禁用5个DELETE键关闭触摸窗口, 再进删除确认页, 并解除本页互锁。
+//不在手指仍触摸时立即清零(必被活动触摸压过而卡按下); 按下视觉在确认页返回时由NotifyScreen(15)统一清零
+void listTreatmentRecordDeleteKey(uint8_t slot){
+  uint16_t recPos;
+  uint8_t d;
+  if(slot >= LIST_RECORD_WINDOW_SIZE){
+    treatmentBtnLockReset();
+    return;
+  }
+  recPos = (uint16_t)(listTreatmentCtx.recordTop + slot);
+  if(recPos >= listTreatmentCtx.recordCount){
+    treatmentBtnLockReset();
+    return;
+  }
+  //清掉可能残留的确认索引(异常中断的上一次流程), 使DeleteStart守卫通过
+  listTreatmentCtx.deleteRecordGlobalIndex = 0xFFFFU;
+  //1) 立即禁用5个DELETE键: 阻塞切页期间屏幕物理上不接受这些键的新触摸、不产生重复state=1
+  for(d = 0U; d < LIST_RECORD_WINDOW_SIZE; d++){
+    SetControlEnable(GDDC_PAGE_LIST_RECORD,
+                     (uint16_t)(GDDC_PAGE_LIST_RECORD_KEY_DELETE_0 + d), 0U);
+  }
+  //2) 置确认索引/文案并切到确认页16(DeleteStart守卫此时通过, 其内部recPos校验同样通过)
+  listTreatmentRecordDeleteStart(slot);
+  //3) 解除本页互锁: 已切到确认页, 其OK/CANCEL会重新武装; 即使内部早退也不残留锁
+  treatmentBtnLockReset();
+}
+
 //DELETE进入删除确认页(16): slot为记录页窗口内槽位(0-4)
 void listTreatmentRecordDeleteStart(uint8_t slot){
+  char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
   uint16_t recPos;
+  uint16_t globalIndex;
   if(listTreatmentCtx.deleteRecordGlobalIndex != 0xFFFFU){
     return;
   }
@@ -4215,16 +4420,64 @@ void listTreatmentRecordDeleteStart(uint8_t slot){
   if(recPos >= listTreatmentCtx.recordCount){
     return;
   }
-  listTreatmentCtx.deleteRecordGlobalIndex = listTreatmentCtx.recordWindow[slot];
-  SetTextValue(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_TEXT_NAME,
-               (uint8_t*)"Delete Record?");
+  globalIndex = listTreatmentCtx.recordWindow[slot];
+  listTreatmentCtx.deleteRecordGlobalIndex = globalIndex;
+  //TEXT_NAME: 待删记录所属病人"姓名 - AR 编号"(与记录页姓名行同口径); 查不到再回退占位
+  {
+    uint16_t patientIndex;
+    patientRecord_t pat;
+    if((treatmentPatientFind(listTreatmentCtx.recordPatientId, &patientIndex) == TREATMENT_EPROM_OK)
+       && (treatmentPatientGetByIndex(patientIndex, &pat) == TREATMENT_EPROM_OK)){
+      sprintf(dispBuf, "%s - AR %04u", pat.name, (unsigned int)pat.id);
+    }
+    else{
+      sprintf(dispBuf, "-- - AR %04u", (unsigned int)listTreatmentCtx.recordPatientId);
+    }
+    SetTextValue(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_TEXT_NAME,
+                 (uint8_t*)dispBuf);
+  }
+  //摘要: "治疗日期 - 发射能量 - 发射时间 - 发射功率", 显示该条待删记录的真实数据; 读不到再回退通用提示
+  {
+    treatmentLog_t log;
+    if(treatmentEpromGet(globalIndex, &log) == TREATMENT_EPROM_OK){
+      uint16_t mm, ss;
+      int32_t energyWhole, energyFrac;
+      mm = (uint16_t)(log.releaseTime / 60);
+      ss = (uint16_t)(log.releaseTime % 60);
+      energyWhole = log.releaseEnergy / 10;
+      energyFrac = log.releaseEnergy % 10;
+      if(energyFrac < 0){
+        energyFrac = -energyFrac;
+      }
+      if(log.rtcYear >= 2000U){
+        sprintf(dispBuf,
+                "%04u-%02u-%02u %02u:%02u - %d.%d J - %02u:%02u - %d W",
+                (unsigned int)log.rtcYear, (unsigned int)log.rtcMonth,
+                (unsigned int)log.rtcDay, (unsigned int)log.rtcHour,
+                (unsigned int)log.rtcMinute, (int)energyWhole, (int)energyFrac,
+                (unsigned int)mm, (unsigned int)ss, (int)log.laserPower);
+      }
+      else{
+        sprintf(dispBuf,
+                "---- --:-- - %d.%d J - %02u:%02u - %d W",
+                (int)energyWhole, (int)energyFrac, (unsigned int)mm,
+                (unsigned int)ss, (int)log.laserPower);
+      }
+    }
+    else{
+      sprintf(dispBuf, "Delete this treatment record?");
+    }
+  }
   SetTextValue(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_TEXT_SUMMARY_0,
-               (uint8_t*)"Delete this treatment record?");
+               (uint8_t*)dispBuf);
+  //切页前建立确认页两键"未按下"基线(屏幕会保留自锁键运行态), 防止进入即显示CANCEL/OK按下
+  SetButtonValue(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_KEY_OK, 0U);
+  SetButtonValue(GDDC_PAGE_DELETE_RECORD, GDDC_PAGE_DELETE_RECORD_KEY_CANCEL, 0U);
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_DELETE_RECORD;
   SetScreen(GDDC_PAGE_DELETE_RECORD);
 }
 
-//删除确认页OK: 删除该条记录, 重新枚举后回记录页(15)
+//删除确认页OK: 删除该条记录, 切页前完成记录页清零/重渲染/使能恢复, 再回记录页(15)
 void listTreatmentDeleteRecordConfirm(void){
   uint16_t idx = listTreatmentCtx.deleteRecordGlobalIndex;
   if(idx != 0xFFFFU){
@@ -4234,19 +4487,116 @@ void listTreatmentDeleteRecordConfirm(void){
     listTreatmentCtx.deleteRecordGlobalIndex = 0xFFFFU;
     listTreatmentRecordEnumerate();
   }
+  //切页前(确认页仍为当前页)对记录页建立"全部按钮未按下"基线并重渲染、恢复使能;
+  //DeviceScreenNotify=0使切页后的NotifyScreen不可靠, 不能依赖返回回调清理
+  for(uint16_t btn = GDDC_PAGE_LIST_RECORD_KEY_DELETE_0;
+      btn <= GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT; btn++){
+    SetButtonValue(GDDC_PAGE_LIST_RECORD, btn, 0U);
+  }
+  refreshListRecordDisplay();//重渲染: 剩余记录上移回缩, 空槽文本隐藏、DELETE键隐藏并禁用
+  listTreatmentRecordUpdatePageKeys();//恢复翻页键使能
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_RECORD;
   SetScreen(GDDC_PAGE_LIST_RECORD);
 }
 
-//删除确认页CANCEL: 不删除, 回记录页(15)
+//删除确认页CANCEL: 不删除, 切页前同样清零/重渲染/恢复使能, 再回记录页(15)
 void listTreatmentDeleteRecordCancel(void){
   listTreatmentCtx.deleteRecordGlobalIndex = 0xFFFFU;
+  for(uint16_t btn = GDDC_PAGE_LIST_RECORD_KEY_DELETE_0;
+      btn <= GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT; btn++){
+    SetButtonValue(GDDC_PAGE_LIST_RECORD, btn, 0U);
+  }
+  refreshListRecordDisplay();
+  listTreatmentRecordUpdatePageKeys();
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_RECORD;
   SetScreen(GDDC_PAGE_LIST_RECORD);
 }
 
-//EDIT_PATIENT进入患者信息编辑页(17): 预填患者信息, 置更新模式(OK只更新患者, 不追加记录)
+//切页按键基线延迟: 进入目标页时先禁用按钮, 经过该延时(手指已抬起)再清零并使能, 避免活动触摸把外部清零压过
+#define KEY_ARM_DELAY_MS 150U
+static uint8_t  s_keyArmPending = 0U;//有一次切页待建立按键未按下基线
+static uint32_t s_keyArmTick = 0U;   //装填基线的HAL_GetTick, 延迟计时基准
+static uint16_t s_keyArmScreen = 0U; //目标页面
+static uint16_t s_keyArmFirst = 0U;  //按钮范围起点(本工程按钮ID均远小于65535, 自增无回绕风险)
+static uint16_t s_keyArmLast = 0U;   //按钮范围终点
+
+//装填一次按键基线(必须在SetScreen切页前调用): 先禁用阻断该按钮触摸, 再立即弹起——
+//禁用后活动触摸不会把清零压过, 故切页时按钮已是"禁用+弹起"的正确状态; 延迟后由轮询恢复使能
+void treatmentArmKeyBaseline(uint16_t screen, uint16_t first, uint16_t last){
+  //规范化按钮范围: 调用方可能按控件语义而非ID大小传参, 统一为 first<=last, 避免循环空转
+  if(first > last){
+    uint16_t tmp = first;
+    first = last;
+    last = tmp;
+  }
+  for(uint16_t c = first; c <= last; c++){
+    SetControlEnable(screen, c, 0U);
+    SetButtonValue(screen, c, 0U);
+  }
+  s_keyArmScreen = screen;
+  s_keyArmFirst = first;
+  s_keyArmLast = last;
+  s_keyArmTick = HAL_GetTick();
+  s_keyArmPending = 1U;
+}
+
+//按键基线轮询(在dcHmiLoop每拍调用): 延迟满后手指已抬起, 仅恢复使能, 按钮保持弹起
+void treatmentKeyArmLoop(void){
+  if(s_keyArmPending == 0U){
+    return;
+  }
+  if((HAL_GetTick() - s_keyArmTick) < KEY_ARM_DELAY_MS){
+    return;
+  }
+  s_keyArmPending = 0U;
+  for(uint16_t c = s_keyArmFirst; c <= s_keyArmLast; c++){
+    SetControlEnable(s_keyArmScreen, c, 1U);
+  }
+}
+
+// ===== 切页固定延迟: 让源按钮按下态自然展示 =====
+// 按下瞬间不立即切页, 按钮保持按下态给用户明确反馈; 固定展示时间到后再整页切换,
+// 源按钮随旧整页一起消失(不在旧页弹起), 视觉为"按下→停顿→整页切换", 避免按下/弹起时序错乱
+#define NAV_PRESS_HOLD_MS 150U
+#define NAV_ACTION_EDIT_PATIENT 1U//GDDC_PAGE_LIST_RECORD的GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT -> GDDC_PAGE_EDIT_PATIENT
+static uint8_t  s_navPending = 0U;//有一次延迟导航待执行
+static uint32_t s_navTick = 0U;   //按下装填时刻, 固定展示计时基准
+static uint8_t  s_navAction = 0U; //待执行的导航动作
+
+//按下时装填延迟导航: 按钮保持按下态(不切页), 固定展示时间由轮询判定
+void treatmentNavArm(uint8_t action){
+  s_navAction = action;
+  s_navTick = HAL_GetTick();
+  s_navPending = 1U;
+}
+
+//实际执行GDDC_PAGE_LIST_RECORD -> GDDC_PAGE_EDIT_PATIENT的切页(延迟满后由treatmentNavLoop调用)
+static void listTreatmentDoEditPatient(void);
+
+//延迟导航轮询(在dcHmiLoop每拍调用): 固定展示时间满后执行真正切页
+void treatmentNavLoop(void){
+  if(s_navPending == 0U){
+    return;
+  }
+  if((HAL_GetTick() - s_navTick) < NAV_PRESS_HOLD_MS){
+    return;
+  }
+  s_navPending = 0U;
+  if(s_navAction == NAV_ACTION_EDIT_PATIENT){
+    listTreatmentDoEditPatient();
+  }
+}
+
+//GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT按下入口: 不立即切页, 只装填固定延迟导航,
+//按钮保持按下态给用户明确反馈; 真正切页由treatmentNavLoop延迟满后调用listTreatmentDoEditPatient
 void listTreatmentRecordEditPatient(void){
+  treatmentNavArm(NAV_ACTION_EDIT_PATIENT);
+}
+
+//实际执行 GDDC_PAGE_LIST_RECORD -> GDDC_PAGE_EDIT_PATIENT (固定展示时间满后由treatmentNavLoop调用):
+//预填患者信息, 置更新模式(OK只更新患者, 不追加记录); 源按钮随旧整页消失(不在旧页弹起),
+//目标页 GDDC_PAGE_EDIT_PATIENT_KEY_OK / GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL 切页前禁用+弹起
+static void listTreatmentDoEditPatient(void){
   uint16_t patientIndex;
   patientRecord_t pat;
   char idBuf[16];
@@ -4261,7 +4611,30 @@ void listTreatmentRecordEditPatient(void){
   memcpy(treatmentLog.name, pat.name, TREATMENT_NAME_SIZE);
   sprintf(idBuf, "AR %04u", (unsigned int)pat.id);
   listTreatmentCtx.editPatientMode = 1U;
+  listTreatmentCtx.editReturnPage = GDDC_PAGE_LIST_RECORD;
+  printf("@NAV enter editPatient page, mode=%u recordPatientId=%u return=%u\n",
+         (unsigned)listTreatmentCtx.editPatientMode,
+         (unsigned)listTreatmentCtx.recordPatientId,
+         (unsigned)listTreatmentCtx.editReturnPage);
   dcHmiShowTreatmentCommon(GDDC_PAGE_EDIT_PATIENT, idBuf, &treatmentLog);
+  //性别文本控件: 进入编辑页即按患者性别刷新(男Male/女Female), 与注册页同口径;
+  //dcHmiShowTreatmentCommon只更新菜单, 文本需单独下发避免残留
+  if(treatmentLog.gender == MALE){
+    SetTextValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_TEXT_GENDER, (uint8_t*)"Male");
+  }
+  else if(treatmentLog.gender == FEMALE){
+    SetTextValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_TEXT_GENDER, (uint8_t*)"Female");
+  }
+  else{
+    SetTextValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_TEXT_GENDER, (uint8_t*)"");
+  }
+  //释放源按钮 GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT 的互锁: 导航正在执行, 新页面不得继承该锁,
+  //否则 GDDC_PAGE_EDIT_PATIENT 的按键会被互锁门拒绝而卡按下(源按钮本身随旧整页消失, 无需SetButtonValue)
+  treatmentBtnLockRelease(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);
+  //装填目标页基线(内部先禁用触摸再弹起): 保证SetScreen切到本页时两键已是弹起态,
+  //既防页面15重叠位置的触摸穿透, 也消除历史按下残留; 手指抬起后由treatmentKeyArmLoop恢复使能
+  treatmentArmKeyBaseline(GDDC_PAGE_EDIT_PATIENT,
+                          GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL, GDDC_PAGE_EDIT_PATIENT_KEY_OK);
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_EDIT_PATIENT;
   SetScreen(GDDC_PAGE_EDIT_PATIENT);
 }
@@ -4269,10 +4642,14 @@ void listTreatmentRecordEditPatient(void){
 //患者信息编辑页OK: 校验后更新患者信息, 回记录页(15)
 void listTreatmentEditPatientConfirm(void){
   patientRecord_t row;
+  printf("@NAV confirm enter, mode=%u name0=%u\n",
+         (unsigned)listTreatmentCtx.editPatientMode,
+         (unsigned)treatmentLog.name[0]);
   if(listTreatmentCtx.editPatientMode == 0U){
     return;
   }
   if(treatmentLog.name[0] == 0){
+    printf("@NAV confirm abort: empty name, stay page17\n");
     return;
   }
   memset(&row, 0x0, sizeof(row));
@@ -4282,15 +4659,40 @@ void listTreatmentEditPatientConfirm(void){
   memcpy(row.name, treatmentLog.name, TREATMENT_NAME_SIZE);
   treatmentPatientUpdate(listTreatmentCtx.recordPatientId, &row);
   listTreatmentCtx.editPatientMode = 0U;
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_RECORD;
-  SetScreen(GDDC_PAGE_LIST_RECORD);
+  NVRAM0[EM_DC_PAGE] = listTreatmentCtx.editReturnPage;
+  printf("@NAV confirm SetScreen return=%u\n", (unsigned)listTreatmentCtx.editReturnPage);
+  //冻结画面: 屏幕保持页面17, 使源按钮OK弹起与切页过程不可见
+  SetScreenUpdateEnable(0U);
+  //源按钮OK在冻结后清零并解锁: 状态已更新但不绘制(notify层不再单独释放)
+  SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_OK, 0U);
+  treatmentBtnLockRelease(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_OK);
+  //装填记录页基线(内部先禁用再弹起): 保证SetScreen切到记录页时各键已是弹起态
+  treatmentArmKeyBaseline(GDDC_PAGE_LIST_RECORD,
+                          GDDC_PAGE_LIST_RECORD_KEY_DELETE_0, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);
+  SetScreen(listTreatmentCtx.editReturnPage);
+  //解冻: 一次性重绘, 直接显示已正确设置的记录页, 无中间变化
+  SetScreenUpdateEnable(1U);
 }
 
-//患者信息编辑页CANCEL: 不更新, 回记录页(15)
+//患者信息编辑页CANCEL: 不更新, 按来源页返回
 void listTreatmentEditPatientCancel(void){
+  printf("@NAV cancel enter, mode=%u return=%u\n",
+         (unsigned)listTreatmentCtx.editPatientMode,
+         (unsigned)listTreatmentCtx.editReturnPage);
   listTreatmentCtx.editPatientMode = 0U;
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_RECORD;
-  SetScreen(GDDC_PAGE_LIST_RECORD);
+  NVRAM0[EM_DC_PAGE] = listTreatmentCtx.editReturnPage;
+  printf("@NAV cancel SetScreen return=%u\n", (unsigned)listTreatmentCtx.editReturnPage);
+  //冻结画面: 屏幕保持页面17, 使源按钮CANCEL弹起与切页过程不可见
+  SetScreenUpdateEnable(0U);
+  //源按钮CANCEL在冻结后清零并解锁: 状态已更新但不绘制(notify层不再单独释放)
+  SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL, 0U);
+  treatmentBtnLockRelease(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL);
+  //装填记录页基线(内部先禁用再弹起): 保证SetScreen切到记录页时各键已是弹起态
+  treatmentArmKeyBaseline(GDDC_PAGE_LIST_RECORD,
+                          GDDC_PAGE_LIST_RECORD_KEY_DELETE_0, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);
+  SetScreen(listTreatmentCtx.editReturnPage);
+  //解冻: 一次性重绘, 直接显示已正确设置的记录页, 无中间变化
+  SetScreenUpdateEnable(1U);
 }
 
 //供NotifyButton判断当前编辑页是否为"患者信息更新模式"
@@ -4371,7 +4773,11 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
   {
     uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
       ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
+    //先弹起OK并解除互锁, 再恢复OK/CANCEL使能(读写期间两键均被物理禁用), 然后才切回操作页,
+    //保证下次进入确认页按键功能正常; 此时手指已抬起, 清零与恢复不会被活动触摸干扰
     treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK);
+    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 1);
+    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 1);
   }
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
   SetScreen(GDDC_PAGE_OPERATOR_USB);
@@ -4470,6 +4876,8 @@ void dcHmiLoopInit(void){//初始化模块
 	//校准病历数量:扫描EPROM治疗记录区块得到实际有效病历数,写入DM_TREATMENT_NUM。
 	//固件变化时已在上一步清空,扫描结果为0; 其余情况NVRAM与实际不一致时,以此处扫描结果为准完成自愈
 	NVRAM0[DM_TREATMENT_NUM] = (int16_t)treatmentEpromGetCount();
+	//开机输出一次结构化诊断快照(@DIAG), 主机侧 host_diag 自动读取/解析, 形成诊断闭环
+	treatmentDumpDiagnostics();
 	if(deviceConfig.greenLedDc <= 0 || (deviceConfig.greenLedDc > CONFIG_GREEN_LED_MAX_DC)){
 		SET_GREEN_LED_DC(10);
 	}
@@ -4808,6 +5216,9 @@ void dcHmiLoop(void){//HMI轮训程序
 	tempControlLoop();
 	gddcHmiLoop();
 	listTreatmentUsbLoop();//U盘提示页面轮询(非阻塞)
+	listTreatmentPageReleaseLoop();//病历列表页翻页键延迟释放(非阻塞, 手指抬起后再清零/使能)
+	treatmentNavLoop();//固定延迟导航(非阻塞): 源按钮按下展示时间满后再执行切页
+	treatmentKeyArmLoop();//切页后延迟建立按键未按下基线(非阻塞, 手指抬起后再清零/使能)
 	listTreatmentStepWatch();//监视停光: 抓取待新建病历快照
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){//休眠软关机
 		return;
@@ -6330,9 +6741,15 @@ static void NotifyScreen(uint16_t screen_id){
       break;
     }
     case GDDC_PAGE_LIST_RECORD:{
-      //历史治疗记录页冷加载: 重新枚举并下发姓名行/记录槽/页码(空槽隐藏)
+      //先建立"全部按钮未按下"基线(确认页返回/冷加载时清掉DELETE键可能残留的按下态), 再枚举/渲染/恢复使能
+      for(uint16_t btn = GDDC_PAGE_LIST_RECORD_KEY_DELETE_0;
+          btn <= GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT; btn++){
+        SetButtonValue(GDDC_PAGE_LIST_RECORD, btn, 0U);
+      }
+      //历史治疗记录页冷加载: 重新枚举并下发姓名行/记录槽/页码(空槽隐藏), 并恢复两键使能
       listTreatmentRecordEnumerate();
       refreshListRecordDisplay();
+      listTreatmentRecordUpdatePageKeys();
       break;
     }
     case GDDC_PAGE_DELETE_RECORD:{
@@ -6392,14 +6809,14 @@ static void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t item, ui
   if(state == 0U){
     return;
   }
-  //三页性别菜单选项顺序均为"FeMale;Male": 索引0=女(FEMALE), 1=男(MALE)
+  //三页性别菜单选项顺序均为"Male;Female": 索引0=男(MALE), 1=女(FEMALE)
   if(((screen_id == GDDC_PAGE_EDIT_PATIENT) || (screen_id == GDDC_PAGE_REGISTER_PATIENT))
      && (control_id == GDDC_PAGE_EDIT_PATIENT_MENU_GENDER)){
-    treatmentLog.gender = (item == 1U) ? MALE : FEMALE;
+    treatmentLog.gender = (item == 0U) ? MALE : FEMALE;
   }
   else if((screen_id == GDDC_PAGE_VERIFY_TREATMENT)
           && (control_id == GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER)){
-    treatmentLog.gender = (item == 1U) ? MALE : FEMALE;
+    treatmentLog.gender = (item == 0U) ? MALE : FEMALE;
   }
 }
 

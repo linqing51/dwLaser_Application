@@ -99,6 +99,7 @@ void enterOperatorUsbPage(void);//列表页"操作USB"按键:进入USB导入导�
 void listTreatmentOperatorUsbBack(void);//USB操作页返回:回到病历列表页
 void listTreatmentMoveUp(void);//病历列表页:PAGE_UP键向前翻一整页(到第一页停止)
 void listTreatmentMoveDown(void);//病历列表页:PAGE_DOWN键向后翻一整页(到最后一页停止)
+void listTreatmentPageKey(uint8_t dir);//病历列表页翻页键统一去抖入口: 0=PAGE_UP 1=PAGE_DOWN, 动作期禁用+完成后清零恢复(释放由notify幂等兜底)
 void listTreatmentSelect(uint8_t slot);//病历列表页:选择当前页第slot个患者(0-4)
 void listTreatmentSetFindText(const char *text);//病历列表页:SEARCH_NAME输入查找字母, 实时过滤患者姓名
 void listTreatmentDelete(void);//旧记录式删除逻辑(暂保留, 新UI的DELETE_0-4走listTreatmentDeleteStart确认页)
@@ -122,8 +123,10 @@ void listTreatmentRecordEnter(uint8_t slot);//列表页KEY_EDIT_RECORD: 进入�
 void refreshListRecordDisplay(void);//记录页: 刷新姓名行/5个记录槽(空槽隐藏)/页码
 void listTreatmentRecordPageUp(void);//记录页PAGE_UP: 记录窗口向前翻5条
 void listTreatmentRecordPageDown(void);//记录页PAGE_DOWN: 记录窗口向后翻5条
+void listTreatmentRecordPageKey(uint8_t dir);//翻页键软件去抖入口: 0=PAGE_UP 1=PAGE_DOWN, 快速连按只生效一次(释放由notify统一做)
 void listTreatmentRecordClose(void);//记录页CLOSE: 返回病历列表页
 void listTreatmentRecordDeleteStart(uint8_t slot);//记录页DELETE: 进入单条删除确认页(16)
+void listTreatmentRecordDeleteKey(uint8_t slot);//记录页DELETE统一入口: 先禁用DELETE键关闭触摸窗口再进确认页, 并解除本页互锁(防卡按下)
 void listTreatmentDeleteRecordConfirm(void);//删除确认页OK: 删除该条记录后回记录页
 void listTreatmentDeleteRecordCancel(void);//删除确认页CANCEL: 不删除回记录页
 void listTreatmentRecordEditPatient(void);//记录页EDIT_PATIENT: 进入患者信息编辑页(17)

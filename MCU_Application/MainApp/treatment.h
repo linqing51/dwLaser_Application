@@ -9,7 +9,7 @@
 // 设计要点:
 // - 片上只存两类紧凑、自然对齐的定长结构:
 //     patientRecord_t   24 字节, 每个患者一行, 从区块低端向上增长;
-//     treatmentRecord_t 24 字节, 每次治疗一行, 从区块高端向下增长。
+//     treatmentRecord_t 28 字节, 每次治疗一行, 从区块高端向下增长。
 // - 患者身份(name 等)只存一次, 治疗记录以 patientId 外键引用, 不再重复。
 // - 患者数/记录数无任何预设业务上限, 完全由两表之间的剩余空闲空间动态决定,
 //   写入前由 FreeBytesPR 保证不碰撞、不越界; 总量上限即病历区块物理容量。
@@ -197,6 +197,7 @@ treatmentEpromErr_t treatmentRecordAdd(const treatmentRecord_t *in);        //�
 treatmentEpromErr_t treatmentRecordDeleteByIndex(uint16_t index);           //删除单条记录(墓碑+安全压缩)
 treatmentEpromErr_t treatmentRecordGetByIndex(uint16_t index, treatmentRecord_t *out);   //按索引读记录
 treatmentEpromErr_t treatmentRecordGetPatientIdByIndex(uint16_t index, uint16_t *idOut); //按索引只读外键id(2字节, 轻量扫描用)
+uint16_t treatmentRecordReadRows(uint16_t startIndex, uint8_t *buf, uint16_t bufBytes); //连续批量读记录行(28B行, 单事务地址自增), 消除逐行事务开销, 返回实际读取行数(数据按索引递减序)
 treatmentEpromErr_t treatmentRecordUpdateByIndex(uint16_t index, const treatmentRecord_t *in); //更新记录
 
 //============================================================================
@@ -216,6 +217,9 @@ treatmentEpromErr_t treatmentEpromUpdate(uint16_t index, const treatmentLog_t *l
 treatmentEpromErr_t treatmentEpromGet(uint16_t index, treatmentLog_t *out);
 treatmentEpromErr_t treatmentEpromClear(void);
 uint32_t treatmentEpromCalcFwCrc(void);
+
+// 结构化诊断快照: 输出可机器解析的 @DIAG key=value 行, 供主机侧 host_diag 自动读取/解析(纯只读, 无副作用)
+void treatmentDumpDiagnostics(void);
 
 // PVD 欠压写入门控: 配置 PVD(2.8V 阈值, EXTI line16 双沿中断),
 // 欠压时内部置门控标志, 写路径在开启新事务前拒绝写入。
