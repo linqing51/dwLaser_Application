@@ -297,6 +297,7 @@ extern "C" {
 #define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD            15 //提示音时间增加
 #define GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC            16 //提示音时间减小
 #define GDDC_PAGE_READY_KEY_READY                        17 //切换待机按键
+#define GDDC_PAGE_READY_KEY_EMULATOR_FSW                 98 //模拟脚踏
 #define GDDC_PAGE_READY_TEXT_DEBUG                       99 //显示调试信息
 //***************************************************************************
 #define GDDC_PAGE_OPTION_KEY_TONE                        1 //蜂鸣器声光同步

@@ -161,23 +161,29 @@
    - **未选患者（`selectedPatientId == 0`，新患者路径）**：保持既有行为，清空 `name`/`age`/`gender`、`id = 0` 占位，在编辑页录入后由 `treatmentEpromAdd` 自动新建患者并分配新 id。
 3. 本闭环为强制规格：选中患者后任何保存路径都不得再为该次治疗新建重复患者；同一患者的多次治疗只在其名下追加记录，患者主表中该患者仍只出现一次。
 
-### 5.5 激光停光后核对页自动归属已选患者（强制规格，2026-11-23）
+### 5.5 以一次 ready 会话为单位的病历保存与核对页自动归属（强制规格，2026-11-25 修订）
 
-本节固化“选中患者 → 激光发射 → 核对页自动把本次治疗归属该患者”的实时链路，与 5.4 的旧 CREATE 链路相互独立，激光流程以本节为准。
+本节固化病历记录的保存口径：**记录单位是一次 ready 会话，不是单次脚踏发射周期**；保存的是整个 ready 期间累计的发射时间/能量。与 5.4 的旧 CREATE 链路相互独立，激光流程以本节为准。
 
-1. **停光自动进核对页**：`listTreatmentStepWatch` 监视到治疗步骤从“发射中”切走即调 `listTreatmentPendingCapture` 抓停光快照（含停光瞬间 RTC 时间戳）；正常停光回等待触发且待存有效时，调 `listTreatmentVerifyAfterLaser()` 把待存快照载入 `treatmentLog` 并进入核对页 `GDDC_PAGE_VERIFY_TREATMENT`（页面 22）。
-2. **自动预填已选患者（不新建患者）**：`listTreatmentVerifyAfterLaser` 默认置 `treatmentLog.id = 0`，随后调 `listTreatmentPrefillSelectedPatient()`：
-   - **已选患者（`selectedPatientId != 0`）且该患者仍存在**：经 `treatmentPatientFind` + `treatmentPatientGetByIndex` 取出该患者，把 `treatmentLog` 的 `id`/`name`/`age`/`gender` 覆盖为该患者，本次治疗即自动选定储存在其名下，无需再手动选患者。
+1. **ready 会话边界与累计口径**：
+   - 进入 ready（`updateReadyDisplay`）时 `clearReleaseTimeEnergy()` 清零一次发射计数；此后整个 ready 期间（含多次踩下/弹起脚踏）`EM_LASER_TRIG_TIME` 等持续累加。脚踏弹起只是从 `FSMSTEP_LASER_EMITING` 回到 `FSMSTEP_LASER_WAIT_TRIGGER`，**不清零、不弹核对页**，用户可继续踩脚踏，发射时间/能量在原有基础上继续累加。
+   - 因此单次脚踏弹起（发射→等待触发）不再触发核对页，也不产生独立记录；同一 ready 内的多次发射合并为一条记录。
+2. **退出 ready 回待机时才弹一次核对页**：用户点 `GDDC_PAGE_READY_KEY_READY`（置 `R_STANDBY_KEY_STNADBY_UP`）正常退出 ready 时，`listTreatmentExitReadyVerify()` 调 `listTreatmentPendingCapture()`，用整个 ready 期间的累计值抓一次快照（含退出瞬间 RTC 时间戳）：
+   - 整个 ready 确有发射（`EM_LASER_TRIG_TIME > 0`，`pendingValid = 1`）：调 `listTreatmentVerifyAfterLaser()` 把累计快照载入 `treatmentLog` 并进入核对页 `GDDC_PAGE_VERIFY_TREATMENT`（页面 22），整个 ready 只弹这一次。
+   - 整个 ready 没有发射（`pendingValid = 0`）：不弹核对页，直接回待机页。
+   - 急停（`X_ESTOP_NC`）、故障（`R_FAULT`）、`FSMSTEP_READY_ERROR` 等异常退出路径不弹核对页，按原导航立即回待机，不打断安全处置。
+3. **自动预填已选患者（不新建患者）**：`listTreatmentVerifyAfterLaser` 默认置 `treatmentLog.id = 0`，随后调 `listTreatmentPrefillSelectedPatient()`：
+   - **已选患者（`selectedPatientId != 0`）且该患者仍存在**：经 `treatmentPatientFind` + `treatmentPatientGetByIndex` 取出该患者，把 `treatmentLog` 的 `id`/`name`/`age`/`gender` 覆盖为该患者，本次 ready 的累计治疗即自动选定储存在其名下，无需再手动选患者。
    - **未选择或选中患者已被删除（查不到）**：保持 `id = 0`，回退新患者路径，避免外键悬空。
-3. **核对页各控件显示该患者信息**：`listTreatmentRefreshVerifyDisplay` 必须按下表渲染，字段口径与本规格其他章节对该页的描述一致：
+4. **核对页各控件显示该 ready 的累计信息**：`listTreatmentRefreshVerifyDisplay` 必须按下表渲染，字段口径与本规格其他章节对该页的描述一致：
    - `TEXT_ID`（控件 1）：已选患者显示其**真实 ID**（`treatmentLog.id`，4 位补零），不再显示新患者的建议 ID；仅 `id = 0` 时才显示预生成最小空缺 ID。
    - `TEXT_NAME`（2）、`TEXT_AGE`（3）、`TEXT_GENDER`（9）及性别菜单（20）：显示该患者姓名、年龄、性别（`Male`/`Female`，菜单男性在前，口径同 17.4）。
-   - `TEXT_SUMMARY_TIME`（4）：显示治疗结束 RTC 时间戳，格式 `YYYY-MM-DD HH:MM`（停光瞬间盖章，完整 4 位年）。
-   - `TEXT_SUMMARY_ENERGY`（5）、`TEXT_SUMMARY_OUT_TIME`（6）、`TEXT_SUMMARY_POWER`（7）、`TEXT_SUMMARY_SCHEME`（8）：显示本次发射能量、发射时长、功率、方案，口径同该页既有规则。
-4. **SAVE_RECORD 确认储存**：点 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）：
-   - `treatmentLog.id != 0`（已选患者）：直接调 `treatmentEpromAddToPatient(treatmentLog.id, &treatmentLog)`，以该患者为外键追加本次治疗记录、**不新建患者**，随后清待存并经 `returnStandbyDisplay()` 回待机页。
+   - `TEXT_SUMMARY_TIME`（4）：显示治疗结束 RTC 时间戳，格式 `YYYY-MM-DD HH:MM`（退出 ready 瞬间盖章，完整 4 位年）。
+   - `TEXT_SUMMARY_ENERGY`（5）、`TEXT_SUMMARY_OUT_TIME`（6）、`TEXT_SUMMARY_POWER`（7）、`TEXT_SUMMARY_SCHEME`（8）：显示**整个 ready 累计**的发射能量、发射时长，以及功率、方案，口径同该页既有规则。
+5. **SAVE_RECORD 确认储存**：点 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）：
+   - `treatmentLog.id != 0`（已选患者）：直接调 `treatmentEpromAddToPatient(treatmentLog.id, &treatmentLog)`，以该患者为外键追加本次 ready 的累计治疗记录、**不新建患者**，随后清待存并经 `returnStandbyDisplay()` 回待机页。
    - `treatmentLog.id == 0`（新患者）：沿用 17.1 入口 1 进注册页，填写后再归属。
-5. 本链路为强制规格：只要已选患者且其仍存在，激光停光后核对页即默认归属该患者，SAVE_RECORD 不得再为本次治疗新建重复患者。
+6. 本链路为强制规格：病历以 ready 会话为单位累计保存，脚踏弹起不弹页、不拆记录；只要已选患者且其仍存在，退出 ready 后核对页即默认归属该患者，SAVE_RECORD 不得再为本次治疗新建重复患者。
 
 ---
 
@@ -240,9 +246,9 @@
 
 ## 九、病历数据规则：治疗时刻 RTC 与姓名长度（强制规格）
 
-1. **治疗时刻必须落盘**：每条治疗记录保存“停光瞬间”的 RTC 时刻（完整 4 位年 + 月/日/时/分/秒），用于病历追溯；不得只保存不显示、也不得留空。
+1. **治疗时刻必须落盘**：每条治疗记录保存“退出 ready 回待机瞬间”（一次 ready 会话结束）的 RTC 时刻（完整 4 位年 + 月/日/时/分/秒），用于病历追溯；不得只保存不显示、也不得留空。
 2. 数据结构：RAM 复合视图 `treatmentLog_t` 与片上 `treatmentRecord_t` 均带 `rtcYear/rtcMonth/rtcDay/rtcHour/rtcMinute/rtcSecond`，片上存年份后两位（实际年 = +2000，0 = 未记录）。
-3. 采集与保存链路：`listTreatmentPendingCapture()` 在停光瞬间抓取 RTC 存入待存快照 `listTreatmentCtx.pending`；`listTreatmentCreateStart()` 必须把快照的 6 个 RTC 字段回填到 `treatmentLog`，编辑页 `KEY_OK` 后随 `treatmentEpromAdd` 写入 EPROM；漏抓兜底路径（发射时间计数判断）必须用当前 RTC 补齐。
+3. 采集与保存链路：`listTreatmentPendingCapture()` 在退出 ready 时抓取 RTC 存入待存快照 `listTreatmentCtx.pending`（ready 会话内只在退出时抓一次）；`listTreatmentCreateStart()` 必须把快照的 6 个 RTC 字段回填到 `treatmentLog`，编辑页 `KEY_OK` 后随 `treatmentEpromAdd` 写入 EPROM；漏抓兜底路径（发射时间计数判断）必须用当前 RTC 补齐。
 4. **U 盘 CSV 必须带时间并带回**：当前 `rtc` 为第 10 列，格式 `YYYY-MM-DD HH:MM:SS`；未记录时间时该列留空。当前完整表头为 13 列（`id` 加 AR 前缀，`rtc` 后追加 `pulseMode,posWidth,negWidth`），详见第十三至十五节。
    - 导入解析：列数 ≥ 9 即接受，旧版 9 列/10 列备份仍可载入，时间按“未记录”、脉冲按 CW 处理；有新列但格式/范围非法则整行载入失败。
    - 导入回读核对（`treatmentLogVerifyUdisk`）必须同时比较 RTC 6 个字段与脉冲三字段，不允许跳过。
@@ -302,7 +308,7 @@
    `记录时间 - 发射能量 - 发射时间 - 功率 - 波长`
    示例：`2026-11-10 18:00 - 262.7 J - 00:19 - 30 W - 1470 nm`
    - 记录时间取 RTC，格式 `YYYY-MM-DD HH:MM`；未记录时间时该段显示 `---- --:--`。
-   - **各数据来源的时间口径**：①AUTOFILL 演示记录由 `demoBuildRecord` 生成，末尾经 `demoStampRandomRtc` 随机附一条合规 RTC——完整年取 2001–2099（`demoRandRange`），月 1–12，日按 `demoDaysInMonth` 取 1..当月天数（闰年规则与 `RtcCheckDate` 一致，2 月闰年 29 天），时 0–23、分 0–59、秒 0–59，故演示记录均显示真实格式时间；②CSV 导入记录仅当源文件第 10 列 RTC 非空才带时间，空列即无时间（显 `----`）；③真实治疗记录在停光瞬间由 `RtcGetDateTime` 盖章，只要硬件 RTC 已正确校时即显示完整时间。已知边界：片上 `rtcYear` 用 0 表示“无时间”，而 2000 年（`sDate.Year=0`）落盘也为 0，二者无法区分；因此随机年份下限刻意避开 2000、从 2001 起（落盘 1–99，永不为 0），保证可回读显时间。
+   - **各数据来源的时间口径**：①AUTOFILL 演示记录由 `demoBuildRecord` 生成，末尾经 `demoStampRandomRtc` 随机附一条合规 RTC——完整年取 2001–2099（`demoRandRange`），月 1–12，日按 `demoDaysInMonth` 取 1..当月天数（闰年规则与 `RtcCheckDate` 一致，2 月闰年 29 天），时 0–23、分 0–59、秒 0–59，故演示记录均显示真实格式时间；②CSV 导入记录仅当源文件第 10 列 RTC 非空才带时间，空列即无时间（显 `----`）；③真实治疗记录在退出 ready 回待机时由 `RtcGetDateTime` 盖章，只要硬件 RTC 已正确校时即显示完整时间。已知边界：片上 `rtcYear` 用 0 表示“无时间”，而 2000 年（`sDate.Year=0`）落盘也为 0，二者无法区分；因此随机年份下限刻意避开 2000、从 2001 起（落盘 1–99，永不为 0），保证可回读显时间。
    - 发射能量底层为 0.1 J（decijoule），显示时除以 10 保留 1 位小数（用整数运算拆整/分，不用浮点）。
    - 发射时间取秒，格式 `MM:SS`；功率取 `laserPower`，单位 `W`；波长单波长如 `1470 nm`，双波长如 `1470+980 nm`。
 3. **方案/脉宽行 `TEXT_SCHEME_WIDTH_0–4`（控件 7–11）**：
@@ -419,7 +425,7 @@
 
 ### 16.5 页面实现位置与启用状态
 
-1. 页面 22 `GDDC_PAGE_VERIFY_TREATMENT`、页面 23 `GDDC_PAGE_DISCARD_TREATMENT` 已建立 `SetScreen`/`NotifyButton` 分支并启用（激光停光自动弹出核对页 22，放弃记录进入放弃页 23），其按键在 `NotifyButton` 分支内无条件 `treatmentReleaseButton`，与本规格一致；页面重编号后原 `GDDC_PAGE_READY` 顺延为 24。
+1. 页面 22 `GDDC_PAGE_VERIFY_TREATMENT`、页面 23 `GDDC_PAGE_DISCARD_TREATMENT` 已建立 `SetScreen`/`NotifyButton` 分支并启用（退出 ready 且有发射时自动弹出核对页 22，放弃记录进入放弃页 23），其按键在 `NotifyButton` 分支内无条件 `treatmentReleaseButton`，与本规格一致；页面重编号后原 `GDDC_PAGE_READY` 顺延为 24。
 2. 实现位置：
    - 互锁状态与判定/放行/释放函数（`treatmentIsLockPage`、`treatmentBtnLockArm/Release/Reset`、`treatmentButtonLockAllowed`、`treatmentReleaseButton`）：`MainApp/dcHmiApp.c`，对外声明在 `MainApp/dcHmiApp.h`。
    - 互锁门接入与各自锁键释放点：`MainApp/dcHmiNotifyButton.c`、`MainApp/dcHmiApp.c`。
@@ -487,7 +493,7 @@
 
 新建患者有两条等价入口，均跳转到注册页 `GDDC_PAGE_REGISTER_PATIENT`（18）：
 
-1. **激光发射完成后**：自动弹出核对页 `GDDC_PAGE_VERIFY_TREATMENT`（页面 22），点击 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）进入注册页；
+1. **退出 ready 回待机时（ready 期间有发射）**：自动弹出核对页 `GDDC_PAGE_VERIFY_TREATMENT`（页面 22），点击 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）进入注册页；
 2. **列表页手动新建**：在 `GDDC_PAGE_LIST_TREATMENT`（页面 13）点击 `GDDC_PAGE_LIST_TREATMENT_KEY_CREATE_NEW`（控件 39）进入注册页。该入口不要求本次必须发射过激光。
 
 ### 17.2 按键出口
@@ -561,3 +567,4 @@
 27. **2026-11-24（全局性别编码男=1女=2、菜单男性在前、进入页面自动刷新性别文本 #108）**：用户拍板全局性别逻辑编码——男性 `MALE=1`、女性 `FEMALE=2`（与 treatment.h 既有 `GENDER_ENUM` 一致，`gender=0` 表示未选择），并要求 HMI 菜单与程序选项男性排在女性前面。改动：①三个屏幕工程（17 EDIT_PATIENT、18 REGISTER_PATIENT、22 VERIFY_TREATMENT）`MENU_GENDER` 的 options 由 `FeMale;Male;` 改为 `Male;Female;`，菜单索引 `0=男(MALE)`、`1=女(FEMALE)`；②菜单索引↔逻辑编码映射随翻转同步——`dcHmiShowTreatmentCommon` 改 `(gender==MALE)?0:1`，`NotifyMenu` 两处改 `(item==0)?MALE:FEMALE`，核对页 `listTreatmentRefreshVerifyDisplay` 性别段重排（MALE→索引0/"Male"，FEMALE→索引1/"Female"）并把女性文本由旧拼写 `FeMale` 统一为 `Female`；③进入页面自动刷新 `TEXT_GENDER`：`listTreatmentEnterRegisterPage` 切页前按性别下发 `Male`/`Female`/空串，编辑页 `listTreatmentRecordEditPatient` 补同口径刷新（公共函数只更新菜单不更新文本），核对页在显示函数内一并处理。CSV 导入按字符串 `Male`/`Female` 解析、与菜单索引无关，不受影响。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编代码零警告），hex 正常生成（Code=239752，较第 26 条 +140，RO=18592、RW=1588、ZI=121428 均不变）。17.4 与核对页条目已重写。无硬件，菜单顺序、进入自动刷新与三页性别文本待上板确认；.tft 菜单顺序需在 VisualTFT 重新编译并烧录屏幕后才生效，未烧录前上板会与固件映射不一致。
 28. **2026-11-24（双重规格全面审计：字段偏移改 offsetof，修数据偏移隐患 #109–112）**：按至高规格（ASCII/控件命名）与病历软件规格双重要求对存储链路做全面审计。用 armcc 编译期负数组断言实测结构布局：`patientRecord_t` sizeof=24（id=0/age=2/gender=3/name=4），`treatmentRecord_t` sizeof=28（patientId=0/recSeq=2/laserPower=4/waveProto=6/magic=7/releaseEnergy=8/releaseTime=12/rtcYear=16/modeScheme=22/reserved1=23/posWidth=24/negWidth=26），自然对齐、无实际错位；地址几何、split/join、CSV 13 列映射、HMI 类型化解析、SPI 24 位地址均正确。发现并修复两类问题：①treatment.h 顶部注释把记录行误写为 24 字节，更正为 28；②全部字节级局部写入的硬编码偏移（记录 magic 的 `+7` 共 7 处、患者正文的 `+2` 共 5 处）改为新增宏 `REC_MAGIC_OFFSET=offsetof(treatmentRecord_t,magic)`、`PAT_BODY_OFFSET=offsetof(patientRecord_t,age)`，正文长度同步用 `PAT_BYTES-PAT_BODY_OFFSET`；位图取整 `(n+7)/8` 为数学运算保留。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编代码零警告），hex 正常生成（Code=239756，较第 27 条 +4，RO=18592、RW=1588、ZI=121428 均不变），证明纯编译期替换、零运行时行为变化。第九节新增第 8 条固化 offsetof 规则。无硬件，偏移自动跟随与实际读写位置待上板确认。
 29. **2026-11-24（修复两阶段提交判断常量笔误，AUTOFILL/USB 载入误报 IO #113–114）**：上板 AUTOFILL 与 U 盘载入均失败，屏幕报 `DEMO FILL ERR:2`（`TREATMENT_DEMO_ERR_IO`）。根因不是偏移量（`REC_MAGIC_OFFSET`/`PAT_BODY_OFFSET` 实测仍为 7/2），而是第 28 条把硬编码 `+7` 替换为 `REC_MAGIC_OFFSET` 时，两处 COMMIT 点的错误判断常量被一并误改：`treatmentRecordAdd` 与 `RecordReplaceAt` 中写成了 `if(RowWrite(...) != TREATMENT_EPROM_ERR_IO)`，正确应为 `!= TREATMENT_EPROM_OK`。`RowWrite` 成功返回 `TREATMENT_EPROM_OK=0`，使 `0 != ERR_IO(4)` 恒为真，COMMIT 写入即使成功也立即返回 `TREATMENT_EPROM_ERR_IO`；两条路径（AUTOFILL 经 `treatmentEpromAdd`、USB 载入经 `treatmentEpromWriteAt` 追加路径）都汇聚到 `treatmentRecordAdd`，故首个 COMMIT 点必败。修复：两处判断常量改回 `TREATMENT_EPROM_OK`，并全量核对 12 处 `if(RowWrite...)` 均为 `!= TREATMENT_EPROM_OK`，无其他同类笔误。验证盲区教训：第 28 条的“反汇编/段表等价”比较的两个版本（hard/off）都基于同一含笔误的工作区文件构造、仅改偏移表达，保留了共有的判断常量错误，故只能证明偏移表达等价、无法证明判断逻辑正确——基线本身带 bug 时等价性证明不成立；改判断类语句时必须逐字核对返回值语义（成功判 `OK`，不是判 `ERR_IO`）。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线），hex 正常生成（Code=239752，较第 28 条 −4，RO=18592、RW=1588、ZI=121428 均不变）。无硬件，AUTOFILL 填满与 U 盘载入实际写入待上板确认。
+30. **2026-11-25（病历保存口径改为 ready 会话级累计 #124）**：用户澄清病历记录单位不是单次脚踏发射周期，而是一次 ready 会话——进入 ready 后只要有过激光发射，退出 ready 回待机时才弹一次核对页 22，保存整个 ready 期间累计的发射时间/能量（多次踩脚踏累加为一条记录）。改动均在 `dcHmiApp.c`：①删除每次脚踏弹起（发射→等待触发）即抓快照并弹页的 `listTreatmentStepWatch`（连同其 dcHmiLoop 调用与 `driveStep` 字段），新增 `listTreatmentExitReadyVerify()`——在正常点 READY 键退出（`R_STANDBY_KEY_STNADBY_UP`）时调 `listTreatmentPendingCapture()` 用整个 ready 累计值抓一次快照，确有发射（`EM_LASER_TRIG_TIME > 0`）才调 `listTreatmentVerifyAfterLaser()` 弹一次核对页并返回 1，无发射返回 0 直接回待机；②等待触发态与发射态两个退出点在 `returnStandbyDisplay` 前接入该判定，弹页即 return 不回待机；急停/故障/READY_ERROR 异常路径不弹页。发射计数本就只在进入 ready 时清零、ready 内持续累加，故累计口径天然满足，数据层零改动。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），hex 正常生成（Code=241344，较仿真脚踏版 +4，RO=18660、RW=1612、ZI=121424）。无硬件，多次踩脚踏累计、退出才弹一次、无发射不弹等待上板确认。

@@ -155,6 +155,7 @@ void standbyKeyTouchEnable(int8_t enable);//Standby key触摸
 /*****************************************************************************/
 void updateExtralDisplay(void);//更新额外显示
 void standbyDebugInfoVisiable(int8_t enable);
+void emulatorFswApplyMode(void);//按工程模式设置仿真脚踏可见性/使能(正常模式隐藏禁用并清零)
 void optionKeyEnable(uint8_t enable);
 /*****************************************************************************/
 extern void PmuPowerUp(void);//开机函数

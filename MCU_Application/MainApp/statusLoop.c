@@ -522,7 +522,16 @@ void statusLoop(void){//温度轮询轮询
 	}
 	
 	//脚踏检测
-	if(LD(R_DISABLE_FOOTSWITCH_CHECK)){//屏蔽脚踏插入探测、使能屏幕激光发射控制
+	if(LD(R_ENGINEER_MODE)){//工程模式: 屏幕仿真脚踏优先, 完全替代物理/无线脚踏(远程调试激光发射)
+		SSET(R_FOOTSWITCH_PLUG);
+		if(LD(R_EMULATOR_FSW_PRESS)){
+			SSET(R_FOOTSWITCH_PRESS);
+		}
+		else{
+			RRES(R_FOOTSWITCH_PRESS);
+		}
+	}
+	else if(LD(R_DISABLE_FOOTSWITCH_CHECK)){//屏蔽脚踏插入探测、使能屏幕激光发射控制
 		SSET(R_FOOTSWITCH_PLUG);
 		if(LD(R_HMI_FOOTSWITCH_PRESS)){
 			SSET(R_FOOTSWITCH_PRESS);

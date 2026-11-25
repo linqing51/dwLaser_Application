@@ -2394,6 +2394,14 @@ void readyPageTouchEnable(int8_t enable){//Ready page->adjust key touch
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_ADD, enable);	
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_ACOUSTIC_TIME_INC, enable);	
 }
+void emulatorFswApplyMode(void){//工程模式: 仿真脚踏可见并使能; 正常模式: 隐藏并禁用
+	uint8_t engineer = LD(R_ENGINEER_MODE);
+	SetControlVisiable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_EMULATOR_FSW, engineer);
+	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_READY_KEY_EMULATOR_FSW, engineer);
+	if(engineer == 0U){
+		RRES(R_EMULATOR_FSW_PRESS);//离开工程模式: 确保仿真状态清零, 物理脚踏链路恢复
+	}
+}
 void readyKeyTouchEnable(int8_t enable){
 	SetControlEnable(GDDC_PAGE_READY, GDDC_PAGE_STANDBY_KEY_STANDBY, enable);
 }
@@ -2681,6 +2689,7 @@ void updateReadyDisplay(void){//更新READY显示
 	clearReleaseTimeEnergy();
 	updateReleaseTimeEnergy();
 	updateAcousticDisplay();
+	emulatorFswApplyMode();//每次进入READY页: 按当前工程/正常模式刷新仿真脚踏可见性与使能
 }
 
 /*****************************************************************************/
@@ -2736,7 +2745,6 @@ typedef struct{
   uint16_t usbState;//U盘流程状态: 0空闲 6确认页等待按键 7导出/导入执行中(读写在轮询完成)
   uint16_t usbCount;//本次保存/载入的病历条数
   char usbText[64];//USB操作页SUMMARY_USB当前应显示的内容(默认U盘在位状态, 导出/导入后为本次结果, 取消后为空)
-  uint16_t driveStep;//上一拍HMI治疗步骤(用于识别停光, 开机为0不等于发射中步骤)
   uint8_t  usbOp;//1=导出(save) 2=导入(load), 决定确认页文案与轮询执行分支
   uint8_t  usbErr;//U盘操作结果(0=成功)
   uint8_t  pendingValid;//1=本次治疗确实发射过且尚未落成病历
@@ -3390,29 +3398,28 @@ static void listTreatmentStampRtc(treatmentLog_t *log){
                  &log->rtcSecond);
 }
 
-static void listTreatmentPendingCapture(void){//停光时调用: 补齐最后一段累计后整条快照
+static void listTreatmentPendingCapture(void){//退出ready时调用: 补齐累计后整条快照
   int32_t trigTicks;
-  updateReleaseTimeEnergy();//用停光前的当前参数刷新累计时间/能量, 补齐最后一个100ms节拍
-  trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//激光实际打开时间(20ms计数)
-  if(trigTicks <= 0){//本次没有实际发射: 不产生待存病历
+  updateReleaseTimeEnergy();//用当前参数刷新整个ready累计的时间/能量, 补齐最后一个节拍
+  trigTicks = *((int32_t*)&NVRAM0[EM_LASER_TRIG_TIME]);//整个ready累计的激光实际打开时间(10ms计数)
+  if(trigTicks <= 0){//整个ready没有实际发射: 不产生待存病历
     return;
   }
-  listTreatmentCtx.pending = treatmentLog;//整条快照: 功率/波长/方案/发射时间/发射能量
-  //停光瞬间捕获RTC治疗时刻, 随病历一起落盘(完整4位年)
+  listTreatmentCtx.pending = treatmentLog;//整条快照: 功率/波长/方案/累计发射时间/累计发射能量
+  //退出ready瞬间捕获RTC治疗时刻, 随病历一起落盘(完整4位年)
   listTreatmentStampRtc(&listTreatmentCtx.pending);
   listTreatmentCtx.pendingValid = 1U;
 }
 
-static void listTreatmentStepWatch(void){//监视治疗步骤: 从"发射中"切走即视为停光, 抓取待存病历快照
-  uint16_t stepNow = (uint16_t)NVRAM0[EM_HMI_OPERA_STEP];
-  if((listTreatmentCtx.driveStep == (uint16_t)FSMSTEP_LASER_EMITING) && (stepNow != (uint16_t)FSMSTEP_LASER_EMITING)){
-    listTreatmentPendingCapture();
-    //正常停光(回等待触发)且有有效待存: 自动弹核对页; ESTOP/回待机等路径不弹, 仍由其原导航处理
-    if((listTreatmentCtx.pendingValid != 0U) && (stepNow == (uint16_t)FSMSTEP_LASER_WAIT_TRIGGER)){
-      listTreatmentVerifyAfterLaser();
-    }
+// 正常退出ready(点READY键回待机)前调用: 用整个ready期间累计的发射时间/能量抓一次快照;
+// 确有发射则进核对页(22)由用户确认是否保存并返回1; 整个ready没有发射则返回0, 调用方继续正常回待机
+static uint8_t listTreatmentExitReadyVerify(void){
+  listTreatmentPendingCapture();//内部按EM_LASER_TRIG_TIME判断, 无发射直接返回且不置pendingValid
+  if(listTreatmentCtx.pendingValid == 0U){
+    return 0U;
   }
-  listTreatmentCtx.driveStep = stepNow;
+  listTreatmentVerifyAfterLaser();
+  return 1U;
 }
 
 //姓名非空判定(全部为空格等同于没填)
@@ -4993,6 +5000,8 @@ void dcHmiLoopInit(void){//初始化模块
 	SET_USBA1_SEL_ON;
 	SET_USBA0_PSON_ON;
 #endif
+	//开机安全: 仿真脚踏状态清零, 不允许掉电保持"踩下"残留(可见性在进入READY页时由emulatorFswApplyMode按模式设置)
+	RRES(R_EMULATOR_FSW_PRESS);
 }
 
 static void speakerLoop(void){//蜂鸣器轮询
@@ -5219,7 +5228,6 @@ void dcHmiLoop(void){//HMI轮训程序
 	listTreatmentPageReleaseLoop();//病历列表页翻页键延迟释放(非阻塞, 手指抬起后再清零/使能)
 	treatmentNavLoop();//固定延迟导航(非阻塞): 源按钮按下展示时间满后再执行切页
 	treatmentKeyArmLoop();//切页后延迟建立按键未按下基线(非阻塞, 手指抬起后再清零/使能)
-	listTreatmentStepWatch();//监视停光: 抓取待新建病历快照
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){//休眠软关机
 		return;
 	}
@@ -5968,6 +5976,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			NVRAM0[SPREG_DAC_16] = 0;UPDAC16();//关闭红激光
 			NVRAM0[SPREG_DAC_17] = 0;UPDAC17();//关闭绿激光
 			T100MS(T100MS_READY_BEEM_DELAY, false, 3);//停止2秒计时器
+			//正常点READY键退出: 整个ready有发射则弹一次核对页(累计值), 不再回待机; 故障/无发射走原回待机
+			if(LD(R_STANDBY_KEY_STNADBY_UP) && (listTreatmentExitReadyVerify() != 0U)){
+				RRES(R_STANDBY_KEY_STNADBY_UP);
+				return;
+			}
 			returnStandbyDisplay();//统一返回待机页面:状态机+页面+SetScreen+刷新
 			standbyKeyValue(false);
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){
@@ -6022,6 +6035,11 @@ void dcHmiLoop(void){//HMI轮训程序
 			UPDAC0();UPDAC1();UPDAC2();UPDAC3();UPDAC4();UPDAC5();UPDAC6();UPDAC7();
 			NVRAM0[SPREG_DAC_16] = 0;NVRAM0[SPREG_DAC_17] = 0;
 			UPDAC16();UPDAC17();
+			//正常点READY键退出: 整个ready有发射则弹一次核对页(累计值); 急停/故障不弹, 直接回待机
+			if(LD(R_STANDBY_KEY_STNADBY_UP) && (listTreatmentExitReadyVerify() != 0U)){
+				RRES(R_STANDBY_KEY_STNADBY_UP);
+				return;
+			}
 			returnStandbyDisplay();//统一返回待机页面:状态机+页面+SetScreen+刷新
 			standbyKeyValue(0);
 			if(LD(R_STANDBY_KEY_STNADBY_UP)){

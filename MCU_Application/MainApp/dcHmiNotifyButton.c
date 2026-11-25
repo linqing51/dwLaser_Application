@@ -344,10 +344,12 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						SSET(R_ENGINEER_MODE);
 						standbyDebugInfoVisiable(true);	
+						emulatorFswApplyMode();//工程模式: 仿真脚踏可见并使能
 					}else if((NVRAM0[EM_DC_NEW_PASSCODE0] == NVRAM0[DM_DC_OLD_PASSCODE0]) && (NVRAM0[EM_DC_NEW_PASSCODE1] == NVRAM0[DM_DC_OLD_PASSCODE1])){
 						NVRAM0[EM_HMI_OPERA_STEP] = FSMSTEP_STANDBY;
 						RRES(R_ENGINEER_MODE);
 						standbyDebugInfoVisiable(false);	
+						emulatorFswApplyMode();//正常模式: 仿真脚踏隐藏禁用并清零
 					}
 					else{
 						break;
@@ -1289,6 +1291,15 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 					}
 					break;
 				}				
+				case GDDC_PAGE_READY_KEY_EMULATOR_FSW:{//工程模式瞬态按键: 按下=脚踏踩下, 弹起=脚踏松开
+					if(state){
+						SSET(R_EMULATOR_FSW_PRESS);
+					}
+					else{
+						RRES(R_EMULATOR_FSW_PRESS);
+					}
+					break;
+				}
 				case GDDC_PAGE_READY_KEY_ACOUSTIC_ENERGY_ADD:{
 					if(state){//DOWN
 						SSET(R_READY_KEY_ACOUSTIC_ENERGY_ADD_DOWN);
