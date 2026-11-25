@@ -48,7 +48,7 @@
 3. **诊断格式要求**：固件侧诊断统一输出**机器可解析**的结构化行（如 `@DIAG key=value`，用 `BEGIN/END` 界定一次完整快照）；主机侧脚本自动捕获、解析为结构化数据（JSON）并做健康判定。新增诊断项应保持命名稳定、含义明确，便于回归对比。
 4. **安全与边界（强制）**：
    - 诊断采集默认**纯只读、无副作用**，不得为采集诊断而改变业务状态或写入病历数据，诊断函数不得在正常写/提交事务上引入额外 FRAM 写入；
-   - 诊断相关的自编代码改动仍属本仓库自编源码，**必须按第 2 节做 AC5 Rebuild 达到 0 Error**，并在真实设备上经串口实读验证后，才可声称闭环通过；
+   - 诊断相关的自编代码改动仍属本仓库自编源码，**必须按第 2 节做 AC5 与 AC6 完整 Rebuild 均达到 0 Error**，并在真实设备上经串口实读验证后，才可声称闭环通过；
    - 本授权只覆盖"诊断能力本身及其直接发现的问题"，不得借诊断之名擅自修改与病历/EPROM 无关的业务逻辑；分支范围（第 1 节）、对外接口与 Git 纪律（第 7 节）仍然有效。
 5. **证据口径**：经 SWD+VCP 的串口实读属于真实硬件通信级证据，可据此判定诊断链路与被读取的状态值；但不因此等同于业务功能时序、断电原子性或上板手感已验证，后者仍需相应上板确认。
 6. **变更授权**：本条由仓库所有者明确授权设立；废止、收紧或扩大其授权范围，须由所有者人工确认并同步修改本文件。
@@ -60,7 +60,7 @@
    - 调用 `armcc`/`armclang`/`fromelf` 等工具完成编译、反汇编、段表/尺寸核对等调试分析；
    - 必要时经 Keil GUI 进行工程选项设置或调试（如复位编译器版本选择、目标选项），并配合 ST-Link 完成下载、复位与在线调试。
 2. **操作边界（强制）**：
-   - 编译通过标准仍以第 2 节为准（本分支 AC5 0 Error 并生成 hex），结果以 Keil 实际日志为依据，不得虚构，也不得只凭单一编译器通过即下结论；
+   - 编译通过标准仍以第 2 节为准（AC5 与 AC6 完整 Rebuild 均 0 Error，AC5 正常生成 hex），结果以 Keil 实际日志为依据，不得虚构，也不得只凭单一编译器通过即下结论；
    - 仅允许操作第 3 节指定的唯一活跃 G5 工程，不得为修复停止维护工程而改动其工程/源文件；
    - 验证性、临时的工程选项改动（如编译器切换、`pArmCC` 复位）完成后必须恢复到仓库规定设置，不遗留无关 diff；不擅自调整优化等级、宏定义、链接脚本等改变产物基线的配置；
    - 下载/复位/在线调试须围绕当前任务目标，遵循串口诊断闭环条目的证据口径，不得借调试之名写入或修改业务数据、更改与病历/EPROM 无关的逻辑。
@@ -117,10 +117,11 @@
 - 禁止在本分支修复任何与病历/EPROM 无关的问题（历史编译错误、驱动重构、格式化、警告清理、其他功能优化）。
 - 不修改其他电路板工程（见第 3 节）。
 
-## 2. 编译验证（本分支落地标准）
-- 本分支标准：用 AC5（armcc）做完整 Rebuild，达到 **0 Error 并生成 hex**；每次改动后必须 Rebuild 并保存日志作为证据。
-- AC6（armclang）迁移在本分支**明确搁置**：其历史错误是已知、有意阻断的，不得擅自启动迁移，也不为此调整工程选项或第三方库。
-- 第三方库（STM32 HAL、FreeRTOS、FatFs、USB Host、mbedTLS 等）不要求零警告；自编代码对它们的调用方式必须可编译。
+## 2. 编译验证（双编译器均须 0 Error）
+- 自编源码（非第三方库、非 HAL/中间件）每次改动后，必须分别用 AC5（armcc）与 AC6（armclang）各做一次完整 Rebuild，两者均达到 **0 Error** 才算编译验证通过；禁止只凭单一编译器通过即下结论。每次 Rebuild 保存日志作为证据，AC5 通过还须正常生成 hex。
+- 切换编译器：在活跃工程 `targetBoard_G5_TRI_A1_20260915.uvprojx` 中改 `<uAC6>`：`0` 用 AC5、`1` 用 AC6；命令行完整 Rebuild 用 `-r`（`-b` 可能只做增量）。
+- **AC6 迁移是本分支为将来分支合并必须完成的配套工作（2026-11-25 所有者拍板，不再搁置）**：当前 AC6 仍有历史阻断——FreeRTOS 仍用 `portable/RVDS/ARM_CM4F` port，armclang 不识别 armcc 的 `__forceinline`（仓库缺 GCC/ARM_CM4F port），另有 `dcHmiApp.c` 的 static 声明冲突；须补齐可用的 GCC/ARM_CM4F port 并消除 static 冲突，使 AC6 达到 0 Error。该项由所有者授权纳入本分支，与病历功能并行推进，落地前不得声称 AC6 已通过。
+- 第三方库（STM32 HAL、FreeRTOS、FatFs、USB Host、mbedTLS 等）不要求零警告；自编代码对它们的调用方式必须在两个编译器下都可编译。
 - 无硬件时不声称运行时显示效果与功能行为。
 
 ## 3. 唯一活跃工程（铁律）
@@ -141,7 +142,7 @@
 ## 6. EPROM / 病历数据铁律
 - 固件升级不保留任何 EPROM 病历数据：固件 CRC 变化（首次烧录/升级/CRC 失败恢复）时 `treatmentEpromClear()` 清空病历区块是**预期设计、不是缺陷**；不得新增旧格式到新格式的数据迁移。
 - FRAM 硬件块保护（状态寄存器 BP1/BP0）必须保持关闭（状态寄存器写 `0x00`）；存储越界一律由软件 `InRegion`/`FreeBytes` 防护，不依赖硬件块保护。
-- 患者编号单调递增、不回收（`DM_TREATMENT_NEXT_ID = maxId+1`）；无实际激光输出不建治疗记录；断电靠 magic 状态机保证原子提交。
+- 患者编号**最小空缺优先回收复用、无空缺才取最大 ID+1**（`treatmentPatientSuggestId` / `FirstFreePatientId`）；`DM_TREATMENT_NEXT_ID` 仅记录高水位，补空缺不拉低它，删除患者留下的编号会被后续新患者优先复用；无实际激光输出不建治疗记录；断电靠 magic 状态机保证原子提交。
 - 容量受 FRAM 物理大小与编译期静态断言约束，改动容量/字段前必须先核算并由所有者拍板。
 - **HMI 交互规则单一事实源**：病历按键互锁、notify 层无条件释放（自锁键经 `treatmentReleaseButton`、异步动作键在其完成路径释放）、页面出口、显示格式等交互行为，以 `targetBoard_G5_TRI_A1_20260915/MDK-ARM/病历列表页UI规格.md` 为唯一权威，本文件不重复其细节。
 - **规则文档只保留不随时间变化的规则**：某时点的屏幕工程/数据状态与每次变更写入规格文档的"变更日志"，不得把易过时快照写进强制规则正文。
@@ -155,7 +156,7 @@
 - Git：`C:\Program Files\Git\cmd\git.exe`
 - Keil UV4：`C:\Keil_v5\UV4\UV4.exe`
 - AC5（armcc）：`C:\Keil_v5\ARM\ARMCC\Bin\armcc.exe`
-- AC6（armclang，本分支搁置）：`C:\Keil_v5\ARM\ARMCLANG\Bin\armclang.exe`
+- AC6（armclang）：`C:\Keil_v5\ARM\ARMCLANG\Bin\armclang.exe`
 - 命令行完整 Rebuild：`UV4.exe -r <工程.uvprojx> -o <日志文件> -j0`
 - 编译日志统一写入各工程的 `MDK-ARM/build_logs/` 目录（如 `...\G5_TRI_A1_20260915\MDK-ARM\build_logs\ac5_xxx_log.txt`），不要散落在 `MDK-ARM` 根目录；该目录已被 `.gitignore` 忽略，不纳入提交。
 - STM32CubeProgrammer（SWD 连接/复位/烧录）：`C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe`；SWD 复位为 `... -c port=SWD --rst`，烧录为 `... -c port=SWD -d <hex> --hardRst`。
