@@ -1225,17 +1225,18 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
       break;
     }
         
+		case GDDC_PAGE_VERIFY_TREATMENT:
 		case GDDC_PAGE_EDIT_PATIENT:
-		case GDDC_PAGE_REGISTER_PATIENT:{//患者注册/编辑页控件编号一致, 共用文本录入处理
+		case GDDC_PAGE_REGISTER_PATIENT:{//患者核对/编辑/注册页控件编号一致(NAME=2,AGE=3), 共用文本录入处理
 			switch(control_id){
-				case GDDC_PAGE_EDIT_PATIENT_TEXT_NAME:{//患者姓名录入(两页NAME编号均为2)
+				case GDDC_PAGE_EDIT_PATIENT_TEXT_NAME:{//患者姓名录入(三页NAME编号均为2: GDDC_PAGE_VERIFY_TREATMENT_TEXT_NAME/GDDC_PAGE_EDIT_PATIENT_TEXT_NAME/GDDC_PAGE_REGISTER_PATIENT_TEXT_NAME)
 					if(str != NULL){
 						strncpy(treatmentLog.name, (const char*)str, sizeof(treatmentLog.name) - 1);
 						treatmentLog.name[sizeof(treatmentLog.name) - 1] = '\0';//截断保护
 					}
 					break;
 				}
-				case GDDC_PAGE_EDIT_PATIENT_TEXT_AGE:{//患者年龄录入(两页AGE编号均为3)
+				case GDDC_PAGE_EDIT_PATIENT_TEXT_AGE:{//患者年龄录入(三页AGE编号均为3: GDDC_PAGE_VERIFY_TREATMENT_TEXT_AGE/GDDC_PAGE_EDIT_PATIENT_TEXT_AGE/GDDC_PAGE_REGISTER_PATIENT_TEXT_AGE)
 					if(str != NULL){
 						int value = 0;
 						if(sscanf((const char*)str, "%d", &value) == 1){

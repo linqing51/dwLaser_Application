@@ -99,7 +99,7 @@ typedef struct{
 //  id 兼作提交点: 0xFFFF=空白/未提交, 有效非零 id=已提交。
 //----------------------------------------------------------------------------
 typedef struct {
-	uint16_t id;                       //稳定患者编号(单调, 删除不重编号)
+	uint16_t id;                       //患者编号(最小空缺优先回收复用, 见treatmentPatientCreate; 0xFFFF=空白/未提交)
 	uint8_t  age;
 	uint8_t  gender;                   //GENDER_ENUM 收窄为 uint8
 	char     name[TREATMENT_NAME_SIZE];//患者姓名(最多CONFIG_TREATMENT_NAME_LEN个字符)

@@ -269,6 +269,7 @@ extern "C" {
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_POWER    7 //治疗摘要-功率
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_SCHEME   8 //治疗摘要-方案
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER                  9//性别显示
+#define GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG                10 //本页英文引导/错误提示(默认引导语, 校验或落盘失败时显示错误)
 #define GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER              20 //性别下来菜单
 #define GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD       30 //保存记录 
 #define GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD    31 //放弃本次记录

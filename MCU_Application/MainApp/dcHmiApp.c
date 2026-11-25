@@ -2773,8 +2773,11 @@ typedef struct{
   uint8_t editPatientMode;
   //EDIT_PATIENT编辑页(17)返回目标页: 记录页进入=15, 正常新建流程=13; OK/CANCEL后显式回到该页, 不依赖隐式状态
   uint16_t editReturnPage;
-  //REGISTER_PATIENT注册页: registerReturnPage为进入注册页之前的来源页(13=CREATE_NEW手动, 22=核对页SAVE_RECORD),
-  //CANCEL/完成后返回该页; verifySelectMode=1表示列表页正被核对页用来选择已有患者, 选中后回核对页而非待机页
+  //GDDC_PAGE_REGISTER_PATIENT注册页: registerReturnPage为进入该页之前的来源页(2026-11-25起仅
+  //GDDC_PAGE_LIST_TREATMENT(页面13)的CREATE_NEW手动新建; GDDC_PAGE_VERIFY_TREATMENT(页面22)已改为本页录入、
+  //不再跳GDDC_PAGE_REGISTER_PATIENT), CANCEL/完成后返回该页;
+  //verifySelectMode=1表示GDDC_PAGE_LIST_TREATMENT正被GDDC_PAGE_VERIFY_TREATMENT用来选择已有患者,
+  //选中后回GDDC_PAGE_VERIFY_TREATMENT而非待机页
   uint16_t registerReturnPage;
   uint8_t verifySelectMode;
 }listTreatmentCtx_t;
@@ -3512,7 +3515,7 @@ void listTreatmentCreateConfirm(void){//编辑页OK: 校验患者信息后把当
     SetTextValue(NVRAM0[EM_DC_PAGE], GDDC_PAGE_EDIT_PATIENT_TEXT_ID, (uint8_t*)"SET GENDER");
     return;
   }
-  if((treatmentLog.age == 0U) || (treatmentLog.age > 120U)){//年龄范围检查
+  if((treatmentLog.age == 0U) || (treatmentLog.age > PATIENT_AGE_LIMIT)){//年龄范围检查(1-PATIENT_AGE_LIMIT, 与全局口径统一)
     SetTextValue(NVRAM0[EM_DC_PAGE], GDDC_PAGE_EDIT_PATIENT_TEXT_ID, (uint8_t*)"SET AGE");
     return;
   }
@@ -3645,7 +3648,13 @@ void listTreatmentRegisterConfirm(void){
   }
   if(hadPending != 0U){//激光流程: 患者已建, 把本次治疗记录归属到新患者
     treatmentLog.id = newId;
-    (void)treatmentEpromAddToPatient(newId, &treatmentLog);
+    ce = treatmentEpromAddToPatient(newId, &treatmentLog);
+    if(ce != TREATMENT_EPROM_OK){
+      // 患者已建但记录落盘失败: 保留待存与当前页, 提示重试(不回待机、不清待存)
+      SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_SUMMARY_0,
+                   (uint8_t*)"Save failed, please retry!");
+      return;
+    }
     listTreatmentCtx.pendingValid = 0U;
     returnStandbyDisplay();//记录已落盘, 回待机页
   }
@@ -3738,6 +3747,9 @@ static void listTreatmentRefreshVerifyDisplay(void){
             (unsigned int)treatmentLog.schemeIndex + 1U);
   }
   SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_SCHEME, (uint8_t*)dispBuf);
+  // 本页提示重置为默认引导语(清除上一次可能残留的错误信息)
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
+               (uint8_t*)"Fill in new patient info, or select an existing patient.");
 }
 
 // 进入核对页: 渲染并切页(不复制快照, 调用方负责treatmentLog内容)
@@ -3777,16 +3789,54 @@ void listTreatmentVerifyAfterLaser(void){
   listTreatmentEnterVerifyPage();
 }
 
-// 核对页SAVE_RECORD: 已选已有患者则直接归属记录; 新患者进注册页填写
+// GDDC_PAGE_VERIFY_TREATMENT的SAVE_RECORD: 本页校验后落盘, 全程不切GDDC_PAGE_REGISTER_PATIENT(2026-11-25 规则)
 void listTreatmentVerifySaveRecord(void){
+  patientRecord_t pat;
+  uint16_t newId = 0U;
+  treatmentEpromErr_t ce;
   if(treatmentLog.id != 0U){
-    (void)treatmentEpromAddToPatient(treatmentLog.id, &treatmentLog);
+    // 已有患者: 只追加治疗记录, 患者主表24字节不变
+    ce = treatmentEpromAddToPatient(treatmentLog.id, &treatmentLog);
+    if(ce != TREATMENT_EPROM_OK){
+      // 记录落盘失败: 保留待存与当前页, 提示重试(不回待机、不清待存)
+      SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
+                   (uint8_t*)"Save failed, please retry!");
+      return;
+    }
     listTreatmentCtx.pendingValid = 0U;
     returnStandbyDisplay();
     return;
   }
-  listTreatmentCtx.registerReturnPage = GDDC_PAGE_VERIFY_TREATMENT;
-  listTreatmentEnterRegisterPage();
+  // 新患者: 本页校验姓名非空/性别/年龄(1-150), 失败在本页提示、不切页不写盘
+  if((listTreatmentNameValid(treatmentLog.name) == 0U)
+     || ((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE))
+     || (treatmentLog.age == 0U) || (treatmentLog.age > PATIENT_AGE_LIMIT)){
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
+                 (uint8_t*)"Invalid input, please re-enter!");
+    return;
+  }
+  memset(&pat, 0, sizeof(pat));
+  pat.age = treatmentLog.age;
+  pat.gender = (uint8_t)treatmentLog.gender;
+  memcpy(pat.name, treatmentLog.name, TREATMENT_NAME_SIZE);
+  ce = treatmentPatientCreate(&pat, &newId);
+  if(ce != TREATMENT_EPROM_OK){
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
+                 (uint8_t*)"Save failed, please retry!");
+    return;
+  }
+  // 患者已建(分配最小空缺ID), 把本次治疗记录归属到新患者
+  treatmentLog.id = newId;
+  ce = treatmentEpromAddToPatient(newId, &treatmentLog);
+  if(ce != TREATMENT_EPROM_OK){
+    // 患者已建但记录落盘失败: 保留待存与当前页, 提示重试(不回待机、不清待存);
+    // treatmentLog.id已为newId, 重试走已有患者分支, 不会重复建患者
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
+                 (uint8_t*)"Save failed, please retry!");
+    return;
+  }
+  listTreatmentCtx.pendingValid = 0U;
+  returnStandbyDisplay();
 }
 
 // 核对页SELECT_TREATMENT: 列表页进入"选择已有患者"模式, 选中后回核对页
