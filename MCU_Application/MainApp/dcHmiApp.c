@@ -2710,7 +2710,10 @@ static void dcHmiShowTreatmentCommon(uint16_t screenId, const char *idText, cons
 	sprintf(dispBuf, "%s", log->name);
 	SetTextValue(screenId, GDDC_PAGE_EDIT_PATIENT_TEXT_NAME, (uint8_t*)dispBuf);
 	memset(dispBuf, 0x0, sizeof(dispBuf));
-	sprintf(dispBuf, "%d", log->age);
+	//年龄未填写(age=0)时下发空串保持空白, 不得显示"0"; 已填写才输出数字
+	if(log->age != 0){
+		sprintf(dispBuf, "%d", log->age);
+	}
 	SetTextValue(screenId, GDDC_PAGE_EDIT_PATIENT_TEXT_AGE, (uint8_t*)dispBuf);
 	//性别下拉菜单: 屏幕工程选项顺序"Male;Female"(索引0=男MALE, 1=女FEMALE)
 	SetSelectorValue(screenId, GDDC_PAGE_EDIT_PATIENT_MENU_GENDER,
@@ -3319,6 +3322,12 @@ void listTreatmentSelect(uint8_t slot){
     treatmentLog.age = pat.age;
     treatmentLog.gender = (GENDER_ENUM)pat.gender;
     memcpy(treatmentLog.name, pat.name, TREATMENT_NAME_SIZE);
+    //持久记录本次选择: 更新selectedPatientId/Name, 使SAVE回待机页时PATIENT_NAME显示该患者名,
+    //且再次激光核验经listTreatmentPrefillSelectedPatient自动归属该患者, 直到重新选择
+    listTreatmentCtx.selectedPatientId = pat.id;
+    memset(listTreatmentCtx.selectedPatientName, 0x0, sizeof(listTreatmentCtx.selectedPatientName));
+    strncpy(listTreatmentCtx.selectedPatientName, pat.name,
+            sizeof(listTreatmentCtx.selectedPatientName) - 1U);
     listTreatmentEnterVerifyPage();
     return;
   }
@@ -3567,6 +3576,8 @@ static void listTreatmentEnterRegisterPage(void);
 static void listTreatmentEnterVerifyPage(void);
 static void listTreatmentRefreshVerifyDisplay(void);
 static void listTreatmentGoListPage(void);
+static void listTreatmentClearVerifyFields(void);
+static void listTreatmentClearRegisterFields(void);
 
 // 回病历列表页(13): 重建过滤视图并刷新、切页
 static void listTreatmentGoListPage(void){
@@ -3580,22 +3591,20 @@ static void listTreatmentGoListPage(void){
   SetScreen(GDDC_PAGE_LIST_TREATMENT);
 }
 
-// 进入注册页: 建立按键未按下基线、清空提示, 显示预生成的最小空缺ID, 再切页
-static void listTreatmentEnterRegisterPage(void){
+// 按当前treatmentLog渲染注册页(先无条件清空再渲染), 供进入时预刷新与NotifyScreen冷加载重发复用
+static void listTreatmentRenderRegisterDisplay(void){
   char idBuf[16];
   uint16_t suggestId = treatmentPatientSuggestId();
-  SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_OK, 0);
-  SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL, 0);
-  SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_SUMMARY_0, (uint8_t*)"");
   if(suggestId != 0U){
     sprintf(idBuf, "%04u", (unsigned int)suggestId);
   }
   else{
     sprintf(idBuf, "----");
   }
+  // 先无条件清空姓名/年龄/性别/提示, 再按当前treatmentLog渲染(先清后绘, 杜绝上一次残留)
+  listTreatmentClearRegisterFields();
   dcHmiShowTreatmentCommon(GDDC_PAGE_REGISTER_PATIENT, idBuf, &treatmentLog);
-  //性别文本控件: 进入注册页即按当前患者性别自动刷新(男Male/女Female), 未选择则清空;
-  //dcHmiShowTreatmentCommon只更新性别菜单, 文本需在此单独下发, 否则切页后TEXT_GENDER残留旧值
+  //性别文本控件: dcHmiShowTreatmentCommon只更新性别菜单, 文本需单独下发, 否则切页后TEXT_GENDER残留旧值
   if(treatmentLog.gender == MALE){
     SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_GENDER,
                  (uint8_t*)"Male");
@@ -3608,8 +3617,21 @@ static void listTreatmentEnterRegisterPage(void){
     SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_GENDER,
                  (uint8_t*)"");
   }
+}
+
+// 进入注册页: 建立按键未按下基线, 预刷新后台页面后切页;
+// 冷加载完成后由NotifyScreen调用listTreatmentRenderRegisterDisplay重发(SetScreen后立即发会在冷加载窗口丢帧)
+static void listTreatmentEnterRegisterPage(void){
+  // 切页前先建立按键未按下基线
+  SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_OK, 0);
+  SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL, 0);
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_REGISTER_PATIENT;
+  // 冻结: 屏幕保持列表页, 预刷新与切页加载过程不可见
+  SetScreenUpdateEnable(0U);
+  listTreatmentRenderRegisterDisplay();//预刷新后台注册页(指令带screen id)
   SetScreen(GDDC_PAGE_REGISTER_PATIENT);
+  // 解冻: 一次性重绘注册页; 若冷加载覆盖预刷新值, 由NotifyScreen加载完成后再次渲染兜底
+  SetScreenUpdateEnable(1U);
 }
 
 // 列表页CREATE_NEW: 手动新建患者(不要求激光发射), 清空患者字段后进注册页
@@ -3646,6 +3668,14 @@ void listTreatmentRegisterConfirm(void){
                  (uint8_t*)"Save failed, please retry!");
     return;
   }
+  if(listTreatmentCtx.verifySelectMode != 0U){
+    //核对页22选择流程(SELECT_TREATMENT->列表13->CREATE_NEW)中的新建: 只创建患者,
+    //不把待存治疗记录归属(不AddToPatient), 保留pendingValid与verifySelectMode, 回列表页13
+    //由操作者决定是否选中该新患者; 选中后listTreatmentSelect回填患者字段并回核对页,
+    //治疗参数(能量/时长/功率/方案/脉宽)一直保留在treatmentLog未被清空
+    listTreatmentGoListPage();
+    return;
+  }
   if(hadPending != 0U){//激光流程: 患者已建, 把本次治疗记录归属到新患者
     treatmentLog.id = newId;
     ce = treatmentEpromAddToPatient(newId, &treatmentLog);
@@ -3671,10 +3701,29 @@ void listTreatmentRegisterCancel(void){
   }
 }
 
+// 进入核对页前清空本页可残留的显示控件(姓名/年龄/性别/提示), 防止上一次数据残留;
+// 清空后再由listTreatmentRefreshVerifyDisplay按当前treatmentLog渲染, 已选患者仍会正常回填
+static void listTreatmentClearVerifyFields(void){
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_NAME, (uint8_t*)"");
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_AGE, (uint8_t*)"");
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_GENDER, (uint8_t*)"");
+  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG, (uint8_t*)"");
+}
+
+// 进入注册页前清空本页可残留的显示控件(姓名/年龄/性别/提示), 防止上一次数据残留
+static void listTreatmentClearRegisterFields(void){
+  SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_NAME, (uint8_t*)"");
+  SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_AGE, (uint8_t*)"");
+  SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_GENDER, (uint8_t*)"");
+  SetTextValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_TEXT_SUMMARY_0, (uint8_t*)"");
+}
+
 // 核对页渲染: 把待存治疗(已在treatmentLog)写入核对页各控件
 static void listTreatmentRefreshVerifyDisplay(void){
   char dispBuf[CONFIG_DCHMI_DISKBUF_SIZE];
   char idBuf[16];
+  // 先无条件清空姓名/年龄/性别/提示, 再按当前treatmentLog渲染(先清后绘, 杜绝上一次残留)
+  listTreatmentClearVerifyFields();
   uint16_t suggestId;
   int32_t energyWhole, energyFrac;
   uint16_t mm, ss;
@@ -3739,21 +3788,32 @@ static void listTreatmentRefreshVerifyDisplay(void){
     sprintf(dispBuf, "Custom");
   }
   else if(treatmentLog.pulseMode == LASER_MODE_MP){
-    sprintf(dispBuf, "%s %u - Pulse", treatmentProtocolName(treatmentLog.protocol),
-            (unsigned int)treatmentLog.schemeIndex + 1U);
+    //脉冲模式: 与历史记录页15同口径, 追加正/负脉宽(ON=正脉宽posWidth, OFF=负脉宽negWidth, 单位ms)
+    sprintf(dispBuf, "%s %u - Pulse - ON %u / OFF %u ms",
+            treatmentProtocolName(treatmentLog.protocol),
+            (unsigned int)treatmentLog.schemeIndex + 1U,
+            (unsigned int)treatmentLog.posWidth,
+            (unsigned int)treatmentLog.negWidth);
   }
   else{
     sprintf(dispBuf, "%s %u - CW", treatmentProtocolName(treatmentLog.protocol),
             (unsigned int)treatmentLog.schemeIndex + 1U);
   }
   SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_SCHEME, (uint8_t*)dispBuf);
-  // 本页提示重置为默认引导语(清除上一次可能残留的错误信息)
-  SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
-               (uint8_t*)"Fill in new patient info, or select an existing patient.");
+  // GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG进入时保持空白(已在函数开头清空), 仅校验或落盘失败时才显示具体错误
 }
 
 // 进入核对页: 渲染并切页(不复制快照, 调用方负责treatmentLog内容)
+// 核对页三键(SAVE/DISCARD/SELECT)弹起基线: SAVE成功切走时按钮可能停在物理按下态,
+// 屏幕冷加载重绘会恢复该按下态, 故每次进入及冷加载完成后都重发弹起, 保证不卡按下
+static void listTreatmentReleaseVerifyKeys(void){
+  SetButtonValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD, 0);
+  SetButtonValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD, 0);
+  SetButtonValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SELECT_TREATMENT, 0);
+}
+
 static void listTreatmentEnterVerifyPage(void){
+  listTreatmentReleaseVerifyKeys();//切页前先建立按键未按下基线
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_VERIFY_TREATMENT;
   listTreatmentRefreshVerifyDisplay();
   SetScreen(GDDC_PAGE_VERIFY_TREATMENT);
@@ -3785,7 +3845,13 @@ void listTreatmentVerifyAfterLaser(void){
     treatmentLog = listTreatmentCtx.pending;
   }
   treatmentLog.id = 0U;//默认新患者路径
-  (void)listTreatmentPrefillSelectedPatient();//已选患者: 覆盖为其id/信息, 本次记录自动归属该患者
+  if(listTreatmentPrefillSelectedPatient() == 0U){
+    //无选中患者(新患者路径): 停光快照可能带着上一次新建患者的字段, 必须清空,
+    //使核对页姓名/年龄/性别保持空白待录入, 不残留过去患者信息
+    treatmentLog.age = 0U;
+    treatmentLog.gender = (GENDER_ENUM)0;
+    memset(treatmentLog.name, 0, sizeof(treatmentLog.name));
+  }
   listTreatmentEnterVerifyPage();
 }
 
@@ -3807,12 +3873,20 @@ void listTreatmentVerifySaveRecord(void){
     returnStandbyDisplay();
     return;
   }
-  // 新患者: 本页校验姓名非空/性别/年龄(1-150), 失败在本页提示、不切页不写盘
-  if((listTreatmentNameValid(treatmentLog.name) == 0U)
-     || ((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE))
-     || (treatmentLog.age == 0U) || (treatmentLog.age > PATIENT_AGE_LIMIT)){
+  // 新患者: 逐字段校验, 每个失败在本页给出具体原因(不切页不写盘), 直接定位是哪个字段未回写
+  if(listTreatmentNameValid(treatmentLog.name) == 0U){
     SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
-                 (uint8_t*)"Invalid input, please re-enter!");
+                 (uint8_t*)"Invalid name: please enter the patient name.");
+    return;
+  }
+  if((treatmentLog.gender != MALE) && (treatmentLog.gender != FEMALE)){
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
+                 (uint8_t*)"Invalid gender: please select Male or Female.");
+    return;
+  }
+  if((treatmentLog.age == 0U) || (treatmentLog.age > PATIENT_AGE_LIMIT)){
+    SetTextValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_TEXT_MSG,
+                 (uint8_t*)"Invalid age: please enter a value from 1 to 150.");
     return;
   }
   memset(&pat, 0, sizeof(pat));
@@ -3835,6 +3909,12 @@ void listTreatmentVerifySaveRecord(void){
                  (uint8_t*)"Save failed, please retry!");
     return;
   }
+  // 新建患者成功落盘: 持久记录为当前选中患者, 使回待机页PATIENT_NAME显示其名,
+  // 且重新选择前后续治疗经listTreatmentPrefillSelectedPatient自动归属该患者
+  listTreatmentCtx.selectedPatientId = newId;
+  memset(listTreatmentCtx.selectedPatientName, 0x0, sizeof(listTreatmentCtx.selectedPatientName));
+  strncpy(listTreatmentCtx.selectedPatientName, treatmentLog.name,
+          sizeof(listTreatmentCtx.selectedPatientName) - 1U);
   listTreatmentCtx.pendingValid = 0U;
   returnStandbyDisplay();
 }
@@ -4577,6 +4657,45 @@ static uint16_t s_keyArmScreen = 0U; //目标页面
 static uint16_t s_keyArmFirst = 0U;  //按钮范围起点(本工程按钮ID均远小于65535, 自增无回绕风险)
 static uint16_t s_keyArmLast = 0U;   //按钮范围终点
 
+// ===== 弹出层(系统键盘/下拉菜单)返回后, 延迟重新确认按键弹起 =====
+// 弹出层关闭会重绘注册/编辑/核对页, 可能把页面按钮恢复成按下态(固件无法靠屏幕通知捕获, DeviceScreenNotify=0)。
+// 在控件通知(NotifyText/NotifyMenu)时装填, 等弹出层完全关闭、重绘完成后再下发弹起帧;
+// 只重发按钮值、不改变使能, 故无灰化、不影响手感
+#define POPUP_RELEASE_DELAY_MS 150U
+static uint8_t  s_popupReleasePending = 0U;
+static uint32_t s_popupReleaseTick = 0U;
+static uint16_t s_popupReleaseScreen = 0U;
+static uint16_t s_popupReleaseFirst = 0U;
+static uint16_t s_popupReleaseLast = 0U;
+
+//装填一次弹出层返回后的按键释放(由NotifyText/NotifyMenu调用)
+void treatmentPopupReleaseArm(uint16_t screen, uint16_t first, uint16_t last){
+  if(first > last){
+    uint16_t tmp = first;
+    first = last;
+    last = tmp;
+  }
+  s_popupReleaseScreen = screen;
+  s_popupReleaseFirst = first;
+  s_popupReleaseLast = last;
+  s_popupReleaseTick = HAL_GetTick();
+  s_popupReleasePending = 1U;
+}
+
+//非阻塞延迟释放轮询(在dcHmiLoop每拍调用): 弹出层关闭重绘完成后, 对范围内按钮重新下发弹起帧
+void treatmentPopupReleaseLoop(void){
+  if(s_popupReleasePending == 0U){
+    return;
+  }
+  if((HAL_GetTick() - s_popupReleaseTick) < POPUP_RELEASE_DELAY_MS){
+    return;
+  }
+  s_popupReleasePending = 0U;
+  for(uint16_t c = s_popupReleaseFirst; c <= s_popupReleaseLast; c++){
+    SetButtonValue(s_popupReleaseScreen, c, 0U);
+  }
+}
+
 //装填一次按键基线(必须在SetScreen切页前调用): 先禁用阻断该按钮触摸, 再立即弹起——
 //禁用后活动触摸不会把清零压过, 故切页时按钮已是"禁用+弹起"的正确状态; 延迟后由轮询恢复使能
 void treatmentArmKeyBaseline(uint16_t screen, uint16_t first, uint16_t last){
@@ -5278,6 +5397,7 @@ void dcHmiLoop(void){//HMI轮训程序
 	listTreatmentPageReleaseLoop();//病历列表页翻页键延迟释放(非阻塞, 手指抬起后再清零/使能)
 	treatmentNavLoop();//固定延迟导航(非阻塞): 源按钮按下展示时间满后再执行切页
 	treatmentKeyArmLoop();//切页后延迟建立按键未按下基线(非阻塞, 手指抬起后再清零/使能)
+	treatmentPopupReleaseLoop();//系统键盘/下拉菜单返回后延迟重新确认按键弹起(非阻塞)
 	if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){//休眠软关机
 		return;
 	}
@@ -5828,10 +5948,14 @@ void dcHmiLoop(void){//HMI轮训程序
 			standbyKeyValue(0);
 			//先刷新READY页控件(指令带screen id,可预刷新后台页面)
 			NVRAM0[EM_DC_PAGE] = GDDC_PAGE_READY;//指定目标页面
+			//冻结画面: 屏幕保持STANDBY, 使预刷新与SetScreen切页的整屏重绘过程不可见, 消除进入READY的闪烁
+			SetScreenUpdateEnable(0U);
 			readyPageTouchEnable(0);
 			readyKeyValue(1);
 			updateReadyDisplay();
 			SetScreen(NVRAM0[EM_DC_PAGE]);//再切换页面,避免上一页控件残留
+			//解冻: 一次性重绘完整READY页(背景图+已预填控件), 无中间清屏/逐元素绘制, 故不闪
+			SetScreenUpdateEnable(1U);
 			SET_SAFE_RESET_OFF;//复位急停
 		}
 		if(LD(R_STANDBY_KEY_SCHEME_NEXT_DOWN)){
@@ -6803,9 +6927,14 @@ static void NotifyScreen(uint16_t screen_id){
 			}
 			break;
 		}
-    case GDDC_PAGE_EDIT_PATIENT:
+    case GDDC_PAGE_EDIT_PATIENT:{
+      //患者编辑页无调试控件, 页面加载不做调试刷新
+      break;
+    }
     case GDDC_PAGE_REGISTER_PATIENT:{
-      //患者注册/编辑页无调试控件, 页面加载不做调试刷新
+      //冷加载完成后重新清空并按当前treatmentLog渲染, 杜绝上一次输入残留(与其他页面冷加载重发一致);
+      //SetScreen后立即发会在冷加载窗口丢帧, 故放在本加载完成回调
+      listTreatmentRenderRegisterDisplay();
       break;
     }
     case GDDC_PAGE_LIST_RECORD:{
@@ -6826,6 +6955,13 @@ static void NotifyScreen(uint16_t screen_id){
     }
 		case GDDC_PAGE_OPERATOR_USB:{
 			refreshOperatorUsbDisplay();//页面冷加载完成后再下发一次摘要与U盘状态
+			break;
+		}
+		case GDDC_PAGE_VERIFY_TREATMENT:{
+			//冷加载完成后重新清空并按当前treatmentLog渲染, 保证新患者姓名/年龄/性别空白、不残留旧控件值
+			listTreatmentRefreshVerifyDisplay();
+			//冷加载可能恢复切页前的按下态, 重发三键弹起兜底, 保证SAVE等键不卡按下
+			listTreatmentReleaseVerifyKeys();
 			break;
 		}
 		default:break;
@@ -6885,6 +7021,17 @@ static void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t item, ui
   else if((screen_id == GDDC_PAGE_VERIFY_TREATMENT)
           && (control_id == GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER)){
     treatmentLog.gender = (item == 0U) ? MALE : FEMALE;
+  }
+  // 性别下拉菜单返回后延迟重新确认本页按键弹起: 弹出层关闭重绘可能把按钮恢复成按下态
+  if(screen_id == GDDC_PAGE_VERIFY_TREATMENT){
+    treatmentPopupReleaseArm(screen_id,
+      GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD,
+      GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD);
+  }
+  else{
+    treatmentPopupReleaseArm(screen_id,
+      GDDC_PAGE_REGISTER_PATIENT_KEY_OK,
+      GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL);
   }
 }
 

@@ -1226,6 +1226,10 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 						treatmentReleaseButton(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD);
 						listTreatmentVerifySaveRecord();
 					}
+					else{
+						//松开兜底: 校验失败停留时无活动触摸, 再下发弹起帧, 保证按钮可靠弹起不卡按下态
+						SetButtonValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD, 0);
+					}
 					break;
 				}
 				case GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD:{
@@ -1268,8 +1272,13 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 			switch(control_id){
 				case GDDC_PAGE_REGISTER_PATIENT_KEY_OK:{//保存: 校验后新建患者(激光流程同时落记录)
 					if(state){
+						//按下先释放(应对动作内切页, 保证切页前清零)再校验; 若校验失败停留、释放被活动触摸压过, 由松开分支兜底
 						treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_OK);//复位自锁按钮并解除互锁
 						listTreatmentRegisterConfirm();
+					}
+					else{
+						//松开: 已无活动触摸, 再下发一次弹起帧兜底, 保证校验失败停留时按钮可靠弹起、不卡按下态
+						SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_OK, 0);
 					}
 					break;
 				}
