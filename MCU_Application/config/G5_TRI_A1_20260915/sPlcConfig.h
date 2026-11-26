@@ -598,7 +598,7 @@ extern "C" {
 #define DM_TREATMENT_FW_CRC_L                         (DM_START + 12)//上次运行固件CRC32低16位(固件变化清空病历判据)
 #define DM_TREATMENT_FW_CRC_H                         (DM_START + 13)//上次运行固件CRC32高16位(固件变化清空病历判据)
 #define DM_TREATMENT_PATIENT_NUM                      (DM_START + 14)//EPROM中已储存患者(人数)总数 P
-#define DM_TREATMENT_NEXT_ID                          (DM_START + 15)//下一个可分配患者编号(单调, 删除不重编号)
+#define DM_TREATMENT_NEXT_ID                          (DM_START + 15)//患者编号高水位(最小空缺回收, 补空缺不拉低)
 
 /*****************************************************************************/
 #define X_ESTOP_NC																		(X_START * 16 + 0)//XIN0 紧急停止开关

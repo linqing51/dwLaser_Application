@@ -45,8 +45,8 @@ extern "C" {
 #define GDDC_PAGE_DELETE_TREATMENT                       14 //删除病历确认
 #define GDDC_PAGE_LIST_RECORD                            15 //‌治疗记录页面
 #define GDDC_PAGE_DELETE_RECORD							             16 //治疗记录删除页面
-#define GDDC_PAGE_EDIT_PATIENT                           17 //编辑病人
-#define GDDC_PAGE_REGISTER_PATIENT                       18 //添加病人
+#define GDDC_PAGE_EDIT_PATIENT                           17 //编辑患者
+#define GDDC_PAGE_REGISTER_PATIENT                       18 //添加患者
 #define GDDC_PAGE_OPERATOR_USB                           19 //USB导入导出操作页面
 #define GDDC_PAGE_OPERATOR_USB_SAVE                      20 //USB储存操作确认页面
 #define GDDC_PAGE_OPERATOR_USB_LOAD        				       21 //USB载入操作确认页面

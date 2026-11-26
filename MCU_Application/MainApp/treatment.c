@@ -1214,7 +1214,7 @@ static treatmentDemoErr_t demoVerify(uint16_t count){
 	return TREATMENT_DEMO_OK;
 }
 
-// 默认每病人记录数范围(参数全 0 时启用)
+// 默认每患者记录数范围(参数全 0 时启用)
 #define DEMO_REC_MIN_DEFAULT											5U
 #define DEMO_REC_MAX_DEFAULT											19U//每患者随机记录数上界(仅demo分布参数, 非存储上限, 与区块容量无关)
 
@@ -1255,7 +1255,7 @@ treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t 
 		// 唯一停止条件: 剩余空间放不下 患者行+至少1条记录
 		if(FreeBytesPR(CntP(), CntR()) < (uint32_t)(PAT_BYTES + REC_BYTES)){ break; }
 
-		// 该病人的目标记录数(每病人独立随机)
+		// 该患者的目标记录数(每患者独立随机)
 		wantRec = (uint16_t)demoRandRange((uint32_t)recMin, (uint32_t)recMax);
 
 		// 首条: 建立新患者(随机身份, 姓名去重由demoBuildRecord内部扫描FRAM保证)并写入第 1 条记录;
@@ -1270,7 +1270,7 @@ treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t 
 		// 第 2..wantRec 条: 复用患者身份(id/age/gender/name), 仅治疗参数随机
 		for(k = 1U; k < wantRec; k++){
 			treatmentLog_t more;
-			// 第一重保险(空隙): 剩余空间不足一条记录则结束该病人
+			// 第一重保险(空隙): 剩余空间不足一条记录则结束该患者
 			if(FreeBytesPR(CntP(), CntR()) < REC_BYTES){ break; }
 			demoBuildRecord(pid, &more);
 			more.id = pid;

@@ -2,7 +2,9 @@
 
 本文件固化 11 个病历相关页面（页面清单见第十六节 16.1）的**强制交互行为**，涵盖 `GDDC_PAGE_LIST_TREATMENT` 的页码、搜索、关闭按钮、患者选择闭环、删除患者确认，`GDDC_PAGE_OPERATOR_USB` 及导出/导入确认页，`GDDC_PAGE_VERIFY_TREATMENT` 核对页的患者信息录入与保存，以及全部病历页面的**按键互锁**（第十六节）。任何 AI 维护这些页面前必须先读完本文件，并按此实现，不得擅自更改匹配口径、排序规则、显示格式、页面跳转出口、患者选择归属、删除确认流程与按键互锁规则。
 
-> **最高优先级规格（2026-11-20）：导出后机内病历数据不清空。** 从设备导出病历到 U 盘后，机内患者表与治疗记录必须完整保留，不得删除或清空。本规格优先于任何软件功能改动与页面文案；确需“导出后清空本机病历”时，必须**先修改本规格并经用户明确确认**，之后才允许进行软件修改。任何 AI 不得擅自在导出流程中加入清空逻辑（详见第八节）。
+> **层级关系**：本文件从属于仓库根目录 `AI_RULES.md`。`AI_RULES.md` 中的规则描述具有最高优先级；本文件是其在病历 HMI 交互上的具体规格补充，与 `AI_RULES.md` 冲突时一律以 `AI_RULES.md` 为准。
+
+> **强制规格（2026-11-20）：导出后机内病历数据不清空。** 从设备导出病历到 U 盘后，机内患者表与治疗记录必须完整保留，不得删除或清空。本规则在本文件范围内强制，任何软件功能改动与页面文案不得违背；确需“导出后清空本机病历”时，必须**先修改本规格并经用户明确确认**，之后才允许进行软件修改。任何 AI 不得擅自在导出流程中加入清空逻辑（详见第八节）。
 
 - 实现位置：`MainApp/dcHmiApp.c`（过滤/排序/刷新）、`dcHmiNotifyButton.c`（按钮）、`dcHmiNotifyText.c`（文本输入）
 - 控件 ID 定义：`MainApp/dcHmiRes.h`
@@ -134,7 +136,7 @@
 ### 5.1 待机页进入列表页（已实现，必须保留）
 
 1. 在待机页点 `GDDC_PAGE_STANDBY_KEY_ENTER_TREATMENT`（控件 46），按钮回调只置标志 `R_STANDBY_KEY_ENTER_LIST_TREATMENT_DOWN`。
-2. 主循环待机状态机检测到该标志后：置 `FSMSTEP_LIST_TREATMENT`、`NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT`，先 `enterListTreatmentPage()` 重建患者视图并刷新，再 `SetScreen(13)`，随后清除进入标志。
+2. 主循环待机状态机检测到该标志后：置 `FSMSTEP_LIST_TREATMENT`、`NVRAM0[EM_DC_PAGE] = GDDC_PAGE_LIST_TREATMENT`，先 `enterListTreatmentPage()` 重建患者视图并刷新，再 `SetScreen(GDDC_PAGE_LIST_TREATMENT)`，随后清除进入标志。
 3. 该入口行为为强制规格，不得改为直接进编辑页或其他页面。
 
 ### 5.2 列表页选中患者并自动返回待机页
@@ -193,7 +195,7 @@
 
    | 控件完整宏名 | 控件 ID | 类型 | 职责 | 本页可否编辑 |
    |---|---|---|---|---|
-   | `GDDC_PAGE_VERIFY_TREATMENT_TEXT_ID` | 1 | 文本（只读） | 显示插空（最小空缺）患者 ID | 否 |
+   | `GDDC_PAGE_VERIFY_TREATMENT_TEXT_ID` | 1 | 文本（只读） | 显示患者 ID：已选患者显真实 ID；之前未选择患者时，新患者（id=0）显最小空缺 ID | 否 |
    | `GDDC_PAGE_VERIFY_TREATMENT_TEXT_NAME` | 2 | 文本输入 | 输入患者名字 | **是** |
    | `GDDC_PAGE_VERIFY_TREATMENT_TEXT_AGE` | 3 | 文本输入 | 输入患者年龄 | **是** |
    | `GDDC_PAGE_VERIFY_TREATMENT_TEXT_SUMMARY_TIME` | 4 | 文本（只读） | 该条记录的生成 RTC 时间 | 否 |
@@ -305,12 +307,12 @@
 
 - 仅在 `run_treatment` 分支、唯一活跃工程 `targetBoard_G5_TRI_A1_20260915` 内修改；UTF-8 编码与代码风格统一遵循仓库根 `AI_RULES.md`（权威规则主文件）。
 - 文本控件英文显示与非 ASCII 符号转换要求已提升为**全工程至高规格**，统一以根目录 `AI_RULES.md` 的“显示文本一律英文、非 ASCII 符号一律转换”条款为准（适用全部页面，修改或开口子须经仓库所有者人工授权）；本文件不再维护局部规则，原中点 `·` 等非 ASCII 分隔符一律改为 ASCII 符号。
-- 改动后按 `AI_RULES.md` 第 2 节做 AC5 与 AC6 完整 Rebuild、**两者均 0 Error 才算通过**（AC5 还须正常生成 hex）；无硬件时只能称为“编译级验证”，不得声称上板功能/时序已验证。
+- 改动后按 `AI_RULES.md` 第 2 节做 AC5 完整 Rebuild、**0 Error 并生成 hex 即为本分支编译验证通过**（本分支不迁移 AC6）；无硬件时只能称为“编译级验证”，不得声称上板功能/时序已验证。
 - 若控件 ID、页面编号或本文件描述的规则发生变化，必须同步更新本文件，保持规格与代码一致。
 
 ---
 
-## 八、导出后机内病历数据保留（最高优先级强制规格）
+## 八、导出后机内病历数据保留（强制规格）
 
 1. 执行导出（`GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK` → `GDDC_PAGE_OPERATOR_USB_SAVE` → `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`，最终调用 `treatmentLogSaveToUdisk`）后，机内患者表与治疗记录必须**完整保留**，患者数、记录数与导出前一致。
 2. 导出流程中**禁止**调用任何删除/清空病历的接口，包括 `treatmentEpromClear()`、`treatmentPatientDelete()`、`treatmentEpromDelete()`，也不得以“释放空间”“防止重复导入”等理由间接清空。
@@ -339,7 +341,7 @@
 
 ## 十、空槽位控件隐藏与搜索框清空（强制规格，2026-11-20）
 
-1. **空槽位判定**：窗口内槽位 `i` 的视图位置 `viewPos = topIndex + i`，当 `viewPos >= filteredCount` 时该槽位为空（搜索命中不足一屏、空视图、末页未满均适用）。用户所述“搜索后只有 2 个对应病人时，槽位 2–4 全部空白”即本条的具体情形；本条对 0–4 任意数量空槽位统一生效，不只限于 2 个病人的场景。
+1. **空槽位判定**：窗口内槽位 `i` 的视图位置 `viewPos = topIndex + i`，当 `viewPos >= filteredCount` 时该槽位为空（搜索命中不足一屏、空视图、末页未满均适用）。用户所述“搜索后只有 2 个对应患者时，槽位 2–4 全部空白”即本条的具体情形；本条对 0–4 任意数量空槽位统一生效，不只限于 2 个患者的场景。
 2. **空槽位文本**：`GDDC_PAGE_LIST_TREATMENT_TEXT_NAME_i`、`GDDC_PAGE_LIST_TREATMENT_TEXT_ID_i`、`GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_i` 三个文本框一律下发空串，不显示任何内容。
 3. **空槽位按键**：`GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_i`、`GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_i`、`GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_i` 三个按键必须同时 `SetControlVisiable(..., 0)` 隐藏、`SetControlEnable(..., 0)` 禁止触摸；各回调函数既有的空槽位 `viewPos >= filteredCount` 直接返回防护继续保留，作为双保险。
 4. **有效槽位恢复**：每次 `refreshListTreatmentDisplay()` 对全部 5 个槽位显式下发状态——有效槽位三个按键 `SetControlVisiable/Enable(..., 1)`，保证过滤、翻页、删除后重新占用的槽位按键能正常显示与触摸，不依赖屏幕工程的默认控件状态。
@@ -350,7 +352,7 @@
 
 ## 十一、病历数量文本框 TEXT_RECORD_COUNT_0–4 显示格式（强制规格，2026-11-20）
 
-1. **有效槽位（有对应病人）**：`GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_i` 显示固定英文格式 `Records: X`，其中 `X` 为该患者实际已记录的病历数量；**X 可以为 0**，此时显示 `Records: 0`。`X` 由 `refreshListTreatmentDisplay()` 预读窗口 5 行后，**单遍记录 id 轻读（2 字节/条）一次性统计**窗口各患者的记录数，不再为每个患者各做一次整行全表扫描。
+1. **有效槽位（有对应患者）**：`GDDC_PAGE_LIST_TREATMENT_TEXT_RECORD_COUNT_i` 显示固定英文格式 `Records: X`，其中 `X` 为该患者实际已记录的病历数量；**X 可以为 0**，此时显示 `Records: 0`。`X` 由 `refreshListTreatmentDisplay()` 预读窗口 5 行后，**单遍记录 id 轻读（2 字节/条）一次性统计**窗口各患者的记录数，不再为每个患者各做一次整行全表扫描。
 2. **空槽位**：仍按第十节下发空串，不显示任何内容。
 3. 文案为纯 ASCII（英文字母、冒号、空格与数字），符合根目录 `AI_RULES.md` 显示文本一律英文的至高规格，屏幕现有字体（font 6，ASC_CHS_20）可直接渲染，无需改屏幕工程。
 4. 曾提出的中文“病历数量X”方案：与 `AI_RULES.md` 英文显示至高规格冲突，且屏幕资源无中文字体（`dwLaser.fidx` 仅含 30 个 ASCII 字体，`charset.txt` 不含“病历数量”字形），经确认**不采用**。将来若要恢复中文显示，必须先经仓库所有者人工授权并修改 `AI_RULES.md` 至高规格，再完成屏幕中文字体工程（VisualTFT 配置中文字体、加入字形、重建并烧录屏幕资源），固件按 GB2312/GBK 编码下发。
@@ -431,7 +433,7 @@
 
 1. **进入确认页（不直接删除）**：记录页 `GDDC_PAGE_LIST_RECORD` 点击 `GDDC_PAGE_LIST_RECORD_KEY_DELETE_0–4`（控件 20–24）由统一入口 `listTreatmentRecordDeleteKey(slot)` 处理：先禁用 5 个 DELETE 键关闭触摸窗口，再由 `listTreatmentRecordDeleteStart(slot)` 缓存待删记录全局索引到 `deleteRecordGlobalIndex`、下发确认页内容，并在切页前对 `GDDC_PAGE_DELETE_RECORD_KEY_OK`/`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL` 建立未按下基线后 `SetScreen(GDDC_PAGE_DELETE_RECORD)`，即按下 DELETE 后先弹出确认页；不在记录页直接删除，也不在手指仍触摸时立即清零（防卡按下，见 16.10）。
 2. **控件**：`GDDC_PAGE_DELETE_RECORD_TEXT_NAME`（控件 1）、`GDDC_PAGE_DELETE_RECORD_TEXT_SUMMARY_0`（控件 2）、`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL`（控件 10）、`GDDC_PAGE_DELETE_RECORD_KEY_OK`（控件 11）。
-   - **`GDDC_PAGE_DELETE_RECORD_TEXT_NAME`（控件 1）显示待删记录所属病人**：按“病人姓名 - AR 编号”格式展示该条历史记录对应的病人名字和 ID（与记录页姓名行同口径，见 13.2），不显示通用标题。
+   - **`GDDC_PAGE_DELETE_RECORD_TEXT_NAME`（控件 1）显示待删记录所属患者**：按“患者姓名 - AR 编号”格式展示该条历史记录对应的患者名字和 ID（与记录页姓名行同口径，见 13.2），不显示通用标题。
 3. **`GDDC_PAGE_DELETE_RECORD_TEXT_SUMMARY_0`（控件 2）显示待删记录摘要**：按“治疗日期 - 发射能量 - 发射时间 - 发射功率”四字段展示该条记录的真实数据（不是通用提示语），供用户核对将要删除的对象；该记录无 RTC 时日期段显 `---- --:--`。
 4. **`GDDC_PAGE_DELETE_RECORD_KEY_OK`（控件 11）**：`listTreatmentDeleteRecordConfirm()` 调用 `treatmentRecordDeleteByIndex(idx)` 删除该条（墓碑 + 安全压缩），清空缓存索引、重新枚举；**在 `SetScreen(GDDC_PAGE_LIST_RECORD)` 之前**先对记录页控件 20–28 清零、调 `refreshListRecordDisplay()` 重渲染并 `listTreatmentRecordUpdatePageKeys()` 恢复使能，再返回上一级记录页（不依赖切页后的 `NotifyScreen`）。
 5. **`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL`（控件 10）**：`listTreatmentDeleteRecordCancel()` 放弃删除、不做任何 EPROM 写入，清空缓存索引；同样在 `SetScreen(GDDC_PAGE_LIST_RECORD)` 前完成清零/重渲染/使能恢复后直接返回上一级记录页。
@@ -445,7 +447,7 @@
 1. **编码格式**：`AR` + 一个空格 + 至少 4 位递增数字，不足 4 位前面补零，例如 `AR 0001`、`AR 0002`、`AR 0011`。
 2. **EPROM 只存数字**：为节省空间，患者行 `patientRecord_t.id` 与记录外键均只存 `uint16_t` 递增数字，不存 `AR` 前缀或空格；在 HMI 显示与 CSV 导出/导入时由软件自动加/去 `AR ` 前缀。
 3. **自动生成、不可手动修改**：新建患者编号**最小空缺优先回收复用、无空缺才取最大数字加 1**（`treatmentPatientSuggestId` / `FirstFreePatientId`），不接受手动输入；删除患者留下的编号会被后续新患者优先复用，但既有患者自身编号永不重编号。
-4. **新患者分配新 ID，老患者复用**：再次治疗选择已有患者时追加治疗记录、沿用原 ID；新建患者的具体编号由数据层按当前最大 ID 递增分配（某个时点的已分配编号属于运行数据，不在本强制规格中记录）。
+4. **新患者分配新 ID，老患者复用**：再次治疗选择已有患者时追加治疗记录、沿用原 ID；新建患者的具体编号由数据层按本节第 3 条的最小空缺规则分配（某个时点的已分配编号属于运行数据，不在本强制规格中记录）。
 5. **同名不代表同一患者**：选择已有患者即复用其 ID；选择 Create New Patient 则生成新 ID，即使姓名相同也视为不同患者。
 6. **CSV 落地**：导出 ID 列输出 `AR 0001`，导入由 `treatmentCsvParseId()` 解析回数字（同时兼容旧版纯数字列）；ID 数字范围对齐片上 `PATIENT_ID_LIMIT`。
 7. 本规则任何改动必须先更新本节，并同步 HMI 显示、`minicsvApp.c` 前缀处理与 `treatment.c` 分配逻辑。
@@ -558,7 +560,7 @@
    - **步骤①动作开始即对 5 个 DELETE 键 `SetControlEnable(0)`**：阻塞切页期间这些键物理上不接受新触摸、不产生重复 `state=1`；
    - **步骤②调 `listTreatmentRecordDeleteStart(slot)`**：置确认索引/文案，切页前对 `GDDC_PAGE_DELETE_RECORD_KEY_OK`/`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL` 下发 `SetButtonValue(0)` 建立未按下基线（防止进入即取消键按下），再 `SetScreen(GDDC_PAGE_DELETE_RECORD)`；
    - **步骤③ `treatmentBtnLockReset()` 解除本页互锁**：`GDDC_PAGE_DELETE_RECORD_KEY_OK`/`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL` 会重新武装，即使内部早退也不残留锁。
-3. **返回记录页（切页前完成，OK 与 CANCEL 同构）**：`listTreatmentDeleteRecordConfirm/Cancel` 在 `SetScreen(15)` 之前，确认页仍为当前页时依次：对 20–28 全部 `SetButtonValue(0)` 清按下态 → `refreshListRecordDisplay()` 重渲染（剩余记录上移回缩，空槽文本隐藏、DELETE 键按 occupied 隐藏并禁用/使能）→ `listTreatmentRecordUpdatePageKeys()` 恢复翻页键。此时原 DELETE 手指已抬起、键上无活动触摸，清零确定性生效。
+3. **返回记录页（切页前完成，OK 与 CANCEL 同构）**：`listTreatmentDeleteRecordConfirm/Cancel` 在 `SetScreen(GDDC_PAGE_LIST_RECORD)` 之前，确认页仍为当前页时依次：对 20–28 全部 `SetButtonValue(0)` 清按下态 → `refreshListRecordDisplay()` 重渲染（剩余记录上移回缩，空槽文本隐藏、DELETE 键按 occupied 隐藏并禁用/使能）→ `listTreatmentRecordUpdatePageKeys()` 恢复翻页键。此时原 DELETE 手指已抬起、键上无活动触摸，清零确定性生效。
 4. **范围约束**：只禁用 5 个 DELETE 键（20–24），不碰 `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`（27）/`GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`（28），这两个键始终保持使能、无独立使能管理；`GDDC_PAGE_DELETE_RECORD` 的 `GDDC_PAGE_DELETE_RECORD_KEY_OK`/`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL` 触摸与数据层删除/压缩逻辑不变。`NotifyScreen(15)` 保留为兜底重发，不再作为主清理路径。
 5. **待确认**：无硬件，禁用灰化、确认页切换与返回后按键弹起/记录是否删除/文本回缩待上板确认；若仍有极端 case，同样可改屏幕“瞬变”按钮（方法 A）根治。
 
@@ -676,3 +678,12 @@
 43. **2026-11-25（核对页选择患者持久归属 + 待机显示 + 后续自动归属，#156）**：用户要求治疗结束弹核对页、点 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SELECT_TREATMENT`（32）进列表页选具体患者（`GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0–4`）后，要把该患者记录为当前选中患者，回待机页 `GDDC_PAGE_STANDBY_TEXT_PATIENT_NAME` 显示其名，且重新选择前再次激光核验默认归属该患者。代码级根因：`listTreatmentSelect` 的 `verifySelectMode` 分支原只把患者填入 `treatmentLog`、刻意不更新 `selectedPatientId/Name`（旧口径“不改变待机页归属”），导致选择不持久、待机名不更新、下次核验无法自动回填。修复在固件：该分支在填 `treatmentLog` 后同步更新 `selectedPatientId`/`selectedPatientName`（保留回核对页 SAVE 流程，不立即回待机）；SAVE 落盘后 `returnStandbyDisplay` → `updateStandbyDisplay` 经 `listTreatmentWriteStandbyPatientName` 显示患者名；下次激光 `listTreatmentVerifyAfterLaser` 经 `listTreatmentPrefillSelectedPatient` 自动回填该患者。正文规则见 5.6 第 5 条（旧“不改变归属”表述已修订）。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），Code=242204，hex 正常生成；实际归属与待机显示待上板确认。
 44. **2026-11-25（核对页本页新建患者持久归属 + 待机显示，#157）**：用户要求在核对页 `GDDC_PAGE_VERIFY_TREATMENT`（22）本页直接录入新患者姓名/年龄/性别并 SAVE 储存后，回待机页 `GDDC_PAGE_STANDBY_TEXT_PATIENT_NAME` 也要显示该新建患者名，且重新选择前后续治疗记录归属该患者。代码级根因：`listTreatmentVerifySaveRecord` 新患者成功路径（`treatmentPatientCreate` + `AddToPatient` 成功后）原只清 `pendingValid` 回待机，未设置 `selectedPatientId/Name`，导致待机名空白、下次激光仍走新患者路径而非归属。修复在固件：新患者成功落盘后、回待机前，设置 `selectedPatientId = newId`、`selectedPatientName = treatmentLog.name`；回待机经 `listTreatmentWriteStandbyPatientName` 显示其名，下次激光 `listTreatmentVerifyAfterLaser` 经 `listTreatmentPrefillSelectedPatient` 自动回填归属。正文规则见 5.6 第 4 条新患者子项。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），Code=242244，hex 正常生成；实际新建归属与待机显示待上板确认。
 45. **2026-11-25（核对页进入三键弹起基线，修 SAVE 键再次进入卡按下 #158）**：用户上板发现核对页 `GDDC_PAGE_VERIFY_TREATMENT`（22）的 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（30）在使用过一次后，再次进入该页时按钮停在按下态、未弹起。代码级根因：SAVE 成功路径在按下（state=1）时先 `treatmentReleaseButton` 再 `returnStandbyDisplay` 切页，切走瞬间手指仍可能压着按钮（活动触摸竞争），切页后手指松开的 state=0 帧已不在当前页，屏幕保存并在下次冷加载重绘时恢复按下态；而 `listTreatmentEnterVerifyPage` 原未对按键做弹起基线。修复在固件：新增 `listTreatmentReleaseVerifyKeys()` 对三键（SAVE=30/DISCARD=31/SELECT=32）下发 `SetButtonValue(...,0)`，进入函数切页前调用一次、`NotifyScreen` 冷加载完成后再调用一次兜底。正文规则见 5.6 第 6 条新增子项。AC5 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），Code=242292，hex 正常生成；实际弹起手感待上板确认。
+46. **2026-11-26（规则冲突复审收口：AC6 本分支不迁移、ID 回收口径维持、入口文件纯引导化）**：仓库所有者对规则一致性复审的三项问题再次拍板，本次为文档修订加一处头文件注释更正。①AC6 迁移——本分支明确不迁移，编译验证落地标准为 AC5 完整 Rebuild 0 Error 并生成 hex；不新增 FreeRTOS GCC/ARM_CM4F port、不处理 armclang 下 static 冲突，双编译器 0 Error 要求保留至将来专门的 AC6 迁移分支（推翻第 34 条②“恢复 AC6 验证”的临时口径）；②患者编号——维持“最小空缺优先回收复用、无空缺才最大 ID+1”口径，同步修正 `sPlcConfig.h` 中 `DM_TREATMENT_NEXT_ID` 的过时注释（高水位、补空缺不拉低）；③分支范围定性——资源节省优化（为病历腾出 RAM/EPROM 空间的直接配套）与工程模式仿真脚踏（调试激光发射后病历记录功能）均属病历配套、在分支范围内，不构成范围扩大；④入口文件——根 `AGENTS.md`、`MCU_Application/AGENTS.md`、`.cursorrules`、`.trae/rules/project_rules.md` 统一精简为纯引导，不再维护易过时摘要。`sPlcConfig.h` 注释改动后 AC5 Rebuild 结果以编译日志为准。
+47. **2026-11-26（规则文档措辞修订：残缺句重写、注释口径统一为只用 //）**：仓库所有者要求两项纯文档修订，代码零改动。①第 6 节“规则文档只保留不随时间变化的规则”条目重写——原句缺主语谓语，明确为“时点状态（某时点的屏幕工程/数据状态）与变更日志只允许留在规格文档中，不得写进强制规则正文”；②英文显示至高规格的注解决外条目删除“块注释”字样，明确注释风格统一只用 `//`、不用 `/* */`，与第 5 节代码风格口径一致；中文注释豁免保留。纯文档修订，无需重新编译。
+48. **2026-11-26（质量门清单快照口径清理：只留检查方法与判据，时点数字以实测为准）**：仓库所有者要求清理《G5工程质量门检查清单》，纯文档修订、代码零改动。删除固化的基线数字（Code/RO/RW/ZI）、内存表占用与空闲列、失效的他人在途改动名单、释放点计数与警告行号等易过时内容；保留稳定的区域起始/大小、工具链路径与检查方法，统一改为以最新 Keil 日志 Program Size 与 `.map` Execution Region 行实测/复算为准；同时明确 UV4 返回码仅作参考（有警告时返回码仍可能为 0），结果以日志文本判据为准。纯文档修订，无需重新编译。
+49. **2026-11-26（删除规则中 COM2 端口固化描述；双编译要求明确为 master 主线约束、本分支豁免）**：仓库所有者拍板两项纯文档修订。①删除 `AI_RULES.md` 中两处固化的虚拟串口 **COM2** 端口号（调试串口物理参数 USART3/115200 8N1 保留）；`host_diag` 脚本的 `--port` 默认参数属工具代码、`CLISerial.h` 的 `serCOM2` 为片上串口枚举，均与该描述无关，不动。②双编译器 0 Error 及“自编代码调用方式在两个编译器下可编译”明确为 **master 主线要求**，本分支（run_treatment）不受该约束，仅须 AC5 完整 Rebuild 0 Error 出 hex；`活跃工程说明.md` 同步该口径。纯文档修订，无需重新编译。
+50. **2026-11-26（修复 ID 分配条目内部矛盾；正文裸数字页面 ID 改完整宏名）**：仓库所有者拍板两项纯文档修订，代码零改动。①第十五节第 4 条“按当前最大 ID 递增分配”与同节第 3 条最小空缺回收口径矛盾，改为“由数据层按本节第 3 条的最小空缺规则分配”；②正文 5.1 与 16.10 中 `SetScreen(13)`/`SetScreen(15)` 两处裸数字违反完整宏名规则且与代码不符，分别改为 `SetScreen(GDDC_PAGE_LIST_TREATMENT)`、`SetScreen(GDDC_PAGE_LIST_RECORD)`，与固件实际写法一致；附录 A 变更日志中的历史裸数字保留不动。纯文档修订，无需重新编译。
+51. **2026-11-26（补全核对页 TEXT_ID 控件表职责描述）**：5.6 控件表中 `GDDC_PAGE_VERIFY_TREATMENT_TEXT_ID`（控件 1）原仅写“显示插空（最小空缺）患者 ID”，未覆盖已选患者场景，与 5.5 第 179 行口径及代码 `dcHmiApp.c:3730` 的分支逻辑不符。按仓库所有者口径补全为“显示患者 ID：已选患者显真实 ID；之前未选择患者时，新患者（id=0）显最小空缺 ID”。纯文档修订，无需重新编译。
+52. **2026-11-26（活跃工程说明对齐实测口径；明确 UI 规格与 AI_RULES 层级映射）**：仓库所有者拍板两项纯文档修订。①《活跃工程说明》“当前验证状态”章节删除固化的 Code/RO/RW/ZI 时点数字与 static 冲突计数，改为“验证状态与判据”，时点数字以最新 Keil 日志 Program Size 实测为准，保留 0 Error 判据、第三方 usbh_cdc 警告基线与 AC6 不迁移等稳定事实；②本文件抬头新增层级关系声明：本文件从属于 `AI_RULES.md`，其规则描述具有最高优先级、本文件为具体规格补充、冲突以 AI_RULES 为准；原“最高优先级规格/最高优先级强制规格”两处自称改为“强制规格”，避免两个“最高”并存。纯文档修订，无需重新编译。
+53. **2026-11-26（中文术语统一：全文“病人”改“患者”，术语规则写入 AI_RULES）**：仓库所有者要求统一中文术语，纯文档修订、代码零改动。本文件全部“病人”（含“病人姓名”“所属病人”“对应病人”等）整词替换为“患者”，与全文主体用词一致；根 `AI_RULES.md` 第 5 节新增中文术语统一规则——文档与注释一律用“患者”、不用“病人”，新增内容必须遵循。纯文档修订，无需重新编译。
+54. **2026-11-26（代码注释术语统一：4 个 MainApp 源文件“病人”改“患者”）**：承接第 53 条术语规则，把 `dcHmiApp.c`、`dcHmiRes.h`、`treatment.c`、`treatment.h` 注释中残留的 8 处“病人”整词替换为“患者”（仅注释、无字符串与标识符改动，不改变任何运行时行为）；替换后按 AI_RULES 第 2 节执行 AC5 完整 Rebuild 验证，结果以编译日志为准。
