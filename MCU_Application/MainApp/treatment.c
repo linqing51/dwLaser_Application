@@ -43,15 +43,15 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave){
 //============================================================================
 // 区块几何与持久化计数
 //============================================================================
-#define REG_START								((uint32_t)CONFIG_EPROM_TREATMENT_START)
-#define REG_END									((uint32_t)CONFIG_EPROM_TREATMENT_END)
-#define REG_SIZE								((uint32_t)CONFIG_EPROM_TREATMENT_SIZE)
-#define PAT_BYTES								((uint16_t)sizeof(patientRecord_t))	// 24
-#define REC_BYTES								((uint16_t)sizeof(treatmentRecord_t))	// 28
+#define REG_START        ((uint32_t)CONFIG_EPROM_TREATMENT_START)
+#define REG_END          ((uint32_t)CONFIG_EPROM_TREATMENT_END)
+#define REG_SIZE         ((uint32_t)CONFIG_EPROM_TREATMENT_SIZE)
+#define PAT_BYTES        ((uint16_t)sizeof(patientRecord_t)) // 24
+#define REC_BYTES        ((uint16_t)sizeof(treatmentRecord_t)) // 28
 // 字段偏移统一用 offsetof 取编译器真实布局, 不写死魔法数字:
 // 结构字段增减时偏移自动跟随, 从根本上消除"数据偏移"(正文/magic写错位置)隐患。
-#define PAT_BODY_OFFSET						((uint32_t)offsetof(patientRecord_t, age))	// 患者正文(age)起始偏移
-#define REC_MAGIC_OFFSET					((uint32_t)offsetof(treatmentRecord_t, magic))	// 记录magic状态字段偏移
+#define PAT_BODY_OFFSET  ((uint32_t)offsetof(patientRecord_t, age)) // 患者正文(age)起始偏移
+#define REC_MAGIC_OFFSET ((uint32_t)offsetof(treatmentRecord_t, magic)) // 记录magic状态字段偏移
 
 // 编译期尺寸固化: 防止结构调整后尺寸假设失效。
 // ARMCC5(本工程,C99)不支持C11关键字_Static_assert, 改用负数组惯用法:
@@ -969,8 +969,8 @@ static const demoProfile_t demoProfileTable[] = {
 	{eDentistry,     6,  8, 75,  55,  1,  4,   20,  120,  30},
 	{eTherapy,       8, 18, 78,  50,  2, 10,   60,  600,  60}
 };
-#define DEMO_PROFILE_NUM								(sizeof(demoProfileTable) / sizeof(demoProfile_t))
-#define DEMO_PROFILE_WEIGHT_TOTAL						100
+#define DEMO_PROFILE_NUM          (sizeof(demoProfileTable) / sizeof(demoProfile_t))
+#define DEMO_PROFILE_WEIGHT_TOTAL 100
 
 //测试病历姓名池: 西方常用人名, 首字母大写、其余小写(区分大小写), 组合时"名前姓后"; 名+空格+姓总长不超过18字符
 static const char *const demoSurnamePool[] = {
@@ -986,9 +986,9 @@ static const char *const demoGivenFemalePool[] = {
 	"Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Karen",
 	"Lisa", "Nancy", "Betty", "Margaret", "Sandra", "Ashley", "Kimberly", "Emily", "Donna", "Michelle"
 };
-#define DEMO_SURNAME_NUM								(sizeof(demoSurnamePool)/sizeof(demoSurnamePool[0]))
-#define DEMO_GIVEN_MALE_NUM								(sizeof(demoGivenMalePool)/sizeof(demoGivenMalePool[0]))
-#define DEMO_GIVEN_FEMALE_NUM							(sizeof(demoGivenFemalePool)/sizeof(demoGivenFemalePool[0]))
+#define DEMO_SURNAME_NUM      (sizeof(demoSurnamePool)/sizeof(demoSurnamePool[0]))
+#define DEMO_GIVEN_MALE_NUM   (sizeof(demoGivenMalePool)/sizeof(demoGivenMalePool[0]))
+#define DEMO_GIVEN_FEMALE_NUM (sizeof(demoGivenFemalePool)/sizeof(demoGivenFemalePool[0]))
 
 static uint32_t demoRandState = 1U;
 static void demoRandSeed(uint32_t seed){
@@ -1215,8 +1215,8 @@ static treatmentDemoErr_t demoVerify(uint16_t count){
 }
 
 // 默认每患者记录数范围(参数全 0 时启用)
-#define DEMO_REC_MIN_DEFAULT											5U
-#define DEMO_REC_MAX_DEFAULT											19U//每患者随机记录数上界(仅demo分布参数, 非存储上限, 与区块容量无关)
+#define DEMO_REC_MIN_DEFAULT 5U
+#define DEMO_REC_MAX_DEFAULT 19U //每患者随机记录数上界(仅demo分布参数, 非存储上限, 与区块容量无关)
 
 treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed, uint8_t recMin, uint8_t recMax,
                                          uint8_t clearFirst,

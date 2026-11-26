@@ -34,9 +34,9 @@ extern "C" {
 // 患者姓名长度: 最多 CONFIG_TREATMENT_NAME_LEN 个字符(不含结束符), 缓冲区另加 1 字节结束符;
 // 片上患者行与 RAM 复合视图共用同一长度, 改此值即同时改变 EPROM 患者行尺寸(存量病历按固件CRC变化整片清空)
 #ifndef CONFIG_TREATMENT_NAME_LEN
-#define CONFIG_TREATMENT_NAME_LEN										18
+#define CONFIG_TREATMENT_NAME_LEN 18
 #endif
-#define TREATMENT_NAME_SIZE													(CONFIG_TREATMENT_NAME_LEN + 1)
+#define TREATMENT_NAME_SIZE       (CONFIG_TREATMENT_NAME_LEN + 1)
 //***************************************************************************
 // 性别
 typedef enum{
@@ -141,23 +141,23 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave);
 /*****************************************************************************/
 #if defined(CONFIG_EPROM_TREATMENT_START)
 // 片上定长行尺寸
-#define CONFIG_EPROM_PATIENT_RECORD_SIZE								(sizeof(patientRecord_t))
-#define CONFIG_EPROM_TREATMENT_RECORD_SIZE								(sizeof(treatmentRecord_t))
-#define CONFIG_EPROM_TREATMENT_SLOT_EMPTY								0xFFFFu
+#define CONFIG_EPROM_PATIENT_RECORD_SIZE   (sizeof(patientRecord_t))
+#define CONFIG_EPROM_TREATMENT_RECORD_SIZE (sizeof(treatmentRecord_t))
+#define CONFIG_EPROM_TREATMENT_SLOT_EMPTY  0xFFFFu
 
 // 物理容量(紧凑索引数组上界): 由区块字节数/患者行尺寸推导, 是物理上限而非业务限制, 不参与写入封顶
-#define TREATMENT_PHYSICAL_PATIENT_CAP								((uint16_t)(CONFIG_EPROM_TREATMENT_SIZE / CONFIG_EPROM_PATIENT_RECORD_SIZE))
+#define TREATMENT_PHYSICAL_PATIENT_CAP     ((uint16_t)(CONFIG_EPROM_TREATMENT_SIZE / CONFIG_EPROM_PATIENT_RECORD_SIZE))
 
 // 行状态机(刻意避开 0x00 与 0xFF, 使 clearEprom 的 0x00 与空白 FRAM 的 0xFF 都被识别为非有效)
-#define ROW_MAGIC_BLANK													0xFFu
-#define ROW_MAGIC_PENDING												0x33u
-#define ROW_MAGIC_COMMIT												0x5Au
-#define ROW_MAGIC_TOMB													0xA5u
+#define ROW_MAGIC_BLANK                    0xFFu
+#define ROW_MAGIC_PENDING                  0x33u
+#define ROW_MAGIC_COMMIT                   0x5Au
+#define ROW_MAGIC_TOMB                     0xA5u
 
 // 患者/记录元数据硬边界(受 u16 与 DM int16 宽度约束)
-#define PATIENT_ID_LIMIT												32767u
-#define RECORD_SEQ_LIMIT												65534u
-#define PATIENT_AGE_LIMIT												150u
+#define PATIENT_ID_LIMIT                   32767u
+#define RECORD_SEQ_LIMIT                   65534u
+#define PATIENT_AGE_LIMIT                  150u
 
 // 错误码: 保留基线 TREATMENT_EPROM_ERR_* 语义, 新增患者/记录级别名
 typedef enum{
@@ -172,9 +172,9 @@ typedef enum{
 }treatmentEpromErr_t;
 
 // 语义别名(存储层内部及新代码使用)
-#define PATIENT_FULL						TREATMENT_EPROM_ERR_FULL
-#define PATIENT_NOT_FOUND					TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND
-#define PATIENT_INVALID						TREATMENT_EPROM_ERR_PARAM
+#define PATIENT_FULL      TREATMENT_EPROM_ERR_FULL
+#define PATIENT_NOT_FOUND TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND
+#define PATIENT_INVALID   TREATMENT_EPROM_ERR_PARAM
 
 //============================================================================
 // 一级 API: 患者 / 记录 归一化操作
@@ -230,14 +230,14 @@ typedef void (*treatmentEpromVisitFn)(uint16_t index, const treatmentLog_t *log)
 void treatmentEpromTraverse(treatmentEpromVisitFn fn);
 //***************************************************************************
 #ifndef CONFIG_TREATMENT_DEMO_VERBOSE
-#define CONFIG_TREATMENT_DEMO_VERBOSE										0
+#define CONFIG_TREATMENT_DEMO_VERBOSE 0
 #endif
 // 已废弃: 随机填充不再使用固定数量, 保留仅为兼容, 不参与逻辑
 #ifndef CONFIG_TREATMENT_DEMO_COUNT
-#define CONFIG_TREATMENT_DEMO_COUNT											200
+#define CONFIG_TREATMENT_DEMO_COUNT   200
 #endif
 #ifndef CONFIG_TREATMENT_DEMO_SEED
-#define CONFIG_TREATMENT_DEMO_SEED											0
+#define CONFIG_TREATMENT_DEMO_SEED    0
 #endif
 // 虚拟病历生成: 直接写入本区块, 各子项按真实治疗场景自洽模拟
 typedef enum{
