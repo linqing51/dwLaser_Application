@@ -1,8 +1,8 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 // 病历存储模块 (归一化双结构 + 双区对向增长 + 断电原子提交)
 //
@@ -24,13 +24,13 @@
 //----------------------------------------------------------------------------
 #ifndef __TREATMENT_H__
 #define __TREATMENT_H__
-/*****************************************************************************/
+// ***************************************************************************
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*****************************************************************************/
+// ***************************************************************************
 #include "sPlc.h"
-/*****************************************************************************/
+// ***************************************************************************
 // 患者姓名长度: 最多 CONFIG_TREATMENT_NAME_LEN 个字符(不含结束符), 缓冲区另加 1 字节结束符;
 // 片上患者行与 RAM 复合视图共用同一长度, 改此值即同时改变 EPROM 患者行尺寸(存量病历按固件CRC变化整片清空)
 #ifndef CONFIG_TREATMENT_NAME_LEN
@@ -40,58 +40,58 @@ extern "C" {
 //***************************************************************************
 // 性别
 typedef enum{
-	MALE = 1,
-	FEMALE = 2
+  MALE = 1,
+  FEMALE = 2
 }GENDER_ENUM;
 
 // 激光波长
 typedef enum{
-	WAVE_450 = 1,
-	WAVE_915,
-	WAVE_980,
-	WAVE_1064,
-	WAVE_1470,
-	WAVE_1920,
-	WAVE_635,
-	WAVE_1940,
-	WAVE_1470_980
+  WAVE_450 = 1,
+  WAVE_915,
+  WAVE_980,
+  WAVE_1064,
+  WAVE_1470,
+  WAVE_1920,
+  WAVE_635,
+  WAVE_1940,
+  WAVE_1470_980
 }LASER_WAVE_ENUM;
 
 // 工作协议
 typedef enum{
-	ePhlebology = 0,
-	eProctology,
-	eGynecology,
-	eENT,
-	eNeurosurgery,
-	eDermatology,
-	eLiposuction,
-	eDentistry,
-	eTherapy,
-	eCustiom
+  ePhlebology = 0,
+  eProctology,
+  eGynecology,
+  eENT,
+  eNeurosurgery,
+  eDermatology,
+  eLiposuction,
+  eDentistry,
+  eTherapy,
+  eCustiom
 }PROTOCOL_ENUM;
-/*****************************************************************************/
+// ***************************************************************************
 // RAM 内复合视图(仅内存使用; 存储层负责与片上结构 split/join)
 typedef struct{
-	uint16_t id;                       //患者编号
-	uint8_t  age;
-	int16_t  laserPower;               //激光功率(W)
-	int32_t  releaseEnergy;            //已发射能量(0.1J, decijoule; 显示时除以10)
-	int32_t  releaseTime;              //发射时间(秒)
-	char     name[TREATMENT_NAME_SIZE];//患者姓名(最多CONFIG_TREATMENT_NAME_LEN个字符)
-	GENDER_ENUM gender;                //患者性别
-	LASER_WAVE_ENUM laserWave;         //选择的波长
-	PROTOCOL_ENUM protocol;            //选择的预设方案
-	uint8_t  pulseMode;                //激光发射模式(LASER_MODE_CW/MP), 0=未记录
-	uint8_t  schemeIndex;              //选中预设方案在其分类内的索引(0..31)
-	uint16_t posWidth;                 //正脉宽(ms)
-	uint16_t negWidth;                 //负脉宽(ms)
-	uint16_t rtcYear;                  //治疗时刻RTC完整年份(2000-2099), 0表示未记录时间
-	uint8_t  rtcMonth;                 //月 1-12
-	uint8_t  rtcDay;                   //日 1-31
-	uint8_t  rtcHour;                  //时 0-23
-	uint8_t  rtcMinute;                //分 0-59
-	uint8_t  rtcSecond;                //秒 0-59
+  uint16_t id;                       //患者编号
+  uint8_t  age;
+  int16_t  laserPower;               //激光功率(W)
+  int32_t  releaseEnergy;            //已发射能量(0.1J, decijoule; 显示时除以10)
+  int32_t  releaseTime;              //发射时间(秒)
+  char     name[TREATMENT_NAME_SIZE];//患者姓名(最多CONFIG_TREATMENT_NAME_LEN个字符)
+  GENDER_ENUM gender;                //患者性别
+  LASER_WAVE_ENUM laserWave;         //选择的波长
+  PROTOCOL_ENUM protocol;            //选择的预设方案
+  uint8_t  pulseMode;                //激光发射模式(LASER_MODE_CW/MP), 0=未记录
+  uint8_t  schemeIndex;              //选中预设方案在其分类内的索引(0..31)
+  uint16_t posWidth;                 //正脉宽(ms)
+  uint16_t negWidth;                 //负脉宽(ms)
+  uint16_t rtcYear;                  //治疗时刻RTC完整年份(2000-2099), 0表示未记录时间
+  uint8_t  rtcMonth;                 //月 1-12
+  uint8_t  rtcDay;                   //日 1-31
+  uint8_t  rtcHour;                  //时 0-23
+  uint8_t  rtcMinute;                //分 0-59
+  uint8_t  rtcSecond;                //秒 0-59
 }treatmentLog_t;
 
 //----------------------------------------------------------------------------
@@ -99,10 +99,10 @@ typedef struct{
 //  id 兼作提交点: 0xFFFF=空白/未提交, 有效非零 id=已提交。
 //----------------------------------------------------------------------------
 typedef struct {
-	uint16_t id;                       //患者编号(最小空缺优先回收复用, 见treatmentPatientCreate; 0xFFFF=空白/未提交)
-	uint8_t  age;
-	uint8_t  gender;                   //GENDER_ENUM 收窄为 uint8
-	char     name[TREATMENT_NAME_SIZE];//患者姓名(最多CONFIG_TREATMENT_NAME_LEN个字符)
+  uint16_t id;                       //患者编号(最小空缺优先回收复用, 见treatmentPatientCreate; 0xFFFF=空白/未提交)
+  uint8_t  age;
+  uint8_t  gender;                   //GENDER_ENUM 收窄为 uint8
+  char     name[TREATMENT_NAME_SIZE];//患者姓名(最多CONFIG_TREATMENT_NAME_LEN个字符)
 }patientRecord_t;
 
 //----------------------------------------------------------------------------
@@ -115,30 +115,30 @@ typedef struct {
 //  reserved1: 显式保留对齐字节, 写入时置0, 不依赖编译器隐式填充。
 //----------------------------------------------------------------------------
 typedef struct {
-	uint16_t patientId;                //外键 -> patientRecord_t.id
-	uint16_t recSeq;                   //稳定唯一记录序列
-	int16_t  laserPower;
-	uint8_t  waveProto;                //(laserWave<<4)|protocol
-	uint8_t  magic;                    //ROW_MAGIC_* 状态
-	int32_t  releaseEnergy;            //0.1J(decijoule)
-	int32_t  releaseTime;              //秒
-	uint8_t  rtcYear;                  //治疗时刻年份后两位(0-99, 实际年=+2000)
-	uint8_t  rtcMonth;                 //月 1-12
-	uint8_t  rtcDay;                   //日 1-31
-	uint8_t  rtcHour;                  //时 0-23
-	uint8_t  rtcMinute;                //分 0-59
-	uint8_t  rtcSecond;                //秒 0-59
-	uint8_t  modeScheme;               //(pulseMode<<5)|schemeIndex
-	uint8_t  reserved1;                //保留对齐(置0)
-	uint16_t posWidth;                 //正脉宽(ms)
-	uint16_t negWidth;                 //负脉宽(ms)
+  uint16_t patientId;                //外键 -> patientRecord_t.id
+  uint16_t recSeq;                   //稳定唯一记录序列
+  int16_t  laserPower;
+  uint8_t  waveProto;                //(laserWave<<4)|protocol
+  uint8_t  magic;                    //ROW_MAGIC_* 状态
+  int32_t  releaseEnergy;            //0.1J(decijoule)
+  int32_t  releaseTime;              //秒
+  uint8_t  rtcYear;                  //治疗时刻年份后两位(0-99, 实际年=+2000)
+  uint8_t  rtcMonth;                 //月 1-12
+  uint8_t  rtcDay;                   //日 1-31
+  uint8_t  rtcHour;                  //时 0-23
+  uint8_t  rtcMinute;                //分 0-59
+  uint8_t  rtcSecond;                //秒 0-59
+  uint8_t  modeScheme;               //(pulseMode<<5)|schemeIndex
+  uint8_t  reserved1;                //保留对齐(置0)
+  uint16_t posWidth;                 //正脉宽(ms)
+  uint16_t negWidth;                 //负脉宽(ms)
 }treatmentRecord_t;
 
 extern treatmentLog_t treatmentLog;
-/*****************************************************************************/
+// ***************************************************************************
 const char* treatmentProtocolName(PROTOCOL_ENUM protocol);
 const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave);
-/*****************************************************************************/
+// ***************************************************************************
 #if defined(CONFIG_EPROM_TREATMENT_START)
 // 片上定长行尺寸
 #define CONFIG_EPROM_PATIENT_RECORD_SIZE   (sizeof(patientRecord_t))
@@ -161,14 +161,14 @@ const char* treatmentLaserWaveName(LASER_WAVE_ENUM wave);
 
 // 错误码: 保留基线 TREATMENT_EPROM_ERR_* 语义, 新增患者/记录级别名
 typedef enum{
-	TREATMENT_EPROM_OK = 0,
-	TREATMENT_EPROM_ERR_PARAM,        //参数错误(索引越界/指针为空)
-	TREATMENT_EPROM_ERR_FULL,         //剩余空间不足/编号耗尽
-	TREATMENT_EPROM_ERR_EMPTY,        //索引处无记录
-	TREATMENT_EPROM_ERR_IO,           //EPROM 读写失败
-	TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND,
-	TREATMENT_EPROM_ERR_PATIENT_FULL,
-	TREATMENT_EPROM_ERR_POWER_LOW     //PVD 检测到欠压, 拒绝开启新写入事务
+  TREATMENT_EPROM_OK = 0,
+  TREATMENT_EPROM_ERR_PARAM,        //参数错误(索引越界/指针为空)
+  TREATMENT_EPROM_ERR_FULL,         //剩余空间不足/编号耗尽
+  TREATMENT_EPROM_ERR_EMPTY,        //索引处无记录
+  TREATMENT_EPROM_ERR_IO,           //EPROM 读写失败
+  TREATMENT_EPROM_ERR_PATIENT_NOT_FOUND,
+  TREATMENT_EPROM_ERR_PATIENT_FULL,
+  TREATMENT_EPROM_ERR_POWER_LOW     //PVD 检测到欠压, 拒绝开启新写入事务
 }treatmentEpromErr_t;
 
 // 语义别名(存储层内部及新代码使用)
@@ -241,11 +241,11 @@ void treatmentEpromTraverse(treatmentEpromVisitFn fn);
 #endif
 // 虚拟病历生成: 直接写入本区块, 各子项按真实治疗场景自洽模拟
 typedef enum{
-	TREATMENT_DEMO_OK = 0,
-	TREATMENT_DEMO_ERR_PARAM,
-	TREATMENT_DEMO_ERR_IO,
-	TREATMENT_DEMO_ERR_FULL,
-	TREATMENT_DEMO_ERR_VERIFY
+  TREATMENT_DEMO_OK = 0,
+  TREATMENT_DEMO_ERR_PARAM,
+  TREATMENT_DEMO_ERR_IO,
+  TREATMENT_DEMO_ERR_FULL,
+  TREATMENT_DEMO_ERR_VERIFY
 }treatmentDemoErr_t;
 // 虚拟病历填充(填满模式, 无患者数/记录数硬上限): 持续新建患者,
 // 直到剩余空间放不下一个患者+首条记录; 姓名去重由内部扫描已存患者保证。

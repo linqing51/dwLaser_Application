@@ -1,148 +1,148 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 #include "sPlc.h"
-/*****************************************************************************/
+// ***************************************************************************
 int8_t inputFilter[(X_END - X_START + 1) * 16];//IO输入滤波器缓冲区
-/*****************************************************************************/
+// ***************************************************************************
 void sPlcInputInit(void){//IO输入滤波器初始化
-	memset((uint8_t*)inputFilter, 0x0, ((X_END - X_START + 1) * 16));
+  memset((uint8_t*)inputFilter, 0x0, ((X_END - X_START + 1) * 16));
 #if (CONFIG_DEBUG_IO == 1)
-	printf("%s,%d,%s:input init......\n",__FILE__, __LINE__, __func__);
+  printf("%s,%d,%s:input init......\n",__FILE__, __LINE__, __func__);
 #endif
 }
 void sPlcInputRefresh(void){//获取输入IO
-	uint8_t	temp;
+  uint8_t temp;
 #if (CONFIG_DEBUG_IO == 1)
-	uint16_t oldX, newX;
-	oldX = (uint16_t)(NVRAM0[X_START] & 0x00FF);//刷新前X状态(用于变化检测)
+  uint16_t oldX, newX;
+  oldX = (uint16_t)(NVRAM0[X_START] & 0x00FF);//刷新前X状态(用于变化检测)
 #endif
-	//X0 急停
-	temp = GET_ESTOP_NC;
-	if(temp == 0){//急停常闭
-		if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[0] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 0);
-		}
-	}
-	else{//急停常开
-		if(inputFilter[0] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[0] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 0);
-		}
-	}
-	//X1 安全连锁
-	temp = GET_INTERLOCK_NC;
-	if(temp == 0){
-		if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[1] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 1);
-		}
-	}
-	else{
-		if(inputFilter[1] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[1] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 1);
-		}
-	}
+  //X0 急停
+  temp = GET_ESTOP_NC;
+  if(temp == 0){//急停常闭
+    if(inputFilter[0] < CONFIG_INPUT_FILTER_TIME){
+      inputFilter[0] ++;
+    }
+    else{
+      NVRAM0[X_START] |= (int16_t)(1 << 0);
+    }
+  }
+  else{//急停常开
+    if(inputFilter[0] > (CONFIG_INPUT_FILTER_TIME * -1)){
+      inputFilter[0] --;
+    }
+    else{
+      NVRAM0[X_START] &= ~(uint16_t)(1 << 0);
+    }
+  }
+  //X1 安全连锁
+  temp = GET_INTERLOCK_NC;
+  if(temp == 0){
+    if(inputFilter[1] < CONFIG_INPUT_FILTER_TIME){
+      inputFilter[1] ++;
+    }
+    else{
+      NVRAM0[X_START] |= (int16_t)(1 << 1);
+    }
+  }
+  else{
+    if(inputFilter[1] > (CONFIG_INPUT_FILTER_TIME * -1)){
+      inputFilter[1] --;
+    }
+    else{
+      NVRAM0[X_START] &= ~(uint16_t)(1 << 1);
+    }
+  }
 
-	//X2 脚踏常开
-	temp = GET_FSWITCH_NO;//获取常开脚踏开关状态
-	if(temp == 0){
-		if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[2] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 2);
-		}
-	}
-	else{
-		if(inputFilter[2] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[2] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 2);
-		}
-	}
-	//X3 脚踏常闭
-	temp = GET_FSWITCH_NC;
+  //X2 脚踏常开
+  temp = GET_FSWITCH_NO;//获取常开脚踏开关状态
+  if(temp == 0){
+    if(inputFilter[2] < CONFIG_INPUT_FILTER_TIME){
+      inputFilter[2] ++;
+    }
+    else{
+      NVRAM0[X_START] |= (int16_t)(1 << 2);
+    }
+  }
+  else{
+    if(inputFilter[2] > (CONFIG_INPUT_FILTER_TIME * -1)){
+      inputFilter[2] --;
+    }
+    else{
+      NVRAM0[X_START] &= ~(uint16_t)(1 << 2);
+    }
+  }
+  //X3 脚踏常闭
+  temp = GET_FSWITCH_NC;
   if(temp == 1){
-		if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[3] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 3);
-		}
-	}
-	else{
-		if(inputFilter[3] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[3] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
-		}
-	}
+    if(inputFilter[3] < CONFIG_INPUT_FILTER_TIME){
+      inputFilter[3] ++;
+    }
+    else{
+      NVRAM0[X_START] |= (int16_t)(1 << 3);
+    }
+  }
+  else{
+    if(inputFilter[3] > (CONFIG_INPUT_FILTER_TIME * -1)){
+      inputFilter[3] --;
+    }
+    else{
+      NVRAM0[X_START] &= ~(uint16_t)(1 << 3);
+    }
+  }
 
-	//X4 光纤探测
-	if(NVRAM0[SPREG_ADC_54] <= deviceConfig.fiberDetect){
-		if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[4] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 4);
-		}
-	}
-	else{
-		if(inputFilter[4] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[4] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
-		}
-	}
-		
-	//X6 软关机信号(LTC2955): 对应X_PWR_INT(bit6); 无该硬件的板整块跳过,该位保持0
+  //X4 光纤探测
+  if(NVRAM0[SPREG_ADC_54] <= deviceConfig.fiberDetect){
+    if(inputFilter[4] < CONFIG_INPUT_FILTER_TIME){
+      inputFilter[4] ++;
+    }
+    else{
+      NVRAM0[X_START] |= (int16_t)(1 << 4);
+    }
+  }
+  else{
+    if(inputFilter[4] > (CONFIG_INPUT_FILTER_TIME * -1)){
+      inputFilter[4] --;
+    }
+    else{
+      NVRAM0[X_START] &= ~(uint16_t)(1 << 4);
+    }
+  }
+    
+  //X6 软关机信号(LTC2955): 对应X_PWR_INT(bit6); 无该硬件的板整块跳过,该位保持0
 #if (CONFIG_HAS_PWR_INT == 1)
-	temp = GET_PWR_INT;
-	if(temp == 0){
-		if(inputFilter[6] < CONFIG_INPUT_FILTER_TIME){
-			inputFilter[6] ++;
-		}
-		else{
-			NVRAM0[X_START] |= (int16_t)(1 << 6);
-		}
-	}
-	else{
-		if(inputFilter[6] > (CONFIG_INPUT_FILTER_TIME * -1)){
-			inputFilter[6] --;
-		}
-		else{
-			NVRAM0[X_START] &= ~(uint16_t)(1 << 6);
-		}
-	}
+  temp = GET_PWR_INT;
+  if(temp == 0){
+    if(inputFilter[6] < CONFIG_INPUT_FILTER_TIME){
+      inputFilter[6] ++;
+    }
+    else{
+      NVRAM0[X_START] |= (int16_t)(1 << 6);
+    }
+  }
+  else{
+    if(inputFilter[6] > (CONFIG_INPUT_FILTER_TIME * -1)){
+      inputFilter[6] --;
+    }
+    else{
+      NVRAM0[X_START] &= ~(uint16_t)(1 << 6);
+    }
+  }
 #endif
 #if (CONFIG_DEBUG_IO == 1)
-	newX = (uint16_t)(NVRAM0[X_START] & 0x00FF);
-	if(oldX != newX){//仅在滤波后X状态变化时打印,避免周期刷屏; bits按X6..X0顺序, raw为GPIO原始电平
-		printf("%s,%d,%s:X changed 0x%02X->0x%02X bits:%d%d%d%d%d%d%d raw GPIO:%d%d%d%d",
-			__FILE__, __LINE__, __func__, oldX, newX,
-			(newX >> 6) & 1, (newX >> 5) & 1, (newX >> 4) & 1, (newX >> 3) & 1, (newX >> 2) & 1, (newX >> 1) & 1, newX & 1,
-			GET_ESTOP_NC, GET_INTERLOCK_NC, GET_FSWITCH_NO, GET_FSWITCH_NC);
+  newX = (uint16_t)(NVRAM0[X_START] & 0x00FF);
+  if(oldX != newX){//仅在滤波后X状态变化时打印,避免周期刷屏; bits按X6..X0顺序, raw为GPIO原始电平
+    printf("%s,%d,%s:X changed 0x%02X->0x%02X bits:%d%d%d%d%d%d%d raw GPIO:%d%d%d%d",
+      __FILE__, __LINE__, __func__, oldX, newX,
+      (newX >> 6) & 1, (newX >> 5) & 1, (newX >> 4) & 1, (newX >> 3) & 1, (newX >> 2) & 1, (newX >> 1) & 1, newX & 1,
+      GET_ESTOP_NC, GET_INTERLOCK_NC, GET_FSWITCH_NO, GET_FSWITCH_NC);
 #if (CONFIG_HAS_PWR_INT == 1)
-		printf(" PWR_INT:%d", GET_PWR_INT);
+    printf(" PWR_INT:%d", GET_PWR_INT);
 #endif
-		printf("\n");
-	}
+    printf("\n");
+  }
 #endif
 
 }

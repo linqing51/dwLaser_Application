@@ -1,8 +1,8 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 #include "classic_pid.h"
 #include <stdio.h>  // 用于终端输出
 
@@ -69,7 +69,7 @@ void PID_StartTune(PID_Controller_t *pid) {
     pid->tune_period = 0;
 
     // 终端输出整定启动信息
-    printf("PID Auto-tune start. Setpoint: %d, Timeout: %dms\r\n", 
+    printf("PID Auto-tune start. Setpoint: %d, Timeout: %dms\r\n",
            pid->setpoint, TUNE_TIMEOUT_MS);
 }
 
@@ -118,7 +118,7 @@ static void PID_Tune_PeakDetect(PID_Controller_t *pid, int16_t current_temp) {
     // 自整定逻辑（优先执行）
     if (pid->tune_state == PID_TUNE_RUNNING) {
         pid->tune_current_tick = GET_TICK();
-        
+
         // 1. 检测整定超时
         if (pid->tune_current_tick - pid->tune_start_tick > TUNE_TIMEOUT_MS) {
             pid->tune_state = PID_TUNE_FAILED;
@@ -184,7 +184,7 @@ static void PID_Tune_PeakDetect(PID_Controller_t *pid, int16_t current_temp) {
     pid->last_error_c = e_c;
     pid->prev_temp = pid->last_temp;
     pid->last_temp = current_temp;
-    
+
     // 输出当前PID状态（仅自整定过程中）
     if (pid->tune_state == PID_TUNE_RUNNING) {
         printf("PID Tune: Current temp: %d, Error: %d, Output: %d\r\n",
