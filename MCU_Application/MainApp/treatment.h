@@ -249,10 +249,10 @@ typedef enum{
 }treatmentDemoErr_t;
 // 虚拟病历填充(填满模式, 无患者数/记录数硬上限): 持续新建患者,
 // 直到剩余空间放不下一个患者+首条记录; 姓名去重由内部扫描已存患者保证。
-// 每个病人的记录数在 [recMin, recMax] 内随机, 尾部空间不足时安全截断。
+// 每个患者的记录数在 [recMin, recMax] 内随机, 尾部空间不足时安全截断。
 // recMin 与 recMax 同时为 0 时使用默认范围 5..19。
 // 所有 EPROM 写入经 FreeBytesPR(空隙) + RowWrite/InRegion(区间) 双重越界校验。
-// patientsWritten/recordsWritten 可为 NULL, 分别返回实际写入的病人数与记录数。
+// patientsWritten/recordsWritten 可为 NULL, 分别返回实际写入的患者数与记录数。
 treatmentDemoErr_t treatmentDemoGenerate(uint32_t seed,
                                          uint8_t recMin, uint8_t recMax,
                                          uint8_t clearFirst,

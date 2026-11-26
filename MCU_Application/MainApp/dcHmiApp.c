@@ -4559,7 +4559,7 @@ void listTreatmentRecordDeleteStart(uint8_t slot){
   }
   globalIndex = listTreatmentCtx.recordWindow[slot];
   listTreatmentCtx.deleteRecordGlobalIndex = globalIndex;
-  //TEXT_NAME: 待删记录所属病人"姓名 - AR 编号"(与记录页姓名行同口径); 查不到再回退占位
+  //TEXT_NAME: 待删记录所属患者"姓名 - AR 编号"(与记录页姓名行同口径); 查不到再回退占位
   {
     uint16_t patientIndex;
     patientRecord_t pat;
