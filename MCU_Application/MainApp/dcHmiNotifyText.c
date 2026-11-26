@@ -1253,17 +1253,6 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
         }
         default:break;
       }
-      // 键盘返回后延迟重新确认本页按键弹起: 弹出层关闭重绘可能把按钮恢复成按下态
-      if(screen_id == GDDC_PAGE_VERIFY_TREATMENT){
-        treatmentPopupReleaseArm(screen_id,
-          GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD,
-          GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD);
-      }
-      else{
-        treatmentPopupReleaseArm(screen_id,
-          GDDC_PAGE_REGISTER_PATIENT_KEY_OK,
-          GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL);
-      }
       break;
     }
     default:break;

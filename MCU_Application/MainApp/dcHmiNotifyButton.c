@@ -1185,9 +1185,6 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
       break;
     }
     case GDDC_PAGE_EDIT_PATIENT:{//老患者编辑页(性别为下拉菜单, 经NotifyMenu处理)
-      printf("@NAV editPatient key screen=%u ctrl=%u state=%u mode=%u\n",
-        (unsigned)screen_id, (unsigned)control_id, (unsigned)state,
-        (unsigned)listTreatmentIsEditPatientMode());
       switch(control_id){
         case GDDC_PAGE_EDIT_PATIENT_KEY_OK:{//保存: 记录页进入=更新患者信息; 正常流程=校验后追加到EPROM
           if(state){
@@ -1222,13 +1219,9 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
     case GDDC_PAGE_VERIFY_TREATMENT:{//激光核对页
       switch(control_id){
         case GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD:{
-          if(state){//先释放再动作: 动作内部可能切页, 保证本页仍当前时清零
-            treatmentReleaseButton(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD);
+          if(state){
+            //瞬变按钮: 按下执行落盘, 松开屏幕自动弹起; 校验失败停留本页也不卡按下
             listTreatmentVerifySaveRecord();
-          }
-          else{
-            //松开兜底: 校验失败停留时无活动触摸, 再下发弹起帧, 保证按钮可靠弹起不卡按下态
-            SetButtonValue(GDDC_PAGE_VERIFY_TREATMENT, GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD, 0);
           }
           break;
         }
@@ -1272,13 +1265,8 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
       switch(control_id){
         case GDDC_PAGE_REGISTER_PATIENT_KEY_OK:{//保存: 校验后新建患者(激光流程同时落记录)
           if(state){
-            //按下先释放(应对动作内切页, 保证切页前清零)再校验; 若校验失败停留、释放被活动触摸压过, 由松开分支兜底
-            treatmentReleaseButton(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_OK);//复位自锁按钮并解除互锁
+            //瞬变按钮: 按下执行校验, 松开屏幕自动弹起; 校验失败停留本页也不卡按下
             listTreatmentRegisterConfirm();
-          }
-          else{
-            //松开: 已无活动触摸, 再下发一次弹起帧兜底, 保证校验失败停留时按钮可靠弹起、不卡按下态
-            SetButtonValue(GDDC_PAGE_REGISTER_PATIENT, GDDC_PAGE_REGISTER_PATIENT_KEY_OK, 0);
           }
           break;
         }

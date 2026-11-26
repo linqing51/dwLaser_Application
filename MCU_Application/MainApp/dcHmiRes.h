@@ -252,6 +252,7 @@ extern "C" {
 #define GDDC_PAGE_OPERATOR_USB_SAVE_TEXT_SUMMARY_3     4 //信息栏
 #define GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL         10 //取消按键
 #define GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK        11 //确认按键
+#define GDDC_PAGE_OPERATOR_USB_SAVE_PROGRESS_SDISK           20 //写入进度条
 //***************************************************************************
 #define GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_0     1//信息栏
 #define GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_1      2//信息栏
@@ -259,6 +260,7 @@ extern "C" {
 #define GDDC_PAGE_OPERATOR_USB_LOAD_TEXT_SUMMARY_3      4//信息栏
 #define GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL          10//取消按键
 #define GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK              11//确认按键
+#define GDDC_PAGE_OPERATOR_USB_LOAD_PROGRESS_LDISK      20 //读取进度条
 //***************************************************************************
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_ID               1 //患者编号
 #define GDDC_PAGE_VERIFY_TREATMENT_TEXT_NAME             2 //患者姓名

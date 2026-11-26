@@ -6,6 +6,14 @@
 
 > **强制规格（2026-11-20）：导出后机内病历数据不清空。** 从设备导出病历到 U 盘后，机内患者表与治疗记录必须完整保留，不得删除或清空。本规则在本文件范围内强制，任何软件功能改动与页面文案不得违背；确需“导出后清空本机病历”时，必须**先修改本规格并经用户明确确认**，之后才允许进行软件修改。任何 AI 不得擅自在导出流程中加入清空逻辑（详见第八节）。
 
+> **强制规格（2026-11-26，本文件交互总纲，优先级高于下文一切“自锁/延迟/基线”描述）：11 个病历相关页面的全部按键 KEY 一律为瞬变按钮（屏幕工程 `button_type = 0`）。** 语义统一为：手指按下时屏幕上报 `state = 1`，手指松开时**屏幕自身自动把按钮弹起**并上报 `state = 0`（按下 = 1、松开 = 0）。由此固化以下规则：
+> 1. 按钮的物理弹起由屏幕保证，MCU **不再**为“让按钮弹起”而下发 `SetButtonValue(...,0)`；`state = 1` 分支只执行业务动作，`state = 0` 分支只用于解除按键互锁。
+> 2. 历史上为“自锁按钮 + 活动触摸压过主机写 0”而建立的全部机制一律删除：切页按键基线（`treatmentArmKeyBaseline`/`treatmentKeyArmLoop`）、弹出层延迟释放（`treatmentPopupReleaseArm`/`treatmentPopupReleaseLoop`）、校验键事件/定时释放（`treatmentConfirmKeyArm`/`treatmentConfirmKeyRelease`）、固定延迟导航（`treatmentNavArm`/`treatmentNavLoop`）、列表页非阻塞延迟释放（`listTreatmentPageReleaseLoop`）以及各页 `*_DELAY_MS`/`*_DEBOUNCE_MS` 定时与去抖常量。
+> 3. 翻页键（`GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP`/`GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN`、`GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`/`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`）按下即翻页，并按边界更新使能（首页禁用向前键、末页禁用向后键）；松开屏幕自动弹起，无需去抖或延迟。
+> 4. 校验类按键（如 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`、`GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`）输入非法时，在对应提示文本框显示英文错误并停留本页；按钮随手指松开自动弹起，**不再出现卡按下**。
+> 5. 三个承载弹出菜单的性别键 `GDDC_PAGE_EDIT_PATIENT_KEY_GENDER`、`GDDC_PAGE_REGISTER_PATIENT_KEY_GENDER`、`GDDC_PAGE_VERIFY_TREATMENT_KEY_GENDER` 保持 `button_type = 4` 不变，其弹出逻辑由 `NotifyMenu` 处理。
+> 6. 下文第十二节、第十六节 16.6–16.10、第十七节 17.6–17.7 中凡与本总纲冲突的“自锁/延迟/基线/触摸释放”描述，一律以本总纲为准；这些章节仅保留仍有效的业务规则（页面跳转、边界使能、防闪烁、互锁门、触摸放行）。
+
 - 实现位置：`MainApp/dcHmiApp.c`（过滤/排序/刷新）、`dcHmiNotifyButton.c`（按钮）、`dcHmiNotifyText.c`（文本输入）
 - 控件 ID 定义：`MainApp/dcHmiRes.h`
 - 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者数与记录数**无任何业务硬上限**，两表按剩余空间（`FreeBytesPR`）动态致密增长，总量上限即病历区块物理容量。RAM 侧不恢复按业务上限定尺寸的整行大数组，仅保留：
@@ -359,14 +367,13 @@
 
 ---
 
-## 十二、USB 三页面按键自锁（强制规格，2026-11-21）
+## 十二、USB 三页面按键瞬变（强制规格，2026-11-26 修订；原 2026-11-21 自锁口径已按文首总纲废止）
 
-1. **适用范围**：`GDDC_PAGE_OPERATOR_USB`、`GDDC_PAGE_OPERATOR_USB_SAVE`、`GDDC_PAGE_OPERATOR_USB_LOAD` 三个页面上的**全部 7 个按键控件**——`GDDC_PAGE_OPERATOR_USB` 页 `GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK`（控件 3）、`GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK`（控件 4）、`GDDC_PAGE_OPERATOR_USB_KEY_CLOSE`（控件 5）；`GDDC_PAGE_OPERATOR_USB_SAVE`/`GDDC_PAGE_OPERATOR_USB_LOAD` 页 `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`（控件 11）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`（控件 11）、`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL`（控件 10）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL`（控件 10）。屏幕工程中 7 个按键均为 `button_type = 1`（自锁型，按下后不自行弹起），该属性为强制配置，不得改为自弹型。
-2. **弹起机制不另立规则**：这 7 个按键的释放位置、无条件弹起（含空操作）、切页安全解锁与中止路径，**统一遵循第十六节**，由 `treatmentReleaseButton` 经 `NotifyButton` 层处理，本节不再维护各自的弹起时机，避免与第十六节口径漂移。
-3. **唯一需在本节点明的异步特性**：`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`（控件 11）按下只授权（`usbState` 6→7），实际 CSV 读写（含导入后的回读核对）在 `listTreatmentUsbLoop` 中完成，故该确认键按第十六节的异步例外在 loop 工作完成后释放，而非 notify 立即释放。
-4. 任何后续在这三页新增的自锁按键，先在本节登记控件 ID，其释放仍统一遵循第十六节。
-5. **进入确认页的按键基线与读写期间两键物理禁用（强制）**：进入 `GDDC_PAGE_OPERATOR_USB_SAVE`/`GDDC_PAGE_OPERATOR_USB_LOAD` 时，固件必须在 `SetScreen` 前显式对本页确认键（`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`，控件 11）、取消键（`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL`，控件 10）下发 `SetButtonValue(...,0)` 并恢复触摸使能，建立“两键均未按下且可用”基线——屏幕会保留自锁键运行态、不随切页复位，不主动清零会出现进入即两键同时显示按下。确认键按下进入状态 7 后，固件须对本页确认键、取消键全部 `SetControlEnable(...,0)`（取消键先 `SetButtonValue(0)`），使读写过程中按下任一键都不产生任何触摸通知：禁止中途取消，也禁止读取期间重复按确认键持续发出 `state=1`。读写完成后在返回操作页前先弹起确认键、解除互锁，并对两键 `SetControlEnable(...,1)` 恢复使能；下次进入确认页时进入基线也会再次统一恢复。
-6. **确认页取消键返回操作页时重建操作页按键基线（强制）**：点 `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL`（状态 6→0）返回操作页 `GDDC_PAGE_OPERATOR_USB` 时，进入确认页前对操作页 SAVE/LOAD 下发的释放帧在切页前已发，但屏幕对自锁键运行态保留不可靠，LOAD 键可能停在按下态。故 `listTreatmentUsbCancel` 在 `SetScreen` 前必须调用 `refreshOperatorUsbDisplay()`（此时确认页仍为当前页，帧目标操作页），重建操作页 SAVE/LOAD/CLOSE“全部未按下”基线并清空 `GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB`，再切页。
+1. **适用范围**：`GDDC_PAGE_OPERATOR_USB`、`GDDC_PAGE_OPERATOR_USB_SAVE`、`GDDC_PAGE_OPERATOR_USB_LOAD` 三个页面上的**全部 7 个按键控件**——`GDDC_PAGE_OPERATOR_USB` 页 `GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK`（控件 3）、`GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK`（控件 4）、`GDDC_PAGE_OPERATOR_USB_KEY_CLOSE`（控件 5）；`GDDC_PAGE_OPERATOR_USB_SAVE`/`GDDC_PAGE_OPERATOR_USB_LOAD` 页 `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`（控件 11）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`（控件 11）、`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL`（控件 10）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL`（控件 10）。屏幕工程中 7 个按键均为 `button_type = 0`（瞬变型，按下上报 1、松开屏幕自动弹起并上报 0），该属性为强制配置。
+2. **互锁与切页安全不另立规则**：这 7 个按键的互锁放行、切页安全解锁与中止路径，统一遵循第十六节；`treatmentReleaseButton` 在瞬变语义下只解除互锁、不再下发 `SetButtonValue(...,0)`。
+3. **确认键异步读写**：`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`（控件 11）按下只授权（`usbState` 6→7），实际 CSV 读写（含导入后的回读核对）在 `listTreatmentUsbLoop` 中完成；按钮的物理弹起由屏幕在手指松开时自动完成，与异步读写时序无关。
+4. **读写期间两键物理禁用（强制）**：确认键按下进入状态 7 后，固件须对本页确认键、取消键全部 `SetControlEnable(...,0)`，使读写过程中按下任一键都不产生任何触摸通知：禁止中途取消，也禁止读取期间重复按确认键。读写完成后在返回操作页前对两键 `SetControlEnable(...,1)` 恢复使能并解除互锁。
+5. **取消返回操作页时刷新基线（强制）**：点 `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL`（状态 6→0）返回操作页 `GDDC_PAGE_OPERATOR_USB` 时，`listTreatmentUsbCancel` 在 `SetScreen` 前调用 `refreshOperatorUsbDisplay()`，重建操作页 SAVE/LOAD/CLOSE 显示基线并清空 `GDDC_PAGE_OPERATOR_USB_TEXT_SUMMARY_USB`，再切页。
 
 ---
 
@@ -510,59 +517,31 @@
    - 互锁门接入与各自锁键释放点：`MainApp/dcHmiNotifyButton.c`、`MainApp/dcHmiApp.c`。
 3. 本规格为强制规格：任何新增病历相关页面若需要同样的“在途互锁”，必须先在 16.1 表中登记页面 ID，并确认其按键在 `NotifyButton` 分支内无条件调用 `treatmentReleaseButton`（异步动作键在其完成路径释放），否则该页面按键可能在途后无法正常解锁。
 
-### 16.6 进入/重进页面的按键未按下基线
+### 16.6 进入/重进页面的按键基线（瞬变口径）
 
-1. 页面在被显示前必须保证其上全部按键处于未按下（`SetButtonValue(...,0)`）状态，不得依赖按键在切页前后无应答的逐个复位；进入与重新进入（含从其他页返回、翻页、过滤重建）同等适用。
-2. `GDDC_PAGE_LIST_TREATMENT` 的该基线在 `refreshListTreatmentDisplay()` 内、渲染槽位之前建立：对全部 20 个按钮（控件 20–29、31–40，经 `GDDC_PAGE_LIST_TREATMENT_KEY_SELECT_PATIENT_0`…`GDDC_PAGE_LIST_TREATMENT_KEY_DELETE_4` 与 `GDDC_PAGE_LIST_TREATMENT_KEY_EDIT_RECORD_0`…`GDDC_PAGE_LIST_TREATMENT_KEY_OPERATOR_USB` 两段符号宏循环）显式清零；进入路径均先 refresh 再 `SetScreen`，故页面显示前清零已生效。
-3. 选中患者不再用按钮 down 态高亮，其归属由 `selectedPatientId/Name` 保持（见第五节）；其他页面若出现同类残留按下，按本基线在其 refresh 中显式清零。
+1. 瞬变按钮（`button_type = 0`）切页重绘后默认即未按下；进入与重新进入（含从其他页返回、翻页、过滤重建）时，固件仍可在各 refresh 内对目标页按钮下发幂等 `SetButtonValue(...,0)` 作为防边界残留基线，但这不再是按钮弹起的依赖——按钮的物理弹起由屏幕在手指松开时自动完成。
+2. 选中患者不再用按钮 down 态高亮，其归属由 `selectedPatientId/Name` 保持（见第五节）。
 
-### 16.7 翻页键边界禁用（确定性防卡按下，强制）
+### 16.7 翻页键边界使能（强制）
 
-1. **问题边界**：`GDDC_PAGE_LIST_RECORD` 的 `GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`/`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN` 为自锁键，其清零帧若在按下通知后立即回发，可能与屏幕触摸状态机的“置 1”提交竞争，使按键视觉停在按下态。正常翻页时功能函数先经 `refreshListRecordDisplay()` 下发约 27 帧阻塞 UART（数十毫秒），清零帧天然落在触摸提交之后；但在**首/末页边界继续按翻页键**（功能函数判定不移动、空操作、零帧）时无此间隔，曾尝试在释放前加固定 30 ms settle（见附录 A 第 16 条）仍无法彻底消除，证明该自锁竞争不能靠清零帧时序可靠解决。
-2. **最终方案——边界禁用（从源头杜绝）**：在 `refreshListRecordDisplay()` 末尾，按钳制后的 `recordTop` 与 `maxTop` 确定性设置两键触摸使能：
-   - `GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`：`recordTop > 0` 时使能，已在首页（`recordTop = 0`）时 `SetControlEnable(...,0)` 禁用；
-   - `GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`：`recordTop < maxTop` 时使能，已在末页（`recordTop = maxTop`）时禁用。
-   被禁用的按键不响应触摸、不产生 `state=1` 通知、不进入自锁态，因此边界处根本无法按下，彻底消除卡按下。
-3. **状态一致性**：进入、上翻/下翻（`GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`/`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`）、冷加载（`NotifyScreen`）四条重渲染路径全部经 `refreshListRecordDisplay()` 重算，翻回可移动方向即自动恢复使能；0 条或不足 1 页记录时两键均禁用。该写法与本函数对空槽 DELETE 键的 `SetControlEnable` 处理同构。
-4. 有效移动到末页的那一次按下，仍由 notify 在功能函数后经 `treatmentReleaseButton` 显式清零（先在刷新中禁用、再下发 0），不会残留按下态；上一版的 30 ms settle 已撤回，`treatmentReleaseButton` 恢复为直接 `SetButtonValue(0)`+解锁。
-5. 禁用键的灰化视觉与边界禁用实际效果待上板确认；`GDDC_PAGE_LIST_TREATMENT` 翻页键为同构结构，已按同款方案落地，见 16.9。
+1. 翻页键按下即翻页，并由单点 helper 按边界确定性设置使能：
+   - `GDDC_PAGE_LIST_TREATMENT` 经 `listTreatmentUpdatePageKeys()`：首页（`topIndex = 0`）禁用 `GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP`，末页（`topIndex = maxTop`）禁用 `GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN`；
+   - `GDDC_PAGE_LIST_RECORD` 经 `listTreatmentRecordUpdatePageKeys()`：首页禁用 `GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`，末页禁用 `GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`。
+2. 被禁用的按键不响应触摸、不产生 `state=1`；0 条或不足 1 页时两键均禁用。进入、翻页、冷加载等重渲染路径都经对应 helper 重算，离开边界自动恢复。
 
-### 16.8 动作期禁用 + 完成后清零恢复（确定性防连按，强制）
+### 16.8 翻页入口（瞬变，无去抖无延迟）
 
-1. **问题边界**：16.7 解决“到边界后继续按”，但在**翻页动作的阻塞刷新期间快速连按**，第二次触摸会在按键仍使能时被屏幕接受、其 `state=1` 进入队列，物理置 1 与主机清零交错。此前的 settle 延时与去抖冷却（见附录 A 第 16/18 条）均为概率性时序，未能彻底消除，证明必须在动作期间直接关闭按键触摸。
-2. **确定性序列（固化于 `listTreatmentRecordPageKey(dir)`，两键在 notify 的唯一入口）**：
-   - **步骤①动作开始即禁用**：先对 `GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`、`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN` 同时 `SetControlEnable(...,0)`，关闭整个动作窗口的触摸；此后阻塞刷新期间屏幕物理上不接受任何新连按、不产生第二次 `state=1`。
-   - **步骤②去抖并翻页**：以 `HAL_GetTick` 维护 `s_recordPageLastTick`，冷却窗口 `RECORD_PAGE_DEBOUNCE_MS`（当前 250 ms，参考值-非实测验收线）仅兜底禁用命令到达前已进入队列的重复帧；窗口外才执行 PageUp/PageDown（只移动窗口+渲染文本，不再管理使能）。
-   - **步骤③完成后清零再恢复**：翻页完成（手指已抬起）后先对源按键 `SetButtonValue(...,0)` 清除按下视觉，再调用 `listTreatmentRecordUpdatePageKeys()` 按新位置恢复使能——可移动方向恢复触摸，边界方向保持禁用。
-3. **使能管理单点化**：新增 `listTreatmentRecordUpdatePageKeys()` 统一按 `recordTop/maxTop` 设置两键使能（首页禁用 `GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`、末页禁用 `GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`、0 条时两键均禁用），进入、动作完成、冷加载（`NotifyScreen`）三条路径均调用它；`refreshListRecordDisplay()` 只渲染文本、不再触碰按键使能。
-4. 互锁解除仍由 notify 在入口返回后的 `treatmentReleaseButton` 统一完成（其再次下发 0 为幂等兜底），故被禁用/去抖路径都有显式释放，不会残留或永久锁死；仅增加一个 `uint32` 时间戳，RAM 开销恒定。
-5. 250 ms 为工程参考值，动作期禁用的灰化/恢复手感与连按实际效果待上板确认；若仍有极端连按问题，优先确认禁用帧是否及时到达，再据实调整常量并在附录 A 留痕，不在各功能函数内分散加延时。
+1. `GDDC_PAGE_LIST_TREATMENT` 的 `listTreatmentPageKey(dir)` 与 `GDDC_PAGE_LIST_RECORD` 的 `listTreatmentRecordPageKey(dir)`（dir 0=向前、1=向后）是翻页键在 `state=1` 的唯一入口：按下直接移动窗口并渲染，再调用 16.7 的 helper 按新边界更新使能。
+2. 不使用任何 `*_DEBOUNCE_MS`/`*_DELAY_MS` 去抖或定时；按钮松开由屏幕自动完成，互锁由 `state=0` 经 `treatmentButtonLockAllowed` 解除。
 
-### 16.9 `GDDC_PAGE_LIST_TREATMENT` 翻页键非阻塞延迟释放（确定性防卡按下，强制）
+### 16.9 数据层批量读（翻页跟手）
 
-1. **适用范围与根因**：`GDDC_PAGE_LIST_TREATMENT` 的 `GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP`（控件 36）/`GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN`（控件 37）为自锁翻页键。多轮帧序调整（settle、去抖、动作期禁用、render-only）上板仍卡按下，根因是**自锁键在手指仍触摸时，活动触摸会压过主机的 `SetButtonValue(0)`，且固件拿不到手指抬起事件**；`GDDC_PAGE_LIST_TREATMENT` 每次刷新全表扫描记录数（动作约百 ms），尾部清零时手指大概率未抬。证据：按另一键（手指已离开原键）触发的 refresh 基线能成功清零，且对禁用控件写 0 有效。因此本条不再试图“赢得清零竞争”，改为等手指抬起后再清零。
-2. **使能单点管理**：`listTreatmentUpdatePageKeys()` 按钳制后的 `topIndex` 与 `listTreatmentGetMaxTop()` 确定性设置两键使能——首页（`topIndex=0`）禁 PAGE_UP、末页（`topIndex=maxTop`）禁 PAGE_DOWN，0 条/不足 1 页两键全禁。该 helper 不在 refresh 内调用，仅在延迟释放轮询及进入/各切屏返回路径显式调用。
-3. **按下入口（`listTreatmentPageKey(dir)`，notify 在 state=1 的唯一入口，dir 0=UP、1=DOWN）**：
-   - **步骤①动作开始即禁用**：先对两键同时 `SetControlEnable(0)`，阻塞刷新期间屏幕物理上不接受新连按；
-   - **步骤②去抖并翻页**：`s_listPageLastTick` + `LIST_PAGE_DEBOUNCE_MS`（150 ms，参考值）决定一次点按爆发是否只翻一页，窗口外才 `MoveUp/MoveDown`（refresh 只渲染、不碰使能，按键全程禁用）；
-   - **步骤③不立即清零，装填延迟释放**：置 `s_listPageReleasePending`、记录 `s_listPageReleaseTick=HAL_GetTick()` 与源控件 `s_listPageControl`，按键保持禁用；每次连按都刷新该计时，保证从最后一次按下起再等满释放窗口。
-4. **非阻塞延迟释放轮询（`listTreatmentPageReleaseLoop()`，在 dcHmiLoop 每拍调用）**：当最后一次按下后经过 `LIST_PAGE_RELEASE_DELAY_MS`（150 ms，参考值-非实测验收线），手指确定抬起、两键仍禁用且键上无活动触摸，才依次：对两键 `SetButtonValue(0)` → `UpdatePageKeys()` 按新位置恢复使能 → `treatmentBtnLockRelease()` 精确解除互锁。清零时键上无触摸，故确定性清得掉，不依赖时序运气。
-5. **互锁口径**：notify 两 case 不立即调 `treatmentReleaseButton`，互锁在按下时由 `treatmentButtonLockAllowed` 武装、在延迟释放时解除；窗口内同键重复放行、异键屏蔽，窗口保证最终一定触发，不会永久锁死。`refreshListTreatmentDisplay()` 保持 20 键清零基线但只渲染、不碰使能（与 `GDDC_PAGE_LIST_RECORD` 同构）；冷加载工程模式分支不改动。
-6. **动作提速（跟手关键）**：早期 refresh 第二步对最多 2019 条记录逐条发独立 SPI 事务读 2 字节 id，每事务命令/地址开销累积约百 ms。现数据层新增 `treatmentRecordReadRows()`（单事务地址自增，8 个 28 字节行/块连续读），refresh 改为分块批量读、提取每行首字段 `patientId` 计数，数据时钟占主导，记录扫描耗时由约百 ms 降到约 20–30 ms；页面内容因此更快响应，且 150 ms 释放窗口下翻页上限约 6.7 页/秒。
-7. **代价与待确认**：每次翻页后按键有约 150 ms 灰化延迟；新增块缓冲 `listRecordChunk`（8×28=224 B，ZI 增）。无硬件，灰化/手感与慢按/长接触（>150 ms）是否仍复现待上板确认；若仍有极端 case，优先改屏幕“瞬变”按钮（方法 A，手指抬起自动回发 state=0，可零额外延迟、物理不卡）。
+1. 数据层 `treatmentRecordReadRows()` 以单事务地址自增连续读取若干 28 字节行，refresh 分块批量读、提取每行首字段 `patientId` 计数，避免逐条 SPI 事务的开销，记录扫描耗时显著降低，翻页跟手。
 
-### 16.10 `GDDC_PAGE_LIST_RECORD` DELETE 键禁用优先 + 切页前清零（确定性防卡按下，强制）
+### 16.10 `GDDC_PAGE_LIST_RECORD` DELETE 键禁用优先（强制）
 
-1. **问题与根因**：`GDDC_PAGE_LIST_RECORD_KEY_DELETE_0–4`（20–24）为自锁键，手指仍触摸时主机 `SetButtonValue(0)` 必被活动触摸压过；且本工程 `DeviceScreenNotify=0`，切页后的 `NotifyScreen` 回传不可靠。旧实现把返回后的清零/重渲染/使能恢复寄托在 `NotifyScreen(15)`，该回调不触发时 DELETE 键残留按下、5 个 DELETE 键保持禁用（锁定）、文本不上回缩。结论：**一切清理必须在 `SetScreen` 之前完成，不能依赖返回回调。**
-2. **进入确认页（统一入口 `listTreatmentRecordDeleteKey(slot)`，notify 在 state=1 的唯一入口）**：
-   - 先校验槽位与 `recordTop+slot < recordCount`，非法则复位互锁直接返回，不做禁用；
-   - 清掉可能残留的 `deleteRecordGlobalIndex`（异常中断的上一次流程），使 `DeleteStart` 守卫通过；
-   - **步骤①动作开始即对 5 个 DELETE 键 `SetControlEnable(0)`**：阻塞切页期间这些键物理上不接受新触摸、不产生重复 `state=1`；
-   - **步骤②调 `listTreatmentRecordDeleteStart(slot)`**：置确认索引/文案，切页前对 `GDDC_PAGE_DELETE_RECORD_KEY_OK`/`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL` 下发 `SetButtonValue(0)` 建立未按下基线（防止进入即取消键按下），再 `SetScreen(GDDC_PAGE_DELETE_RECORD)`；
-   - **步骤③ `treatmentBtnLockReset()` 解除本页互锁**：`GDDC_PAGE_DELETE_RECORD_KEY_OK`/`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL` 会重新武装，即使内部早退也不残留锁。
-3. **返回记录页（切页前完成，OK 与 CANCEL 同构）**：`listTreatmentDeleteRecordConfirm/Cancel` 在 `SetScreen(GDDC_PAGE_LIST_RECORD)` 之前，确认页仍为当前页时依次：对 20–28 全部 `SetButtonValue(0)` 清按下态 → `refreshListRecordDisplay()` 重渲染（剩余记录上移回缩，空槽文本隐藏、DELETE 键按 occupied 隐藏并禁用/使能）→ `listTreatmentRecordUpdatePageKeys()` 恢复翻页键。此时原 DELETE 手指已抬起、键上无活动触摸，清零确定性生效。
-4. **范围约束**：只禁用 5 个 DELETE 键（20–24），不碰 `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`（27）/`GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`（28），这两个键始终保持使能、无独立使能管理；`GDDC_PAGE_DELETE_RECORD` 的 `GDDC_PAGE_DELETE_RECORD_KEY_OK`/`GDDC_PAGE_DELETE_RECORD_KEY_CANCEL` 触摸与数据层删除/压缩逻辑不变。`NotifyScreen(15)` 保留为兜底重发，不再作为主清理路径。
-5. **待确认**：无硬件，禁用灰化、确认页切换与返回后按键弹起/记录是否删除/文本回缩待上板确认；若仍有极端 case，同样可改屏幕“瞬变”按钮（方法 A）根治。
+1. `listTreatmentRecordDeleteKey(slot)` 是 `GDDC_PAGE_LIST_RECORD_KEY_DELETE_0–4` 在 `state=1` 的唯一入口：先校验槽位与 `recordTop+slot < recordCount`，非法则复位互锁返回；清掉残留 `deleteRecordGlobalIndex`，再对 5 个 DELETE 键 `SetControlEnable(0)` 关闭动作窗口触摸，随后进入 `GDDC_PAGE_DELETE_RECORD` 并 `treatmentBtnLockReset()` 解除本页互锁。
+2. 从 `GDDC_PAGE_DELETE_RECORD` 返回（OK 与 CANCEL 同构）在 `SetScreen(GDDC_PAGE_LIST_RECORD)` 之前完成重渲染与使能恢复，不依赖切页后的回调；只禁用 5 个 DELETE 键，不碰 `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`/`GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`。
 
 ---
 
@@ -606,19 +585,15 @@
 
 用户重新填写至全部合法后，按 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK` 才允许新建患者。
 
-### 17.6 按键松开兜底释放（确定性防卡按下，强制，2026-11-25 新增）
+### 17.6 校验类按键瞬变（强制，2026-11-26 按文首总纲重写；原事件驱动/定时释放口径废止）
 
-1. **问题边界**：点 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`（控件 20）时，若姓名/性别/年龄校验失败，固件停留在本页（见 17.5）。按下瞬间（`state = 1`）下发的 `SetButtonValue(...,0)` 释放帧可能与仍在进行的物理触摸竞争、被活动触摸压过，使按钮视觉停在按下态；此前松开（`state = 0`）分支没有任何兜底释放。
-2. **释放规则**：按下（`state = 1`）仍先调用 `treatmentReleaseButton` 再执行 `listTreatmentRegisterConfirm`（保留“动作内切页前先清零”的意图）；**新增松开（`state = 0`）分支再下发一次 `SetButtonValue(...,0)`**——此时手指已抬起、无活动触摸，释放帧可靠生效，保证按钮一定弹起，不依赖按下时那一帧的时序。
-3. **同口径适用**：核对页 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）结构与校验失败停留路径完全相同，按相同方式在 `state = 0` 补 `SetButtonValue(...,0)` 兜底，避免核对页本页校验失败时同样卡按下。
-4. 校验成功的切页路径不受影响：切页后旧页不可见，松开帧即便落到旧页也无副作用；本规则只收口“校验失败、停留本页”的卡按下。
+1. `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`（控件 20）与核对页 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）在屏幕工程中均为瞬变按钮（`button_type = 0`）：按下上报 `state = 1`，执行业务校验/落盘；松开时屏幕自动把按钮弹起并上报 `state = 0`，由 `treatmentButtonLockAllowed` 解除互锁。
+2. 输入非法时，动作函数在对应提示文本框（如 `GDDC_PAGE_REGISTER_PATIENT_TEXT_SUMMARY_0`）显示英文错误并停留本页，不发任何清零帧；按钮随手指松开自动弹起，短按、长按行为一致，从机制上消除卡按下。
 
-### 17.7 弹出层返回按键释放与切页后重发清空（确定性，强制，2026-11-25 新增）
+### 17.7 弹出层返回与字段清空（强制，2026-11-26 按瞬变口径修订）
 
-1. **弹出层返回的卡按下**：本页点 `GDDC_PAGE_REGISTER_PATIENT_TEXT_NAME`/`GDDC_PAGE_REGISTER_PATIENT_TEXT_AGE` 弹出系统键盘、点 `GDDC_PAGE_REGISTER_PATIENT_KEY_GENDER`（控件 22）弹出性别下拉菜单，这些是屏幕内置弹出层；弹出层关闭返回时屏幕重绘本页，可能把 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`（控件 20）等按钮恢复成按下态。由于 `DeviceScreenNotify = 0`，固件无法靠画面切换通知捕获该返回。
-2. **延迟重新确认弹起**：在控件通知（`NotifyText` 键盘确认、`NotifyMenu` 菜单选择）时调用 `treatmentPopupReleaseArm` 装填，由 `treatmentPopupReleaseLoop` 非阻塞等待 `POPUP_RELEASE_DELAY_MS`（150 ms，参考值）弹出层完全关闭、重绘完成后，对本页按钮范围重新下发 `SetButtonValue(...,0)`；只重发按钮值、不改变使能，故无灰化、不影响手感。注册/编辑页覆盖 `KEY_OK`/`KEY_CANCEL`（20/21），核对页覆盖 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`/`GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD`（30/31）。
-3. **二次进入字段未清空（冷加载窗口）**：`SetScreen` 切到本页时屏幕存在冷加载窗口——切页“前”下发的清空帧会被加载重绘覆盖，切页“后立即”下发的帧又会在冷加载窗口丢帧，两者都不可靠，导致再次进入时残留第一次输入。
-4. **预刷新 + 冷加载完成重发（确定性）**：把“先清空再渲染”封装为 `listTreatmentRenderRegisterDisplay`。`listTreatmentEnterRegisterPage` 在 `SetScreenUpdateEnable(0)` 冻结后先调用它预刷新后台注册页，再 `SetScreen`、`SetScreenUpdateEnable(1)` 解冻；**同时在 `NotifyScreen` 的 `GDDC_PAGE_REGISTER_PATIENT` 分支（屏幕冷加载完成后必上报 `MSG_GET_CURRENT_SCREEN`）再次调用 `listTreatmentRenderRegisterDisplay` 重发**，此时冷加载已结束、帧不丢失，可靠清空，与待机/记录等页面的冷加载重发模式一致。冻结保证整个过程无旧值闪烁。
+1. 点 `GDDC_PAGE_REGISTER_PATIENT_TEXT_NAME`/`GDDC_PAGE_REGISTER_PATIENT_TEXT_AGE` 弹出系统键盘、点 `GDDC_PAGE_REGISTER_PATIENT_KEY_GENDER`（控件 22）弹出性别下拉菜单，弹出层关闭返回时屏幕重绘本页；瞬变按钮重绘后默认弹起，不再需要弹出层延迟释放（原 `treatmentPopupReleaseArm`/`treatmentPopupReleaseLoop` 已删除）。
+2. 字段清空仍按“预刷新 + 冷加载完成重发”保证：`listTreatmentRenderRegisterDisplay` 封装“先清空再渲染”，`listTreatmentEnterRegisterPage` 在 `SetScreenUpdateEnable(0)` 冻结后预刷新后台页，再 `SetScreen`、`SetScreenUpdateEnable(1)` 解冻；`NotifyScreen` 的 `GDDC_PAGE_REGISTER_PATIENT` 分支在冷加载完成后再次调用该渲染函数重发，可靠清空上一次输入。
 
 ---
 
@@ -687,3 +662,8 @@
 52. **2026-11-26（活跃工程说明对齐实测口径；明确 UI 规格与 AI_RULES 层级映射）**：仓库所有者拍板两项纯文档修订。①《活跃工程说明》“当前验证状态”章节删除固化的 Code/RO/RW/ZI 时点数字与 static 冲突计数，改为“验证状态与判据”，时点数字以最新 Keil 日志 Program Size 实测为准，保留 0 Error 判据、第三方 usbh_cdc 警告基线与 AC6 不迁移等稳定事实；②本文件抬头新增层级关系声明：本文件从属于 `AI_RULES.md`，其规则描述具有最高优先级、本文件为具体规格补充、冲突以 AI_RULES 为准；原“最高优先级规格/最高优先级强制规格”两处自称改为“强制规格”，避免两个“最高”并存。纯文档修订，无需重新编译。
 53. **2026-11-26（中文术语统一：全文“病人”改“患者”，术语规则写入 AI_RULES）**：仓库所有者要求统一中文术语，纯文档修订、代码零改动。本文件全部“病人”（含“病人姓名”“所属病人”“对应病人”等）整词替换为“患者”，与全文主体用词一致；根 `AI_RULES.md` 第 5 节新增中文术语统一规则——文档与注释一律用“患者”、不用“病人”，新增内容必须遵循。纯文档修订，无需重新编译。
 54. **2026-11-26（代码注释术语统一：4 个 MainApp 源文件“病人”改“患者”）**：承接第 53 条术语规则，把 `dcHmiApp.c`、`dcHmiRes.h`、`treatment.c`、`treatment.h` 注释中残留的 8 处“病人”整词替换为“患者”（仅注释、无字符串与标识符改动，不改变任何运行时行为）；替换后按 AI_RULES 第 2 节执行 AC5 完整 Rebuild 验证，结果以编译日志为准。
+55. **2026-11-26（校验类按键改按下即禁用-清零-恢复，修注册页OK键校验失败卡按下 #159）**：用户上板再次发现注册页 `GDDC_PAGE_REGISTER_PATIENT`（18）姓名/年龄/性别填写不正常时，点 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`（20）显示 `Invalid input, please re-enter!` 后该键仍无法弹起。代码级根因：该键在 `GDDC_PAGE_REGISTER_PATIENT.tft` 中为 `button_type=1` 自锁按钮，一次点击只发 `state=1`、物理抬起无通知，#151 的 `state=0` 兜底在一次点击内永远等不到，按下帧又被活动触摸压过；#152 的弹出层延迟释放不覆盖直接点 OK 的路径。修复在固件：新增 `treatmentConfirmKeyArm`（dcHmiApp.c，声明入 dcHmiApp.h），封装 `treatmentArmKeyBaseline`（先 `SetControlEnable(0)` 阻断触摸再 `SetButtonValue(0)` 清零）+ `treatmentBtnLockRelease` 解锁，150 ms 后由现成 `treatmentKeyArmLoop` 恢复使能；`dcHmiNotifyButton.c` 中 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK` 与同构的 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD` 两 case 的 `state=1` 分支改为先 `treatmentConfirmKeyArm` 再执行校验/落盘，`state=0` 幂等兜底保留。正文规则见重写后的 17.6。AC5 完整 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），Code=242312、RO=18660、RW=1624、ZI=121424，hex 正常生成；实际弹起手感待所有者上板确认。
+56. **2026-11-26（第55条上板仍失败，改按下只禁用、延迟到手指抬起后再清零恢复，#160）**：用户上板确认第 55 条固件后卡按下仍旧存在。代码级结论：`treatmentArmKeyBaseline` 在触摸**正在进行**时立即下发的 `SetButtonValue(...,0)` 仍被当前触摸周期压过，触摸期间的清零帧对自锁按钮不可靠；而仓库内翻页键（#101/#102）已验证的有效模式是“按下只禁用、延迟 150 ms 等手指确定抬起、无活动触摸后再清零并恢复使能”。修复在固件：重写 `treatmentConfirmKeyArm` 为只 `SetControlEnable(0)` + `treatmentBtnLockRelease` + 装填新延迟状态（`CONFIRM_RELEASE_DELAY_MS=150`），按下期间不清零；新增 `treatmentConfirmKeyLoop`（声明入 dcHmiApp.h，挂入 `dcHmiLoop`），延迟满后依次 `SetButtonValue(0)`、`SetControlEnable(1)`。`dcHmiNotifyButton.c` 两 case 调用点不变，`state=0` 幂等兜底保留。正文规则见再次重写的 17.6。AC5 完整 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），Code=242428、RO=18660、RW=1640、ZI=121428，hex 正常生成；实际弹起手感待所有者上板确认。
+57. **2026-11-26（长按松开反成按下：接通物理触摸通知，延迟释放等真实松手，#161）**：用户上板确认第 56 条后短按已正常，但持续按住 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK` 再松开时，按键反而变成按下态。代码级根因：固定 150 ms 到点时若手指仍在键上，`treatmentConfirmKeyLoop` 先清零又 `SetControlEnable(1)` 恢复使能，持续接触被屏幕重新锁存为按下。修复在固件：`ProcessMessage` 中空置的 `NOTIFY_TOUCH_PRESS`/`NOTIFY_TOUCH_RELEASE` 两分支接通，维护 `s_hmiTouchPressed`；`treatmentConfirmKeyLoop` 改为最短延迟满**且**触摸态为 0 才清零+恢复使能，长按时保持禁用、直到 `NOTIFY_TOUCH_RELEASE` 后那一拍执行；新增 `CONFIRM_RELEASE_FORCE_MS=3000` 兜底，仅防松开通知丢失导致永久禁用。正文规则见重写的 17.6 第 2/4 条。AC5 完整 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），Code=242464、RO=18660、RW=1640、ZI=121428，hex 正常生成；短按/长按实际手感待所有者上板确认。
+58. **2026-11-26（定时方案上板仍失败，改纯事件驱动：按下记录、物理松开事件清零，#162）**：用户上板确认第 57 条后长按松开仍变按下，并明确要求不要用时间解决。修复在固件：删除全部 confirm 延迟状态机（`CONFIRM_RELEASE_DELAY_MS`/`CONFIRM_RELEASE_FORCE_MS`、`s_confirmRelease*`、`s_hmiTouchPressed`、`treatmentConfirmKeyLoop` 及其 dcHmiLoop 挂点）；`treatmentConfirmKeyArm` 改为只记录源按钮到 `s_pressedConfirmScreen`/`s_pressedConfirmControl`，不发清零帧、不碰使能；新增 `treatmentConfirmKeyRelease`（声明入 dcHmiApp.h），由 `ProcessMessage` 的 `NOTIFY_TOUCH_RELEASE` 分支（物理松开协议事件，与按压时长无关）调用，对记录按钮 `SetButtonValue(0)` 并 `treatmentBtnLockRelease` 后清空记录。松开通知若丢失，再点一次靠 `state=0` 控件通知自愈，无需定时。正文规则见重写的 17.6。AC5 完整 Rebuild：0 Error、2 Warning（usbh_cdc 固定基线，自编零警告），Code=242364、RO=18660、RW=1632、ZI=121424，hex 正常生成；短按/长按实际手感待所有者上板确认。
+59. **2026-11-26（11 个病历页面全部 KEY 改瞬变，全面改写，#163）**：用户拍板统一规格，将 `GDDC_PAGE_LIST_TREATMENT`、`GDDC_PAGE_DELETE_TREATMENT`、`GDDC_PAGE_LIST_RECORD`、`GDDC_PAGE_DELETE_RECORD`、`GDDC_PAGE_EDIT_PATIENT`、`GDDC_PAGE_REGISTER_PATIENT`、`GDDC_PAGE_OPERATOR_USB`、`GDDC_PAGE_OPERATOR_USB_SAVE`、`GDDC_PAGE_OPERATOR_USB_LOAD`、`GDDC_PAGE_VERIFY_TREATMENT`、`GDDC_PAGE_DISCARD_TREATMENT` 共 11 页的全部按键改为瞬变（按下=1、松开=0，屏幕 `button_type=0`，共 49 个按钮 1→0）；三个 `GDDC_PAGE_*_KEY_GENDER` 保持 `button_type=4` 弹出菜单不变。屏幕工程与固件两侧同步：固件删除全部自锁 workaround——切页基线、弹出层延迟释放、校验键事件/定时释放、固定延迟导航、列表页非阻塞延迟释放及各 `*_DELAY_MS`/`*_DEBOUNCE_MS` 常量与空占位 `NotifyTouchXY`；`treatmentReleaseButton` 改为只解除互锁、不再下发 `SetButtonValue(0)`；保留翻页边界使能、读写期物理禁用、`SetScreenUpdateEnable` 防闪烁、互锁门与触摸放行等业务规则。文首新增交互总纲，第十二节、16.6–16.10、17.6–17.7 同步改写。AC5 完整 Rebuild：0 Error、0 Warning，hex 正常生成（Code=241032、RO=18592、RW=1568、ZI=121424）；触摸与显示实际手感待所有者上板确认。

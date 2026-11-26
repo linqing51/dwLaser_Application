@@ -109,8 +109,7 @@ void listTreatmentDeleteCancel(void);//删除确认页CANCEL: 不删除并返回
 
 uint8_t listTreatmentUsbButtonAllowed(uint16_t screen_id, uint16_t control_id);//触摸放行判断(写入中屏蔽触摸, 确认页只放行确认/取消)
 uint8_t treatmentButtonLockAllowed(uint16_t screen_id, uint16_t control_id, uint8_t state);//按键互锁门(在途期间锁定其他按键)
-void treatmentReleaseButton(uint16_t screen_id, uint16_t control_id);//在途按键清零并解除互锁
-void treatmentPopupReleaseArm(uint16_t screen, uint16_t first, uint16_t last);//弹出层返回后延迟重新确认按键弹起
+void treatmentReleaseButton(uint16_t screen_id, uint16_t control_id);//在途按键解除互锁(瞬变按钮由屏幕自动弹起)
 uint8_t listTreatmentUsbBusy(void);//确认页/写入中(usbState非0)
 void listTreatmentSaveUsbStart(void);//USB操作页: SAVE_UDISK按键, 进入确认页(不立即写盘, 确认后才CSV导出)
 void listTreatmentLoadUsbStart(void);//USB操作页: LOAD_UDISK按键, 进入确认页(不立即读盘, 确认后才CSV导入覆盖机内病历)

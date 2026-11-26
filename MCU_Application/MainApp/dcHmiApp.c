@@ -3237,16 +3237,7 @@ void listTreatmentMoveDown(void){
   }
 }
 
-//页面13翻页键去抖(参考值-非实测验收线): 仅兜底禁用命令到达前已入队的重复帧, 与释放窗口对齐避免双重限速
-#define LIST_PAGE_DEBOUNCE_MS 150U
-//延迟释放(参考值-非实测验收线): 动作结束后保持禁用, 等手指确定抬起再清零/使能, 规避"活动触摸压过主机写0";
-//批量读使动作缩短到约20-30ms, 150ms覆盖快速轻点的接触时长, 兼顾跟手(约6.7页/秒)
-#define LIST_PAGE_RELEASE_DELAY_MS 150U
-static uint32_t s_listPageLastTick = 0U;      //最近一次有效翻页的HAL_GetTick
-static uint8_t  s_listPageReleasePending = 0U;//有一次翻页待延迟释放
-static uint32_t s_listPageReleaseTick = 0U;   //最后一次按下的HAL_GetTick, 释放计时基准
-static uint16_t s_listPageControl = 0U;       //本次按下的源控件, 用于精确解除互锁
-static void treatmentBtnLockRelease(uint16_t screen, uint16_t control);//前置声明: 延迟释放时解除互锁
+//列表页翻页键: 瞬变按钮按下即翻页, 松开由屏幕自动弹起; 按边界更新两键使能(首页禁用PAGE_UP/末页禁用PAGE_DOWN)
 
 //按当前(已钳制)topIndex/最大整页边界设置两键使能: 首页禁用PAGE_UP, 末页禁用PAGE_DOWN; 0条/不足1页时两键均禁用
 static void listTreatmentUpdatePageKeys(void){
@@ -3258,46 +3249,15 @@ static void listTreatmentUpdatePageKeys(void){
 }
 
 //翻页键统一入口(由notify在state=1调用): dir 0=PAGE_UP 1=PAGE_DOWN
-//不再与活动触摸竞争清零: 动作开始立即禁用两键 -> 去抖翻页(阻塞渲染) -> 保持禁用并装填延迟释放, 由主循环在手指抬起后清零/使能
+//瞬变按钮: 按下直接翻页并按边界更新使能, 无需去抖/延迟; 松开屏幕自动弹起, 互锁由state=0释放
 void listTreatmentPageKey(uint8_t dir){
-  uint32_t now;
-  uint16_t srcCtrl;
-  srcCtrl = (dir != 0U) ? GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN
-                        : GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP;
-  //1) 立即关闭两键触摸: 随后阻塞刷新期间屏幕物理上不接受新连按、不产生第二次state=1
-  SetControlEnable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP, 0U);
-  SetControlEnable(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN, 0U);
-  //2) 去抖决定是否翻页(翻页函数只移动窗口+渲染, refresh不碰使能, 按键全程保持禁用)
-  now = HAL_GetTick();
-  if((now - s_listPageLastTick) >= LIST_PAGE_DEBOUNCE_MS){
-    s_listPageLastTick = now;
-    if(dir != 0U){
-      listTreatmentMoveDown();
-    }
-    else{
-      listTreatmentMoveUp();
-    }
+  if(dir != 0U){
+    listTreatmentMoveDown();
   }
-  //3) 不立即清零/使能: 保持禁用并(重新)装填延迟释放; 每次连按都刷新计时, 保证最后一次按下后再等满RELEASE_DELAY
-  s_listPageReleasePending = 1U;
-  s_listPageReleaseTick = now;
-  s_listPageControl = srcCtrl;
-}
-
-//非阻塞延迟释放轮询(在dcHmiLoop每拍调用): 最后一次按下后经过RELEASE_DELAY, 手指已抬起。
-//此时两键仍禁用、键上无活动触摸, 先清零再按位置恢复使能, 并精确解除互锁——从机制上避免清零被活动触摸压过
-void listTreatmentPageReleaseLoop(void){
-  if(s_listPageReleasePending == 0U){
-    return;
+  else{
+    listTreatmentMoveUp();
   }
-  if((HAL_GetTick() - s_listPageReleaseTick) < LIST_PAGE_RELEASE_DELAY_MS){
-    return;
-  }
-  s_listPageReleasePending = 0U;
-  SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP, 0U);
-  SetButtonValue(GDDC_PAGE_LIST_TREATMENT, GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN, 0U);
   listTreatmentUpdatePageKeys();
-  treatmentBtnLockRelease(GDDC_PAGE_LIST_TREATMENT, s_listPageControl);
 }
 
 //选择窗口内第slot个患者(slot 0-4对应KEY_SELECT_PATIENT_0-4),空槽位不响应;
@@ -4029,9 +3989,8 @@ uint8_t treatmentButtonLockAllowed(uint16_t screen, uint16_t control, uint8_t st
   return 0U;
 }
 
-//在途按键复位包装: 下发清零并同步解除互锁, 供各页自锁键复位统一调用
+//在途按键释放包装: 瞬变按钮由屏幕在松开时自动弹起, 这里只同步解除互锁, 供各页动作处理统一调用
 void treatmentReleaseButton(uint16_t screen, uint16_t control){
-  SetButtonValue(screen, control, 0);
   treatmentBtnLockRelease(screen, control);
 }
 
@@ -4458,33 +4417,15 @@ static void listTreatmentRecordUpdatePageKeys(void){
                    (listTreatmentCtx.recordTop < maxTop) ? 1U : 0U);
 }
 
-//翻页键软件去抖(参考值-非实测验收线): 冷却窗口内已在队列中的重复帧不重复翻页(正常情况下动作期
-//禁用后屏幕不会再产生新的连按通知, 该窗口仅兜底禁用命令到达前已进入队列的帧)
-#define RECORD_PAGE_DEBOUNCE_MS 250U
-static uint32_t s_recordPageLastTick = 0U;//最近一次有效翻页的HAL_GetTick
-
 //翻页键统一入口(由notify在state=1调用): dir 0=PAGE_UP 1=PAGE_DOWN
-//确定性防连按: 动作一开始立即禁用两键关闭触摸窗口 -> 翻页(阻塞渲染) -> 完成后清零按下态再按新边界恢复使能
+//瞬变按钮: 按下直接翻页并按边界更新使能, 无需去抖/延迟; 松开屏幕自动弹起, 互锁由state=0释放
 void listTreatmentRecordPageKey(uint8_t dir){
-  uint32_t now;
-  //1) 立即关闭两键触摸: 随后的阻塞刷新期间, 屏幕物理上不接受任何新的连按、不产生第二次state=1
-  SetControlEnable(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP, 0U);
-  SetControlEnable(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN, 0U);
-  //2) 去抖并执行翻页(翻页函数只移动窗口+渲染文本, 不再管理按键使能)
-  now = HAL_GetTick();
-  if((now - s_recordPageLastTick) >= RECORD_PAGE_DEBOUNCE_MS){
-    s_recordPageLastTick = now;
-    if(dir != 0U){
-      listTreatmentRecordPageDown();
-    }
-    else{
-      listTreatmentRecordPageUp();
-    }
+  if(dir != 0U){
+    listTreatmentRecordPageDown();
   }
-  //3) 翻页完成(手指已抬起)后先清零按下视觉, 再按新位置恢复两键使能(边界方向保持禁用)
-  SetButtonValue(GDDC_PAGE_LIST_RECORD,
-                 (dir != 0U) ? GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN
-                             : GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP, 0U);
+  else{
+    listTreatmentRecordPageUp();
+  }
   listTreatmentRecordUpdatePageKeys();
 }
 
@@ -4649,129 +4590,11 @@ void listTreatmentDeleteRecordCancel(void){
   SetScreen(GDDC_PAGE_LIST_RECORD);
 }
 
-//切页按键基线延迟: 进入目标页时先禁用按钮, 经过该延时(手指已抬起)再清零并使能, 避免活动触摸把外部清零压过
-#define KEY_ARM_DELAY_MS 150U
-static uint8_t  s_keyArmPending = 0U;//有一次切页待建立按键未按下基线
-static uint32_t s_keyArmTick = 0U;   //装填基线的HAL_GetTick, 延迟计时基准
-static uint16_t s_keyArmScreen = 0U; //目标页面
-static uint16_t s_keyArmFirst = 0U;  //按钮范围起点(本工程按钮ID均远小于65535, 自增无回绕风险)
-static uint16_t s_keyArmLast = 0U;   //按钮范围终点
+// ===== 患者信息编辑页(由GDDC_PAGE_LIST_RECORD的GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT进入) =====
+// 瞬变按钮按下即触发、松开由屏幕自动弹起, 无需切页基线/延迟/弹出层释放等自锁机制
 
-// ===== 弹出层(系统键盘/下拉菜单)返回后, 延迟重新确认按键弹起 =====
-// 弹出层关闭会重绘注册/编辑/核对页, 可能把页面按钮恢复成按下态(固件无法靠屏幕通知捕获, DeviceScreenNotify=0)。
-// 在控件通知(NotifyText/NotifyMenu)时装填, 等弹出层完全关闭、重绘完成后再下发弹起帧;
-// 只重发按钮值、不改变使能, 故无灰化、不影响手感
-#define POPUP_RELEASE_DELAY_MS 150U
-static uint8_t  s_popupReleasePending = 0U;
-static uint32_t s_popupReleaseTick = 0U;
-static uint16_t s_popupReleaseScreen = 0U;
-static uint16_t s_popupReleaseFirst = 0U;
-static uint16_t s_popupReleaseLast = 0U;
-
-//装填一次弹出层返回后的按键释放(由NotifyText/NotifyMenu调用)
-void treatmentPopupReleaseArm(uint16_t screen, uint16_t first, uint16_t last){
-  if(first > last){
-    uint16_t tmp = first;
-    first = last;
-    last = tmp;
-  }
-  s_popupReleaseScreen = screen;
-  s_popupReleaseFirst = first;
-  s_popupReleaseLast = last;
-  s_popupReleaseTick = HAL_GetTick();
-  s_popupReleasePending = 1U;
-}
-
-//非阻塞延迟释放轮询(在dcHmiLoop每拍调用): 弹出层关闭重绘完成后, 对范围内按钮重新下发弹起帧
-void treatmentPopupReleaseLoop(void){
-  if(s_popupReleasePending == 0U){
-    return;
-  }
-  if((HAL_GetTick() - s_popupReleaseTick) < POPUP_RELEASE_DELAY_MS){
-    return;
-  }
-  s_popupReleasePending = 0U;
-  for(uint16_t c = s_popupReleaseFirst; c <= s_popupReleaseLast; c++){
-    SetButtonValue(s_popupReleaseScreen, c, 0U);
-  }
-}
-
-//装填一次按键基线(必须在SetScreen切页前调用): 先禁用阻断该按钮触摸, 再立即弹起——
-//禁用后活动触摸不会把清零压过, 故切页时按钮已是"禁用+弹起"的正确状态; 延迟后由轮询恢复使能
-void treatmentArmKeyBaseline(uint16_t screen, uint16_t first, uint16_t last){
-  //规范化按钮范围: 调用方可能按控件语义而非ID大小传参, 统一为 first<=last, 避免循环空转
-  if(first > last){
-    uint16_t tmp = first;
-    first = last;
-    last = tmp;
-  }
-  for(uint16_t c = first; c <= last; c++){
-    SetControlEnable(screen, c, 0U);
-    SetButtonValue(screen, c, 0U);
-  }
-  s_keyArmScreen = screen;
-  s_keyArmFirst = first;
-  s_keyArmLast = last;
-  s_keyArmTick = HAL_GetTick();
-  s_keyArmPending = 1U;
-}
-
-//按键基线轮询(在dcHmiLoop每拍调用): 延迟满后手指已抬起, 仅恢复使能, 按钮保持弹起
-void treatmentKeyArmLoop(void){
-  if(s_keyArmPending == 0U){
-    return;
-  }
-  if((HAL_GetTick() - s_keyArmTick) < KEY_ARM_DELAY_MS){
-    return;
-  }
-  s_keyArmPending = 0U;
-  for(uint16_t c = s_keyArmFirst; c <= s_keyArmLast; c++){
-    SetControlEnable(s_keyArmScreen, c, 1U);
-  }
-}
-
-// ===== 切页固定延迟: 让源按钮按下态自然展示 =====
-// 按下瞬间不立即切页, 按钮保持按下态给用户明确反馈; 固定展示时间到后再整页切换,
-// 源按钮随旧整页一起消失(不在旧页弹起), 视觉为"按下→停顿→整页切换", 避免按下/弹起时序错乱
-#define NAV_PRESS_HOLD_MS 150U
-#define NAV_ACTION_EDIT_PATIENT 1U//GDDC_PAGE_LIST_RECORD的GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT -> GDDC_PAGE_EDIT_PATIENT
-static uint8_t  s_navPending = 0U;//有一次延迟导航待执行
-static uint32_t s_navTick = 0U;   //按下装填时刻, 固定展示计时基准
-static uint8_t  s_navAction = 0U; //待执行的导航动作
-
-//按下时装填延迟导航: 按钮保持按下态(不切页), 固定展示时间由轮询判定
-void treatmentNavArm(uint8_t action){
-  s_navAction = action;
-  s_navTick = HAL_GetTick();
-  s_navPending = 1U;
-}
-
-//实际执行GDDC_PAGE_LIST_RECORD -> GDDC_PAGE_EDIT_PATIENT的切页(延迟满后由treatmentNavLoop调用)
-static void listTreatmentDoEditPatient(void);
-
-//延迟导航轮询(在dcHmiLoop每拍调用): 固定展示时间满后执行真正切页
-void treatmentNavLoop(void){
-  if(s_navPending == 0U){
-    return;
-  }
-  if((HAL_GetTick() - s_navTick) < NAV_PRESS_HOLD_MS){
-    return;
-  }
-  s_navPending = 0U;
-  if(s_navAction == NAV_ACTION_EDIT_PATIENT){
-    listTreatmentDoEditPatient();
-  }
-}
-
-//GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT按下入口: 不立即切页, 只装填固定延迟导航,
-//按钮保持按下态给用户明确反馈; 真正切页由treatmentNavLoop延迟满后调用listTreatmentDoEditPatient
-void listTreatmentRecordEditPatient(void){
-  treatmentNavArm(NAV_ACTION_EDIT_PATIENT);
-}
-
-//实际执行 GDDC_PAGE_LIST_RECORD -> GDDC_PAGE_EDIT_PATIENT (固定展示时间满后由treatmentNavLoop调用):
-//预填患者信息, 置更新模式(OK只更新患者, 不追加记录); 源按钮随旧整页消失(不在旧页弹起),
-//目标页 GDDC_PAGE_EDIT_PATIENT_KEY_OK / GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL 切页前禁用+弹起
+//实际执行 GDDC_PAGE_LIST_RECORD -> GDDC_PAGE_EDIT_PATIENT:
+//预填患者信息, 置更新模式(GDDC_PAGE_EDIT_PATIENT_KEY_OK只更新患者, 不追加记录)
 static void listTreatmentDoEditPatient(void){
   uint16_t patientIndex;
   patientRecord_t pat;
@@ -4788,10 +4611,6 @@ static void listTreatmentDoEditPatient(void){
   sprintf(idBuf, "AR %04u", (unsigned int)pat.id);
   listTreatmentCtx.editPatientMode = 1U;
   listTreatmentCtx.editReturnPage = GDDC_PAGE_LIST_RECORD;
-  printf("@NAV enter editPatient page, mode=%u recordPatientId=%u return=%u\n",
-         (unsigned)listTreatmentCtx.editPatientMode,
-         (unsigned)listTreatmentCtx.recordPatientId,
-         (unsigned)listTreatmentCtx.editReturnPage);
   dcHmiShowTreatmentCommon(GDDC_PAGE_EDIT_PATIENT, idBuf, &treatmentLog);
   //性别文本控件: 进入编辑页即按患者性别刷新(男Male/女Female), 与注册页同口径;
   //dcHmiShowTreatmentCommon只更新菜单, 文本需单独下发避免残留
@@ -4804,28 +4623,25 @@ static void listTreatmentDoEditPatient(void){
   else{
     SetTextValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_TEXT_GENDER, (uint8_t*)"");
   }
-  //释放源按钮 GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT 的互锁: 导航正在执行, 新页面不得继承该锁,
-  //否则 GDDC_PAGE_EDIT_PATIENT 的按键会被互锁门拒绝而卡按下(源按钮本身随旧整页消失, 无需SetButtonValue)
+  //释放源按钮 GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT 的互锁: 源按钮随旧整页消失, 新页面不得继承该锁
   treatmentBtnLockRelease(GDDC_PAGE_LIST_RECORD, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);
-  //装填目标页基线(内部先禁用触摸再弹起): 保证SetScreen切到本页时两键已是弹起态,
-  //既防页面15重叠位置的触摸穿透, 也消除历史按下残留; 手指抬起后由treatmentKeyArmLoop恢复使能
-  treatmentArmKeyBaseline(GDDC_PAGE_EDIT_PATIENT,
-                          GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL, GDDC_PAGE_EDIT_PATIENT_KEY_OK);
   NVRAM0[EM_DC_PAGE] = GDDC_PAGE_EDIT_PATIENT;
   SetScreen(GDDC_PAGE_EDIT_PATIENT);
 }
 
-//患者信息编辑页OK: 校验后更新患者信息, 回记录页(15)
+//GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT按下入口: 瞬变按钮按下直接切页(无延迟)
+void listTreatmentRecordEditPatient(void){
+  listTreatmentDoEditPatient();
+}
+
+//患者信息编辑页GDDC_PAGE_EDIT_PATIENT_KEY_OK: 校验后更新患者信息, 回记录页
 void listTreatmentEditPatientConfirm(void){
   patientRecord_t row;
-  printf("@NAV confirm enter, mode=%u name0=%u\n",
-         (unsigned)listTreatmentCtx.editPatientMode,
-         (unsigned)treatmentLog.name[0]);
   if(listTreatmentCtx.editPatientMode == 0U){
     return;
   }
   if(treatmentLog.name[0] == 0){
-    printf("@NAV confirm abort: empty name, stay page17\n");
+    //姓名为空: 停留本页, 瞬变按钮松开由屏幕自动弹起, 不卡按下
     return;
   }
   memset(&row, 0x0, sizeof(row));
@@ -4836,38 +4652,23 @@ void listTreatmentEditPatientConfirm(void){
   treatmentPatientUpdate(listTreatmentCtx.recordPatientId, &row);
   listTreatmentCtx.editPatientMode = 0U;
   NVRAM0[EM_DC_PAGE] = listTreatmentCtx.editReturnPage;
-  printf("@NAV confirm SetScreen return=%u\n", (unsigned)listTreatmentCtx.editReturnPage);
-  //冻结画面: 屏幕保持页面17, 使源按钮OK弹起与切页过程不可见
+  //冻结画面: 切页过程不可见, 解冻后一次性重绘记录页(防闪烁, 与按钮自锁无关)
   SetScreenUpdateEnable(0U);
-  //源按钮OK在冻结后清零并解锁: 状态已更新但不绘制(notify层不再单独释放)
-  SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_OK, 0U);
+  //释放GDDC_PAGE_EDIT_PATIENT_KEY_OK互锁: 瞬变按钮无需清零, 记录页各键默认弹起
   treatmentBtnLockRelease(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_OK);
-  //装填记录页基线(内部先禁用再弹起): 保证SetScreen切到记录页时各键已是弹起态
-  treatmentArmKeyBaseline(GDDC_PAGE_LIST_RECORD,
-                          GDDC_PAGE_LIST_RECORD_KEY_DELETE_0, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);
   SetScreen(listTreatmentCtx.editReturnPage);
-  //解冻: 一次性重绘, 直接显示已正确设置的记录页, 无中间变化
   SetScreenUpdateEnable(1U);
 }
 
-//患者信息编辑页CANCEL: 不更新, 按来源页返回
+//患者信息编辑页GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL: 不更新, 按来源页返回
 void listTreatmentEditPatientCancel(void){
-  printf("@NAV cancel enter, mode=%u return=%u\n",
-         (unsigned)listTreatmentCtx.editPatientMode,
-         (unsigned)listTreatmentCtx.editReturnPage);
   listTreatmentCtx.editPatientMode = 0U;
   NVRAM0[EM_DC_PAGE] = listTreatmentCtx.editReturnPage;
-  printf("@NAV cancel SetScreen return=%u\n", (unsigned)listTreatmentCtx.editReturnPage);
-  //冻结画面: 屏幕保持页面17, 使源按钮CANCEL弹起与切页过程不可见
+  //冻结画面: 切页过程不可见, 解冻后一次性重绘记录页(防闪烁)
   SetScreenUpdateEnable(0U);
-  //源按钮CANCEL在冻结后清零并解锁: 状态已更新但不绘制(notify层不再单独释放)
-  SetButtonValue(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL, 0U);
+  //释放GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL互锁: 瞬变按钮无需清零
   treatmentBtnLockRelease(GDDC_PAGE_EDIT_PATIENT, GDDC_PAGE_EDIT_PATIENT_KEY_CANCEL);
-  //装填记录页基线(内部先禁用再弹起): 保证SetScreen切到记录页时各键已是弹起态
-  treatmentArmKeyBaseline(GDDC_PAGE_LIST_RECORD,
-                          GDDC_PAGE_LIST_RECORD_KEY_DELETE_0, GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT);
   SetScreen(listTreatmentCtx.editReturnPage);
-  //解冻: 一次性重绘, 直接显示已正确设置的记录页, 无中间变化
   SetScreenUpdateEnable(1U);
 }
 
@@ -5394,10 +5195,6 @@ void dcHmiLoop(void){//HMI轮训程序
   tempControlLoop();
   gddcHmiLoop();
   listTreatmentUsbLoop();//U盘提示页面轮询(非阻塞)
-  listTreatmentPageReleaseLoop();//病历列表页翻页键延迟释放(非阻塞, 手指抬起后再清零/使能)
-  treatmentNavLoop();//固定延迟导航(非阻塞): 源按钮按下展示时间满后再执行切页
-  treatmentKeyArmLoop();//切页后延迟建立按键未按下基线(非阻塞, 手指抬起后再清零/使能)
-  treatmentPopupReleaseLoop();//系统键盘/下拉菜单返回后延迟重新确认按键弹起(非阻塞)
   if(NVRAM0[EM_HMI_OPERA_STEP] == FSMSTEP_HIBERNATE){//休眠软关机
     return;
   }
@@ -6795,11 +6592,10 @@ static void ProcessMessage( PCTRL_MSG msg, uint16_t size ){
     uint16_t control_id = PTR2U16(&msg->control_id);                                      //控件ID
     uint32_t value = PTR2U32(msg->param);                                                 //数值
     switch(cmd_type){
-    case NOTIFY_TOUCH_PRESS:{//触摸屏按下
+    case NOTIFY_TOUCH_PRESS:{//触摸屏按下(瞬变按钮由控件通知驱动, 无需处理)
       break;
     }
-    case NOTIFY_TOUCH_RELEASE:{//触摸屏松开
-      NotifyTouchXY(hmiCmdBuffer[1],PTR2U16(hmiCmdBuffer + 2),PTR2U16(hmiCmdBuffer + 4));
+    case NOTIFY_TOUCH_RELEASE:{//触摸屏松开(瞬变按钮由控件通知驱动, 无需处理)
       break;
     }
     case NOTIFY_WRITE_FLASH_OK:{//写FLASH成功
@@ -6967,15 +6763,6 @@ static void NotifyScreen(uint16_t screen_id){
   }
 }
 
-//触摸坐标事件响应
-//press 1按下触摸屏，3松开触摸屏;x x坐标;y y坐标
-static void NotifyTouchXY(uint8_t press,uint16_t x,uint16_t y){
-    //TODO: 添加用户代码
-}
-
-
-
-
 
 
 // !
@@ -7020,17 +6807,6 @@ static void NotifyMenu(uint16_t screen_id, uint16_t control_id, uint8_t item, ui
   else if((screen_id == GDDC_PAGE_VERIFY_TREATMENT)
           && (control_id == GDDC_PAGE_VERIFY_TREATMENT_MENU_GENDER)){
     treatmentLog.gender = (item == 0U) ? MALE : FEMALE;
-  }
-  // 性别下拉菜单返回后延迟重新确认本页按键弹起: 弹出层关闭重绘可能把按钮恢复成按下态
-  if(screen_id == GDDC_PAGE_VERIFY_TREATMENT){
-    treatmentPopupReleaseArm(screen_id,
-      GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD,
-      GDDC_PAGE_VERIFY_TREATMENT_KEY_DISCARD_RECORD);
-  }
-  else{
-    treatmentPopupReleaseArm(screen_id,
-      GDDC_PAGE_REGISTER_PATIENT_KEY_OK,
-      GDDC_PAGE_REGISTER_PATIENT_KEY_CANCEL);
   }
 }
 
