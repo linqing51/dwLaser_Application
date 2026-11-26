@@ -80,6 +80,8 @@ extern "C" {
 #define SAVE_EPROM_FILENAME              "/seprom.bin"//EPROM->UDISK 储存名称
 #define LOAD_EPROM_FILENAME              "/leprom.bin"//UDISK->EPROM 恢复名称
 #define TREATMENTLOG_FILENAME             "/treatment_v1.csv"
+//进度条到100%后在确认页停留时长(毫秒), 满后才切回操作页(导入/导出通用)
+#define CONFIG_USB_DONE_HOLD_MS           1000
 // ***************************************************************************
 //配置密码
 #define CONFIG_HMI_ADMIN_PASSWORD0          0x3532//管理员密码

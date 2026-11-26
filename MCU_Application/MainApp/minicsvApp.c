@@ -200,6 +200,10 @@ void vMiniCSVTestTask(void *pvParameters){
 #define TREATMENT_CSV_COLUMNS_MIN           9U  //旧格式最小列数(无rtc及脉冲列)
 #define TREATMENT_CSV_COLUMNS_RTC           10U //含rtc的中间格式列数(脉冲列之前)
 #define TREATMENT_CSV_COLUMNS            13U //当前格式列数(含rtc+脉冲模式+正负脉宽)
+//导入进度三阶段边界(0-100): 预检0-30, 写入30-70, 核对70-100; 同时覆盖U盘读取与软件处理进度
+#define TREATMENT_USB_PROGRESS_PRECHECK_END   30U  //预检阶段上界(读+解析, 按文件读取位置)
+#define TREATMENT_USB_PROGRESS_WRITE_END      70U  //写入阶段上界(清空+写EPROM, 按已写入记录)
+#define TREATMENT_USB_PROGRESS_VERIFY_END    100U  //核对阶段上界(回读+逐字段比较, 按已核对记录)
 static char treatmentCsvLineBuf[512];//单行序列化缓冲
 static char treatmentCsvReadBuf[256];//f_gets行缓冲
 static char treatmentCsvWorkBuf[512];//解析工作缓冲
@@ -467,6 +471,8 @@ treatmentUsbErr_t treatmentLogSaveToUdisk(uint16_t *saved){
     f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
     return TREATMENT_USB_ERR_IO;
   }
+  //开始逐条写入前确保进度条为0%(进入确认页时已清零, 这里再确保一次)
+  SetProgressValue(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_PROGRESS_SDISK, 0);
   for(i = 0U; i < count; i++){
     treatmentLog_t rec;
     if(treatmentEpromGet(i, &rec) != TREATMENT_EPROM_OK){
@@ -484,6 +490,9 @@ treatmentUsbErr_t treatmentLogSaveToUdisk(uint16_t *saved){
       return TREATMENT_USB_ERR_IO;
     }
     written++;
+    //按已写入记录数更新进度条: written/count 映射0-100, 写完最后一条到100%
+    SetProgressValue(GDDC_PAGE_OPERATOR_USB_SAVE, GDDC_PAGE_OPERATOR_USB_SAVE_PROGRESS_SDISK,
+      (uint32_t)written * 100U / count);
   }
   f_close(&file);
   f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
@@ -501,6 +510,7 @@ treatmentUsbErr_t treatmentLogLoadFromUdisk(uint16_t *loaded){
   FRESULT fr;
   uint16_t capacity, validCount = 0U, written = 0U;
   uint16_t pass;
+  uint32_t fileSize;//CSV文件总字节数(预检阶段按文件读取位置计算进度)
   treatmentLog_t rec;
 
   if(loaded != NULL){
@@ -519,9 +529,17 @@ treatmentUsbErr_t treatmentLogLoadFromUdisk(uint16_t *loaded){
     printf("%s,%d,%s:open %s fail,code=%d\n", __FILE__, __LINE__, __func__, TREATMENTLOG_FILENAME, (int)fr);
     return TREATMENT_USB_ERR_OPEN;
   }
+  fileSize = (uint32_t)f_size(&file);
+  //开始读取前确保进度条为0%(进入确认页时已清零, 这里再确保一次)
+  SetProgressValue(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_PROGRESS_LDISK, 0);
 
   //第一遍: 只预检, 统计可写入条数
   while(f_gets(treatmentCsvReadBuf, (int)sizeof(treatmentCsvReadBuf), &file) != NULL){
+    //预检阶段: 按文件读取位置(f_tell/fileSize)映射0-30%, 放在行类型判断前使每行都更新
+    if(fileSize > 0U){
+      SetProgressValue(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_PROGRESS_LDISK,
+        (uint32_t)f_tell(&file) * TREATMENT_USB_PROGRESS_PRECHECK_END / fileSize);
+    }
     if(treatmentCsvReadBuf[0] == '\0'){
       continue;//空行
     }
@@ -573,6 +591,10 @@ treatmentUsbErr_t treatmentLogLoadFromUdisk(uint16_t *loaded){
       break;
     }
     written++;
+    //写入阶段: 按已写入记录数(written/validCount)映射30-70%, 与预检末尾的30%衔接, 最后一条到70%
+    SetProgressValue(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_PROGRESS_LDISK,
+      TREATMENT_USB_PROGRESS_PRECHECK_END
+      + (uint32_t)written * (TREATMENT_USB_PROGRESS_WRITE_END - TREATMENT_USB_PROGRESS_PRECHECK_END) / validCount);
   }
   f_close(&file);
   f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);
@@ -650,6 +672,10 @@ uint8_t treatmentLogVerifyUdisk(void){
       break;
     }
     i++;
+    //核对阶段: 按已核对记录数(i/localCount)映射70-100%, 最后一条核对完到100%
+    SetProgressValue(GDDC_PAGE_OPERATOR_USB_LOAD, GDDC_PAGE_OPERATOR_USB_LOAD_PROGRESS_LDISK,
+      TREATMENT_USB_PROGRESS_WRITE_END
+      + (uint32_t)i * (TREATMENT_USB_PROGRESS_VERIFY_END - TREATMENT_USB_PROGRESS_WRITE_END) / localCount);
   }
   f_close(&file);
   f_mount(NULL, (const TCHAR*)FATFS_ROOT, 1);

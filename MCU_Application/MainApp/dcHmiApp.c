@@ -2745,8 +2745,9 @@ void updateListTreatmentDisplay(void){//病历储存页面:显示当前治疗记
 typedef struct{
   uint16_t topIndex;//列表窗口第一个患者在"过滤后患者视图"中的位置(整页翻页, 恒为窗口大小的整数倍)
   uint16_t selectedIndex;//当前选中患者在"过滤后患者视图"中的位置
-  uint16_t usbState;//U盘流程状态: 0空闲 6确认页等待按键 7导出/导入执行中(读写在轮询完成)
+  uint16_t usbState;//U盘流程状态: 0空闲 6确认页等待 7执行中 8完成态(100%后等1秒再切页)
   uint16_t usbCount;//本次保存/载入的病历条数
+  uint32_t usbDoneTick;//状态7完成时刻(HAL_GetTick毫秒), 供状态8判定1秒停留
   char usbText[64];//USB操作页SUMMARY_USB当前应显示的内容(默认U盘在位状态, 导出/导入后为本次结果, 取消后为空)
   uint8_t  usbOp;//1=导出(save) 2=导入(load), 决定确认页文案与轮询执行分支
   uint8_t  usbErr;//U盘操作结果(0=成功)
@@ -4028,7 +4029,7 @@ uint8_t listTreatmentUsbBusy(void){//提示页/确认页显示中
   return (listTreatmentCtx.usbState != 0U) ? 1U : 0U;
 }
 
-static uint16_t listTreatmentUsbPageOf(uint16_t state){//确认页状态(6/7)对应页面ID, 用于判断页面是否被别处切走
+static uint16_t listTreatmentUsbPageOf(uint16_t state){//确认页状态(6/7/8)对应页面ID, 用于判断页面是否被别处切走
   (void)state;
   //按操作类型返回拆分后的确认页: 导入LOAD, 导出SAVE
   if(listTreatmentCtx.usbOp == 2U){
@@ -4071,6 +4072,13 @@ static void enterOperatorUsbConfirmPage(void){
   SetButtonValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 0);
   SetControlEnable(page, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 1);
   SetControlEnable(page, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 1);
+  //进入确认页先把本页进度条清零: 上次操作可能停在100%, 等待确认期间应显示0%
+  if(page == GDDC_PAGE_OPERATOR_USB_LOAD){
+    SetProgressValue(page, GDDC_PAGE_OPERATOR_USB_LOAD_PROGRESS_LDISK, 0);
+  }
+  else{
+    SetProgressValue(page, GDDC_PAGE_OPERATOR_USB_SAVE_PROGRESS_SDISK, 0);
+  }
   NVRAM0[EM_DC_PAGE] = page;
   SetScreen(page);
 }
@@ -4708,7 +4716,25 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
   if(listTreatmentCtx.usbState == 6U){//确认页: 等用户按键, 不做读写
     return;
   }
-  //状态7: 已确认, 执行一次导出或导入, 再回操作页并在SUMMARY_USB显示结果
+  if(listTreatmentCtx.usbState == 8U){//完成态: 进度条保持100%, 非阻塞等满停留时长再切回操作页
+    if((HAL_GetTick() - listTreatmentCtx.usbDoneTick) < CONFIG_USB_DONE_HOLD_MS){
+      return;//停留未满, 保持确认页100%完成态
+    }
+    //停留满: 恢复OK/CANCEL使能并切回操作页(此时手指已抬起, 恢复不会被活动触摸干扰)
+    {
+      uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
+        ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
+      //先弹起OK并解除互锁, 再恢复OK/CANCEL使能(读写期间两键均被物理禁用)
+      treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK);
+      SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 1);
+      SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 1);
+    }
+    NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
+    SetScreen(GDDC_PAGE_OPERATOR_USB);
+    listTreatmentCtx.usbState = 0U;//回到空闲, 允许后续触摸
+    return;
+  }
+  //状态7: 已确认, 执行一次导出或导入(完成后切状态8, 停留1秒再切页)
   memset(dispBuf, 0x0, sizeof(dispBuf));
   if(listTreatmentCtx.usbOp == 2U){//导入: 读U盘CSV覆盖机内EPROM, 再回读本机与U盘逐条比较; 载入失败或比较不一致统一按失败提示
     listTreatmentCtx.usbErr = (uint8_t)treatmentLogLoadFromUdisk(&listTreatmentCtx.usbCount);
@@ -4736,28 +4762,17 @@ void listTreatmentUsbLoop(void){//USB确认页轮询(非阻塞): 确认页等待
       }
     }
   }
-  listTreatmentCtx.usbState = 0U;//先退出忙状态(允许后续触摸)
+  //导出成功文案(导入分支已在上面填好); 结果文案交给usbText统一维护, 页面冷加载重发同内容不覆盖
   if((listTreatmentCtx.usbOp != 2U) && (listTreatmentCtx.usbErr == (uint8_t)TREATMENT_USB_OK)){
-    //导出成功: 结果栏显示本次备份概况(患者数/已写入的治疗记录数), 替代原来的成功提示
     memset(dispBuf, 0x0, sizeof(dispBuf));
     sprintf(dispBuf, "USB backup: %u patients, %u treatment records",
       (unsigned int)treatmentEpromGetPatientCount(), (unsigned int)listTreatmentCtx.usbCount);
   }
-  setOperatorUsbText(dispBuf);//结果文案交给usbText统一维护, 页面冷加载重发同内容不会覆盖
-  refreshOperatorUsbDisplay();//刷新操作页摘要并下发结果栏
-  //OK自锁键: 功能已全部执行完毕, 必须在切回操作页之前(确认页仍为当前页)下发清零,
-  //切页后屏幕无法可靠清零旧页控件, 会导致OK键视觉停在按下态
-  {
-    uint16_t confirmPage = (listTreatmentCtx.usbOp == 2U)
-      ? GDDC_PAGE_OPERATOR_USB_LOAD : GDDC_PAGE_OPERATOR_USB_SAVE;
-    //先弹起OK并解除互锁, 再恢复OK/CANCEL使能(读写期间两键均被物理禁用), 然后才切回操作页,
-    //保证下次进入确认页按键功能正常; 此时手指已抬起, 清零与恢复不会被活动触摸干扰
-    treatmentReleaseButton(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK);
-    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK, 1);
-    SetControlEnable(confirmPage, GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL, 1);
-  }
-  NVRAM0[EM_DC_PAGE] = GDDC_PAGE_OPERATOR_USB;
-  SetScreen(GDDC_PAGE_OPERATOR_USB);
+  setOperatorUsbText(dispBuf);
+  refreshOperatorUsbDisplay();//先下发操作页结果帧(当前仍为确认页, 帧目标操作页)
+  //状态7完成: 进度条已到100%, 记录完成时刻切状态8, 停留1秒让用户看到100%完成态, 不立即切页
+  listTreatmentCtx.usbDoneTick = HAL_GetTick();
+  listTreatmentCtx.usbState = 8U;
 }
 
 void updateAcousticDisplay(void){//更新提示音设置
