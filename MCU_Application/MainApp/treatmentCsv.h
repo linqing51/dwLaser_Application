@@ -3,18 +3,20 @@
  // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
  // 请以 UTF-8 编码保存, 并在文件头保留本注释。
  // ----------------------------------------------------------------------------
-#ifndef __MINICSVAPP_H__
-#define __MINICSVAPP_H__
+#ifndef __TREATMENTCSV_H__
+#define __TREATMENTCSV_H__
 // ***************************************************************************
 #ifdef __cplusplus
 extern "C" {
 #endif
 // ***************************************************************************
+// 病历 CSV/U盘数据层: 只依赖病历领域头(treatment.h)与 FatFs/MiniCSV, 不依赖任何 HMI 头;
+// 进度经 treatmentReportProgress 上报, 由 HMI 层注入回调对接屏幕进度条
+#include "treatment.h"
 #include "minicsv.h"
 #include "ff.h"
 #include <string.h>
 #include <stdio.h>
-#include "dcHmiApp.h"
 //***************************************************************************
 //治疗记录导出/导入U盘(U盘CSV文件, 文件名由TREATMENTLOG_FILENAME定义)
 typedef enum{
@@ -35,6 +37,4 @@ uint8_t treatmentUsbDiskPresent(void);//检查USBFS口U盘(MSC)是否已在位(1
 #ifdef __cplusplus
 }
 #endif
-
 #endif
-

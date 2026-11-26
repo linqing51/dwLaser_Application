@@ -29,9 +29,7 @@ extern "C" {
 //虚拟病历生成(测试数据填充): 模块常驻编译, 由诊断页按钮GDDC_PAGE_DIAGNOSIS_KEY_AUTOFILL触发
 //现行为(填满模式): 持续新建患者直到患者硬上限(100)或剩余空间放不下一个患者行+首条记录;
 //每患者记录数在5-20随机(范围由函数参数控制, 传0,0=默认5-20), 尾部写不下即安全截断; 双重越界保险在treatment.c内
-#define CONFIG_TREATMENT_DEMO_COUNT          0//已废弃: 随机填充不再使用固定数量, 宏保留仅为兼容, 不参与逻辑
-#define CONFIG_TREATMENT_DEMO_SEED          20261111//随机种子(0=按运行时刻取, 同种子数据可复现)
-#define CONFIG_TREATMENT_DEMO_VERBOSE         1//串口输出生成/校验摘要
+// 可调配置CONFIG_TREATMENT_DEMO_VERBOSE已迁移至AppConfig.h; 固定数量COUNT/随机种子SEED全工程无引用, 已删除
 //***************************************************************************
 #define CONFIG_INPUT_FILTER_TIME           10//输入数字滤波扫描周期 1mS * N
 // ***************************************************************************

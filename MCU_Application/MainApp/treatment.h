@@ -31,11 +31,8 @@ extern "C" {
 // ***************************************************************************
 #include "sPlc.h"
 // ***************************************************************************
-// 患者姓名长度: 最多 CONFIG_TREATMENT_NAME_LEN 个字符(不含结束符), 缓冲区另加 1 字节结束符;
-// 片上患者行与 RAM 复合视图共用同一长度, 改此值即同时改变 EPROM 患者行尺寸(存量病历按固件CRC变化整片清空)
-#ifndef CONFIG_TREATMENT_NAME_LEN
-#define CONFIG_TREATMENT_NAME_LEN 18
-#endif
+// 患者姓名长度: CONFIG_TREATMENT_NAME_LEN 定义在板级 AppConfig.h(经 sPlc.h->myConfig.h 先包含),
+// 最多该数量字符(不含结束符), 缓冲区另加1字节; 片上患者行与RAM复合视图共用, 改值即改变EPROM患者行尺寸
 #define TREATMENT_NAME_SIZE       (CONFIG_TREATMENT_NAME_LEN + 1)
 //***************************************************************************
 // 性别
@@ -226,19 +223,13 @@ void treatmentDumpDiagnostics(void);
 // 须在开机外设初始化完成后、业务任务启动前调用一次。
 void treatmentPvdInit(void);
 uint8_t treatmentWriteBlocked(void);
+// 进度回调: 数据层(CSV/USB)经此上报0-100进度, 由HMI层注入实现对接屏幕进度条; 未注册时安全空操作
+typedef void (*treatmentProgressFn)(uint8_t percent);
+void treatmentSetProgressCallback(treatmentProgressFn fn);
+void treatmentReportProgress(uint8_t percent);//数据层上报入口(内部判空, 未注册回调时空操作)
 typedef void (*treatmentEpromVisitFn)(uint16_t index, const treatmentLog_t *log);
 void treatmentEpromTraverse(treatmentEpromVisitFn fn);
 //***************************************************************************
-#ifndef CONFIG_TREATMENT_DEMO_VERBOSE
-#define CONFIG_TREATMENT_DEMO_VERBOSE 0
-#endif
-// 已废弃: 随机填充不再使用固定数量, 保留仅为兼容, 不参与逻辑
-#ifndef CONFIG_TREATMENT_DEMO_COUNT
-#define CONFIG_TREATMENT_DEMO_COUNT   200
-#endif
-#ifndef CONFIG_TREATMENT_DEMO_SEED
-#define CONFIG_TREATMENT_DEMO_SEED    0
-#endif
 // 虚拟病历生成: 直接写入本区块, 各子项按真实治疗场景自洽模拟
 typedef enum{
   TREATMENT_DEMO_OK = 0,

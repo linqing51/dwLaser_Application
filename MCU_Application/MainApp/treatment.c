@@ -904,6 +904,16 @@ static volatile uint8_t g_writeBlocked = 0U;
 
 uint8_t treatmentWriteBlocked(void){ return g_writeBlocked; }
 
+// 进度回调: 数据层(CSV/USB)统一经 treatmentReportProgress 上报, HMI层用注册函数注入对接屏幕的实现
+static treatmentProgressFn g_progressFn = NULL;
+
+void treatmentSetProgressCallback(treatmentProgressFn fn){ g_progressFn = fn; }
+
+// 数据层上报入口: 未注册回调时空操作, 已注册才转发0-100, 保证数据层不直接依赖HMI
+void treatmentReportProgress(uint8_t percent){
+  if(g_progressFn != NULL){ g_progressFn(percent); }
+}
+
 // HAL 弱回调: PVD 中断经 HAL_PWR_PVD_IRQHandler 调用;
 // PVDO=1 表示 Vdd 已低于阈值(门控关闭新写入), PVDO=0 表示恢复(解除)。
 void HAL_PWR_PVDCallback(void){

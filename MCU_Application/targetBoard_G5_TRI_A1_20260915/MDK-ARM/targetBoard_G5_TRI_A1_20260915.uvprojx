@@ -3014,9 +3014,14 @@
               <FilePath>..\..\MainApp\preSchemeTrip_1940_1470_635.c</FilePath>
             </File>
             <File>
-              <FileName>minicsvApp.c</FileName>
+              <FileName>treatmentCsv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\MainApp\minicsvApp.c</FilePath>
+              <FilePath>..\..\MainApp\treatmentCsv.c</FilePath>
+            </File>
+            <File>
+              <FileName>treatmentHmi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\MainApp\treatmentHmi.c</FilePath>
             </File>
             <File>
               <FileName>treatment.c</FileName>

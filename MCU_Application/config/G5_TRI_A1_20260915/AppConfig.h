@@ -82,6 +82,10 @@ extern "C" {
 #define TREATMENTLOG_FILENAME             "/treatment_v1.csv"
 //进度条到100%后在确认页停留时长(毫秒), 满后才切回操作页(导入/导出通用)
 #define CONFIG_USB_DONE_HOLD_MS           1000
+//病历领域参数: 患者姓名最大字符数(不含结束符), 改此值即改变EPROM患者行尺寸(存量病历随固件CRC清空)
+#define CONFIG_TREATMENT_NAME_LEN         18
+//病历demo虚拟数据生成: 诊断打印开关(0=不打印, 1=打印), 由sPlcConfig.h迁移, 保持原生效值1
+#define CONFIG_TREATMENT_DEMO_VERBOSE     1
 // ***************************************************************************
 //配置密码
 #define CONFIG_HMI_ADMIN_PASSWORD0          0x3532//管理员密码

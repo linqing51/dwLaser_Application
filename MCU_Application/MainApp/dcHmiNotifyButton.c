@@ -5,7 +5,7 @@
  // ----------------------------------------------------------------------------
 #include "dcHmiNotifyButton.h"
 #include "treatment.h"
-#include "minicsvApp.h"//U盘CSV导入导出(治疗记录)
+#include "treatmentCsv.h"//U盘CSV导入导出/U盘在位检测(治疗记录)
 // ***************************************************************************
 //诊断页全部按键ID(与GDDC_PAGE_DIAGNOSIS.tft枚举一致), 共19个, 自动填充期间用于整页锁键
 static const uint16_t diagnosisKeyList[] = {
