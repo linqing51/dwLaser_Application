@@ -1,7 +1,7 @@
 # AI_RULES.md — AI 智能体改动本仓库前的强制规则（必读）
 
 > 本文件是所有 AI 智能体（含任何工具、任何新建会话/工作）在本仓库做任何修改、编译、提交之前，必须先完整阅读并严格遵守的规则。
-> 本文件是面向 AI 执行的**权威规则主文件**，独立于根目录 AGENTS.md；各工具入口（`.cursorrules`、`.trae/rules/` 等）只负责把智能体引导到本文件，规则只在本文件维护一份。
+> 本文件是面向 AI 执行的**权威规则主文件**，独立于根目录 AGENTS.md；各工具入口（`.cursorrules` 等）只负责把智能体引导到本文件，规则只在本文件维护一份。
 > 最后更新：2026-11-27。
 
 ## 第 0 章 总则
@@ -133,7 +133,7 @@
 2. **模式判定（密码入口）**：
    - 密码输入阶段输入管理员密码（`2580`，即 `CONFIG_HMI_ADMIN_PASSWORD0`/`CONFIG_HMI_ADMIN_PASSWORD1`）→ 进入工程模式（`SSET(R_ENGINEER_MODE)`），仿真脚踏按键 `GDDC_PAGE_READY_KEY_EMULATOR_FSW` **可见并使能**；
    - 输入普通用户密码（`DM_DC_OLD_PASSCODE0`/`DM_DC_OLD_PASSCODE1`）→ 进入正常使用模式（`RRES(R_ENGINEER_MODE)`），该按键**隐藏并禁用**。
-3. **按键形态（瞬态）**：`GDDC_PAGE_READY_KEY_EMULATOR_FSW` 必须配置为**瞬变按钮**（屏幕工程 `button_type = 0`，按下自动弹起），不是自锁型；按下产生 `state = 1` 通知、弹起产生 `state = 0` 通知，固件不得对其下发自锁保持或主动清零帧。
+3. **按键形态（瞬态）**：`GDDC_PAGE_READY_KEY_EMULATOR_FSW` 必须配置为**瞬变按钮**（屏幕工程 `button_style = 0`，按下自动弹起），不是自锁型；按下产生 `state = 1` 通知、弹起产生 `state = 0` 通知，固件不得对其下发自锁保持或主动清零帧。
 4. **功能（完全模拟脚踏）**：
    - 按键按下（`state = 1`）等价于脚踏踩下，按键弹起（`state = 0`）等价于脚踏松开；
    - 工程模式下仿真脚踏优先于物理/无线脚踏，经 `statusLoop` 注入 `R_FOOTSWITCH_PRESS`（同时置 `R_FOOTSWITCH_PLUG`），下游激光发射/停止逻辑无需改动，与真实脚踏走**同一链路**；
@@ -174,7 +174,7 @@
 ## 第 15 章 接口与 Git 纪律
 - 不擅自改变对外函数签名；兼容修复优先用同名薄适配并标注影响面。
 - 优先新增提交，不用 `--amend`、`--no-verify`；不擅自 `reset --hard`、强推；提交信息准确体现本次改动主题。
-- 不纳入、不修改他人未提交的改动（如 `minicsvApp.c`）；编译自动产物（`RTE_Components.h`、`.dbgconf` 等）提交前核对并恢复无关改动。
+- 不纳入、不修改他人未提交的改动（如 `dcHmiRes.h`）；编译自动产物（`RTE_Components.h`、`.dbgconf` 等）提交前核对并恢复无关改动。
 - 分支冻结用 annotated tag 标记：`run_treatment` 已在其最终提交 `ec0f44b0` 上打带说明的 annotated tag `frozen/run_treatment` 并推送，标记该分支永久冻结；后续其他 tag/分支是否推送、何时推送由所有者决定，AI 不擅自推送。
 
 ## 第 16 章 本机工具链（不在 PATH，须全路径调用）

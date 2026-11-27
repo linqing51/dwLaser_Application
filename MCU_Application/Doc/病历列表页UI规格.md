@@ -8,17 +8,18 @@
 
 > **强制规格（2026-11-20）：导出后机内病历数据不清空。** 从设备导出病历到 U 盘后，机内患者表与治疗记录必须完整保留，不得删除或清空。本规则在本文件范围内强制，任何软件功能改动与页面文案不得违背；确需“导出后清空本机病历”时，必须**先修改本规格并经用户明确确认**，之后才允许进行软件修改。任何 AI 不得擅自在导出流程中加入清空逻辑（详见第八节）。
 
-> **强制规格（2026-11-26，本文件交互总纲，优先级高于下文一切“自锁/延迟/基线”描述）：11 个病历相关页面的全部按键 KEY 一律为瞬变按钮（屏幕工程 `button_type = 0`）。** 语义统一为：手指按下时屏幕上报 `state = 1`，手指松开时**屏幕自身自动把按钮弹起**并上报 `state = 0`（按下 = 1、松开 = 0）。由此固化以下规则：
-> 1. 按钮的物理弹起由屏幕保证，MCU **不再**为“让按钮弹起”而下发 `SetButtonValue(...,0)`；`state = 1` 分支只执行业务动作，`state = 0` 分支只用于解除按键互锁。
-> 2. 历史上为“自锁按钮 + 活动触摸压过主机写 0”而建立的全部机制一律删除：切页按键基线（`treatmentArmKeyBaseline`/`treatmentKeyArmLoop`）、弹出层延迟释放（`treatmentPopupReleaseArm`/`treatmentPopupReleaseLoop`）、校验键事件/定时释放（`treatmentConfirmKeyArm`/`treatmentConfirmKeyRelease`）、固定延迟导航（`treatmentNavArm`/`treatmentNavLoop`）、列表页非阻塞延迟释放（`listTreatmentPageReleaseLoop`）以及各页 `*_DELAY_MS`/`*_DEBOUNCE_MS` 定时与去抖常量。
-> 3. 翻页键（`GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP`/`GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN`、`GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`/`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`）按下即翻页，并按边界更新使能（首页禁用向前键、末页禁用向后键）；松开屏幕自动弹起，无需去抖或延迟。
-> 4. 校验类按键（如 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`、`GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`）输入非法时，在对应提示文本框显示英文错误并停留本页；按钮随手指松开自动弹起，**不再出现卡按下**。
-> 5. 三个承载弹出菜单的性别键 `GDDC_PAGE_EDIT_PATIENT_KEY_GENDER`、`GDDC_PAGE_REGISTER_PATIENT_KEY_GENDER`、`GDDC_PAGE_VERIFY_TREATMENT_KEY_GENDER` 保持 `button_type = 4` 不变，其弹出逻辑由 `NotifyMenu` 处理。
-> 6. 下文第十二节、第十六节 16.6–16.10、第十七节 17.6–17.7 中凡与本总纲冲突的“自锁/延迟/基线/触摸释放”描述，一律以本总纲为准；这些章节仅保留仍有效的业务规则（页面跳转、边界使能、防闪烁、互锁门、触摸放行）。
+> **强制规格（2026-11-27 修订，本文件交互总纲）：按键操作风格不强制统一为一种——瞬变与自锁按各页面/控件的实际功能与验证结果分别采用，具体属性以本文件各章节（第十二节、第十三节、第十四节、第十六节、第十七节等）经过验证的描述为准；本总纲只确立分类与释放原则，不替代各页面/控件的具体属性。** 两种风格的语义与释放责任：
+> 1. 瞬变按钮（操作风格 `button_style = 0`）：手指按下上报 `state = 1`，手指松开时屏幕自身自动把按钮弹起并上报 `state = 0`；MCU 无需为“让按钮弹起”下发 `SetButtonValue(...,0)`，`state = 1` 分支执行业务动作，`state = 0` 分支用于解除按键互锁。
+> 2. 自锁按钮（屏幕不会自行补发 `state = 0`）：按键在 `NotifyButton` 的 `state = 1` 分支、功能函数调用之后无条件调用 `treatmentReleaseButton(screen, control)`，由其下发 `SetButtonValue(...,0)` 并同步解除互锁；即使功能函数因空槽位、边界或忙状态提前 return（空操作），也必须释放，严禁出现“按下后无任何路径释放”的死锁。
+> 3. 翻页键（`GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_UP`/`GDDC_PAGE_LIST_TREATMENT_KEY_PAGE_DOWN`、`GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`/`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`）按各页面章节口径处理，并按边界更新使能（首页禁用向前键、末页禁用向后键）。
+> 4. 校验类按键（如 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`、`GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`）输入非法时，在对应提示文本框显示英文错误并停留本页；其弹起与释放按该键所属风格（瞬变/自锁）的上述口径执行。
+> 5. 三个承载弹出菜单的性别键 `GDDC_PAGE_EDIT_PATIENT_KEY_GENDER`、`GDDC_PAGE_REGISTER_PATIENT_KEY_GENDER`、`GDDC_PAGE_VERIFY_TREATMENT_KEY_GENDER` 保持触控用途 `button_type = 4` 不变，其弹出逻辑由 `NotifyMenu` 处理。
+> 6. 异步确认键 `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK` 按下只授权（`usbState` 6→7），实际 CSV 读写在 `listTreatmentUsbLoop` 完成后才释放；确认页被切走时由 loop 中止路径统一弹起（见 4.4、16.3）。
+> 7. 各页面/控件当前究竟为瞬变还是自锁，以对应章节的具体规格为准；真实属性与手感最终由仓库所有者上板确认，AI 不做虚拟屏验证。
 
 - 实现位置（2026-11-26 起按三层三文件组织，详见附录 A 第 62 条）：
   - `MainApp/treatment.c/.h`：病历领域逻辑 + EPROM 存储（含断电原子提交、ID 回收、诊断），**不依赖 HMI**；可调配置经 `AppConfig.h`。
-  - `MainApp/treatmentCsv.c/.h`：病历 U 盘 CSV 数据层（由 `minicsvApp` 改造），经 `treatmentReportProgress` 进度回调上报，**不直接调 HMI**。
+  - `MainApp/treatmentCsv.c/.h`：病历 U 盘 CSV 数据层，经 `treatmentReportProgress` 进度回调上报，**不直接调 HMI**。
   - `MainApp/treatmentHmi.c/.h`：病历全部 HMI 交互（过滤/排序/刷新/各页面与弹窗），含进度回调适配；按键通知仍在 `dcHmiNotifyButton.c`、文本输入在 `dcHmiNotifyText.c`，经本头调用。
 - 控件 ID 定义：`MainApp/dcHmiRes.h`
 - 每页固定显示 `LIST_TREATMENT_WINDOW_SIZE = 5` 个患者；患者数与记录数**无任何业务硬上限**，两表按剩余空间（`FreeBytesPR`）动态致密增长，总量上限即病历区块物理容量。RAM 侧不恢复按业务上限定尺寸的整行大数组，仅保留：
@@ -362,7 +363,7 @@
    - 客户端如 Excel 另存，需保持该列格式（空格分隔日期与时间，不拆成两列）。
 5. **患者姓名长度 18 个字符**：由 `treatment.h` 的 `CONFIG_TREATMENT_NAME_LEN = 18` 定义，缓冲区 `TREATMENT_NAME_SIZE = 19`（含结束符），`treatmentLog_t.name` 与 `patientRecord_t.name` 共用该长度；固件在姓名录入处按 `TREATMENT_NAME_SIZE - 1` 截断，屏幕输入控件 `text_len_max` 保持 255，以固件截断为准。
 6. 姓名长度改变会改变片上患者行尺寸（当前 24 字节），存量病历与新结构不兼容；沿用既有约定——固件 CRC 变化时 `dcHmiLoopInit` 清空整片 EPROM，不做迁移与向后兼容。
-7. 本节的 RTC 列与姓名长度属于数据规格，任何后续改动必须先更新本节，并同步 `minicsvApp.c` 的列定义（`TREATMENT_CSV_COLUMNS_MIN` / `TREATMENT_CSV_COLUMNS_RTC` / `TREATMENT_CSV_COLUMNS`）与 `treatmentCsvHeader`。
+7. 本节的 RTC 列与姓名长度属于数据规格，任何后续改动必须先更新本节，并同步 `treatmentCsv.c` 的列定义（`TREATMENT_CSV_COLUMNS_MIN` / `TREATMENT_CSV_COLUMNS_RTC` / `TREATMENT_CSV_COLUMNS`）与 `treatmentCsvHeader`。
 8. **字段字节偏移一律用 `offsetof`，禁止写死魔法数字（强制，防数据偏移）**：凡对片上结构做字节级局部写入（如记录 `magic` 状态位、患者正文 `age` 起始），其地址偏移必须取 `offsetof(treatmentRecord_t, magic)` / `offsetof(patientRecord_t, age)`（在 treatment.c 内封装为 `REC_MAGIC_OFFSET` / `PAT_BODY_OFFSET`），严禁直接写 `+ 7`、`+ 2` 等硬编码常量；行尺寸与地址几何一律用 `sizeof`/`PAT_BYTES`/`REC_BYTES`。这样结构字段增减、对齐变化时偏移由编译器自动跟随，不会把正文或状态位写到错误位置。`offsetof`/`sizeof` 均为编译期常量，替换不改变任何运行时行为与镜像尺寸。仅数学取整（如位图字节数 `(n+7)/8`）不属于字段偏移，不受此限。
 
 ---
@@ -387,9 +388,9 @@
 
 ---
 
-## 十二、USB 三页面按键瞬变（强制规格，2026-11-26 修订；原 2026-11-21 自锁口径已按文首总纲废止）
+## 十二、USB 三页面按键瞬变（强制规格，2026-11-26 修订；原 2026-11-21 自锁口径已修订为瞬变）
 
-1. **适用范围**：`GDDC_PAGE_OPERATOR_USB`、`GDDC_PAGE_OPERATOR_USB_SAVE`、`GDDC_PAGE_OPERATOR_USB_LOAD` 三个页面上的**全部 7 个按键控件**——`GDDC_PAGE_OPERATOR_USB` 页 `GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK`（控件 3）、`GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK`（控件 4）、`GDDC_PAGE_OPERATOR_USB_KEY_CLOSE`（控件 5）；`GDDC_PAGE_OPERATOR_USB_SAVE`/`GDDC_PAGE_OPERATOR_USB_LOAD` 页 `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`（控件 11）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`（控件 11）、`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL`（控件 10）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL`（控件 10）。屏幕工程中 7 个按键均为 `button_type = 0`（瞬变型，按下上报 1、松开屏幕自动弹起并上报 0），该属性为强制配置。
+1. **适用范围**：`GDDC_PAGE_OPERATOR_USB`、`GDDC_PAGE_OPERATOR_USB_SAVE`、`GDDC_PAGE_OPERATOR_USB_LOAD` 三个页面上的**全部 7 个按键控件**——`GDDC_PAGE_OPERATOR_USB` 页 `GDDC_PAGE_OPERATOR_USB_KEY_SAVE_UDISK`（控件 3）、`GDDC_PAGE_OPERATOR_USB_KEY_LOAD_UDISK`（控件 4）、`GDDC_PAGE_OPERATOR_USB_KEY_CLOSE`（控件 5）；`GDDC_PAGE_OPERATOR_USB_SAVE`/`GDDC_PAGE_OPERATOR_USB_LOAD` 页 `GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`（控件 11）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`（控件 11）、`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_CANCEL`（控件 10）/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_CANCEL`（控件 10）。屏幕工程中 7 个按键均为 `button_style = 0`（瞬变型，按下上报 1、松开屏幕自动弹起并上报 0），该属性为强制配置。
 2. **互锁与切页安全不另立规则**：这 7 个按键的互锁放行、切页安全解锁与中止路径，统一遵循第十六节；`treatmentReleaseButton` 在瞬变语义下只解除互锁、不再下发 `SetButtonValue(...,0)`。
 3. **确认键异步读写**：`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK`（控件 11）按下只授权（`usbState` 6→7），实际 CSV 读写（含导入后的回读核对）在 `listTreatmentUsbLoop` 中完成；按钮的物理弹起由屏幕在手指松开时自动完成，与异步读写时序无关。
 4. **读写期间两键物理禁用（强制）**：确认键按下进入状态 7 后，固件须对本页确认键、取消键全部 `SetControlEnable(...,0)`，使读写过程中按下任一键都不产生任何触摸通知：禁止中途取消，也禁止读取期间重复按确认键。读写完成后在返回操作页前对两键 `SetControlEnable(...,1)` 恢复使能并解除互锁。
@@ -440,11 +441,11 @@
    - 删除经确认页 `GDDC_PAGE_DELETE_RECORD` 闭环执行（先确认后删除，见第十四节），防卡按下的禁用/清零机制见 16.10；删除后不足 5 条时空槽文本与 DELETE 键的隐藏、禁用见 13.3。
 3. `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`（控件 27）：notify 先 `treatmentReleaseButton` 弹起本键，再由 `listTreatmentRecordClose()` 清空 `recordPatientId` 并返回病历列表页 `GDDC_PAGE_LIST_TREATMENT`。
 4. `GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`（控件 28）：notify 先释放本键，再由 `listTreatmentRecordEditPatient()` 跳转患者信息编辑页 `GDDC_PAGE_EDIT_PATIENT`，行为见 13.5。
-5. 本页全部按键在屏幕工程均为 `button_type = 1`（自锁型）。**释放时序（强制，按按键分类）**：
-   - `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`/`GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`：notify 先 `treatmentReleaseButton`（当前页仍在时下发清零）再切页，禁止先切页再发释放帧（设备切走后可能忽略该帧导致按键残留）；
-   - `GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`/`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`：走 `listTreatmentRecordPageKey` 动作期禁用、完成后清零恢复（见 16.8）；
-   - `GDDC_PAGE_LIST_RECORD_KEY_DELETE_0–4`：禁用优先、确认页返回时统一清零（见 16.10），不在手指仍触摸时立即清零。
-   各路径统一遵循第十六节。
+5. 本页全部按键在屏幕工程均为瞬变按钮（`button_style = 0`，手指松开屏幕自动弹起）。**释放时序（强制，按按键分类）**：
+   - `GDDC_PAGE_LIST_RECORD_KEY_CLOSE`/`GDDC_PAGE_LIST_RECORD_KEY_EDIT_PATIENT`：notify 先 `treatmentReleaseButton`（当前页仍在时解除互锁）再切页，禁止先切页再解锁（设备切走后改由切页安全解锁兜底）；
+   - `GDDC_PAGE_LIST_RECORD_KEY_PAGE_UP`/`GDDC_PAGE_LIST_RECORD_KEY_PAGE_DOWN`：走 `listTreatmentRecordPageKey` 动作期禁用、按边界更新使能（见 16.7、16.8）；
+   - `GDDC_PAGE_LIST_RECORD_KEY_DELETE_0–4`：禁用优先、确认页返回时统一处理（见 16.10）。
+   各路径统一遵循第十六节；瞬变语义下 `treatmentReleaseButton` 只解除互锁、不再下发 `SetButtonValue(...,0)`。
 
 ### 13.5 患者信息编辑（`GDDC_PAGE_EDIT_PATIENT` 复用）
 
@@ -477,7 +478,7 @@
 4. **新患者分配新 ID，老患者复用**：再次治疗选择已有患者时追加治疗记录、沿用原 ID；新建患者的具体编号由数据层按本节第 3 条的最小空缺规则分配（某个时点的已分配编号属于运行数据，不在本强制规格中记录）。
 5. **同名不代表同一患者**：选择已有患者即复用其 ID；选择 Create New Patient 则生成新 ID，即使姓名相同也视为不同患者。
 6. **CSV 落地**：导出 ID 列输出 `AR 0001`，导入由 `treatmentCsvParseId()` 解析回数字（同时兼容旧版纯数字列）；ID 数字范围对齐片上 `PATIENT_ID_LIMIT`。
-7. 本规则任何改动必须先更新本节，并同步 HMI 显示、`minicsvApp.c` 前缀处理与 `treatment.c` 分配逻辑。
+7. 本规则任何改动必须先更新本节，并同步 HMI 显示、`treatmentCsv.c` 前缀处理与 `treatment.c` 分配逻辑。
 
 ---
 
@@ -510,17 +511,17 @@
 2. **锁定**：在途期间，凡画面或控件 ID 与在途按键不一致的其他按键上报 `state = 1`，一律拒绝（`NotifyButton` 直接 `return`，不执行任何功能）；锁定对同页其他按键与跨页按键同等生效。
 3. **同一按键重复通知放行**：在途按键自身重复上报 `state = 1`（屏幕重发/轮询）时放行，不视为新按键，保证在途动作自身的事件链路不被自己的锁阻断。
 4. **弹起释放（统一在 notify 层无条件执行）**：
-   - 11 页全部按键均为 `button_type = 1`（自锁型，屏幕不会自行补发 `state = 0`），故**每个按键都在 `NotifyButton` 对应分支 `if(state)` 内、调用功能函数之后无条件调用 `treatmentReleaseButton(screen, control)`**；该函数下发 `SetButtonValue(..., 0)` 并同步解除互锁。
-   - 释放不得放在功能函数内部的守卫之后：即使功能函数因空槽位、边界、忙状态或校验失败而提前 return（空操作），按键仍必须弹起，严禁出现“按下后无任何路径释放”的死锁。
-   - **唯一例外（异步确认键）**：`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK` 按下只授权（`usbState` 6→7），实际 CSV 读写在 `listTreatmentUsbLoop` 中完成；该确认键必须在 loop 工作全部执行完毕后才释放，不在 notify 释放。
-   - 若确认页被别处切走（中止路径），由 loop 对该页确认键/取消键统一弹起（见 16.3）。
+   - 11 页按键（性别菜单键除外）在屏幕工程均为瞬变按钮（`button_style = 0`，手指松开时屏幕自动弹起并补发 `state = 0`），故**每个按键都在 `NotifyButton` 对应分支 `if(state)` 内、调用功能函数之后无条件调用 `treatmentReleaseButton(screen, control)`**；瞬变语义下该函数只同步解除互锁、不再下发 `SetButtonValue(..., 0)`，物理弹起由屏幕完成。
+   - 释放不得放在功能函数内部的守卫之后：即使功能函数因空槽位、边界、忙状态或校验失败而提前 return（空操作），互锁仍必须解除，严禁出现“按下后互锁无任何路径释放”的死锁。
+   - **唯一例外（异步确认键）**：`GDDC_PAGE_OPERATOR_USB_SAVE_KEY_OK`/`GDDC_PAGE_OPERATOR_USB_LOAD_KEY_OK` 按下只授权（`usbState` 6→7），实际 CSV 读写在 `listTreatmentUsbLoop` 中完成；该确认键在 loop 工作全部执行完毕后才解除互锁，不在 notify 释放。
+   - 若确认页被别处切走（中止路径），由 loop 对该页确认键/取消键统一处理（见 16.3）。
 5. 互锁只保存“是否在途 + 画面 ID + 控件 ID”三个标量，不按页面或控件数量分配数组，RAM 开销恒定。
 
 ### 16.3 切页安全解锁（防永久锁死）
 
 1. 页面切换完成通知 `NotifyScreen(screen_id)` 触发时，若新页面与在途按键所在页面**不同**（原页面被切走，其按键无法再走正常复位路径），强制解除互锁，避免新页面被上一页遗留的在途锁永久屏蔽。
 2. 若新页面与在途按键所在页面**相同**（同一页面的加载/重发通知），不解锁，避免在途动作期间被误放行；在途按键仍由其功能完成路径正常释放。
-3. USB 确认页被别处切走的中止路径（见第十二节、4.4）继续对该页确认键/取消键显式弹起，弹起即经 `treatmentReleaseButton` 同步解锁，与本条切页解锁互为兜底。
+3. USB 确认页被别处切走的中止路径（见第十二节、4.4）由 `treatmentReleaseButton` 对该页确认键/取消键同步解除互锁，与本条切页安全解锁互为兜底。
 
 ### 16.4 与现有触摸状态门的分层关系
 
@@ -533,13 +534,13 @@
 
 1. `GDDC_PAGE_VERIFY_TREATMENT`、`GDDC_PAGE_DISCARD_TREATMENT` 已建立 `SetScreen`/`NotifyButton` 分支并启用（退出 ready 且有发射时自动弹出 `GDDC_PAGE_VERIFY_TREATMENT`，放弃记录进入 `GDDC_PAGE_DISCARD_TREATMENT`），其按键在 `NotifyButton` 分支内无条件 `treatmentReleaseButton`，与本规格一致；页面重编号后原 `GDDC_PAGE_READY` 顺延为页面 24。
 2. 实现位置：
-   - 互锁状态与判定/放行/释放函数（`treatmentIsLockPage`、`treatmentBtnLockArm/Release/Reset`、`treatmentButtonLockAllowed`、`treatmentReleaseButton`）：`MainApp/dcHmiApp.c`，对外声明在 `MainApp/dcHmiApp.h`。
-   - 互锁门接入与各自锁键释放点：`MainApp/dcHmiNotifyButton.c`、`MainApp/dcHmiApp.c`。
+   - 互锁状态与判定/放行/释放函数（`treatmentIsLockPage`、`treatmentBtnLockArm/Release/Reset`、`treatmentButtonLockAllowed`、`treatmentReleaseButton`）：`MainApp/treatmentHmi.c`，对外声明在 `MainApp/treatmentHmi.h`。
+   - 互锁门接入与各按键释放点：`MainApp/dcHmiNotifyButton.c`、`MainApp/treatmentHmi.c`。
 3. 本规格为强制规格：任何新增病历相关页面若需要同样的“在途互锁”，必须先在 16.1 表中登记页面 ID，并确认其按键在 `NotifyButton` 分支内无条件调用 `treatmentReleaseButton`（异步动作键在其完成路径释放），否则该页面按键可能在途后无法正常解锁。
 
 ### 16.6 进入/重进页面的按键基线（瞬变口径）
 
-1. 瞬变按钮（`button_type = 0`）切页重绘后默认即未按下；进入与重新进入（含从其他页返回、翻页、过滤重建）时，固件仍可在各 refresh 内对目标页按钮下发幂等 `SetButtonValue(...,0)` 作为防边界残留基线，但这不再是按钮弹起的依赖——按钮的物理弹起由屏幕在手指松开时自动完成。
+1. 瞬变按钮（`button_style = 0`）切页重绘后默认即未按下；进入与重新进入（含从其他页返回、翻页、过滤重建）时，固件仍可在各 refresh 内对目标页按钮下发幂等 `SetButtonValue(...,0)` 作为防边界残留基线，但这不再是按钮弹起的依赖——按钮的物理弹起由屏幕在手指松开时自动完成。
 2. 选中患者不再用按钮 down 态高亮，其归属由 `selectedPatientId/Name` 保持（见第五节）。
 
 ### 16.7 翻页键边界使能（强制）
@@ -605,9 +606,9 @@
 
 用户重新填写至全部合法后，按 `GDDC_PAGE_REGISTER_PATIENT_KEY_OK` 才允许新建患者。
 
-### 17.6 校验类按键瞬变（强制，2026-11-26 按文首总纲重写；原事件驱动/定时释放口径废止）
+### 17.6 校验类按键瞬变（强制，2026-11-26 按瞬变口径重写；原事件驱动/定时释放口径已废止）
 
-1. `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`（控件 20）与核对页 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）在屏幕工程中均为瞬变按钮（`button_type = 0`）：按下上报 `state = 1`，执行业务校验/落盘；松开时屏幕自动把按钮弹起并上报 `state = 0`，由 `treatmentButtonLockAllowed` 解除互锁。
+1. `GDDC_PAGE_REGISTER_PATIENT_KEY_OK`（控件 20）与核对页 `GDDC_PAGE_VERIFY_TREATMENT_KEY_SAVE_RECORD`（控件 30）在屏幕工程中均为瞬变按钮（`button_style = 0`）：按下上报 `state = 1`，执行业务校验/落盘；松开时屏幕自动把按钮弹起并上报 `state = 0`，由 `treatmentButtonLockAllowed` 解除互锁。
 2. 输入非法时，动作函数在对应提示文本框（如 `GDDC_PAGE_REGISTER_PATIENT_TEXT_SUMMARY_0`）显示英文错误并停留本页，不发任何清零帧；按钮随手指松开自动弹起，短按、长按行为一致，从机制上消除卡按下。
 
 ### 17.7 弹出层返回与字段清空（强制，2026-11-26 按瞬变口径修订）
