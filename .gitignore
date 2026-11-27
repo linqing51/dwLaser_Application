@@ -68,6 +68,10 @@ dkms.conf
 *.bak
 *.log
 *.uvoptx
+# 命令行编译日志统一存放目录(各工程MDK-ARM/build_logs)
+**/MDK-ARM/build_logs/
+# 仓库根目录本地分析脚本与构建日志(临时产物, 不入库)
+/build_logs/
 
 # ===== IAR intermediate / build artifacts =====
 *.fed
@@ -97,3 +101,4 @@ bootload.bin
 **/dciot_build/private/bin/*.bin
 **/MDK-ARM/targetBoard_*/*.sct
 /MCU_Application/targetBoard_G5_A1/MDK-ARM/targetBoard_G5_A1
+/vTFT_HMI/output

@@ -1,100 +1,100 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 #include "sPlc.h"
-/*****************************************************************************/
+// ***************************************************************************
 void sPlcOutputInit(void){//IO输出初始化
-	NVRAM0[Y_START] = 0x0;
-	SET_TEC_CH0_OFF;
-	SET_TEC_CH1_OFF;
-	SET_TEC_CH2_OFF;
-	SET_TEC_CH3_OFF;
-	SET_TEC_CH4_OFF;
-	SET_TEC_CH5_OFF;
-	SET_TEC_CH6_OFF;
-	SET_TEC_CH7_OFF;
-	SET_TEC_GATE_CH0_OFF;
-	SET_TEC_GATE_CH1_OFF;
-	SET_RED_LED_OFF;
-	SET_GREEN_LED_OFF;
-	SET_BLUE_LED_OFF;
-	SET_TICK_LED_OFF;
-	SET_ERR_LED_OFF;
+  NVRAM0[Y_START] = 0x0;
+  SET_TEC_CH0_OFF;
+  SET_TEC_CH1_OFF;
+  SET_TEC_CH2_OFF;
+  SET_TEC_CH3_OFF;
+  SET_TEC_CH4_OFF;
+  SET_TEC_CH5_OFF;
+  SET_TEC_CH6_OFF;
+  SET_TEC_CH7_OFF;
+  SET_TEC_GATE_CH0_OFF;
+  SET_TEC_GATE_CH1_OFF;
+  SET_RED_LED_OFF;
+  SET_GREEN_LED_OFF;
+  SET_BLUE_LED_OFF;
+  SET_TICK_LED_OFF;
+  SET_ERR_LED_OFF;
 #if (CONFIG_DEBUG_IO == 1)
-	printf("%s,%d,%s:output init......\n",__FILE__, __LINE__, __func__);
+  printf("%s,%d,%s:output init......\n",__FILE__, __LINE__, __func__);
 #endif
 }
 
-void sPlcOutputRefresh(void){//设置输出IO	
+void sPlcOutputRefresh(void){//设置输出IO
 #if (CONFIG_DEBUG_IO == 1)
-	uint16_t oldY, newY;
-	oldY = (uint16_t)(NVRAM0[Y_START] & 0x00FF);//刷新前Y状态(用于变化检测)
+  uint16_t oldY, newY;
+  oldY = (uint16_t)(NVRAM0[Y_START] & 0x00FF);//刷新前Y状态(用于变化检测)
 #endif
-	//YOUT0 绿灯
-	if(LDP(Y_GREEN_LED)){
-		SET_GREEN_LED_ON;
-	}
-	if(LDN(Y_GREEN_LED)){
-		SET_GREEN_LED_OFF;
-	}
-	//YOUT1 红灯
-	if(LDP(Y_RED_LED)){
-		SET_RED_LED_ON;
-	}
-	if(LDN(Y_RED_LED)){
-		SET_RED_LED_OFF;
-	}
-	//YOUT2 蓝灯
-	if(LDP(Y_BLUE_LED)){
-		SET_BLUE_LED_ON;
-	}
-	if(LDN(Y_BLUE_LED)){
-		SET_BLUE_LED_OFF;
-	}
-	//YOUT3 黄灯
-	if(LDP(Y_YELLOW_LED)){
-		SET_YELLOW_LED_ON;
-	}
-	if(LDN(Y_YELLOW_LED)){
+  //YOUT0 绿灯
+  if(LDP(Y_GREEN_LED)){
+    SET_GREEN_LED_ON;
+  }
+  if(LDN(Y_GREEN_LED)){
+    SET_GREEN_LED_OFF;
+  }
+  //YOUT1 红灯
+  if(LDP(Y_RED_LED)){
+    SET_RED_LED_ON;
+  }
+  if(LDN(Y_RED_LED)){
+    SET_RED_LED_OFF;
+  }
+  //YOUT2 蓝灯
+  if(LDP(Y_BLUE_LED)){
+    SET_BLUE_LED_ON;
+  }
+  if(LDN(Y_BLUE_LED)){
+    SET_BLUE_LED_OFF;
+  }
+  //YOUT3 黄灯
+  if(LDP(Y_YELLOW_LED)){
+    SET_YELLOW_LED_ON;
+  }
+  if(LDN(Y_YELLOW_LED)){
     SET_YELLOW_LED_OFF;
-	}
-	//YOUT4 TICK LED
-	if(LDP(Y_TICK_LED)){
-		SET_TICK_LED_ON;
-	}
-	if(LDN(Y_TICK_LED)){
-		SET_TICK_LED_OFF;
-	}
-	
-	//YOUT5 ERR LED
-	if(LDP(Y_ERR_LED)){
-		SET_ERR_LED_ON;
-	}
-	if(LDN(Y_ERR_LED)){
-		SET_ERR_LED_OFF;
-	}
-	
-	//YOUT6 BEEM LED
-	if(LDP(Y_BEEM_LED)){
-	}
-	if(LDN(Y_BEEM_LED)){
-	}
-	//YOUT7 TEC
-	if(LDP(Y_TEC)){
-		SET_TEC_GATE_CH0_ON;
-	}
-	if(LDN(Y_TEC)){
-		SET_TEC_GATE_CH0_OFF;
-	}
+  }
+  //YOUT4 TICK LED
+  if(LDP(Y_TICK_LED)){
+    SET_TICK_LED_ON;
+  }
+  if(LDN(Y_TICK_LED)){
+    SET_TICK_LED_OFF;
+  }
+  
+  //YOUT5 ERR LED
+  if(LDP(Y_ERR_LED)){
+    SET_ERR_LED_ON;
+  }
+  if(LDN(Y_ERR_LED)){
+    SET_ERR_LED_OFF;
+  }
+  
+  //YOUT6 BEEM LED
+  if(LDP(Y_BEEM_LED)){
+  }
+  if(LDN(Y_BEEM_LED)){
+  }
+  //YOUT7 TEC
+  if(LDP(Y_TEC)){
+    SET_TEC_GATE_CH0_ON;
+  }
+  if(LDN(Y_TEC)){
+    SET_TEC_GATE_CH0_OFF;
+  }
 #if (CONFIG_DEBUG_IO == 1)
-	newY = (uint16_t)(NVRAM0[Y_START] & 0x00FF);
-	if(oldY != newY){//仅在Y输出状态变化时打印,避免周期刷屏; bits按Y6..Y0顺序
-		printf("%s,%d,%s:Y changed 0x%02X->0x%02X bits:%d%d%d%d%d%d%d\n",
-			__FILE__, __LINE__, __func__, oldY, newY,
-			LD(Y_TEC), LD(Y_BEEM_LED), LD(Y_ERR_LED), LD(Y_TICK_LED), LD(Y_YELLOW_LED), LD(Y_RED_LED), LD(Y_GREEN_LED));
-	}
+  newY = (uint16_t)(NVRAM0[Y_START] & 0x00FF);
+  if(oldY != newY){//仅在Y输出状态变化时打印,避免周期刷屏; bits按Y6..Y0顺序
+    printf("%s,%d,%s:Y changed 0x%02X->0x%02X bits:%d%d%d%d%d%d%d\n",
+      __FILE__, __LINE__, __func__, oldY, newY,
+      LD(Y_TEC), LD(Y_BEEM_LED), LD(Y_ERR_LED), LD(Y_TICK_LED), LD(Y_YELLOW_LED), LD(Y_RED_LED), LD(Y_GREEN_LED));
+  }
 #endif
 }
 

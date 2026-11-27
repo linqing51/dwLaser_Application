@@ -1,26 +1,26 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 
 #ifndef __BOARDCONFIG_H__
 #define __BOARDCONFIG_H__
-/*****************************************************************************/
+// ***************************************************************************
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*****************************************************************************/
+// ***************************************************************************
 #include "main.h"
 #include "usbh_core.h"
-/*****************************************************************************/
+// ***************************************************************************
 typedef enum{
-	ENUM_LDR2P1_G5_A1_20260915                               = 0x10,
-	ENUM_CORE_6M3S_RASPI_L2_A1_20260519                      = 0x11,
-	ENUM_LDR2P1_RASPI_G9_A1_20260322                         = 0x12,
-	ENUM_LDR2P1_G5_A1_20251108                               = 0x13,
-	ENUM_LDR2P1_G5_DUAL_A1_20250910                          = 0x14,
-	ENUM_LDR2P1_G9_A1_20250823                               = 0x15,
+  ENUM_LDR2P1_G5_A1_20260915                               = 0x10,
+  ENUM_CORE_6M3S_RASPI_L2_A1_20260519                      = 0x11,
+  ENUM_LDR2P1_RASPI_G9_A1_20260322                         = 0x12,
+  ENUM_LDR2P1_G5_A1_20251108                               = 0x13,
+  ENUM_LDR2P1_G5_DUAL_A1_20250910                          = 0x14,
+  ENUM_LDR2P1_G9_A1_20250823                               = 0x15,
   ENUM_LDR2P1_G5_A1_20250731                               = 0x16,
   ENUM_LDR2P1_1920_M12_20241128                            = 0x17,
   ENUM_LDR4P1_G5_20240905                                  = 0x18
@@ -28,14 +28,14 @@ typedef enum{
 
 typedef enum{
   ENUM_MODLE_JL_FC_1470_15W_200_22_1S                      = 0xA0,
-  ENUM_MODLE_M1470_640_10_15_02_D200_22_G5W_PK             = 0xA1,	
+  ENUM_MODLE_M1470_640_10_15_02_D200_22_G5W_PK             = 0xA1,
   ENUM_MODLE_M1470_980_640_10_15_35_05_D200_22_G5W_PK      = 0xA2,
   ENUM_MODLE_M1470_980_640_10_15_15_02_D200_22_G5W_PK      = 0xA3,
   ENUM_MODLE_M12_1920_10_400S                              = 0xA4,
   ENUM_MODLE_M1470_640_10_30_05_D200_22_G9_PK              = 0xA5,
   ENUM_MODLE_M450_980_200_60_D275_22_VI1_GP                = 0xA6
 }LASER_VENDOR_ENUM;
-/*****************************************************************************/
+// ***************************************************************************
 //定义外部资源
 extern ADC_HandleTypeDef hadc1;
 extern RNG_HandleTypeDef hrng;
@@ -43,8 +43,8 @@ extern DAC_HandleTypeDef hdac;//LAS0 LAS1
 extern SPI_HandleTypeDef hspi3;//EPROM SPI3
 extern TIM_HandleTypeDef htim3;//FAN TIM
 extern TIM_HandleTypeDef htim4;//RGB LED TIM
-extern TIM_HandleTypeDef htim5;//AIM TIM	
-	
+extern TIM_HandleTypeDef htim5;//AIM TIM
+  
 extern TIM_HandleTypeDef htim7;//LASER TIM
 extern TIM_HandleTypeDef htim8;//SKP TIM
 
@@ -55,29 +55,29 @@ extern UART_HandleTypeDef huart3;//BT/DEV UART
 extern UART_HandleTypeDef huart6;//NFS UART
 extern USBH_HandleTypeDef hUsbHostHS;
 extern USBH_HandleTypeDef hUsbHostFS;
-/*****************************************************************************/
+// ***************************************************************************
 //定义外设总线
-#define CONFIG_LASER_TIM_HANDLE								htim7
-#define CONFIG_LASER_TIM											TIM7
+#define CONFIG_LASER_TIM_HANDLE        htim7
+#define CONFIG_LASER_TIM           TIM7
 
-#define CONFIG_SPLC_TIM_HANDLE								htim14//SPLC 计时器定义	
-#define CONFIG_SPLC_TIM												TIM14
+#define CONFIG_SPLC_TIM_HANDLE        htim14//SPLC 计时器定义
+#define CONFIG_SPLC_TIM            TIM14
 
-#define CONFIG_SPK_HANDLE											htim8//SPK 计时器定义	
-#define CONFIG_SPK_TIM												TIM8
-#define CONFIG_SPK_PWM_CHANNEL								TIM_CHANNEL_1
+#define CONFIG_SPK_HANDLE           htim8//SPK 计时器定义
+#define CONFIG_SPK_TIM            TIM8
+#define CONFIG_SPK_PWM_CHANNEL        TIM_CHANNEL_1
 
-/* 蜂鸣器定时器底层硬件资源(板级差异集中在此, 供 sPlcSpeaker.c 完整初始化) */
-#define CONFIG_SPK_TIM_CLK_ENABLE()						__HAL_RCC_TIM8_CLK_ENABLE()
-#define CONFIG_SPK_GPIO_CLK_ENABLE()					__HAL_RCC_GPIOC_CLK_ENABLE()
+// 蜂鸣器定时器底层硬件资源(板级差异集中在此, 供 sPlcSpeaker.c 完整初始化)
+#define CONFIG_SPK_TIM_CLK_ENABLE()      __HAL_RCC_TIM8_CLK_ENABLE()
+#define CONFIG_SPK_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOC_CLK_ENABLE()
 #ifndef SPLC_STM32F1
-#define CONFIG_SPK_GPIO_AF    								GPIO_AF3_TIM8/* F4 复用编号; F1 固定复用无此项 */
+#define CONFIG_SPK_GPIO_AF            GPIO_AF3_TIM8 // F4 复用编号; F1 固定复用无此项
 #endif
 
-#define CONFIG_FAN0_TIM_HANDLE								htim3	
-#define CONFIG_FAN0_TIM												TIM3
-#define CONFIG_FAN0_PWM_CHANNEL								TIM_CHANNEL_2
-#define CONFIG_FAN0_FG_CHANNEL								TIM_CHANNEL_1
+#define CONFIG_FAN0_TIM_HANDLE        htim3
+#define CONFIG_FAN0_TIM            TIM3
+#define CONFIG_FAN0_PWM_CHANNEL        TIM_CHANNEL_2
+#define CONFIG_FAN0_FG_CHANNEL        TIM_CHANNEL_1
 
 #define CONFIG_RGB_LED_TIM_HANDLE             htim4
 #define CONFIG_RGB_LED_TIM                    TIM4
@@ -85,327 +85,337 @@ extern USBH_HandleTypeDef hUsbHostFS;
 #define CONFIG_GLED_PWM_CHANNEL               TIM_CHANNEL_3
 #define CONFIG_BLED_PWM_CHANNEL               TIM_CHANNEL_1
 
-#define CONFIG_AIM_HANDLE											htim5			
-#define CONFIG_AIM_PWM_CHANNEL								TIM_CHANNEL_1
+#define CONFIG_AIM_HANDLE           htim5
+#define CONFIG_AIM_PWM_CHANNEL        TIM_CHANNEL_1
 
-#define CONFIG_EPROM_BUS_HANDLE								hspi3//SPLC NVRAM接口定义
-#define CONFIG_EPROM_BUS											SPI3	
+#define CONFIG_EPROM_BUS_HANDLE        hspi3//SPLC NVRAM接口定义
+#define CONFIG_EPROM_BUS           SPI3
 
-#define CONFIG_DEBUG_UART											huart3//调试串口
+#define CONFIG_DEBUG_UART           huart3//调试串口
 
-#define CONFIG_GDDC_UART											huart1//GDDC串口
-#define CONFIG_GDDC_UART_INSTANCE							USART1//GDDC串口中断
-/*****************************************************************************/
+#define CONFIG_GDDC_UART           huart1//GDDC串口
+#define CONFIG_GDDC_UART_INSTANCE       USART1//GDDC串口中断
+// ***************************************************************************
 //引脚功能定义
-#define GET_ESTOP_NC													HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
-#define GET_INTERLOCK_NC											HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
-#define GET_FSWITCH_NO												HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
-#define GET_FSWITCH_NC												HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
+#define GET_ESTOP_NC             HAL_GPIO_ReadPin(ESTOP_NC_GPIO_Port, ESTOP_NC_Pin)
+#define GET_INTERLOCK_NC           HAL_GPIO_ReadPin(INTERLOCK_NC_GPIO_Port, INTERLOCK_NC_Pin)
+#define GET_FSWITCH_NO            HAL_GPIO_ReadPin(FS_NO_GPIO_Port, FS_NO_Pin)
+#define GET_FSWITCH_NC            HAL_GPIO_ReadPin(FS_NC_GPIO_Port, FS_NC_Pin)
 
-#define SET_SPK_AP_ON													HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
-#define SET_SPK_AP_OFF												HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
+#define SET_SPK_AP_ON             HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_RESET)
+#define SET_SPK_AP_OFF            HAL_GPIO_WritePin(SPK_EN_GPIO_Port, SPK_EN_Pin, GPIO_PIN_SET)
 
 #define EPROM_SPI_NSS_SEL                     HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_RESET)
 #define EPROM_SPI_NSS_DESEL                   HAL_GPIO_WritePin(EPROM_NSS_GPIO_Port, EPROM_NSS_Pin, GPIO_PIN_SET)
 
-#define SET_EDAC0_CS(b)												__nop()		
-#define SET_EDAC1_CS(b)												__nop()
-#define SET_EDAC2_CS(b)												__nop()
-#define SET_EDAC3_CS(b)												__nop()
-#define SET_EDAC4_CS(b)												__nop()
-#define SET_EDAC5_CS(b)												__nop()
-#define SET_EDAC6_CS(b)												__nop()
-#define SET_EDAC7_CS(b)												__nop()											
+#define SET_EDAC0_CS(b)            __nop()
+#define SET_EDAC1_CS(b)            __nop()
+#define SET_EDAC2_CS(b)            __nop()
+#define SET_EDAC3_CS(b)            __nop()
+#define SET_EDAC4_CS(b)            __nop()
+#define SET_EDAC5_CS(b)            __nop()
+#define SET_EDAC6_CS(b)            __nop()
+#define SET_EDAC7_CS(b)            __nop()
 
-#define SET_EDAC0_SCK(b)											__nop()
-#define SET_EDAC1_SCK(b)											__nop()
-#define SET_EDAC2_SCK(b)											__nop()
-#define SET_EDAC3_SCK(b)											__nop()
-#define SET_EDAC4_SCK(b)											__nop()
-#define SET_EDAC5_SCK(b)											__nop()
-#define SET_EDAC6_SCK(b)											__nop()
-#define SET_EDAC7_SCK(b)											__nop()			
+#define SET_EDAC0_SCK(b)           __nop()
+#define SET_EDAC1_SCK(b)           __nop()
+#define SET_EDAC2_SCK(b)           __nop()
+#define SET_EDAC3_SCK(b)           __nop()
+#define SET_EDAC4_SCK(b)           __nop()
+#define SET_EDAC5_SCK(b)           __nop()
+#define SET_EDAC6_SCK(b)           __nop()
+#define SET_EDAC7_SCK(b)           __nop()
 
-#define SET_EDAC0_SDI(b)											__nop()
-#define SET_EDAC1_SDI(b)											__nop()
-#define SET_EDAC2_SDI(b)											__nop()
-#define SET_EDAC3_SDI(b)											__nop()
-#define SET_EDAC4_SDI(b)											__nop()
-#define SET_EDAC5_SDI(b)											__nop()
-#define SET_EDAC6_SDI(b)											__nop()
-#define SET_EDAC7_SDI(b)											__nop()
+#define SET_EDAC0_SDI(b)           __nop()
+#define SET_EDAC1_SDI(b)           __nop()
+#define SET_EDAC2_SDI(b)           __nop()
+#define SET_EDAC3_SDI(b)           __nop()
+#define SET_EDAC4_SDI(b)           __nop()
+#define SET_EDAC5_SDI(b)           __nop()
+#define SET_EDAC6_SDI(b)           __nop()
+#define SET_EDAC7_SDI(b)           __nop()
 
-#define SET_RED_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
-#define SET_RED_LED_OFF												HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
-#define SET_RED_LED_DC(b)											__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL, b)
+#define SET_RED_LED_ON            HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
+#define SET_RED_LED_OFF            HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL)
+#define SET_RED_LED_DC(b)           __HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_RLED_PWM_CHANNEL, b)
 
-#define SET_GREEN_LED_ON											HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
-#define SET_GREEN_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
-#define SET_GREEN_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL, b)
+#define SET_GREEN_LED_ON           HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
+#define SET_GREEN_LED_OFF           HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL)
+#define SET_GREEN_LED_DC(b)          __HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_GLED_PWM_CHANNEL, b)
 
-#define SET_BLUE_LED_ON												HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
-#define SET_BLUE_LED_OFF											HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
-#define SET_BLUE_LED_DC(b)										__HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL, b)
+#define SET_BLUE_LED_ON            HAL_TIM_PWM_Start(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
+#define SET_BLUE_LED_OFF           HAL_TIM_PWM_Stop(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL)
+#define SET_BLUE_LED_DC(b)          __HAL_TIM_SET_COMPARE(&CONFIG_RGB_LED_TIM_HANDLE, CONFIG_BLED_PWM_CHANNEL, b)
 
 #define SET_YELLOW_LED_ON                     __nop()
 #define SET_YELLOW_LED_OFF                    __nop()
 #define SET_YELLOW_LED_DC(b)                  __nop()
 
-#define SET_BEEM_LED_ON												__nop()
-#define SET_BEEM_LED_OFF											__nop()
-#define GET_BEEM_LED													__nop()
-#define FLIP_BEEM_LED													__nop()
+#define SET_BEEM_LED_ON            __nop()
+#define SET_BEEM_LED_OFF           __nop()
+#define GET_BEEM_LED             __nop()
+#define FLIP_BEEM_LED             __nop()
 
-#define SET_TICK_LED_ON												__nop()
-#define SET_TICK_LED_OFF											__nop()
-#define GET_TICK_LED													__nop()
-#define FLIP_TICK_LED													__nop()
+#define SET_TICK_LED_ON            __nop()
+#define SET_TICK_LED_OFF           __nop()
+#define GET_TICK_LED             __nop()
+#define FLIP_TICK_LED             __nop()
 //FLIP_TICK_LED
-#define SET_ERR_LED_ON												__nop()
-#define SET_ERR_LED_OFF												__nop()
-#define GET_ERR_LED														__nop()
-#define FLIP_ERR_LED													__nop()
+#define SET_ERR_LED_ON            __nop()
+#define SET_ERR_LED_OFF            __nop()
+#define GET_ERR_LED              __nop()
+#define FLIP_ERR_LED             __nop()
 
-#define SET_LASER_CH0_ON											HAL_GPIO_WritePin(LD0_PWM_GPIO_Port, LD0_PWM_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH0_OFF											HAL_GPIO_WritePin(LD0_PWM_GPIO_Port, LD0_PWM_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH1_ON											HAL_GPIO_WritePin(LD1_PWM_GPIO_Port, LD1_PWM_Pin, GPIO_PIN_SET)
-#define SET_LASER_CH1_OFF											HAL_GPIO_WritePin(LD1_PWM_GPIO_Port, LD1_PWM_Pin, GPIO_PIN_RESET)
-#define SET_LASER_CH2_ON											__nop()
-#define SET_LASER_CH2_OFF											__nop()
-#define SET_LASER_CH3_ON											__nop()
-#define SET_LASER_CH3_OFF											__nop()
-#define SET_LASER_CH4_ON											__nop()
-#define SET_LASER_CH4_OFF											__nop()
-#define SET_LASER_CH5_ON											__nop()
-#define SET_LASER_CH5_OFF											__nop()
-#define SET_LASER_CH6_ON											__nop()
-#define SET_LASER_CH6_OFF											__nop()
-#define SET_LASER_CH7_ON											__nop()
-#define SET_LASER_CH7_OFF											__nop()
+#define SET_LASER_CH0_ON           HAL_GPIO_WritePin(LD0_PWM_GPIO_Port, LD0_PWM_Pin, GPIO_PIN_SET)
+#define SET_LASER_CH0_OFF           HAL_GPIO_WritePin(LD0_PWM_GPIO_Port, LD0_PWM_Pin, GPIO_PIN_RESET)
+#define SET_LASER_CH1_ON           HAL_GPIO_WritePin(LD1_PWM_GPIO_Port, LD1_PWM_Pin, GPIO_PIN_SET)
+#define SET_LASER_CH1_OFF           HAL_GPIO_WritePin(LD1_PWM_GPIO_Port, LD1_PWM_Pin, GPIO_PIN_RESET)
+#define SET_LASER_CH2_ON           __nop()
+#define SET_LASER_CH2_OFF           __nop()
+#define SET_LASER_CH3_ON           __nop()
+#define SET_LASER_CH3_OFF           __nop()
+#define SET_LASER_CH4_ON           __nop()
+#define SET_LASER_CH4_OFF           __nop()
+#define SET_LASER_CH5_ON           __nop()
+#define SET_LASER_CH5_OFF           __nop()
+#define SET_LASER_CH6_ON           __nop()
+#define SET_LASER_CH6_OFF           __nop()
+#define SET_LASER_CH7_ON           __nop()
+#define SET_LASER_CH7_OFF           __nop()
 
-#define SET_TEC_CH0_ON												HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_SET)
-#define SET_TEC_CH0_OFF											  HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_RESET)
-#define SET_TEC_CH1_ON												__nop()
-#define SET_TEC_CH1_OFF												__nop()
-#define SET_TEC_CH2_ON												__nop()
-#define SET_TEC_CH2_OFF												__nop()
-#define SET_TEC_CH3_ON												__nop()
-#define SET_TEC_CH3_OFF												__nop()
-#define SET_TEC_CH4_ON												__nop()
-#define SET_TEC_CH4_OFF												__nop()
-#define SET_TEC_CH5_ON												__nop()
-#define SET_TEC_CH5_OFF												__nop()
-#define SET_TEC_CH6_ON												__nop()
-#define SET_TEC_CH6_OFF												__nop()
-#define SET_TEC_CH7_ON												__nop()
-#define SET_TEC_CH7_OFF												__nop()
+#define SET_TEC_CH0_ON            HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_SET)
+#define SET_TEC_CH0_OFF             HAL_GPIO_WritePin(TEC_PWM_GPIO_Port, TEC_PWM_Pin, GPIO_PIN_RESET)
+#define SET_TEC_CH1_ON            __nop()
+#define SET_TEC_CH1_OFF            __nop()
+#define SET_TEC_CH2_ON            __nop()
+#define SET_TEC_CH2_OFF            __nop()
+#define SET_TEC_CH3_ON            __nop()
+#define SET_TEC_CH3_OFF            __nop()
+#define SET_TEC_CH4_ON            __nop()
+#define SET_TEC_CH4_OFF            __nop()
+#define SET_TEC_CH5_ON            __nop()
+#define SET_TEC_CH5_OFF            __nop()
+#define SET_TEC_CH6_ON            __nop()
+#define SET_TEC_CH6_OFF            __nop()
+#define SET_TEC_CH7_ON            __nop()
+#define SET_TEC_CH7_OFF            __nop()
 
 #define SET_TEC_GATE_CH0_OFF                  __nop()
 #define SET_TEC_GATE_CH1_OFF                  __nop()
-  
+
 #define SET_TEC_GATE_CH0_ON                   __nop()
-#define SET_TEC_GATE_CH1_ON                   __nop() 
+#define SET_TEC_GATE_CH1_ON                   __nop()
 
-#define FLIP_LASER_CH0												HAL_GPIO_TogglePin(LD0_PWM_GPIO_Port, LD0_PWM_Pin)
-#define FLIP_LASER_CH1												HAL_GPIO_TogglePin(LD1_PWM_GPIO_Port, LD1_PWM_Pin)
-#define FLIP_LASER_CH2												__nop()
-#define FLIP_LASER_CH3												__nop()
-#define FLIP_LASER_CH4												__nop()
-#define FLIP_LASER_CH5												__nop()
-#define FLIP_LASER_CH6												__nop()
-#define FLIP_LASER_CH7												__nop()
+#define FLIP_LASER_CH0            HAL_GPIO_TogglePin(LD0_PWM_GPIO_Port, LD0_PWM_Pin)
+#define FLIP_LASER_CH1            HAL_GPIO_TogglePin(LD1_PWM_GPIO_Port, LD1_PWM_Pin)
+#define FLIP_LASER_CH2            __nop()
+#define FLIP_LASER_CH3            __nop()
+#define FLIP_LASER_CH4            __nop()
+#define FLIP_LASER_CH5            __nop()
+#define FLIP_LASER_CH6            __nop()
+#define FLIP_LASER_CH7            __nop()
 
-#define GET_LASER_CH0													HAL_GPIO_ReadPin(LD0_PWM_GPIO_Port, LD0_PWM_Pin)
-#define GET_LASER_CH1													HAL_GPIO_ReadPin(LD1_PWM_GPIO_Port, LD1_PWM_Pin)
-#define GET_LASER_CH2													0
-#define GET_LASER_CH3													0
-#define GET_LASER_CH4													0
-#define GET_LASER_CH5													0
-#define GET_LASER_CH6													0
-#define GET_LASER_CH7													0
+#define GET_LASER_CH0             HAL_GPIO_ReadPin(LD0_PWM_GPIO_Port, LD0_PWM_Pin)
+#define GET_LASER_CH1             HAL_GPIO_ReadPin(LD1_PWM_GPIO_Port, LD1_PWM_Pin)
+#define GET_LASER_CH2             0
+#define GET_LASER_CH3             0
+#define GET_LASER_CH4             0
+#define GET_LASER_CH5             0
+#define GET_LASER_CH6             0
+#define GET_LASER_CH7             0
 
-#define SET_FAN0_ON														HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
-#define SET_FAN0_OFF													HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
-#define SET_FAN0_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, b)
+#define SET_FAN0_ON              HAL_TIM_PWM_Start(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
+#define SET_FAN0_OFF             HAL_TIM_PWM_Stop(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL)
+#define SET_FAN0_TIM_PWM(b)          __HAL_TIM_SET_COMPARE(&CONFIG_FAN0_TIM_HANDLE, CONFIG_FAN0_PWM_CHANNEL, b)
 
-#define SET_FAN1_ON														__nop()
-#define SET_FAN1_OFF													__nop()
-#define SET_FAN1_TIM_PWM(b)										__nop()
+#define SET_FAN1_ON              __nop()
+#define SET_FAN1_OFF             __nop()
+#define SET_FAN1_TIM_PWM(b)          __nop()
 
-#define SET_FAN2_ON														__nop()
-#define SET_FAN2_OFF													__nop()
-#define SET_FAN2_TIM_PWM(b)										__nop()
+#define SET_FAN2_ON              __nop()
+#define SET_FAN2_OFF             __nop()
+#define SET_FAN2_TIM_PWM(b)          __nop()
 
-#define SET_SPK_TIM_ON												HAL_TIM_OC_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
-#define SET_SPK_TIM_OFF												HAL_TIM_OC_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_ON            HAL_TIM_OC_Start(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
+#define SET_SPK_TIM_OFF            HAL_TIM_OC_Stop(&CONFIG_SPK_HANDLE, CONFIG_SPK_PWM_CHANNEL)
 
-#define SET_RAIM_TIM_OFF											HAL_TIM_PWM_Stop(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
-#define SET_RAIM_TIM_ON												HAL_TIM_PWM_Start(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
-#define SET_RAIM_TIM_PWM(b)										__HAL_TIM_SET_COMPARE(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL, b)
+#define SET_RAIM_TIM_OFF           HAL_TIM_PWM_Stop(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
+#define SET_RAIM_TIM_ON            HAL_TIM_PWM_Start(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL)
+#define SET_RAIM_TIM_PWM(b)          __HAL_TIM_SET_COMPARE(&CONFIG_AIM_HANDLE, CONFIG_AIM_PWM_CHANNEL, b)
 
-#define SET_RAIM_SHDN(b)			                __nop()
+#define SET_RAIM_SHDN(b)                   __nop()
 #define SET_RAIM_SHDN_ON                      __nop()
 #define SET_RAIM_SHDN_OFF                     __nop()
 #define FLIP_RAIM_SHDN                        __nop()
-#define GET_RAIM_SHDN													0
+#define GET_RAIM_SHDN             0
 
-#define SET_GAIM_TIM_OFF											__nop()
-#define SET_GAIM_TIM_ON												__nop()
-#define SET_GAIM_TIM_PWM(b)										__nop()
+#define SET_GAIM_TIM_OFF           __nop()
+#define SET_GAIM_TIM_ON            __nop()
+#define SET_GAIM_TIM_PWM(b)          __nop()
 
-#define SET_GAIM_SHDN(b)			                __nop()
+#define SET_GAIM_SHDN(b)                   __nop()
 #define SET_GAIM_SHDN_ON                      __nop()
 #define SET_GAIM_SHDN_OFF                     __nop()
 #define FLIP_GAIM_SHDN                        __nop()
-#define GET_GAIM_SHDN													0
+#define GET_GAIM_SHDN             0
 
 //MCP41010
-#define SET_MCP41010_CS(b)										HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)
-#define SET_MCP41010_SDI(b)										HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
-#define SET_MCP41010_SCK(b)										HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
+#define SET_MCP41010_CS(b)          HAL_GPIO_WritePin(MCP41010_CS_GPIO_Port, MCP41010_CS_Pin, b)
+#define SET_MCP41010_SDI(b)          HAL_GPIO_WritePin(MCP41010_SDI_GPIO_Port, MCP41010_SDI_Pin, b)
+#define SET_MCP41010_SCK(b)          HAL_GPIO_WritePin(MCP41010_SCK_GPIO_Port, MCP41010_SCK_Pin, b)
 
 //POWER INT MPU软关机中断信号-->LTC2955作为MPU单元
-#define CONFIG_HAS_PWR_INT											0//本板未接LTC2955软关机中断输入(GET_PWR_INT为占位0)
-#define GET_PWR_INT														0
+#define CONFIG_HAS_PWR_INT           0//本板未接LTC2955软关机中断输入(GET_PWR_INT为占位0)
+#define GET_PWR_INT              0
 //POWER KILL MPU软件关机信号-->LTC2955作为MPU单元
-#define SET_PWR_KILL_POWER(b)									__nop()
-#define SET_PWR_KILL_POWER_ON									__nop()
-#define SET_PWR_KILL_POWER_OFF								__nop()
-#define FLIP_PWR_KILL_POWER_KILL							__nop()
-#define GET_PWR_KILL_POWER_KILL								__nop()
+#define SET_PWR_KILL_POWER(b)         __nop()
+#define SET_PWR_KILL_POWER_ON         __nop()
+#define SET_PWR_KILL_POWER_OFF        __nop()
+#define FLIP_PWR_KILL_POWER_KILL       __nop()
+#define GET_PWR_KILL_POWER_KILL        __nop()
 
 //POWER LED
-#define SET_PWR_LED(b)												__nop()
-#define SET_PWR_LED_ON												__nop()
-#define SET_PWR_LED_OFF												__nop()
-#define GET_PWR_LED														__nop()
-#define FLIP_PWR_LED													__nop()
+#define SET_PWR_LED(b)            __nop()
+#define SET_PWR_LED_ON            __nop()
+#define SET_PWR_LED_OFF            __nop()
+#define GET_PWR_LED              __nop()
+#define FLIP_PWR_LED             __nop()
 
 //安全锁接触
-#define SET_SAFE_RESET(b)											__nop()
-#define SET_SAFE_RESET_ON                    	__nop()
-#define SET_SAFE_RESET_OFF                   	__nop()
-/*****************************************************************************/
+#define SET_SAFE_RESET(b)           __nop()
+#define SET_SAFE_RESET_ON                     __nop()
+#define SET_SAFE_RESET_OFF                    __nop()
+// ***************************************************************************
 //配置EPROM规格
-#define CONFIG_EPROM_SPI											
-#define CONFIG_EPROM_SIZE 										CONFIG_MB85RS512TPN_SIZE
-#define	CONFIG_AT24C64_SIZE										8192
-#define	CONFIG_AT24C128_SIZE 									16384
-#define	CONFIG_AT24C256_SIZE 									32768//32K*8
-#define CONFIG_FM25W256G_SIZE									32768//32K
-#define CONFIG_MB85RS512TPN_SIZE							65536//64K
-#define CONFIG_MB85RS2MAT_SIZE								262144//256K
-#define CONFIG_EPROM_WRITE_ADDR								0xA0//
-#define CONFIG_EPROM_READ_ADDR								0xA1//
-#define CONFIG_EPROM_TIMEOUT									1000//EPROM读写超时
-#define CONFIG_EPROM_PAGE_SIZE								0x08//EPROM 页大小
-#define CONFIG_EPROM_WRITE_DELAY							0//写入等待时间mS
-#define CONFIG_BKSRAM_BASE_ADDR								(0x40024000UL)//STM32F405 BKPSRAM 4K 掉电保持区起始地址
-/******************************************************************************/
+#define CONFIG_EPROM_SPI
+#define CONFIG_EPROM_SIZE           CONFIG_MB85RS512TPN_SIZE
+#define CONFIG_AT24C64_SIZE          8192
+#define CONFIG_AT24C128_SIZE          16384
+#define CONFIG_AT24C256_SIZE          32768//32K*8
+#define CONFIG_FM25W256G_SIZE         32768//32K
+#define CONFIG_MB85RS512TPN_SIZE       65536//64K
+#define CONFIG_MB85RS2MAT_SIZE        262144//256K
+#define CONFIG_MB85RS1MT_SIZE        131072//128K
+#define CONFIG_MB85RS4MT_SIZE        524288//512K
+#define CONFIG_EPROM_WRITE_ADDR        0xA0//
+#define CONFIG_EPROM_READ_ADDR        0xA1//
+#define CONFIG_EPROM_TIMEOUT         1000//EPROM读写超时
+#define CONFIG_EPROM_PAGE_SIZE        0x08//EPROM 页大小
+#define CONFIG_EPROM_WRITE_DELAY       0//写入等待时间mS
+#define CONFIG_BKSRAM_BASE_ADDR        (0x40024000UL)//STM32F405 BKPSRAM 4K 掉电保持区起始地址
+// ****************************************************************************
 //配置ADC
-#define CONFIG_VREF_CAL                     	*(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
-#define CONFIG_ADC1_CHANNEL										10//ADC采集通道
-#define ADC_FILTER_ALPHA    									0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱	
-#define CONFIG_ADC1_DMA_BUFFER_SIZE						CONFIG_ADC1_CHANNEL//ADC DMA采集缓冲
+#define CONFIG_VREF_CAL                      *(__IO uint16_t *)(0x1FFF7A2A)//校正电压源
+#define CONFIG_ADC1_CHANNEL          10//ADC采集通道
+#define ADC_FILTER_ALPHA             0.25f//0.1f：滤波极强，超平滑 0.25f：平衡响应与滤波（推荐） 0.5f：响应快，滤波弱
+#define CONFIG_ADC1_DMA_BUFFER_SIZE      CONFIG_ADC1_CHANNEL//ADC DMA采集缓冲
 
-#define CONFIG_VREF_ADC												SPREG_ADC_59
-#define CONFIG_MCU_VREF												3300.0F
-#define CONFIG_ADC_AVG_SLOPE									2.5F
-#define CONFIG_ADC_V25												760.0F//0.76V@25D
+#define CONFIG_VREF_ADC            SPREG_ADC_59
+#define CONFIG_MCU_VREF            3300.0F
+#define CONFIG_ADC_AVG_SLOPE         2.5F
+#define CONFIG_ADC_V25            760.0F//0.76V@25D
 
-#define CONFIG_DIODE_NTC_RS										3300L//激光器热敏电阻分压电阻值
-#define CONFIG_HT0_NTC_RS											4700L//散热器0热敏电阻分压电阻值
-#define CONFIG_HT1_NTC_RS											4700L//散热器1热敏电阻分压电阻值
-#define CONFIG_HT2_NTC_RS											1L	
-#define CONFIG_HT3_NTC_RS											1L
-#define CONFIG_WATER_HOT_NTC_RS								1L
-#define CONFIG_WATER_COOL_NTC_RS							1L
-#define CONFIG_AMBIENT_NTC_RS									1L
-#define CONFIG_MBAT_NTC_RS										4700L//环境热敏电阻分压电阻值
+#define CONFIG_DIODE_NTC_RS          3300L//激光器热敏电阻分压电阻值
+#define CONFIG_HT0_NTC_RS           4700L//散热器0热敏电阻分压电阻值
+#define CONFIG_HT1_NTC_RS           4700L//散热器1热敏电阻分压电阻值
+#define CONFIG_HT2_NTC_RS           1L
+#define CONFIG_HT3_NTC_RS           1L
+#define CONFIG_WATER_HOT_NTC_RS        1L
+#define CONFIG_WATER_COOL_NTC_RS       1L
+#define CONFIG_AMBIENT_NTC_RS         1L
+#define CONFIG_MBAT_NTC_RS          4700L//环境热敏电阻分压电阻值
 
-#define CONFIG_DIODE_NTC_B										3477.0F//激光器热敏电阻B值
-#define CONFIG_HT0_NTC_B											3477.0F//散热器0热敏电阻B值
-#define CONFIG_HT1_NTC_B											3477.0F//散热器1热敏电阻B值
-#define CONFIG_HT2_NTC_B											3477.0F//散热器2热敏电阻B值
-#define CONFIG_HT3_NTC_B											3477.0F//散热器3热敏电阻B值
-#define CONFIG_MBAT_NTC_B											3477.0F//电池热敏电阻B值
+#define CONFIG_DIODE_NTC_B          3477.0F//激光器热敏电阻B值
+#define CONFIG_HT0_NTC_B           3477.0F//散热器0热敏电阻B值
+#define CONFIG_HT1_NTC_B           3477.0F//散热器1热敏电阻B值
+#define CONFIG_HT2_NTC_B           3477.0F//散热器2热敏电阻B值
+#define CONFIG_HT3_NTC_B           3477.0F//散热器3热敏电阻B值
+#define CONFIG_MBAT_NTC_B           3477.0F//电池热敏电阻B值
 
-#define CONFIG_WATER_HOT_NTC_B							  3477.0F
-#define CONFIG_WATER_COOL_NTC_B								3477.0F
-#define CONFIG_AMBIENT_NTC_B									3477.0F
+#define CONFIG_WATER_HOT_NTC_B         3477.0F
+#define CONFIG_WATER_COOL_NTC_B        3477.0F
+#define CONFIG_AMBIENT_NTC_B         3477.0F
 
-#define CONFIG_NTC_R25												10000.0F//25摄氏度时电阻
-#define CONFIG_NTC_VREF												3300L//
+#define CONFIG_NTC_R25            10000.0F//25摄氏度时电阻
+#define CONFIG_NTC_VREF            3300L//
 
 #if defined(MODLE_JL_FC_1470_15W_200_22_1S)
-  #define CONFIG_FIBER_PD_THRESHOLD						50//光纤插入时ADC阈值
+  #define CONFIG_FIBER_PD_THRESHOLD      50//光纤插入时ADC阈值
 #endif
 
-/*****************************************************************************/
+// ***************************************************************************
 //配置TEC温控(TIM9 CH2 PWM -> GP8101C-SH -> 模拟电压, 逻辑DAC8)
-#define CONFIG_TEC_HT_FF_GAIN								  20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
-#define CONFIG_TEC_SLEW_STEP								  200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
-#define CONFIG_TEC_TEMP_FILTER_ALPHA			  	0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
-/*****************************************************************************/
+#define CONFIG_TEC_HT_FF_GAIN          20.0f//散热器温度前馈增益: 温差(×10单位)×增益=叠加计数, 散热器高设定10℃时约叠加49%满幅输出
+#define CONFIG_TEC_SLEW_STEP          200//输出变化率限幅: 每500ms控制周期最多变化计数(0~4095), 0→满幅约需10s
+#define CONFIG_TEC_TEMP_FILTER_ALPHA      0.5f//反馈温度一阶滤波系数(0~1), 抑制NTC噪声放大
+// ***************************************************************************
 //配置DAC
-#define CONFIG_DAC_MAXBIT_CH0									0xFFF//12BIT STM32
-#define CONFIG_DAC_MAXBIT_CH1									0xFFF//12BIT STM32
-#define CONFIG_DAC_MAXBIT_CH2									0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH3									0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH4									0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH5									0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH6									0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH7									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH0         0xFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH1         0xFFF//12BIT STM32
+#define CONFIG_DAC_MAXBIT_CH2         0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH3         0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH4         0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH5         0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH6         0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH7         0xFFFF//NULL
 
-#define CONFIG_DAC_MAXBIT_CH8									0xFFF//12BIT DAC7311
-#define CONFIG_DAC_MAXBIT_CH9									0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH8         0xFFF//12BIT DAC7311
+#define CONFIG_DAC_MAXBIT_CH9         0xFFFF//NULL
 #define CONFIG_DAC_MAXBIT_CH10                0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH11								0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH12								0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH13								0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH14								0xFFFF//NULL
-#define CONFIG_DAC_MAXBIT_CH15								0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH11        0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH12        0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH13        0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH14        0xFFFF//NULL
+#define CONFIG_DAC_MAXBIT_CH15        0xFFFF//NULL
 
-#define CONFIG_DAC_MAXBIT_CH16								5000
-#define CONFIG_DAC_MAXBIT_CH17								5000//NULL
-/*****************************************************************************/
+#define CONFIG_DAC_MAXBIT_CH16        5000
+#define CONFIG_DAC_MAXBIT_CH17        5000//NULL
+// ***************************************************************************
 //配置EPROM数据地址(注意: NVRAM索引为16bit字, EPROM地址为字节, 长度须乘2换算)
-#define CONFIG_EPROM_MR_START									(0x0L)//
-#define CONFIG_EPROM_MR_END										(CONFIG_EPROM_MR_START + (CONFIG_MR_SIZE * 2L) - 1L)
-#define CONFIG_EPROM_DM_START									(CONFIG_EPROM_MR_END + 1L)//NVRAM中DM在EPROM储存地址
-#define CONFIG_EPROM_DM_END										(CONFIG_EPROM_DM_START + (CONFIG_DM_SIZE * 2L) - 1L)
+#define CONFIG_EPROM_MR_START         (0x0L)//
+#define CONFIG_EPROM_MR_END          (CONFIG_EPROM_MR_START + (CONFIG_MR_SIZE * 2L) - 1L)
+#define CONFIG_EPROM_DM_START         (CONFIG_EPROM_MR_END + 1L)//NVRAM中DM在EPROM储存地址
+#define CONFIG_EPROM_DM_END          (CONFIG_EPROM_DM_START + (CONFIG_DM_SIZE * 2L) - 1L)
 
-#define CONFIG_EPROM_FD_SCHEME_SIZE						((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//单个方案占用的EPROM空间
-#define CONFIG_EPROM_FD_START									(CONFIG_EPROM_DM_END + 1L)
-#define CONFIG_EPROM_FD_END										(CONFIG_EPROM_FD_START + (CONFIG_FDRAM_SIZE * 2L) - 1L)
+#define CONFIG_EPROM_FD_SCHEME_SIZE      ((FD_SCHEME_END_0 - FD_SCHEME_START_0 + 1) * 2)//单个方案占用的EPROM空间
+#define CONFIG_EPROM_FD_START         (CONFIG_EPROM_DM_END + 1L)
+#define CONFIG_EPROM_FD_END          (CONFIG_EPROM_FD_START + (CONFIG_FDRAM_SIZE * 2L) - 1L)
 
 //BK 4K区块(映射硬件BKSRAM 4K掉电保持区)在EPROM储存地址
-#define CONFIG_EPROM_BK_START									(CONFIG_EPROM_FD_END + 1L)
-#define CONFIG_EPROM_BK_END										(CONFIG_EPROM_BK_START + (CONFIG_BKRAM_SIZE * 4L) - 1L)
+#define CONFIG_EPROM_BK_START         (CONFIG_EPROM_FD_END + 1L)
+#define CONFIG_EPROM_BK_END          (CONFIG_EPROM_BK_START + (CONFIG_BKRAM_SIZE * 4L) - 1L)
 
-#define CONFIG_EPROM_MR_CRC										(CONFIG_EPROM_DM_CRC - 4L)//4B MR NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_DM_CRC										(CONFIG_EPROM_FD_CRC - 4L)//4B DM NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_FD_CRC										(CONFIG_EPROM_BK_CRC - 4L)//4B FD NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_BK_CRC										(CONFIG_EPROM_MCU_FW_CRC - 4L)//4B BK NVRAM CRC32 硬件计算
-#define CONFIG_EPROM_MCU_FW_CRC								(CONFIG_EPROM_LCD_FW_CRC - 4L)//4B MCU固件CRC32值 软件计算
-#define CONFIG_EPROM_LCD_FW_CRC								(CONFIG_EPROM_TREATMENT_CRC - 4L)//4B LCD固件CRC32值 软件计算
-#define CONFIG_EPROM_TREATMENT_CRC						(CONFIG_EPROM_CFG_CRC - 4L)//4B treatment CRC32值 硬件计算
-#define CONFIG_EPROM_CFG_CRC									(CONFIG_EPROM_LOG_CRC - 4L)//4B deviceConfig CRC32值 硬件计算
-#define CONFIG_EPROM_LOG_CRC									(CONFIG_EPROM_TREATMENT_START - 4L)//4B logInfo CRC32值 硬件计算
+//CRC校验区块: 紧跟BK数据区之后, 自低向高依次排布, 各占4字节; 地址随上游分区尺寸自动浮动
+#define CONFIG_EPROM_MR_CRC          (CONFIG_EPROM_BK_END + 1L)//4B MR NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_DM_CRC          (CONFIG_EPROM_MR_CRC + 4L)//4B DM NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_FD_CRC          (CONFIG_EPROM_DM_CRC + 4L)//4B FD NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_BK_CRC          (CONFIG_EPROM_FD_CRC + 4L)//4B BK NVRAM CRC32 硬件计算
+#define CONFIG_EPROM_MCU_FW_CRC        (CONFIG_EPROM_BK_CRC + 4L)//4B MCU固件CRC32值 软件计算
+#define CONFIG_EPROM_LCD_FW_CRC        (CONFIG_EPROM_MCU_FW_CRC + 4L)//4B LCD固件CRC32值 软件计算
+#define CONFIG_EPROM_TREATMENT_CRC      (CONFIG_EPROM_LCD_FW_CRC + 4L)//4B treatment CRC32值 硬件计算
+#define CONFIG_EPROM_CFG_CRC         (CONFIG_EPROM_TREATMENT_CRC + 4L)//4B deviceConfig CRC32值 硬件计算
+#define CONFIG_EPROM_LOG_CRC         (CONFIG_EPROM_CFG_CRC + 4L)//4B logInfo CRC32值 硬件计算
 
-#define CONFIG_EPROM_TREATMENT_START					(CONFIG_EPROM_BK_END + 37L)//病历区起点: BK分区之后的36字节为9个分区CRC(BK_END+1..BK_END+36), 再往后到CONFIG区的空闲空间全部划给病历
-#define CONFIG_EPROM_TREATMENT_END						(CONFIG_EPROM_CONFIG_START - 1L)
-#define CONFIG_EPROM_TREATMENT_SIZE						(CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(55708B=386位患者@每人10条)
+// 病历(治疗记录)区块: 起始地址紧跟CRC区块之后, 末端到配置区之前; 不再固定32*1536, 自动占满EPROM剩余全部空间
+#define CONFIG_EPROM_TREATMENT_START     (CONFIG_EPROM_LOG_CRC + 4L)
+#define CONFIG_EPROM_TREATMENT_END      (CONFIG_EPROM_CONFIG_START - 1L)
+#define CONFIG_EPROM_TREATMENT_SIZE      (CONFIG_EPROM_TREATMENT_END - CONFIG_EPROM_TREATMENT_START + 1L)//治疗记录区块字节数(浮动:自动占满EPROM剩余空间)
 
-#define CONFIG_EPROM_CONFIG_START							(CONFIG_EPROM_CONFIG_END - 1024L + 1L)//1024B 配置信息区
-#define CONFIG_EPROM_CONFIG_END								(CONFIG_EPROM_LOGINFO_START - 1L)
-#define CONFIG_EPROM_LOGINFO_START						(CONFIG_EPROM_LOGINFO_END - 256L + 1L)//256B 记录信息区 
-#define CONFIG_EPROM_LOGINFO_END							(CONFIG_EPROM_SIZE - 1L)
+// 无患者数/单患者记录数硬上限: 两表按剩余空间动态致密增长, 写入前由 FreeBytesPR 防护, 总量上限即区块物理容量。
+
+#define CONFIG_EPROM_CONFIG_START       (CONFIG_EPROM_CONFIG_END - 512L + 1L)//1024B 配置信息区
+#define CONFIG_EPROM_CONFIG_END        (CONFIG_EPROM_LOGINFO_START - 1L)
+#define CONFIG_EPROM_LOGINFO_START      (CONFIG_EPROM_LOGINFO_END - 64L + 1L)//256B 记录信息区
+#define CONFIG_EPROM_LOGINFO_END       (CONFIG_EPROM_SIZE - 1L)
 
 #if (CONFIG_EPROM_BK_END >= CONFIG_EPROM_MR_CRC)
-	#error "EPROM 容量不足：存储区域重叠，请调小分区或更换更大容量芯片"
+  #error "EPROM 容量不足：BK数据区与CRC区块重叠，请调小分区或更换更大容量芯片"
 #endif
-/*****************************************************************************/
+//病历区块浮动容量校验: 固定数据区+CRC区(即病历起始)不得越过病历末端(配置区), 否则剩余空间不足
+#if (CONFIG_EPROM_TREATMENT_START > CONFIG_EPROM_TREATMENT_END)
+  #error "EPROM 容量不足：固定数据区与CRC区已侵入病历/配置区，请调小分区或更换更大容量芯片"
+#endif
+// ***************************************************************************
 #ifdef __cplusplus
 }
 #endif

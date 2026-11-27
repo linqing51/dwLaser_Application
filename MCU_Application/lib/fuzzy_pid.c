@@ -1,191 +1,191 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 #include "fuzzy_pid.h"
-/*****************************************************************************/
+// ***************************************************************************
 struct fuzzy *fuzzy_init(unsigned int input_num, unsigned int output_num) {
-	struct fuzzy *fuzzy_struct = (struct fuzzy *) malloc(sizeof(struct fuzzy));
-	fuzzy_struct->input_num = input_num;
-	fuzzy_struct->output_num = output_num;
-	fuzzy_struct->mf_type = (unsigned int *) malloc((input_num + output_num) * sizeof(unsigned int));
+  struct fuzzy *fuzzy_struct = (struct fuzzy *) malloc(sizeof(struct fuzzy));
+  fuzzy_struct->input_num = input_num;
+  fuzzy_struct->output_num = output_num;
+  fuzzy_struct->mf_type = (unsigned int *) malloc((input_num + output_num) * sizeof(unsigned int));
 #ifdef fuzzy_pid_rule_base_deep_copy
-	fuzzy_struct->mf_params = (int *) malloc(4 * qf_default * sizeof(int));
-	fuzzy_struct->rule_base = (int *) malloc(output_num * qf_default * qf_default * sizeof(int));
+  fuzzy_struct->mf_params = (int *) malloc(4 * qf_default * sizeof(int));
+  fuzzy_struct->rule_base = (int *) malloc(output_num * qf_default * qf_default * sizeof(int));
 #endif
-	fuzzy_struct->output = (float *) malloc(output_num * sizeof(float));
-	return fuzzy_struct;
+  fuzzy_struct->output = (float *) malloc(output_num * sizeof(float));
+  return fuzzy_struct;
 }
 
 void delete_fuzzy(struct fuzzy *fuzzy_struct) {
-	free(fuzzy_struct->mf_type);
-	free(fuzzy_struct->output);
-	free(fuzzy_struct);
+  free(fuzzy_struct->mf_type);
+  free(fuzzy_struct->output);
+  free(fuzzy_struct);
 }
 
 void fuzzy_params_init(struct fuzzy *fuzzy_struct, unsigned int mf_type, unsigned int fo_type, unsigned int df_type, int mf_params[], int rule_base[][qf_default]) {
-	for (unsigned int i = 0; i < fuzzy_struct->input_num + fuzzy_struct->output_num; ++i) {
-		fuzzy_struct->mf_type[i] = mf_type;
-	}
-	for (unsigned int i = 0; i < fuzzy_struct->output_num; ++i) {
-		fuzzy_struct->output[i] = 0;
-	}
+  for (unsigned int i = 0; i < fuzzy_struct->input_num + fuzzy_struct->output_num; ++i) {
+    fuzzy_struct->mf_type[i] = mf_type;
+  }
+  for (unsigned int i = 0; i < fuzzy_struct->output_num; ++i) {
+    fuzzy_struct->output[i] = 0;
+  }
 #ifdef fuzzy_pid_rule_base_deep_copy
-	for (unsigned int j = 0; j < 4 * qf_default; ++j) {
-		 fuzzy_struct->mf_params[j] = mf_params[j];
-	 }
-	 for (unsigned int k = 0; k < fuzzy_struct->output_num * qf_default; ++k) {
-		 for (unsigned int i = 0; i < qf_default; ++i) {
-				 fuzzy_struct->rule_base[k * 7 + i] = rule_base[k][i];
-		 }
-	 }
+  for (unsigned int j = 0; j < 4 * qf_default; ++j) {
+     fuzzy_struct->mf_params[j] = mf_params[j];
+   }
+   for (unsigned int k = 0; k < fuzzy_struct->output_num * qf_default; ++k) {
+     for (unsigned int i = 0; i < qf_default; ++i) {
+         fuzzy_struct->rule_base[k * 7 + i] = rule_base[k][i];
+     }
+   }
 #else
-	fuzzy_struct->mf_params = mf_params;
-	fuzzy_struct->rule_base = (int *) rule_base;
+  fuzzy_struct->mf_params = mf_params;
+  fuzzy_struct->rule_base = (int *) rule_base;
 #endif
-	fuzzy_struct->fo_type = fo_type;
-	fuzzy_struct->df_type = df_type;
+  fuzzy_struct->fo_type = fo_type;
+  fuzzy_struct->df_type = df_type;
 }
 
 #define inverse(parameter) 1.0f/(float)parameter
 
 // Gaussian membership function
 float gaussmf(float x, float sigma, float c) {
-	float t = (x - c) / sigma;
-	return expf(-(t * t));//powf(x,2)→x*x，避免 libm pow 函数调用
+  float t = (x - c) / sigma;
+  return expf(-(t * t));//powf(x,2)→x*x，避免 libm pow 函数调用
 }
 
 // Generalized bell-shaped membership function
 float gbellmf(float x, float a, float b, float c) {
-	return inverse(1.0f + powf(fabsf((x - c) / a), 2.0f * b));
+  return inverse(1.0f + powf(fabsf((x - c) / a), 2.0f * b));
 }
 
 // Sigmoidal membership function
 float sigmf(float x, float a, float c) {
-	return inverse(1.0f + expf(a * (c - x)));
+  return inverse(1.0f + expf(a * (c - x)));
 }
 
 // Trapezoidal membership function
 float trapmf(float x, float a, float b, float c, float d) {
-	if (x >= a && x < b)
-		return (x - a) / (b - a);
-	else if (x >= b && x < c)
-		return 1.0f;
-	else if (x >= c && x <= d)
-		return (d - x) / (d - c);
-	else return 0.0f;
+  if (x >= a && x < b)
+    return (x - a) / (b - a);
+  else if (x >= b && x < c)
+    return 1.0f;
+  else if (x >= c && x <= d)
+    return (d - x) / (d - c);
+  else return 0.0f;
 }
 
 // Triangular membership function
 float trimf(float x, float a, float b, float c) {
-	return trapmf(x, a, b, b, c);
+  return trapmf(x, a, b, b, c);
 }
 
 // Z-shaped membership function
 float zmf(float x, float a, float b) {
-	if (x <= a)
-		return 1.0f;
-	else if (x >= a && x <= (a + b) / 2.0f) {
-		float t = (x - a) / (b - a);
-		return 1.0f - 2.0f * (t * t);
-	}
-	else if (x >= (a + b) / 2.0f && x < b) {
-		float t = (x - b) / (b - a);
-		return 2.0f * (t * t);
-	}
-	else return 0;
+  if (x <= a)
+    return 1.0f;
+  else if (x >= a && x <= (a + b) / 2.0f) {
+    float t = (x - a) / (b - a);
+    return 1.0f - 2.0f * (t * t);
+  }
+  else if (x >= (a + b) / 2.0f && x < b) {
+    float t = (x - b) / (b - a);
+    return 2.0f * (t * t);
+  }
+  else return 0;
 }
 
 // Membership function
 float mf(float x, unsigned int mf_type, int *params) {
-	switch (mf_type) {
-		case 0:
-			return gaussmf(x, params[0], params[1]);
-		case 1:
-			return gbellmf(x, params[0], params[1], params[2]);
-		case 2:
-			return sigmf(x, params[0], params[2]);
-		case 3:
-			return trapmf(x, params[0], params[1], params[2], params[3]);
-		case 5:
-			return zmf(x, params[0], params[1]);
-		default: // set triangular as default membership function
-			return trimf(x, params[0], params[1], params[2]);
-	}
+  switch (mf_type) {
+    case 0:
+      return gaussmf(x, params[0], params[1]);
+    case 1:
+      return gbellmf(x, params[0], params[1], params[2]);
+    case 2:
+      return sigmf(x, params[0], params[2]);
+    case 3:
+      return trapmf(x, params[0], params[1], params[2], params[3]);
+    case 5:
+      return zmf(x, params[0], params[1]);
+    default: // set triangular as default membership function
+      return trimf(x, params[0], params[1], params[2]);
+  }
 }
 
 // Union operator
 float or(float a, float b, unsigned int type) {
-	if (type == 1) { // algebraic sum
-		return a + b - a * b;
-	} else if (type == 2) { // bounded sum
-		return fminf(1, a + b);
-	} else { // fuzzy union
-		return fmaxf(a, b);
-	}
+  if (type == 1) { // algebraic sum
+    return a + b - a * b;
+  } else if (type == 2) { // bounded sum
+    return fminf(1, a + b);
+  } else { // fuzzy union
+    return fmaxf(a, b);
+  }
 }
 
 // Intersection operator
 float and(float a, float b, unsigned int type) {
-	if (type == 1) { // algebraic product
-		return a * b;
-	} else if (type == 2) { // bounded product
-		return fmaxf(0, a + b - 1);
-	} else { // fuzzy intersection
-		return fminf(a, b);
-	}
+  if (type == 1) { // algebraic product
+    return a * b;
+  } else if (type == 2) { // bounded product
+    return fmaxf(0, a + b - 1);
+  } else { // fuzzy intersection
+    return fminf(a, b);
+  }
 }
 
 // Equilibrium operator
 float equilibrium(float a, float b, float params) {
-	float r1, r2;
-	if (params == 0.5f) {// fo() 仅以 params=0.5 调用: powf(x,0.5)≡sqrt(x)
-		arm_sqrt_f32(a * b, &r1);// ARM DSP 快速开方（VSQRT 硬件指令）
-		arm_sqrt_f32(1.0f - (1.0f - a) * (1.0f - b), &r2);
-		return r1 * r2;
-	}
-	return powf(a * b, 1.0f - params) * powf(1.0f - (1.0f - a) * (1.0f - b), params);
+  float r1, r2;
+  if (params == 0.5f) {// fo() 仅以 params=0.5 调用: powf(x,0.5)≡sqrt(x)
+    arm_sqrt_f32(a * b, &r1);// ARM DSP 快速开方（VSQRT 硬件指令）
+    arm_sqrt_f32(1.0f - (1.0f - a) * (1.0f - b), &r2);
+    return r1 * r2;
+  }
+  return powf(a * b, 1.0f - params) * powf(1.0f - (1.0f - a) * (1.0f - b), params);
 }
 
 // Fuzzy operator
 float fo(float a, float b, unsigned int type) {
-	if (type < 3) {
-		return and(a, b, type);
-	} else if (type < 6) {
-		return or(a, b, type - 3);
-	} else {
-		return equilibrium(a, b, 0.5f);
-	}
+  if (type < 3) {
+    return and(a, b, type);
+  } else if (type < 6) {
+    return or(a, b, type - 3);
+  } else {
+    return equilibrium(a, b, 0.5f);
+  }
 }
 
 // Mean of centers defuzzifier, only for two input multiple index
 void moc(const float *joint_membership, const unsigned int *index, const unsigned int *count, struct fuzzy *fuzzy_struct) {
 
-	float denominator_count = 0;
-	float numerator_count[fuzzy_struct->output_num];
-	for (unsigned int l = 0; l < fuzzy_struct->output_num; ++l) {
-		numerator_count[l] = 0;
-	}
+  float denominator_count = 0;
+  float numerator_count[fuzzy_struct->output_num];
+  for (unsigned int l = 0; l < fuzzy_struct->output_num; ++l) {
+    numerator_count[l] = 0;
+  }
 
-	for (int i = 0; i < count[0]; ++i) {
-		for (int j = 0; j < count[1]; ++j) {
-			denominator_count += joint_membership[i * count[1] + j];
-		}
-	}
-	if (denominator_count < 1e-9F) {//去模糊分母为0保护, 避免除零产生NaN
-		for (unsigned int l = 0; l < fuzzy_struct->output_num; ++l) {
-			fuzzy_struct->output[l] = 0;
-		}
-		return;
-	}
-	for(unsigned int k = 0; k < fuzzy_struct->output_num; ++k) {
-		for(unsigned int i = 0; i < count[0]; ++i) {
-			for(unsigned int j = 0; j < count[1]; ++j) {
-				numerator_count[k] += joint_membership[i * count[1] + j] * fuzzy_struct->rule_base[k * qf_default * qf_default + index[i] * qf_default + index[count[0] + j]];
-			}
-		}
-	}
+  for (int i = 0; i < count[0]; ++i) {
+    for (int j = 0; j < count[1]; ++j) {
+      denominator_count += joint_membership[i * count[1] + j];
+    }
+  }
+  if (denominator_count < 1e-9F) {//去模糊分母为0保护, 避免除零产生NaN
+    for (unsigned int l = 0; l < fuzzy_struct->output_num; ++l) {
+      fuzzy_struct->output[l] = 0;
+    }
+    return;
+  }
+  for(unsigned int k = 0; k < fuzzy_struct->output_num; ++k) {
+    for(unsigned int i = 0; i < count[0]; ++i) {
+      for(unsigned int j = 0; j < count[1]; ++j) {
+        numerator_count[k] += joint_membership[i * count[1] + j] * fuzzy_struct->rule_base[k * qf_default * qf_default + index[i] * qf_default + index[count[0] + j]];
+      }
+    }
+  }
 
 #ifdef fuzzy_pid_debug_print
     printf("output:\n");
@@ -535,11 +535,11 @@ int pid_motor_pwd_output(float real, float idea, bool direct, struct PID *pid) {
                  pid->output_min_value);
 }
 
-/*============================================================================*/
-/* 模糊PID应用层封装实现 (FuzzyPID_HandleTypeDef)                              */
-/* 默认隶属函数: 7 个三角隶属函数, 论域 ±3, 中心 -3..3 等距                    */
-/* 默认规则表: 标准对称模糊PID规则表(ΔKp/ΔKi/ΔKd, 每表 7×7)                    */
-/*============================================================================*/
+// ============================================================================
+// 模糊PID应用层封装实现 (FuzzyPID_HandleTypeDef)
+// 默认隶属函数: 7 个三角隶属函数, 论域 ±3, 中心 -3..3 等距
+// 默认规则表: 标准对称模糊PID规则表(ΔKp/ΔKi/ΔKd, 每表 7×7)
+// ============================================================================
 static int fuzzy_default_mf_params[7 * 4] = {
     -4, -3, -2, 0,   // NB
     -3, -2, -1, 0,   // NM

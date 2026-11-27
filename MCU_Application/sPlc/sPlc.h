@@ -1,17 +1,17 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 
 #ifndef __SPLC_H__
 #define __SPLC_H__
-/*****************************************************************************/
+// ***************************************************************************
 #include "compiler.h"
-/*****************************************************************************/
+// ***************************************************************************
 //stm32
-/* 自动识别 MCU 系列: 依据 Keil 工程全局芯片宏(STM32F103xE/STM32F407xx 等)。
- * 命中 F1 系列任一型号时包含 F1 HAL, 否则默认 F4, 现有 F4 工程无需改动。 */
+// 自动识别 MCU 系列: 依据 Keil 工程全局芯片宏(STM32F103xE/STM32F407xx 等)。
+ // 命中 F1 系列任一型号时包含 F1 HAL, 否则默认 F4, 现有 F4 工程无需改动。
 #if defined(STM32F100x4) || defined(STM32F100x6) || defined(STM32F100x8)  || \
     defined(STM32F100xB) || defined(STM32F100xC) || defined(STM32F100xD)  || \
     defined(STM32F100xE) || defined(STM32F101x6) || defined(STM32F101xB)  || \
@@ -23,24 +23,24 @@
     defined(STM32F103xG) || defined(STM32F105xC) || defined(STM32F107xC)
   #include "stm32f1xx_hal.h"
   #include "stm32f1xx_hal_tim.h"
-  #define SPLC_STM32F1 1 /* F1 系列统一标识, 供 GPIO 等差异条件编译 */
+  #define SPLC_STM32F1 1 // F1 系列统一标识, 供 GPIO 等差异条件编译
 #else
   #include "stm32f4xx_hal.h"
   #include "stm32f4xx_hal_tim.h"
 #endif
-/*****************************************************************************/
+// ***************************************************************************
 //cdev
 #include "math.h"
 #include <stdio.h>
-#include <stddef.h> 
-#include <stdlib.h> 
+#include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
 #include "stdbool.h"
 #include "stdint.h"
 #include "string.h"
-/*****************************************************************************/
+// ***************************************************************************
 //lib
 #include "..\config\myConfig.h"
 #include "sPlcEprom.h"
@@ -50,79 +50,79 @@
 #include "flash_if.h"
 #include "minicsv.h"
 #include "treatment.h"
-/*****************************************************************************/
+// ***************************************************************************
 #include "classic_pid.h"
-/*****************************************************************************/
+// ***************************************************************************
 //usb
 #include "usbh_msc.h"
 #include "usb_host.h"
 #include "usbh_core.h"
-/*****************************************************************************/
+// ***************************************************************************
 //fatfs
 #include "ff.h"
 #include "ff_gen_drv.h"
 #include "flash_if.h"
-/*****************************************************************************/
+// ***************************************************************************
 #if CONFIG_SPLC_USING_FUNTEST == 1
 #include "sPlcTest.h"
 #endif
-/*****************************************************************************/
+// ***************************************************************************
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*****************************************************************************/
-#define BEEM_MODE_0														0x10//连续模式
-#define BEEM_MODE_1														0x11//声光同步
-#define BEEM_MODE_2														0x12//激光发射固定间隔
-#define BEEM_MODE_3														0x13//异常报警
-#define BEEM_MODE_4														0x14//激光发射固定间隔+提示音
-#define BEEM_MODE_5														0x15
-/*****************************************************************************/
-#define LASER_MODE_CW													0x01//连续模式
-#define LASER_MODE_MP													0x02//多脉冲模式
-/*****************************************************************************/
+// ***************************************************************************
+#define BEEM_MODE_0              0x10//连续模式
+#define BEEM_MODE_1              0x11//声光同步
+#define BEEM_MODE_2              0x12//激光发射固定间隔
+#define BEEM_MODE_3              0x13//异常报警
+#define BEEM_MODE_4              0x14//激光发射固定间隔+提示音
+#define BEEM_MODE_5              0x15
+// ***************************************************************************
+#define LASER_MODE_CW             0x01//连续模式
+#define LASER_MODE_MP             0x02//多脉冲模式
+// ***************************************************************************
 
 
 typedef struct{
-	uint16_t calibrationPwr0[20];//通道0功率校正表
-	uint16_t calibrationPwr1[20];//通道1功率校正表
-	uint16_t calibrationPwr2[20];//通道2功率校正表
-	uint16_t calibrationPwr3[20];//通道3功率校正表
-	uint16_t calibrationPwr4[20];//通道4功率校正表
-	uint16_t calibrationPwr5[20];//通道5功率校正表
-	uint16_t calibrationPwr6[20];//通道6功率校正表
-	uint16_t calibrationPwr7[20];//通道7功率校正表
-	char serialNumber[16];//序列号
-	int16_t mfg_year;//生产年
-	int16_t mfg_month;//生产月
-	int16_t mfg_day;//生产日
-	int8_t redLedDc;//红灯亮度
-	int8_t greenLedDc;//绿灯亮度
-	int8_t blueLedDc;//蓝灯亮度
-	int8_t redAimGain;//红指示光增益
-  int8_t redAimOffset;//红指示光增益
+  uint16_t calibrationPwr0[20];//通道0功率校正表
+  uint16_t calibrationPwr1[20];//通道1功率校正表
+  uint16_t calibrationPwr2[20];//通道2功率校正表
+  uint16_t calibrationPwr3[20];//通道3功率校正表
+  uint16_t calibrationPwr4[20];//通道4功率校正表
+  uint16_t calibrationPwr5[20];//通道5功率校正表
+  uint16_t calibrationPwr6[20];//通道6功率校正表
+  uint16_t calibrationPwr7[20];//通道7功率校正表
+  char serialNumber[16];//序列号
+  int16_t mfg_year;//生产年
+  int16_t mfg_month;//生产月
+  int16_t mfg_day;//生产日
+  int8_t redLedDc;//红灯亮度
+  int8_t greenLedDc;//绿灯亮度
+  int8_t blueLedDc;//蓝灯亮度
+  int8_t redAimGain;//红指示光增益
+  int8_t redAimOffset;//红指示光偏移
   int8_t redLaserDecay;//红激光衰减系数
-	int8_t greenAimGain;//绿指示光增益
-  int8_t greenAimOffset;//绿指示光增益
-  int16_t greenLaserDecay;//绿光光衰减系数
-	int16_t fiberDetect;//光纤探测阈值
-	int16_t laserDiodeA_Temp;//激光器A设置温度
-	int16_t laserDiodeB_Temp;//激光器B设置温度
-	char normalOpenInterLock;
+  int8_t greenAimGain;//绿指示光增益
+  int8_t greenAimOffset;//绿指示光偏移
+  int16_t greenLaserDecay;//绿激光衰减系数
+  int16_t fiberDetect;//光纤探测阈值
+  int16_t laserDiodeA_Temp;//激光器A设置温度
+  int16_t laserDiodeB_Temp;//激光器B设置温度
+  char normalOpenInterLock;
 }deviceConfig_t;
 
 typedef struct{
-	uint32_t powerUpCycle;//开机次数
-	uint32_t runTime;//运行累计时间 单位分钟
-	int16_t laserMaxPhotoDiode;//激光器最大功率
-	int16_t mucMaxTemper;//处理器最高温度
+  uint32_t powerUpCycle;//开机次数
+  uint32_t runTime;//运行累计时间 单位分钟
+  int16_t laserMaxPhotoDiode;//激光器最大功率
+  int16_t mucMaxTemper;//处理器最高温度
 }deviceLogInfo_t;
 
-/*****************************************************************************/
+// ***************************************************************************
 extern deviceConfig_t deviceConfig;
 extern deviceLogInfo_t deviceLogInfo;
-extern uint32_t	UniqueId[3];//处理器序列号 
-/*****************************************************************************/
+extern uint32_t UniqueId[3];//处理器序列号
+// ***************************************************************************
 extern int16_t NVRAM0[CONFIG_NVRAM_SIZE];//掉电保持寄存器 当前 包含存档寄存器
 extern int16_t NVRAM1[CONFIG_NVRAM_SIZE];//掉电保持寄存器 上一次
 extern int16_t FDRAM0[CONFIG_FDRAM_SIZE], FDRAM1[CONFIG_FDRAM_SIZE];//存档寄存器
@@ -143,7 +143,7 @@ extern uint8_t TD_1000MS_SP;
 extern uint8_t TD_60000MS_SP;
 extern uint32_t sPlcTick;
 extern uint32_t BootloadCrc, ApplicationCrc;
-/*****************************************************************************/
+// ***************************************************************************
 extern int8_t LaserTimer_Mode;
 extern int16_t LaserTimer_TCounter;
 extern int16_t LaserTimer_TMate;
@@ -153,14 +153,14 @@ extern int16_t LaserTimer_PMate;
 extern int16_t LaserTimer_POvertime;
 extern int16_t LaserTimer_ReleaseTime;
 extern int16_t LaserTimer_ReleaseCounter;
-/*****************************************************************************/
+// ***************************************************************************
 extern void sPlcInit(void);//软逻辑初始化
 extern void sPlcProcessStart(void);//sPLC轮询起始
 extern void sPlcProcessEnd(void);//sPLC轮询结束
 extern void sPlcPortProcess(void);//sPLC平台程序
 extern void sPlcAssertCoilAddress(uint16_t adr);
 extern void sPlcAssertRegisterAddress(uint16_t adr);
-/*****************************************************************************/
+// ***************************************************************************
 extern void sPlcIsrDisable(void);
 extern void sPlcIsrEnable(void);
 extern void sPlcSpeakerFreq(int16_t freq);//设置喇叭频率
@@ -168,7 +168,7 @@ extern void sPlcSpeakerVolume(int16_t volume);//设置喇叭音量
 extern void sPlcSpeakerEnable(void);//打开喇叭数据流
 extern void sPlcSpeakerDisable(void);//关闭喇叭数据流
 extern void sPlcSpeakerInit(void);//喇叭初始化
-extern void sPlcNvramUpdate(void);//更新NVRAM->EPROM	
+extern void sPlcNvramUpdate(void);//更新NVRAM->EPROM
 extern void sPlcNvramLoad(void);
 extern void sPlcNvramSave(void);
 extern uint32_t sPlcCrc32Calc(uint32_t *pBuffer, uint32_t BufferLength);//EPROM CRC32计算(纯软件实现, 不碰CRC外设: CRC硬件模块已移除, 无hcrc参数; 可重入, 可多任务并发)
@@ -198,7 +198,7 @@ extern uint32_t getOriginAppCrc(void);//计算MCU App CRC32
 extern uint8_t updateBootloadReq(void);//更新BOOTLOAD请求
 extern void confirmBootloadUpdate(void);//执行Bootload更新
 extern void exitBootloadUpdate(void);//退出Bootload更新
-/*****************************************************************************/
+// ***************************************************************************
 extern void RtcInitTimeDefault(void);
 extern void RtcCheckAndInit(void);//RTC掉电检测与防锁死初始化(含BKSRAM使能)
 extern void RtcGetNowTime(uint8_t *year,uint8_t *mon,uint8_t *day, uint8_t *hour,uint8_t *min,uint8_t *sec);
@@ -211,7 +211,7 @@ extern void RtcSetDate(uint8_t tmp);
 extern void RtcSetHours(uint8_t tmp);
 extern void RtcSetMinutes(uint8_t tmp);
 extern void RtcSetSeconds(uint8_t tmp);
-/*****************************************************************************/
+// ***************************************************************************
 extern void REBOOT(void) ;//复位
 //位指令
 extern void SSET(uint16_t A);//线圈置位
@@ -304,7 +304,7 @@ extern void sPlcOutputRefresh(void);//更新Y口输出
 extern void setFanSpeed(FAN_CHANNLE_ENMU ch, int16_t speed);//设置风扇转速
 extern uint8_t hdc1080_init(void);//初始化HDC1080
 extern void hdc1080_read(int16_t *temp, int16_t *humi);//读取温湿度数据
-/*****************************************************************************/
+// ***************************************************************************
 #ifdef __cplusplus
 }
 #endif

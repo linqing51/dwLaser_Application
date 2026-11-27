@@ -1,657 +1,666 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 #include "dcHmiApp.h"
-/*****************************************************************************/
+// ***************************************************************************
 void statusLoop(void){//温度轮询轮询
-	bool flag;
-#if CONFIG_SPLC_USING_HDC1080  
-	int16_t temp, humi;
-	if(LDP(SPCOIL_PS1000MS)){//1秒间隔
-		hdc1080_read(&temp, &humi);
-		NVRAM0[EM_HDC1080_TEMP] = temp;
-		NVRAM0[EM_HDC1080_HUMIDITY] = humi;
-	}
+  bool flag;
+#if CONFIG_SPLC_USING_HDC1080
+  int16_t temp, humi;
+  if(LDP(SPCOIL_PS1000MS)){//1秒间隔
+    hdc1080_read(&temp, &humi);
+    NVRAM0[EM_HDC1080_TEMP] = temp;
+    NVRAM0[EM_HDC1080_HUMIDITY] = humi;
+  }
 #endif
-	//核心温度检测
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_A_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] < (CONFIG_LASER_A_DIODE_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_A_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] < CONFIG_LASER_A_DIODE_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_A_DIODE_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_A_DIODE_TEMP_LOW);
-	}
-	if(LDP(R_LASER_A_DIODE_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER A DIODE TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_A_DIODE_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER A DIODE TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//核心温度检测	
-	if(NVRAM0[EM_LASER_B_DIODE_TEMP] > CONFIG_LASER_B_DIODE_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_B_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_DIODE_TEMP] < (CONFIG_LASER_B_DIODE_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_B_DIODE_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_DIODE_TEMP] < CONFIG_LASER_B_DIODE_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_B_DIODE_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_B_DIODE_TEMP] > CONFIG_LASER_B_DIODE_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_B_DIODE_TEMP_LOW);
-	}
-	if(LDP(R_LASER_B_DIODE_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER B DIODE TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_B_DIODE_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER B DIODE TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}	
-	//耦合温度检测
-	if(NVRAM0[EM_LASER_A_COUPLER_TEMP] > CONFIG_LASER_A_COUPLER_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_A_COUPLER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_COUPLER_TEMP] < (CONFIG_LASER_A_COUPLER_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_A_COUPLER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_COUPLER_TEMP] < CONFIG_LASER_A_COUPLER_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_A_COUPLER_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_A_COUPLER_TEMP] > CONFIG_LASER_A_COUPLER_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_A_COUPLER_TEMP_LOW);
-	}
-	if(LDP(R_LASER_A_COUPLER_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER A COUPLER TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_A_COUPLER_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER A COUPLER TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//耦合器温度检测
-	if(NVRAM0[EM_LASER_B_COUPLER_TEMP] > CONFIG_LASER_B_COUPLER_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_B_COUPLER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_COUPLER_TEMP] < (CONFIG_LASER_B_COUPLER_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_B_COUPLER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_COUPLER_TEMP] < CONFIG_LASER_B_COUPLER_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_B_COUPLER_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_B_COUPLER_TEMP] > CONFIG_LASER_B_COUPLER_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_B_COUPLER_TEMP_LOW);
-	}
-	if(LDP(R_LASER_B_COUPLER_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER B COUPLER TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_B_COUPLER_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER B COUPLER TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}	
-	//晶体温度检测
-	if(NVRAM0[EM_LASER_A_CRYST0_TEMP] > CONFIG_LASER_A_CRYST0_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_A_CRYST0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_CRYST0_TEMP] < (CONFIG_LASER_A_CRYST0_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_A_CRYST0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_CRYST0_TEMP] < CONFIG_LASER_A_CRYST0_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_A_CRYST0_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_A_CRYST0_TEMP] > CONFIG_LASER_A_CRYST0_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_A_CRYST0_TEMP_LOW);
-	}
-	if(LDP(R_LASER_A_CRYST0_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER A CRYST0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_A_CRYST0_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER A CRYST0 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//晶体温度检测
-	if(NVRAM0[EM_LASER_A_CRYST1_TEMP] > CONFIG_LASER_A_CRYST1_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_A_CRYST1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_CRYST1_TEMP] < (CONFIG_LASER_A_CRYST1_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_A_CRYST1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_A_CRYST1_TEMP] < CONFIG_LASER_A_CRYST1_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_A_CRYST1_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_A_CRYST1_TEMP] > CONFIG_LASER_A_CRYST1_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_A_CRYST1_TEMP_LOW);
-	}
-	if(LDP(R_LASER_A_CRYST1_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER A CRYST1 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_A_CRYST1_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER A CRYST1 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//晶体温度检测
-	if(NVRAM0[EM_LASER_B_CRYST0_TEMP] > CONFIG_LASER_B_CRYST0_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_B_CRYST0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_CRYST0_TEMP] < (CONFIG_LASER_B_CRYST0_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_B_CRYST0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_CRYST0_TEMP] < CONFIG_LASER_B_CRYST0_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_B_CRYST0_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_B_CRYST0_TEMP] > CONFIG_LASER_B_CRYST0_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_B_CRYST0_TEMP_LOW);
-	}
-	if(LDP(R_LASER_B_CRYST0_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER B CRYST0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_B_CRYST0_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER B CRYST0 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//晶体温度检测
-	if(NVRAM0[EM_LASER_B_CRYST1_TEMP] > CONFIG_LASER_B_CRYST1_TEMP_HIGH){//激光器过热
-		SSET(R_LASER_B_CRYST1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_CRYST1_TEMP] < (CONFIG_LASER_B_CRYST1_TEMP_HIGH - 50)){//激光器恢复正常温度
-		RRES(R_LASER_B_CRYST1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_LASER_B_CRYST1_TEMP] < CONFIG_LASER_B_CRYST1_TEMP_LOW){//激光器低温保护
-		SSET(R_LASER_B_CRYST1_TEMP_LOW);
-	}
-	if(NVRAM0[EM_LASER_B_CRYST1_TEMP] > CONFIG_LASER_B_CRYST1_TEMP_LOW + 50){//激光器恢复正常温度
-		RRES(R_LASER_B_CRYST1_TEMP_LOW);
-	}
-	if(LDP(R_LASER_B_CRYST1_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:LASER B CRYST1 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_LASER_B_CRYST1_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:LASER B CRYST1 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//散热器温度检测
-	if(NVRAM0[EM_HT0_TEMP] > CONFIG_HT0_TEMP_HIGH){
-		SSET(R_HT0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HT0_TEMP] < (CONFIG_HT0_TEMP_HIGH - 50)){
-		RRES(R_HT0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HT1_TEMP] > CONFIG_HT1_TEMP_HIGH){
-		SSET(R_HT1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HT1_TEMP] < (CONFIG_HT1_TEMP_HIGH - 50)){
-		RRES(R_HT1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HT2_TEMP] > CONFIG_HT2_TEMP_HIGH){
-		SSET(R_HT2_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HT2_TEMP] < (CONFIG_HT2_TEMP_HIGH - 50)){
-		RRES(R_HT2_TEMP_HIGH);
-	}	
-	if(NVRAM0[EM_HT3_TEMP] > CONFIG_HT3_TEMP_HIGH){
-		SSET(R_HT3_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HT2_TEMP] < (CONFIG_HT3_TEMP_HIGH - 50)){
-		RRES(R_HT3_TEMP_HIGH);
-	}
-	if(LDP(R_HT0_TEMP_HIGH) || LDN(R_HT0_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:HT0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_HT1_TEMP_HIGH) || LDN(R_HT1_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:HT1 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_HT2_TEMP_HIGH) || LDN(R_HT2_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:HT2 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_HT3_TEMP_HIGH) || LDN(R_HT3_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:HT3 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	//水温检测
-	if(NVRAM0[EM_HWATER_TEMP] > CONFIG_HWATER_TEMP_HIGH){
-		SSET(R_HWATER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HWATER_TEMP] < (CONFIG_HWATER_TEMP_HIGH - 50)){
-		RRES(R_HWATER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HWATER_TEMP] < CONFIG_HWATER_TEMP_LOW){
-		SSET(R_HWATER_TEMP_LOW);
-	}
-	if(NVRAM0[EM_HWATER_TEMP] > (CONFIG_HWATER_TEMP_LOW + 50)){
-		RRES(R_HWATER_TEMP_LOW);
-	}
-	if(NVRAM0[EM_CWATER_TEMP] > CONFIG_CWATER_TEMP_HIGH){
-		SSET(R_CWATER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_CWATER_TEMP] < (CONFIG_CWATER_TEMP_HIGH - 50)){
-		RRES(R_CWATER_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_CWATER_TEMP] < CONFIG_CWATER_TEMP_LOW){
-		SSET(R_CWATER_TEMP_LOW);
-	}
-	if(NVRAM0[EM_CWATER_TEMP] > (CONFIG_CWATER_TEMP_LOW + 50)){
-		RRES(R_CWATER_TEMP_LOW);
-	}
-	if(LDP(R_HWATER_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:HWATER TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_HWATER_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:HWATER TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_CWATER_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:CWATER TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_CWATER_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:CWATER TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//环境温度检测
-	if(NVRAM0[EM_AMBIENT0_TEMP] > CONFIG_AMBIENT0_TEMP_HIGH){
-		SSET(R_AMBIENT0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT0_TEMP] < (CONFIG_AMBIENT0_TEMP_HIGH - 50)){
-		RRES(R_AMBIENT0_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT0_TEMP] < CONFIG_AMBIENT0_TEMP_LOW){
-		SSET(R_AMBIENT0_TEMP_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT0_TEMP] > (CONFIG_AMBIENT0_TEMP_LOW + 50)){
-		RRES(R_AMBIENT0_TEMP_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT1_TEMP] > CONFIG_AMBIENT1_TEMP_HIGH){
-		SSET(R_AMBIENT1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT1_TEMP] < (CONFIG_AMBIENT1_TEMP_HIGH - 50)){
-		RRES(R_AMBIENT1_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT1_TEMP] < CONFIG_AMBIENT1_TEMP_LOW){
-		SSET(R_AMBIENT1_TEMP_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT1_TEMP] > (CONFIG_AMBIENT1_TEMP_LOW + 50)){
-		RRES(R_AMBIENT1_TEMP_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT2_TEMP] > CONFIG_AMBIENT2_TEMP_HIGH){
-		SSET(R_AMBIENT2_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT2_TEMP] < (CONFIG_AMBIENT2_TEMP_HIGH - 50)){
-		RRES(R_AMBIENT2_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT2_TEMP] < CONFIG_AMBIENT2_TEMP_LOW){
-		SSET(R_AMBIENT2_TEMP_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT2_TEMP] > (CONFIG_AMBIENT2_TEMP_LOW + 50)){
-		RRES(R_AMBIENT2_TEMP_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT3_TEMP] > CONFIG_AMBIENT3_TEMP_HIGH){
-		SSET(R_AMBIENT3_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT3_TEMP] < (CONFIG_AMBIENT3_TEMP_HIGH - 50)){
-		RRES(R_AMBIENT3_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_AMBIENT3_TEMP] < CONFIG_AMBIENT3_TEMP_LOW){
-		SSET(R_AMBIENT3_TEMP_LOW);
-	}
-	if(NVRAM0[EM_AMBIENT3_TEMP] > (CONFIG_AMBIENT3_TEMP_LOW + 50)){
-		RRES(R_AMBIENT3_TEMP_LOW);
-	}
-	if(LDP(R_AMBIENT0_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:AMBIENT0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_AMBIENT0_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:AMBIENT0 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_AMBIENT1_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:AMBIENT0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_AMBIENT1_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:AMBIENT0 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}		
-	if(LDP(R_AMBIENT2_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:AMBIENT2 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_AMBIENT2_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:AMBIENT2 TEMP LOW\n",__FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_AMBIENT3_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:AMBIENT3 TEMP HIGH\n",__FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_AMBIENT3_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:AMBIENT3 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//HDC1080 湿度检测
-	if(NVRAM0[EM_HDC1080_HUMIDITY] > CONFIG_HDC1080_HUMIDITY_HIGH){
-		SSET(R_HDC1080_HUMIDITY_HIGH);
-	}
-	if(NVRAM0[EM_HDC1080_HUMIDITY] > (CONFIG_HDC1080_HUMIDITY_HIGH - 50)){
-		RRES(R_HDC1080_HUMIDITY_HIGH);
-	}
-	if(NVRAM0[EM_HDC1080_HUMIDITY] < CONFIG_HDC1080_HUMIDITY_LOW){
-		SSET(R_HDC1080_HUMIDITY_LOW);
-	}
-	if(NVRAM0[EM_HDC1080_HUMIDITY] > (CONFIG_HDC1080_HUMIDITY_LOW + 50)){
-		RRES(R_HDC1080_HUMIDITY_LOW);
-	}
-	if(LDP(R_HDC1080_HUMIDITY_HIGH)){
-		//printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_HDC1080_HUMIDITY_LOW)){
-		//printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//HDC1080 温度检测
-	if(NVRAM0[EM_HDC1080_TEMP] > CONFIG_HDC1080_TEMP_HIGH){
-		SSET(R_HDC1080_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HDC1080_TEMP] > (CONFIG_HDC1080_TEMP_HIGH - 50)){
-		RRES(R_HDC1080_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_HDC1080_TEMP] < CONFIG_HDC1080_TEMP_LOW){
-		SSET(R_HDC1080_TEMP_LOW);
-	}
-	if(NVRAM0[EM_HDC1080_TEMP] > (CONFIG_HDC1080_TEMP_LOW + 50)){
-		RRES(R_HDC1080_TEMP_LOW);
-	}
-	if(LDP(R_HDC1080_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:HDC1080 TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_HDC1080_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:HDC1080 TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//DHT11 湿度检测
-	if(NVRAM0[EM_DHT11_HUMIDITY] > CONFIG_DHT11_HUMIDITY_HIGH){
-		SSET(R_DHT11_HUMIDITY_HIGH);
-	}
-	if(NVRAM0[EM_DHT11_HUMIDITY] > (CONFIG_DHT11_HUMIDITY_HIGH - 50)){
-		RRES(R_DHT11_HUMIDITY_HIGH);
-	}
-	if(NVRAM0[EM_DHT11_HUMIDITY] < CONFIG_DHT11_HUMIDITY_LOW){
-		SSET(R_DHT11_HUMIDITY_LOW);
-	}
-	if(NVRAM0[EM_DHT11_HUMIDITY] > (CONFIG_DHT11_HUMIDITY_LOW + 50)){
-		RRES(R_DHT11_HUMIDITY_LOW);
-	}
-	if(LDP(R_DHT11_HUMIDITY_HIGH)){
-		//printf("%s,%d,%s:STATUS:DHT11 HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_DHT11_HUMIDITY_LOW)){
-		//printf("%s,%d,%s:STATUS:DHT11 HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//DHT11 温度检测
-	if(NVRAM0[EM_DHT11_TEMP] > CONFIG_DHT11_TEMP_HIGH){
-		SSET(R_DHT11_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_DHT11_TEMP] > (CONFIG_DHT11_TEMP_HIGH - 50)){
-		RRES(R_DHT11_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_DHT11_TEMP] < CONFIG_DHT11_TEMP_LOW){
-		SSET(R_DHT11_TEMP_LOW);
-	}
-	if(NVRAM0[EM_DHT11_TEMP] > (CONFIG_DHT11_TEMP_LOW + 50)){
-		RRES(R_DHT11_TEMP_LOW);
-	}	
-	if(LDP(R_DHT11_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:DHT11_TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_DHT11_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:DHT11_TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//处理器温度检测
-	if(NVRAM0[EM_MCU_TEMP] > CONFIG_MCU_TEMP_HIGH){
-		SSET(R_MCU_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MCU_TEMP] < (CONFIG_MCU_TEMP_HIGH - 50)){
-		RRES(R_MCU_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MCU_TEMP] < CONFIG_MCU_TEMP_LOW){
-		SSET(R_MCU_TEMP_LOW);
-	}
-	if(NVRAM0[EM_MCU_TEMP] > (CONFIG_MCU_TEMP_LOW + 50)){
-		RRES(R_MCU_TEMP_LOW);
-	}
-	if(LDP(R_MCU_TEMP_HIGH)){
-		//printf("%s,%d,%s:STATUS:MCU TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_MCU_TEMP_LOW)){
-		//printf("%s,%d,%s:STATUS:MCU TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	//主电池温度
-	if(NVRAM0[EM_MBAT_TEMP] > CONFIG_MBAT_TEMP_HIGH){
-		SSET(R_MBAT_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MBAT_TEMP] < (CONFIG_MBAT_TEMP_HIGH - 50)){
-		RRES(R_MBAT_TEMP_HIGH);
-	}
-	if(NVRAM0[EM_MBAT_TEMP] < CONFIG_MBAT_TEMP_LOW){
-		SSET(R_MBAT_TEMP_LOW);
-	}
-	if(NVRAM0[EM_MBAT_TEMP] > (CONFIG_MBAT_TEMP_LOW + 50)){
-		RRES(R_MBAT_TEMP_LOW);
-	}
-	if(LDP(R_MBAT_TEMP_HIGH)){
-		printf("%s,%d,%s:STATUS:MBAT TEMP HIGH\n", __FILE__, __LINE__, __func__);
-	}
-	if(LDP(R_MBAT_TEMP_LOW)){
-		printf("%s,%d,%s:STATUS:MBAT TEMP LOW\n", __FILE__, __LINE__, __func__);
-	}
-	
-	flag = 0;
-	flag |= LD(R_LASER_A_DIODE_TEMP_HIGH);									
-	flag |= LD(R_LASER_A_DIODE_TEMP_LOW);										
-	flag |= LD(R_LASER_B_DIODE_TEMP_HIGH);									
-	flag |= LD(R_LASER_B_DIODE_TEMP_LOW);									
-
-	flag |= LD(R_LASER_A_COUPLER_TEMP_HIGH);							
-	flag |= LD(R_LASER_A_COUPLER_TEMP_LOW);									
-	flag |= LD(R_LASER_B_COUPLER_TEMP_HIGH);									
-	flag |= LD(R_LASER_B_COUPLER_TEMP_LOW);							
-
-	flag |= LD(R_LASER_A_CRYST0_TEMP_HIGH);										
-	flag |= LD(R_LASER_A_CRYST0_TEMP_LOW);										
-	flag |= LD(R_LASER_A_CRYST1_TEMP_HIGH);										
-	flag |= LD(R_LASER_A_CRYST1_TEMP_LOW);	
-
-	flag |= LD(R_LASER_B_CRYST0_TEMP_HIGH);	
-	flag |= LD(R_LASER_B_CRYST0_TEMP_LOW);	
-	flag |= LD(R_LASER_B_CRYST1_TEMP_HIGH);	
-	flag |= LD(R_LASER_B_CRYST1_TEMP_LOW);	
-	flag |= LD(R_HT0_TEMP_HIGH);					
-	flag |= LD(R_HT1_TEMP_HIGH);				
-	flag |= LD(R_HT2_TEMP_HIGH);				
-	flag |= LD(R_HT3_TEMP_HIGH);	
-
-	flag |= LD(R_HWATER_TEMP_HIGH);
-	flag |= LD(R_HWATER_TEMP_LOW);
-	flag |= LD(R_CWATER_TEMP_HIGH);
-	flag |= LD(R_CWATER_TEMP_LOW);
-	flag |= LD(R_AMBIENT0_TEMP_HIGH);
-	flag |= LD(R_AMBIENT0_TEMP_LOW);
-	flag |= LD(R_AMBIENT1_TEMP_HIGH);
-	flag |= LD(R_AMBIENT1_TEMP_LOW);
-	flag |= LD(R_AMBIENT2_TEMP_HIGH);
-	flag |= LD(R_AMBIENT2_TEMP_LOW);
-	flag |= LD(R_AMBIENT3_TEMP_HIGH);
-	flag |= LD(R_AMBIENT3_TEMP_LOW);
-	flag |= LD(R_HDC1080_TEMP_HIGH);
-	flag |= LD(R_HDC1080_TEMP_LOW);
-
-	flag |= LD(R_DHT11_TEMP_HIGH);
-	flag |= LD(R_DHT11_TEMP_LOW);
-
-	flag |= LD(R_MCU_TEMP_HIGH);
-	flag |= LD(R_MCU_TEMP_LOW);
-	flag |= LD(R_MBAT_TEMP_HIGH);
-	flag |= LD(R_MBAT_TEMP_LOW);
-	
-	if(LD(R_DISABLE_TEMPERATURE_CHECK)){//屏蔽温度报警
-		RRES(R_TEMP_FAULT);
-	}
-	else{
-		if(flag){
-			SSET(R_TEMP_FAULT);
-		}
-		else{
-			RRES(R_TEMP_FAULT);
-		}
-	}
-		
-	flag = 0;
-	flag |= LD(R_HDC1080_HUMIDITY_HIGH);
-	flag |= LD(R_HDC1080_HUMIDITY_LOW);
-	flag |= LD(R_DHT11_HUMIDITY_HIGH);
-	flag |= LD(R_DHT11_HUMIDITY_LOW);		
-	if(LD(R_DISABLE_INTERLOCK_CHECK)){
-		RRES(R_HUMIDITY_FALUT);
-	}
-	else{
-		if(flag){
-			SSET(R_HUMIDITY_FALUT);
-		}
-		else{
-			RRES(R_HUMIDITY_FALUT);
-		}
-	}
-	
-	flag = 0;
-	flag |= LD(R_HWATER_FLOW_LOW);
-	flag |= LD(R_CWATER_FLOW_LOW);
-	if(LD(R_DISABLE_FLOW_CHECK)){
-				RRES(R_FLOW_FAULT);
-	}
-	else{
-		if(flag){
-			SSET(R_FLOW_FAULT);
-		}
-		else{
-			RRES(R_FLOW_FAULT);
-		}
-	}
-	
-	//脚踏检测
-	if(LD(R_DISABLE_FOOTSWITCH_CHECK)){//屏蔽脚踏插入探测、使能屏幕激光发射控制
-		SSET(R_FOOTSWITCH_PLUG);
-		if(LD(R_HMI_FOOTSWITCH_PRESS)){
-			SSET(R_FOOTSWITCH_PRESS);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PRESS);
-		}
-	}
-	else if(LD(SPCOIL_WFSWITCH_PLUG)){//无线脚踏插入、屏蔽有线脚踏
-		SSET(R_FOOTSWITCH_PLUG);
-		if(LD(SPCOIL_WFSWITCH_NO)){
-			SSET(R_FOOTSWITCH_PRESS);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PRESS);
-		}
-	}
-	else{
-		if(LD(X_FOOTSWITCH_NC)){//常闭
-			SSET(R_FOOTSWITCH_PLUG);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PLUG);
-		}
-		if(LD(X_FOOTSWITCH_NO)){//常开
-			SSET(R_FOOTSWITCH_PRESS);
-		}
-		else{
-			RRES(R_FOOTSWITCH_PRESS);
-		}
-	}
-	
-	//屏蔽光纤探测器
-	if(LD(R_DISABLE_FIBER_PROBE_CHECK)){
-		SSET(R_FIBER_PROBE);
-	}
-	else{
-		if(LD(X_FIBER_PROBE)){
-			SSET(R_FIBER_PROBE);
-		}
-		else{
-			RRES(R_FIBER_PROBE);
-		}
-	}
-
-	if(LD(R_DISABLE_RFID_CHECK)){//屏蔽光纤RFID探测
-		SSET(R_RFID_PASS);
-	}
-	
-	if(LD(R_DISABLE_ESTOP_CHECK)){//屏蔽紧急停止开关
-		SSET(R_ESTOP);
-	}
-	else{
-		if(LDB(X_ESTOP_NC)){
-
-			SSET(R_ESTOP);
-		}
-		else{
-			RRES(R_ESTOP);
-		}
-	}
-	
-	//屏蔽安全联锁
-	if(LD(R_DISABLE_INTERLOCK_CHECK)){
-		SSET(R_INTERLOCK);
-	}
-	else{
-		if(deviceConfig.normalOpenInterLock == 1){//常开连锁			
-			if(LD(X_INTERLOCK_NC)){
-				SSET(R_INTERLOCK);
-			}
-			else{
-				RRES(R_INTERLOCK);
-			}
-		}
-		else{//常闭连锁
-			if(LD(X_INTERLOCK_NC)){
-				RRES(R_INTERLOCK);
-			}
-			else{
-				SSET(R_INTERLOCK);
-			}
-		}	
-	}
-	flag = 0;
-	flag |= LD(R_TEMP_FAULT);
-	flag |=	LD(R_HUMIDITY_FALUT);
-	flag |=	LD(R_FLOW_FAULT);
-	flag |=	LDB(R_FOOTSWITCH_PLUG);
-	flag |=	LDB(R_FIBER_PROBE);
-	//flag |=	LDB(R_RFID_PASS);
-	flag |=	LD(R_ESTOP);
-	flag |=	LD(R_INTERLOCK);
-	if(flag){
-		SSET(R_FAULT);
-	}
-	else{
-		RRES(R_FAULT);
-	}
+  //核心温度检测
+  if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_A_DIODE_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_DIODE_TEMP] < (CONFIG_LASER_A_DIODE_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_A_DIODE_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_DIODE_TEMP] < CONFIG_LASER_A_DIODE_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_A_DIODE_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_A_DIODE_TEMP] > CONFIG_LASER_A_DIODE_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_A_DIODE_TEMP_LOW);
+  }
+  if(LDP(R_LASER_A_DIODE_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER A DIODE TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_A_DIODE_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER A DIODE TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //核心温度检测
+  if(NVRAM0[EM_LASER_B_DIODE_TEMP] > CONFIG_LASER_B_DIODE_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_B_DIODE_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_DIODE_TEMP] < (CONFIG_LASER_B_DIODE_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_B_DIODE_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_DIODE_TEMP] < CONFIG_LASER_B_DIODE_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_B_DIODE_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_B_DIODE_TEMP] > CONFIG_LASER_B_DIODE_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_B_DIODE_TEMP_LOW);
+  }
+  if(LDP(R_LASER_B_DIODE_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER B DIODE TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_B_DIODE_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER B DIODE TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //耦合温度检测
+  if(NVRAM0[EM_LASER_A_COUPLER_TEMP] > CONFIG_LASER_A_COUPLER_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_A_COUPLER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_COUPLER_TEMP] < (CONFIG_LASER_A_COUPLER_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_A_COUPLER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_COUPLER_TEMP] < CONFIG_LASER_A_COUPLER_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_A_COUPLER_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_A_COUPLER_TEMP] > CONFIG_LASER_A_COUPLER_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_A_COUPLER_TEMP_LOW);
+  }
+  if(LDP(R_LASER_A_COUPLER_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER A COUPLER TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_A_COUPLER_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER A COUPLER TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //耦合器温度检测
+  if(NVRAM0[EM_LASER_B_COUPLER_TEMP] > CONFIG_LASER_B_COUPLER_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_B_COUPLER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_COUPLER_TEMP] < (CONFIG_LASER_B_COUPLER_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_B_COUPLER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_COUPLER_TEMP] < CONFIG_LASER_B_COUPLER_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_B_COUPLER_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_B_COUPLER_TEMP] > CONFIG_LASER_B_COUPLER_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_B_COUPLER_TEMP_LOW);
+  }
+  if(LDP(R_LASER_B_COUPLER_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER B COUPLER TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_B_COUPLER_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER B COUPLER TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //晶体温度检测
+  if(NVRAM0[EM_LASER_A_CRYST0_TEMP] > CONFIG_LASER_A_CRYST0_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_A_CRYST0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_CRYST0_TEMP] < (CONFIG_LASER_A_CRYST0_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_A_CRYST0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_CRYST0_TEMP] < CONFIG_LASER_A_CRYST0_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_A_CRYST0_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_A_CRYST0_TEMP] > CONFIG_LASER_A_CRYST0_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_A_CRYST0_TEMP_LOW);
+  }
+  if(LDP(R_LASER_A_CRYST0_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER A CRYST0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_A_CRYST0_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER A CRYST0 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //晶体温度检测
+  if(NVRAM0[EM_LASER_A_CRYST1_TEMP] > CONFIG_LASER_A_CRYST1_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_A_CRYST1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_CRYST1_TEMP] < (CONFIG_LASER_A_CRYST1_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_A_CRYST1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_A_CRYST1_TEMP] < CONFIG_LASER_A_CRYST1_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_A_CRYST1_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_A_CRYST1_TEMP] > CONFIG_LASER_A_CRYST1_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_A_CRYST1_TEMP_LOW);
+  }
+  if(LDP(R_LASER_A_CRYST1_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER A CRYST1 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_A_CRYST1_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER A CRYST1 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //晶体温度检测
+  if(NVRAM0[EM_LASER_B_CRYST0_TEMP] > CONFIG_LASER_B_CRYST0_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_B_CRYST0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_CRYST0_TEMP] < (CONFIG_LASER_B_CRYST0_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_B_CRYST0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_CRYST0_TEMP] < CONFIG_LASER_B_CRYST0_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_B_CRYST0_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_B_CRYST0_TEMP] > CONFIG_LASER_B_CRYST0_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_B_CRYST0_TEMP_LOW);
+  }
+  if(LDP(R_LASER_B_CRYST0_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER B CRYST0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_B_CRYST0_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER B CRYST0 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //晶体温度检测
+  if(NVRAM0[EM_LASER_B_CRYST1_TEMP] > CONFIG_LASER_B_CRYST1_TEMP_HIGH){//激光器过热
+    SSET(R_LASER_B_CRYST1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_CRYST1_TEMP] < (CONFIG_LASER_B_CRYST1_TEMP_HIGH - 50)){//激光器恢复正常温度
+    RRES(R_LASER_B_CRYST1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_LASER_B_CRYST1_TEMP] < CONFIG_LASER_B_CRYST1_TEMP_LOW){//激光器低温保护
+    SSET(R_LASER_B_CRYST1_TEMP_LOW);
+  }
+  if(NVRAM0[EM_LASER_B_CRYST1_TEMP] > CONFIG_LASER_B_CRYST1_TEMP_LOW + 50){//激光器恢复正常温度
+    RRES(R_LASER_B_CRYST1_TEMP_LOW);
+  }
+  if(LDP(R_LASER_B_CRYST1_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:LASER B CRYST1 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_LASER_B_CRYST1_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:LASER B CRYST1 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //散热器温度检测
+  if(NVRAM0[EM_HT0_TEMP] > CONFIG_HT0_TEMP_HIGH){
+    SSET(R_HT0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HT0_TEMP] < (CONFIG_HT0_TEMP_HIGH - 50)){
+    RRES(R_HT0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HT1_TEMP] > CONFIG_HT1_TEMP_HIGH){
+    SSET(R_HT1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HT1_TEMP] < (CONFIG_HT1_TEMP_HIGH - 50)){
+    RRES(R_HT1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HT2_TEMP] > CONFIG_HT2_TEMP_HIGH){
+    SSET(R_HT2_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HT2_TEMP] < (CONFIG_HT2_TEMP_HIGH - 50)){
+    RRES(R_HT2_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HT3_TEMP] > CONFIG_HT3_TEMP_HIGH){
+    SSET(R_HT3_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HT2_TEMP] < (CONFIG_HT3_TEMP_HIGH - 50)){
+    RRES(R_HT3_TEMP_HIGH);
+  }
+  if(LDP(R_HT0_TEMP_HIGH) || LDN(R_HT0_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:HT0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_HT1_TEMP_HIGH) || LDN(R_HT1_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:HT1 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_HT2_TEMP_HIGH) || LDN(R_HT2_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:HT2 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_HT3_TEMP_HIGH) || LDN(R_HT3_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:HT3 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  //水温检测
+  if(NVRAM0[EM_HWATER_TEMP] > CONFIG_HWATER_TEMP_HIGH){
+    SSET(R_HWATER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HWATER_TEMP] < (CONFIG_HWATER_TEMP_HIGH - 50)){
+    RRES(R_HWATER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HWATER_TEMP] < CONFIG_HWATER_TEMP_LOW){
+    SSET(R_HWATER_TEMP_LOW);
+  }
+  if(NVRAM0[EM_HWATER_TEMP] > (CONFIG_HWATER_TEMP_LOW + 50)){
+    RRES(R_HWATER_TEMP_LOW);
+  }
+  if(NVRAM0[EM_CWATER_TEMP] > CONFIG_CWATER_TEMP_HIGH){
+    SSET(R_CWATER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_CWATER_TEMP] < (CONFIG_CWATER_TEMP_HIGH - 50)){
+    RRES(R_CWATER_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_CWATER_TEMP] < CONFIG_CWATER_TEMP_LOW){
+    SSET(R_CWATER_TEMP_LOW);
+  }
+  if(NVRAM0[EM_CWATER_TEMP] > (CONFIG_CWATER_TEMP_LOW + 50)){
+    RRES(R_CWATER_TEMP_LOW);
+  }
+  if(LDP(R_HWATER_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:HWATER TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_HWATER_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:HWATER TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_CWATER_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:CWATER TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_CWATER_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:CWATER TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //环境温度检测
+  if(NVRAM0[EM_AMBIENT0_TEMP] > CONFIG_AMBIENT0_TEMP_HIGH){
+    SSET(R_AMBIENT0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT0_TEMP] < (CONFIG_AMBIENT0_TEMP_HIGH - 50)){
+    RRES(R_AMBIENT0_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT0_TEMP] < CONFIG_AMBIENT0_TEMP_LOW){
+    SSET(R_AMBIENT0_TEMP_LOW);
+  }
+  if(NVRAM0[EM_AMBIENT0_TEMP] > (CONFIG_AMBIENT0_TEMP_LOW + 50)){
+    RRES(R_AMBIENT0_TEMP_LOW);
+  }
+  if(NVRAM0[EM_AMBIENT1_TEMP] > CONFIG_AMBIENT1_TEMP_HIGH){
+    SSET(R_AMBIENT1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT1_TEMP] < (CONFIG_AMBIENT1_TEMP_HIGH - 50)){
+    RRES(R_AMBIENT1_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT1_TEMP] < CONFIG_AMBIENT1_TEMP_LOW){
+    SSET(R_AMBIENT1_TEMP_LOW);
+  }
+  if(NVRAM0[EM_AMBIENT1_TEMP] > (CONFIG_AMBIENT1_TEMP_LOW + 50)){
+    RRES(R_AMBIENT1_TEMP_LOW);
+  }
+  if(NVRAM0[EM_AMBIENT2_TEMP] > CONFIG_AMBIENT2_TEMP_HIGH){
+    SSET(R_AMBIENT2_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT2_TEMP] < (CONFIG_AMBIENT2_TEMP_HIGH - 50)){
+    RRES(R_AMBIENT2_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT2_TEMP] < CONFIG_AMBIENT2_TEMP_LOW){
+    SSET(R_AMBIENT2_TEMP_LOW);
+  }
+  if(NVRAM0[EM_AMBIENT2_TEMP] > (CONFIG_AMBIENT2_TEMP_LOW + 50)){
+    RRES(R_AMBIENT2_TEMP_LOW);
+  }
+  if(NVRAM0[EM_AMBIENT3_TEMP] > CONFIG_AMBIENT3_TEMP_HIGH){
+    SSET(R_AMBIENT3_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT3_TEMP] < (CONFIG_AMBIENT3_TEMP_HIGH - 50)){
+    RRES(R_AMBIENT3_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_AMBIENT3_TEMP] < CONFIG_AMBIENT3_TEMP_LOW){
+    SSET(R_AMBIENT3_TEMP_LOW);
+  }
+  if(NVRAM0[EM_AMBIENT3_TEMP] > (CONFIG_AMBIENT3_TEMP_LOW + 50)){
+    RRES(R_AMBIENT3_TEMP_LOW);
+  }
+  if(LDP(R_AMBIENT0_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:AMBIENT0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_AMBIENT0_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:AMBIENT0 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_AMBIENT1_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:AMBIENT0 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_AMBIENT1_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:AMBIENT0 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_AMBIENT2_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:AMBIENT2 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_AMBIENT2_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:AMBIENT2 TEMP LOW\n",__FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_AMBIENT3_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:AMBIENT3 TEMP HIGH\n",__FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_AMBIENT3_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:AMBIENT3 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //HDC1080 湿度检测
+  if(NVRAM0[EM_HDC1080_HUMIDITY] > CONFIG_HDC1080_HUMIDITY_HIGH){
+    SSET(R_HDC1080_HUMIDITY_HIGH);
+  }
+  if(NVRAM0[EM_HDC1080_HUMIDITY] > (CONFIG_HDC1080_HUMIDITY_HIGH - 50)){
+    RRES(R_HDC1080_HUMIDITY_HIGH);
+  }
+  if(NVRAM0[EM_HDC1080_HUMIDITY] < CONFIG_HDC1080_HUMIDITY_LOW){
+    SSET(R_HDC1080_HUMIDITY_LOW);
+  }
+  if(NVRAM0[EM_HDC1080_HUMIDITY] > (CONFIG_HDC1080_HUMIDITY_LOW + 50)){
+    RRES(R_HDC1080_HUMIDITY_LOW);
+  }
+  if(LDP(R_HDC1080_HUMIDITY_HIGH)){
+    //printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_HDC1080_HUMIDITY_LOW)){
+    //printf("%s,%d,%s:STATUS:HDC1080_HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //HDC1080 温度检测
+  if(NVRAM0[EM_HDC1080_TEMP] > CONFIG_HDC1080_TEMP_HIGH){
+    SSET(R_HDC1080_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HDC1080_TEMP] > (CONFIG_HDC1080_TEMP_HIGH - 50)){
+    RRES(R_HDC1080_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_HDC1080_TEMP] < CONFIG_HDC1080_TEMP_LOW){
+    SSET(R_HDC1080_TEMP_LOW);
+  }
+  if(NVRAM0[EM_HDC1080_TEMP] > (CONFIG_HDC1080_TEMP_LOW + 50)){
+    RRES(R_HDC1080_TEMP_LOW);
+  }
+  if(LDP(R_HDC1080_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:HDC1080 TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_HDC1080_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:HDC1080 TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //DHT11 湿度检测
+  if(NVRAM0[EM_DHT11_HUMIDITY] > CONFIG_DHT11_HUMIDITY_HIGH){
+    SSET(R_DHT11_HUMIDITY_HIGH);
+  }
+  if(NVRAM0[EM_DHT11_HUMIDITY] > (CONFIG_DHT11_HUMIDITY_HIGH - 50)){
+    RRES(R_DHT11_HUMIDITY_HIGH);
+  }
+  if(NVRAM0[EM_DHT11_HUMIDITY] < CONFIG_DHT11_HUMIDITY_LOW){
+    SSET(R_DHT11_HUMIDITY_LOW);
+  }
+  if(NVRAM0[EM_DHT11_HUMIDITY] > (CONFIG_DHT11_HUMIDITY_LOW + 50)){
+    RRES(R_DHT11_HUMIDITY_LOW);
+  }
+  if(LDP(R_DHT11_HUMIDITY_HIGH)){
+    //printf("%s,%d,%s:STATUS:DHT11 HUMIDITY HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_DHT11_HUMIDITY_LOW)){
+    //printf("%s,%d,%s:STATUS:DHT11 HUMIDITY LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //DHT11 温度检测
+  if(NVRAM0[EM_DHT11_TEMP] > CONFIG_DHT11_TEMP_HIGH){
+    SSET(R_DHT11_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_DHT11_TEMP] > (CONFIG_DHT11_TEMP_HIGH - 50)){
+    RRES(R_DHT11_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_DHT11_TEMP] < CONFIG_DHT11_TEMP_LOW){
+    SSET(R_DHT11_TEMP_LOW);
+  }
+  if(NVRAM0[EM_DHT11_TEMP] > (CONFIG_DHT11_TEMP_LOW + 50)){
+    RRES(R_DHT11_TEMP_LOW);
+  }
+  if(LDP(R_DHT11_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:DHT11_TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_DHT11_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:DHT11_TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //处理器温度检测
+  if(NVRAM0[EM_MCU_TEMP] > CONFIG_MCU_TEMP_HIGH){
+    SSET(R_MCU_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_MCU_TEMP] < (CONFIG_MCU_TEMP_HIGH - 50)){
+    RRES(R_MCU_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_MCU_TEMP] < CONFIG_MCU_TEMP_LOW){
+    SSET(R_MCU_TEMP_LOW);
+  }
+  if(NVRAM0[EM_MCU_TEMP] > (CONFIG_MCU_TEMP_LOW + 50)){
+    RRES(R_MCU_TEMP_LOW);
+  }
+  if(LDP(R_MCU_TEMP_HIGH)){
+    //printf("%s,%d,%s:STATUS:MCU TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_MCU_TEMP_LOW)){
+    //printf("%s,%d,%s:STATUS:MCU TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
+  //主电池温度
+  if(NVRAM0[EM_MBAT_TEMP] > CONFIG_MBAT_TEMP_HIGH){
+    SSET(R_MBAT_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_MBAT_TEMP] < (CONFIG_MBAT_TEMP_HIGH - 50)){
+    RRES(R_MBAT_TEMP_HIGH);
+  }
+  if(NVRAM0[EM_MBAT_TEMP] < CONFIG_MBAT_TEMP_LOW){
+    SSET(R_MBAT_TEMP_LOW);
+  }
+  if(NVRAM0[EM_MBAT_TEMP] > (CONFIG_MBAT_TEMP_LOW + 50)){
+    RRES(R_MBAT_TEMP_LOW);
+  }
+  if(LDP(R_MBAT_TEMP_HIGH)){
+    printf("%s,%d,%s:STATUS:MBAT TEMP HIGH\n", __FILE__, __LINE__, __func__);
+  }
+  if(LDP(R_MBAT_TEMP_LOW)){
+    printf("%s,%d,%s:STATUS:MBAT TEMP LOW\n", __FILE__, __LINE__, __func__);
+  }
   
+  flag = 0;
+  flag |= LD(R_LASER_A_DIODE_TEMP_HIGH);
+  flag |= LD(R_LASER_A_DIODE_TEMP_LOW);
+  flag |= LD(R_LASER_B_DIODE_TEMP_HIGH);
+  flag |= LD(R_LASER_B_DIODE_TEMP_LOW);
+
+  flag |= LD(R_LASER_A_COUPLER_TEMP_HIGH);
+  flag |= LD(R_LASER_A_COUPLER_TEMP_LOW);
+  flag |= LD(R_LASER_B_COUPLER_TEMP_HIGH);
+  flag |= LD(R_LASER_B_COUPLER_TEMP_LOW);
+
+  flag |= LD(R_LASER_A_CRYST0_TEMP_HIGH);
+  flag |= LD(R_LASER_A_CRYST0_TEMP_LOW);
+  flag |= LD(R_LASER_A_CRYST1_TEMP_HIGH);
+  flag |= LD(R_LASER_A_CRYST1_TEMP_LOW);
+
+  flag |= LD(R_LASER_B_CRYST0_TEMP_HIGH);
+  flag |= LD(R_LASER_B_CRYST0_TEMP_LOW);
+  flag |= LD(R_LASER_B_CRYST1_TEMP_HIGH);
+  flag |= LD(R_LASER_B_CRYST1_TEMP_LOW);
+  flag |= LD(R_HT0_TEMP_HIGH);
+  flag |= LD(R_HT1_TEMP_HIGH);
+  flag |= LD(R_HT2_TEMP_HIGH);
+  flag |= LD(R_HT3_TEMP_HIGH);
+
+  flag |= LD(R_HWATER_TEMP_HIGH);
+  flag |= LD(R_HWATER_TEMP_LOW);
+  flag |= LD(R_CWATER_TEMP_HIGH);
+  flag |= LD(R_CWATER_TEMP_LOW);
+  flag |= LD(R_AMBIENT0_TEMP_HIGH);
+  flag |= LD(R_AMBIENT0_TEMP_LOW);
+  flag |= LD(R_AMBIENT1_TEMP_HIGH);
+  flag |= LD(R_AMBIENT1_TEMP_LOW);
+  flag |= LD(R_AMBIENT2_TEMP_HIGH);
+  flag |= LD(R_AMBIENT2_TEMP_LOW);
+  flag |= LD(R_AMBIENT3_TEMP_HIGH);
+  flag |= LD(R_AMBIENT3_TEMP_LOW);
+  flag |= LD(R_HDC1080_TEMP_HIGH);
+  flag |= LD(R_HDC1080_TEMP_LOW);
+
+  flag |= LD(R_DHT11_TEMP_HIGH);
+  flag |= LD(R_DHT11_TEMP_LOW);
+
+  flag |= LD(R_MCU_TEMP_HIGH);
+  flag |= LD(R_MCU_TEMP_LOW);
+  flag |= LD(R_MBAT_TEMP_HIGH);
+  flag |= LD(R_MBAT_TEMP_LOW);
+  
+  if(LD(R_DISABLE_TEMPERATURE_CHECK)){//屏蔽温度报警
+    RRES(R_TEMP_FAULT);
+  }
+  else{
+    if(flag){
+      SSET(R_TEMP_FAULT);
+    }
+    else{
+      RRES(R_TEMP_FAULT);
+    }
+  }
+    
+  flag = 0;
+  flag |= LD(R_HDC1080_HUMIDITY_HIGH);
+  flag |= LD(R_HDC1080_HUMIDITY_LOW);
+  flag |= LD(R_DHT11_HUMIDITY_HIGH);
+  flag |= LD(R_DHT11_HUMIDITY_LOW);
+  if(LD(R_DISABLE_INTERLOCK_CHECK)){
+    RRES(R_HUMIDITY_FALUT);
+  }
+  else{
+    if(flag){
+      SSET(R_HUMIDITY_FALUT);
+    }
+    else{
+      RRES(R_HUMIDITY_FALUT);
+    }
+  }
+  
+  flag = 0;
+  flag |= LD(R_HWATER_FLOW_LOW);
+  flag |= LD(R_CWATER_FLOW_LOW);
+  if(LD(R_DISABLE_FLOW_CHECK)){
+        RRES(R_FLOW_FAULT);
+  }
+  else{
+    if(flag){
+      SSET(R_FLOW_FAULT);
+    }
+    else{
+      RRES(R_FLOW_FAULT);
+    }
+  }
+  
+  //脚踏检测
+  if(LD(R_ENGINEER_MODE)){//工程模式: 屏幕仿真脚踏优先, 完全替代物理/无线脚踏(远程调试激光发射)
+    SSET(R_FOOTSWITCH_PLUG);
+    if(LD(R_EMULATOR_FSW_PRESS)){
+      SSET(R_FOOTSWITCH_PRESS);
+    }
+    else{
+      RRES(R_FOOTSWITCH_PRESS);
+    }
+  }
+  else if(LD(R_DISABLE_FOOTSWITCH_CHECK)){//屏蔽脚踏插入探测、使能屏幕激光发射控制
+    SSET(R_FOOTSWITCH_PLUG);
+    if(LD(R_HMI_FOOTSWITCH_PRESS)){
+      SSET(R_FOOTSWITCH_PRESS);
+    }
+    else{
+      RRES(R_FOOTSWITCH_PRESS);
+    }
+  }
+  else if(LD(SPCOIL_WFSWITCH_PLUG)){//无线脚踏插入、屏蔽有线脚踏
+    SSET(R_FOOTSWITCH_PLUG);
+    if(LD(SPCOIL_WFSWITCH_NO)){
+      SSET(R_FOOTSWITCH_PRESS);
+    }
+    else{
+      RRES(R_FOOTSWITCH_PRESS);
+    }
+  }
+  else{
+    if(LD(X_FOOTSWITCH_NC)){//常闭
+      SSET(R_FOOTSWITCH_PLUG);
+    }
+    else{
+      RRES(R_FOOTSWITCH_PLUG);
+    }
+    if(LD(X_FOOTSWITCH_NO)){//常开
+      SSET(R_FOOTSWITCH_PRESS);
+    }
+    else{
+      RRES(R_FOOTSWITCH_PRESS);
+    }
+  }
+  
+  //屏蔽光纤探测器
+  if(LD(R_DISABLE_FIBER_PROBE_CHECK)){
+    SSET(R_FIBER_PROBE);
+  }
+  else{
+    if(LD(X_FIBER_PROBE)){
+      SSET(R_FIBER_PROBE);
+    }
+    else{
+      RRES(R_FIBER_PROBE);
+    }
+  }
+
+  if(LD(R_DISABLE_RFID_CHECK)){//屏蔽光纤RFID探测
+    SSET(R_RFID_PASS);
+  }
+  
+  if(LD(R_DISABLE_ESTOP_CHECK)){//屏蔽紧急停止开关
+    SSET(R_ESTOP);
+  }
+  else{
+    if(LDB(X_ESTOP_NC)){
+
+      SSET(R_ESTOP);
+    }
+    else{
+      RRES(R_ESTOP);
+    }
+  }
+  
+  //屏蔽安全联锁
+  if(LD(R_DISABLE_INTERLOCK_CHECK)){
+    SSET(R_INTERLOCK);
+  }
+  else{
+    if(deviceConfig.normalOpenInterLock == 1){//常开连锁
+      if(LD(X_INTERLOCK_NC)){
+        SSET(R_INTERLOCK);
+      }
+      else{
+        RRES(R_INTERLOCK);
+      }
+    }
+    else{//常闭连锁
+      if(LD(X_INTERLOCK_NC)){
+        RRES(R_INTERLOCK);
+      }
+      else{
+        SSET(R_INTERLOCK);
+      }
+    }
+  }
+  flag = 0;
+  flag |= LD(R_TEMP_FAULT);
+  flag |= LD(R_HUMIDITY_FALUT);
+  flag |= LD(R_FLOW_FAULT);
+  flag |= LDB(R_FOOTSWITCH_PLUG);
+  flag |= LDB(R_FIBER_PROBE);
+  //flag |= LDB(R_RFID_PASS);
+  flag |= LD(R_ESTOP);
+  flag |= LD(R_INTERLOCK);
+  if(flag){
+    SSET(R_FAULT);
+  }
+  else{
+    RRES(R_FAULT);
+  }
+
 #ifndef LYPE_2V0_20260703_M450
-	if(LD(R_FAULT)){
-		RRES(Y_GREEN_LED);//关闭绿灯
-		RRES(Y_BLUE_LED);//关闭黄灯
-		SSET(Y_RED_LED);//打开红灯
-	}
-	else if(LD(R_LASER_FALG_EMITING)){
-		SSET(Y_GREEN_LED);//打开绿灯
-		RRES(Y_BLUE_LED);//打开黄灯
-		SSET(Y_RED_LED);//关闭红灯
-	}
-	else{
-		SSET(Y_GREEN_LED);//打开绿灯
-		RRES(Y_BLUE_LED);//关闭黄灯
-		RRES(Y_RED_LED);//关闭红灯
-	}	
+  if(LD(R_FAULT)){
+    RRES(Y_GREEN_LED);//关闭绿灯
+    RRES(Y_BLUE_LED);//关闭黄灯
+    SSET(Y_RED_LED);//打开红灯
+  }
+  else if(LD(R_LASER_FALG_EMITING)){
+    SSET(Y_GREEN_LED);//打开绿灯
+    RRES(Y_BLUE_LED);//打开黄灯
+    SSET(Y_RED_LED);//关闭红灯
+  }
+  else{
+    SSET(Y_GREEN_LED);//打开绿灯
+    RRES(Y_BLUE_LED);//关闭黄灯
+    RRES(Y_RED_LED);//关闭红灯
+  }
 #else
-	if(LD(R_FAULT)){
-		SSET(Y_RED_LED);//打开红灯
-	}
-	else{
-		RRES(Y_RED_LED);
-	}
-	if(LaserFlag_Emiting){
-		SSET(Y_YELLOW_LED);
-	}
-	else{
-		RRES(Y_YELLOW_LED);
-	}
+  if(LD(R_FAULT)){
+    SSET(Y_RED_LED);//打开红灯
+  }
+  else{
+    RRES(Y_RED_LED);
+  }
+  if(LaserFlag_Emiting){
+    SSET(Y_YELLOW_LED);
+  }
+  else{
+    RRES(Y_YELLOW_LED);
+  }
 #endif
 }
 

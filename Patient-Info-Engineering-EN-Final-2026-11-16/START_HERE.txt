@@ -1,0 +1,35 @@
+PATIENT INFO — FINAL ENGLISH ENGINEERING DEMO
+Packaged: 16 November 2026
+
+1. Extract the entire ZIP to a folder on your computer.
+2. Double-click index.html to open the English demo in a desktop browser.
+3. Keep the assets folder beside index.html.
+
+Viewing requires no internet connection, server, development tools or font installation.
+The default device canvas is 1024 x 600. Demo controls are below it.
+If the window is too small, clear Actual Size to fit the demo to the window.
+
+PACKAGE CONTENTS
+index.html              English offline demonstration
+assets/                 Required original screen images
+ENGINEERING_NOTES.md    Final behavior, demo scenarios and implementation notes
+UI_SPEC_EN.md           Layout, type sizes and colors
+VALIDATION.md           Checks performed and validation scope
+source/                 Complete editable source, tests and build configuration
+SHA256SUMS.txt           File checksums
+
+IMPORTANT DEMO BEHAVIOR
+Export and Clear Device writes the complete backup to the simulated USB,
+then clears the active device's saved patient and treatment records.
+Failed export retains existing data. Import replaces the complete device archive
+after confirmation; it does not merge records.
+
+USB B starts with two fictional patients and one treatment record per patient.
+Choose USB B under Simulated drive, then open Patient Info > USB Transfer >
+Import from USB > Replace and Import. The device then contains those two patients
+and two records, replacing its original archive.
+
+All device storage, USB drives and laser output are simulated in page memory.
+Restart Demo Device preserves saved simulated archives. Refreshing or closing
+this webpage resets the entire simulation. No real USB or laser is accessed.
+Use fictional patient information only.

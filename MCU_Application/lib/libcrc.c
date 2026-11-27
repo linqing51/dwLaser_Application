@@ -1,30 +1,30 @@
-﻿/*----------------------------------------------------------------------------
- * 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
- * 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
- * 请以 UTF-8 编码保存, 并在文件头保留本注释。
- *----------------------------------------------------------------------------*/
+﻿// ----------------------------------------------------------------------------
+ // 文件编码约定: 本文件为 UTF-8 编码(带BOM)。
+ // 本工程源码统一使用 UTF-8(带BOM) 保存: 新建或修改任何源文件时,
+ // 请以 UTF-8 编码保存, 并在文件头保留本注释。
+ // ----------------------------------------------------------------------------
 #include "libcrc.h"
-/*****************************************************************************/
-/* CRC32 纯软件实现——不依赖 CRC 外设、不依赖 RCC、不关中断、不需要互斥量
- *
- * 算法与 STM32 硬件 CRC 外设的 bit 序逐位一致: 多项式 0x04C11DB7(固定32位)、
- * 初值 0xFFFFFFFF、MSB-first 输入(对应 CR.REV_IN=0)、输出不反转、无末异或,
- * 即目录标准 CRC-32/MPEG-2。因此与旧硬件路径算出的值完全相同, EPROM 里已存的
- * CRC(MR/DM/FD/BK/固件CRC) 继续有效, 不需要重新生成, 也不需要迁移。
- *   - 校验值: "123456789" -> 0x0376E6E7 (CRC-32/MPEG-2 目录标准值)
- *   - 32位字模式与硬件 WORDS 语义一致: 每个字按"值的高字节到低字节"喂入,
- *     等价于把 32 位字按大端字节序拼成字节流后逐字节计算。
- *
- * 可重入性(本文件的设计前提):
- *   1. 没有任何静态可变变量; 查表数组是 const, 放 .rodata 只读;
- *   2. CRC 中间值由调用者持有, 通过返回值在调用之间传递(见 crc32SwUpdate);
- *   3. 因此同一函数可被多个任务/中断并发调用而互不影响, 调用者各自持有自己的
- *      中间值即可; 不需要关中断, 也不需要信号量/互斥量。
- *   注意: 唯一的外部要求是"同一个 CRC 序列"必须由同一个调用者串行推进
- *   (这是算法语义决定的, 与并发无关; 不同线程各自的序列完全独立)。
- */
-/*****************************************************************************/
-/* 256 项查表(多项式 0x04C11DB7, MSB-first), 运行期只读, 无需初始化 */
+// ***************************************************************************
+// CRC32 纯软件实现——不依赖 CRC 外设、不依赖 RCC、不关中断、不需要互斥量
+ //
+ // 算法与 STM32 硬件 CRC 外设的 bit 序逐位一致: 多项式 0x04C11DB7(固定32位)、
+ // 初值 0xFFFFFFFF、MSB-first 输入(对应 CR.REV_IN=0)、输出不反转、无末异或,
+ // 即目录标准 CRC-32/MPEG-2。因此与旧硬件路径算出的值完全相同, EPROM 里已存的
+ // CRC(MR/DM/FD/BK/固件CRC) 继续有效, 不需要重新生成, 也不需要迁移。
+ // - 校验值: "123456789" -> 0x0376E6E7 (CRC-32/MPEG-2 目录标准值)
+ // - 32位字模式与硬件 WORDS 语义一致: 每个字按"值的高字节到低字节"喂入,
+ // 等价于把 32 位字按大端字节序拼成字节流后逐字节计算。
+ //
+ // 可重入性(本文件的设计前提):
+ // 1. 没有任何静态可变变量; 查表数组是 const, 放 .rodata 只读;
+ // 2. CRC 中间值由调用者持有, 通过返回值在调用之间传递(见 crc32SwUpdate);
+ // 3. 因此同一函数可被多个任务/中断并发调用而互不影响, 调用者各自持有自己的
+ // 中间值即可; 不需要关中断, 也不需要信号量/互斥量。
+ // 注意: 唯一的外部要求是"同一个 CRC 序列"必须由同一个调用者串行推进
+ // (这是算法语义决定的, 与并发无关; 不同线程各自的序列完全独立)。
+ //
+// ***************************************************************************
+// 256 项查表(多项式 0x04C11DB7, MSB-first), 运行期只读, 无需初始化
 static const uint32_t crc32SwTable[256] = {
     0x00000000u, 0x04C11DB7u, 0x09823B6Eu, 0x0D4326D9u,
     0x130476DCu, 0x17C56B6Bu, 0x1A864DB2u, 0x1E475005u,
@@ -91,35 +91,35 @@ static const uint32_t crc32SwTable[256] = {
     0xAFB010B1u, 0xAB710D06u, 0xA6322BDFu, 0xA2F33668u,
     0xBCB4666Du, 0xB8757BDAu, 0xB5365D03u, 0xB1F740B4u
 };
-/*****************************************************************************/
+// ***************************************************************************
 uint32_t crc32SwUpdate(uint32_t crc, const void *buf, uint32_t len){//字节流分块累加: 调用者持有crc(初值CRC32_SW_INIT), 可跨多次调用/跨任务
-	const uint8_t *p = (const uint8_t *)buf;
-	while(len --){
-		crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (uint32_t)(*p ++)) & 0xFFu];
-	}
-	return crc;
+  const uint8_t *p = (const uint8_t *)buf;
+  while(len --){
+    crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (uint32_t)(*p ++)) & 0xFFu];
+  }
+  return crc;
 }
 uint32_t crc32SwBlock(const void *buf, uint32_t len){//字节流一次算完
-	return crc32SwUpdate(CRC32_SW_INIT, buf, len);
+  return crc32SwUpdate(CRC32_SW_INIT, buf, len);
 }
 uint32_t crc32SwUpdateWords(uint32_t crc, const void *words, uint32_t nWords){//32位字累加(硬件WORDS语义: 字内按高字节->低字节喂)
-	const uint32_t *p = (const uint32_t *)words;
-	while(nWords --){
-		uint32_t v = *p ++;
-		crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (v >> 24)) & 0xFFu];
-		crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ ((v >> 16) & 0xFFu)) & 0xFFu];
-		crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ ((v >>  8) & 0xFFu)) & 0xFFu];
-		crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (v & 0xFFu)) & 0xFFu];
-	}
-	return crc;
+  const uint32_t *p = (const uint32_t *)words;
+  while(nWords --){
+    uint32_t v = *p ++;
+    crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (v >> 24)) & 0xFFu];
+    crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ ((v >> 16) & 0xFFu)) & 0xFFu];
+    crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ ((v >>  8) & 0xFFu)) & 0xFFu];
+    crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (v & 0xFFu)) & 0xFFu];
+  }
+  return crc;
 }
 uint32_t crc32SwBlockWords(const void *words, uint32_t nWords){//32位字一次算完
-	return crc32SwUpdateWords(CRC32_SW_INIT, words, nWords);
+  return crc32SwUpdateWords(CRC32_SW_INIT, words, nWords);
 }
 uint32_t crc32SwUpdateFill(uint32_t crc, uint8_t val, uint32_t count){//重复同一字节累加(固件镜像尾部补0xFF)
-	while(count --){
-		crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (uint32_t)val) & 0xFFu];
-	}
-	return crc;
+  while(count --){
+    crc = (crc << 8) ^ crc32SwTable[((crc >> 24) ^ (uint32_t)val) & 0xFFu];
+  }
+  return crc;
 }
-/*****************************************************************************/
+// ***************************************************************************
