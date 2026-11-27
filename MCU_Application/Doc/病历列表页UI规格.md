@@ -1,6 +1,8 @@
-# 病历功能 UI 行为规格 — 覆盖 GDDC_PAGE_LIST_TREATMENT 等 11 个病历相关页面
+# 病历功能 UI 行为规格（全硬件板通用）— 覆盖 GDDC_PAGE_LIST_TREATMENT 等 11 个病历相关页面
 
 本文件固化 11 个病历相关页面（页面清单见第十六节 16.1）的**强制交互行为**，涵盖 `GDDC_PAGE_LIST_TREATMENT` 的页码、搜索、关闭按钮、患者选择闭环、删除患者确认，`GDDC_PAGE_OPERATOR_USB` 及导出/导入确认页，`GDDC_PAGE_VERIFY_TREATMENT` 核对页的患者信息录入与保存，以及全部病历页面的**按键互锁**（第十六节）。任何 AI 维护这些页面前必须先读完本文件，并按此实现，不得擅自更改匹配口径、排序规则、显示格式、页面跳转出口、患者选择归属、删除确认流程与按键互锁规则。
+
+> **适用范围（2026-11-27 起全硬件板通用）**：本规格不绑定任何具体 targetBoard 板，对仓库内全部硬件板（含当前唯一活跃工程 `targetBoard_G5_TRI_A1_20260915` 及将来恢复维护的其他板）统一生效；其引用的 `GDDC_PAGE_*` 控件宏定义于全板共享的 `MainApp/dcHmiRes.h`，故规则对所有板具有同等约束力。停止维护板仅冻结代码改动，不改变本规格的适用效力。
 
 > **层级关系**：本文件从属于仓库根目录 `AI_RULES.md`。`AI_RULES.md` 中的规则描述具有最高优先级；本文件是其在病历 HMI 交互上的具体规格补充，与 `AI_RULES.md` 冲突时一律以 `AI_RULES.md` 为准。
 
@@ -68,7 +70,7 @@
 ## 三、关闭按钮 GDDC_PAGE_LIST_TREATMENT_KEY_CLOSE（控件 ID 38）
 
 1. 点击该按钮必须回到待机页 `GDDC_PAGE_STANDBY`，不得跳到其他页面、也不得仅关闭弹窗而停留原页。
-2. `GDDC_PAGE_STANDBY` 是板级别名，在 G5 工程 `config/G5_TRI_A1_20260915/AppConfig.h` 中映射为 `GDDC_PAGE_STANDBY_DUAL_1470_635`；维护时一律引用 `GDDC_PAGE_STANDBY`，不要硬编码具体板型待机页。
+2. `GDDC_PAGE_STANDBY` 是板级别名，由各板自己的 `config/<板型>/AppConfig.h` 映射到该板的具体待机页（如 G5 工程 `config/G5_TRI_A1_20260915/AppConfig.h` 映射为 `GDDC_PAGE_STANDBY_DUAL_1470_635`）；维护时一律引用 `GDDC_PAGE_STANDBY`，不要硬编码具体板型待机页。
 3. 实现统一走 `returnStandbyDisplay()`：把状态机切回 `FSMSTEP_STANDBY`、显式写入 `NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY`，先 `updateStandbyDisplay()` 预刷新再 `SetScreen()`，避免目标页控件残留。
 4. 本要求为**强制规格，任何时刻打开/维护此页都必须保留此行为**，不得改为返回其他页面或删除该退出出口。
 
@@ -331,9 +333,9 @@
 
 ## 七、维护约束
 
-- 仅在 `run_treatment` 分支、唯一活跃工程 `targetBoard_G5_TRI_A1_20260915` 内修改；UTF-8 编码与代码风格统一遵循仓库根 `AI_RULES.md`（权威规则主文件）。
+- 本规格为全硬件板通用规格，不绑定任何 targetBoard 板；实际代码改动只在当前活跃工程内进行（活跃工程以 `AI_RULES.md` 为准，现为 `targetBoard_G5_TRI_A1_20260915`），停止维护板禁止改动；UTF-8 编码与代码风格统一遵循仓库根 `AI_RULES.md`（权威规则主文件）。
 - 文本控件英文显示与非 ASCII 符号转换要求已提升为**全工程至高规格**，统一以根目录 `AI_RULES.md` 的“显示文本一律英文、非 ASCII 符号一律转换”条款为准（适用全部页面，修改或开口子须经仓库所有者人工授权）；本文件不再维护局部规则，原中点 `·` 等非 ASCII 分隔符一律改为 ASCII 符号。
-- 改动后按 `AI_RULES.md` 第 2 节做 AC5 完整 Rebuild、**0 Error 并生成 hex 即为本分支编译验证通过**（本分支不迁移 AC6）；无硬件时只能称为“编译级验证”，不得声称上板功能/时序已验证。
+- 改动后按 `AI_RULES.md` 第 2 节做 AC5 完整 Rebuild、**0 Error 并生成 hex 即为编译验证通过**（当前活跃工程不迁移 AC6）；无硬件时只能称为“编译级验证”，不得声称上板功能/时序已验证。
 - 若控件 ID、页面编号或本文件描述的规则发生变化，必须同步更新本文件，保持规格与代码一致。
 
 ---
@@ -688,3 +690,4 @@
 60. **2026-11-26（两个 USB 进度条关联 CSV 读写进度，0–100；澄清按钮属性口径，#164）**：用户要求把 `GDDC_PAGE_OPERATOR_USB_SAVE_PROGRESS_SDISK`（写入进度条）与 `GDDC_PAGE_OPERATOR_USB_LOAD_PROGRESS_LDISK`（读取进度条）关联到 U 盘 CSV 读写进度，两控件均为 `progress`、起始值 0、终止值 100、初始值 0、禁止滑动。固件经 `SetProgressValue` 下发整数百分比：导出在 `treatmentLogSaveToUdisk` 按 `written/count` 走 0–100%；导入在 `treatmentLogLoadFromUdisk` 分两段——预检按 `f_tell/f_size` 走 0–50%、写入按 `written/validCount` 走 50–100%；进入确认页 `enterOperatorUsbConfirmPage` 统一清零。同时据大彩《按钮控件应用》澄清属性口径：`button_type` 是“触控用途”（开关描述=1、切换画面=2、弹出菜单=4），`button_style` 才是“操作风格”（瞬变=0、开关=2 等）；第 59 条等历史日志中的 `button_type` 字样属历史记录保留不改，正确瞬变口径以 `button_style=0` 为准。正文规则见新增 4.5。AC5 完整 Rebuild 结果以编译日志为准；进度条实际显示待所有者上板确认。
 61. **2026-11-26（导入进度条覆盖核对阶段、改三段映射；100% 后非阻塞停留 1 秒再切页，#164 续）**：用户上板反馈第 60 条导入进度条到 100% 后仍要等一段时间才跳转，根因是 `listTreatmentUsbLoop` 在 `treatmentLogLoadFromUdisk` 返回（进度已 100%）后还要调用 `treatmentLogVerifyUdisk` 重新挂载、逐行回读并与机内 EPROM 逐字段比较，该核对段无进度反馈。本次把核对纳入进度条，导入改三段映射，边界由 `TREATMENT_USB_PROGRESS_PRECHECK_END=30`、`TREATMENT_USB_PROGRESS_WRITE_END=70`、`TREATMENT_USB_PROGRESS_VERIFY_END=100` 固化：预检 0–30（`f_tell/f_size`）、写入 30–70（`written/validCount`）、核对 70–100（`i/localCount`，在 `treatmentLogVerifyUdisk` 内）；导出仍按 `written/count` 单段 0–100（无回读核对）。100% 后停留改用非阻塞状态机而非 `vTaskDelay`：新增完成态 `usbState=8`，状态 7 完成时记录 `usbDoneTick=HAL_GetTick()` 切状态 8，状态 8 轮询满 `CONFIG_USB_DONE_HOLD_MS`（`AppConfig.h` 新增，默认 1000 毫秒）后才恢复 OK/CANCEL 使能并 `SetScreen` 切回 `GDDC_PAGE_OPERATOR_USB`；停留期间触摸屏蔽，导入/导出统一处理，页面被切走由函数开头中止分支兜底。正文 4.5 已同步为三段口径。AC5 完整 Rebuild 结果以编译日志为准；实际显示与停留时长待所有者上板确认。
 62. **2026-11-26（病历模块三层三文件解耦重构：treatment / treatmentCsv / treatmentHmi，#165）**：用户拍板候选一，要求病历功能与其他功能解耦、相关函数收敛、配置宏集中。重构为三层：①`treatment.c/.h` 保持病历领域 + EPROM 存储，不依赖 HMI；②新增 `treatmentCsv.c/.h`，由 `minicsvApp.c/.h` 改造，删除其反向 `#include "dcHmiApp.h"`，改依赖 `treatment.h/minicsv.h/ff.h`，原 6 处直接 `SetProgressValue` 全部改为经 `treatmentReportProgress` 上报；③新增 `treatmentHmi.c/.h`，把原 `dcHmiApp.c` 中连续约 2081 行病历 HMI 整体平移，`listTreatmentExitReadyVerify` 及 6 个被屏幕冷加载回调跨文件调用的内部函数改外部可见，并新增 `treatmentHmiResetLockIfPageMoved`（不暴露按键锁变量）、`treatmentHmiProgressCb`（按 `usbOp` 选对应进度条，在确认启动状态 7 注册）。解耦机制：`treatment.h` 新增回调类型 `treatmentProgressFn` 与注册/上报三件套，`treatment.c` 用 `static g_progressFn`（判空转发），数据层不直接依赖 HMI、且不改对外函数签名。配置集中：`CONFIG_TREATMENT_NAME_LEN`、`CONFIG_TREATMENT_DEMO_VERBOSE` 迁到 `AppConfig.h`（VERBOSE 保持原生效值 1），`sPlcConfig.h` 同步移除；删除全工程无引用的死宏 `CONFIG_TREATMENT_DEMO_COUNT`、`CONFIG_TREATMENT_DEMO_SEED`，以及仅内部互引的死函数 `MiniCSV_ReadCsvFile`、`MiniCSV_WriteCsvFile`、`vMiniCSVTestTask`（含其专用缓冲，ZI 因此降约 2044 字节）。`dcHmiApp.c/.h` 移除病历区段与声明、改 `#include "treatmentHmi.h"`，`uvprojx` MainApp 组替换注册，删除 `minicsvApp.c/.h`。本次为结构平移、对外签名与运行行为不变。AC5 完整 Rebuild：0 Error、2 Warning（usbh_cdc 固定 #225-D 基线，自编零警告），Code=241340、RO=18592、RW=1568、ZI=119384，hex 733038 字节正常生成；HMI 实际手感仍待所有者上板确认。
+63. **2026-11-27（病历 UI 规格提升为全硬件板通用，去 G5 绑定）**：用户要求把本规格从仅 `targetBoard_G5_TRI_A1_20260915` 目标板生效提升为全部硬件板通用。纯文档改动、代码零改动：①用 `git mv` 把文件从 `targetBoard_G5_TRI_A1_20260915/MDK-ARM/` 移到中立的 `MCU_Application/Doc/`（保留 Git 历史），物理位置不再绑定任何板；②标题标注“全硬件板通用”，文首新增适用范围声明——不绑定具体 targetBoard、对全部硬件板（含活跃工程与将来恢复维护的板）统一生效，依据是 `GDDC_PAGE_*` 宏定义于全板共享的 `MainApp/dcHmiRes.h`，停止维护板仅冻结代码、不影响规格效力；③第三节 `GDDC_PAGE_STANDBY` 板级别名说明泛化为各板 `config/<板型>/AppConfig.h` 通用机制（G5 映射保留为示例）；④第七节维护约束删除“仅 `run_treatment` 分支、G5 工程内修改”的过时限定，改为全板通用、代码改动只在当前活跃工程（现为 G5）内进行，编译验证措辞“本分支”改为“当前活跃工程”；⑤同步更新 `AI_RULES.md` 第 14 章 HMI 单一事实源的路径与全板适用表述。本次为规则适用范围提升，不改动任何停止维护板工程；纯文档修订，无需重新编译。
