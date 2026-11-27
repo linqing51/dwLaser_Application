@@ -6,6 +6,7 @@
 #include "dcHmiApp.h"
 #include "treatment.h"
 #include "treatmentHmi.h"//病历HMI交互(列表/编辑/核对/U盘页), 实现已平移至treatmentHmi.c
+#include "version_generated.h"//构建时自动生成的Git版本信息(commit/分支/提交数/dirty), 该文件不入库
 // ***************************************************************************
 uint8_t hmiCmdBuffer[CMD_MAX_SIZE];//指令缓存
 static int8_t standbyKeyTouchEnableStatus = -1;
@@ -2040,11 +2041,11 @@ void updateInformationDisplay(void){//更新信息界面显示
   pMain = (char*)(BOOTLOAD_MAIN_ADDRESS);
   pMonir = (char*)(BOOTLOAD_MINOR_ADDRESS);
   if((*pMain >='0' && *pMain <= '9') && (*pMonir >= '0' && *pMonir <= '9')){
-    sprintf(dispBuf, "%s-%s:%s  Bootload Ver: %c.%c", (char*)SW_VERSION, __DATE__, __TIME__, *pMain, *pMonir);
+    sprintf(dispBuf, "%s %s  Bootload Ver: %c.%c", (char*)SW_VERSION, (char*)FW_VERSION_GIT, *pMain, *pMonir);
     SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXT_SOFTWARE_VERSION, (uint8_t*)dispBuf);
   }
   else{
-    sprintf(dispBuf, "%s-%s:%s; No Bootload!!!", (char*)SW_VERSION,  __DATE__, __TIME__);
+    sprintf(dispBuf, "%s %s; No Bootload!!!", (char*)SW_VERSION, (char*)FW_VERSION_GIT);
     SetTextValue(GDDC_PAGE_INFORMATION, GDDC_PAGE_INFORMATION_TEXT_SOFTWARE_VERSION, (uint8_t*)dispBuf);
   }
   

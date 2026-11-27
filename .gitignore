@@ -72,6 +72,8 @@ dkms.conf
 **/MDK-ARM/build_logs/
 # 仓库根目录本地分析脚本与构建日志(临时产物, 不入库)
 /build_logs/
+# Git 版本信息生成头(构建时由 gen_version.py 自动生成, 不入库)
+MCU_Application/config/version_generated.h
 
 # ===== IAR intermediate / build artifacts =====
 *.fed
