@@ -180,12 +180,12 @@ void sPlcLaserInit(void){//激光脉冲功能初始化
 void laserStart(void){//按通道选择打开激光
   if(LD(R_LASER_FALG_EMITING) == false){
     if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH0){
-      SET_LASER_CH0_ON;            
+      SET_LASER_CH0_ON;
     }
     if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH1){
       SET_LASER_CH1_ON;
     }
-    if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//打开红激光    
+    if(NVRAM0[EM_LASER_CHANNEL_SELECT] == LASER_CHANNEL_CH2){//打开红激光
       NVRAM0[SPREG_DAC_16] = (int16_t)((float)NVRAM0[EM_LASER_POWER_CH2] * ((float)(deviceConfig.redLaserDecay) / 100.0F) * 1000.0F);
       UPDAC16();
     }
@@ -195,7 +195,7 @@ void laserStart(void){//按通道选择打开激光
 }
 void laserStop(void){//按通道选择关闭激光
   if(LD(R_LASER_FALG_EMITING) == true){
-    SET_LASER_CH0_OFF;    
+    SET_LASER_CH0_OFF;
     SET_LASER_CH1_OFF;
     SET_LASER_CH2_OFF;
     SET_LASER_CH3_OFF;
@@ -204,7 +204,7 @@ void laserStop(void){//按通道选择关闭激光
     SET_LASER_CH6_OFF;
     SET_LASER_CH7_OFF;
     NVRAM0[SPREG_DAC_16] = NVRAM0[DM_RAIM_BRG] * deviceConfig.redAimGain + deviceConfig.redAimOffset;
-    UPDAC16();  
+    UPDAC16();
     RRES(R_LASER_FALG_EMITING);
     SET_BEEM_LED_OFF;
   }
@@ -234,7 +234,7 @@ void sPlcLaserTimerIsr(void){//TIM 中断回调 激光发射
     default:break;
   }
 }
-  
+
 void setRedLaserPwm(int16_t pwm){//设置红激光占空比 0-100
   if(pwm < 0){
     pwm = 0;

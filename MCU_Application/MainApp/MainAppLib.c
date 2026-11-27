@@ -106,7 +106,7 @@ void restoreDefault(void){//恢复默认值
   NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
   NVRAM0[DM_SCHEME_INDEX] = 0;
 #endif
-  
+
 #if defined(APP_CONFIG_WAVE_450_980)
   NVRAM0[DM_SCHEME_CLASSIFY] = SCHEME_CUSTIOM;
   NVRAM0[DM_SCHEME_INDEX] = 0;
@@ -334,7 +334,7 @@ uint16_t fitLaserToCode(uint8_t ch, int16_t power, deviceConfig_t *pcfg, bool ca
     }
     fout = fpower / 100;
   }
-  
+
   fout = fout * dacmax;
   if(fout > dacmax){
     fout = dacmax;

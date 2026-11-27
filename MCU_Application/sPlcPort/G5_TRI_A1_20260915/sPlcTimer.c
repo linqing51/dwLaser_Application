@@ -92,7 +92,7 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
     TD_60000MS_SP = 1;
     TimerCounter_60000mS = 0;
   }
-  
+
   TimerCounter_10mS ++;//10毫秒
   TimerCounter_100mS ++;//100毫秒
   TimerCounter_200mS ++;//200毫秒
@@ -100,7 +100,7 @@ void sPlcTimerIsr(void){//硬件sTimer计时器中断 1mS
   TimerCounter_500mS ++;//500毫秒
   TimerCounter_1000mS ++;//1秒
   TimerCounter_60000mS ++;//1分钟
-  
+
   sPlcTick ++;
 }
 

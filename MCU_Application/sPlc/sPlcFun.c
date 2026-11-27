@@ -335,7 +335,7 @@ void ADD32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位非饱加法 D = Sa + Sb
   tmpSb = *((int32_t*)(&NVRAM0[Sb]));
   tmpD = tmpSa + tmpSb;
   *((int32_t*)(&NVRAM0[D])) = tmpD;
-  
+
 }
 void ADDS32(uint16_t Sa, uint16_t Sb, uint16_t D){//32位饱和加法 D = Sa + Sb
   int32_t tmpSa, tmpSb;
@@ -413,11 +413,11 @@ void MULT32(uint16_t Sa, uint16_t Sb, uint16_t D){//16*16->32非饱和乘法 D =
   tmpSa = NVRAM0[(Sa + 1)];
   tmpSa = (tmpSa << 16) & 0xFFFF0000;
   tmpSa |= NVRAM0[Sa];
-  
+
   tmpSb = NVRAM0[(Sb + 1)];
   tmpSb = (tmpSb << 16) & 0xFFFF0000;
   tmpSb |= NVRAM0[Sb];
-  
+
   tmpD = tmpSa * tmpSb;
   NVRAM0[D] = tmpD & 0x0000FFFF;
   NVRAM0[(D + 1)] = (tmpD >> 16) & 0x0000FFFF;
@@ -429,8 +429,7 @@ void SUM16(uint16_t index, uint16_t length, uint16_t sum){//16BIT数求和->32BI
   sPlcAssertWord32Address(sum);
   cnt = NVRAM0[length];
   sPlcAssertArrayRange(index, cnt);
-  for(i = 0; i < cnt; i++)
-  {
+  for(i = 0; i < cnt; i++) {
     tmp += NVRAM0[index + i];
   }
   *((int32_t*)&NVRAM0[sum]) = tmp;

@@ -119,7 +119,7 @@ static void calculate_target_speed(FanController* fan){//内部函数：计算�
       fan->target_speed = fan->speed_curve[0].speed;
       return;
   }
-  
+
   if(temp >= fan->speed_curve[fan->curve_point_count - 1].temperature){//高于最高温度点
       fan->target_speed = fan->speed_curve[fan->curve_point_count - 1].speed;
       return;

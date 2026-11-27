@@ -428,7 +428,7 @@ void statusLoop(void){//温度轮询轮询
   if(LDP(R_MBAT_TEMP_LOW)){
     printf("%s,%d,%s:STATUS:MBAT TEMP LOW\n", __FILE__, __LINE__, __func__);
   }
-  
+
   flag = 0;
   flag |= LD(R_LASER_A_DIODE_TEMP_HIGH);
   flag |= LD(R_LASER_A_DIODE_TEMP_LOW);
@@ -476,7 +476,7 @@ void statusLoop(void){//温度轮询轮询
   flag |= LD(R_MCU_TEMP_LOW);
   flag |= LD(R_MBAT_TEMP_HIGH);
   flag |= LD(R_MBAT_TEMP_LOW);
-  
+
   if(LD(R_DISABLE_TEMPERATURE_CHECK)){//屏蔽温度报警
     RRES(R_TEMP_FAULT);
   }
@@ -488,7 +488,7 @@ void statusLoop(void){//温度轮询轮询
       RRES(R_TEMP_FAULT);
     }
   }
-    
+
   flag = 0;
   flag |= LD(R_HDC1080_HUMIDITY_HIGH);
   flag |= LD(R_HDC1080_HUMIDITY_LOW);
@@ -505,7 +505,7 @@ void statusLoop(void){//温度轮询轮询
       RRES(R_HUMIDITY_FALUT);
     }
   }
-  
+
   flag = 0;
   flag |= LD(R_HWATER_FLOW_LOW);
   flag |= LD(R_CWATER_FLOW_LOW);
@@ -520,7 +520,7 @@ void statusLoop(void){//温度轮询轮询
       RRES(R_FLOW_FAULT);
     }
   }
-  
+
   //脚踏检测
   if(LD(R_ENGINEER_MODE)){//工程模式: 屏幕仿真脚踏优先, 完全替代物理/无线脚踏(远程调试激光发射)
     SSET(R_FOOTSWITCH_PLUG);
@@ -563,7 +563,7 @@ void statusLoop(void){//温度轮询轮询
       RRES(R_FOOTSWITCH_PRESS);
     }
   }
-  
+
   //屏蔽光纤探测器
   if(LD(R_DISABLE_FIBER_PROBE_CHECK)){
     SSET(R_FIBER_PROBE);
@@ -580,7 +580,7 @@ void statusLoop(void){//温度轮询轮询
   if(LD(R_DISABLE_RFID_CHECK)){//屏蔽光纤RFID探测
     SSET(R_RFID_PASS);
   }
-  
+
   if(LD(R_DISABLE_ESTOP_CHECK)){//屏蔽紧急停止开关
     SSET(R_ESTOP);
   }
@@ -593,7 +593,7 @@ void statusLoop(void){//温度轮询轮询
       RRES(R_ESTOP);
     }
   }
-  
+
   //屏蔽安全联锁
   if(LD(R_DISABLE_INTERLOCK_CHECK)){
     SSET(R_INTERLOCK);

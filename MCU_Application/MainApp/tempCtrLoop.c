@@ -56,7 +56,7 @@ void tempControlInit(void){
   FanController_Init(&AutoFan5, fan_curve_5, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
   FanController_Init(&AutoFan6, fan_curve_6, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
   FanController_Init(&AutoFan7, fan_curve_7, CONFIG_FAN_CURVE_POINTS, 3, 0.3f, 10, 100);//初始化风扇控制器（核心算法与硬件接口绑定）
-    
+
 }
 
 void tempControlLoop(void){//温度风扇控制循环
@@ -77,7 +77,7 @@ void tempControlLoop(void){//温度风扇控制循环
       AutoFan5.current_temp = ((float32_t)NVRAM0[EM_AMBIENT0_TEMP] / 10.0F);//关联温度->环境进风温度
       AutoFan6.current_temp = ((float32_t)NVRAM0[EM_HWATER_TEMP] / 10.0F);//关联温度->热水温度
       AutoFan7.current_temp = ((float32_t)NVRAM0[EM_HDC1080_TEMP] / 10.0F);//关联温度->板载传感器温度
-        
+
       FanController_Run(&AutoFan0);// 更新风扇控制
       FanController_Run(&AutoFan1);// 更新风扇控制
       FanController_Run(&AutoFan2);// 更新风扇控制
@@ -86,7 +86,7 @@ void tempControlLoop(void){//温度风扇控制循环
       FanController_Run(&AutoFan5);// 更新风扇控制
       FanController_Run(&AutoFan6);// 更新风扇控制
       FanController_Run(&AutoFan7);// 更新风扇控制
-      
+
       NVRAM0[EM_FAN0_SET_SPEED] = AutoFan0.current_speed;
       NVRAM0[EM_FAN1_SET_SPEED] = AutoFan1.current_speed;
       NVRAM0[EM_FAN2_SET_SPEED] = AutoFan2.current_speed;
@@ -104,7 +104,7 @@ void tempControlLoop(void){//温度风扇控制循环
     setFanSpeed(FAN_CH5, NVRAM0[EM_FAN5_SET_SPEED]);
     setFanSpeed(FAN_CH6, NVRAM0[EM_FAN6_SET_SPEED]);
     setFanSpeed(FAN_CH7, NVRAM0[EM_FAN7_SET_SPEED]);
-      
+
 #if CONFIG_USING_CLASSIC_PID == 1
     ClassicPid_A.setpoint = deviceConfig.laserDiodeA_Temp;
     LaserTecOut0 = PID_Compute(&ClassicPid_A, NVRAM0[EM_LASER_A_DIODE_TEMP]);
@@ -114,7 +114,7 @@ void tempControlLoop(void){//温度风扇控制循环
     FuzzyPID_SetSetpoint(&FuzzyPid_A, deviceConfig.laserDiodeA_Temp); // 设定目标温度为 25℃
     LaserTecOut0 = FuzzyPID_Compute(&FuzzyPid_A, NVRAM0[EM_LASER_A_DIODE_TEMP]);
 #endif
-    
+
 #if CONFIG_USING_SMART_PID == 1
     //辨识未完成期间，保持小功率输出或零输出，等待辨识结束
     if(!SmartPID_Identify(&SmartPid_A, (float32_t)NVRAM0[EM_LASER_A_DIODE_TEMP] / 10.0F, &ftmp0)){

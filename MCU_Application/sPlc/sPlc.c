@@ -496,7 +496,7 @@ void sPlcSpwmLoop(void){//SPWM轮询
       NVRAM0[SPREG_SPWM_COUNTER_1] = NVRAM0[SPREG_SPWM_COUNTER_1] + 1;
       RRES(SPCOIL_SPWM_OUT_1);
     }
-    
+
     else{
       NVRAM0[SPREG_SPWM_COUNTER_1] = NVRAM0[SPREG_SPWM_COUNTER_1] + 1;
     }

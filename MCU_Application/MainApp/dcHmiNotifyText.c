@@ -324,7 +324,7 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
           printf("%s,%d,%s:set ch0 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr0[14]);
           break;
         }
-        
+
         case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_0P80:{
           sscanf((const char*)str, "%f", &fValue);
           deviceConfig.calibrationPwr0[15] = (uint16_t)(fValue * 10.0F);
@@ -1043,14 +1043,14 @@ void NotifyText(uint16_t screen_id, uint16_t control_id, uint8_t *str){
           sscanf((const char*)str, "%f", &fValue);
           deviceConfig.calibrationPwr6[13] = (uint16_t)(fValue * 10.0F);
           printf("%s,%d,%s:set ch6 calibration power table[13]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[13]);
-          
+
         break;
         }
         case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_6P75:{
           sscanf((const char*)str, "%f", &fValue);
           deviceConfig.calibrationPwr6[14] = (uint16_t)(fValue * 10.0F);
           printf("%s,%d,%s:set ch6 calibration power table[14]:%d!\n",__FILE__, __LINE__, __func__, deviceConfig.calibrationPwr6[14]);
-          
+
           break;
         }
         case GDDC_PAGE_DIAGNOSIS_CALI_TEXT_6P80:{

@@ -76,7 +76,7 @@ const INFO_MSG_T info_msg = {
   .HW_VER               = "HW:"HW_VERSION"",
   .SW_VER               = "App:"SW_VERSION"",
   .MANUFACTURE_DATE         = "MANUFACTURE DATE: ",
-  
+
 #if defined(APP_CONFIG_WAVE_1470_635)
 #if defined(MODLE_M1470_640_10_30_05_D200_22_G9_PK)
   .TYPE                = "TYPE: PVGLS 1470/30",
@@ -89,7 +89,7 @@ const INFO_MSG_T info_msg = {
   .WAVELENGTH             = "WAVE LENGTH: 1470nm+635nm"
 #endif
 #endif
-  
+
 #if defined(MODEL_PVGLS_7W_1940_A0)
   .TYPE                = "TYPE: PVGLS 1940/7",
   .LASER_POWER             = "LASER_POWER: 7W",

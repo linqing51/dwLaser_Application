@@ -364,7 +364,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, false);
           SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, true);
           SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH0, true);
-          
+
           SetButtonValue( GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, false);
           SetControlVisiable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
           SetControlEnable(GDDC_PAGE_STANDBY, GDDC_PAGE_STANDBY_KEY_SELECT_CH1, true);
@@ -375,7 +375,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
 
           NVRAM0[EM_DC_PAGE] = GDDC_PAGE_STANDBY;//切换待机页面
           SetTextValue(screen_id, GDDC_PAGE_PASSCODE_TEXT_CODE, (uint8_t*)(dispBuf));
-                    
+
           updateStandbyDisplay();
           SetScreen(NVRAM0[EM_DC_PAGE]);
           break;
@@ -1418,7 +1418,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
         case GDDC_PAGE_RESTORE_KEY_CANCEL:{
           if(state){
             updateOptionDisplay();
-            
+
           }
           break;
         }
@@ -1821,7 +1821,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
       }
       break;
     }
-    
+
     case GDDC_PAGE_DIAGNOSIS:{
       switch(control_id){
         case GDDC_PAGE_DIAGNOSIS_KEY_ENTER_OK:{
@@ -2083,7 +2083,7 @@ void NotifyButton(uint16_t screen_id, uint16_t control_id, uint8_t state){
           }
           break;
         }
-        
+
         case GDDC_PAGE_DIAGNOSIS_CALI_KEY_UPDATE_CH0:{
           if(state){
             NVRAM0[SPREG_DAC_0] = fitLaserToCode(LASER_DAC_CHANNEL_CH0, NVRAM0[EM_CALI_CUR_SET_CH0], &deviceConfig, false);

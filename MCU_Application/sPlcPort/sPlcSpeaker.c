@@ -129,8 +129,7 @@ static void writeMcp41010(uint8_t dat){//MCP41010 模拟SPI写入
  // APB1: TIM2、TIM3、TIM4、TIM5、TIM6、TIM7、TIM12、TIM13、TIM14
  // 用 #ifdef 保护, 适配未集成对应外设的型号(如 F103 无 TIM9~TIM11)。
 static uint8_t sPlcSpeakerIsApb2(TIM_TypeDef *tim){
-  switch((uint32_t)tim)
-  {
+  switch((uint32_t)tim) {
 #ifdef TIM1
     case (uint32_t)TIM1:
 #endif
@@ -160,16 +159,14 @@ static uint8_t sPlcSpeakerIsApb2(TIM_TypeDef *tim){
 static uint32_t sPlcSpeakerGetTimClk(TIM_HandleTypeDef *htim){
   uint32_t pclk;
 
-  if(sPlcSpeakerIsApb2(htim->Instance) != 0U)
-  {
+  if(sPlcSpeakerIsApb2(htim->Instance) != 0U) {
     pclk = HAL_RCC_GetPCLK2Freq();
     // PPRE2 位段全 0 表示 APB2 未分频(DIV1), 定时器时钟 = PCLK2
     if((RCC->CFGR & RCC_CFGR_PPRE2) == 0U){
       return pclk;
     }
   }
-  else
-  {
+  else {
     pclk = HAL_RCC_GetPCLK1Freq();
     // PPRE1 位段全 0 表示 APB1 未分频(DIV1), 定时器时钟 = PCLK1
     if((RCC->CFGR & RCC_CFGR_PPRE1) == 0U){

@@ -67,7 +67,7 @@ void sPlcOutputRefresh(void){//设置输出IO
   if(LDN(Y_TICK_LED)){
     SET_TICK_LED_OFF;
   }
-  
+
   //YOUT5 ERR LED
   if(LDP(Y_ERR_LED)){
     SET_ERR_LED_ON;
@@ -75,7 +75,7 @@ void sPlcOutputRefresh(void){//设置输出IO
   if(LDN(Y_ERR_LED)){
     SET_ERR_LED_OFF;
   }
-  
+
   //YOUT6 BEEM LED
   if(LDP(Y_BEEM_LED)){
   }
